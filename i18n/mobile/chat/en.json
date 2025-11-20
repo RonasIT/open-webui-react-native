@@ -1,0 +1,146 @@
+{
+  "CHAT": {
+    "CHAT_SCREEN": {
+      "TEXT_LOADING": "Loading...",
+      "TEXT_SELECT_A_MODEL": "Select a model"
+    },
+    "CHAT": {
+      "TEXT_INPUT_PLACEHOLDER": "Send a message",
+      "TEXT_MODEL_NOT_SELECTED": "Model not selected"
+    },
+    "CHAT_MENU_LIST": {
+      "PINNED_CHAT_LIST": {
+        "TEXT_PINNED": "Pinned"
+      },
+      "TEXT_NEW_CHAT": "New chat",
+      "TEXT_SEARCH": "Search",
+      "TEXT_THERE_ARE_NO_CHATS": "There are no chats"
+    },
+    "SEARCH_CHATS_LIST": {
+      "TEXT_THERE_ARE_NO_CHATS": "There are no chats"
+    },
+    "FORM_CHAT_INPUT": {
+      "TEXT_MODEL_NOT_SELECTED": "Model not selected",
+      "ATTACHMENTS_ACTIONS_POPUP": {
+        "TEXT_CAPTURE": "Capture",
+        "TEXT_CHOOSE_FROM_GALLERY": "Choose from gallery",
+        "TEXT_UPLOAD_FILES": "Upload files",
+        "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "You cannot upload an empty file."
+      }
+    },
+    "SHARE_CHAT_MODAL": {
+      "TEXT_SHARE_CHAT": "Share chat",
+      "TEXT_DESCRIPTION_NOT_SHARED": "Messages you send after creating your link won't be shared. Users with the URL will be able to view the shared chat.",
+      "TEXT_DESCRIPTION_SHARED_1": "You have shared this chat",
+      "TEXT_BEFORE_LINK": "before",
+      "TEXT_DESCRIPTION_SHARED_2": "Click here to",
+      "TEXT_DELETE_LINK": "delete this link",
+      "TEXT_DESCRIPTION_SHARED_3": "and create a new shared link.",
+      "BUTTON_COPY_LINK": "Copy Link",
+      "BUTTON_UPDATE_AND_COPY_LINK": "Update and Copy Link",
+      "TEXT_LINK_COPIED": "Link copied to clipboard"
+    },
+    "CREATE_CHAT": {
+      "TEXT_NEW_CHAT": "New chat",
+      "TEXT_PLACEHOLDER": "How can I help you today?",
+      "TEXT_MODEL_NOT_SELECTED": "Model not selected",
+      "TEXT_SELECT_A_MODEL": "Select a model",
+      "SEARCH_MODEL_VIEW": {
+        "TEXT_SELECT_A_MODEL": "Select a model",
+        "TEXT_SEARCH_MODEL": "Search model"
+      },
+      "SEARCH_FOLDER_VIEW": {
+        "TEXT_SEARCH_FOLDER": "Search folder",
+        "TEXT_NO_FOLDER": "No folder",
+        "TEXT_CREATE_NEW_FOLDER": "Create new folder"
+      },
+      "SUGGESTIONS_LIST": {
+        "TEXT_SUGGESTED": "Suggested",
+        "TEXT_SUGGESTION_TITLE_1": "Help me study",
+        "TEXT_SUGGESTION_SUBTITLE_1": "vocabulary for a college entrance exam",
+        "TEXT_SUGGESTION_CONTENT_1": "Help me study vocabulary: write a sentence for me to fill in the blank, and I'll try to pick the correct option.",
+        "TEXT_SUGGESTION_TITLE_2": "Give me ideas",
+        "TEXT_SUGGESTION_SUBTITLE_2": "for what to do with my kids' art",
+        "TEXT_SUGGESTION_CONTENT_2": "What are 5 creative things I could do with my kids' art? I don't want to throw them away, but it's also so much clutter.",
+        "TEXT_SUGGESTION_TITLE_3": "Tell me a fun fact",
+        "TEXT_SUGGESTION_SUBTITLE_3": "about the Roman Empire",
+        "TEXT_SUGGESTION_CONTENT_3": "Tell me a random fun fact about the Roman Empire",
+        "TEXT_SUGGESTION_TITLE_4": "Show me a code snippet",
+        "TEXT_SUGGESTION_SUBTITLE_4": "of a website's sticky header",
+        "TEXT_SUGGESTION_CONTENT_4": "Show me a code snippet of a website's sticky header in CSS and JavaScript.",
+        "TEXT_SUGGESTION_TITLE_5": "Explain options trading",
+        "TEXT_SUGGESTION_SUBTITLE_5": "if I'm familiar with buying and selling stocks",
+        "TEXT_SUGGESTION_CONTENT_5": "Explain options trading in simple terms if I'm familiar with buying and selling stocks.",
+        "TEXT_SUGGESTION_TITLE_6": "Overcome procrastination",
+        "TEXT_SUGGESTION_SUBTITLE_6": "give me tips",
+        "TEXT_SUGGESTION_CONTENT_6": "Could you start by asking me about instances when I procrastinate the most and then give me some suggestions to overcome it?"
+      }
+    },
+    "ATTACHED_FILE_ITEM": {
+      "TEXT_FILE": "File",
+      "TEXT_DOCUMENT": "Document",
+      "TEXT_COLLECTION": "Collection",
+      "FILE_INFO_MODAL": {
+        "TEXT_FORMATTING_DISCLAIMER": "Formatting may be inconsistent from source.",
+        "TEXT_NO_PREVIEW_AVAILABLE": "No preview available",
+        "TEXT_EXTRACTED_LINES": {
+          "one": "{{count}} Extracted line",
+          "other": "{{count}} Extracted lines"
+        }
+      }
+    },
+    "SOURCE_CITATION_MODAL": {
+      "TEXT_CITATION": "Citation",
+      "TEXT_SOURCE": "Source",
+      "TEXT_RELEVANCE": "Relevance",
+      "TEXT_CONTENT": "Content",
+      "TEXT_NO_PREVIEW_AVAILABLE": "No preview available"
+    },
+    "ARCHIVED_CHATS_LIST": {
+      "TEXT_ARCHIVED_CHATS": "Archived Chats",
+      "TEXT_NO_CHATS": "There are no archived chats.",
+      "CHAT_ITEM": {
+        "TEXT_DELETE_CHAT": "Delete chat?",
+        "TEXT_THIS_WILL_DELETE": "This will delete {{name}}",
+        "TEXT_RESTORE": "Restore",
+        "TEXT_EXPORT": "Export",
+        "TEXT_DELETE": "Delete",
+        "TEXT_KEEP": "Keep"
+      },
+      "ARCHIVED_CHATS_ACTIONS_SHEET": {
+        "TEXT_UNARCHIVE_CHATS": "Unarchive all chats?",
+        "TEXT_ARE_YOU_SURE": "Are you sure you want to unarchive all archived chats?",
+        "BUTTON_RESTORE_ALL_CHATS": "Restore all chats",
+        "BUTTON_EXPORT_ALL_CHATS": "Export all chat"
+      }
+    },
+    "USER_MESSAGE_ACTIONS": {
+      "TEXT_EDIT": "Edit",
+      "TEXT_COPY": "Copy"
+    },
+    "AI_MESSAGE_ACTIONS": {
+      "TEXT_EDIT": "Edit",
+      "TEXT_COPY": "Copy"
+    },
+    "EDIT_MESSAGE_INPUT": {
+      "TEXT_EDIT_MESSAGE": "Edit message",
+      "BUTTON_SAVE": "Save",
+      "BUTTON_SAVE_AS_COPY": "Save as copy",
+      "BUTTON_SEND": "Send",
+      "BUTTON_CANCEL": "Cancel"
+    },
+    "ARCHIVED_CHATS_FILTERS_SHEET": {
+      "USE_SEARCH_FILTERS": {
+        "TEXT_MOST_RECENT": "Most recent",
+        "TEXT_OLDEST": "Oldest",
+        "TEXT_A-Z": "A-Z",
+        "TEXT_Z-A": "Z-A"
+      }
+    },
+    "VOICE_MODE_MODAL": {
+      "TEXT_LISTENING": "Listening...",
+      "TEXT_THINKING": "Thinking...",
+      "TEXT_TALKING": "Talking..."
+    }
+  }
+}

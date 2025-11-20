@@ -1,0 +1,9 @@
+{
+  "name": "mobile-chat-ui-source-citation-item",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mobile/chat/ui/source-citation-item/src",
+  "projectType": "library",
+  "tags": ["app:mobile", "scope:chat", "type:ui"],
+  "// targets": "to see all targets run: nx show project mobile-chat-ui-source-citation-item --web",
+  "targets": {}
+}

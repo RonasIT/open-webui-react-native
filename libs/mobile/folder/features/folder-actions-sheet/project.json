@@ -1,0 +1,9 @@
+{
+  "name": "mobile-folder-features-folder-actions-sheet",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mobile/folder/features/folder-actions-sheet/src",
+  "projectType": "library",
+  "tags": ["app:mobile", "type:features", "scope:folder"],
+  "// targets": "to see all targets run: nx show project mobile-folder-features-folder-actions-sheet --web",
+  "targets": {}
+}

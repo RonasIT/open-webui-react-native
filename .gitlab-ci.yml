@@ -1,0 +1,21 @@
+default:
+  tags:
+    - ronasit
+    - kubernetes
+    - ci
+
+include:
+  - project: spaces/gitlab-ci-cd/templates
+    ref: kubernetes
+    file: react.yaml
+  - project: spaces/gitlab-ci-cd/templates
+    ref: kubernetes
+    file: /jobs/cloudrun-deploy.yaml
+
+trigger:
+  rules:
+    - when: never
+
+npm:ci:
+  rules:
+    - when: always

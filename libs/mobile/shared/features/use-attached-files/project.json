@@ -1,0 +1,9 @@
+{
+  "name": "mobile-shared-features-use-attached-files",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mobile/shared/features/use-attached-files/src",
+  "projectType": "library",
+  "tags": ["app:mobile", "type:features", "scope:shared"],
+  "// targets": "to see all targets run: nx show project mobile-shared-features-use-attached-files --web",
+  "targets": {}
+}

@@ -1,0 +1,1 @@
+export { TextGroup } from './component';

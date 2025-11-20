@@ -1,0 +1,8 @@
+# Add files here to ignore them from prettier formatting
+/dist
+/coverage
+/.nx/cache
+/.nx/workspace-data# Files with custom rules
+**/actions.ts
+**/epics.ts
+**/selectors.ts

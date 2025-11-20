@@ -1,0 +1,9 @@
+{
+  "name": "mobile-shared-data-access-file-system-service",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mobile/shared/data-access/file-system-service/src",
+  "projectType": "library",
+  "tags": ["scope:shared", "type:data-access", "app:mobile"],
+  "// targets": "to see all targets run: nx show project mobile-shared-data-access-file-system-service --web",
+  "targets": {}
+}

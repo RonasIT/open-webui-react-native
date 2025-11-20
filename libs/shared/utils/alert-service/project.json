@@ -1,0 +1,9 @@
+{
+  "name": "shared/utils/alert-service",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/utils/alert-service/src",
+  "projectType": "library",
+  "tags": ["app:shared", "scope:shared", "type:utils"],
+  "// targets": "to see all targets run: nx show project shared/utils/alert-service --web",
+  "targets": {}
+}

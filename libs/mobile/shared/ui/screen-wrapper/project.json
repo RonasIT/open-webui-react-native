@@ -1,0 +1,9 @@
+{
+  "name": "mobile/shared/ui/screen-wrapper",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mobile/shared/ui/screen-wrapper/src",
+  "projectType": "library",
+  "tags": ["app:mobile", "scope:shared", "type:ui"],
+  "// targets": "to see all targets run: nx show project mobile/shared/ui/screen-wrapper --web",
+  "targets": {}
+}

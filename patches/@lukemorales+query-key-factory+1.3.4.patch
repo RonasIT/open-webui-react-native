@@ -1,0 +1,11 @@
+//NOTE The patch exports types from the library, they are necessary for correct typing of returned values ​​from the createQueriesKeys function.
+diff --git a/node_modules/@lukemorales/query-key-factory/dist/index.d.ts b/node_modules/@lukemorales/query-key-factory/dist/index.d.ts
+index 7e2e8c6..a4196f6 100644
+--- a/node_modules/@lukemorales/query-key-factory/dist/index.d.ts
++++ b/node_modules/@lukemorales/query-key-factory/dist/index.d.ts
+@@ -208,4 +208,4 @@ declare type LooseQueryOptionsStruct = {
+ declare type LooseQueryOptionsStructGenerator = (...args: any[]) => LooseQueryOptionsStruct;
+ declare type TypedUseQueryOptions<Options extends LooseQueryOptionsStruct | LooseQueryOptionsStructGenerator, Data = Options extends LooseQueryOptionsStructGenerator ? Awaited<ReturnType<ReturnType<Options>['queryFn']>> : Options extends LooseQueryOptionsStruct ? Awaited<ReturnType<Options['queryFn']>> : never> = Options extends LooseQueryOptionsStructGenerator ? UseQueryOptions<Awaited<ReturnType<ReturnType<Options>['queryFn']>>, unknown, Data, ReturnType<Options>['queryKey']> : Options extends LooseQueryOptionsStruct ? UseQueryOptions<Awaited<ReturnType<Options['queryFn']>>, unknown, Data, Options['queryKey']> : never;
+ 
+-export { type TypedUseQueryOptions, createMutationKeys, createQueryKeyStore, createQueryKeys, type inferQueryKeyStore, type inferQueryKeys, mergeQueryKeys };
++export { type TypedUseQueryOptions, createMutationKeys, createQueryKeyStore, createQueryKeys, type inferQueryKeyStore, type inferQueryKeys, mergeQueryKeys, QueryKeyFactoryResult, QueryFactorySchema };

@@ -1,0 +1,100 @@
+{
+  "SHARED": {
+    "VALIDATION": {
+      "TEXT_INVALID_EMAIL": "Please enter a valid email address",
+      "TEXT_REQUIRED_EMAIL": "Please enter your email",
+      "TEXT_REQUIRED_PASSWORD": "Please enter your password",
+      "TEXT_INVALID_URL": "Please enter a valid URL in format https://your.domain",
+      "TEXT_REQUIRED_FOLDER_NAME": "Please enter a folder name"
+    },
+    "COMMON": {
+      "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "Feature is not implemented yet.",
+      "TEXT_NEW_CHAT": "New Chat",
+      "BUTTON_CANCEL": "Cancel",
+      "BUTTON_CONFIRM": "Confirm",
+      "BUTTON_OPEN_SETTINGS": "Open Settings",
+      "TEXT_UNABLE_TO_OPEN_SETTINGS": "Unable to open settings",
+      "TEXT_SETTINGS": "Settings",
+      "TEXT_DISABLED_IN_OFFLINE_MODE": "Feature are disabled in offline mode",
+      "ACTIONS_BOTTOM_SHEET": {
+        "BUTTON_CANCEL": "Cancel"
+      },
+      "TEXT_COPIED_TO_CLIPBOARD": "Copied to clipboard"
+    },
+    "API_ERRORS": {
+      "TEXT_SOMETHING_WENT_WRONG": "Something went wrong",
+      "TEXT_YOUR_SESSION_HAS_EXPIRED": "Your session has expired. Please sign in again",
+      "TEXT_FORBIDDEN_ERROR": "You have no access to this action",
+      "TEXT_INTERNAL_SERVER_ERROR": "Loading data error",
+      "TEXT_NOT_FOUND_ERROR": "Data not found"
+    },
+    "DATES": {
+      "TEXT_TODAY": "Today",
+      "TEXT_YESTERDAY": "Yesterday",
+      "TEXT_LAST_DAYS": "Last {{days}} days",
+      "TEXT_AT_TIME": "at {{time}}",
+      "TEXT_TODAY_TIME": "Today {{time}}",
+      "TEXT_YESTERDAY_TIME": "Yesterday {{time}}"
+    },
+    "CODE_BLOCK": {
+      "TEXT_COPIED_TO_CLIPBOARD": "Copied to clipboard",
+      "TEXT_COPY": "Copy"
+    },
+    "SOCKET_SERVICE": {
+      "TEXT_CONNECTION_ERROR": "Connection error"
+    },
+    "IMAGE_PICKER_SERVICE": {
+      "TEXT_ACCESS_DENIED": "Access denied"
+    },
+    "ACTION_BUTTONS_MODAL": {
+      "BUTTON_CONFIRM": "Confirm",
+      "BUTTON_CANCEL": "Cancel",
+      "TEXT_TITLE_CAN_NOT_BE_EMPTY": "Title can't be empty"
+    },
+    "MEDIA_LIBRARY_SERVICE": {
+      "TEXT_SUCCESSFULLY_SAVED": "Image successfully saved",
+      "TEXT_ERROR_DURING_SAVING": "An error occurred while saving the image",
+      "TEXT_SETTINGS": "Settings",
+      "TEXT_SETTINGS_MESSAGE": "Allow camera access from settings. Settings > Open Web UI > Photos > All Photos"
+    },
+    "FILE_SYSTEM_SERVICE": {
+      "TEXT_SHARE": "Share {{fileName}}",
+      "TEXT_SHARING_IS_NOT_AVAILABLE": "Sharing isn't available on this device"
+    },
+    "USE_AUDIO_RECORDER": {
+      "TEXT_NO_ACCESS": "No access",
+      "TEXT_APP_NEEDS_ACCESS": "The app needs access to your device microphone"
+    },
+    "NO_CONNECTION_BANNER": {
+      "TEXT_YOU_ARE_OFFLINE": "You`re offline!"
+    },
+    "PRESSABLE_SEARCH_INPUT": {
+      "TEXT_SEARCH_CHATS": "Search chats"
+    },
+    "CHAT_ACTIONS_MENU_SHEET": {
+      "TEXT_PIN": "Pin",
+      "TEXT_UNPIN": "Unpin",
+      "TEXT_RENAME": "Rename",
+      "TEXT_CLONE": "Clone",
+      "TEXT_ARCHIVE": "Archive",
+      "TEXT_SHARE": "Share",
+      "TEXT_DOWNLOAD": "Download",
+      "TEXT_DELETE": "Delete",
+      "TEXT_KEEP": "Keep",
+      "TEXT_RENAME_CHAT": "Rename chat",
+      "TEXT_DELETE_CHAT": "Delete chat?",
+      "TEXT_THIS_WILL_DELETE": "This will delete {{name}}",
+      "TEXT_CLONE_OF": "Clone of {{title}}",
+      "TEXT_CHAT_ACTIONS": "Chat actions",
+      "DOWNLOAD_CHAT_OPTIONS_SHEET": {
+        "TEXT_EXPORT_CHAT_JSON": "Export chat (.json)",
+        "TEXT_PLAIN_TEXT": "Plain text (.txt)",
+        "TEXT_PDF_DOCUMENT": "PDF document (.pdf)"
+      }
+    },
+    "SEARCH_INPUT": {
+      "BUTTON_CANCEL": "Cancel",
+      "TEXT_SEARCH_CHATS": "Search chats"
+    }
+  }
+}

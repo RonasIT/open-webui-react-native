@@ -1,0 +1,1 @@
+export { MathBlock } from './component';
