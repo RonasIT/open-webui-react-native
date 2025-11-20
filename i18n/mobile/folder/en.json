@@ -1,0 +1,35 @@
+{
+  "FOLDER": {
+    "CHATS_LIST": {
+      "TEXT_NO_CHATS": "There are no chats in this folder."
+    },
+    "FOLDER_ACTIONS_SHEET": {
+      "TEXT_EDIT": "Edit",
+      "TEXT_EXPORT": "Export",
+      "TEXT_DELETE": "Delete",
+      "TEXT_KEEP": "Keep",
+      "TEXT_DELETE_FOLDER": "Delete folder?",
+      "TEXT_THIS_WILL_DELETE": "This will delete {{name}}"
+    },
+    "UPSERT_FOLDER_SHEET": {
+      "TEXT_NEW_FOLDER": "New Folder",
+      "TEXT_EDIT_FOLDER": "Edit Folder",
+      "TEXT_FOLDER_NAME": "Folder name",
+      "TEXT_DOCUMENT": "Document",
+      "TEXT_FILE": "File",
+      "TEXT_COLLECTION": "Collection",
+      "TEXT_FOLDER_NAME_PLACEHOLDER": "e.g. My Folder",
+      "TEXT_SYSTEM_PROMPT": "System prompt",
+      "TEXT_KNOWLEDGE": "Knowledge",
+      "BUTTON_SELECT_KNOWLEDGE": "Select Knowledge",
+      "BUTTON_UPLOAD_FILES": "Upload Files",
+      "TEXT_CREATE": "Create",
+      "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "You cannot upload an empty file.",
+      "TEXT_UNSUPPORTED_TYPE": "Unsupported type."
+    },
+    "SELECT_KNOWLEDGE_SHEET": {
+      "TEXT_SELECT_KNOWLEDGE": "Select Knowledge",
+      "TEXT_NO_KNOWLEDGE": "There is no knowledge."
+    }
+  }
+}

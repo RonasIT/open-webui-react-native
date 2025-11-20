@@ -1,0 +1,9 @@
+{
+  "name": "mobile-shared-features-profile-menu-sheet",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mobile/shared/features/profile-menu-sheet/src",
+  "projectType": "library",
+  "tags": ["app:mobile", "type:features", "scope:shared"],
+  "// targets": "to see all targets run: nx show project mobile-shared-features-profile-menu-sheet --web",
+  "targets": {}
+}

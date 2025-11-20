@@ -1,0 +1,9 @@
+{
+  "name": "shared-utils-app-env",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/utils/app-env/src",
+  "projectType": "library",
+  "tags": ["scope:shared", "type:utils", "app:shared"],
+  "// targets": "to see all targets run: nx show project shared-utils-app-env --web",
+  "targets": {}
+}

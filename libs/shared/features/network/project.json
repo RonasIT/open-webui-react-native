@@ -1,0 +1,9 @@
+{
+  "name": "shared-features-network",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/features/network/src",
+  "projectType": "library",
+  "tags": ["app:shared", "scope:shared", "type:features"],
+  "// targets": "to see all targets run: nx show project shared-features-network --web",
+  "targets": {}
+}

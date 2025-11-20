@@ -1,0 +1,190 @@
+diff --git a/node_modules/@ronas-it/rtkq-entity-api/dist/index.d.mts b/node_modules/@ronas-it/rtkq-entity-api/dist/index.d.mts
+index 6fd9056..6da81b9 100644
+--- a/node_modules/@ronas-it/rtkq-entity-api/dist/index.d.mts
++++ b/node_modules/@ronas-it/rtkq-entity-api/dist/index.d.mts
+@@ -1,6 +1,6 @@
+ import { ClassConstructor } from 'class-transformer';
+ import { immerable } from 'immer';
+-import { DateTime } from 'luxon';
++import { Dayjs } from 'dayjs';
+ import * as type_fest from 'type-fest';
+ import { SetOptional, OmitIndexSignature, LiteralUnion } from 'type-fest';
+ import * as axios from 'axios';
+@@ -28,9 +28,9 @@ import * as react from 'react';
+ declare abstract class BaseEntity<TID = string | number> {
+     [immerable]: boolean;
+     id: TID;
+-    createdAt: DateTime;
+-    updatedAt?: DateTime;
+-    deletedAt?: DateTime;
++    createdAt: Dayjs;
++    updatedAt?: Dayjs;
++    deletedAt?: Dayjs;
+     constructor(model?: Partial<BaseEntity>);
+ }
+ 
+diff --git a/node_modules/@ronas-it/rtkq-entity-api/dist/index.d.ts b/node_modules/@ronas-it/rtkq-entity-api/dist/index.d.ts
+index 6fd9056..6da81b9 100644
+--- a/node_modules/@ronas-it/rtkq-entity-api/dist/index.d.ts
++++ b/node_modules/@ronas-it/rtkq-entity-api/dist/index.d.ts
+@@ -1,6 +1,6 @@
+ import { ClassConstructor } from 'class-transformer';
+ import { immerable } from 'immer';
+-import { DateTime } from 'luxon';
++import { Dayjs } from 'dayjs';
+ import * as type_fest from 'type-fest';
+ import { SetOptional, OmitIndexSignature, LiteralUnion } from 'type-fest';
+ import * as axios from 'axios';
+@@ -28,9 +28,9 @@ import * as react from 'react';
+ declare abstract class BaseEntity<TID = string | number> {
+     [immerable]: boolean;
+     id: TID;
+-    createdAt: DateTime;
+-    updatedAt?: DateTime;
+-    deletedAt?: DateTime;
++    createdAt: Dayjs;
++    updatedAt?: Dayjs;
++    deletedAt?: Dayjs;
+     constructor(model?: Partial<BaseEntity>);
+ }
+ 
+diff --git a/node_modules/@ronas-it/rtkq-entity-api/dist/index.js b/node_modules/@ronas-it/rtkq-entity-api/dist/index.js
+index 6a2fd31..0c029df 100644
+--- a/node_modules/@ronas-it/rtkq-entity-api/dist/index.js
++++ b/node_modules/@ronas-it/rtkq-entity-api/dist/index.js
+@@ -75,7 +75,8 @@ var EntityTagID = /* @__PURE__ */ ((EntityTagID2) => {
+ // src/models/base-entity.ts
+ var import_class_transformer4 = require("class-transformer");
+ var import_immer = require("immer");
+-var import_luxon2 = require("luxon");
++var import_dayjs2 = require("dayjs");
++var dayjs2 = import_dayjs2.default || import_dayjs2;
+ 
+ // src/utils/class-transformer/transform-boolean.ts
+ var import_class_transformer = require("class-transformer");
+@@ -92,21 +93,28 @@ function TransformBoolean() {
+ 
+ // src/utils/class-transformer/transform-date.ts
+ var import_class_transformer2 = require("class-transformer");
+-var import_luxon = require("luxon");
++var import_dayjs = require("dayjs");
++var utc = require("dayjs/plugin/utc");
++var customParseFormat = require("dayjs/plugin/customParseFormat");
++var dayjs = import_dayjs.default || import_dayjs;
++if (dayjs.extend) {
++  dayjs.extend(utc);
++  dayjs.extend(customParseFormat);
++}
+ function TransformDate(options = {}) {
+   const { dateOnly, format } = options;
+   const toPlain = (0, import_class_transformer2.Transform)(
+     ({ value }) => {
+-      if (import_luxon.DateTime.isDateTime(value)) {
+-        const utcValue = value.toUTC();
+-        return format ? utcValue.toFormat(format) : dateOnly ? value.toISODate() : utcValue.toISO();
++      if (dayjs.isDayjs(value)) {
++        const utcValue = value.utc();
++        return format ? utcValue.format(format) : dateOnly ? value.format('YYYY-MM-DD') : utcValue.toISOString();
+       }
+       return value;
+     },
+     { toPlainOnly: true }
+   );
+   const toClass = (0, import_class_transformer2.Transform)(
+-    ({ value }) => value ? format ? import_luxon.DateTime.fromFormat(value, format) : import_luxon.DateTime.fromISO(value) : value,
++    ({ value }) => value ? format ? dayjs(value, format, true) : dayjs(value) : value,
+     { toClassOnly: true }
+   );
+   return (target, key) => {
+@@ -158,17 +166,17 @@ __decorateClass([
+ ], BaseEntity.prototype, "id", 2);
+ __decorateClass([
+   (0, import_class_transformer4.Expose)({ name: "created_at" }),
+-  (0, import_class_transformer4.Type)(() => import_luxon2.DateTime),
++  (0, import_class_transformer4.Type)(() => dayjs2),
+   TransformDate()
+ ], BaseEntity.prototype, "createdAt", 2);
+ __decorateClass([
+   (0, import_class_transformer4.Expose)({ name: "updated_at" }),
+-  (0, import_class_transformer4.Type)(() => import_luxon2.DateTime),
++  (0, import_class_transformer4.Type)(() => dayjs2),
+   TransformDate()
+ ], BaseEntity.prototype, "updatedAt", 2);
+ __decorateClass([
+   (0, import_class_transformer4.Expose)({ name: "deleted_at" }),
+-  (0, import_class_transformer4.Type)(() => import_luxon2.DateTime),
++  (0, import_class_transformer4.Type)(() => dayjs2),
+   TransformDate()
+ ], BaseEntity.prototype, "deletedAt", 2);
+ 
+diff --git a/node_modules/@ronas-it/rtkq-entity-api/dist/index.mjs b/node_modules/@ronas-it/rtkq-entity-api/dist/index.mjs
+index 5e57f5f..c879b2e 100644
+--- a/node_modules/@ronas-it/rtkq-entity-api/dist/index.mjs
++++ b/node_modules/@ronas-it/rtkq-entity-api/dist/index.mjs
+@@ -32,7 +32,8 @@ var EntityTagID = /* @__PURE__ */ ((EntityTagID2) => {
+ // src/models/base-entity.ts
+ import { Expose, Type } from "class-transformer";
+ import { immerable } from "immer";
+-import { DateTime as DateTime2 } from "luxon";
++import dayjs as dayjs2 from "dayjs";
++const dayjsInstance2 = dayjs2.default || dayjs2;
+ 
+ // src/utils/class-transformer/transform-boolean.ts
+ import { Transform } from "class-transformer";
+@@ -49,21 +50,30 @@ function TransformBoolean() {
+ 
+ // src/utils/class-transformer/transform-date.ts
+ import { Transform as Transform2 } from "class-transformer";
+-import { DateTime } from "luxon";
++import dayjs from "dayjs";
++import utc from "dayjs/plugin/utc";
++import customParseFormat from "dayjs/plugin/customParseFormat";
++
++// Handle different module systems
++const dayjsInstance = dayjs.default || dayjs;
++if (dayjsInstance.extend) {
++  dayjsInstance.extend(utc);
++  dayjsInstance.extend(customParseFormat);
++}
+ function TransformDate(options = {}) {
+   const { dateOnly, format } = options;
+   const toPlain = Transform2(
+     ({ value }) => {
+-      if (DateTime.isDateTime(value)) {
+-        const utcValue = value.toUTC();
+-        return format ? utcValue.toFormat(format) : dateOnly ? value.toISODate() : utcValue.toISO();
++      if (dayjsInstance.isDayjs(value)) {
++        const utcValue = value.utc();
++        return format ? utcValue.format(format) : dateOnly ? value.format('YYYY-MM-DD') : utcValue.toISOString();
+       }
+       return value;
+     },
+     { toPlainOnly: true }
+   );
+   const toClass = Transform2(
+-    ({ value }) => value ? format ? DateTime.fromFormat(value, format) : DateTime.fromISO(value) : value,
++    ({ value }) => value ? format ? dayjsInstance(value, format, true) : dayjsInstance(value) : value,
+     { toClassOnly: true }
+   );
+   return (target, key) => {
+@@ -115,17 +125,17 @@ __decorateClass([
+ ], BaseEntity.prototype, "id", 2);
+ __decorateClass([
+   Expose({ name: "created_at" }),
+-  Type(() => DateTime2),
++  Type(() => dayjsInstance2),
+   TransformDate()
+ ], BaseEntity.prototype, "createdAt", 2);
+ __decorateClass([
+   Expose({ name: "updated_at" }),
+-  Type(() => DateTime2),
++  Type(() => dayjsInstance2),
+   TransformDate()
+ ], BaseEntity.prototype, "updatedAt", 2);
+ __decorateClass([
+   Expose({ name: "deleted_at" }),
+-  Type(() => DateTime2),
++  Type(() => dayjsInstance2),
+   TransformDate()
+ ], BaseEntity.prototype, "deletedAt", 2);
+ 

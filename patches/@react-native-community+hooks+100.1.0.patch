@@ -1,0 +1,25 @@
+//NOTE: The patch is needed to process the state of opening the keyboard on IOS in advance and faster
+diff --git a/node_modules/@react-native-community/hooks/lib/useKeyboard.js b/node_modules/@react-native-community/hooks/lib/useKeyboard.js
+index e31c7e1..6a49833 100644
+--- a/node_modules/@react-native-community/hooks/lib/useKeyboard.js
++++ b/node_modules/@react-native-community/hooks/lib/useKeyboard.js
+@@ -19,6 +19,7 @@ function useKeyboard() {
+     var _c = (0, react_1.useState)(0), keyboardHeight = _c[0], setKeyboardHeight = _c[1];
+     var handleKeyboardWillShow = function (e) {
+         setCoordinates({ start: e.startCoordinates, end: e.endCoordinates });
++        setShown(true);
+     };
+     var handleKeyboardDidShow = function (e) {
+         setShown(true);
+@@ -27,9 +28,10 @@ function useKeyboard() {
+     };
+     var handleKeyboardWillHide = function (e) {
+         setCoordinates({ start: e.startCoordinates, end: e.endCoordinates });
++        setShown(false);
+     };
+     var handleKeyboardDidHide = function (e) {
+-        setShown(false);
++         setShown(false);
+         if (e) {
+             setCoordinates({ start: e.startCoordinates, end: e.endCoordinates });
+         }

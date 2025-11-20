@@ -1,0 +1,9 @@
+{
+  "name": "mobile-auth-features-sign-in",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mobile/auth/features/sign-in/src",
+  "projectType": "library",
+  "tags": ["app:mobile", "type:features", "scope:auth"],
+  "// targets": "to see all targets run: nx show project mobile-auth-features-sign-in --web",
+  "targets": {}
+}

@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* New design colors */
+    --brand-primary: #167BF1;
+    --brand-primary-hover: #3391FE;
+    --brand-primary-pressed: #126EDA;
+    --brand-primary-transparent: rgba(22, 123, 241, 0.4);
+    --brand-primary-transparent-hover: rgba(51, 145, 254, 0.1);
+    --brand-secondary: #6163F8;
+    --brand-secondary-transparent: rgba(97, 99, 248, 0.06);
+
+    --text-primary: #181818;
+    --text-secondary: #93989C;
+    --text-tertiary: #C5CBD3;
+    --text-foreground: #FFFFFF;
+
+    --background-primary: #FFFFFF;
+    --background-secondary: #F7F8FA;
+    --background-tertiary: #F1F2F4;
+    --background-primary-transparent: rgba(255, 255, 255, 0.8);
+    --background-elevated-surface: #FFFFFF;
+    --background-elevated-surface-shadow: rgba(26, 69, 109, 0.1);
+    
+    --status-danger: #E71D32;
+    --status-danger-light: #fceaea;
+    --status-success: #3DC55B;
+    --status-warning: #FEB62B;
+    --status-success-light: #def2d6;
+    --status-warning-light: #f8f3d6;
+    --status-warning-orange: #ff7f00;
+    --status-warning-orange-light: #ffe6cc;
+  }
+
+  /* Dark mode colors */
+  .dark:root {
+   --text-primary: #FFFFFF;
+   --text-secondary: #A1A9B4;
+
+   --background-primary: #222526;
+   --background-secondary: #32393C;
+   --background-tertiary: #2C3035;
+   --background-primary-transparent: rgba(34, 37, 38, 0.8);
+   --background-elevated-surface: #2A3033;
+   --background-elevated-surface-shadow: rgba(0, 0, 0, 0.3);
+  }
+}

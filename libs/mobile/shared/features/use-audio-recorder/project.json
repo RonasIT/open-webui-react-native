@@ -1,0 +1,9 @@
+{
+  "name": "mobile/shared/features/use-audio-recorder",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mobile/shared/features/use-audio-recorder/src",
+  "projectType": "library",
+  "tags": ["app:mobile", "scope:shared", "type:features"],
+  "// targets": "to see all targets run: nx show project mobile/shared/features/use-audio-recorder --web",
+  "targets": {}
+}

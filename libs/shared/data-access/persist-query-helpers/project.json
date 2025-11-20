@@ -1,0 +1,9 @@
+{
+  "name": "shared/data-access/persist-query-helpers",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/data-access/persist-query-helpers/src",
+  "projectType": "library",
+  "tags": ["app:shared", "scope:shared", "type:data-access"],
+  "// targets": "to see all targets run: nx show project shared/data-access/persist-query-helpers --web",
+  "targets": {}
+}

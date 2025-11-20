@@ -1,0 +1,9 @@
+{
+  "name": "shared-data-access-websocket",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/data-access/websocket/src",
+  "projectType": "library",
+  "tags": ["app:shared", "scope:shared", "type:data-access"],
+  "// targets": "to see all targets run: nx show project shared-data-access-websocket --web",
+  "targets": {}
+}

@@ -1,0 +1,9 @@
+{
+  "name": "mobile-auth-features-google-sign-in-form",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mobile/auth/features/google-sign-in-form/src",
+  "projectType": "library",
+  "tags": ["app:mobile", "type:features", "scope:auth"],
+  "// targets": "to see all targets run: nx show project mobile-auth-features-google-sign-in-form --web",
+  "targets": {}
+}

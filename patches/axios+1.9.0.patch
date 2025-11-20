@@ -1,0 +1,20 @@
+//NOTE Workaround https://github.com/axios/axios/issues/6899#issuecomment-2837581573
+diff --git a/node_modules/axios/package.json b/node_modules/axios/package.json
+index 521a676..53c7072 100644
+--- a/node_modules/axios/package.json
++++ b/node_modules/axios/package.json
+@@ -11,11 +11,11 @@
+       },
+       "browser": {
+         "require": "./dist/browser/axios.cjs",
+-        "default": "./index.js"
++        "default": "./dist/esm/axios.js"
+       },
+       "default": {
+-        "require": "./dist/node/axios.cjs",
+-        "default": "./index.js"
++        "require": "./dist/browser/axios.cjs",
++        "default": "./dist/esm/axios.js"
+       }
+     },
+     "./lib/adapters/http.js": "./lib/adapters/http.js",

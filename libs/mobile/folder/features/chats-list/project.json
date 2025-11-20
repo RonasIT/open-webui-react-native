@@ -1,0 +1,9 @@
+{
+  "name": "mobile/folder/features/chats-list",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mobile/folder/features/chats-list/src",
+  "projectType": "library",
+  "tags": ["app:mobile", "scope:folder", "type:features"],
+  "// targets": "to see all targets run: nx show project mobile/folder/features/chats-list --web",
+  "targets": {}
+}

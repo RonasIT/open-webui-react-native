@@ -1,0 +1,71 @@
+//NOTE: This patch adds a feature that allows you to disable keyboard handling
+diff --git a/node_modules/@pietile-native-kit/keyboard-aware-scrollview/dist/KeyboardAwareScrollView.d.ts b/node_modules/@pietile-native-kit/keyboard-aware-scrollview/dist/KeyboardAwareScrollView.d.ts
+index e193376..81084c7 100644
+--- a/node_modules/@pietile-native-kit/keyboard-aware-scrollview/dist/KeyboardAwareScrollView.d.ts
++++ b/node_modules/@pietile-native-kit/keyboard-aware-scrollview/dist/KeyboardAwareScrollView.d.ts
+@@ -10,6 +10,7 @@ declare type Props = typeof KeyboardAwareScrollView.defaultProps & {
+     scrollViewContentContainerStyle?: StyleProp<ViewProps>;
+     scrollViewRef?: MutableRefObject<ScrollView> | RefCallback<ScrollView>;
+     onFocus?: (event: NativeSyntheticEvent<TargetedEvent>) => void;
++    enabled?: boolean;
+ } & ScrollViewProps;
+ interface State {
+     paddingBottom: Animated.Value;
+@@ -23,6 +24,7 @@ interface State {
+ export declare class KeyboardAwareScrollView extends Component<Props, State> {
+     static defaultProps: {
+         extraHeight: number;
++        enabled: boolean;
+     };
+     private subscriptions;
+     private scrollToFocusedInputTimeout;
+diff --git a/node_modules/@pietile-native-kit/keyboard-aware-scrollview/dist/KeyboardAwareScrollView.js b/node_modules/@pietile-native-kit/keyboard-aware-scrollview/dist/KeyboardAwareScrollView.js
+index 1fe8e22..ec0b353 100644
+--- a/node_modules/@pietile-native-kit/keyboard-aware-scrollview/dist/KeyboardAwareScrollView.js
++++ b/node_modules/@pietile-native-kit/keyboard-aware-scrollview/dist/KeyboardAwareScrollView.js
+@@ -235,7 +235,7 @@ export class KeyboardAwareScrollView extends Component {
+         onFocus={this.onFocus} ref={this.onRef}>
+         <Animated.View style={[
+                 contentStyles,
+-                { paddingBottom: Animated.add(this.state.paddingBottom, paddingBottom) },
++                { paddingBottom: this.props.enabled ? Animated.add(this.state.paddingBottom, paddingBottom) : 0 },
+             ]}>
+           {children}
+         </Animated.View>
+@@ -244,6 +244,7 @@ export class KeyboardAwareScrollView extends Component {
+ }
+ KeyboardAwareScrollView.defaultProps = {
+     extraHeight: 24,
++    enabled: true,
+ };
+ const styles = StyleSheet.create({
+     contentContainer: {
+diff --git a/node_modules/@pietile-native-kit/keyboard-aware-scrollview/src/KeyboardAwareScrollView.tsx b/node_modules/@pietile-native-kit/keyboard-aware-scrollview/src/KeyboardAwareScrollView.tsx
+index 507dc4d..2ba4911 100644
+--- a/node_modules/@pietile-native-kit/keyboard-aware-scrollview/src/KeyboardAwareScrollView.tsx
++++ b/node_modules/@pietile-native-kit/keyboard-aware-scrollview/src/KeyboardAwareScrollView.tsx
+@@ -34,6 +34,7 @@ type Props = typeof KeyboardAwareScrollView.defaultProps & {
+   scrollViewContentContainerStyle?: StyleProp<ViewProps>;
+   scrollViewRef?: MutableRefObject<ScrollView> | RefCallback<ScrollView>;
+   onFocus?: (event: NativeSyntheticEvent<TargetedEvent>) => void;
++  enabled?: boolean;
+ } & ScrollViewProps;
+ 
+ interface State {
+@@ -58,6 +59,7 @@ const IPHONE_X_INSET = {
+ export class KeyboardAwareScrollView extends Component<Props, State> {
+   static defaultProps = {
+     extraHeight: 24,
++    enabled: true,
+   };
+ 
+   private subscriptions: EmitterSubscription[] = [];
+@@ -335,7 +337,7 @@ export class KeyboardAwareScrollView extends Component<Props, State> {
+         <Animated.View
+           style={[
+             contentStyles,
+-            { paddingBottom: Animated.add(this.state.paddingBottom, paddingBottom) },
++            { paddingBottom: props.enabled ? Animated.add(this.state.paddingBottom, paddingBottom) : 0 },
+           ]}
+         >
+           {children}

@@ -1,0 +1,22 @@
+{
+  "AUTH": {
+    "SIGN_IN": {
+      "TEXT_TITLE_EXTERNAL": "Sign In",
+      "TEXT_TITLE_INTERNAL": "Sign In to Ronas IT",
+      "TEXT_TITLE_INTERNAL_SUBTITLE": "OpenWeb UI",
+      "TEXT_USE_YOUR_RONAS_IT": "Use your Ronas IT",
+      "TEXT_GOOGLE_ACCOUNT_TO_SIGN_IN": "Google account to sign in",
+      "TEXT_YOU_LOGGED_IN": "You`re now logged in.",
+      "EMAIL_FORM": {
+        "TEXT_EMAIL_ADDRESS": "Email Address",
+        "TEXT_PASSWORD": "Password",
+        "TEXT_API_URL": "API URL",
+        "TEXT_ENTER_YOUR_PASSWORD": "Enter Your Password",
+        "BUTTON_SIGN_IN": "Sign In"
+      },
+      "GOOGLE_FORM": {
+        "BUTTON_CONTINUE_WITH_GOOGLE": "Continue with Google"
+      }
+    }
+  }
+}

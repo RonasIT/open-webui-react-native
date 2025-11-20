@@ -1,0 +1,9 @@
+{
+  "name": "shared/features/get-chat-as-text",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/features/get-chat-as-text/src",
+  "projectType": "library",
+  "tags": ["app:shared", "scope:shared", "type:features"],
+  "// targets": "to see all targets run: nx show project shared/features/get-chat-as-text --web",
+  "targets": {}
+}
