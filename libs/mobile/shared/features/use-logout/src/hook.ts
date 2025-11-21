@@ -1,7 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { authApi } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { authState$ } from '@open-web-ui-mobile-client-react-native/shared/data-access/auth';
-import { cookieService } from '@open-web-ui-mobile-client-react-native/shared/data-access/cookie';
+import { authApi } from '@open-webui-react-native/shared/data-access/api';
+import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
+import { cookieService } from '@open-webui-react-native/shared/data-access/cookie';
 
 export const useLogout = (): { logout: () => Promise<void>; isLoading: boolean } => {
   const queryClient = useQueryClient();

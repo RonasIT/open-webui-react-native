@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 import { ReactElement, useEffect, useRef } from 'react';
 import { Easing, useDerivedValue, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
-import { useDictateMode } from '@open-web-ui-mobile-client-react-native/mobile/shared/features/use-dictate-mode';
-import { cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
-import { View, AppText, IconButton } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+import { useDictateMode } from '@open-webui-react-native/mobile/shared/features/use-dictate-mode';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { View, AppText, IconButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { WaveBar } from './components';
 import { soundWaveConfig } from './config';
 

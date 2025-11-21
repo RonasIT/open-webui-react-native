@@ -25,8 +25,8 @@ import { Keyboard, Platform, TouchableWithoutFeedback, ViewProps, StyleSheet } f
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SetOptional } from 'type-fest';
-import { cn, screenHeight } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
-import { uiState$ } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-state';
+import { cn, screenHeight } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { uiState$ } from '@open-webui-react-native/mobile/shared/ui/ui-state';
 import { View } from '../view';
 
 const CustomizedBottomSheet = remapProps(BottomSheet, {

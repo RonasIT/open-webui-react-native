@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { Rect } from 'react-content-loader/native';
-import { colors, useColorScheme } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
-import { AppContentLoader } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+import { colors, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { AppContentLoader } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 
 export function SkeletonMessage(): ReactElement {
   const { isDarkColorScheme } = useColorScheme();

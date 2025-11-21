@@ -1,6 +1,6 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
 import { useAudioRecorder as useExpoAudioRecorder, AudioRecorder, AudioModule } from 'expo-audio';
-import { permissionAlertService } from '@open-web-ui-mobile-client-react-native/shared/utils/permission-alert';
+import { permissionAlertService } from '@open-webui-react-native/shared/utils/permission-alert';
 import { recordingOptions } from './config';
 
 export interface UseAudioRecorderResult {

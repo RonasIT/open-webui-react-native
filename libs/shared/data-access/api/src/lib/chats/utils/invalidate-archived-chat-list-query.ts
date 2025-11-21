@@ -1,4 +1,4 @@
-import { queryClient } from '@open-web-ui-mobile-client-react-native/shared/data-access/query-client';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { archivedChatListQueryKey } from '../archived-chat-list-query-keys';
 import { chatServiceConfig } from '../configs';
 

@@ -1,20 +1,14 @@
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import Modal, { ModalProps } from 'react-native-modal';
-import { useCreateNewChat } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/use-create-new-chat';
-import { useSendMessage } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/use-send-message';
-import { speechStreamingService } from '@open-web-ui-mobile-client-react-native/mobile/shared/data-access/speech-streaming-service';
-import { useDictateMode } from '@open-web-ui-mobile-client-react-native/mobile/shared/features/use-dictate-mode';
-import { colors, useColorScheme } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
-import {
-  AppSafeAreaView,
-  AppText,
-  AppToast,
-  IconButton,
-  View,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { chatApi } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+import { useCreateNewChat } from '@open-webui-react-native/mobile/chat/features/use-create-new-chat';
+import { useSendMessage } from '@open-webui-react-native/mobile/chat/features/use-send-message';
+import { speechStreamingService } from '@open-webui-react-native/mobile/shared/data-access/speech-streaming-service';
+import { useDictateMode } from '@open-webui-react-native/mobile/shared/features/use-dictate-mode';
+import { colors, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { AppSafeAreaView, AppText, AppToast, IconButton, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { chatApi } from '@open-webui-react-native/shared/data-access/api';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { Loader, SpeechListener } from './components';
 import { voiceModeModalConfig } from './config';
 

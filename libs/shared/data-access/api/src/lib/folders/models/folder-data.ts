@@ -1,5 +1,5 @@
 import { Expose, plainToInstance, Transform } from 'class-transformer';
-import { AttachedFile, FileType } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { AttachedFile, FileType } from '@open-webui-react-native/shared/data-access/common';
 import { Knowledge } from '../../knowledge/models/knowledge';
 
 export class FolderData {

@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
-import { colors } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
-import { AppSpinner, Icon, View } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+import { colors } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { AppSpinner, Icon, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 
 export interface UrlInputLoaderProps {
   isLoading: boolean;

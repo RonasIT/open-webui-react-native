@@ -1,20 +1,16 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useEffect, useRef } from 'react';
-import { fileSystemService } from '@open-web-ui-mobile-client-react-native/mobile/shared/data-access/file-system-service';
+import { fileSystemService } from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
 import {
   imagePickerService,
   ImagePickerSource,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/data-access/image-picker-service';
-import {
-  ActionsBottomSheet,
-  ActionSheetItemProps,
-  IconButton,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { filesApi } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { FileData, ImageData } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
-import { getDocumentFormData } from '@open-web-ui-mobile-client-react-native/shared/utils/files';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+} from '@open-webui-react-native/mobile/shared/data-access/image-picker-service';
+import { ActionsBottomSheet, ActionSheetItemProps, IconButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { filesApi } from '@open-webui-react-native/shared/data-access/api';
+import { FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
+import { getDocumentFormData } from '@open-webui-react-native/shared/utils/files';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 export interface AttachmentsMenuSheetProps {
   disabled?: boolean;

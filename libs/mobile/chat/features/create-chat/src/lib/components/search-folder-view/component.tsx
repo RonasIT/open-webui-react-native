@@ -1,6 +1,6 @@
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement } from 'react';
-import { useColorScheme } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
 import {
   AppPressable,
   AppText,
@@ -9,8 +9,8 @@ import {
   FullScreenSearchModalProps,
   Icon,
   View,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { FolderListItem, foldersApi } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { FolderListItem, foldersApi } from '@open-webui-react-native/shared/data-access/api';
 
 interface SearchFolderViewProps
   extends Omit<FullScreenSearchModalProps<FolderListItem>, 'searchPlaceholder' | 'data' | 'renderTrigger'> {

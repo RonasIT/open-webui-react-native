@@ -1,11 +1,8 @@
 import { useSelector } from '@legendapp/state/react';
-import { AppSplashScreen } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import {
-  navigationConfig,
-  useInitialNavigation,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/navigation';
-import { appState$ } from '@open-web-ui-mobile-client-react-native/shared/data-access/app-state';
-import { authState$ } from '@open-web-ui-mobile-client-react-native/shared/data-access/auth';
+import { AppSplashScreen } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { navigationConfig, useInitialNavigation } from '@open-webui-react-native/mobile/shared/utils/navigation';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
+import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { useRouter } from 'expo-router';
 import { ReactElement, useEffect } from 'react';
 

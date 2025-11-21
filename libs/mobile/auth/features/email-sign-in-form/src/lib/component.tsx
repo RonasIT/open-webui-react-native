@@ -3,16 +3,12 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { TextInput } from 'react-native';
-import {
-  AppButton,
-  View,
-  FormFloatedLabelInput,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { FormValues } from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/form';
-import { appConfigurationApi, authApi } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { appStorageService } from '@open-web-ui-mobile-client-react-native/shared/data-access/storage';
-import { FeatureID, isFeatureEnabled } from '@open-web-ui-mobile-client-react-native/shared/utils/feature-flag';
-import { useDebouncedQuery } from '@open-web-ui-mobile-client-react-native/shared/utils/use-debounced-query';
+import { AppButton, View, FormFloatedLabelInput } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
+import { appConfigurationApi, authApi } from '@open-webui-react-native/shared/data-access/api';
+import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
+import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
+import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
 import { UrlInputLoader } from './components';
 import { emailFormConfig } from './config';
 import { EmailFormSchema } from './forms';

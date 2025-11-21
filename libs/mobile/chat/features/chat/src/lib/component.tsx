@@ -5,31 +5,20 @@ import { delay } from 'lodash-es';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { InteractionManager } from 'react-native';
-import { EditMessageInput } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/edit-message-input';
-import {
-  FormChatInput,
-  FormChatInputSchema,
-} from '@open-web-ui-mobile-client-react-native/mobile/chat/features/form-chat-input';
-import { useEditMessage } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/use-edit-message';
-import { useSendMessage } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/use-send-message';
-import { useAttachedFiles } from '@open-web-ui-mobile-client-react-native/mobile/shared/features/use-attached-files';
-import { cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
-import {
-  AppKeyboardControllerView,
-  AppSpinner,
-  View,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { FormValues } from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/form';
-import {
-  chatApi,
-  ChatGenerationOption,
-  chatQueriesKeys,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { Role } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
-import { useSubscribeToQueryCache } from '@open-web-ui-mobile-client-react-native/shared/data-access/query-client';
-import { webSocketConfig, webSocketState$ } from '@open-web-ui-mobile-client-react-native/shared/data-access/websocket';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
-import { useAppStateChange } from '@open-web-ui-mobile-client-react-native/shared/utils/use-app-state-change';
+import { EditMessageInput } from '@open-webui-react-native/mobile/chat/features/edit-message-input';
+import { FormChatInput, FormChatInputSchema } from '@open-webui-react-native/mobile/chat/features/form-chat-input';
+import { useEditMessage } from '@open-webui-react-native/mobile/chat/features/use-edit-message';
+import { useSendMessage } from '@open-webui-react-native/mobile/chat/features/use-send-message';
+import { useAttachedFiles } from '@open-webui-react-native/mobile/shared/features/use-attached-files';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { AppKeyboardControllerView, AppSpinner, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
+import { chatApi, ChatGenerationOption, chatQueriesKeys } from '@open-webui-react-native/shared/data-access/api';
+import { Role } from '@open-webui-react-native/shared/data-access/common';
+import { useSubscribeToQueryCache } from '@open-webui-react-native/shared/data-access/query-client';
+import { webSocketConfig, webSocketState$ } from '@open-webui-react-native/shared/data-access/websocket';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
+import { useAppStateChange } from '@open-webui-react-native/shared/utils/use-app-state-change';
 import { patchNewChat } from './utils';
 
 const LazyChatMessagesList = React.lazy(() => import('./components/messages-list/component'));

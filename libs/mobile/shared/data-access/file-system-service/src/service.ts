@@ -3,7 +3,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import { Directory, File, Paths } from 'expo-file-system/next';
 import * as Sharing from 'expo-sharing';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { FileExtension, MimeType, UtiType } from './enums';
 
 export class FileSystemService {

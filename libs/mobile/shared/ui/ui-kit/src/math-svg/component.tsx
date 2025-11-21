@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import MathJax, { MathJaxProps } from 'react-native-mathjax-svg';
-import { withClassNameInterop, cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { withClassNameInterop, cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 
 export interface MathSvgProps extends MathJaxProps {
   className?: string;

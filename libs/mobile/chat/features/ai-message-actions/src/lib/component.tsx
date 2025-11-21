@@ -3,11 +3,11 @@ import { i18n, useTranslation } from '@ronas-it/react-native-common-modules/i18n
 import * as Clipboard from 'expo-clipboard';
 import { compact } from 'lodash-es';
 import { PropsWithChildren, ReactElement, useRef } from 'react';
-import { MessageActionsSheetWrapper } from '@open-web-ui-mobile-client-react-native/mobile/chat/ui/message-actions-wrapper';
-import { ActionSheetItemProps } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { Message } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { FeatureID, isFeatureEnabled } from '@open-web-ui-mobile-client-react-native/shared/utils/feature-flag';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+import { MessageActionsSheetWrapper } from '@open-webui-react-native/mobile/chat/ui/message-actions-wrapper';
+import { ActionSheetItemProps } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { Message } from '@open-webui-react-native/shared/data-access/api';
+import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 interface AiMessageActionsProps {
   message: Message;

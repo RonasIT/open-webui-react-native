@@ -1,6 +1,6 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
-import { FileData } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
-import { getLineCount } from '@open-web-ui-mobile-client-react-native/shared/utils/strings';
+import { FileData } from '@open-webui-react-native/shared/data-access/common';
+import { getLineCount } from '@open-webui-react-native/shared/utils/strings';
 import { formatFileSize } from './format-file-size';
 
 export const prepareFileInfo = (file: FileData): string => {

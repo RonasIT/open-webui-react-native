@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FormValues } from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/form';
+import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 import {
   chatApi,
   ChatResponse,
   prepareUpdateMessageInChatPayload,
   prepareCompleteChatPayload,
   prepareUpdateMessageToSendPayload,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { socketService } from '@open-web-ui-mobile-client-react-native/shared/data-access/websocket';
+} from '@open-webui-react-native/shared/data-access/api';
+import { socketService } from '@open-webui-react-native/shared/data-access/websocket';
 
 interface UseEditMessageProps {
   chat?: ChatResponse;

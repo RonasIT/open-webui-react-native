@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import { Platform } from 'react-native';
 import { KeyboardAvoidingView, KeyboardAvoidingViewProps } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 
 const CustomizedKeyboardAvoidingView = cssInterop(KeyboardAvoidingView, {
   className: 'style',

@@ -6,8 +6,8 @@ import {
   FileType,
   MessageSource,
   Role,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
-import { ChatStatusData } from '@open-web-ui-mobile-client-react-native/shared/data-access/websocket';
+} from '@open-webui-react-native/shared/data-access/common';
+import { ChatStatusData } from '@open-webui-react-native/shared/data-access/websocket';
 
 export class Message extends BaseEntity<string> {
   @Expose({ name: 'user_id' })

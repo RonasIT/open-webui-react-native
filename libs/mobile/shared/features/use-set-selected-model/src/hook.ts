@@ -1,10 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import {
-  appConfigurationApi,
-  chatApi,
-  modelsApi,
-  usersApi,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
+import { appConfigurationApi, chatApi, modelsApi, usersApi } from '@open-webui-react-native/shared/data-access/api';
 
 export interface UseSetSelectedModelResult {
   isLoading: boolean;

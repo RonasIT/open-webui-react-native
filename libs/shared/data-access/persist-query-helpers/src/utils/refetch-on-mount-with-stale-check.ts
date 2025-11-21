@@ -3,7 +3,7 @@ import {
   queryClientConfig,
   queriesState$,
   queryClient,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/query-client';
+} from '@open-webui-react-native/shared/data-access/query-client';
 
 // NOTE: Guarantees a refetch on the first mount and further depends on staleTime
 export const refetchOnMountWithStaleCheck = <

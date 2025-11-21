@@ -1,5 +1,5 @@
 import { Expose, Type } from 'class-transformer';
-import { MessageSource } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { MessageSource } from '@open-webui-react-native/shared/data-access/common';
 
 export class ChatCompletionChunk {
   @Expose()

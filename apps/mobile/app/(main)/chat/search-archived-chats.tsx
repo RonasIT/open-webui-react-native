@@ -1,5 +1,5 @@
-import { SearchArchivedChats } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/search-archived-chats';
-import { navigationConfig } from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/navigation';
+import { SearchArchivedChats } from '@open-webui-react-native/mobile/chat/features/search-archived-chats';
+import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import { router } from 'expo-router';
 import { ReactElement } from 'react';
 

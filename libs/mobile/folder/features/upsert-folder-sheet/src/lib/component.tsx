@@ -9,9 +9,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   SelectKnowledgeSheet,
   SelectKnowledgeSheetMethods,
-} from '@open-web-ui-mobile-client-react-native/mobile/folder/features/select-knowledge-sheet';
-import { fileSystemService } from '@open-web-ui-mobile-client-react-native/mobile/shared/data-access/file-system-service';
-import { useAttachedFiles } from '@open-web-ui-mobile-client-react-native/mobile/shared/features/use-attached-files';
+} from '@open-webui-react-native/mobile/folder/features/select-knowledge-sheet';
+import { fileSystemService } from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
+import { useAttachedFiles } from '@open-webui-react-native/mobile/shared/features/use-attached-files';
 import {
   View,
   FormFloatedLabelInput,
@@ -22,18 +22,18 @@ import {
   AppBottomSheetPropsType,
   AppBottomSheetKeyboardAwareScrollView,
   AppSpinner,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { FormValues } from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/form';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 import {
   filesApi,
   foldersApi,
   Knowledge,
   prepareCreateFolderPayload,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { AttachedFile, FileData } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
-import { FeatureID, isFeatureEnabled } from '@open-web-ui-mobile-client-react-native/shared/utils/feature-flag';
-import { getDocumentFormData } from '@open-web-ui-mobile-client-react-native/shared/utils/files';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+} from '@open-webui-react-native/shared/data-access/api';
+import { AttachedFile, FileData } from '@open-webui-react-native/shared/data-access/common';
+import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
+import { getDocumentFormData } from '@open-webui-react-native/shared/utils/files';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { AttachedKnowledge } from './components';
 import { UpsertFolderFormSchema } from './forms';
 
