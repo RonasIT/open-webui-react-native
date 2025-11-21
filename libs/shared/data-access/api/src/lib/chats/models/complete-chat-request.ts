@@ -1,5 +1,5 @@
 import { Expose, Type } from 'class-transformer';
-import { AttachedFile } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { AttachedFile } from '@open-webui-react-native/shared/data-access/common';
 import { BackgroundTasks } from './background-tasks';
 import { ChatMessage } from './chat-message';
 import { Features } from './features';

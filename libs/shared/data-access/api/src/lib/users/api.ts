@@ -1,7 +1,7 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { ApiErrorData } from '@open-web-ui-mobile-client-react-native/shared/data-access/api-client';
-import { createEntityApi } from '@open-web-ui-mobile-client-react-native/shared/data-access/base-entity';
+import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
+import { createEntityApi } from '@open-webui-react-native/shared/data-access/base-entity';
 import { usersApiConfig } from './config';
 import { UserSettings } from './models';
 import { usersService } from './service';

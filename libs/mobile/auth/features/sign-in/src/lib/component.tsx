@@ -1,10 +1,10 @@
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import Constants from 'expo-constants';
 import { ReactElement } from 'react';
-import { EmailSignInForm } from '@open-web-ui-mobile-client-react-native/mobile/auth/features/email-sign-in-form';
-import { GoogleSignInForm } from '@open-web-ui-mobile-client-react-native/mobile/auth/features/google-sign-in-form';
-import { AppText, View } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+import { EmailSignInForm } from '@open-webui-react-native/mobile/auth/features/email-sign-in-form';
+import { GoogleSignInForm } from '@open-webui-react-native/mobile/auth/features/google-sign-in-form';
+import { AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 export interface SignInProps {
   onSuccess: () => void;

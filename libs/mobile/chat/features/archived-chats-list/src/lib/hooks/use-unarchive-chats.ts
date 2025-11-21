@@ -3,9 +3,9 @@ import {
   chatApi,
   chatServiceConfig,
   invalidateArchivedChatListQuery,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { queryClient } from '@open-web-ui-mobile-client-react-native/shared/data-access/query-client';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+} from '@open-webui-react-native/shared/data-access/api';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 interface UseUnarchiveChatsResult {
   isUnarchiving: boolean;

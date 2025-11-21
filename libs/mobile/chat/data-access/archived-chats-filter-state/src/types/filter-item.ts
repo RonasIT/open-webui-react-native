@@ -1,7 +1,7 @@
 import {
   ArchivedChatListOrderBy,
   ArchivedChatListOrderDirection,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
+} from '@open-webui-react-native/shared/data-access/api';
 
 export type FilterItem = {
   title: string;

@@ -12,14 +12,11 @@ import {
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { merge } from 'lodash-es';
-import { ApiErrorData } from '@open-web-ui-mobile-client-react-native/shared/data-access/api-client';
-import { getNextPageParam, Role } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
-import { refetchOnMountWithStaleCheck } from '@open-web-ui-mobile-client-react-native/shared/data-access/persist-query-helpers';
-import { queryClient } from '@open-web-ui-mobile-client-react-native/shared/data-access/query-client';
-import {
-  useSubscribeToEvent,
-  WebSocketEventName,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/websocket';
+import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
+import { getNextPageParam, Role } from '@open-webui-react-native/shared/data-access/common';
+import { refetchOnMountWithStaleCheck } from '@open-webui-react-native/shared/data-access/persist-query-helpers';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
+import { useSubscribeToEvent, WebSocketEventName } from '@open-webui-react-native/shared/data-access/websocket';
 import { foldersApiConfig } from '../folders';
 import { archivedChatListQueryKey } from './archived-chat-list-query-keys';
 import { chatQueriesKeys } from './chat-queries-keys';

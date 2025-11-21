@@ -1,4 +1,4 @@
-import { appEnv, appEnvStage } from '@open-web-ui-mobile-client-react-native/shared/utils/app-env';
+import { appEnv, appEnvStage } from '@open-webui-react-native/shared/utils/app-env';
 import { featureFlagConfig } from './config';
 import { FeatureID } from './enums';
 

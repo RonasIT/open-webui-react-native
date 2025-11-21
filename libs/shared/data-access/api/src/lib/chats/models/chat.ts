@@ -1,6 +1,6 @@
 import { BaseEntity } from '@ronas-it/rtkq-entity-api';
 import { Expose, Type } from 'class-transformer';
-import { AttachedFile } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { AttachedFile } from '@open-webui-react-native/shared/data-access/common';
 import { History } from './history';
 import { Message } from './message';
 

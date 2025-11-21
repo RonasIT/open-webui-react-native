@@ -1,7 +1,7 @@
 import { delay } from 'lodash-es';
 import { RefObject, useMemo, useRef, useState } from 'react';
-import { AppModalHandle } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { MessageSource } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { AppModalHandle } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { MessageSource } from '@open-webui-react-native/shared/data-access/common';
 import { Citation } from '../types';
 import { normalizeCitations } from '../utils';
 

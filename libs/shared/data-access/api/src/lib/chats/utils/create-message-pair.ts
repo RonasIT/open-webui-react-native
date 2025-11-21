@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import uuid from 'react-native-uuid';
-import { FileData, ImageData, Role } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { FileData, ImageData, Role } from '@open-webui-react-native/shared/data-access/common';
 import { prepareAttachedFiles, prepareAttachedImages } from '../../files';
 import { Message } from '../models';
 

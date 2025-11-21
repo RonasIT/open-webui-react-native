@@ -1,7 +1,7 @@
 import { useMutation, UseMutationOptions, UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { ApiErrorData } from '@open-web-ui-mobile-client-react-native/shared/data-access/api-client';
-import { FileData } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
+import { FileData } from '@open-webui-react-native/shared/data-access/common';
 import { filesApiConfig } from './config';
 import { filesService } from './service';
 

@@ -1,6 +1,6 @@
 import { ReactElement, Ref } from 'react';
 import { Platform, TextInput, TextInputProps, View } from 'react-native';
-import { cn, colors } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { cn, colors } from '@open-webui-react-native/mobile/shared/ui/styles';
 
 export type AppInputProps = {
   label?: string;

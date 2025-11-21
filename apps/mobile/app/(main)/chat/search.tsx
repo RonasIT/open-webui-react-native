@@ -1,5 +1,5 @@
-import { SearchChatsList } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/search-chats-list';
-import { navigationConfig } from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/navigation';
+import { SearchChatsList } from '@open-webui-react-native/mobile/chat/features/search-chats-list';
+import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import { router } from 'expo-router';
 import { ReactElement } from 'react';
 

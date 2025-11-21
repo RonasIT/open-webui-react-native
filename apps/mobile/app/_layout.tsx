@@ -1,21 +1,21 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { useSelector } from '@legendapp/state/react';
-import { ToastProvider } from '@open-web-ui-mobile-client-react-native/mobile/shared/features/toast';
-import { useLogout } from '@open-web-ui-mobile-client-react-native/mobile/shared/features/use-logout';
-import { fonts } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
-import { StatusBar, View } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { navigationConfig } from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/navigation';
-import { appState$ } from '@open-web-ui-mobile-client-react-native/shared/data-access/app-state';
-import { authState$ } from '@open-web-ui-mobile-client-react-native/shared/data-access/auth';
+import { ToastProvider } from '@open-webui-react-native/mobile/shared/features/toast';
+import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-logout';
+import { fonts } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { StatusBar, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
+import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import {
   queryPersister,
   persistStorageConfig,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/persist-query-storage';
-import { queryClient } from '@open-web-ui-mobile-client-react-native/shared/data-access/query-client';
-import { useSocket } from '@open-web-ui-mobile-client-react-native/shared/data-access/websocket';
-import { useNetworkConnection } from '@open-web-ui-mobile-client-react-native/shared/features/network';
-import { constants } from '@open-web-ui-mobile-client-react-native/shared/utils/config';
-import { setupReactotron } from '@open-web-ui-mobile-client-react-native/shared/utils/reactotron';
+} from '@open-webui-react-native/shared/data-access/persist-query-storage';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
+import { useSocket } from '@open-webui-react-native/shared/data-access/websocket';
+import { useNetworkConnection } from '@open-webui-react-native/shared/features/network';
+import { constants } from '@open-webui-react-native/shared/utils/config';
+import { setupReactotron } from '@open-webui-react-native/shared/utils/reactotron';
 import { setLanguage } from '@ronas-it/react-native-common-modules/i18n';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { useFonts } from 'expo-font';

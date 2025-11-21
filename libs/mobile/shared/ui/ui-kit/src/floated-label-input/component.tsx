@@ -1,7 +1,7 @@
 import { ReactElement, Ref, useState, useEffect } from 'react';
 import { NativeSyntheticEvent, Platform, TextInput, TextInputFocusEventData, TextInputProps } from 'react-native';
 import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { IconButton } from '../icon-button';
 import { AppText } from '../text';
 import { AnimatedView, View } from '../view';

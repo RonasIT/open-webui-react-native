@@ -1,4 +1,4 @@
-import { Role } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { Role } from '@open-webui-react-native/shared/data-access/common';
 import { ChatResponse, Message } from '../models';
 
 export function patchCompletedMessage(oldData: ChatResponse | undefined): ChatResponse | undefined {

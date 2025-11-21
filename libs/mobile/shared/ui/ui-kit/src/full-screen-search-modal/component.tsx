@@ -4,7 +4,7 @@ import { delay } from 'lodash-es';
 import { Fragment, ReactElement, Ref, useCallback, useRef, useState } from 'react';
 import { InteractionManager } from 'react-native';
 import { FadeIn } from 'react-native-reanimated';
-import { useDebouncedQuery } from '@open-web-ui-mobile-client-react-native/shared/utils/use-debounced-query';
+import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
 import { AppFlashList } from '../flash-list';
 import { FullScreenModal } from '../full-screen-modal';
 import { AppKeyboardControllerView } from '../keyboard-controller-view';

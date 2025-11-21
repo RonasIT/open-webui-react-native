@@ -1,16 +1,16 @@
 import { useSelector } from '@legendapp/state/react';
-import { CreateChat } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/create-chat';
+import { CreateChat } from '@open-webui-react-native/mobile/chat/features/create-chat';
 import {
   UpsertFolderSheet,
   UpsertFolderSheetMethods,
-} from '@open-web-ui-mobile-client-react-native/mobile/folder/features/upsert-folder-sheet';
-import { useSetSelectedModel } from '@open-web-ui-mobile-client-react-native/mobile/shared/features/use-set-selected-model';
-import { NoConnectionBanner } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/no-connection-banner';
-import { ScreenWrapper } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/screen-wrapper';
-import { AppHeader, AppSpinner } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { uiState$ } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-state';
-import { navigationConfig } from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/navigation';
-import { appState$ } from '@open-web-ui-mobile-client-react-native/shared/data-access/app-state';
+} from '@open-webui-react-native/mobile/folder/features/upsert-folder-sheet';
+import { useSetSelectedModel } from '@open-webui-react-native/mobile/shared/features/use-set-selected-model';
+import { NoConnectionBanner } from '@open-webui-react-native/mobile/shared/ui/no-connection-banner';
+import { ScreenWrapper } from '@open-webui-react-native/mobile/shared/ui/screen-wrapper';
+import { AppHeader, AppSpinner } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { uiState$ } from '@open-webui-react-native/mobile/shared/ui/ui-state';
+import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { router } from 'expo-router';
 import { ReactElement, useRef } from 'react';

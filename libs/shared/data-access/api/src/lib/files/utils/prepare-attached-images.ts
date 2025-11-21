@@ -1,5 +1,5 @@
-import { AttachedImage, FileType, ImageData } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
-import { toDataUrl } from '@open-web-ui-mobile-client-react-native/shared/utils/files';
+import { AttachedImage, FileType, ImageData } from '@open-webui-react-native/shared/data-access/common';
+import { toDataUrl } from '@open-webui-react-native/shared/utils/files';
 
 export function prepareAttachedImages(attachedImages: Array<ImageData>): Array<AttachedImage> {
   return attachedImages.map(

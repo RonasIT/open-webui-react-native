@@ -1,6 +1,6 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
 import * as Yup from 'yup';
-import { emailValidator } from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/validation';
+import { emailValidator } from '@open-webui-react-native/mobile/shared/utils/validation';
 
 export class EmailFormSchema {
   public email: string;

@@ -3,8 +3,8 @@ import {
   VoiceModeModalMethods,
   VoiceModeModalContext,
   VoiceModeModalContextMethods,
-} from '@open-web-ui-mobile-client-react-native/mobile/chat/features/voice-mode-modal';
-import { navigationConfig } from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/navigation';
+} from '@open-webui-react-native/mobile/chat/features/voice-mode-modal';
+import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import { router } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { ReactElement, useRef } from 'react';

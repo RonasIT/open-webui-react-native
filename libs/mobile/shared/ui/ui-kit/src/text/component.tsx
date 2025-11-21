@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import { Text, TextProps } from 'react-native';
-import { cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 
 export interface AppTextProps extends Omit<TextProps, 'className'> {
   className?: string;

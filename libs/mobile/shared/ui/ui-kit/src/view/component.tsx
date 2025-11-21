@@ -1,7 +1,7 @@
 import { Ref, ReactElement } from 'react';
 import { View as RNView, ViewProps as RNViewProps } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 
 export interface ViewProps extends RNViewProps {
   ref?: Ref<RNView>;
