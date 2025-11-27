@@ -10,9 +10,9 @@ import {
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { merge } from 'lodash-es';
-import { ApiErrorData } from '@open-web-ui-mobile-client-react-native/shared/data-access/api-client';
-import { getNextPageParam } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
-import { queryClient } from '@open-web-ui-mobile-client-react-native/shared/data-access/query-client';
+import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
+import { getNextPageParam } from '@open-webui-react-native/shared/data-access/common';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { ChatListItem } from '../chats/models/chat-list-item';
 import { ChatResponse } from '../chats/models/chat-response';
 import { foldersApiConfig } from './config';

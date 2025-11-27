@@ -1,7 +1,7 @@
 import { useNetInfo } from '@react-native-community/netinfo';
 import { onlineManager } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { appState$ } from '@open-web-ui-mobile-client-react-native/shared/data-access/app-state';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 
 interface UseNetworkConnectionResult {
   isOfflineMode: boolean;

@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import { interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
-import { AnimatedView, IconButton } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+import { AnimatedView, IconButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 
 interface ChatBottomButtonProps {
   isVisible: SharedValue<number>;

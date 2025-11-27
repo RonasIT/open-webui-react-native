@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { useColorScheme } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { Images } from '../assets';
 import { AppImage } from '../image';
 import { AppScreen } from '../screen';

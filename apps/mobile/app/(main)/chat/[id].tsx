@@ -1,8 +1,8 @@
 import { useSelector } from '@legendapp/state/react';
-import { Chat } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/chat';
-import { useSetSelectedModel } from '@open-web-ui-mobile-client-react-native/mobile/shared/features/use-set-selected-model';
-import { NoConnectionBanner } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/no-connection-banner';
-import { cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { Chat } from '@open-webui-react-native/mobile/chat/features/chat';
+import { useSetSelectedModel } from '@open-webui-react-native/mobile/shared/features/use-set-selected-model';
+import { NoConnectionBanner } from '@open-webui-react-native/mobile/shared/ui/no-connection-banner';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import {
   AppScreen,
   AppHeader,
@@ -10,13 +10,10 @@ import {
   AppText,
   Icon,
   FullScreenSearchModal,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import {
-  ChatScreenParams,
-  useInitialNavigation,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/navigation';
-import { modelsApi } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { appState$ } from '@open-web-ui-mobile-client-react-native/shared/data-access/app-state';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { ChatScreenParams, useInitialNavigation } from '@open-webui-react-native/mobile/shared/utils/navigation';
+import { modelsApi } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { useNavigationContainerRef, usePathname, useLocalSearchParams, router } from 'expo-router';
 import { ReactElement, useCallback } from 'react';

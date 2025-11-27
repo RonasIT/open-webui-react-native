@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useAudioRecorder } from '@open-web-ui-mobile-client-react-native/mobile/shared/features/use-audio-recorder';
-import { audioApi } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { getAudioFormData } from '@open-web-ui-mobile-client-react-native/shared/utils/files';
+import { useAudioRecorder } from '@open-webui-react-native/mobile/shared/features/use-audio-recorder';
+import { audioApi } from '@open-webui-react-native/shared/data-access/api';
+import { getAudioFormData } from '@open-webui-react-native/shared/utils/files';
 import { normalizeMetering } from './normalize-metering';
 
 export interface UseDictateModeArgs {

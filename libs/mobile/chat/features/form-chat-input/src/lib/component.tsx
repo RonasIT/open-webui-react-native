@@ -4,29 +4,21 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { xor } from 'lodash-es';
 import { ReactElement, useState } from 'react';
 import { Control, FieldValues, Path, useController } from 'react-hook-form';
-import { AttachedFilesList } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/attached-files-list';
-import { SoundWaveRecorder } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/sound-wave-recorder';
-import { SuggestionsList } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/suggestions-list';
-import { useVoiceModeModal } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/voice-mode-modal';
+import { AttachedFilesList } from '@open-webui-react-native/mobile/chat/features/attached-files-list';
+import { SoundWaveRecorder } from '@open-webui-react-native/mobile/chat/features/sound-wave-recorder';
+import { SuggestionsList } from '@open-webui-react-native/mobile/chat/features/suggestions-list';
+import { useVoiceModeModal } from '@open-webui-react-native/mobile/chat/features/voice-mode-modal';
 import {
   ImagePreviewModal,
   useImagePreview,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/features/image-preview-modal';
-import {
-  AppTextInput,
-  AppInputProps,
-  View,
-  IconButton,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import {
-  appConfigurationApi,
-  ChatGenerationOption,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { AttachedImage, FileData, ImageData } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
-import { withOfflineGuard } from '@open-web-ui-mobile-client-react-native/shared/features/network';
-import { FeatureID, isFeatureEnabled } from '@open-web-ui-mobile-client-react-native/shared/utils/feature-flag';
-import { toDataUrl } from '@open-web-ui-mobile-client-react-native/shared/utils/files';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+} from '@open-webui-react-native/mobile/shared/features/image-preview-modal';
+import { AppTextInput, AppInputProps, View, IconButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { appConfigurationApi, ChatGenerationOption } from '@open-webui-react-native/shared/data-access/api';
+import { AttachedImage, FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
+import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
+import { toDataUrl } from '@open-webui-react-native/shared/utils/files';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { AttachmentsMenuSheet, ChatInputBottomRow, SelectOptionIcon } from './components';
 
 interface FormChatInputProps<T extends FieldValues> extends AppInputProps {

@@ -1,10 +1,7 @@
-import { ChatsList } from '@open-web-ui-mobile-client-react-native/mobile/folder/features/chats-list';
-import { AppHeader, AppScreen, IconButton } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import {
-  FolderScreenParams,
-  navigationConfig,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/navigation';
-import { useNavigateOnce } from '@open-web-ui-mobile-client-react-native/shared/utils/navigation';
+import { ChatsList } from '@open-webui-react-native/mobile/folder/features/chats-list';
+import { AppHeader, AppScreen, IconButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { FolderScreenParams, navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
+import { useNavigateOnce } from '@open-webui-react-native/shared/utils/navigation';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ReactElement } from 'react';
 

@@ -1,5 +1,5 @@
 import { PropsWithChildren, ReactElement } from 'react';
-import { IconButton, View } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+import { IconButton, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 
 export interface ChatInputBottomRowProps extends PropsWithChildren {
   onSubmit: () => void;

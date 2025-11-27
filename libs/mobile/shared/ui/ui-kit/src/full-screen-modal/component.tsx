@@ -1,6 +1,6 @@
 import { ReactElement, ReactNode } from 'react';
 import Modal, { ModalProps } from 'react-native-modal';
-import { createStyles } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { createStyles } from '@open-webui-react-native/mobile/shared/ui/styles';
 
 interface FullScreenModalProps extends Partial<ModalProps> {
   children: ReactNode;

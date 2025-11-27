@@ -2,12 +2,12 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import Constants from 'expo-constants';
 import { ReactElement, useState } from 'react';
-import { AppButton } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { authApi } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { appStorageService } from '@open-web-ui-mobile-client-react-native/shared/data-access/storage';
-import { appEnv } from '@open-web-ui-mobile-client-react-native/shared/utils/app-env';
-import { ronasApiUrl } from '@open-web-ui-mobile-client-react-native/shared/utils/config';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+import { AppButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { authApi } from '@open-webui-react-native/shared/data-access/api';
+import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
+import { appEnv } from '@open-webui-react-native/shared/utils/app-env';
+import { ronasApiUrl } from '@open-webui-react-native/shared/utils/config';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 GoogleSignin.configure({
   iosClientId: Constants.expoConfig?.extra?.googleIosClientId,

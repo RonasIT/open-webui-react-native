@@ -1,6 +1,6 @@
 import { BaseEntity } from '@ronas-it/rtkq-entity-api';
 import { Expose, Type } from 'class-transformer';
-import { Role } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { Role } from '@open-webui-react-native/shared/data-access/common';
 import { Permissions } from './permissions';
 
 export class Profile extends BaseEntity<string> {

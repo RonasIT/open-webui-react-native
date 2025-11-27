@@ -1,5 +1,5 @@
 import { replace } from 'lodash-es';
-import { MessageSource, Source } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { MessageSource, Source } from '@open-webui-react-native/shared/data-access/common';
 import { Citation } from '../types';
 
 export const normalizeCitations = (sources: Array<MessageSource> = []): Array<Citation> => {

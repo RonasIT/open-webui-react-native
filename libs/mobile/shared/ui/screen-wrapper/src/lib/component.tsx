@@ -2,13 +2,13 @@ import { PropsWithChildren, ReactElement } from 'react';
 import {
   AppKeyboardAvoidingView,
   AppKeyboardAvoidingViewProps,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/keyboard-avoiding-view';
+} from '@open-webui-react-native/mobile/shared/ui/keyboard-avoiding-view';
 import {
   AppSafeAreaView,
   AppSafeAreaViewProps,
   AppScreen,
   AppScreenProps,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 
 interface ScreenWrapperProps {
   safeAreaProps?: AppSafeAreaViewProps;

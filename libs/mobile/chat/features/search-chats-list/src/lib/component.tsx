@@ -2,8 +2,8 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { InteractionManager } from 'react-native';
 import { FadeIn } from 'react-native-reanimated';
-import { ChatListRow } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/chat-list-row';
-import { AppKeyboardAvoidingView } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/keyboard-avoiding-view';
+import { ChatListRow } from '@open-webui-react-native/mobile/shared/ui/chat-list-row';
+import { AppKeyboardAvoidingView } from '@open-webui-react-native/mobile/shared/ui/keyboard-avoiding-view';
 import {
   AnimatedView,
   AppFlashList,
@@ -12,10 +12,10 @@ import {
   ListEmptyComponent,
   SearchInput,
   View,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { chatApi, ChatListItem } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { formatDateTime } from '@open-web-ui-mobile-client-react-native/shared/utils/date';
-import { useDebouncedQuery } from '@open-web-ui-mobile-client-react-native/shared/utils/use-debounced-query';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { chatApi, ChatListItem } from '@open-webui-react-native/shared/data-access/api';
+import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
+import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
 
 interface SearchChatsListProps {
   onChatPress: (id: string) => void;

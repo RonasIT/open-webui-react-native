@@ -7,7 +7,7 @@ import {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { screenHeight } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { screenHeight } from '@open-webui-react-native/mobile/shared/ui/styles';
 
 interface UseSwipeToCloseParams {
   onReachDistance: () => void;

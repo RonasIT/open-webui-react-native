@@ -4,8 +4,8 @@ import {
   fileSystemService,
   MimeType,
   UtiType,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/data-access/file-system-service';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+} from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { archivedChatsApiConfig } from '../config';
 
 interface UseExportArchivedChatsResult {

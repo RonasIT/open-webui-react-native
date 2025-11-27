@@ -1,7 +1,7 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
-import { permissionAlertService } from '@open-web-ui-mobile-client-react-native/shared/utils/permission-alert';
+import { permissionAlertService } from '@open-webui-react-native/shared/utils/permission-alert';
 
 export class MediaLibraryService {
   public async saveImage(source: string, authorizationToken?: string): Promise<string | void> {

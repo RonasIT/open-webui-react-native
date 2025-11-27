@@ -1,6 +1,6 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { ReactElement, useRef } from 'react';
-import { FilterItem } from '@open-web-ui-mobile-client-react-native/mobile/chat/data-access/archived-chats-filter-state';
+import { FilterItem } from '@open-webui-react-native/mobile/chat/data-access/archived-chats-filter-state';
 import {
   ActionsBottomSheet,
   ActionSheetItemProps,
@@ -8,7 +8,7 @@ import {
   AppText,
   Icon,
   View,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 
 interface ArchivedChatsFiltersSheetProps {
   filters: Array<FilterItem>;

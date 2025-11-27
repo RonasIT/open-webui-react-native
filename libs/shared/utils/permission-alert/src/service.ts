@@ -1,6 +1,6 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
 import { Alert, Linking } from 'react-native';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 class PermissionAlertService {
   public showAlert = (title: string, message: string): void => {

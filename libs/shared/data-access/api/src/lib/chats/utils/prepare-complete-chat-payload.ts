@@ -1,5 +1,5 @@
 import { uniqBy } from 'lodash-es';
-import { AttachedFile, FileType, Role } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { AttachedFile, FileType, Role } from '@open-webui-react-native/shared/data-access/common';
 import { backgroundTasksConfig } from '../configs';
 import { ChatGenerationOption } from '../enums';
 import { ChatMessage, ChatMessageContent, CompleteChatRequest, Features, Message } from '../models';

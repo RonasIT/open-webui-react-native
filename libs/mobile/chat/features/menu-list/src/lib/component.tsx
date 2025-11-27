@@ -3,24 +3,19 @@ import { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import {
   ChatActionsMenuSheet,
   ChatActionsMenuSheetMethods,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/features/chat-actions-menu-sheet';
-import { ChatListRow } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/chat-list-row';
-import { DateSectionList } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/date-section-list';
+} from '@open-webui-react-native/mobile/shared/features/chat-actions-menu-sheet';
+import { ChatListRow } from '@open-webui-react-native/mobile/shared/ui/chat-list-row';
+import { DateSectionList } from '@open-webui-react-native/mobile/shared/ui/date-section-list';
 import {
   AppRefreshControl,
   AppSpinner,
   ListEmptyComponent,
   PressableSearchInput,
   View,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import {
-  chatApi,
-  ChatListItem,
-  FolderListItem,
-  foldersApi,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { formatDateTime } from '@open-web-ui-mobile-client-react-native/shared/utils/date';
-import { FeatureID, isFeatureEnabled } from '@open-web-ui-mobile-client-react-native/shared/utils/feature-flag';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { chatApi, ChatListItem, FolderListItem, foldersApi } from '@open-webui-react-native/shared/data-access/api';
+import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
+import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { FoldersList, PinnedChatList } from './components';
 
 interface ChatMenuListProps {

@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import {
   AppPressable,
   AppPressableProps,
@@ -8,7 +8,7 @@ import {
   IconButton,
   IconName,
   View,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 
 interface AttachedKnowledgeProps extends AppPressableProps {
   index: number;

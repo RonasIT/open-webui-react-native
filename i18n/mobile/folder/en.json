@@ -30,6 +30,12 @@
     "SELECT_KNOWLEDGE_SHEET": {
       "TEXT_SELECT_KNOWLEDGE": "Select Knowledge",
       "TEXT_NO_KNOWLEDGE": "There is no knowledge."
+    },
+    "MOVE_TO_FOLDER_SHEET": {
+      "TEXT_SEARCH_FOLDERS": "Search folders",
+      "TEXT_NO_FOLDERS": "There is no folders",
+      "TEXT_CREATE_FOLDER": "Create folder",
+      "TEXT_NO_FOLDER": "No folder"
     }
   }
 }

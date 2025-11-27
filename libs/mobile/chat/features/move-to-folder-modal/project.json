@@ -1,0 +1,9 @@
+{
+  "name": "mobile/chat/features/move-to-folder-modal",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mobile/chat/features/move-to-folder-modal/src",
+  "projectType": "library",
+  "tags": ["app:mobile", "scope:chat", "type:features"],
+  "// targets": "to see all targets run: nx show project mobile/chat/features/move-to-folder-modal --web",
+  "targets": {}
+}

@@ -4,7 +4,7 @@ import { Ref, ReactElement } from 'react';
 import { View, Pressable, PressableProps, Platform, GestureResponderEvent } from 'react-native';
 import { Pressable as GesturePressable, PressableProps as GesturePressableProps } from 'react-native-gesture-handler';
 import { PressableEvent } from 'react-native-gesture-handler/lib/typescript/components/Pressable/PressableProps';
-import { cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 
 const hapticImpactHandler = async (): Promise<void> =>
   Platform.OS === 'ios'

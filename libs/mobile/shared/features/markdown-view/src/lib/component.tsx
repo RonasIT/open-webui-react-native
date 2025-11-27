@@ -5,15 +5,10 @@ import { colorScheme } from 'nativewind';
 import React, { PropsWithChildren, ReactElement, ReactNode, useCallback, useMemo } from 'react';
 import { Linking } from 'react-native';
 import Markdown, { ASTNode, MarkdownProps, RenderRules } from 'react-native-markdown-display';
-import { CitationPrefix } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/use-citations';
-import { CodeBlock } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/code-block';
-import {
-  colors,
-  createStyles,
-  useColorScheme,
-  rem,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
-import { AppText, MathSvg, View } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+import { CitationPrefix } from '@open-webui-react-native/mobile/chat/features/use-citations';
+import { CodeBlock } from '@open-webui-react-native/mobile/shared/ui/code-block';
+import { colors, createStyles, useColorScheme, rem } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { AppText, MathSvg, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { MarkdownTableRenderer } from './components/markdown-table-renderer';
 import { MathBlock } from './components/math-block';
 import { TextGroup } from './components/text-group';

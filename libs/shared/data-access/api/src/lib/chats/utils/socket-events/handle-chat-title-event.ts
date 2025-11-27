@@ -1,6 +1,6 @@
 import { plainToInstance } from 'class-transformer';
 import dayjs from 'dayjs';
-import { ChatEventBase, ChatTitleData } from '@open-web-ui-mobile-client-react-native/shared/data-access/websocket';
+import { ChatEventBase, ChatTitleData } from '@open-webui-react-native/shared/data-access/websocket';
 import { patchChatList } from '../patch-chat-list';
 
 export const handleChatTitleEvent = (socketResponse: ChatEventBase): void => {

@@ -1,21 +1,21 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } from 'react';
-import { fileSystemService } from '@open-web-ui-mobile-client-react-native/mobile/shared/data-access/file-system-service';
+import { fileSystemService } from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
 import {
   ActionsBottomSheet,
   ActionsBottomSheetProps,
   ActionSheetItemProps,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import {
   ChatResponse,
   FolderListItem,
   foldersApi,
   foldersApiConfig,
   foldersService,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { queryClient } from '@open-web-ui-mobile-client-react-native/shared/data-access/query-client';
-import { alertService } from '@open-web-ui-mobile-client-react-native/shared/utils/alert-service';
+} from '@open-webui-react-native/shared/data-access/api';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
+import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
 
 export type FolderActionsSheetMethods = {
   present: (folder: FolderListItem) => void;

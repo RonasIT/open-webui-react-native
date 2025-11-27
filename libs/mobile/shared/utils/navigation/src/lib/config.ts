@@ -1,4 +1,4 @@
-import { getLinkWithParamsGenerator } from '@open-web-ui-mobile-client-react-native/shared/utils/navigation';
+import { getLinkWithParamsGenerator } from '@open-webui-react-native/shared/utils/navigation';
 import { ChatScreenParams, FolderScreenParams } from './types';
 
 const slug = '[id]';

@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { Icon, IconName } from '../icon';
 import { AppPressable, AppPressableProps } from '../pressable';
 import { AppSpinner } from '../spinner';

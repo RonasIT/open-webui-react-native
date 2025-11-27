@@ -3,7 +3,7 @@ import {
   LinearGradientProps as ExpoLinearGradientProps,
 } from 'expo-linear-gradient';
 import { Ref, ReactElement } from 'react';
-import { cn, withClassNameInterop } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { cn, withClassNameInterop } from '@open-webui-react-native/mobile/shared/ui/styles';
 
 export interface LinearGradientProps extends Omit<ExpoLinearGradientProps, 'style'> {
   ref?: Ref<ExpoLinearGradient>;

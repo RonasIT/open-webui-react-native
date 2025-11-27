@@ -2,16 +2,13 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { compact } from 'lodash-es';
 import { Fragment, ReactElement, useRef } from 'react';
-import { ChatListRow, ChatListRowProps } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/chat-list-row';
-import {
-  ActionsBottomSheet,
-  ActionSheetItemProps,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { chatApi, ChatListItem } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { withOfflineGuard } from '@open-web-ui-mobile-client-react-native/shared/features/network';
-import { alertService } from '@open-web-ui-mobile-client-react-native/shared/utils/alert-service';
-import { FeatureID, isFeatureEnabled } from '@open-web-ui-mobile-client-react-native/shared/utils/feature-flag';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+import { ChatListRow, ChatListRowProps } from '@open-webui-react-native/mobile/shared/ui/chat-list-row';
+import { ActionsBottomSheet, ActionSheetItemProps } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { chatApi, ChatListItem } from '@open-webui-react-native/shared/data-access/api';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
+import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
+import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 interface ArchivedChatItemProps extends Partial<ChatListRowProps> {
   onItemPress: (id: string) => void;

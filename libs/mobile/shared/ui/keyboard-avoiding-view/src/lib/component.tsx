@@ -1,7 +1,7 @@
 import { KeyboardAwareScrollView } from '@pietile-native-kit/keyboard-aware-scrollview';
 import { ReactElement } from 'react';
 import { ScrollViewProps, StyleProp, ViewStyle } from 'react-native';
-import { commonStyle } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { commonStyle } from '@open-webui-react-native/mobile/shared/ui/styles';
 
 export type AppKeyboardAvoidingViewProps = ScrollViewProps & {
   contentContainerStyleKeyboardShown?: StyleProp<ViewStyle>;

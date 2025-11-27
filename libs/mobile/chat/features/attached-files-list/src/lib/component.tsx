@@ -1,10 +1,10 @@
 import { Observable } from '@legendapp/state';
 import { useSelector } from '@legendapp/state/react';
 import { ReactElement } from 'react';
-import { AttachedFileItem } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/attached-file-item';
-import { AttachedImageItem } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/attached-image-item';
-import { View } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { FileData, ImageData } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { AttachedFileItem } from '@open-webui-react-native/mobile/chat/features/attached-file-item';
+import { AttachedImageItem } from '@open-webui-react-native/mobile/chat/features/attached-image-item';
+import { View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
 
 interface AttachedFilesListProps {
   onDeleteFilePress: (id: string) => void;

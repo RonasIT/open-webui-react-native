@@ -4,8 +4,8 @@ import { FadeIn } from 'react-native-reanimated';
 import {
   ChatActionsMenuSheet,
   ChatActionsMenuSheetMethods,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/features/chat-actions-menu-sheet';
-import { ChatListRow } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/chat-list-row';
+} from '@open-webui-react-native/mobile/shared/features/chat-actions-menu-sheet';
+import { ChatListRow } from '@open-webui-react-native/mobile/shared/ui/chat-list-row';
 import {
   AnimatedView,
   AppFlashList,
@@ -13,8 +13,8 @@ import {
   AppSpinner,
   ListEmptyComponent,
   View,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { ChatListItem, foldersApi } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { ChatListItem, foldersApi } from '@open-webui-react-native/shared/data-access/api';
 
 interface FolderChatsListProps {
   folderId: string;
