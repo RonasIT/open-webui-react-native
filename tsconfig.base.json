@@ -71,6 +71,9 @@
       "@open-webui-react-native/mobile/chat/features/models-sheet": [
         "libs/mobile/chat/features/models-sheet/src/index.ts"
       ],
+      "@open-webui-react-native/mobile/chat/features/move-to-folder-modal": [
+        "libs/mobile/chat/features/move-to-folder-modal/src/index.ts"
+      ],
       "@open-webui-react-native/mobile/chat/features/search-archived-chats": [
         "libs/mobile/chat/features/search-archived-chats/src/index.ts"
       ],

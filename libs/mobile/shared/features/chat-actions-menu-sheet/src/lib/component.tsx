@@ -2,13 +2,17 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { compact, debounce, delay } from 'lodash-es';
 import { ForwardedRef, Fragment, ReactElement, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import {
+  MoveToFolderModal,
+  MoveToFolderModalMethods,
+} from '@open-webui-react-native/mobile/chat/features/move-to-folder-modal';
 import { ShareChatModal } from '@open-webui-react-native/mobile/chat/features/share-chat-modal';
 import {
   ActionButtonsModal,
   ActionButtonsModalMethods,
   ActionsBottomSheet,
-  ActionSheetItemProps,
   ActionsBottomSheetProps,
+  ActionSheetItemProps,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { Chat, chatApi, ChatListItem } from '@open-webui-react-native/shared/data-access/api';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
@@ -35,8 +39,10 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
   const renameModalRef = useRef<ActionButtonsModalMethods>(null);
   const shareChatModalRef = useRef<BottomSheetModal>(null);
   const downloadOptionsModalRef = useRef<BottomSheetModal>(null);
+  const moveToFolderModalRef = useRef<MoveToFolderModalMethods>(null);
 
   const { mutateAsync: updateChat, isPending: isUpdating } = chatApi.useUpdate();
+  const { mutateAsync: updateChatFolder } = chatApi.useUpdateChatFolder();
   const { mutateAsync: deleteChat, isPending: isDeleting } = chatApi.useDelete();
   const { mutateAsync: pinChat, isPending: isPinning } = chatApi.usePinChat();
   const { mutateAsync: cloneChat, isPending: isCloning } = chatApi.useCloneChat();
@@ -77,6 +83,9 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
           setIsLoading(true);
 
           switch (action) {
+            case ChatAction.MOVE_TO_FOLDER:
+              await moveToFolderHandler();
+              break;
             case ChatAction.PIN:
               await pinChatHandler();
               break;
@@ -142,6 +151,11 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
     shareChatModalRef.current?.present();
   };
 
+  const moveToFolderHandler = async (): Promise<void> => {
+    await closeActionsModal();
+    moveToFolderModalRef.current?.present({ chatId });
+  };
+
   const pinChatHandler = async (): Promise<void> => {
     await pinChat({ id: chatId, isPinned: !!isPinned });
     closeActionsModal();
@@ -169,7 +183,17 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
     closeActionsModal();
   };
 
+  const onFolderSelectedHandler = async (folderId: string | null, oldFolderId: string | null): Promise<void> => {
+    await updateChatFolder({ id: chatId, folderId: folderId === '' ? null : folderId, oldFolderId });
+    moveToFolderModalRef.current?.close();
+  };
+
   const actions: Array<ActionSheetItemProps> = compact([
+    {
+      title: translate('TEXT_MOVE_TO_FOLDER'),
+      iconName: 'folderPlus',
+      onPress: () => handleAction(ChatAction.MOVE_TO_FOLDER),
+    },
     {
       title: isPinned ? translate('TEXT_UNPIN') : translate('TEXT_PIN'),
       iconName: isPinned ? 'unpin' : 'pin',
@@ -215,6 +239,7 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
       />
       <ShareChatModal ref={shareChatModalRef} chatId={chatId} />
       <DownloadChatOptionsSheet ref={downloadOptionsModalRef} chatId={chatId} />
+      <MoveToFolderModal ref={moveToFolderModalRef} onFolderSelected={onFolderSelectedHandler} />
     </Fragment>
   );
 }

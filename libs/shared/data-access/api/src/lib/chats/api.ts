@@ -226,6 +226,80 @@ export function useUpdate(
   });
 }
 
+export function useUpdateChatFolder(
+  options?: UseMutationOptions<
+    ChatResponse,
+    AxiosError<ApiErrorData>,
+    EntityPartial<ChatResponse> & { oldFolderId?: string | null }
+  >,
+): UseMutationResult<
+  ChatResponse,
+  AxiosError<ApiErrorData>,
+  EntityPartial<ChatResponse> & { oldFolderId?: string | null }
+> {
+  return useMutation({
+    mutationFn: (params) => chatService.updateChatFolder(params),
+
+    onSuccess: (chat, variables) => {
+      const oldFolderId = variables.oldFolderId ?? null;
+      const newFolderId = chat.folderId ?? null;
+
+      patchChatQueryData(chat.id, { folderId: newFolderId });
+
+      queryClient.setQueryData<InfiniteData<Array<ChatListItem>, number>>(
+        chatServiceConfig.getChatListQueryKey,
+        (draft) => {
+          if (!draft) return;
+
+          const pages = draft.pages.map((page) => page.filter((item) => item.id !== chat.id));
+
+          if (!newFolderId) {
+            pages[0] = [{ ...chat } as ChatListItem, ...pages[0]];
+          }
+
+          return { pages, pageParams: draft.pageParams };
+        },
+      );
+
+      queryClient.setQueryData<Array<ChatListItem>>(chatServiceConfig.getPinnedChatListQueryKey, (draft) =>
+        draft?.map((item) => (item.id === chat.id ? { ...item, folderId: newFolderId } : item)),
+      );
+
+      invalidateSearchChatsQuery();
+
+      if (oldFolderId) {
+        queryClient.setQueryData<InfiniteData<Array<ChatListItem>, number>>(
+          foldersApiConfig.getFolderChatListQueryKey(oldFolderId),
+          (draft) => {
+            if (!draft) return;
+
+            const pages = draft.pages.map((page) => page.filter((item) => item.id !== chat.id));
+
+            return { pages, pageParams: draft.pageParams };
+          },
+        );
+      }
+
+      if (newFolderId) {
+        queryClient.setQueryData<InfiniteData<Array<ChatListItem>, number>>(
+          foldersApiConfig.getFolderChatListQueryKey(newFolderId),
+          (draft) => {
+            if (!draft) return;
+
+            const pages = draft.pages.map((page) => page.filter((item) => item.id !== chat.id));
+
+            pages[0] = [{ ...chat } as ChatListItem, ...pages[0]];
+
+            return { pages, pageParams: draft.pageParams };
+          },
+        );
+      }
+    },
+
+    ...options,
+  });
+}
+
 export function useDelete(
   options?: UseMutationOptions<void, AxiosError<ApiErrorData>, { id: string; folderId?: string }>,
 ): UseMutationResult<void, AxiosError<ApiErrorData>, { id: string; folderId?: string }> {
@@ -653,4 +727,5 @@ export const chatApi = {
   useUnarchiveChat,
   useGetArchivedChatList,
   useGetAllArchivedChatsJson,
+  useUpdateChatFolder,
 };

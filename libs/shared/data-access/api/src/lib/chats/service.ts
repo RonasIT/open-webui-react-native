@@ -79,6 +79,14 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
     return createEntityInstance<ChatResponse>(ChatResponse, response);
   }
 
+  public async updateChatFolder(params: EntityPartial<ChatResponse>): Promise<ChatResponse> {
+    const response = await getApiService().post<ChatResponse>(`${this.endpoint}/${params.id}/folder`, {
+      folder_id: params.folderId,
+    });
+
+    return createEntityInstance<ChatResponse>(ChatResponse, response);
+  }
+
   public async pinChat(chatId: string): Promise<ChatResponse> {
     const response = await getApiService().post<ChatResponse>(`${this.endpoint}/${chatId}/pin`);
 
