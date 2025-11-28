@@ -41,6 +41,7 @@ export function patchChatMessagesWithCompletion(
     ? {
         ...history,
         messages: updatedHistoryMessages,
+        lastAssistantMessage: history?.lastAssistantMessage ?? updatedLastMessage,
       }
     : history;
 

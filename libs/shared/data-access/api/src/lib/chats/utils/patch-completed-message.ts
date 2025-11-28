@@ -36,6 +36,7 @@ export function patchCompletedMessage(oldData: ChatResponse | undefined): ChatRe
     ? {
         ...history,
         messages: updatedHistoryMessages,
+        lastAssistantMessage: history?.lastAssistantMessage ?? updatedLastMessage,
       }
     : history;
 
