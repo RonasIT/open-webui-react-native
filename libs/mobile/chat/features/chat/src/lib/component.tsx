@@ -175,6 +175,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
             onDeleteImagePress={handleDeleteImage}
             chatId={chatId}
             modelId={selectedModelId}
+            isResponseGenerating={isResponseGenerating}
           />
         )}
       </View>

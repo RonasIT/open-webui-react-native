@@ -13,7 +13,12 @@ import {
   useImagePreview,
 } from '@open-webui-react-native/mobile/shared/features/image-preview-modal';
 import { AppTextInput, AppInputProps, View, IconButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { appConfigurationApi, ChatGenerationOption } from '@open-webui-react-native/shared/data-access/api';
+import {
+  appConfigurationApi,
+  ChatGenerationOption,
+  tasksApi,
+  tasksService,
+} from '@open-webui-react-native/shared/data-access/api';
 import { AttachedImage, FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
@@ -36,6 +41,7 @@ interface FormChatInputProps<T extends FieldValues> extends AppInputProps {
   onChatCreated?: (id: string) => void;
   isLoading?: boolean;
   isSuggestionShown?: boolean;
+  isResponseGenerating?: boolean;
 }
 
 export interface FormChatInputSchema {
@@ -57,11 +63,13 @@ export function FormChatInput<T extends FieldValues>({
   onChatCreated,
   isLoading,
   isSuggestionShown,
+  isResponseGenerating,
   ...restProps
 }: FormChatInputProps<T>): ReactElement {
   const translate = useTranslation('CHAT.FORM_CHAT_INPUT');
 
   const { data: config } = appConfigurationApi.useGetAppConfiguration();
+  const stopTaskMutation = tasksApi.useStopTask();
 
   const { field } = useController({ control, name });
 
@@ -108,6 +116,17 @@ export function FormChatInput<T extends FieldValues>({
   const onCompleteRecording = (text: string): void => {
     setIsDictateMode(false);
     field.onChange(text);
+  };
+
+  const onStopGenerationPress = async (): Promise<void> => {
+    if (!chatId) return;
+
+    const tasksData = await tasksService.getChatTasks(chatId);
+    const taskId = tasksData?.tasksIds[0];
+
+    if (taskId) {
+      stopTaskMutation.mutate(taskId);
+    }
   };
 
   return (
@@ -161,12 +180,20 @@ export function FormChatInput<T extends FieldValues>({
                     />
                   )}
                 </View>
-                <IconButton
-                  disabled={isLoading}
-                  iconName='microphone'
-                  className='p-0 mr-16'
-                  onPress={handleDictateModePress}
-                />
+                <View className={'flex-row gap-16 pr-16'}>
+                  {isResponseGenerating && (
+                    <IconButton
+                      iconName='stopCircle'
+                      className='p-0'
+                      onPress={onStopGenerationPress} />
+                  )}
+                  <IconButton
+                    disabled={isLoading}
+                    iconName='microphone'
+                    className='p-0'
+                    onPress={handleDictateModePress}
+                  />
+                </View>
               </View>
             </ChatInputBottomRow>
           }
