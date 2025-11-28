@@ -13,4 +13,14 @@ export class History {
   constructor(history: Partial<History> = {}) {
     Object.assign(this, history);
   }
+
+  public get lastAssistantMessage(): Message | undefined {
+    if (!this.messages) return undefined;
+
+    const assistantMessages = Object.values(this.messages).filter((m) => m.role === 'assistant');
+
+    if (assistantMessages.length === 0) return undefined;
+
+    return assistantMessages.sort((a, b) => b.timestamp - a.timestamp)[0];
+  }
 }

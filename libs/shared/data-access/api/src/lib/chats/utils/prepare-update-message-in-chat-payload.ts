@@ -17,6 +17,8 @@ export function prepareUpdateMessageInChatPayload(
     msg.id === messageId ? { ...messagesMap[messageId] } : msg,
   );
 
+  const lastAssistantMessage = oldData.chat.history.lastAssistantMessage;
+
   const newChatData: ChatResponse = {
     ...oldData,
     chat: {
@@ -24,6 +26,7 @@ export function prepareUpdateMessageInChatPayload(
       history: {
         ...oldData.chat.history,
         messages: messagesMap,
+        lastAssistantMessage,
       },
       messages: messagesArray,
     },

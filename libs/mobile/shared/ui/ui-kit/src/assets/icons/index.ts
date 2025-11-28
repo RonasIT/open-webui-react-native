@@ -36,6 +36,7 @@ import microphone from './microphone.svg';
 import moreDots from './more-dots.svg';
 import noWifi from './no-wifi.svg';
 import pin from './pin.svg';
+import playCircle from './play-circle.svg';
 import plusInCircle from './plus-in-circle.svg';
 import plus from './plus.svg';
 import search from './search.svg';
@@ -94,4 +95,5 @@ export const Icons = {
   closeSM,
   strokeLeft,
   tick,
+  playCircle,
 };
