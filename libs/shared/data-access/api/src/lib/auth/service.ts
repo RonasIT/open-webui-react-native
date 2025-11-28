@@ -1,6 +1,6 @@
 import { instanceToPlain, plainToInstance } from 'class-transformer';
-import { getApiService } from '@open-web-ui-mobile-client-react-native/shared/data-access/api-client';
-import { authState$ } from '@open-web-ui-mobile-client-react-native/shared/data-access/auth';
+import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
+import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { authApiConfig } from './config';
 import { SignInResponse, SignInRequest, GoogleSignInRequest } from './models';
 

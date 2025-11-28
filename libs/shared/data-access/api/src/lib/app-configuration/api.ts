@@ -1,7 +1,7 @@
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
-import { queryClient } from '@open-web-ui-mobile-client-react-native/shared/data-access/query-client';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { appConfigurationApiConfig } from './config';
 import { Configuration } from './models';
 import { appConfigurationService } from './service';

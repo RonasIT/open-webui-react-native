@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import { SharedValue, useAnimatedStyle } from 'react-native-reanimated';
-import { AnimatedView } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+import { AnimatedView } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { soundWaveConfig } from '../../config';
 
 interface WaveBarProps {

@@ -7,8 +7,8 @@ import {
   AppText,
   Icon,
   View,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { FileData } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { FileData } from '@open-webui-react-native/shared/data-access/common';
 import { prepareFileInfo } from '../../utils';
 
 interface FileInfoModalProps extends AppModalProps {

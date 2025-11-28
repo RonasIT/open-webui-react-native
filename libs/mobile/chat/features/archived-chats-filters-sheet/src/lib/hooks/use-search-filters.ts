@@ -4,11 +4,11 @@ import { useMemo } from 'react';
 import {
   archivedChatsFilterState$,
   FilterItem,
-} from '@open-web-ui-mobile-client-react-native/mobile/chat/data-access/archived-chats-filter-state';
+} from '@open-webui-react-native/mobile/chat/data-access/archived-chats-filter-state';
 import {
   ArchivedChatListOrderBy,
   ArchivedChatListOrderDirection,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
+} from '@open-webui-react-native/shared/data-access/api';
 
 interface UseFiltersResult {
   filters: Array<FilterItem>;

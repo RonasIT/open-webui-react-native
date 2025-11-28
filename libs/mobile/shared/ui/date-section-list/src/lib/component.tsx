@@ -1,6 +1,6 @@
 import { flatMap, uniqWith } from 'lodash';
 import React, { ReactElement, useCallback, useMemo } from 'react';
-import { cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import {
   AppFlashList,
   AppFlashListProps,
@@ -8,7 +8,7 @@ import {
   View,
   AppTextProps,
   AppBottomSheetFlashList,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 
 export interface DateSectionListProps<TItem> extends Omit<AppFlashListProps<TItem>, 'ref'> {
   renderItem: (

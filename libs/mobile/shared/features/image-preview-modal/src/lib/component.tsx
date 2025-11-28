@@ -2,9 +2,9 @@ import { FlashList, ListRenderItem, ViewToken } from '@shopify/flash-list';
 import { ReactElement, useCallback, useEffect, useRef } from 'react';
 import { Modal, ModalProps, Platform } from 'react-native';
 import { GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
-import { useImageDownloader } from '@open-web-ui-mobile-client-react-native/mobile/shared/data-access/media-library-service';
-import { useSwipeToClose } from '@open-web-ui-mobile-client-react-native/mobile/shared/features/use-swipe-to-close';
-import { cn, screenWidth } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { useImageDownloader } from '@open-webui-react-native/mobile/shared/data-access/media-library-service';
+import { useSwipeToClose } from '@open-webui-react-native/mobile/shared/features/use-swipe-to-close';
+import { cn, screenWidth } from '@open-webui-react-native/mobile/shared/ui/styles';
 import {
   AnimatedView,
   AppImage,
@@ -12,8 +12,8 @@ import {
   AppZoom,
   IconButton,
   View,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { appStorageService } from '@open-web-ui-mobile-client-react-native/shared/data-access/storage';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { AttachedImageWithIndex } from './types';
 
 interface ImagePreviewModalProps extends Partial<ModalProps> {

@@ -1,19 +1,19 @@
 import { ReactElement, useMemo } from 'react';
 import { LayoutChangeEvent } from 'react-native';
-import { AttachedFileItem } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/attached-file-item';
-import { MessageVersionControls } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/message-version-controls';
-import { UseSiblingMessagesReturn } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/use-manage-messages-siblings';
+import { AttachedFileItem } from '@open-webui-react-native/mobile/chat/features/attached-file-item';
+import { MessageVersionControls } from '@open-webui-react-native/mobile/chat/features/message-version-controls';
+import { UseSiblingMessagesReturn } from '@open-webui-react-native/mobile/chat/features/use-manage-messages-siblings';
 import {
   ImagePreviewModal,
   useImagePreview,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/features/image-preview-modal';
-import { AppMarkdownView } from '@open-web-ui-mobile-client-react-native/mobile/shared/features/markdown-view';
-import { cn, colors, screenWidth, spacings } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
-import { AppText, View } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { Message } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { AttachedFile, FileType } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
-import { formatDateTime } from '@open-web-ui-mobile-client-react-native/shared/utils/date';
-import { deepMemo } from '@open-web-ui-mobile-client-react-native/shared/utils/deep-memo';
+} from '@open-webui-react-native/mobile/shared/features/image-preview-modal';
+import { AppMarkdownView } from '@open-webui-react-native/mobile/shared/features/markdown-view';
+import { cn, colors, screenWidth, spacings } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { Message } from '@open-webui-react-native/shared/data-access/api';
+import { AttachedFile, FileType } from '@open-webui-react-native/shared/data-access/common';
+import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
+import { deepMemo } from '@open-webui-react-native/shared/utils/deep-memo';
 import { ChatImagesGroup } from '../images';
 
 interface ChatUserMessageProps {

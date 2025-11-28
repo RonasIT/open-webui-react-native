@@ -4,29 +4,26 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { xor } from 'lodash-es';
 import { ReactElement, useState } from 'react';
 import { Control, FieldValues, Path, useController } from 'react-hook-form';
-import { AttachedFilesList } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/attached-files-list';
-import { SoundWaveRecorder } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/sound-wave-recorder';
-import { SuggestionsList } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/suggestions-list';
-import { useVoiceModeModal } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/voice-mode-modal';
+import { AttachedFilesList } from '@open-webui-react-native/mobile/chat/features/attached-files-list';
+import { SoundWaveRecorder } from '@open-webui-react-native/mobile/chat/features/sound-wave-recorder';
+import { SuggestionsList } from '@open-webui-react-native/mobile/chat/features/suggestions-list';
+import { useVoiceModeModal } from '@open-webui-react-native/mobile/chat/features/voice-mode-modal';
 import {
   ImagePreviewModal,
   useImagePreview,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/features/image-preview-modal';
-import {
-  AppTextInput,
-  AppInputProps,
-  View,
-  IconButton,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+} from '@open-webui-react-native/mobile/shared/features/image-preview-modal';
+import { AppTextInput, AppInputProps, View, IconButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import {
   appConfigurationApi,
   ChatGenerationOption,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { AttachedImage, FileData, ImageData } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
-import { withOfflineGuard } from '@open-web-ui-mobile-client-react-native/shared/features/network';
-import { FeatureID, isFeatureEnabled } from '@open-web-ui-mobile-client-react-native/shared/utils/feature-flag';
-import { toDataUrl } from '@open-web-ui-mobile-client-react-native/shared/utils/files';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+  tasksApi,
+  tasksService,
+} from '@open-webui-react-native/shared/data-access/api';
+import { AttachedImage, FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
+import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
+import { toDataUrl } from '@open-webui-react-native/shared/utils/files';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { AttachmentsMenuSheet, ChatInputBottomRow, SelectOptionIcon } from './components';
 
 interface FormChatInputProps<T extends FieldValues> extends AppInputProps {
@@ -44,6 +41,7 @@ interface FormChatInputProps<T extends FieldValues> extends AppInputProps {
   onChatCreated?: (id: string) => void;
   isLoading?: boolean;
   isSuggestionShown?: boolean;
+  isResponseGenerating?: boolean;
 }
 
 export interface FormChatInputSchema {
@@ -65,11 +63,13 @@ export function FormChatInput<T extends FieldValues>({
   onChatCreated,
   isLoading,
   isSuggestionShown,
+  isResponseGenerating,
   ...restProps
 }: FormChatInputProps<T>): ReactElement {
   const translate = useTranslation('CHAT.FORM_CHAT_INPUT');
 
   const { data: config } = appConfigurationApi.useGetAppConfiguration();
+  const stopTaskMutation = tasksApi.useStopTask();
 
   const { field } = useController({ control, name });
 
@@ -116,6 +116,17 @@ export function FormChatInput<T extends FieldValues>({
   const onCompleteRecording = (text: string): void => {
     setIsDictateMode(false);
     field.onChange(text);
+  };
+
+  const onStopGenerationPress = async (): Promise<void> => {
+    if (!chatId) return;
+
+    const tasksData = await tasksService.getChatTasks(chatId);
+    const taskId = tasksData?.tasksIds[0];
+
+    if (taskId) {
+      stopTaskMutation.mutate(taskId);
+    }
   };
 
   return (
@@ -169,12 +180,20 @@ export function FormChatInput<T extends FieldValues>({
                     />
                   )}
                 </View>
-                <IconButton
-                  disabled={isLoading}
-                  iconName='microphone'
-                  className='p-0 mr-16'
-                  onPress={handleDictateModePress}
-                />
+                <View className={'flex-row gap-16 pr-16'}>
+                  {isResponseGenerating && (
+                    <IconButton
+                      iconName='stopCircle'
+                      className='p-0'
+                      onPress={onStopGenerationPress} />
+                  )}
+                  <IconButton
+                    disabled={isLoading}
+                    iconName='microphone'
+                    className='p-0'
+                    onPress={handleDictateModePress}
+                  />
+                </View>
               </View>
             </ChatInputBottomRow>
           }

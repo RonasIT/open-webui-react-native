@@ -1,6 +1,6 @@
 import { useMutation, UseMutationOptions, UseMutationResult, useQuery, UseQueryResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { ApiErrorData } from '@open-web-ui-mobile-client-react-native/shared/data-access/api-client';
+import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
 import { authApiConfig } from './config';
 import { GoogleSignInRequest, SignInRequest } from './models';
 import { SignInResponse } from './models/sign-in-response';

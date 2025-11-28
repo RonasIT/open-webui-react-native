@@ -1,20 +1,20 @@
-import { ChatMenuList } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/menu-list';
+import { ChatMenuList } from '@open-webui-react-native/mobile/chat/features/menu-list';
 import {
   FolderActionsSheet,
   FolderActionsSheetMethods,
-} from '@open-web-ui-mobile-client-react-native/mobile/folder/features/folder-actions-sheet';
+} from '@open-webui-react-native/mobile/folder/features/folder-actions-sheet';
 import {
   UpsertFolderSheet,
   UpsertFolderSheetMethods,
-} from '@open-web-ui-mobile-client-react-native/mobile/folder/features/upsert-folder-sheet';
-import { ProfileMenuSheet } from '@open-web-ui-mobile-client-react-native/mobile/shared/features/profile-menu-sheet';
-import { ScreenWrapper } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/screen-wrapper';
-import { AppHeader, IconButton, View } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { navigationConfig } from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/navigation';
-import { FolderListItem } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { withOfflineGuard } from '@open-web-ui-mobile-client-react-native/shared/features/network';
-import { FeatureID, isFeatureEnabled } from '@open-web-ui-mobile-client-react-native/shared/utils/feature-flag';
-import { useNavigateOnce } from '@open-web-ui-mobile-client-react-native/shared/utils/navigation';
+} from '@open-webui-react-native/mobile/folder/features/upsert-folder-sheet';
+import { ProfileMenuSheet } from '@open-webui-react-native/mobile/shared/features/profile-menu-sheet';
+import { ScreenWrapper } from '@open-webui-react-native/mobile/shared/ui/screen-wrapper';
+import { AppHeader, IconButton, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
+import { FolderListItem } from '@open-webui-react-native/shared/data-access/api';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
+import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
+import { useNavigateOnce } from '@open-webui-react-native/shared/utils/navigation';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { router } from 'expo-router';
 import { ReactElement, useRef } from 'react';

@@ -1,7 +1,7 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
 import * as ImagePicker from 'expo-image-picker';
 import { Platform } from 'react-native';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { ImagePickerSource } from './enums';
 
 export class ImagePickerService {

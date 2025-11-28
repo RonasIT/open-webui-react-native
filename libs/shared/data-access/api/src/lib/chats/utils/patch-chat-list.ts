@@ -1,6 +1,6 @@
 import { InfiniteData } from '@tanstack/react-query';
 import dayjs from 'dayjs';
-import { queryClient } from '@open-web-ui-mobile-client-react-native/shared/data-access/query-client';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { foldersApiConfig } from '../../folders/config';
 import { chatServiceConfig } from '../configs';
 import { ChatListItem, ChatResponse } from '../models';

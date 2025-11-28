@@ -1,9 +1,9 @@
 import { ApiService, tokenInterceptor, unauthorizedInterceptor } from '@ronas-it/axios-api-client';
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
-import { authState$ } from '@open-web-ui-mobile-client-react-native/shared/data-access/auth';
-import { appStorageService } from '@open-web-ui-mobile-client-react-native/shared/data-access/storage';
-import { getApiUrl } from '@open-web-ui-mobile-client-react-native/shared/utils/config';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
+import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
+import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { apiConfig } from './config';
 import { errorCatcherInterceptor } from './interceptors';
 

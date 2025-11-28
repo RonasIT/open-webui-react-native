@@ -1,7 +1,7 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
 import { io, Socket } from 'socket.io-client';
-import { getApiUrl } from '@open-web-ui-mobile-client-react-native/shared/utils/config';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { webSocketConfig } from './config';
 import { SocketState, WebSocketEventName } from './enums';
 

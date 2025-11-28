@@ -1,4 +1,4 @@
-import { History } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
+import { History } from '@open-webui-react-native/shared/data-access/api';
 
 export const getSiblingsIds = (history: History, messageId: string): Array<string> =>
   history.messages[messageId].parentId

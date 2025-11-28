@@ -4,14 +4,11 @@ import { ReactElement, useState } from 'react';
 import {
   FileExtension,
   fileSystemService,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/data-access/file-system-service';
-import {
-  ActionsBottomSheet,
-  ActionSheetItemProps,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { chatQueriesKeys, ChatResponse } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { queryClient } from '@open-web-ui-mobile-client-react-native/shared/data-access/query-client';
-import { getChatAsText } from '@open-web-ui-mobile-client-react-native/shared/features/get-chat-as-text';
+} from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
+import { ActionsBottomSheet, ActionSheetItemProps } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { chatQueriesKeys, ChatResponse } from '@open-webui-react-native/shared/data-access/api';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
+import { getChatAsText } from '@open-webui-react-native/shared/features/get-chat-as-text';
 
 export interface DownloadChatOptionsSheetProps {
   chatId: string;

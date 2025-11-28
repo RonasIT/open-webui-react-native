@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
-import { AppPressable, AppText, Icon, View } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { Knowledge } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
+import { AppPressable, AppText, Icon, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { Knowledge } from '@open-webui-react-native/shared/data-access/api';
 
 export interface KnowledgeRowProps {
   item: Knowledge;

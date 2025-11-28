@@ -1,8 +1,8 @@
 import { useObservable } from '@legendapp/state/react';
-import { fileSystemService } from '@open-web-ui-mobile-client-react-native/mobile/shared/data-access/file-system-service';
-import { ImageMimeType } from '@open-web-ui-mobile-client-react-native/mobile/shared/data-access/image-picker-service';
-import { compressImage } from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/compressor';
-import { FileData, ImageData } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { fileSystemService } from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
+import { ImageMimeType } from '@open-webui-react-native/mobile/shared/data-access/image-picker-service';
+import { compressImage } from '@open-webui-react-native/mobile/shared/utils/compressor';
+import { FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
 
 export function useAttachedFiles(): typeof result {
   const attachedFiles = useObservable<Array<FileData>>([]);

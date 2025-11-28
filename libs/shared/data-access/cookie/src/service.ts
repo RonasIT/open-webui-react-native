@@ -1,5 +1,5 @@
 import CookieManager from '@react-native-cookies/cookies';
-import { getApiUrl } from '@open-web-ui-mobile-client-react-native/shared/utils/config';
+import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 
 class CookieService {
   public async setToken(token: string): Promise<void> {

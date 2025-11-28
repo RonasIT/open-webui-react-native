@@ -1,4 +1,4 @@
-import { queryClient } from '@open-web-ui-mobile-client-react-native/shared/data-access/query-client';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { chatServiceConfig } from '../configs';
 
 export const invalidateSearchChatsQuery = (): void => {

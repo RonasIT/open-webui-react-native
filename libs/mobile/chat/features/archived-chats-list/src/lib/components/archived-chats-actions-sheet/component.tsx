@@ -6,10 +6,10 @@ import {
   ActionsBottomSheet,
   ActionsBottomSheetProps,
   ActionSheetItemProps,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { withOfflineGuard } from '@open-web-ui-mobile-client-react-native/shared/features/network';
-import { alertService } from '@open-web-ui-mobile-client-react-native/shared/utils/alert-service';
-import { FeatureID, isFeatureEnabled } from '@open-web-ui-mobile-client-react-native/shared/utils/feature-flag';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
+import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
+import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { useExportArchivedChats, useUnarchiveChats } from '../../hooks';
 
 interface ArchivedChatsActionsSheetProps {

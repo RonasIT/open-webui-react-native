@@ -5,7 +5,7 @@ import {
   ActionSheetItemProps,
   AnimatedView,
   AppPressable,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { useAnimateMessage } from './hooks/use-animate-message';
 
 interface MessageActionsSheetWrapperProps {

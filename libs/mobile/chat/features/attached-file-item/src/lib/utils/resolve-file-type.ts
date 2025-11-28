@@ -1,6 +1,6 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
 import { last, split, toLower } from 'lodash-es';
-import { FileData } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { FileData } from '@open-webui-react-native/shared/data-access/common';
 
 export function resolveFileType(file: FileData): string {
   const contentType = toLower(file.meta.contentType || '');

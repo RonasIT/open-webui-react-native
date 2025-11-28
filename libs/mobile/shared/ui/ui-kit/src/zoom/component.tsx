@@ -1,6 +1,6 @@
 import { Zoomable } from '@likashefqet/react-native-image-zoom';
 import { PropsWithChildren, ReactElement } from 'react';
-import { withClassNameInterop } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { withClassNameInterop } from '@open-webui-react-native/mobile/shared/ui/styles';
 
 type RealZoomableProps = React.ComponentProps<typeof Zoomable>;
 

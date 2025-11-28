@@ -1,4 +1,4 @@
-import { screenWidth, spacings } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { screenWidth, spacings } from '@open-webui-react-native/mobile/shared/ui/styles';
 
 export const chatImagesGroupConfig = {
   maxHeight: 350,

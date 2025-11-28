@@ -1,4 +1,4 @@
-import { getApiUrl } from '@open-web-ui-mobile-client-react-native/shared/utils/config';
+import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 
 export const archivedChatsApiConfig = {
   exportAllChatsApiURL: `${getApiUrl()}/api/v1/chats/all/archived`,

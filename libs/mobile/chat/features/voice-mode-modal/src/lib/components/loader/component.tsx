@@ -1,6 +1,6 @@
 import { ReactElement, useEffect } from 'react';
 import { useAnimatedStyle, useSharedValue, withDelay, withRepeat, withTiming } from 'react-native-reanimated';
-import { AnimatedView, View } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+import { AnimatedView, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 
 export function Loader(): ReactElement {
   const translateY1 = useSharedValue(0);

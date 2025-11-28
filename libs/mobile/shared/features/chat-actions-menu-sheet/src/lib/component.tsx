@@ -2,18 +2,18 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { compact, debounce, delay } from 'lodash-es';
 import { ForwardedRef, Fragment, ReactElement, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { ShareChatModal } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/share-chat-modal';
+import { ShareChatModal } from '@open-webui-react-native/mobile/chat/features/share-chat-modal';
 import {
   ActionButtonsModal,
   ActionButtonsModalMethods,
   ActionsBottomSheet,
   ActionSheetItemProps,
   ActionsBottomSheetProps,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { Chat, chatApi, ChatListItem } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { withOfflineGuard } from '@open-web-ui-mobile-client-react-native/shared/features/network';
-import { alertService } from '@open-web-ui-mobile-client-react-native/shared/utils/alert-service';
-import { FeatureID, isFeatureEnabled } from '@open-web-ui-mobile-client-react-native/shared/utils/feature-flag';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { Chat, chatApi, ChatListItem } from '@open-webui-react-native/shared/data-access/api';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
+import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
+import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { DownloadChatOptionsSheet } from './components';
 import { ChatAction } from './enums';
 

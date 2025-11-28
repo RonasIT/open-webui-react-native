@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { AppPressable, AppText } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+import { AppPressable, AppText } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 
 export interface SuggestionsItemProps {
   title: string;

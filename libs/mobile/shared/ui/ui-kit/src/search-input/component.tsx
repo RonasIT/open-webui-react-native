@@ -1,7 +1,7 @@
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement } from 'react';
 import { Platform } from 'react-native';
-import { cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { AppBottomSheetTextInput } from '../bottom-sheet-text-input';
 import { Icon } from '../icon';
 import { GestureAppPressable, AppPressable } from '../pressable';

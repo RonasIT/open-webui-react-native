@@ -1,7 +1,7 @@
 import { observable, Observable } from '@legendapp/state';
-import { authState$ } from '@open-web-ui-mobile-client-react-native/shared/data-access/auth';
-import { cookieService } from '@open-web-ui-mobile-client-react-native/shared/data-access/cookie';
-import { appStorageService } from '@open-web-ui-mobile-client-react-native/shared/data-access/storage';
+import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
+import { cookieService } from '@open-webui-react-native/shared/data-access/cookie';
+import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 
 interface AppState {
   init: () => Promise<void>;

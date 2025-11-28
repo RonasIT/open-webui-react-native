@@ -1,5 +1,5 @@
 import { plainToInstance } from 'class-transformer';
-import { ChatEventBase, ChatEventType } from '@open-web-ui-mobile-client-react-native/shared/data-access/websocket';
+import { ChatEventBase, ChatEventType } from '@open-webui-react-native/shared/data-access/websocket';
 import { handleChatCompletionEvent } from './handle-chat-completion-event';
 import { handleChatFilesEvent } from './handle-chat-files-event';
 import { handleChatStatusEvent } from './handle-chat-status-event';

@@ -1,4 +1,4 @@
-import { isSmallScreen } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { isSmallScreen } from '@open-webui-react-native/mobile/shared/ui/styles';
 
 export const appMarkdownViewConfig = {
   mathInlineKey: 'math_inline',

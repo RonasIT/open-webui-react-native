@@ -1,10 +1,6 @@
 import { merge, uniqBy } from 'lodash-es';
-import {
-  AttachedFile,
-  FileType,
-  MessageSource,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
-import { queryClient } from '@open-web-ui-mobile-client-react-native/shared/data-access/query-client';
+import { AttachedFile, FileType, MessageSource } from '@open-webui-react-native/shared/data-access/common';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { chatQueriesKeys } from '../chat-queries-keys';
 import { Chat, ChatResponse, History, Message } from '../models';
 import { chatService } from '../service';

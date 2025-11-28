@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import { StatusBar as RNStatusBar, StatusBarProps as RNStatusBarProps } from 'react-native';
-import { withClassNameInterop } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { withClassNameInterop } from '@open-webui-react-native/mobile/shared/ui/styles';
 
 withClassNameInterop(RNStatusBar, ['backgroundColor']);
 

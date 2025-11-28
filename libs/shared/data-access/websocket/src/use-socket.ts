@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { appStorageService } from '@open-web-ui-mobile-client-react-native/shared/data-access/storage';
+import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { socketService } from './service';
 import { webSocketState$ } from './state';
 
