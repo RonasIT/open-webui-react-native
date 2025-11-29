@@ -5,8 +5,6 @@ import { ChatTasksResponse, StopTaskResponse } from './models';
 
 class TasksService {
   public async getChatTasks(chatId: string): Promise<ChatTasksResponse> {
-    console.log(`${tasksApiConfig.route}/chat/${chatId}`);
-
     const response = await getApiService().get<ChatTasksResponse>(`${tasksApiConfig.route}/chat/${chatId}`);
 
     return plainToInstance(ChatTasksResponse, response, { excludeExtraneousValues: true });
