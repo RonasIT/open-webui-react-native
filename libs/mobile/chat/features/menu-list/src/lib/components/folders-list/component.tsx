@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
-import { FolderRow } from '@open-web-ui-mobile-client-react-native/mobile/chat/ui/folder-row';
-import { View } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { FolderListItem } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
+import { FolderRow } from '@open-webui-react-native/mobile/chat/ui/folder-row';
+import { View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { FolderListItem } from '@open-webui-react-native/shared/data-access/api';
 
 export interface FoldersListProps {
   folders: Array<FolderListItem>;

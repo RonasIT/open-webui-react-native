@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
-import { UseSiblingMessagesReturn } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/use-manage-messages-siblings';
-import { AppText, IconButton, View } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { Message } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { FeatureID, isFeatureEnabled } from '@open-web-ui-mobile-client-react-native/shared/utils/feature-flag';
+import { UseSiblingMessagesReturn } from '@open-webui-react-native/mobile/chat/features/use-manage-messages-siblings';
+import { AppText, IconButton, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { Message } from '@open-webui-react-native/shared/data-access/api';
+import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 
 interface MessageVersionControlsProps {
   message: Message;

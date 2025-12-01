@@ -1,5 +1,5 @@
-import { chatQueriesKeys, ChatResponse } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { queryClient } from '@open-web-ui-mobile-client-react-native/shared/data-access/query-client';
+import { chatQueriesKeys, ChatResponse } from '@open-webui-react-native/shared/data-access/api';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 
 export const patchNewChat = (id: string): void => {
   queryClient.setQueryData<ChatResponse>(chatQueriesKeys.get(id).queryKey, (draft) => {

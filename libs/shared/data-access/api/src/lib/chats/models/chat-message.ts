@@ -1,5 +1,5 @@
 import { Expose, Type } from 'class-transformer';
-import { Role } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { Role } from '@open-webui-react-native/shared/data-access/common';
 import { ChatMessageContent } from './chat-message-content';
 
 export class ChatMessage {

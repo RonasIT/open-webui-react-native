@@ -1,6 +1,6 @@
 import { ReactElement, ReactNode } from 'react';
 import { ASTNode } from 'react-native-markdown-display';
-import { AppText, View } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+import { AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { appMarkdownViewConfig } from '../../config';
 import { MarkdownStyles, MarkdownTextProps } from '../../types/markdown-styles';
 import { groupChildrenByLength } from '../../utils';

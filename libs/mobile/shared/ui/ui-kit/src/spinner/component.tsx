@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import { ActivityIndicator, ActivityIndicatorProps } from 'react-native';
-import { cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { View } from '../view';
 
 export interface AppSpinnerProps extends ActivityIndicatorProps {

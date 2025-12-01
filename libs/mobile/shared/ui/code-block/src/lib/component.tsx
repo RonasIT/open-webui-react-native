@@ -4,9 +4,9 @@ import { ReactElement, useMemo, useState } from 'react';
 import { StyleProp, TextStyle, ViewStyle } from 'react-native';
 import CodeHighlighter from 'react-native-code-highlighter';
 import { github, stackoverflowDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-import { screenWidth, spacings, useColorScheme } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
-import { View, AppText, TouchableHighlight } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+import { screenWidth, spacings, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { View, AppText, TouchableHighlight } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 interface CodeBlockProps {
   sourceInfo?: string;

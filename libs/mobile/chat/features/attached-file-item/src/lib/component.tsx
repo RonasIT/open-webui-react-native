@@ -1,5 +1,5 @@
 import { Fragment, ReactElement, useRef } from 'react';
-import { cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import {
   AppModalHandle,
   AppPressable,
@@ -8,8 +8,8 @@ import {
   Icon,
   IconButton,
   View,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { FileData } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { FileData } from '@open-webui-react-native/shared/data-access/common';
 import { FileInfoModal } from './components';
 import { formatFileSize, resolveFileType } from './utils';
 

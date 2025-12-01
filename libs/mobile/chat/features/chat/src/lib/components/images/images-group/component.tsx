@@ -1,14 +1,9 @@
 import { ImageContentFit } from 'expo-image';
 import { ReactElement } from 'react';
-import { AttachedImageWithIndex } from '@open-web-ui-mobile-client-react-native/mobile/shared/features/image-preview-modal';
-import { cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
-import {
-  AppImageProps,
-  AppPressable,
-  AppText,
-  View,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { appStorageService } from '@open-web-ui-mobile-client-react-native/shared/data-access/storage';
+import { AttachedImageWithIndex } from '@open-webui-react-native/mobile/shared/features/image-preview-modal';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { AppImageProps, AppPressable, AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { AttachedImageView } from '../attached-image';
 import { chatImagesGroupConfig } from './config';
 

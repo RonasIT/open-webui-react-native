@@ -1,6 +1,6 @@
 import { Observable, observable } from '@legendapp/state';
-import { cookieService } from '@open-web-ui-mobile-client-react-native/shared/data-access/cookie';
-import { appStorageService } from '@open-web-ui-mobile-client-react-native/shared/data-access/storage';
+import { cookieService } from '@open-webui-react-native/shared/data-access/cookie';
+import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 
 interface AuthState {
   isAuthenticated: boolean;

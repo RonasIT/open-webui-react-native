@@ -13,9 +13,9 @@ import {
   SearchInput,
   SheetHeader,
   View,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { Knowledge, knowledgeApi } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { useDebouncedQuery } from '@open-web-ui-mobile-client-react-native/shared/utils/use-debounced-query';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { Knowledge, knowledgeApi } from '@open-webui-react-native/shared/data-access/api';
+import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
 import { KnowledgeRow } from './components';
 
 export type SelectKnowledgeSheetMethods = {

@@ -1,4 +1,4 @@
-import { AppEnvName } from '@open-web-ui-mobile-client-react-native/shared/utils/app-env';
+import { AppEnvName } from '@open-webui-react-native/shared/utils/app-env';
 import { FeatureID } from './enums';
 
 export const featureFlagConfig: Record<FeatureID, AppEnvName> = {

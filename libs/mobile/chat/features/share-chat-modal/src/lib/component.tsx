@@ -2,15 +2,9 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import * as Clipboard from 'expo-clipboard';
 import { Fragment, ReactElement, Ref, useState } from 'react';
-import {
-  AppText,
-  View,
-  AppBottomSheet,
-  AppButton,
-  AppSpinner,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { chatApi, getShareChatLink } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+import { AppText, View, AppBottomSheet, AppButton, AppSpinner } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { chatApi, getShareChatLink } from '@open-webui-react-native/shared/data-access/api';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 interface ShareChatModalProps {
   ref?: Ref<BottomSheetModal>;

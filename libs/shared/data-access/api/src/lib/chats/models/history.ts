@@ -1,5 +1,5 @@
 import { Expose, Transform } from 'class-transformer';
-import { transformRecordValues } from '@open-web-ui-mobile-client-react-native/shared/utils/objects';
+import { transformRecordValues } from '@open-webui-react-native/shared/utils/objects';
 import { Message } from './message';
 
 export class History {

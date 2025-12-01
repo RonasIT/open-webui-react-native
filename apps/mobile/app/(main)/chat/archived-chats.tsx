@@ -1,7 +1,7 @@
-import { ArchivedChatsList } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/archived-chats-list';
-import { navigationConfig } from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/navigation';
-import { withOfflineGuard } from '@open-web-ui-mobile-client-react-native/shared/features/network';
-import { useNavigateOnce } from '@open-web-ui-mobile-client-react-native/shared/utils/navigation';
+import { ArchivedChatsList } from '@open-webui-react-native/mobile/chat/features/archived-chats-list';
+import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
+import { useNavigateOnce } from '@open-webui-react-native/shared/utils/navigation';
 import { router } from 'expo-router';
 import { ReactElement } from 'react';
 

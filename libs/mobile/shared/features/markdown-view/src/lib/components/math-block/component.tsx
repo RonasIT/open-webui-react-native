@@ -1,11 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react';
-import {
-  AppScrollView,
-  AppSpinner,
-  MathSvg,
-  View,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { useDebouncedQuery } from '@open-web-ui-mobile-client-react-native/shared/utils/use-debounced-query';
+import { AppScrollView, AppSpinner, MathSvg, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
 
 interface MathBlockProps {
   content: string;

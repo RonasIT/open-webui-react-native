@@ -1,5 +1,5 @@
 import { ReactElement, useMemo } from 'react';
-import { cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { AppScrollView, AppScrollViewProps } from '../scroll-view';
 import { View, ViewProps } from '../view';
 

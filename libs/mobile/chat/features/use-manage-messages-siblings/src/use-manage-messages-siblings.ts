@@ -5,7 +5,7 @@ import {
   createMessagesList,
   Message,
   patchChatWithSelectedMessages,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
+} from '@open-webui-react-native/shared/data-access/api';
 
 export interface UseSiblingMessagesReturn {
   showPreviousSibling: (message: Message) => void;

@@ -1,6 +1,6 @@
 import { plainToInstance } from 'class-transformer';
-import { getApiService } from '@open-web-ui-mobile-client-react-native/shared/data-access/api-client';
-import { FileData } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
+import { FileData } from '@open-webui-react-native/shared/data-access/common';
 import { filesApiConfig } from './config';
 
 class FilesService {

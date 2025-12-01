@@ -1,7 +1,7 @@
 import { delay } from 'lodash-es';
 import { ReactElement } from 'react';
 import { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
-import { uiState$ } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-state';
+import { uiState$ } from '@open-webui-react-native/mobile/shared/ui/ui-state';
 import { AppTextInput, AppInputProps } from '../text-input';
 
 export type AppBottomSheetTextInputProps = AppInputProps;

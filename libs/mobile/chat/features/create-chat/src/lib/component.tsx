@@ -3,18 +3,15 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { useLocalSearchParams } from 'expo-router';
 import { ReactElement, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {
-  FormChatInput,
-  FormChatInputSchema,
-} from '@open-web-ui-mobile-client-react-native/mobile/chat/features/form-chat-input';
-import { useCreateNewChat } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/use-create-new-chat';
-import { useAttachedFiles } from '@open-web-ui-mobile-client-react-native/mobile/shared/features/use-attached-files';
-import { useSetSelectedModel } from '@open-web-ui-mobile-client-react-native/mobile/shared/features/use-set-selected-model';
-import { View } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { FormValues } from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/form';
-import { ChatGenerationOption } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { webSocketState$ } from '@open-web-ui-mobile-client-react-native/shared/data-access/websocket';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+import { FormChatInput, FormChatInputSchema } from '@open-webui-react-native/mobile/chat/features/form-chat-input';
+import { useCreateNewChat } from '@open-webui-react-native/mobile/chat/features/use-create-new-chat';
+import { useAttachedFiles } from '@open-webui-react-native/mobile/shared/features/use-attached-files';
+import { useSetSelectedModel } from '@open-webui-react-native/mobile/shared/features/use-set-selected-model';
+import { View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
+import { ChatGenerationOption } from '@open-webui-react-native/shared/data-access/api';
+import { webSocketState$ } from '@open-webui-react-native/shared/data-access/websocket';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { SearchFolderView, SearchModelView } from './components';
 
 interface CreateChatProps {

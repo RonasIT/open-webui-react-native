@@ -3,18 +3,18 @@ import { delay } from 'lodash-es';
 import { ReactElement, useCallback, useRef, useState } from 'react';
 import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { useSharedValue, withTiming } from 'react-native-reanimated';
-import { AiMessageActions } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/ai-message-actions';
-import { useManageMessageSiblings } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/use-manage-messages-siblings';
-import { UserMessageActions } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/user-message-actions';
-import { View, AppFlashList } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
 import {
   chatApi,
   History as ChatHistory,
   Message,
   prepareCompleteChatPayload,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { Role } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
-import { socketService } from '@open-web-ui-mobile-client-react-native/shared/data-access/websocket';
+} from '@open-webui-react-native/shared/data-access/api';
+import { socketService } from '@open-webui-react-native/shared/data-access/websocket';
+import { AiMessageActions } from '@open-webui-react-native/mobile/chat/features/ai-message-actions';
+import { useManageMessageSiblings } from '@open-webui-react-native/mobile/chat/features/use-manage-messages-siblings';
+import { UserMessageActions } from '@open-webui-react-native/mobile/chat/features/user-message-actions';
+import { View, AppFlashList } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { Role } from '@open-webui-react-native/shared/data-access/common';
 import { ChatAiMessage } from '../ai-message';
 import { ChatBottomButton } from '../chat-bottom-button';
 import { ChatUserMessage } from '../user-message';
