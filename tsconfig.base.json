@@ -71,9 +71,6 @@
       "@open-webui-react-native/mobile/chat/features/models-sheet": [
         "libs/mobile/chat/features/models-sheet/src/index.ts"
       ],
-      "@open-webui-react-native/mobile/chat/features/move-to-folder-modal": [
-        "libs/mobile/chat/features/move-to-folder-modal/src/index.ts"
-      ],
       "@open-webui-react-native/mobile/chat/features/search-archived-chats": [
         "libs/mobile/chat/features/search-archived-chats/src/index.ts"
       ],
@@ -119,6 +116,9 @@
       ],
       "@open-webui-react-native/mobile/chat/ui/source-citation-item": [
         "libs/mobile/chat/ui/source-citation-item/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/chat/utils/use-folder-search-list": [
+        "libs/mobile/chat/utils/use-folder-search-list/src/index.ts"
       ],
       "@open-webui-react-native/mobile/folder/features/chats-list": [
         "libs/mobile/folder/features/chats-list/src/index.ts"

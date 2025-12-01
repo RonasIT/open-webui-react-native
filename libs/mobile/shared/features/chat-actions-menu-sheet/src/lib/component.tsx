@@ -2,19 +2,25 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { compact, debounce, delay } from 'lodash-es';
 import { ForwardedRef, Fragment, ReactElement, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import {
-  MoveToFolderModal,
-  MoveToFolderModalMethods,
-} from '@open-webui-react-native/mobile/chat/features/move-to-folder-modal';
 import { ShareChatModal } from '@open-webui-react-native/mobile/chat/features/share-chat-modal';
+import {
+  FolderSearchItem,
+  useFolderSearchList,
+} from '@open-webui-react-native/mobile/chat/utils/use-folder-search-list';
+import {
+  UpsertFolderSheet,
+  UpsertFolderSheetMethods,
+} from '@open-webui-react-native/mobile/folder/features/upsert-folder-sheet';
 import {
   ActionButtonsModal,
   ActionButtonsModalMethods,
   ActionsBottomSheet,
   ActionsBottomSheetProps,
   ActionSheetItemProps,
+  FullScreenSearchModal,
+  FullScreenSearchModalMethods,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { Chat, chatApi, ChatListItem } from '@open-webui-react-native/shared/data-access/api';
+import { Chat, chatApi, ChatListItem, foldersApi } from '@open-webui-react-native/shared/data-access/api';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
@@ -39,7 +45,8 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
   const renameModalRef = useRef<ActionButtonsModalMethods>(null);
   const shareChatModalRef = useRef<BottomSheetModal>(null);
   const downloadOptionsModalRef = useRef<BottomSheetModal>(null);
-  const moveToFolderModalRef = useRef<MoveToFolderModalMethods>(null);
+  const fullScreenSearchModalRef = useRef<FullScreenSearchModalMethods>(null);
+  const upsertFolderSheetRef = useRef<UpsertFolderSheetMethods>(null);
 
   const { mutateAsync: updateChat, isPending: isUpdating } = chatApi.useUpdate();
   const { mutateAsync: updateChatFolder } = chatApi.useUpdateChatFolder();
@@ -47,6 +54,7 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
   const { mutateAsync: pinChat, isPending: isPinning } = chatApi.usePinChat();
   const { mutateAsync: cloneChat, isPending: isCloning } = chatApi.useCloneChat();
   const { mutateAsync: archiveChat, isPending: isArchiving } = chatApi.useArchiveChat();
+  const { data: folders } = foldersApi.useGetFolders();
 
   const [activeChat, setActiveChat] = useState<ChatListItem | null>(null);
   const [folderId, setFolderId] = useState<string | undefined>(undefined);
@@ -75,6 +83,17 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
 
   const chatId = activeChat?.id ?? '';
   const chatTitle = activeChat?.title ?? '';
+  const { data: chatFullData } = chatApi.useGet(chatId, { enabled: !!chatId });
+
+  const openCreateFolderModal = (): void => {
+    upsertFolderSheetRef.current?.present();
+  };
+
+  const { emptyFolders } = useFolderSearchList({
+    noFolderText: translate('MOVE_CHAT_TO_FOLDER_MODAL.TEXT_NO_FOLDER'),
+    createFolderText: translate('MOVE_CHAT_TO_FOLDER_MODAL.TEXT_CREATE_NEW_FOLDER'),
+    onCreateFolderPress: openCreateFolderModal,
+  });
 
   const handleAction = useMemo(
     () =>
@@ -153,7 +172,7 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
 
   const moveToFolderHandler = async (): Promise<void> => {
     await closeActionsModal();
-    moveToFolderModalRef.current?.present({ chatId });
+    fullScreenSearchModalRef.current?.present();
   };
 
   const pinChatHandler = async (): Promise<void> => {
@@ -183,9 +202,9 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
     closeActionsModal();
   };
 
-  const onFolderSelectedHandler = async (folderId: string | null, oldFolderId: string | null): Promise<void> => {
-    await updateChatFolder({ id: chatId, folderId: folderId === '' ? null : folderId, oldFolderId });
-    moveToFolderModalRef.current?.close();
+  const onFolderSelectedHandler = async (id: string | null): Promise<void> => {
+    await updateChatFolder({ id: chatId, folderId: id === undefined ? null : id, oldFolderId: chatFullData?.folderId });
+    fullScreenSearchModalRef.current?.close();
   };
 
   const actions: Array<ActionSheetItemProps> = compact([
@@ -239,7 +258,15 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
       />
       <ShareChatModal ref={shareChatModalRef} chatId={chatId} />
       <DownloadChatOptionsSheet ref={downloadOptionsModalRef} chatId={chatId} />
-      <MoveToFolderModal ref={moveToFolderModalRef} onFolderSelected={onFolderSelectedHandler} />
+      <FullScreenSearchModal
+        data={folders || []}
+        unfilteredData={emptyFolders as Array<FolderSearchItem>}
+        selectedItemId={folderId}
+        ref={fullScreenSearchModalRef}
+        onSelectItem={onFolderSelectedHandler}
+        searchPlaceholder={translate('MOVE_CHAT_TO_FOLDER_MODAL.TEXT_SEARCH_FOLDER')}
+        modalComponent={<UpsertFolderSheet ref={upsertFolderSheetRef} />}
+      />
     </Fragment>
   );
 }

@@ -29,6 +29,7 @@ import {
   CompletedChat,
   CreateNewChatRequest,
   GetArchivedChatListRequest,
+  MoveChatToFolderRequest,
   ShareChatResponse,
 } from './models';
 import { chatService } from './service';
@@ -230,12 +231,12 @@ export function useUpdateChatFolder(
   options?: UseMutationOptions<
     ChatResponse,
     AxiosError<ApiErrorData>,
-    EntityPartial<ChatResponse> & { oldFolderId?: string | null }
+    MoveChatToFolderRequest & { oldFolderId?: string | null }
   >,
 ): UseMutationResult<
   ChatResponse,
   AxiosError<ApiErrorData>,
-  EntityPartial<ChatResponse> & { oldFolderId?: string | null }
+  MoveChatToFolderRequest & { oldFolderId?: string | null }
 > {
   return useMutation({
     mutationFn: (params) => chatService.updateChatFolder(params),

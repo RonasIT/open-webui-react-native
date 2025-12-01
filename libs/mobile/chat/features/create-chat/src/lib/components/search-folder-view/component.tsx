@@ -1,10 +1,13 @@
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement } from 'react';
+import {
+  FolderSearchItem,
+  useFolderSearchList,
+} from '@open-webui-react-native/mobile/chat/utils/use-folder-search-list';
 import { useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
 import {
   AppPressable,
   AppText,
-  FullScreenSearchListItem,
   FullScreenSearchModal,
   FullScreenSearchModalProps,
   Icon,
@@ -18,8 +21,6 @@ interface SearchFolderViewProps
   disabled?: boolean;
 }
 
-const createFolderId = 'create-folder-id';
-
 export function SearchFolderView({
   selectedItemId,
   onCreateFolderPress,
@@ -29,22 +30,11 @@ export function SearchFolderView({
   const translate = useTranslation('CHAT.CREATE_CHAT.SEARCH_FOLDER_VIEW');
   const { isDarkColorScheme } = useColorScheme();
 
-  const emptyFolders = [
-    {
-      id: undefined,
-      name: translate('TEXT_NO_FOLDER'),
-      iconName: isDarkColorScheme ? 'logoSmallDark' : 'logoSmallLight',
-    },
-    {
-      id: createFolderId,
-      name: translate('TEXT_CREATE_NEW_FOLDER'),
-      onPress: onCreateFolderPress,
-      iconName: 'folderPlus',
-      containerClassName: 'mb-24',
-      textClassName: 'text-brand-primary',
-      iconClassName: 'color-brand-primary',
-    },
-  ] as Array<FullScreenSearchListItem>;
+  const { emptyFolders } = useFolderSearchList({
+    noFolderText: translate('TEXT_NO_FOLDER'),
+    createFolderText: translate('TEXT_CREATE_NEW_FOLDER'),
+    onCreateFolderPress,
+  });
 
   const { data: folders } = foldersApi.useGetFolders();
 
@@ -82,7 +72,7 @@ export function SearchFolderView({
       )}
       <FullScreenSearchModal
         data={foldersWithIcon || []}
-        unfilteredData={emptyFolders as Array<FolderListItem>}
+        unfilteredData={emptyFolders as Array<FolderSearchItem>}
         selectedItemId={selectedItemId}
         renderTrigger={renderTrigger}
         searchPlaceholder={translate('TEXT_SEARCH_FOLDER')}

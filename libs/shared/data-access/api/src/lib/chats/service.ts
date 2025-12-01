@@ -12,6 +12,7 @@ import {
   CreateNewChatRequest,
   GetArchivedChatListRequest,
   GetChatListRequest,
+  MoveChatToFolderRequest,
   SearchChatListRequest,
   ShareChatResponse,
 } from './models';
@@ -79,10 +80,13 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
     return createEntityInstance<ChatResponse>(ChatResponse, response);
   }
 
-  public async updateChatFolder(params: EntityPartial<ChatResponse>): Promise<ChatResponse> {
-    const response = await getApiService().post<ChatResponse>(`${this.endpoint}/${params.id}/folder`, {
-      folder_id: params.folderId,
-    });
+  public async updateChatFolder(params: MoveChatToFolderRequest): Promise<ChatResponse> {
+    const updatedEntity = instanceToPlain<MoveChatToFolderRequest>(new MoveChatToFolderRequest(params));
+
+    const response = await getApiService().post<ChatResponse>(
+      `${this.endpoint}/${updatedEntity.id}/folder`,
+      updatedEntity,
+    );
 
     return createEntityInstance<ChatResponse>(ChatResponse, response);
   }
