@@ -145,7 +145,6 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
             onLayout={handleChatMessagesListLayout}
             isMessagesListLoaded={isMessagesListLoaded}
             editingMessageId={editingMessageId}
-            modelId={selectedModelId}
           />
         </React.Suspense>
       )}

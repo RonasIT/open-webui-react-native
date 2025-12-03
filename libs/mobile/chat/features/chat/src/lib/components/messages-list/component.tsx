@@ -1,4 +1,5 @@
 import { FlashList } from '@shopify/flash-list';
+import { useLocalSearchParams } from 'expo-router';
 import { delay } from 'lodash-es';
 import { ReactElement, useCallback, useRef, useState } from 'react';
 import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
@@ -6,7 +7,9 @@ import { useSharedValue, withTiming } from 'react-native-reanimated';
 import { AiMessageActions } from '@open-webui-react-native/mobile/chat/features/ai-message-actions';
 import { useManageMessageSiblings } from '@open-webui-react-native/mobile/chat/features/use-manage-messages-siblings';
 import { UserMessageActions } from '@open-webui-react-native/mobile/chat/features/user-message-actions';
+import { useSetSelectedModel } from '@open-webui-react-native/mobile/shared/features/use-set-selected-model';
 import { View, AppFlashList } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { ChatScreenParams } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import {
   chatApi,
   History as ChatHistory,
@@ -28,7 +31,6 @@ interface ChatMessagesListProps {
   history?: ChatHistory;
   messages?: Array<Message>;
   editingMessageId?: string;
-  modelId?: string;
 }
 
 export default function ChatMessagesList({
@@ -40,7 +42,6 @@ export default function ChatMessagesList({
   isInputFocusing,
   onEditPress,
   editingMessageId,
-  modelId,
 }: ChatMessagesListProps): ReactElement {
   const listRef = useRef<FlashList<Message>>(null);
   const isScrollToBottomAvailable = useRef(false);
@@ -51,6 +52,8 @@ export default function ChatMessagesList({
 
   const { showPreviousSibling, showNextSibling, getSiblingsInfo } = useManageMessageSiblings(chatId, history);
   const { mutate: completeChat } = chatApi.useCompleteChat();
+  const { id }: ChatScreenParams = useLocalSearchParams();
+  const { modelId } = useSetSelectedModel(id);
 
   const handleContentSizeChange = (): void => {
     //NOTE: Needs to wait until the initial scroll to the bottom or content generation finished and not show the ChatBottomButton before
