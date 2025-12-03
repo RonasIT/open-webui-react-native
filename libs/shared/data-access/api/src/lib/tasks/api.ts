@@ -29,8 +29,6 @@ function useStopTask(
           },
         } as Chat,
       });
-
-      props?.onSuccess?.(_, { chatId, lastMessageId } as any, undefined);
     },
 
     ...props,
