@@ -81,12 +81,9 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
   }
 
   public async updateChatFolder(params: MoveChatToFolderRequest): Promise<ChatResponse> {
-    const updatedEntity = instanceToPlain<MoveChatToFolderRequest>(new MoveChatToFolderRequest(params));
+    const request = instanceToPlain<MoveChatToFolderRequest>(new MoveChatToFolderRequest(params));
 
-    const response = await getApiService().post<ChatResponse>(
-      `${this.endpoint}/${updatedEntity.id}/folder`,
-      updatedEntity,
-    );
+    const response = await getApiService().post<ChatResponse>(`${this.endpoint}/${request.id}/folder`, request);
 
     return createEntityInstance<ChatResponse>(ChatResponse, response);
   }

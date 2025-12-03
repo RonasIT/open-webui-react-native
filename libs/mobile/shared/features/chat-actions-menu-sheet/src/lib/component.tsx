@@ -20,7 +20,13 @@ import {
   FullScreenSearchModal,
   FullScreenSearchModalMethods,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { Chat, chatApi, ChatListItem, foldersApi } from '@open-webui-react-native/shared/data-access/api';
+import {
+  Chat,
+  chatApi,
+  ChatListItem,
+  foldersApi,
+  MockFolderItemIds,
+} from '@open-webui-react-native/shared/data-access/api';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
@@ -203,7 +209,11 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
   };
 
   const onFolderSelectedHandler = async (id: string | null): Promise<void> => {
-    await updateChatFolder({ id: chatId, folderId: id === undefined ? null : id, oldFolderId: chatFullData?.folderId });
+    await updateChatFolder({
+      id: chatId,
+      folderId: id === MockFolderItemIds.NO_FOLDER_ID ? null : id,
+      oldFolderId: chatFullData?.folderId,
+    });
     fullScreenSearchModalRef.current?.close();
   };
 

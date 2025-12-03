@@ -1,8 +1,11 @@
 import { useMemo } from 'react';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
-
-export const CREATE_FOLDER_ID = 'create-folder-id';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { IconName } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { MockFolderItemIds } from '@open-webui-react-native/shared/data-access/api';
+import { FolderSearchItem } from './types';
 
 interface UseFolderSearchListParams {
   noFolderText: string;
@@ -10,25 +13,30 @@ interface UseFolderSearchListParams {
   onCreateFolderPress: () => void;
 }
 
+interface UseFolderSearchListResult {
+  emptyFolders: Array<FolderSearchItem>;
+  createFolderId: string;
+}
+
 export function useFolderSearchList({
   noFolderText,
   createFolderText,
   onCreateFolderPress,
-}: UseFolderSearchListParams) {
+}: UseFolderSearchListParams): UseFolderSearchListResult {
   const { isDarkColorScheme } = useColorScheme();
 
   const emptyFolders = useMemo(
     () => [
       {
-        id: undefined,
+        id: MockFolderItemIds.NO_FOLDER_ID,
         name: noFolderText,
-        iconName: isDarkColorScheme ? 'logoSmallDark' : 'logoSmallLight',
+        iconName: isDarkColorScheme ? ('logoSmallDark' as IconName) : ('logoSmallLight' as IconName),
       },
       {
-        id: CREATE_FOLDER_ID,
+        id: MockFolderItemIds.CREATE_FOLDER_ID,
         name: createFolderText,
         onPress: onCreateFolderPress,
-        iconName: 'folderPlus',
+        iconName: 'folderPlus' as IconName,
         containerClassName: 'mb-24',
         textClassName: 'text-brand-primary',
         iconClassName: 'color-brand-primary',
@@ -37,5 +45,5 @@ export function useFolderSearchList({
     [isDarkColorScheme, noFolderText, createFolderText, onCreateFolderPress],
   );
 
-  return { emptyFolders, createFolderId: CREATE_FOLDER_ID };
+  return { emptyFolders, createFolderId: MockFolderItemIds.CREATE_FOLDER_ID };
 }
