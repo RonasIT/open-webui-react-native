@@ -16,6 +16,7 @@ import { AppTextInput, AppInputProps, View, IconButton } from '@open-webui-react
 import {
   appConfigurationApi,
   ChatGenerationOption,
+  ChatResponse,
   tasksApi,
   tasksService,
 } from '@open-webui-react-native/shared/data-access/api';
@@ -36,7 +37,7 @@ interface FormChatInputProps<T extends FieldValues> extends AppInputProps {
   attachedImages: Observable<Array<ImageData>>;
   onImageUploaded: (image: ImageData) => void;
   onDeleteImagePress: (fileName: string) => void;
-  chatId?: string;
+  chat?: ChatResponse;
   modelId?: string;
   onChatCreated?: (id: string) => void;
   isLoading?: boolean;
@@ -58,7 +59,7 @@ export function FormChatInput<T extends FieldValues>({
   attachedImages,
   onImageUploaded,
   onDeleteImagePress,
-  chatId,
+  chat,
   modelId,
   onChatCreated,
   isLoading,
@@ -96,7 +97,7 @@ export function FormChatInput<T extends FieldValues>({
       return ToastService.showError(translate('TEXT_MODEL_NOT_SELECTED'));
     }
     setIsMicrophonePreparing(true);
-    await openVoiceModeModal({ chatId, modelId });
+    await openVoiceModeModal({ chatId: chat?.id, modelId });
     setIsMicrophonePreparing(false);
   };
 
@@ -119,13 +120,16 @@ export function FormChatInput<T extends FieldValues>({
   };
 
   const onStopGenerationPress = async (): Promise<void> => {
-    if (!chatId) return;
+    if (!chat) return;
+
+    const chatId = chat.id;
+    const lastMessageId = chat.chat.history.currentId;
 
     const tasksData = await tasksService.getChatTasks(chatId);
     const taskId = tasksData?.tasksIds[0];
 
     if (taskId) {
-      stopTaskMutation.mutate(taskId);
+      stopTaskMutation.mutate({ taskId, chatId, lastMessageId });
     }
   };
 
@@ -163,6 +167,8 @@ export function FormChatInput<T extends FieldValues>({
               isSubmitDisabled={!isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty}
               onVoiceModePress={onVoiceModePress}
               isVoiceModeAvailable={isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty}
+              onStopGenerationPress={onStopGenerationPress}
+              isResponseGenerating={isResponseGenerating}
               isLoading={isLoading || isMicrophonePreparing}>
               <View className='flex-row flex-1 justify-between'>
                 <View className='gap-16 flex-row '>
@@ -180,20 +186,12 @@ export function FormChatInput<T extends FieldValues>({
                     />
                   )}
                 </View>
-                <View className={'flex-row gap-16 pr-16'}>
-                  {isResponseGenerating && (
-                    <IconButton
-                      iconName='stopCircle'
-                      className='p-0'
-                      onPress={onStopGenerationPress} />
-                  )}
-                  <IconButton
-                    disabled={isLoading}
-                    iconName='microphone'
-                    className='p-0'
-                    onPress={handleDictateModePress}
-                  />
-                </View>
+                <IconButton
+                  disabled={isLoading}
+                  iconName='microphone'
+                  className='p-0 mr-16'
+                  onPress={handleDictateModePress}
+                />
               </View>
             </ChatInputBottomRow>
           }

@@ -173,9 +173,9 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
             attachedImages={attachedImages}
             onImageUploaded={handleImageUploaded}
             onDeleteImagePress={handleDeleteImage}
-            chatId={chatId}
             modelId={selectedModelId}
             isResponseGenerating={isResponseGenerating}
+            chat={chat}
           />
         )}
       </View>
