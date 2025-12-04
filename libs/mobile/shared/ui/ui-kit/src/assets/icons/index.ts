@@ -40,6 +40,7 @@ import play from './play.svg';
 import plusInCircle from './plus-in-circle.svg';
 import plus from './plus.svg';
 import search from './search.svg';
+import stop from './stop.svg';
 import strokeLeft from './stroke-left.svg';
 import tick from './tick.svg';
 import trashCan from './trash-can.svg';
@@ -95,5 +96,6 @@ export const Icons = {
   closeSM,
   strokeLeft,
   tick,
+  stop,
   play,
 };
