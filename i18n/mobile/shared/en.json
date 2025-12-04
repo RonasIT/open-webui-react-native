@@ -86,10 +86,17 @@
       "TEXT_THIS_WILL_DELETE": "This will delete {{name}}",
       "TEXT_CLONE_OF": "Clone of {{title}}",
       "TEXT_CHAT_ACTIONS": "Chat actions",
+      "TEXT_MOVE_TO_FOLDER": "Move to folder",
       "DOWNLOAD_CHAT_OPTIONS_SHEET": {
         "TEXT_EXPORT_CHAT_JSON": "Export chat (.json)",
         "TEXT_PLAIN_TEXT": "Plain text (.txt)",
         "TEXT_PDF_DOCUMENT": "PDF document (.pdf)"
+      },
+      "MOVE_CHAT_TO_FOLDER_MODAL": {
+        "TEXT_SEARCH_FOLDER": "Search folder",
+        "TEXT_NO_FOLDERS": "There is no folders",
+        "TEXT_CREATE_NEW_FOLDER": "Create folder",
+        "TEXT_NO_FOLDER": "No folder"
       }
     },
     "SEARCH_INPUT": {
