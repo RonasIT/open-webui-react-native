@@ -26,7 +26,7 @@ export function ChatInputBottomRow({
       {children}
       {isResponseGenerating ? (
         <IconButton
-          iconName='stopCircle'
+          iconName='stop'
           className='p-0'
           onPress={onStopGenerationPress} />
       ) : (
