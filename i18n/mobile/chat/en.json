@@ -120,7 +120,8 @@
     },
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Edit",
-      "TEXT_COPY": "Copy"
+      "TEXT_COPY": "Copy",
+      "TEXT_CONTINUE_RESPONSE": "Continue response"
     },
     "EDIT_MESSAGE_INPUT": {
       "TEXT_EDIT_MESSAGE": "Edit message",

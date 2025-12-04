@@ -12,12 +12,16 @@ import { ToastService } from '@open-webui-react-native/shared/utils/toast-servic
 interface AiMessageActionsProps {
   message: Message;
   onEditPress: (messageId: string, content: string) => void;
+  onContinueResponsePress: (messageId: string, content: string) => void;
+  isLast: boolean;
 }
 
 //TODO Extend with more actions - https://www.figma.com/design/YPCZjyVlD86psDwUxvMVBc/OpenWebUI-Redesign-React-Native?node-id=27540-25291&t=kg2yUIDp3UQDStLf-0
 export function AiMessageActions({
   message,
   onEditPress,
+  onContinueResponsePress,
+  isLast,
   children,
 }: PropsWithChildren<AiMessageActionsProps>): ReactElement {
   const translate = useTranslation('CHAT.AI_MESSAGE_ACTIONS');
@@ -35,6 +39,11 @@ export function AiMessageActions({
     actionsSheetRef.current?.dismiss();
   };
 
+  const handleContinueResponsePress = (): void => {
+    onContinueResponsePress(message.id, message.content);
+    actionsSheetRef.current?.dismiss();
+  };
+
   const actions: Array<ActionSheetItemProps> = compact([
     isFeatureEnabled(FeatureID.AI_EDIT_MESSAGE) && {
       title: translate('TEXT_EDIT'),
@@ -45,6 +54,11 @@ export function AiMessageActions({
       title: translate('TEXT_COPY'),
       iconName: 'copy',
       onPress: copyToClipboard,
+    },
+    isLast && {
+      title: translate('TEXT_CONTINUE_RESPONSE'),
+      iconName: 'play',
+      onPress: handleContinueResponsePress,
     },
   ]);
 
