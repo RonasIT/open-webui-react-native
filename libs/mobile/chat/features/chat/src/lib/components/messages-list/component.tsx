@@ -153,7 +153,6 @@ export default function ChatMessagesList({
           message={message}
           onEditPress={onEditPress}
           onContinueResponsePress={handleContinueResponsePress}
-          isModelIdLoading={!modelId}
           isLast={isLast}>
           <ChatAiMessage
             message={message}
@@ -176,7 +175,7 @@ export default function ChatMessagesList({
         </UserMessageActions>
       );
     },
-    [history, onEditPress, editingMessageId, showPreviousSibling, showNextSibling, getSiblingsInfo],
+    [history, onEditPress, editingMessageId, showPreviousSibling, showNextSibling, getSiblingsInfo, modelId],
   );
 
   return (

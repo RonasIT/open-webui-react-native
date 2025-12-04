@@ -14,7 +14,6 @@ interface AiMessageActionsProps {
   onEditPress: (messageId: string, content: string) => void;
   onContinueResponsePress: (messageId: string, content: string) => void;
   isLast: boolean;
-  isModelIdLoading: boolean;
 }
 
 //TODO Extend with more actions - https://www.figma.com/design/YPCZjyVlD86psDwUxvMVBc/OpenWebUI-Redesign-React-Native?node-id=27540-25291&t=kg2yUIDp3UQDStLf-0
@@ -23,7 +22,6 @@ export function AiMessageActions({
   onEditPress,
   onContinueResponsePress,
   isLast,
-  isModelIdLoading,
   children,
 }: PropsWithChildren<AiMessageActionsProps>): ReactElement {
   const translate = useTranslation('CHAT.AI_MESSAGE_ACTIONS');
@@ -61,7 +59,6 @@ export function AiMessageActions({
       title: translate('TEXT_CONTINUE_RESPONSE'),
       iconName: 'play',
       onPress: handleContinueResponsePress,
-      isLoading: isModelIdLoading,
     },
   ]);
 
