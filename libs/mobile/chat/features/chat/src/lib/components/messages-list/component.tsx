@@ -153,6 +153,7 @@ export default function ChatMessagesList({
           message={message}
           onEditPress={onEditPress}
           onContinueResponsePress={handleContinueResponsePress}
+          isModelIdLoading={!modelId}
           isLast={isLast}>
           <ChatAiMessage
             message={message}
