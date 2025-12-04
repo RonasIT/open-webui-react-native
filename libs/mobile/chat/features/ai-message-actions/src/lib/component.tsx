@@ -59,7 +59,7 @@ export function AiMessageActions({
     },
     isLast && {
       title: translate('TEXT_CONTINUE_RESPONSE'),
-      iconName: 'playCircle',
+      iconName: 'play',
       onPress: handleContinueResponsePress,
       isLoading: isModelIdLoading,
     },
