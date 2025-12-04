@@ -7,3 +7,4 @@ export * from './files';
 export * from './audio';
 export * from './folders';
 export * from './knowledge';
+export * from './tasks';
