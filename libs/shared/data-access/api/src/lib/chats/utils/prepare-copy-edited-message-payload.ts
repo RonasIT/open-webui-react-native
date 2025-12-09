@@ -1,5 +1,7 @@
+import uuid from 'react-native-uuid';
 import { Role } from '@open-webui-react-native/shared/data-access/common';
-import { ChatResponse, Message } from '../models';
+import { ChatResponse, History, Message } from '../models';
+import { createMessagesList } from './create-messages-list';
 
 export function prepareCopyEditedMessagePayload(
   oldData: ChatResponse,
@@ -9,56 +11,45 @@ export function prepareCopyEditedMessagePayload(
   const history = oldData.chat.history;
   const messagesMap = { ...history.messages };
 
-  const target = messagesMap[messageId];
-  if (!target) return oldData;
+  const original = messagesMap[messageId];
+  if (!original || original.role !== Role.ASSISTANT) return oldData;
 
-  const isAIMessage = target.role === Role.ASSISTANT;
+  const newAssistantMessageId = uuid.v4();
 
-  const updatedMessage: Message = {
-    ...target,
+  const parentId = original.parentId ?? original.id;
+
+  const newAssistantMessage: Message = {
+    ...original,
+    id: newAssistantMessageId,
+    parentId,
+    childrenIds: [],
     content: newContent,
+    done: true,
   };
-  messagesMap[messageId] = updatedMessage;
 
-  if (!isAIMessage) {
-    const patchedMessagesList = oldData.chat.messages.map((msg) => (msg.id === messageId ? updatedMessage : msg));
-    const lastAssistantMessage = oldData.chat.history.lastAssistantMessage;
-
-    return {
-      ...oldData,
-      chat: {
-        ...oldData.chat,
-        history: {
-          ...history,
-          messages: messagesMap,
-          lastAssistantMessage,
-        },
-        messages: patchedMessagesList,
-      },
+  if (parentId && messagesMap[parentId]) {
+    const parent = messagesMap[parentId];
+    messagesMap[parentId] = {
+      ...parent,
+      childrenIds: [...(parent.childrenIds ?? []), newAssistantMessageId],
     };
   }
 
-  const chain: Array<Message> = [];
-  let pointer: Message | undefined = updatedMessage;
+  messagesMap[newAssistantMessageId] = newAssistantMessage;
 
-  while (pointer) {
-    chain.unshift(pointer);
-    pointer = pointer.parentId ? messagesMap[pointer.parentId] : undefined;
-  }
-
-  const newCurrentId = updatedMessage.id;
+  const updatedHistory: History = {
+    ...history,
+    currentId: newAssistantMessageId,
+    messages: messagesMap,
+    lastAssistantMessage: newAssistantMessage,
+  };
 
   return {
     ...oldData,
     chat: {
       ...oldData.chat,
-      history: {
-        ...history,
-        messages: messagesMap,
-        currentId: newCurrentId,
-        lastAssistantMessage: updatedMessage,
-      },
-      messages: chain,
+      history: updatedHistory,
+      messages: createMessagesList(updatedHistory, newAssistantMessageId),
     },
   };
 }
