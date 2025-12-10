@@ -1,5 +1,5 @@
 import { Role } from '@open-webui-react-native/shared/data-access/common';
-import { ChatResponse, Message } from '../models';
+import { ChatResponse, Message, History } from '../models';
 
 export function patchCompletedMessage(oldData: ChatResponse | undefined): ChatResponse | undefined {
   if (
@@ -33,11 +33,10 @@ export function patchCompletedMessage(oldData: ChatResponse | undefined): ChatRe
     : undefined;
 
   const updatedHistory = updatedHistoryMessages
-    ? {
-        ...history,
+    ? new History({
         messages: updatedHistoryMessages,
-        lastAssistantMessage: history?.lastAssistantMessage ?? updatedLastMessage,
-      }
+        currentId: history.currentId,
+      })
     : history;
 
   return {
