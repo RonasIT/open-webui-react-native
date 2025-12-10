@@ -8,7 +8,6 @@ import {
 import { chatQueriesKeys } from '../../chat-queries-keys';
 import { ChatResponse } from '../../models';
 import { handleCompletedChat } from '../handle-completed-chat';
-import { markCurrentMessageGenerating } from '../mark-current-message-generating';
 import { patchChatMessagesWithCompletion } from '../patch-chat-message-with-completion';
 import { patchCompletedMessage } from '../patch-completed-message';
 
@@ -32,11 +31,9 @@ export const handleChatCompletionEvent = async (socketResponse: ChatEventBase): 
   const storedSources = sourcesStore[chatId];
 
   if (chatData) {
-    queryClient.setQueryData(queryKey, (oldData: ChatResponse) => {
-      const withGenerating = markCurrentMessageGenerating(oldData);
-
-      return patchChatMessagesWithCompletion(withGenerating, chatCompletionData.content, storedSources);
-    });
+    queryClient.setQueryData(queryKey, (oldData: ChatResponse) =>
+      patchChatMessagesWithCompletion(oldData, chatCompletionData.content, storedSources),
+    );
   }
 
   if (chatCompletionData.done) {
