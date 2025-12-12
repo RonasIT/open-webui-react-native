@@ -62,7 +62,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   } = useEditMessage({ chat, modelId: selectedModelId });
 
   const history = chat?.chat.history;
-  const isResponseGenerating = !history?.messages[history.currentId].done;
+  const isResponseGenerating = history?.lastAssistantMessage?.done !== true;
 
   const shouldHideContent = isLoading || isRefetching || !isMessagesListLoaded || !selectedModelId;
 
