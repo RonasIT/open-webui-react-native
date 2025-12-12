@@ -8,6 +8,7 @@ import {
 import { chatQueriesKeys } from '../../chat-queries-keys';
 import { ChatResponse } from '../../models';
 import { handleCompletedChat } from '../handle-completed-chat';
+import { markCurrentMessageGenerating } from '../mark-current-message-generating';
 import { patchChatMessagesWithCompletion } from '../patch-chat-message-with-completion';
 import { patchCompletedMessage } from '../patch-completed-message';
 
