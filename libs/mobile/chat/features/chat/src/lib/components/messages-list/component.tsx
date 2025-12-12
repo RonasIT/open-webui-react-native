@@ -161,7 +161,11 @@ export default function ChatMessagesList({
       const message = history?.messages[item.id];
       if (!message) return null;
 
-      const isLast = item.id === history?.lastAssistantMessage?.id;
+      const lastAssistantMessageInUIList = [...messages]
+        .reverse()
+        .find((m) => history?.messages[m.id]?.role === Role.ASSISTANT);
+
+      const isLast = item.id === lastAssistantMessageInUIList?.id;
 
       return item.role === Role.ASSISTANT ? (
         <AiMessageActions
