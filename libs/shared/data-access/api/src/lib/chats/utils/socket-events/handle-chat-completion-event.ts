@@ -20,18 +20,21 @@ export const handleChatCompletionEvent = async (socketResponse: ChatEventBase): 
   const chatId = socketResponse.chatId;
 
   const chatCompletionData = plainToInstance(ChatCompletionChunk, socketResponse.data.data);
+  if (!chatCompletionData) return;
 
+  const queryKey = chatQueriesKeys.get(chatId).queryKey;
+  const chatData = queryClient.getQueryData<ChatResponse>(queryKey);
+
+  if (!chatData) return;
+
+  // Save sources only from the first chunk
   if (chatCompletionData.sources) {
     sourcesStore[chatId] = chatCompletionData.sources;
   }
 
-  if (!chatCompletionData?.content) return;
-
-  const queryKey = chatQueriesKeys.get(chatId).queryKey;
-  const chatData = queryClient.getQueryData<ChatResponse>(queryKey);
   const storedSources = sourcesStore[chatId];
 
-  if (chatData) {
+  if (chatCompletionData.content) {
     queryClient.setQueryData(queryKey, (oldData: ChatResponse) => {
       const withGenerating = markCurrentMessageGenerating(oldData);
 
@@ -42,7 +45,10 @@ export const handleChatCompletionEvent = async (socketResponse: ChatEventBase): 
   if (chatCompletionData.done) {
     delete sourcesStore[chatId];
 
-    queryClient.setQueryData(queryKey, (oldData: ChatResponse) => patchCompletedMessage(oldData));
-    handleCompletedChat(chatCompletionData.content, socketResponse.chatId, sessionId, storedSources);
+    queryClient.setQueryData(queryKey, (oldData: ChatResponse) => {
+      return patchCompletedMessage(oldData);
+    });
+
+    handleCompletedChat(chatCompletionData.content, chatId, sessionId, storedSources);
   }
 };

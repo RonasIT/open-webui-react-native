@@ -3,7 +3,8 @@ import { AxiosError } from 'axios';
 import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { chatQueriesKeys } from '../chats/chat-queries-keys';
-import { ChatResponse, History } from '../chats/models';
+import { ChatResponse } from '../chats/models';
+import { findGeneratingAssistantMessageId, markAssistantMessageCompleted } from '../chats/utils';
 import { StopTaskResponse } from './models';
 import { tasksService } from './service';
 
@@ -24,34 +25,10 @@ function useStopTask(
         if (!chat) return chat;
 
         const history = chat.chat.history;
-        const message = history.messages[lastMessageId];
+        const generatingId = findGeneratingAssistantMessageId(history) ?? lastMessageId;
+        if (!generatingId) return chat;
 
-        if (!message) return chat;
-
-        // already stopped / completed
-        if (message.done === true) {
-          return chat;
-        }
-
-        const updatedMessage = {
-          ...message,
-          done: true,
-        };
-
-        return {
-          ...chat,
-          chat: {
-            ...chat.chat,
-            messages: chat.chat.messages.map((m) => (m.id === updatedMessage.id ? updatedMessage : m)),
-            history: new History({
-              messages: {
-                ...history.messages,
-                [updatedMessage.id]: updatedMessage,
-              },
-              currentId: history.currentId,
-            }),
-          },
-        };
+        return markAssistantMessageCompleted(chat, generatingId);
       });
     },
 

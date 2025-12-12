@@ -9,6 +9,6 @@ export const patchChatQueryData = (chatId: string, partialData: Partial<ChatResp
       return undefined;
     }
 
-    return merge({}, draft, partialData);
+    return new ChatResponse(merge(draft, partialData));
   });
 };

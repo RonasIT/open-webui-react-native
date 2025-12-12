@@ -1,4 +1,5 @@
 import { Expose, Transform } from 'class-transformer';
+import { Role } from '@open-webui-react-native/shared/data-access/common';
 import { transformRecordValues } from '@open-webui-react-native/shared/utils/objects';
 import { Message } from './message';
 
@@ -15,12 +16,21 @@ export class History {
   }
 
   public get lastAssistantMessage(): Message | undefined {
-    if (!this.messages) return undefined;
+    if (!this.messages || !this.currentId) return undefined;
 
-    const assistantMessages = Object.values(this.messages).filter((m) => m.role === 'assistant');
+    let current = this.messages[this.currentId];
+    if (!current) return undefined;
 
-    if (assistantMessages.length === 0) return undefined;
+    // Walk up through parents until we reach the start of the conversation
+    while (current) {
+      if (current.role === Role.ASSISTANT) {
+        return current;
+      }
 
-    return assistantMessages.sort((a, b) => b.timestamp - a.timestamp)[0];
+      if (!current.parentId) break;
+      current = this.messages[current.parentId];
+    }
+
+    return undefined;
   }
 }

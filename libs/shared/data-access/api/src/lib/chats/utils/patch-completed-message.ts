@@ -1,50 +1,27 @@
-import { Role } from '@open-webui-react-native/shared/data-access/common';
-import { ChatResponse, Message, History } from '../models';
+import { ChatResponse, History } from '../models';
 
-export function patchCompletedMessage(oldData: ChatResponse | undefined): ChatResponse | undefined {
-  if (
-    !oldData ||
-    oldData.chat.messages.length === 0 ||
-    oldData.chat.messages[oldData.chat.messages.length - 1].role !== Role.ASSISTANT
-  ) {
-    return oldData;
-  }
+export const patchCompletedMessage = (chat: ChatResponse): ChatResponse => {
+  const history = chat.chat.history;
+  const lastAssistant = history.lastAssistantMessage;
+  if (!lastAssistant) return chat;
 
-  const { chat } = oldData;
-  const { messages, history } = chat;
-
-  const lastMessage = messages[messages.length - 1];
-  if (lastMessage.role !== Role.ASSISTANT) return oldData;
-
-  const updatedLastMessage: Message = {
-    ...lastMessage,
+  const updatedMessage = {
+    ...lastAssistant,
     done: true,
-    socketStatusData: history.messages[lastMessage.id]?.socketStatusData,
   };
-
-  const updatedMessages = [...messages];
-  updatedMessages[updatedMessages.length - 1] = updatedLastMessage;
-
-  const updatedHistoryMessages = history?.messages
-    ? {
-        ...history.messages,
-        [updatedLastMessage.id]: updatedLastMessage,
-      }
-    : undefined;
-
-  const updatedHistory = updatedHistoryMessages
-    ? new History({
-        messages: updatedHistoryMessages,
-        currentId: history.currentId,
-      })
-    : history;
 
   return {
-    ...oldData,
+    ...chat,
     chat: {
-      ...chat,
-      messages: updatedMessages,
-      history: updatedHistory,
+      ...chat.chat,
+      messages: chat.chat.messages.map((m) => (m.id === updatedMessage.id ? updatedMessage : m)),
+      history: new History({
+        messages: {
+          ...history.messages,
+          [updatedMessage.id]: updatedMessage,
+        },
+        currentId: history.currentId,
+      }),
     },
   };
-}
+};
