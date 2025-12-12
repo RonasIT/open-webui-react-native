@@ -1,13 +1,19 @@
 import { ChatResponse, History } from '../models';
 
-export const patchCompletedMessage = (chat: ChatResponse): ChatResponse => {
+export const markCurrentMessageGenerating = (chat: ChatResponse): ChatResponse => {
   const history = chat.chat.history;
   const lastAssistant = history.lastAssistantMessage;
+
   if (!lastAssistant) return chat;
+
+  // already generating
+  if (lastAssistant.done !== true) {
+    return chat;
+  }
 
   const updatedMessage = {
     ...lastAssistant,
-    done: true,
+    done: undefined,
   };
 
   return {

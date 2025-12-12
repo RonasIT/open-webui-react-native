@@ -1,49 +1,40 @@
 import { MessageSource, Role } from '@open-webui-react-native/shared/data-access/common';
-import { ChatResponse, Message } from '../models';
+import { ChatResponse, Message, History } from '../models';
 
 export function patchChatMessagesWithCompletion(
   oldData: ChatResponse | undefined,
   newContent: string,
   sources?: Array<MessageSource>,
 ): ChatResponse | undefined {
-  if (
-    !oldData ||
-    oldData.chat.messages.length === 0 ||
-    oldData.chat.messages[oldData.chat.messages.length - 1].role !== Role.ASSISTANT
-  ) {
-    return oldData;
-  }
+  if (!oldData) return;
 
   const { chat } = oldData;
   const { messages, history } = chat;
 
   const lastMessage = messages[messages.length - 1];
-  if (lastMessage.role !== Role.ASSISTANT) return oldData;
+
+  if (!lastMessage || lastMessage.role !== Role.ASSISTANT) {
+    return oldData;
+  }
 
   const updatedLastMessage: Message = {
     ...lastMessage,
     content: newContent,
-    sources: sources,
+    sources,
     socketStatusData: history.messages[lastMessage.id]?.socketStatusData,
   };
 
-  const updatedMessages = [...messages];
-  updatedMessages[updatedMessages.length - 1] = updatedLastMessage;
+  const updatedMessages = messages.map((m) => (m.id === updatedLastMessage.id ? updatedLastMessage : m));
 
-  const updatedHistoryMessages = history?.messages
-    ? {
-        ...history.messages,
-        [updatedLastMessage.id]: updatedLastMessage,
-      }
-    : undefined;
+  const updatedHistoryMessages = {
+    ...history.messages,
+    [updatedLastMessage.id]: updatedLastMessage,
+  };
 
-  const updatedHistory = updatedHistoryMessages
-    ? {
-        ...history,
-        messages: updatedHistoryMessages,
-        lastAssistantMessage: history?.lastAssistantMessage ?? updatedLastMessage,
-      }
-    : history;
+  const updatedHistory = new History({
+    messages: updatedHistoryMessages,
+    currentId: history.currentId,
+  });
 
   return {
     ...oldData,

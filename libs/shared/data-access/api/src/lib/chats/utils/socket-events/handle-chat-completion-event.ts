@@ -8,6 +8,7 @@ import {
 import { chatQueriesKeys } from '../../chat-queries-keys';
 import { ChatResponse } from '../../models';
 import { handleCompletedChat } from '../handle-completed-chat';
+import { markCurrentMessageGenerating } from '../mark-current-message-generating';
 import { patchChatMessagesWithCompletion } from '../patch-chat-message-with-completion';
 import { patchCompletedMessage } from '../patch-completed-message';
 
@@ -19,27 +20,35 @@ export const handleChatCompletionEvent = async (socketResponse: ChatEventBase): 
   const chatId = socketResponse.chatId;
 
   const chatCompletionData = plainToInstance(ChatCompletionChunk, socketResponse.data.data);
+  if (!chatCompletionData) return;
 
+  const queryKey = chatQueriesKeys.get(chatId).queryKey;
+  const chatData = queryClient.getQueryData<ChatResponse>(queryKey);
+
+  if (!chatData) return;
+
+  // Save sources only from the first chunk
   if (chatCompletionData.sources) {
     sourcesStore[chatId] = chatCompletionData.sources;
   }
 
-  if (!chatCompletionData?.content) return;
-
-  const queryKey = chatQueriesKeys.get(chatId).queryKey;
-  const chatData = queryClient.getQueryData<ChatResponse>(queryKey);
   const storedSources = sourcesStore[chatId];
 
-  if (chatData) {
-    queryClient.setQueryData(queryKey, (oldData: ChatResponse) =>
-      patchChatMessagesWithCompletion(oldData, chatCompletionData.content, storedSources),
-    );
+  if (chatCompletionData.content) {
+    queryClient.setQueryData(queryKey, (oldData: ChatResponse) => {
+      const withGenerating = markCurrentMessageGenerating(oldData);
+
+      return patchChatMessagesWithCompletion(withGenerating, chatCompletionData.content, storedSources);
+    });
   }
 
   if (chatCompletionData.done) {
     delete sourcesStore[chatId];
 
-    queryClient.setQueryData(queryKey, (oldData: ChatResponse) => patchCompletedMessage(oldData));
-    handleCompletedChat(chatCompletionData.content, socketResponse.chatId, sessionId, storedSources);
+    queryClient.setQueryData(queryKey, (oldData: ChatResponse) => {
+      return patchCompletedMessage(oldData);
+    });
+
+    handleCompletedChat(chatCompletionData.content, chatId, sessionId, storedSources);
   }
 };

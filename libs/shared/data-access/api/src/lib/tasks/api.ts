@@ -1,7 +1,10 @@
 import { useMutation, UseMutationOptions, UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
-import { Chat, patchChatQueryData } from '../chats';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
+import { chatQueriesKeys } from '../chats/chat-queries-keys';
+import { ChatResponse } from '../chats/models';
+import { findGeneratingAssistantMessageId, markAssistantMessageCompleted } from '../chats/utils';
 import { StopTaskResponse } from './models';
 import { tasksService } from './service';
 
@@ -18,16 +21,14 @@ function useStopTask(
     mutationFn: ({ taskId }) => tasksService.stopTask(taskId),
 
     onSuccess: (_, { chatId, lastMessageId }) => {
-      patchChatQueryData(chatId, {
-        chat: {
-          history: {
-            messages: {
-              [lastMessageId]: {
-                done: true,
-              },
-            },
-          },
-        } as Chat,
+      queryClient.setQueryData<ChatResponse>(chatQueriesKeys.get(chatId).queryKey, (chat) => {
+        if (!chat) return chat;
+
+        const history = chat.chat.history;
+        const generatingId = findGeneratingAssistantMessageId(history) ?? lastMessageId;
+        if (!generatingId) return chat;
+
+        return markAssistantMessageCompleted(chat, generatingId);
       });
     },
 

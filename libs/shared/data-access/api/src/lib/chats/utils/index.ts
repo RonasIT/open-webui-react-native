@@ -16,3 +16,6 @@ export * from './create-messages-list';
 export * from './patch-chat-with-selected-messages';
 export * from './prepare-update-message-in-chat-payload';
 export * from './prepare-update-message-to-send-payload';
+export * from './mark-current-message-generating';
+export * from './mark-assistant-message-completed';
+export * from './find-generating-assistant-message-id';

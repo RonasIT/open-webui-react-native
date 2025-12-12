@@ -17,6 +17,7 @@ import {
   appConfigurationApi,
   ChatGenerationOption,
   ChatResponse,
+  findGeneratingAssistantMessageId,
   tasksApi,
   tasksService,
 } from '@open-webui-react-native/shared/data-access/api';
@@ -123,13 +124,13 @@ export function FormChatInput<T extends FieldValues>({
     if (!chat) return;
 
     const chatId = chat.id;
-    const lastMessageId = chat.chat.history.currentId;
+    const generatingId = findGeneratingAssistantMessageId(chat.chat.history) ?? chat.chat.history.currentId;
 
     const tasksData = await tasksService.getChatTasks(chatId);
     const taskId = tasksData?.tasksIds[0];
 
-    if (taskId) {
-      stopTaskMutation.mutate({ taskId, chatId, lastMessageId });
+    if (taskId && generatingId) {
+      stopTaskMutation.mutate({ taskId, chatId, lastMessageId: generatingId });
     }
   };
 
