@@ -9,6 +9,7 @@ export interface ChatInputBottomRowProps extends PropsWithChildren {
   isVoiceModeAvailable?: boolean;
   isSubmitDisabled?: boolean;
   isLoading?: boolean;
+  isStopResponseEnabled?: boolean;
 }
 
 export function ChatInputBottomRow({
@@ -20,6 +21,7 @@ export function ChatInputBottomRow({
   isSubmitDisabled,
   isResponseGenerating,
   onStopGenerationPress,
+  isStopResponseEnabled = true,
 }: ChatInputBottomRowProps): ReactElement {
   return (
     <View className='flex-row justify-between items-center mt-12'>
@@ -28,7 +30,10 @@ export function ChatInputBottomRow({
         <IconButton
           iconName='stop'
           className='p-0'
-          onPress={onStopGenerationPress} />
+          isLoading={!isStopResponseEnabled}
+          disabled={!isStopResponseEnabled}
+          onPress={onStopGenerationPress}
+        />
       ) : (
         <IconButton
           disabled={isSubmitDisabled}

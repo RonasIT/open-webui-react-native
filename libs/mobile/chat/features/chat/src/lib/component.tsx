@@ -38,6 +38,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   const isSocketConnected = useSelector(webSocketState$.isSocketConnected);
 
   const [isMessagesListLoaded, setIsMessagesListLoaded] = useState(false);
+  const [isStopResponseEnabled, setIsStopResponseEnabled] = useState(true);
   const [isChatVisible, setIsChatVisible] = useState(false);
 
   const {
@@ -105,10 +106,13 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
       if (!selectedModelId) {
         return ToastService.showError(translate('TEXT_MODEL_NOT_SELECTED'));
       }
-
+      setIsStopResponseEnabled(false);
       sendMessage(inputValue, selectedModelId, options, attachedFiles.get(), attachedImages.get());
       reset();
       resetAttachments();
+      delay(() => {
+        setIsStopResponseEnabled(true);
+      }, 1000);
     })();
 
   useEffect(() => {
@@ -142,6 +146,12 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
             isInputFocusing={isInputFocusing}
             messages={chat?.chat.messages ?? []}
             history={history}
+            onContinueResponsePress={() => {
+              setIsStopResponseEnabled(false);
+              delay(() => {
+                setIsStopResponseEnabled(true);
+              }, 1000);
+            }}
             onLayout={handleChatMessagesListLayout}
             isMessagesListLoaded={isMessagesListLoaded}
             editingMessageId={editingMessageId}
@@ -166,6 +176,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
             onFocus={handleInputFocus}
             name='inputValue'
             onSubmit={onSubmit}
+            isStopResponseEnabled={isStopResponseEnabled}
             isLoading={isSending || !isSocketConnected || isResponseGenerating}
             attachedFiles={attachedFiles}
             onFileUploaded={handleFileUploaded}
