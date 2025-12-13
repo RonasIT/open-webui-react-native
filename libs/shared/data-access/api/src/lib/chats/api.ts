@@ -12,6 +12,7 @@ import {
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { merge } from 'lodash-es';
+import { useRef } from 'react';
 import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
 import { getNextPageParam, Role } from '@open-webui-react-native/shared/data-access/common';
 import { refetchOnMountWithStaleCheck } from '@open-webui-react-native/shared/data-access/persist-query-helpers';
@@ -95,24 +96,37 @@ function useGet(
   id: string,
   options?: Omit<UseQueryOptions<ChatResponse, AxiosError<ApiErrorData>>, 'queryKey' | 'queryFn'>,
 ): UseQueryResult<ChatResponse, AxiosError<ApiErrorData>> {
+  const isUpdated = useRef(false);
   const queryKey = chatQueriesKeys.get(id).queryKey;
 
   const result = useQuery({
     queryKey,
-    queryFn: async () => {
-      const result = await chatService.get(id);
-      const messages = result.chat.history.messages;
-
-      for (const message of Object.values(messages)) {
-        if (message.role === Role.ASSISTANT) {
-          message.done = true;
-        }
-      }
-
-      return result;
-    },
+    queryFn: () => chatService.get(id),
     ...options,
   });
+
+  if (result.isFetching) {
+    isUpdated.current = false;
+  }
+
+  if (result.isFetched && !isUpdated.current) {
+    queryClient.setQueryData<ChatResponse>(queryKey, (draft) => {
+      if (!draft) {
+        return undefined;
+      }
+
+      const { history } = draft.chat;
+
+      if (history.currentId) {
+        for (const message of Object.values(history.messages)) {
+          if (message.role === Role.ASSISTANT) {
+            message.done = true;
+          }
+        }
+      }
+    });
+    isUpdated.current = true;
+  }
 
   return result;
 }
