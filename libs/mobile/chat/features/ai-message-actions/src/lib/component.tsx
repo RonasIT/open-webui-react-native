@@ -3,8 +3,9 @@ import { i18n, useTranslation } from '@ronas-it/react-native-common-modules/i18n
 import * as Clipboard from 'expo-clipboard';
 import { compact } from 'lodash-es';
 import { PropsWithChildren, ReactElement, useRef } from 'react';
+import { View } from 'react-native';
 import { MessageActionsSheetWrapper } from '@open-webui-react-native/mobile/chat/ui/message-actions-wrapper';
-import { ActionSheetItemProps } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { ActionsBottomSheet, ActionSheetItemProps } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { Message } from '@open-webui-react-native/shared/data-access/api';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
@@ -27,6 +28,7 @@ export function AiMessageActions({
   const translate = useTranslation('CHAT.AI_MESSAGE_ACTIONS');
 
   const actionsSheetRef = useRef<BottomSheetModal>(null);
+  const regenerateActionsSheetRef = useRef<BottomSheetModal>(null);
 
   const copyToClipboard = async (): Promise<void> => {
     await Clipboard.setStringAsync(message.content);
@@ -42,6 +44,10 @@ export function AiMessageActions({
   const handleContinueResponsePress = (): void => {
     onContinueResponsePress(message.id, message.content);
     actionsSheetRef.current?.dismiss();
+  };
+
+  const openRegenerateActions = (): void => {
+    regenerateActionsSheetRef.current?.present();
   };
 
   const actions: Array<ActionSheetItemProps> = compact([
@@ -60,11 +66,43 @@ export function AiMessageActions({
       iconName: 'play',
       onPress: handleContinueResponsePress,
     },
+    isFeatureEnabled(FeatureID.AI_REGENERATE_MESSAGE) && {
+      title: translate('TEXT_REGENERATE'),
+      iconName: 'refresh',
+      onPress: openRegenerateActions,
+    },
+  ]);
+
+  const regenerateActions: Array<ActionSheetItemProps> = compact([
+    {
+      title: translate('REGENERATE_MESSAGE_ACTION_SHEET.TEXT_SUGGEST_A_CHANGE'),
+      iconName: 'keyboard',
+    },
+    {
+      title: translate('REGENERATE_MESSAGE_ACTION_SHEET.TEXT_TRY_AGAIN'),
+      iconName: 'refresh',
+    },
+    {
+      title: translate('REGENERATE_MESSAGE_ACTION_SHEET.TEXT_ADD_DETAILS'),
+      iconName: 'moreText',
+    },
+    {
+      title: translate('REGENERATE_MESSAGE_ACTION_SHEET.TEXT_MORE_CONCISE'),
+      iconName: 'lessText',
+    },
   ]);
 
   return (
-    <MessageActionsSheetWrapper actions={actions} sheetRef={actionsSheetRef}>
-      {children}
-    </MessageActionsSheetWrapper>
+    <View>
+      <MessageActionsSheetWrapper actions={actions} sheetRef={actionsSheetRef}>
+        {children}
+      </MessageActionsSheetWrapper>
+      <ActionsBottomSheet
+        onClose={() => regenerateActionsSheetRef.current?.dismiss()}
+        onBackdropPress={() => regenerateActionsSheetRef.current?.dismiss()}
+        actions={regenerateActions}
+        ref={regenerateActionsSheetRef}
+      />
+    </View>
   );
 }
