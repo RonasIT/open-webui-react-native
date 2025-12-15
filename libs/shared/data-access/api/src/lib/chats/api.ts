@@ -111,6 +111,7 @@ function useGet(
 
       return result;
     },
+    staleTime: 5000, //NOTE Needs to avoid simultaneous requests for the same chat
     ...options,
   });
 
