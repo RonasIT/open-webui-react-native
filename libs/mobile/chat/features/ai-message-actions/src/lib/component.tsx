@@ -13,6 +13,7 @@ import { ToastService } from '@open-webui-react-native/shared/utils/toast-servic
 interface AiMessageActionsProps {
   message: Message;
   onEditPress: (messageId: string, content: string) => void;
+  onSuggestPress: (messageId: string) => void;
   onContinueResponsePress: (messageId: string, content: string) => void;
   isLast: boolean;
 }
@@ -21,6 +22,7 @@ interface AiMessageActionsProps {
 export function AiMessageActions({
   message,
   onEditPress,
+  onSuggestPress,
   onContinueResponsePress,
   isLast,
   children,
@@ -39,6 +41,15 @@ export function AiMessageActions({
   const handleEditPress = (): void => {
     onEditPress(message.id, message.content);
     actionsSheetRef.current?.dismiss();
+  };
+
+  const handleSuggestPress = (): void => {
+    actionsSheetRef.current?.dismiss();
+    //NOTE: Small delay ensures sheet is fully closed before showing input
+    setTimeout(() => {
+      onSuggestPress(message.id);
+    }, 100);
+    regenerateActionsSheetRef.current?.dismiss();
   };
 
   const handleContinueResponsePress = (): void => {
@@ -78,6 +89,7 @@ export function AiMessageActions({
     {
       title: translate('REGENERATE_MESSAGE_ACTION_SHEET.TEXT_SUGGEST_A_CHANGE'),
       iconName: 'keyboard',
+      onPress: handleSuggestPress,
     },
     {
       title: translate('REGENERATE_MESSAGE_ACTION_SHEET.TEXT_TRY_AGAIN'),

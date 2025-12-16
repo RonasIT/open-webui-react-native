@@ -137,6 +137,10 @@
       "BUTTON_SEND": "Send",
       "BUTTON_CANCEL": "Cancel"
     },
+    "SUGGEST_CHANGE_INPUT": {
+      "TEXT_SUGGEST_A_CHANGE": "Suggest a change",
+      "BUTTON_CANCEL": "Cancel"
+    },
     "ARCHIVED_CHATS_FILTERS_SHEET": {
       "USE_SEARCH_FILTERS": {
         "TEXT_MOST_RECENT": "Most recent",

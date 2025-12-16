@@ -7,8 +7,10 @@ import { useForm } from 'react-hook-form';
 import { InteractionManager } from 'react-native';
 import { EditMessageInput } from '@open-webui-react-native/mobile/chat/features/edit-message-input';
 import { FormChatInput, FormChatInputSchema } from '@open-webui-react-native/mobile/chat/features/form-chat-input';
+import { SuggestChangeInput } from '@open-webui-react-native/mobile/chat/features/suggest-change-input';
 import { useEditMessage } from '@open-webui-react-native/mobile/chat/features/use-edit-message';
 import { useSendMessage } from '@open-webui-react-native/mobile/chat/features/use-send-message';
+import { useSuggestChange } from '@open-webui-react-native/mobile/chat/features/use-suggest-change';
 import { useAttachedFiles } from '@open-webui-react-native/mobile/shared/features/use-attached-files';
 import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { AppKeyboardControllerView, AppSpinner, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
@@ -60,6 +62,14 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
     saveMessage,
     sendEditedMessage,
   } = useEditMessage({ chat, modelId: selectedModelId });
+
+  const {
+    suggestingMessageId,
+    startSuggesting,
+    cancelSuggesting,
+    control: suggestMessageControl,
+    submitSuggestion,
+  } = useSuggestChange();
 
   const history = chat?.chat.history;
   const isResponseGenerating = !history?.messages[history.currentId].done;
@@ -138,6 +148,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
         <React.Suspense fallback={null}>
           <LazyChatMessagesList
             onEditPress={startEditing}
+            onSuggestPress={startSuggesting}
             chatId={chatId}
             isInputFocusing={isInputFocusing}
             messages={chat?.chat.messages ?? []}
@@ -158,6 +169,14 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
             onCancel={cancelEditing}
             onSend={sendEditedMessage}
             isAiMessage={history?.messages[editingMessageId]?.role === Role.ASSISTANT}
+          />
+        ) : suggestingMessageId ? (
+          <SuggestChangeInput
+            control={suggestMessageControl}
+            name='suggestionInputValue'
+            autoFocus
+            onCancel={cancelSuggesting}
+            onSend={submitSuggestion}
           />
         ) : (
           <FormChatInput
