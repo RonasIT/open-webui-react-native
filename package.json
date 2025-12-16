@@ -154,9 +154,9 @@
     "typescript-eslint": "^8.19.0"
   },
   "overrides": {
-    "metro": "^0.82.0",
-    "metro-resolver@": "^0.82.0",
-    "metro-config": "^0.82.0",
+    "metro": "^0.83.0",
+    "metro-resolver@": "^0.83.0",
+    "metro-config": "^0.83.0",
     "stylus": "https://github.com/stylus/stylus/archive/refs/tags/0.64.0.tar.gz"
   },
   "workspaces": [
