@@ -5,6 +5,7 @@ import BottomSheet, {
   BottomSheetProps,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
+import { BottomSheetMethods } from '@gorhom/bottom-sheet/src/types';
 import { useBackHandler, useKeyboard } from '@react-native-community/hooks';
 import { delay } from 'lodash-es';
 import { remapProps } from 'nativewind';
@@ -29,17 +30,23 @@ import { cn, screenHeight } from '@open-webui-react-native/mobile/shared/ui/styl
 import { uiState$ } from '@open-webui-react-native/mobile/shared/ui/ui-state';
 import { View } from '../view';
 
+type NativeWindProps = {
+  className?: string;
+  backgroundClassName?: string;
+  handleIndicatorClassName?: string;
+};
+
 const CustomizedBottomSheet = remapProps(BottomSheet, {
   className: 'style',
   handleIndicatorClassName: 'handleIndicatorStyle',
   backgroundClassName: 'backgroundStyle',
-});
+}) as React.ForwardRefExoticComponent<BottomSheetProps & NativeWindProps & React.RefAttributes<BottomSheetMethods>>;
 
 const CustomizedBottomSheetModal = remapProps(BottomSheetModal, {
   className: 'style',
   handleIndicatorClassName: 'handleIndicatorStyle',
   backgroundClassName: 'backgroundStyle',
-});
+}) as React.ForwardRefExoticComponent<BottomSheetModalProps & NativeWindProps & React.RefAttributes<BottomSheetModal>>;
 
 export interface AppBottomSheetProps {
   initialSnapPoints?: Array<string | number>;
@@ -113,23 +120,23 @@ export function AppBottomSheet({
 
   const renderBackground = useCallback(
     ({ style }: BottomSheetBackgroundProps) => (
-      <View className={cn(`bg-background-primary rounded-2xl`, withoutBackground && 'bg-transparent')} style={style} />
+      <View
+        style={style}
+        className={cn('bg-background-primary rounded-5xl overflow-hidden', withoutBackground && 'bg-transparent')}
+      />
     ),
     [withoutBackground],
   );
 
   const renderedContent = isScrollable ? (
-    <View className='flex-1'>{content}</View>
+    <View className='flex-1 px-content-offset pt-content-offset'>{content}</View>
   ) : (
-    <BottomSheetView
-      className={cn(
-        keyboardShown && !withoutKeyboardExtraPadding
-          ? `pb-[${keyboardHeight}]`
-          : Platform.OS === 'ios'
-            ? 'pb-safe'
-            : 'pb-16',
-      )}>
-      {content}
+    <BottomSheetView>
+      <View
+        className={cn('px-content-offset pt-content-offset', Platform.OS === 'ios' ? 'pb-safe' : 'pb-16')}
+        style={keyboardShown && !withoutKeyboardExtraPadding ? { paddingBottom: keyboardHeight } : undefined}>
+        {content}
+      </View>
     </BottomSheetView>
   );
 
@@ -184,7 +191,7 @@ export function AppBottomSheet({
         backgroundComponent={renderBackground}
         backgroundClassName='rounded-5xl'
         onChange={handleChange}
-        className={cn('rounded-5xl overflow-hidden px-content-offset pt-content-offset', className)}
+        className={cn('rounded-5xl overflow-hidden', className)}
         enableDynamicSizing={!isScrollable}
         onAnimate={handleAnimate}
         snapPoints={snapPoints}
