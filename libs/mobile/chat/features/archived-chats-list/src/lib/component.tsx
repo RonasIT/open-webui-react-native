@@ -103,7 +103,6 @@ export function ArchivedChatsList({
               }
               transformSectionTitle={transformSectionTitle}
               keyboardShouldPersistTaps='handled'
-              estimatedItemSize={32}
               showsVerticalScrollIndicator={false}
               ItemSeparatorComponent={renderSeparator}
               renderItem={renderItem}

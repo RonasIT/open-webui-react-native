@@ -1,5 +1,5 @@
 import { ExpoConfig } from '@expo/config';
-import { EASConfig } from 'expo-constants/build/Constants.types';
+import { EASConfig } from 'expo-manifests';
 import { AppEnv } from '../../libs/shared/utils/app-env/src/env';
 import { AppEnvName } from '../../libs/shared/utils/app-env/src/app-env';
 import { compact } from 'lodash-es';

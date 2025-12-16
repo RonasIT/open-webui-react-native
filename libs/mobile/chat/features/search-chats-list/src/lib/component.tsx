@@ -70,7 +70,6 @@ export function SearchChatsList({ onChatPress, onCancelPress }: SearchChatsListP
                 {isLoading ? <AppSpinner /> : <ListEmptyComponent description={translate('TEXT_THERE_ARE_NO_CHATS')} />}
               </View>
             }
-            estimatedItemSize={52}
             renderScrollComponent={AppKeyboardAvoidingView}
             ListFooterComponent={isFetchingNextPage ? <AppSpinner /> : null}
             showsVerticalScrollIndicator={false}

@@ -1,7 +1,7 @@
 import { FlashList } from '@shopify/flash-list';
 import { useLocalSearchParams } from 'expo-router';
 import { delay } from 'lodash-es';
-import { ReactElement, useCallback, useRef, useState } from 'react';
+import React, { ReactElement, useCallback, useRef, useState } from 'react';
 import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { useSharedValue, withTiming } from 'react-native-reanimated';
 import { AiMessageActions } from '@open-webui-react-native/mobile/chat/features/ai-message-actions';
@@ -43,7 +43,7 @@ export default function ChatMessagesList({
   onEditPress,
   editingMessageId,
 }: ChatMessagesListProps): ReactElement {
-  const listRef = useRef<FlashList<Message>>(null);
+  const listRef = useRef<React.ComponentRef<typeof FlashList<Message>>>(null);
   const isScrollToBottomAvailable = useRef(false);
   const isScrollToBottomAvailableTimeout = useRef<NodeJS.Timeout | null | number>(null); //NOTE: number needs to fix pipeline lint error
   const isScrollToBottomVisible = useSharedValue(0);

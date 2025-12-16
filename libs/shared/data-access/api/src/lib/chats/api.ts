@@ -547,8 +547,8 @@ function useShareChat({
 > {
   return useMutation<ShareChatResponse, AxiosError, string, unknown>({
     mutationFn: (chatId) => chatService.shareChat(chatId),
-    onSuccess: (response, chatId, context) => {
-      onSuccess?.(response, chatId, context);
+    onSuccess: (response, chatId, _onMutateResult, context) => {
+      onSuccess?.(response, chatId, _onMutateResult, context);
       patchChatQueryData(chatId, { shareId: response.id });
     },
     ...options,

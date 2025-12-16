@@ -1,10 +1,10 @@
 import { FlashList, ListRenderItem, ViewToken } from '@shopify/flash-list';
-import { ReactElement, useCallback, useEffect, useRef } from 'react';
+import React, { ReactElement, useCallback, useEffect, useRef } from 'react';
 import { Modal, ModalProps, Platform } from 'react-native';
 import { GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useImageDownloader } from '@open-webui-react-native/mobile/shared/data-access/media-library-service';
 import { useSwipeToClose } from '@open-webui-react-native/mobile/shared/features/use-swipe-to-close';
-import { cn, screenWidth } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import {
   AnimatedView,
   AppImage,
@@ -30,7 +30,7 @@ export function ImagePreviewModal({
   ...modalProps
 }: ImagePreviewModalProps): ReactElement {
   const isAndroid = Platform.OS === 'android';
-  const listRef = useRef<FlashList<AttachedImageWithIndex>>(null);
+  const listRef = useRef<React.ComponentRef<typeof FlashList<AttachedImageWithIndex>>>(null);
   const token = appStorageService.token.get();
   const activeIndexRef = useRef<number>(initialIndex ?? 0);
 
@@ -106,7 +106,6 @@ export function ImagePreviewModal({
               ref={listRef}
               data={images}
               renderItem={renderItem}
-              estimatedItemSize={screenWidth}
               horizontal
               pagingEnabled
               scrollEnabled

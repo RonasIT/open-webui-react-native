@@ -1,12 +1,13 @@
 import { BaseEntity, EntityRequest } from '@ronas-it/rtkq-entity-api';
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { UseQueryOptions } from '@tanstack/react-query/src/types';
+import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { EntityPromiseService } from '../entity-service';
 import { QueriesKeys } from '../utils';
 
-export interface UseGetParams<TEntity extends BaseEntity, TEntityRequest extends EntityRequest = EntityRequest>
-  extends Omit<UseQueryOptions<TEntity, AxiosError>, 'queryKey' | 'queryFn'> {
+export interface UseGetParams<
+  TEntity extends BaseEntity,
+  TEntityRequest extends EntityRequest = EntityRequest,
+> extends Omit<UseQueryOptions<TEntity, AxiosError>, 'queryKey' | 'queryFn'> {
   entityService: EntityPromiseService<TEntity>;
   id: TEntity['id'];
   queriesKeys: QueriesKeys;
