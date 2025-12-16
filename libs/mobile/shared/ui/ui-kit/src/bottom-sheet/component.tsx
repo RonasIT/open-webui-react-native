@@ -22,7 +22,7 @@ import {
   useState,
 } from 'react';
 
-import { Keyboard, Platform, TouchableWithoutFeedback, ViewProps, StyleSheet } from 'react-native';
+import { Keyboard, TouchableWithoutFeedback, ViewProps, StyleSheet } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SetOptional } from 'type-fest';
@@ -133,7 +133,7 @@ export function AppBottomSheet({
   ) : (
     <BottomSheetView>
       <View
-        className={cn('px-content-offset pt-content-offset', Platform.OS === 'ios' ? 'pb-safe' : 'pb-16')}
+        className='px-content-offset pt-content-offset pb-safe android:pb-16'
         style={keyboardShown && !withoutKeyboardExtraPadding ? { paddingBottom: keyboardHeight } : undefined}>
         {content}
       </View>
