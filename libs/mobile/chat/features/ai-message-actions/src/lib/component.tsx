@@ -70,6 +70,7 @@ export function AiMessageActions({
       title: translate('TEXT_REGENERATE'),
       iconName: 'refresh',
       onPress: openRegenerateActions,
+      hasSubActions: true,
     },
   ]);
 
