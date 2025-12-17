@@ -111,6 +111,7 @@ function useGet(
 
       return result;
     },
+    staleTime: 5000, //NOTE Needs to avoid simultaneous requests for the same chat
     ...options,
   });
 
@@ -308,7 +309,7 @@ export function useDelete(
     mutationFn: ({ id }) => chatService.delete(id),
     onSuccess: (_, { id, folderId }) => {
       // useGet query
-      queryClient.removeQueries({ queryKey: chatQueriesKeys.get(id).queryKey });
+      queryClient.setQueryData(chatQueriesKeys.get(id).queryKey, undefined);
 
       // useGetChatList query
       queryClient.setQueryData<InfiniteData<Array<ChatListItem>, number>>(
