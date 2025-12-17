@@ -1,12 +1,21 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Control, useForm, UseFormHandleSubmit } from 'react-hook-form';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 
 export interface SuggestChangeSchema {
   suggestionInputValue: string;
 }
 
-export const useSuggestChange = () => {
+export interface UseSuggestChangeReturn {
+  suggestingMessageId?: string;
+  control: Control<FormValues<SuggestChangeSchema>>;
+  handleSubmit: UseFormHandleSubmit<FormValues<SuggestChangeSchema>>;
+  startSuggesting: (messageId: string) => void;
+  cancelSuggesting: () => void;
+  submitSuggestion: () => Promise<void>;
+}
+
+export const useSuggestChange = (): UseSuggestChangeReturn => {
   const [suggestingMessageId, setSuggestingMessageId] = useState<string>();
 
   const { control, handleSubmit, reset } = useForm<FormValues<SuggestChangeSchema>>({
