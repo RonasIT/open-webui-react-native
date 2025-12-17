@@ -1,4 +1,4 @@
-# Open WebUI Mobile App
+# Open MobileUI
 
 <div align="center">
 
@@ -9,7 +9,7 @@
 
 **Professional mobile client for Open WebUI** – Access your self-hosted AI assistant anywhere, anytime
 
-[Features](#features) • [Installation](#installation) • [Development](#development) • [Support](#support)
+[Features](#features) • [Installation](#installation) • [Development](#development) • [Support](#support) • [Privacy Policy](PRIVACY_POLICY.md)
 
 </div>
 
@@ -17,11 +17,11 @@
 
 ## 📱 Overview
 
-**Open WebUI Mobile App** is a production-ready, cross-platform mobile application that brings the full power of [Open WebUI](https://github.com/open-webui/open-webui) to iOS and Android devices. Built with React Native by [Ronas IT](https://ronasit.com), this app transforms your self-hosted AI assistant into a native mobile experience.
+**Open MobileUI** is a production-ready, cross-platform mobile application that brings the full power of [Open WebUI](https://github.com/open-webui/open-webui) to iOS and Android devices. Built with React Native by [Ronas IT](https://ronasit.com), Open MobileUI transforms your self-hosted AI assistant into a native mobile experience.
 
 ### Why Choose a Native Mobile App?
 
-While Open WebUI works in mobile browsers, this dedicated app provides:
+While Open WebUI works in mobile browsers, Open MobileUI provides:
 
 - ⚡ **Optimized Performance** – Native rendering and optimized React Native architecture deliver 60fps smooth interactions
 - 🎯 **Mobile-First Design** – UI/UX crafted specifically for touch interactions, gestures, and mobile workflows
@@ -281,7 +281,7 @@ A: Yes! This is an open-source project released under the GNU General Public Lic
 A: Yes, this app connects to your self-hosted Open WebUI deployment. See [Open WebUI Installation](https://docs.openwebui.com/) for setup instructions.
 
 **Q: Is my data secure?**
-A: Absolutely. All connections are encrypted, and your data stays on your self-hosted instance. The app never stores or transmits your conversations to third parties.
+A: Absolutely. All connections are encrypted, and your data stays on your self-hosted instance. The app never stores or transmits your conversations to third parties. For detailed information about data handling, see our [Privacy Policy](PRIVACY_POLICY.md).
 
 **Q: Can I use this for commercial purposes?**
 A: Yes, GPL v3 allows commercial use. However, if you distribute the software (or modified versions), you must also provide the source code and license your modifications under GPL v3. See the [LICENSE](LICENSE.txt) file for complete terms.
@@ -296,6 +296,10 @@ A: Please email security concerns directly to our team through [Ronas IT](https:
 This project is licensed under the **GNU General Public License v3 (GPL v3)**.
 
 **Note**: If you need to use this code in a proprietary application without GPL v3 obligations, please contact [Ronas IT](https://ronasit.com) to discuss alternative licensing options.
+
+## 🔒 Privacy
+
+Open MobileUI is designed with privacy in mind. All your conversations and data remain on your self-hosted Open WebUI instance. We do not operate any backend services that receive, store, or process your chat content. For complete details about how we handle your information, please review our [Privacy Policy](PRIVACY_POLICY.md).
 
 ---
 
