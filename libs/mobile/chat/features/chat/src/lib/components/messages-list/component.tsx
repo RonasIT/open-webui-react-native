@@ -11,9 +11,11 @@ import { useSetSelectedModel } from '@open-webui-react-native/mobile/shared/feat
 import { View, AppFlashList } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { ChatScreenParams } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import {
+  Chat,
   chatApi,
   History as ChatHistory,
   Message,
+  patchChatQueryData,
   prepareCompleteChatPayload,
 } from '@open-webui-react-native/shared/data-access/api';
 import { Role } from '@open-webui-react-native/shared/data-access/common';
@@ -131,6 +133,18 @@ export default function ChatMessagesList({
   const handleContinueResponsePress = (messageId: string): void => {
     if (!modelId) return;
 
+    patchChatQueryData(chatId, {
+      chat: {
+        history: {
+          messages: {
+            [messageId]: {
+              done: false,
+            },
+          },
+        },
+      } as Chat,
+    });
+
     const completePayload = prepareCompleteChatPayload({
       chatId,
       messages,
@@ -146,7 +160,11 @@ export default function ChatMessagesList({
       const message = history?.messages[item.id];
       if (!message) return null;
 
-      const isLast = item.id === history?.lastAssistantMessage?.id;
+      const lastAssistantMessageInUIList = [...messages]
+        .reverse()
+        .find((m) => history?.messages[m.id]?.role === Role.ASSISTANT);
+
+      const isLast = item.id === lastAssistantMessageInUIList?.id;
 
       return item.role === Role.ASSISTANT ? (
         <AiMessageActions
