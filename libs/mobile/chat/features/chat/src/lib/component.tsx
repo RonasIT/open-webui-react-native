@@ -21,6 +21,7 @@ import { useSubscribeToQueryCache } from '@open-webui-react-native/shared/data-a
 import { webSocketConfig, webSocketState$ } from '@open-webui-react-native/shared/data-access/websocket';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { useAppStateChange } from '@open-webui-react-native/shared/utils/use-app-state-change';
+import { ActiveInputMode } from './enums';
 import { patchNewChat } from './utils';
 
 const LazyChatMessagesList = React.lazy(() => import('./components/messages-list/component'));
@@ -41,6 +42,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
 
   const [isMessagesListLoaded, setIsMessagesListLoaded] = useState(false);
   const [isChatVisible, setIsChatVisible] = useState(false);
+  const [activeInputMode, setActiveInputMode] = useState<ActiveInputMode | null>(null);
 
   const {
     attachedFiles,
@@ -110,6 +112,30 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
     }, 1000);
   };
 
+  const handleStartEditing = (messageId: string, content: string): void => {
+    if (activeInputMode === ActiveInputMode.SUGGEST) cancelSuggesting();
+
+    startEditing(messageId, content);
+    setActiveInputMode(ActiveInputMode.EDIT);
+  };
+
+  const handleStartSuggesting = (messageId: string): void => {
+    if (activeInputMode === ActiveInputMode.EDIT) cancelEditing();
+
+    startSuggesting(messageId);
+    setActiveInputMode(ActiveInputMode.SUGGEST);
+  };
+
+  const cancelEditingWrapper = (): void => {
+    cancelEditing();
+    setActiveInputMode(null);
+  };
+
+  const cancelSuggestingWrapper = (): void => {
+    cancelSuggesting();
+    setActiveInputMode(null);
+  };
+
   const onSubmit = (options: Array<ChatGenerationOption>): Promise<void> =>
     handleSubmit(({ inputValue }: FormValues<FormChatInputSchema>): void => {
       if (!selectedModelId) {
@@ -147,8 +173,8 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
       {isChatVisible && (
         <React.Suspense fallback={null}>
           <LazyChatMessagesList
-            onEditPress={startEditing}
-            onSuggestPress={startSuggesting}
+            onEditPress={handleStartEditing}
+            onSuggestPress={handleStartSuggesting}
             chatId={chatId}
             isInputFocusing={isInputFocusing}
             messages={chat?.chat.messages ?? []}
@@ -160,22 +186,22 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
         </React.Suspense>
       )}
       <View className={cn('pb-safe android:pb-16 pt-8 px-16', shouldHideContent && 'opacity-0')}>
-        {editingMessageId ? (
+        {activeInputMode === ActiveInputMode.EDIT && editingMessageId ? (
           <EditMessageInput
             control={editMessageControl}
             name='editMessageInputValue'
             autoFocus={true}
             onSave={saveMessage}
-            onCancel={cancelEditing}
+            onCancel={cancelEditingWrapper}
             onSend={sendEditedMessage}
             isAiMessage={history?.messages[editingMessageId]?.role === Role.ASSISTANT}
           />
-        ) : suggestingMessageId ? (
+        ) : activeInputMode === ActiveInputMode.SUGGEST && suggestingMessageId ? (
           <SuggestChangeInput
             control={suggestMessageControl}
             name='suggestionInputValue'
             autoFocus
-            onCancel={cancelSuggesting}
+            onCancel={cancelSuggestingWrapper}
             onSend={submitSuggestion}
           />
         ) : (
