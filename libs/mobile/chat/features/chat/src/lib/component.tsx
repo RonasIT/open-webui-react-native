@@ -35,6 +35,7 @@ interface ChatProps {
 
 export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: ChatProps): ReactElement {
   const translate = useTranslation('CHAT.CHAT');
+  const translateRegeneratePrompt = useTranslation('CHAT.AI_MESSAGE_ACTIONS.REGENERATE_MESSAGE_ACTION_SHEET');
 
   const [isInputFocusing, setIsInputFocusing] = useState(false); //NOTE: Needs to avoid ChatBottomButton jumping when auto-scrolling after focus
 
@@ -71,7 +72,8 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
     cancelSuggesting,
     control: suggestMessageControl,
     submitSuggestion,
-  } = useSuggestChange();
+    regenerateWithSuggestion,
+  } = useSuggestChange({ chat, modelId: selectedModelId });
 
   const history = chat?.chat.history;
   const isResponseGenerating = !history?.messages[history.currentId].done;
@@ -136,6 +138,23 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
     setActiveInputMode(null);
   };
 
+  const handleQuickSuggestion = (messageId: string, message: string): void => {
+    // NOTE: Quick suggestions should not open the suggest input, they should immediately trigger regeneration
+    void regenerateWithSuggestion(messageId, message);
+  };
+
+  const handleTryAgain = (messageId: string): void => {
+    handleQuickSuggestion(messageId, '');
+  };
+
+  const handleAddDetails = (messageId: string): void => {
+    handleQuickSuggestion(messageId, translateRegeneratePrompt('TEXT_ADD_DETAILS'));
+  };
+
+  const handleMoreConcise = (messageId: string): void => {
+    handleQuickSuggestion(messageId, translateRegeneratePrompt('TEXT_MORE_CONCISE'));
+  };
+
   const onSubmit = (options: Array<ChatGenerationOption>): Promise<void> =>
     handleSubmit(({ inputValue }: FormValues<FormChatInputSchema>): void => {
       if (!selectedModelId) {
@@ -175,6 +194,9 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
           <LazyChatMessagesList
             onEditPress={handleStartEditing}
             onSuggestPress={handleStartSuggesting}
+            onTryAgain={handleTryAgain}
+            onAddDetails={handleAddDetails}
+            onMoreConcise={handleMoreConcise}
             chatId={chatId}
             isInputFocusing={isInputFocusing}
             messages={chat?.chat.messages ?? []}
