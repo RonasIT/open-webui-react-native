@@ -2,10 +2,6 @@
   "AUTH": {
     "SIGN_IN": {
       "TEXT_TITLE_EXTERNAL": "Sign In",
-      "TEXT_TITLE_INTERNAL": "Sign In to Ronas IT",
-      "TEXT_TITLE_INTERNAL_SUBTITLE": "OpenWeb UI",
-      "TEXT_USE_YOUR_RONAS_IT": "Use your Ronas IT",
-      "TEXT_GOOGLE_ACCOUNT_TO_SIGN_IN": "Google account to sign in",
       "TEXT_YOU_LOGGED_IN": "You`re now logged in.",
       "EMAIL_FORM": {
         "TEXT_EMAIL_ADDRESS": "Email Address",
