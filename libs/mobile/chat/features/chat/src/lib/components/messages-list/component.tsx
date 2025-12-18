@@ -30,6 +30,7 @@ interface ChatMessagesListProps {
   onLayout: () => void;
   isInputFocusing: boolean;
   onEditPress: (messageId: string, content: string) => void;
+  onSuggestPress: (messageId: string) => void;
   history?: ChatHistory;
   messages?: Array<Message>;
   editingMessageId?: string;
@@ -43,6 +44,7 @@ export default function ChatMessagesList({
   onLayout,
   isInputFocusing,
   onEditPress,
+  onSuggestPress,
   editingMessageId,
 }: ChatMessagesListProps): ReactElement {
   const listRef = useRef<FlashList<Message>>(null);
@@ -170,6 +172,7 @@ export default function ChatMessagesList({
         <AiMessageActions
           message={message}
           onEditPress={onEditPress}
+          onSuggestPress={onSuggestPress}
           onContinueResponsePress={handleContinueResponsePress}
           isLast={isLast}>
           <ChatAiMessage
@@ -193,7 +196,16 @@ export default function ChatMessagesList({
         </UserMessageActions>
       );
     },
-    [history, onEditPress, editingMessageId, showPreviousSibling, showNextSibling, getSiblingsInfo, modelId],
+    [
+      history,
+      onEditPress,
+      editingMessageId,
+      showPreviousSibling,
+      showNextSibling,
+      getSiblingsInfo,
+      modelId,
+      onSuggestPress,
+    ],
   );
 
   return (
