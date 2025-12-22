@@ -1,4 +1,5 @@
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
+import { FlashList } from '@shopify/flash-list';
 import { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import {
   ChatActionsMenuSheet,
@@ -37,6 +38,8 @@ export function ChatMenuList({
 }: ChatMenuListProps): ReactElement {
   const translate = useTranslation('CHAT.CHAT_MENU_LIST');
   const chatActionsSheetRef = useRef<ChatActionsMenuSheetMethods>(null);
+  const listRef = useRef<FlashList<ChatListItem>>(null);
+  const previousIsRefetchingRef = useRef<boolean>(false);
 
   const [isFirstLoading, setIsFirstLoading] = useState<boolean>(true);
 
@@ -86,6 +89,14 @@ export function ChatMenuList({
     [onChatPress],
   );
 
+  // NOTE: Reset scroll position when refresh completes to remove extra space left by refresh control
+  useEffect(() => {
+    if (previousIsRefetchingRef.current && !isRefetching && listRef.current) {
+      listRef.current.scrollToOffset({ offset: 0, animated: false });
+    }
+    previousIsRefetchingRef.current = isRefetching;
+  }, [isRefetching]);
+
   return (
     <View className='flex-1'>
       <PressableSearchInput onPress={onSearchPress} containerClassName='mx-16 pt-8' />
@@ -95,6 +106,7 @@ export function ChatMenuList({
         </View>
       ) : (
         <DateSectionList
+          ref={listRef}
           data={chats || []}
           estimatedItemSize={52}
           renderItem={renderItem}
