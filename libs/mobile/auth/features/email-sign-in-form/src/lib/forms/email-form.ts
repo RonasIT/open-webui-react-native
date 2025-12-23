@@ -21,12 +21,13 @@ export class EmailFormSchema {
         .url(i18n.t('SHARED.VALIDATION.TEXT_INVALID_URL'))
         .test('no-path', i18n.t('SHARED.VALIDATION.TEXT_INVALID_URL'), (value) => {
           if (!value) return true;
-          if (value.endsWith('/')) return false;
 
           try {
-            const url = new URL(value);
+            const normalizedValue = value.trim();
+            const url = new URL(normalizedValue);
+            const normalizedPath = url.pathname.replace(/\/+$/, '/');
 
-            return url.pathname === '/' && !url.search && !url.hash;
+            return normalizedPath === '/' && !url.search && !url.hash;
           } catch {
             return false;
           }
