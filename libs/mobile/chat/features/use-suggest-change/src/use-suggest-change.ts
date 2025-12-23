@@ -7,11 +7,12 @@ import {
   chatApi,
   ChatResponse,
   Message,
-  prepareRegeneratePayload,
   createMessagesList,
   patchChatWithSelectedMessages,
+  prepareCompleteChatPayload,
 } from '@open-webui-react-native/shared/data-access/api';
 import { Role } from '@open-webui-react-native/shared/data-access/common';
+import { socketService } from '@open-webui-react-native/shared/data-access/websocket';
 
 export interface SuggestChangeSchema {
   suggestionInputValue: string;
@@ -61,6 +62,7 @@ export const useSuggestChange = ({ chat, modelId }: UseSuggestChangeProps): UseS
     const now = dayjs();
     const timestampSec = Math.floor(now.unix());
 
+    // create a new empty assistant message
     history.messages[newAssistantId] = new Message({
       id: newAssistantId,
       timestamp: timestampSec,
@@ -78,11 +80,20 @@ export const useSuggestChange = ({ chat, modelId }: UseSuggestChangeProps): UseS
     const newMessagesList = createMessagesList(history, newAssistantId);
     patchChatWithSelectedMessages(chat.id, newAssistantId, newMessagesList);
 
-    const payload = prepareRegeneratePayload({
-      chat,
+    const regenerationMessages = [
+      ...createMessagesList(history, messageId),
+      new Message({
+        role: Role.USER,
+        content: message,
+      }),
+    ];
+
+    const payload = prepareCompleteChatPayload({
+      chatId: chat.id,
       messageId: newAssistantId,
+      messages: regenerationMessages,
+      sessionId: socketService.socketSessionId,
       model: modelId,
-      suggestionPrompt: message,
     });
 
     completeChat(payload);
