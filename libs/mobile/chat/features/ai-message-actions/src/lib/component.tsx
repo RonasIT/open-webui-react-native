@@ -15,6 +15,9 @@ interface AiMessageActionsProps {
   onEditPress: (messageId: string, content: string) => void;
   onSuggestPress: (messageId: string) => void;
   onContinueResponsePress: (messageId: string, content: string) => void;
+  onTryAgain: (messageId: string) => void;
+  onAddDetails: (messageId: string) => void;
+  onMoreConcise: (messageId: string) => void;
   isLast: boolean;
 }
 
@@ -24,6 +27,9 @@ export function AiMessageActions({
   onEditPress,
   onSuggestPress,
   onContinueResponsePress,
+  onTryAgain,
+  onAddDetails,
+  onMoreConcise,
   isLast,
   children,
 }: PropsWithChildren<AiMessageActionsProps>): ReactElement {
@@ -43,15 +49,6 @@ export function AiMessageActions({
     actionsSheetRef.current?.dismiss();
   };
 
-  const handleSuggestPress = (): void => {
-    actionsSheetRef.current?.dismiss();
-    //NOTE: Small delay ensures sheet is fully closed before showing input
-    setTimeout(() => {
-      onSuggestPress(message.id);
-    }, 100);
-    regenerateActionsSheetRef.current?.dismiss();
-  };
-
   const handleContinueResponsePress = (): void => {
     onContinueResponsePress(message.id, message.content);
     actionsSheetRef.current?.dismiss();
@@ -59,6 +56,33 @@ export function AiMessageActions({
 
   const openRegenerateActions = (): void => {
     regenerateActionsSheetRef.current?.present();
+  };
+
+  const runRegenerateAction = (action?: (messageId: string) => void): void => {
+    actionsSheetRef.current?.dismiss();
+
+    //NOTE: Small delay ensures sheet is fully closed before showing input
+    setTimeout(() => {
+      action?.(message.id);
+    }, 100);
+
+    regenerateActionsSheetRef.current?.dismiss();
+  };
+
+  const handleSuggestPress = (): void => {
+    runRegenerateAction(onSuggestPress);
+  };
+
+  const handleTryAgainPress = (): void => {
+    runRegenerateAction(onTryAgain);
+  };
+
+  const handleAddDetailsPress = (): void => {
+    runRegenerateAction(onAddDetails);
+  };
+
+  const handleMoreConcisePress = (): void => {
+    runRegenerateAction(onMoreConcise);
   };
 
   const actions: Array<ActionSheetItemProps> = compact([
@@ -94,14 +118,17 @@ export function AiMessageActions({
     {
       title: translate('REGENERATE_MESSAGE_ACTION_SHEET.TEXT_TRY_AGAIN'),
       iconName: 'refresh',
+      onPress: handleTryAgainPress,
     },
     {
       title: translate('REGENERATE_MESSAGE_ACTION_SHEET.TEXT_ADD_DETAILS'),
       iconName: 'moreText',
+      onPress: handleAddDetailsPress,
     },
     {
       title: translate('REGENERATE_MESSAGE_ACTION_SHEET.TEXT_MORE_CONCISE'),
       iconName: 'lessText',
+      onPress: handleMoreConcisePress,
     },
   ]);
 
