@@ -1,5 +1,5 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
-import { FileData, ImageData } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
 import { Chat, CreateNewChatRequest } from '../models';
 import { buildMessagesHistory } from './build-messages-history';
 import { createMessagePair } from './create-message-pair';

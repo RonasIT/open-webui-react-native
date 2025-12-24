@@ -1,5 +1,5 @@
 import uuid from 'react-native-uuid';
-import { AttachedFile, FileData, FileType } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { AttachedFile, FileData, FileType } from '@open-webui-react-native/shared/data-access/common';
 import { filesApiConfig } from '../config';
 
 export function prepareAttachedFiles(attachedFiles?: Array<FileData>): Array<AttachedFile> {

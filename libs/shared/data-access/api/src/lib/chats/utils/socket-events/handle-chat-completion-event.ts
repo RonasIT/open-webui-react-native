@@ -1,10 +1,10 @@
 import { plainToInstance } from 'class-transformer';
-import { queryClient } from '@open-web-ui-mobile-client-react-native/shared/data-access/query-client';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import {
   ChatEventBase,
   ChatCompletionChunk,
   socketService,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/websocket';
+} from '@open-webui-react-native/shared/data-access/websocket';
 import { chatQueriesKeys } from '../../chat-queries-keys';
 import { ChatResponse } from '../../models';
 import { handleCompletedChat } from '../handle-completed-chat';

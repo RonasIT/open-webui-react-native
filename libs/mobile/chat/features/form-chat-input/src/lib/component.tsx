@@ -4,29 +4,27 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { xor } from 'lodash-es';
 import { ReactElement, useState } from 'react';
 import { Control, FieldValues, Path, useController } from 'react-hook-form';
-import { AttachedFilesList } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/attached-files-list';
-import { SoundWaveRecorder } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/sound-wave-recorder';
-import { SuggestionsList } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/suggestions-list';
-import { useVoiceModeModal } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/voice-mode-modal';
+import { AttachedFilesList } from '@open-webui-react-native/mobile/chat/features/attached-files-list';
+import { SoundWaveRecorder } from '@open-webui-react-native/mobile/chat/features/sound-wave-recorder';
+import { SuggestionsList } from '@open-webui-react-native/mobile/chat/features/suggestions-list';
+import { useVoiceModeModal } from '@open-webui-react-native/mobile/chat/features/voice-mode-modal';
 import {
   ImagePreviewModal,
   useImagePreview,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/features/image-preview-modal';
-import {
-  AppTextInput,
-  AppInputProps,
-  View,
-  IconButton,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+} from '@open-webui-react-native/mobile/shared/features/image-preview-modal';
+import { AppTextInput, AppInputProps, View, IconButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import {
   appConfigurationApi,
   ChatGenerationOption,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { AttachedImage, FileData, ImageData } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
-import { withOfflineGuard } from '@open-web-ui-mobile-client-react-native/shared/features/network';
-import { FeatureID, isFeatureEnabled } from '@open-web-ui-mobile-client-react-native/shared/utils/feature-flag';
-import { toDataUrl } from '@open-web-ui-mobile-client-react-native/shared/utils/files';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+  ChatResponse,
+  tasksApi,
+  tasksService,
+} from '@open-webui-react-native/shared/data-access/api';
+import { AttachedImage, FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
+import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
+import { toDataUrl } from '@open-webui-react-native/shared/utils/files';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { AttachmentsMenuSheet, ChatInputBottomRow, SelectOptionIcon } from './components';
 
 interface FormChatInputProps<T extends FieldValues> extends AppInputProps {
@@ -39,11 +37,12 @@ interface FormChatInputProps<T extends FieldValues> extends AppInputProps {
   attachedImages: Observable<Array<ImageData>>;
   onImageUploaded: (image: ImageData) => void;
   onDeleteImagePress: (fileName: string) => void;
-  chatId?: string;
+  chat?: ChatResponse;
   modelId?: string;
   onChatCreated?: (id: string) => void;
   isLoading?: boolean;
   isSuggestionShown?: boolean;
+  isResponseGenerating?: boolean;
 }
 
 export interface FormChatInputSchema {
@@ -60,16 +59,18 @@ export function FormChatInput<T extends FieldValues>({
   attachedImages,
   onImageUploaded,
   onDeleteImagePress,
-  chatId,
+  chat,
   modelId,
   onChatCreated,
   isLoading,
   isSuggestionShown,
+  isResponseGenerating,
   ...restProps
 }: FormChatInputProps<T>): ReactElement {
   const translate = useTranslation('CHAT.FORM_CHAT_INPUT');
 
   const { data: config } = appConfigurationApi.useGetAppConfiguration();
+  const stopTaskMutation = tasksApi.useStopTask();
 
   const { field } = useController({ control, name });
 
@@ -96,7 +97,7 @@ export function FormChatInput<T extends FieldValues>({
       return ToastService.showError(translate('TEXT_MODEL_NOT_SELECTED'));
     }
     setIsMicrophonePreparing(true);
-    await openVoiceModeModal({ chatId, modelId });
+    await openVoiceModeModal({ chatId: chat?.id, modelId });
     setIsMicrophonePreparing(false);
   };
 
@@ -116,6 +117,20 @@ export function FormChatInput<T extends FieldValues>({
   const onCompleteRecording = (text: string): void => {
     setIsDictateMode(false);
     field.onChange(text);
+  };
+
+  const onStopGenerationPress = async (): Promise<void> => {
+    if (!chat) return;
+
+    const chatId = chat.id;
+    const lastMessageId = chat.chat.history.currentId;
+
+    const tasksData = await tasksService.getChatTasks(chatId);
+    const taskId = tasksData?.tasksIds[0];
+
+    if (taskId) {
+      stopTaskMutation.mutate({ taskId, chatId, lastMessageId });
+    }
   };
 
   return (
@@ -152,6 +167,8 @@ export function FormChatInput<T extends FieldValues>({
               isSubmitDisabled={!isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty}
               onVoiceModePress={onVoiceModePress}
               isVoiceModeAvailable={isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty}
+              onStopGenerationPress={onStopGenerationPress}
+              isResponseGenerating={isResponseGenerating}
               isLoading={isLoading || isMicrophonePreparing}>
               <View className='flex-row flex-1 justify-between'>
                 <View className='gap-16 flex-row '>

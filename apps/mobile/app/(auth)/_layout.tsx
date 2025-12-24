@@ -1,4 +1,4 @@
-import { navigationConfig } from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/navigation';
+import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import { Stack } from 'expo-router/stack';
 import { ReactElement } from 'react';
 

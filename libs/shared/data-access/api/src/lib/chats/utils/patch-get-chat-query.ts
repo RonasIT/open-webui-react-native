@@ -1,5 +1,5 @@
 import { merge } from 'lodash-es';
-import { queryClient } from '@open-web-ui-mobile-client-react-native/shared/data-access/query-client';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { chatQueriesKeys } from '../chat-queries-keys';
 import { ChatResponse } from '../models';
 
@@ -9,6 +9,6 @@ export const patchChatQueryData = (chatId: string, partialData: Partial<ChatResp
       return undefined;
     }
 
-    return merge({}, draft, partialData);
+    return new ChatResponse(merge(draft, partialData));
   });
 };

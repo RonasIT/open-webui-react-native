@@ -5,9 +5,9 @@ import {
   patchChatList,
   prepareCompleteChatPayload,
   prepareCreateChatPayload,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { FileData, ImageData } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
-import { socketService } from '@open-web-ui-mobile-client-react-native/shared/data-access/websocket';
+} from '@open-webui-react-native/shared/data-access/api';
+import { FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
+import { socketService } from '@open-webui-react-native/shared/data-access/websocket';
 
 interface UseCreateNewChatArgs {
   onSuccess: (id: string) => void;

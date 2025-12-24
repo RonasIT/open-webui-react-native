@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { cn, useColorScheme } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { cn, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { Icon, IconName } from '../../../icon';
 import { AppPressable } from '../../../pressable';
 import { AppText } from '../../../text';

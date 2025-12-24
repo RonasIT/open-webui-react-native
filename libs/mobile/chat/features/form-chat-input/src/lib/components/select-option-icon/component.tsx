@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
-import { cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
-import { IconButton, IconName } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { IconButton, IconName } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 
 export interface SelectOptionIconProps {
   onPress: () => void;

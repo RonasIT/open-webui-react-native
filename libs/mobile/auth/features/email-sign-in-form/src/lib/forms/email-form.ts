@@ -1,6 +1,6 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
 import * as Yup from 'yup';
-import { emailValidator } from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/validation';
+import { emailValidator } from '@open-webui-react-native/mobile/shared/utils/validation';
 
 export class EmailFormSchema {
   public email: string;
@@ -21,12 +21,13 @@ export class EmailFormSchema {
         .url(i18n.t('SHARED.VALIDATION.TEXT_INVALID_URL'))
         .test('no-path', i18n.t('SHARED.VALIDATION.TEXT_INVALID_URL'), (value) => {
           if (!value) return true;
-          if (value.endsWith('/')) return false;
 
           try {
-            const url = new URL(value);
+            const normalizedValue = value.trim();
+            const url = new URL(normalizedValue);
+            const normalizedPath = url.pathname.replace(/\/+$/, '/');
 
-            return url.pathname === '/' && !url.search && !url.hash;
+            return normalizedPath === '/' && !url.search && !url.hash;
           } catch {
             return false;
           }

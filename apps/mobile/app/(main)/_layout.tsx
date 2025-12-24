@@ -1,7 +1,7 @@
-import { colors, useColorScheme } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
-import { AppSpinner } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { navigationConfig } from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/navigation';
-import { useInitRequests } from '@open-web-ui-mobile-client-react-native/shared/features/use-init-requests';
+import { colors, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { AppSpinner } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
+import { useInitRequests } from '@open-webui-react-native/shared/features/use-init-requests';
 import { useIsRestoring } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 import { ReactElement } from 'react';

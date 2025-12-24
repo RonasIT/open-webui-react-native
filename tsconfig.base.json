@@ -23,279 +23,238 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@open-web-ui-mobile-client-react-native/mobile/auth/features/email-sign-in-form": [
+      "@open-webui-react-native/mobile/auth/features/email-sign-in-form": [
         "libs/mobile/auth/features/email-sign-in-form/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/auth/features/google-sign-in-form": [
+      "@open-webui-react-native/mobile/auth/features/google-sign-in-form": [
         "libs/mobile/auth/features/google-sign-in-form/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/auth/features/sign-in": [
-        "libs/mobile/auth/features/sign-in/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/data-access/archived-chats-filter-state": [
+      "@open-webui-react-native/mobile/auth/features/sign-in": ["libs/mobile/auth/features/sign-in/src/index.ts"],
+      "@open-webui-react-native/mobile/chat/data-access/archived-chats-filter-state": [
         "libs/mobile/chat/data-access/archived-chats-filter-state/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/ai-message-actions": [
+      "@open-webui-react-native/mobile/chat/features/ai-message-actions": [
         "libs/mobile/chat/features/ai-message-actions/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/archived-chat-item": [
+      "@open-webui-react-native/mobile/chat/features/archived-chat-item": [
         "libs/mobile/chat/features/archived-chat-item/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/archived-chats-filters-sheet": [
+      "@open-webui-react-native/mobile/chat/features/archived-chats-filters-sheet": [
         "libs/mobile/chat/features/archived-chats-filters-sheet/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/archived-chats-list": [
+      "@open-webui-react-native/mobile/chat/features/archived-chats-list": [
         "libs/mobile/chat/features/archived-chats-list/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/attached-file-item": [
+      "@open-webui-react-native/mobile/chat/features/attached-file-item": [
         "libs/mobile/chat/features/attached-file-item/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/attached-files-list": [
+      "@open-webui-react-native/mobile/chat/features/attached-files-list": [
         "libs/mobile/chat/features/attached-files-list/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/attached-image-item": [
+      "@open-webui-react-native/mobile/chat/features/attached-image-item": [
         "libs/mobile/chat/features/attached-image-item/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/chat": [
-        "libs/mobile/chat/features/chat/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/create-chat": [
+      "@open-webui-react-native/mobile/chat/features/chat": ["libs/mobile/chat/features/chat/src/index.ts"],
+      "@open-webui-react-native/mobile/chat/features/create-chat": [
         "libs/mobile/chat/features/create-chat/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/edit-message-input": [
+      "@open-webui-react-native/mobile/chat/features/edit-message-input": [
         "libs/mobile/chat/features/edit-message-input/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/form-chat-input": [
+      "@open-webui-react-native/mobile/chat/features/form-chat-input": [
         "libs/mobile/chat/features/form-chat-input/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/menu-list": [
-        "libs/mobile/chat/features/menu-list/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/message-version-controls": [
+      "@open-webui-react-native/mobile/chat/features/menu-list": ["libs/mobile/chat/features/menu-list/src/index.ts"],
+      "@open-webui-react-native/mobile/chat/features/message-version-controls": [
         "libs/mobile/chat/features/message-version-controls/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/models-sheet": [
+      "@open-webui-react-native/mobile/chat/features/models-sheet": [
         "libs/mobile/chat/features/models-sheet/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/search-archived-chats": [
+      "@open-webui-react-native/mobile/chat/features/search-archived-chats": [
         "libs/mobile/chat/features/search-archived-chats/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/search-chats-list": [
+      "@open-webui-react-native/mobile/chat/features/search-chats-list": [
         "libs/mobile/chat/features/search-chats-list/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/share-chat-modal": [
+      "@open-webui-react-native/mobile/chat/features/share-chat-modal": [
         "libs/mobile/chat/features/share-chat-modal/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/sound-wave-recorder": [
+      "@open-webui-react-native/mobile/chat/features/sound-wave-recorder": [
         "libs/mobile/chat/features/sound-wave-recorder/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/source-citation-modal": [
+      "@open-webui-react-native/mobile/chat/features/source-citation-modal": [
         "libs/mobile/chat/features/source-citation-modal/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/suggestions-list": [
+      "@open-webui-react-native/mobile/chat/features/suggest-change-input": [
+        "libs/mobile/chat/features/suggest-change-input/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/chat/features/suggestions-list": [
         "libs/mobile/chat/features/suggestions-list/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/use-citations": [
+      "@open-webui-react-native/mobile/chat/features/use-citations": [
         "libs/mobile/chat/features/use-citations/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/use-create-new-chat": [
+      "@open-webui-react-native/mobile/chat/features/use-create-new-chat": [
         "libs/mobile/chat/features/use-create-new-chat/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/use-edit-message": [
+      "@open-webui-react-native/mobile/chat/features/use-edit-message": [
         "libs/mobile/chat/features/use-edit-message/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/use-manage-messages-siblings": [
+      "@open-webui-react-native/mobile/chat/features/use-manage-messages-siblings": [
         "libs/mobile/chat/features/use-manage-messages-siblings/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/use-send-message": [
+      "@open-webui-react-native/mobile/chat/features/use-send-message": [
         "libs/mobile/chat/features/use-send-message/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/user-message-actions": [
+      "@open-webui-react-native/mobile/chat/features/use-suggest-change": [
+        "libs/mobile/chat/features/use-suggest-change/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/chat/features/user-message-actions": [
         "libs/mobile/chat/features/user-message-actions/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/features/voice-mode-modal": [
+      "@open-webui-react-native/mobile/chat/features/voice-mode-modal": [
         "libs/mobile/chat/features/voice-mode-modal/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/ui/folder-row": [
-        "libs/mobile/chat/ui/folder-row/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/ui/message-actions-wrapper": [
+      "@open-webui-react-native/mobile/chat/ui/folder-row": ["libs/mobile/chat/ui/folder-row/src/index.ts"],
+      "@open-webui-react-native/mobile/chat/ui/message-actions-wrapper": [
         "libs/mobile/chat/ui/message-actions-wrapper/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/chat/ui/source-citation-item": [
+      "@open-webui-react-native/mobile/chat/ui/source-citation-item": [
         "libs/mobile/chat/ui/source-citation-item/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/folder/features/chats-list": [
+      "@open-webui-react-native/mobile/chat/utils/use-folder-search-list": [
+        "libs/mobile/chat/utils/use-folder-search-list/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/folder/features/chats-list": [
         "libs/mobile/folder/features/chats-list/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/folder/features/folder-actions-sheet": [
+      "@open-webui-react-native/mobile/folder/features/folder-actions-sheet": [
         "libs/mobile/folder/features/folder-actions-sheet/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/folder/features/select-knowledge-sheet": [
+      "@open-webui-react-native/mobile/folder/features/select-knowledge-sheet": [
         "libs/mobile/folder/features/select-knowledge-sheet/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/folder/features/upsert-folder-sheet": [
+      "@open-webui-react-native/mobile/folder/features/upsert-folder-sheet": [
         "libs/mobile/folder/features/upsert-folder-sheet/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/profile/features/menu-sheet": [
+      "@open-webui-react-native/mobile/profile/features/menu-sheet": [
         "libs/mobile/profile/features/menu-sheet/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/data-access/base-entity": [
+      "@open-webui-react-native/mobile/shared/data-access/base-entity": [
         "libs/mobile/shared/data-access/base-entity/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/data-access/entity-service": [
+      "@open-webui-react-native/mobile/shared/data-access/entity-service": [
         "libs/mobile/shared/data-access/entity-service/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/data-access/file-system-service": [
+      "@open-webui-react-native/mobile/shared/data-access/file-system-service": [
         "libs/mobile/shared/data-access/file-system-service/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/data-access/image-picker-service": [
+      "@open-webui-react-native/mobile/shared/data-access/image-picker-service": [
         "libs/mobile/shared/data-access/image-picker-service/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/data-access/media-library-service": [
+      "@open-webui-react-native/mobile/shared/data-access/media-library-service": [
         "libs/mobile/shared/data-access/media-library-service/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/data-access/speech-streaming-service": [
+      "@open-webui-react-native/mobile/shared/data-access/speech-streaming-service": [
         "libs/mobile/shared/data-access/speech-streaming-service/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/data-access/storage": [
+      "@open-webui-react-native/mobile/shared/data-access/storage": [
         "libs/mobile/shared/data-access/storage/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/features/chat-actions-menu-sheet": [
+      "@open-webui-react-native/mobile/shared/features/chat-actions-menu-sheet": [
         "libs/mobile/shared/features/chat-actions-menu-sheet/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/features/image-preview-modal": [
+      "@open-webui-react-native/mobile/shared/features/image-preview-modal": [
         "libs/mobile/shared/features/image-preview-modal/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/features/markdown-view": [
+      "@open-webui-react-native/mobile/shared/features/markdown-view": [
         "libs/mobile/shared/features/markdown-view/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/features/profile-menu-sheet": [
+      "@open-webui-react-native/mobile/shared/features/profile-menu-sheet": [
         "libs/mobile/shared/features/profile-menu-sheet/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/features/sidebar-menu": [
+      "@open-webui-react-native/mobile/shared/features/sidebar-menu": [
         "libs/mobile/shared/features/sidebar-menu/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/features/toast": [
-        "libs/mobile/shared/features/toast/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/features/use-attached-files": [
+      "@open-webui-react-native/mobile/shared/features/toast": ["libs/mobile/shared/features/toast/src/index.ts"],
+      "@open-webui-react-native/mobile/shared/features/use-attached-files": [
         "libs/mobile/shared/features/use-attached-files/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/features/use-audio-recorder": [
+      "@open-webui-react-native/mobile/shared/features/use-audio-recorder": [
         "libs/mobile/shared/features/use-audio-recorder/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/features/use-dictate-mode": [
+      "@open-webui-react-native/mobile/shared/features/use-dictate-mode": [
         "libs/mobile/shared/features/use-dictate-mode/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/features/use-logout": [
+      "@open-webui-react-native/mobile/shared/features/use-logout": [
         "libs/mobile/shared/features/use-logout/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/features/use-set-selected-model": [
+      "@open-webui-react-native/mobile/shared/features/use-set-selected-model": [
         "libs/mobile/shared/features/use-set-selected-model/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/features/use-swipe-to-close": [
+      "@open-webui-react-native/mobile/shared/features/use-swipe-to-close": [
         "libs/mobile/shared/features/use-swipe-to-close/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/ui/chat-list-row": [
-        "libs/mobile/shared/ui/chat-list-row/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/ui/code-block": [
-        "libs/mobile/shared/ui/code-block/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/ui/date-section-list": [
+      "@open-webui-react-native/mobile/shared/ui/chat-list-row": ["libs/mobile/shared/ui/chat-list-row/src/index.ts"],
+      "@open-webui-react-native/mobile/shared/ui/code-block": ["libs/mobile/shared/ui/code-block/src/index.ts"],
+      "@open-webui-react-native/mobile/shared/ui/date-section-list": [
         "libs/mobile/shared/ui/date-section-list/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/ui/keyboard-avoiding-view": [
+      "@open-webui-react-native/mobile/shared/ui/keyboard-avoiding-view": [
         "libs/mobile/shared/ui/keyboard-avoiding-view/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/ui/no-connection-banner": [
+      "@open-webui-react-native/mobile/shared/ui/no-connection-banner": [
         "libs/mobile/shared/ui/no-connection-banner/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/ui/screen-wrapper": [
-        "libs/mobile/shared/ui/screen-wrapper/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles": ["libs/mobile/shared/ui/styles/src/index.ts"],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit": ["libs/mobile/shared/ui/ui-kit/src/index.ts"],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-state": [
-        "libs/mobile/shared/ui/ui-state/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/utils/compressor": [
-        "libs/mobile/shared/utils/compressor/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/utils/form": [
-        "libs/mobile/shared/utils/form/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/utils/navigation": [
-        "libs/mobile/shared/utils/navigation/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/mobile/shared/utils/validation": [
-        "libs/mobile/shared/utils/validation/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/shared/data-access/api": ["libs/shared/data-access/api/src/index.ts"],
-      "@open-web-ui-mobile-client-react-native/shared/data-access/api-client": [
-        "libs/shared/data-access/api-client/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/shared/data-access/app-state": [
-        "libs/shared/data-access/app-state/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/shared/data-access/auth": ["libs/shared/data-access/auth/src/index.ts"],
-      "@open-web-ui-mobile-client-react-native/shared/data-access/base-entity": [
-        "libs/shared/data-access/base-entity/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/shared/data-access/common": [
-        "libs/shared/data-access/common/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/shared/data-access/cookie": [
-        "libs/shared/data-access/cookie/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/shared/data-access/persist-query-helpers": [
+      "@open-webui-react-native/mobile/shared/ui/screen-wrapper": ["libs/mobile/shared/ui/screen-wrapper/src/index.ts"],
+      "@open-webui-react-native/mobile/shared/ui/styles": ["libs/mobile/shared/ui/styles/src/index.ts"],
+      "@open-webui-react-native/mobile/shared/ui/ui-kit": ["libs/mobile/shared/ui/ui-kit/src/index.ts"],
+      "@open-webui-react-native/mobile/shared/ui/ui-state": ["libs/mobile/shared/ui/ui-state/src/index.ts"],
+      "@open-webui-react-native/mobile/shared/utils/compressor": ["libs/mobile/shared/utils/compressor/src/index.ts"],
+      "@open-webui-react-native/mobile/shared/utils/form": ["libs/mobile/shared/utils/form/src/index.ts"],
+      "@open-webui-react-native/mobile/shared/utils/navigation": ["libs/mobile/shared/utils/navigation/src/index.ts"],
+      "@open-webui-react-native/mobile/shared/utils/validation": ["libs/mobile/shared/utils/validation/src/index.ts"],
+      "@open-webui-react-native/shared/data-access/api": ["libs/shared/data-access/api/src/index.ts"],
+      "@open-webui-react-native/shared/data-access/api-client": ["libs/shared/data-access/api-client/src/index.ts"],
+      "@open-webui-react-native/shared/data-access/app-state": ["libs/shared/data-access/app-state/src/index.ts"],
+      "@open-webui-react-native/shared/data-access/auth": ["libs/shared/data-access/auth/src/index.ts"],
+      "@open-webui-react-native/shared/data-access/base-entity": ["libs/shared/data-access/base-entity/src/index.ts"],
+      "@open-webui-react-native/shared/data-access/common": ["libs/shared/data-access/common/src/index.ts"],
+      "@open-webui-react-native/shared/data-access/cookie": ["libs/shared/data-access/cookie/src/index.ts"],
+      "@open-webui-react-native/shared/data-access/persist-query-helpers": [
         "libs/shared/data-access/persist-query-helpers/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/shared/data-access/persist-query-storage": [
+      "@open-webui-react-native/shared/data-access/persist-query-storage": [
         "libs/shared/data-access/persist-query-storage/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/shared/data-access/query-client": [
-        "libs/shared/data-access/query-client/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/shared/data-access/storage": [
-        "libs/shared/data-access/storage/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/shared/data-access/websocket": [
-        "libs/shared/data-access/websocket/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/shared/features/get-chat-as-text": [
+      "@open-webui-react-native/shared/data-access/query-client": ["libs/shared/data-access/query-client/src/index.ts"],
+      "@open-webui-react-native/shared/data-access/storage": ["libs/shared/data-access/storage/src/index.ts"],
+      "@open-webui-react-native/shared/data-access/websocket": ["libs/shared/data-access/websocket/src/index.ts"],
+      "@open-webui-react-native/shared/features/get-chat-as-text": [
         "libs/shared/features/get-chat-as-text/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/shared/features/network": ["libs/shared/features/network/src/index.ts"],
-      "@open-web-ui-mobile-client-react-native/shared/features/use-init-requests": [
+      "@open-webui-react-native/shared/features/network": ["libs/shared/features/network/src/index.ts"],
+      "@open-webui-react-native/shared/features/use-init-requests": [
         "libs/shared/features/use-init-requests/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/shared/utils/alert-service": [
-        "libs/shared/utils/alert-service/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/shared/utils/app-env": ["libs/shared/utils/app-env/src/index.ts"],
-      "@open-web-ui-mobile-client-react-native/shared/utils/config": ["libs/shared/utils/config/src/index.ts"],
-      "@open-web-ui-mobile-client-react-native/shared/utils/date": ["libs/shared/utils/date/src/index.ts"],
-      "@open-web-ui-mobile-client-react-native/shared/utils/deep-memo": ["libs/shared/utils/deep-memo/src/index.ts"],
-      "@open-web-ui-mobile-client-react-native/shared/utils/feature-flag": [
-        "libs/shared/utils/feature-flag/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/shared/utils/files": ["libs/shared/utils/files/src/index.ts"],
-      "@open-web-ui-mobile-client-react-native/shared/utils/navigation": ["libs/shared/utils/navigation/src/index.ts"],
-      "@open-web-ui-mobile-client-react-native/shared/utils/objects": ["libs/shared/utils/objects/src/index.ts"],
-      "@open-web-ui-mobile-client-react-native/shared/utils/permission-alert": [
-        "libs/shared/utils/permission-alert/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/shared/utils/reactotron": ["libs/shared/utils/reactotron/src/index.ts"],
-      "@open-web-ui-mobile-client-react-native/shared/utils/strings": ["libs/shared/utils/strings/src/index.ts"],
-      "@open-web-ui-mobile-client-react-native/shared/utils/toast-service": [
-        "libs/shared/utils/toast-service/src/index.ts"
-      ],
-      "@open-web-ui-mobile-client-react-native/shared/utils/use-app-state-change": [
+      "@open-webui-react-native/shared/utils/alert-service": ["libs/shared/utils/alert-service/src/index.ts"],
+      "@open-webui-react-native/shared/utils/app-env": ["libs/shared/utils/app-env/src/index.ts"],
+      "@open-webui-react-native/shared/utils/config": ["libs/shared/utils/config/src/index.ts"],
+      "@open-webui-react-native/shared/utils/date": ["libs/shared/utils/date/src/index.ts"],
+      "@open-webui-react-native/shared/utils/deep-memo": ["libs/shared/utils/deep-memo/src/index.ts"],
+      "@open-webui-react-native/shared/utils/feature-flag": ["libs/shared/utils/feature-flag/src/index.ts"],
+      "@open-webui-react-native/shared/utils/files": ["libs/shared/utils/files/src/index.ts"],
+      "@open-webui-react-native/shared/utils/navigation": ["libs/shared/utils/navigation/src/index.ts"],
+      "@open-webui-react-native/shared/utils/objects": ["libs/shared/utils/objects/src/index.ts"],
+      "@open-webui-react-native/shared/utils/permission-alert": ["libs/shared/utils/permission-alert/src/index.ts"],
+      "@open-webui-react-native/shared/utils/reactotron": ["libs/shared/utils/reactotron/src/index.ts"],
+      "@open-webui-react-native/shared/utils/strings": ["libs/shared/utils/strings/src/index.ts"],
+      "@open-webui-react-native/shared/utils/toast-service": ["libs/shared/utils/toast-service/src/index.ts"],
+      "@open-webui-react-native/shared/utils/use-app-state-change": [
         "libs/shared/utils/use-app-state-change/src/index.ts"
       ],
-      "@open-web-ui-mobile-client-react-native/shared/utils/use-debounced-query": [
+      "@open-webui-react-native/shared/utils/use-debounced-query": [
         "libs/shared/utils/use-debounced-query/src/index.ts"
       ]
     }

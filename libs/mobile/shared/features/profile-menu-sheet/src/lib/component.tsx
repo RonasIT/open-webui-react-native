@@ -1,17 +1,17 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useRef } from 'react';
-import { useLogout } from '@open-web-ui-mobile-client-react-native/mobile/shared/features/use-logout';
+import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-logout';
 import {
   Avatar,
   AppBottomSheetProps,
   ActionsBottomSheet,
   ActionSheetItemProps,
   AppPressable,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { authApi } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { FeatureID, isFeatureEnabled } from '@open-web-ui-mobile-client-react-native/shared/utils/feature-flag';
-import { ToastService } from '@open-web-ui-mobile-client-react-native/shared/utils/toast-service';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { authApi } from '@open-webui-react-native/shared/data-access/api';
+import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 interface ProfileMenuSheetProps extends Pick<AppBottomSheetProps, 'renderTrigger'> {
   onArchivedChatsPress: () => void;

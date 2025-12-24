@@ -1,14 +1,18 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FormValues } from '@open-web-ui-mobile-client-react-native/mobile/shared/utils/form';
+import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 import {
   chatApi,
   ChatResponse,
-  prepareUpdateMessageInChatPayload,
   prepareCompleteChatPayload,
   prepareUpdateMessageToSendPayload,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { socketService } from '@open-web-ui-mobile-client-react-native/shared/data-access/websocket';
+  prepareEditAssistantMessagePayload,
+  prepareCopyEditedMessagePayload,
+  prepareUpdateMessageInChatPayload,
+  History,
+} from '@open-webui-react-native/shared/data-access/api';
+import { Role } from '@open-webui-react-native/shared/data-access/common';
+import { socketService } from '@open-webui-react-native/shared/data-access/websocket';
 
 interface UseEditMessageProps {
   chat?: ChatResponse;
@@ -32,6 +36,12 @@ export const useEditMessage = ({ chat, modelId }: UseEditMessageProps): typeof r
   const { mutateAsync: updateChat, isPending: isChatUpdating } = chatApi.useUpdate();
   const { mutate: completeChat } = chatApi.useCompleteChat();
 
+  const isAssistantMessage = (chatHistory: History, messageId: string): boolean => {
+    const editedMessage = chatHistory.messages[messageId];
+
+    return editedMessage.role === Role.ASSISTANT;
+  };
+
   const startEditing = (messageId: string, content: string): void => {
     setEditingMessageId(messageId);
     reset({ editMessageInputValue: content });
@@ -47,7 +57,11 @@ export const useEditMessage = ({ chat, modelId }: UseEditMessageProps): typeof r
       return;
     }
 
-    const preparedChat = prepareUpdateMessageInChatPayload(chat, editingMessageId, message);
+    const chatHistory = chat.chat.history;
+
+    const preparedChat: ChatResponse = isAssistantMessage(chatHistory, editingMessageId)
+      ? prepareCopyEditedMessagePayload(chat, editingMessageId, message)
+      : prepareUpdateMessageInChatPayload(chat, editingMessageId, message);
 
     await updateChat(preparedChat);
     cancelEditing();
@@ -60,10 +74,14 @@ export const useEditMessage = ({ chat, modelId }: UseEditMessageProps): typeof r
     const chatHistory = chat.chat.history;
     const editedMessage = chatHistory.messages[editingMessageId];
 
-    const preparedChat = prepareUpdateMessageToSendPayload(chat, message, modelId, editedMessage.parentId);
+    const preparedChat: ChatResponse = isAssistantMessage(chatHistory, editingMessageId)
+      ? prepareEditAssistantMessagePayload(chat, editingMessageId, message)
+      : prepareUpdateMessageToSendPayload(chat, message, modelId, editedMessage.parentId);
 
     await updateChat(preparedChat, {
       onSuccess: (data) => {
+        if (editedMessage.role === Role.ASSISTANT) return;
+
         const completePayload = prepareCompleteChatPayload({
           chatId: data.id,
           messageId: data.chat!.history.currentId,

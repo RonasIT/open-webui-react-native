@@ -27,10 +27,10 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     slug: process.env.EXPO_PUBLIC_APP_SLUG as string,
     scheme: process.env.EXPO_PUBLIC_APP_SCHEME as string,
     owner: process.env.EXPO_PUBLIC_APP_OWNER as string,
-    version: '1.0.0',
+    version: '1.1.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
-    runtimeVersion: '1.0.0',
+    runtimeVersion: '1.1.0',
     experiments: {
       reactCompiler: true,
     },
@@ -42,7 +42,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       supportsTablet: false,
       buildNumber: appEnv.select({
         default: '13',
-        production: '6',
+        production: '7',
       }),
       config: {
         usesNonExemptEncryption: false,
@@ -52,7 +52,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       package: appId,
       versionCode: appEnv.select({
         default: 13,
-        production: 6,
+        production: 7,
       }),
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
@@ -81,15 +81,15 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       [
         'expo-image-picker',
         {
-          photosPermission: 'Allow Open Web UI to access your photos.',
-          cameraPermission: 'Allow Open Web UI to access your camera.',
+          photosPermission: 'Allow Open MobileUI to access your photos.',
+          cameraPermission: 'Allow Open MobileUI to access your camera.',
         },
       ],
       [
         'expo-media-library',
         {
-          photosPermission: 'Allow Open Web UI to access your photos.',
-          savePhotosPermission: 'Allow Open Web UI to save photos.',
+          photosPermission: 'Allow Open MobileUI to access your photos.',
+          savePhotosPermission: 'Allow Open MobileUI to save photos.',
         },
       ],
       googleAuthIosUrlScheme

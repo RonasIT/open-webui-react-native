@@ -1,5 +1,5 @@
 import { EntityPartial } from '@ronas-it/rtkq-entity-api';
-import { FileData, ImageData } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
 import { Chat, ChatResponse } from '../models';
 import { buildMessagesHistory } from './build-messages-history';
 import { createMessagePair } from './create-message-pair';

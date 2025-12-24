@@ -1,7 +1,7 @@
 import React, { ReactElement, ReactNode, useState } from 'react';
 import { useWindowDimensions } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { View } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+import { View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 
 function isElement(node: ReactNode): node is ReactElement {
   return !!node && typeof node === 'object' && 'props' in (node as any);

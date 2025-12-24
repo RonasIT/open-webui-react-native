@@ -1,9 +1,4 @@
-import {
-  appConfigurationApi,
-  authApi,
-  modelsApi,
-  usersApi,
-} from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
+import { appConfigurationApi, authApi, modelsApi, usersApi } from '@open-webui-react-native/shared/data-access/api';
 
 interface UseInitRequestsResult {
   isLoading: boolean;

@@ -26,6 +26,8 @@ import gallery from './gallery.svg';
 import generatedImage from './generated-image.svg';
 import googleLogo from './google.svg';
 import headphones from './headphones.svg';
+import keyboard from './keyboard.svg';
+import lessText from './less-text.svg';
 import link from './link.svg';
 import logoDark from './logo-dark.svg';
 import logoLight from './logo-light.svg';
@@ -34,11 +36,15 @@ import logoSmallLight from './logo-small-light.svg';
 import logout from './logout.svg';
 import microphone from './microphone.svg';
 import moreDots from './more-dots.svg';
+import moreText from './more-text.svg';
 import noWifi from './no-wifi.svg';
 import pin from './pin.svg';
+import play from './play.svg';
 import plusInCircle from './plus-in-circle.svg';
 import plus from './plus.svg';
+import refresh from './refresh.svg';
 import search from './search.svg';
+import stop from './stop.svg';
 import strokeLeft from './stroke-left.svg';
 import tick from './tick.svg';
 import trashCan from './trash-can.svg';
@@ -94,4 +100,10 @@ export const Icons = {
   closeSM,
   strokeLeft,
   tick,
+  stop,
+  play,
+  refresh,
+  keyboard,
+  lessText,
+  moreText,
 };

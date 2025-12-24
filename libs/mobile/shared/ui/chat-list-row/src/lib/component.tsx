@@ -1,12 +1,7 @@
 import { ReactElement } from 'react';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing } from 'react-native-reanimated';
-import { cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
-import {
-  View,
-  AppText,
-  AppPressable,
-  AppPressableProps,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { View, AppText, AppPressable, AppPressableProps } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { chatListRowConfig } from '../config';
 
 export interface ChatListRowProps extends Omit<AppPressableProps, 'onPress'> {

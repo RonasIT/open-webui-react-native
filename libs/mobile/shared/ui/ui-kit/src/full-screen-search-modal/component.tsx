@@ -1,10 +1,12 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 import { delay } from 'lodash-es';
-import { Fragment, ReactElement, Ref, useCallback, useRef, useState } from 'react';
+import { ForwardedRef, Fragment, ReactElement, Ref, useCallback, useImperativeHandle, useRef, useState } from 'react';
 import { InteractionManager } from 'react-native';
 import { FadeIn } from 'react-native-reanimated';
-import { useDebouncedQuery } from '@open-web-ui-mobile-client-react-native/shared/utils/use-debounced-query';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { MockFolderItemIds } from '@open-webui-react-native/shared/data-access/api';
+import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
 import { AppFlashList } from '../flash-list';
 import { FullScreenModal } from '../full-screen-modal';
 import { AppKeyboardControllerView } from '../keyboard-controller-view';
@@ -13,14 +15,22 @@ import { AnimatedView, View } from '../view';
 import { ListItem } from './components';
 import { FullScreenSearchListItem } from './types';
 
+export type FullScreenSearchModalMethods = {
+  present: () => void;
+  close: () => void;
+};
+
+export type FullScreenSearchModalRef = ForwardedRef<FullScreenSearchModalMethods>;
+
 export interface FullScreenSearchModalProps<Item extends FullScreenSearchListItem> {
   data: Array<Item>;
   searchPlaceholder: string;
-  renderTrigger: (props: { onPress: () => void }) => ReactElement;
   onSelectItem: (id: string) => void;
+  renderTrigger?: (props: { onPress: () => void }) => ReactElement;
   unfilteredData?: Array<Item>;
   selectedItemId?: string;
   modalComponent?: ReactElement;
+  ref?: FullScreenSearchModalRef;
 }
 
 export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
@@ -31,6 +41,7 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
   unfilteredData,
   selectedItemId,
   modalComponent,
+  ref,
 }: FullScreenSearchModalProps<Item>): ReactElement {
   const listRef = useRef<FlashList<Item>>(null);
 
@@ -38,6 +49,21 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
   const [isAnimationCompleted, setIsAnimationCompleted] = useState<boolean>(false);
 
   const { query, setQuery } = useDebouncedQuery();
+
+  const close = (): void => {
+    setIsOpen(false);
+  };
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      present: (): void => {
+        setIsOpen(true);
+      },
+      close,
+    }),
+    [],
+  );
 
   const filteredData = (data ?? []).filter((item) => new RegExp(query, 'i').test(item.name));
 
@@ -80,23 +106,27 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
   );
 
   const renderItem = useCallback(
-    ({ item }: { item: Item }) => (
-      <ListItem
-        isSelected={selectedItemId === item.id}
-        onSelect={() => handleSelectItem(item.id, item.onPress)}
-        name={item.name}
-        iconName={item.iconName}
-        containerClassName={item.containerClassName}
-        iconClassName={item.iconClassName}
-        textClassName={item.textClassName}
-      />
-    ),
+    ({ item }: { item: Item }) => {
+      const isNoFolderSelected = selectedItemId === null && item.id === MockFolderItemIds.NO_FOLDER_ID;
+
+      return (
+        <ListItem
+          isSelected={selectedItemId === item.id || isNoFolderSelected}
+          onSelect={() => handleSelectItem(item.id, item.onPress)}
+          name={item.name}
+          iconName={item.iconName}
+          containerClassName={item.containerClassName}
+          iconClassName={item.iconClassName}
+          textClassName={item.textClassName}
+        />
+      );
+    },
     [handleSelectItem, selectedItemId],
   );
 
   return (
     <Fragment>
-      {renderTrigger({ onPress: handleOpen })}
+      {renderTrigger && renderTrigger({ onPress: handleOpen })}
       <FullScreenModal
         avoidKeyboard={false}
         onModalWillShow={toggleAnimationCompleted}

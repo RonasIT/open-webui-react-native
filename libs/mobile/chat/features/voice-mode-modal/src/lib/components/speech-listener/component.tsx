@@ -1,6 +1,6 @@
 import { ReactElement, useEffect } from 'react';
 import { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { AnimatedView } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+import { AnimatedView } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { voiceModeModalConfig } from '../../config';
 
 export interface SpeechListenerProps {

@@ -1,14 +1,14 @@
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useMemo } from 'react';
-import { Citation } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/use-citations';
-import { cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { Citation } from '@open-webui-react-native/mobile/chat/features/use-citations';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import {
   AppModal,
   AppModalProps,
   AppScrollView,
   AppText,
   View,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { calculatePercentage, getRelevanceColor } from './utils';
 
 interface SourceCitationModalProps extends AppModalProps {

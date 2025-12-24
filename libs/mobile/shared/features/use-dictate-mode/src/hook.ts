@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useAudioRecorder } from '@open-web-ui-mobile-client-react-native/mobile/shared/features/use-audio-recorder';
-import { audioApi } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { getAudioFormData } from '@open-web-ui-mobile-client-react-native/shared/utils/files';
+import { useAudioRecorder } from '@open-webui-react-native/mobile/shared/features/use-audio-recorder';
+import { audioApi } from '@open-webui-react-native/shared/data-access/api';
+import { getAudioFormData } from '@open-webui-react-native/shared/utils/files';
 import { normalizeMetering } from './normalize-metering';
 
 export interface UseDictateModeArgs {
@@ -27,33 +27,28 @@ export const useDictateMode = ({
   onStopRecording,
   updateIntervalMillis = 400,
 }: UseDictateModeArgs): UseDictateModeResult => {
-  const { recorder, startRecording, stopRecording } = useAudioRecorder();
+  const { recorder, startRecording, isReady, stopRecording } = useAudioRecorder();
 
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [metering, setMetering] = useState<number | undefined>(undefined);
   const [durationMillis, setDurationMillis] = useState<number>(0);
 
   useEffect(() => {
-    const recorderStateInterval =
-      isRecording &&
-      setInterval(() => {
-        const { durationMillis, metering } = recorder.getStatus();
-        setDurationMillis(durationMillis);
-        setMetering(normalizeMetering(metering));
-      }, updateIntervalMillis);
-
-    if (!isRecording && recorderStateInterval) {
+    if (!isRecording || !isReady) {
       setDurationMillis(0);
       setMetering(undefined);
-      clearInterval(recorderStateInterval);
+
+      return;
     }
 
-    return () => {
-      if (recorderStateInterval) {
-        clearInterval(recorderStateInterval);
-      }
-    };
-  }, [isRecording]);
+    const interval = setInterval(() => {
+      const { durationMillis, metering } = recorder.getStatus();
+      setDurationMillis(durationMillis);
+      setMetering(normalizeMetering(metering));
+    }, updateIntervalMillis);
+
+    return () => clearInterval(interval);
+  }, [isRecording, isReady]);
 
   const { mutate: transcribeAudio, isPending: isTranscribing } = audioApi.useTranscribeAudio({
     onSuccess: (response) => {
@@ -71,10 +66,10 @@ export const useDictateMode = ({
     if (!isRecording) {
       return;
     }
+    setIsRecording(false);
 
     try {
       const uri = await stopRecording();
-      setIsRecording(false);
 
       if (!uri) {
         return;
@@ -88,8 +83,8 @@ export const useDictateMode = ({
   };
 
   const stopSpeechRecording = async (): Promise<void> => {
-    await stopRecording();
     setIsRecording(false);
+    await stopRecording();
     onStopRecording?.();
   };
 

@@ -8,7 +8,7 @@ import {
   View,
   Icon,
   AppInputProps,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 
 interface EditMessageInputProps<T extends FieldValues> extends AppInputProps {
   onSave: (message: string) => void;

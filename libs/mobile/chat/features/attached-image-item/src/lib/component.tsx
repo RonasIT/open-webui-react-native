@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
-import { AppImage, AppPressable, IconButton } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { ImageData } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { AppImage, AppPressable, IconButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { ImageData } from '@open-webui-react-native/shared/data-access/common';
 
 interface AttachedImageItemProps {
   image: ImageData;

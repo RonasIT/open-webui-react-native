@@ -1,9 +1,9 @@
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { shuffle, take } from 'lodash-es';
 import { ReactElement, useMemo } from 'react';
-import { cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
-import { AppText, View } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { appConfigurationApi } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { appConfigurationApi } from '@open-webui-react-native/shared/data-access/api';
 import { SuggestionsItemProps, SuggestionItem } from './components';
 import { suggestionsListConfig } from './config';
 

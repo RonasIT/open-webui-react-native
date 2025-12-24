@@ -1,7 +1,7 @@
 import { useSelector } from '@legendapp/state/react';
 import { useEffect } from 'react';
-import { appState$ } from '@open-web-ui-mobile-client-react-native/shared/data-access/app-state';
-import { queryClient } from '@open-web-ui-mobile-client-react-native/shared/data-access/query-client';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { WebSocketEventName } from '../enums';
 import { socketService } from '../service';
 

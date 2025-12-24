@@ -7,8 +7,8 @@ import {
   FullScreenSearchModalProps,
   Icon,
   View,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { AIModel, modelsApi } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { AIModel, modelsApi } from '@open-webui-react-native/shared/data-access/api';
 
 type SearchModelViewProps = Omit<FullScreenSearchModalProps<AIModel>, 'searchPlaceholder' | 'data' | 'renderTrigger'>;
 

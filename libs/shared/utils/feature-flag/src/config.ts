@@ -1,4 +1,4 @@
-import { AppEnvName } from '@open-web-ui-mobile-client-react-native/shared/utils/app-env';
+import { AppEnvName } from '@open-webui-react-native/shared/utils/app-env';
 import { FeatureID } from './enums';
 
 export const featureFlagConfig: Record<FeatureID, AppEnvName> = {
@@ -11,4 +11,5 @@ export const featureFlagConfig: Record<FeatureID, AppEnvName> = {
   [FeatureID.VOICE_MODE]: 'development',
   [FeatureID.USER_EDIT_MESSAGE]: 'production',
   [FeatureID.AI_EDIT_MESSAGE]: 'development',
+  [FeatureID.AI_REGENERATE_MESSAGE]: 'development',
 };

@@ -1,8 +1,8 @@
 import { ImageRef, Image } from 'expo-image';
 import { ReactElement, useEffect, useState } from 'react';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import { AppImage, AppImageProps, AppPressable } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { appStorageService } from '@open-web-ui-mobile-client-react-native/shared/data-access/storage';
+import { AppImage, AppImageProps, AppPressable } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { ImageSkeleton } from '../image-skeleton';
 
 export interface AttachedImageViewProps extends AppImageProps {

@@ -2,18 +2,34 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { compact, debounce, delay } from 'lodash-es';
 import { ForwardedRef, Fragment, ReactElement, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { ShareChatModal } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/share-chat-modal';
+import { ShareChatModal } from '@open-webui-react-native/mobile/chat/features/share-chat-modal';
+import {
+  FolderSearchItem,
+  useFolderSearchList,
+} from '@open-webui-react-native/mobile/chat/utils/use-folder-search-list';
+import {
+  UpsertFolderSheet,
+  UpsertFolderSheetMethods,
+} from '@open-webui-react-native/mobile/folder/features/upsert-folder-sheet';
 import {
   ActionButtonsModal,
   ActionButtonsModalMethods,
   ActionsBottomSheet,
-  ActionSheetItemProps,
   ActionsBottomSheetProps,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { Chat, chatApi, ChatListItem } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { withOfflineGuard } from '@open-web-ui-mobile-client-react-native/shared/features/network';
-import { alertService } from '@open-web-ui-mobile-client-react-native/shared/utils/alert-service';
-import { FeatureID, isFeatureEnabled } from '@open-web-ui-mobile-client-react-native/shared/utils/feature-flag';
+  ActionSheetItemProps,
+  FullScreenSearchModal,
+  FullScreenSearchModalMethods,
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import {
+  Chat,
+  chatApi,
+  ChatListItem,
+  foldersApi,
+  MockFolderItemIds,
+} from '@open-webui-react-native/shared/data-access/api';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
+import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
+import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { DownloadChatOptionsSheet } from './components';
 import { ChatAction } from './enums';
 
@@ -35,12 +51,16 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
   const renameModalRef = useRef<ActionButtonsModalMethods>(null);
   const shareChatModalRef = useRef<BottomSheetModal>(null);
   const downloadOptionsModalRef = useRef<BottomSheetModal>(null);
+  const fullScreenSearchModalRef = useRef<FullScreenSearchModalMethods>(null);
+  const upsertFolderSheetRef = useRef<UpsertFolderSheetMethods>(null);
 
   const { mutateAsync: updateChat, isPending: isUpdating } = chatApi.useUpdate();
+  const { mutateAsync: updateChatFolder } = chatApi.useUpdateChatFolder();
   const { mutateAsync: deleteChat, isPending: isDeleting } = chatApi.useDelete();
   const { mutateAsync: pinChat, isPending: isPinning } = chatApi.usePinChat();
   const { mutateAsync: cloneChat, isPending: isCloning } = chatApi.useCloneChat();
   const { mutateAsync: archiveChat, isPending: isArchiving } = chatApi.useArchiveChat();
+  const { data: folders } = foldersApi.useGetFolders();
 
   const [activeChat, setActiveChat] = useState<ChatListItem | null>(null);
   const [folderId, setFolderId] = useState<string | undefined>(undefined);
@@ -69,6 +89,17 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
 
   const chatId = activeChat?.id ?? '';
   const chatTitle = activeChat?.title ?? '';
+  const { data: chatFullData } = chatApi.useGet(chatId, { enabled: !!chatId });
+
+  const openCreateFolderModal = (): void => {
+    upsertFolderSheetRef.current?.present();
+  };
+
+  const { emptyFolders } = useFolderSearchList({
+    noFolderText: translate('MOVE_CHAT_TO_FOLDER_MODAL.TEXT_NO_FOLDER'),
+    createFolderText: translate('MOVE_CHAT_TO_FOLDER_MODAL.TEXT_CREATE_NEW_FOLDER'),
+    onCreateFolderPress: openCreateFolderModal,
+  });
 
   const handleAction = useMemo(
     () =>
@@ -77,6 +108,9 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
           setIsLoading(true);
 
           switch (action) {
+            case ChatAction.MOVE_TO_FOLDER:
+              await moveToFolderHandler();
+              break;
             case ChatAction.PIN:
               await pinChatHandler();
               break;
@@ -142,6 +176,11 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
     shareChatModalRef.current?.present();
   };
 
+  const moveToFolderHandler = async (): Promise<void> => {
+    await closeActionsModal();
+    fullScreenSearchModalRef.current?.present();
+  };
+
   const pinChatHandler = async (): Promise<void> => {
     await pinChat({ id: chatId, isPinned: !!isPinned });
     closeActionsModal();
@@ -169,7 +208,21 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
     closeActionsModal();
   };
 
+  const onFolderSelectedHandler = async (id: string | null): Promise<void> => {
+    await updateChatFolder({
+      id: chatId,
+      folderId: id === MockFolderItemIds.NO_FOLDER_ID ? null : id,
+      oldFolderId: chatFullData?.folderId,
+    });
+    fullScreenSearchModalRef.current?.close();
+  };
+
   const actions: Array<ActionSheetItemProps> = compact([
+    {
+      title: translate('TEXT_MOVE_TO_FOLDER'),
+      iconName: 'folderPlus',
+      onPress: () => handleAction(ChatAction.MOVE_TO_FOLDER),
+    },
     {
       title: isPinned ? translate('TEXT_UNPIN') : translate('TEXT_PIN'),
       iconName: isPinned ? 'unpin' : 'pin',
@@ -215,6 +268,15 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
       />
       <ShareChatModal ref={shareChatModalRef} chatId={chatId} />
       <DownloadChatOptionsSheet ref={downloadOptionsModalRef} chatId={chatId} />
+      <FullScreenSearchModal
+        data={folders || []}
+        unfilteredData={emptyFolders as Array<FolderSearchItem>}
+        selectedItemId={folderId}
+        ref={fullScreenSearchModalRef}
+        onSelectItem={onFolderSelectedHandler}
+        searchPlaceholder={translate('MOVE_CHAT_TO_FOLDER_MODAL.TEXT_SEARCH_FOLDER')}
+        modalComponent={<UpsertFolderSheet ref={upsertFolderSheetRef} />}
+      />
     </Fragment>
   );
 }

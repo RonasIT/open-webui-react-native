@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { SvgProps } from 'react-native-svg';
-import { withClassNameInterop, cn } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/styles';
+import { withClassNameInterop, cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { Icons } from '../assets';
 import { IconName } from './types';
 

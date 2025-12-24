@@ -1,7 +1,7 @@
 import { createEntityInstance, EntityPartial } from '@ronas-it/rtkq-entity-api';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
-import { getApiService } from '@open-web-ui-mobile-client-react-native/shared/data-access/api-client';
-import { EntityPromiseService } from '@open-web-ui-mobile-client-react-native/shared/data-access/base-entity';
+import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
+import { EntityPromiseService } from '@open-webui-react-native/shared/data-access/base-entity';
 import { chatServiceConfig } from './configs';
 import {
   ChatListItem,
@@ -12,6 +12,7 @@ import {
   CreateNewChatRequest,
   GetArchivedChatListRequest,
   GetChatListRequest,
+  MoveChatToFolderRequest,
   SearchChatListRequest,
   ShareChatResponse,
 } from './models';
@@ -75,6 +76,14 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
     });
 
     const response = await getApiService().post<ChatResponse>(`${this.endpoint}/${updatedEntity.id}`, updatedEntity);
+
+    return createEntityInstance<ChatResponse>(ChatResponse, response);
+  }
+
+  public async updateChatFolder(params: MoveChatToFolderRequest): Promise<ChatResponse> {
+    const request = instanceToPlain<MoveChatToFolderRequest>(new MoveChatToFolderRequest(params));
+
+    const response = await getApiService().post<ChatResponse>(`${this.endpoint}/${request.id}/folder`, request);
 
     return createEntityInstance<ChatResponse>(ChatResponse, response);
   }

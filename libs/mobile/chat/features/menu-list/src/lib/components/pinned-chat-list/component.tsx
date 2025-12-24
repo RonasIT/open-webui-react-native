@@ -3,10 +3,10 @@ import { ReactElement, useRef } from 'react';
 import {
   ChatActionsMenuSheet,
   ChatActionsMenuSheetMethods,
-} from '@open-web-ui-mobile-client-react-native/mobile/shared/features/chat-actions-menu-sheet';
-import { ChatListRow } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/chat-list-row';
-import { AppText, View } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { ChatListItem } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
+} from '@open-webui-react-native/mobile/shared/features/chat-actions-menu-sheet';
+import { ChatListRow } from '@open-webui-react-native/mobile/shared/ui/chat-list-row';
+import { AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { ChatListItem } from '@open-webui-react-native/shared/data-access/api';
 
 export interface PinnedChatListProps {
   chats: Array<ChatListItem>;

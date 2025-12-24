@@ -1,14 +1,25 @@
 import { FlashList } from '@shopify/flash-list';
+import { useLocalSearchParams } from 'expo-router';
 import { delay } from 'lodash-es';
 import { ReactElement, useCallback, useRef, useState } from 'react';
 import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { useSharedValue, withTiming } from 'react-native-reanimated';
-import { AiMessageActions } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/ai-message-actions';
-import { useManageMessageSiblings } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/use-manage-messages-siblings';
-import { UserMessageActions } from '@open-web-ui-mobile-client-react-native/mobile/chat/features/user-message-actions';
-import { View, AppFlashList } from '@open-web-ui-mobile-client-react-native/mobile/shared/ui/ui-kit';
-import { History as ChatHistory, Message } from '@open-web-ui-mobile-client-react-native/shared/data-access/api';
-import { Role } from '@open-web-ui-mobile-client-react-native/shared/data-access/common';
+import { AiMessageActions } from '@open-webui-react-native/mobile/chat/features/ai-message-actions';
+import { useManageMessageSiblings } from '@open-webui-react-native/mobile/chat/features/use-manage-messages-siblings';
+import { UserMessageActions } from '@open-webui-react-native/mobile/chat/features/user-message-actions';
+import { useSetSelectedModel } from '@open-webui-react-native/mobile/shared/features/use-set-selected-model';
+import { View, AppFlashList } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { ChatScreenParams } from '@open-webui-react-native/mobile/shared/utils/navigation';
+import {
+  Chat,
+  chatApi,
+  History as ChatHistory,
+  Message,
+  patchChatQueryData,
+  prepareCompleteChatPayload,
+} from '@open-webui-react-native/shared/data-access/api';
+import { Role } from '@open-webui-react-native/shared/data-access/common';
+import { socketService } from '@open-webui-react-native/shared/data-access/websocket';
 import { ChatAiMessage } from '../ai-message';
 import { ChatBottomButton } from '../chat-bottom-button';
 import { ChatUserMessage } from '../user-message';
@@ -18,9 +29,10 @@ interface ChatMessagesListProps {
   isMessagesListLoaded: boolean;
   onLayout: () => void;
   isInputFocusing: boolean;
+  onEditPress: (messageId: string, content: string) => void;
+  onSuggestPress: (messageId: string) => void;
   history?: ChatHistory;
   messages?: Array<Message>;
-  onEditPress: (messageId: string, content: string) => void;
   editingMessageId?: string;
 }
 
@@ -32,6 +44,7 @@ export default function ChatMessagesList({
   onLayout,
   isInputFocusing,
   onEditPress,
+  onSuggestPress,
   editingMessageId,
 }: ChatMessagesListProps): ReactElement {
   const listRef = useRef<FlashList<Message>>(null);
@@ -42,6 +55,9 @@ export default function ChatMessagesList({
   const [autoscrollToBottomThreshold, setAutoscrollToBottomThreshold] = useState<number | undefined>(1);
 
   const { showPreviousSibling, showNextSibling, getSiblingsInfo } = useManageMessageSiblings(chatId, history);
+  const { mutate: completeChat } = chatApi.useCompleteChat();
+  const { id }: ChatScreenParams = useLocalSearchParams();
+  const { modelId } = useSetSelectedModel(id);
 
   const handleContentSizeChange = (): void => {
     //NOTE: Needs to wait until the initial scroll to the bottom or content generation finished and not show the ChatBottomButton before
@@ -116,13 +132,49 @@ export default function ChatMessagesList({
     }, 1000);
   };
 
+  const handleContinueResponsePress = (messageId: string): void => {
+    if (!modelId) return;
+
+    patchChatQueryData(chatId, {
+      chat: {
+        history: {
+          messages: {
+            [messageId]: {
+              done: false,
+            },
+          },
+        },
+      } as Chat,
+    });
+
+    const completePayload = prepareCompleteChatPayload({
+      chatId,
+      messages,
+      messageId: messageId,
+      sessionId: socketService.socketSessionId,
+      model: modelId,
+    });
+    completeChat(completePayload);
+  };
+
   const renderItem = useCallback(
     ({ item, index }: { item: Message; index: number }) => {
       const message = history?.messages[item.id];
       if (!message) return null;
 
+      const lastAssistantMessageInUIList = [...messages]
+        .reverse()
+        .find((m) => history?.messages[m.id]?.role === Role.ASSISTANT);
+
+      const isLast = item.id === lastAssistantMessageInUIList?.id;
+
       return item.role === Role.ASSISTANT ? (
-        <AiMessageActions message={message} onEditPress={onEditPress}>
+        <AiMessageActions
+          message={message}
+          onEditPress={onEditPress}
+          onSuggestPress={onSuggestPress}
+          onContinueResponsePress={handleContinueResponsePress}
+          isLast={isLast}>
           <ChatAiMessage
             message={message}
             onEditPress={() => handleEditPress(index, message.id, message.content)}
@@ -144,7 +196,16 @@ export default function ChatMessagesList({
         </UserMessageActions>
       );
     },
-    [history, onEditPress, editingMessageId, showPreviousSibling, showNextSibling, getSiblingsInfo],
+    [
+      history,
+      onEditPress,
+      editingMessageId,
+      showPreviousSibling,
+      showNextSibling,
+      getSiblingsInfo,
+      modelId,
+      onSuggestPress,
+    ],
   );
 
   return (
