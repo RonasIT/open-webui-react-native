@@ -40,6 +40,7 @@ export function ChatMenuList({
   const chatActionsSheetRef = useRef<ChatActionsMenuSheetMethods>(null);
   const listRef = useRef<FlashList<ChatListItem>>(null);
   const previousIsRefetchingRef = useRef<boolean>(false);
+  const scrollOffsetRef = useRef(0);
 
   const [isFirstLoading, setIsFirstLoading] = useState<boolean>(true);
 
@@ -89,11 +90,14 @@ export function ChatMenuList({
     [onChatPress],
   );
 
-  // NOTE: Reset scroll position when refresh completes to remove extra space left by refresh control
+  // NOTE: Reset scroll position when auto refresh completes to remove extra space left by refresh control
   useEffect(() => {
-    if (previousIsRefetchingRef.current && !isRefetching && listRef.current) {
+    const wasRefetching = previousIsRefetchingRef.current;
+
+    if (wasRefetching && !isRefetching && listRef.current && scrollOffsetRef.current > 0) {
       listRef.current.scrollToOffset({ offset: 0, animated: false });
     }
+
     previousIsRefetchingRef.current = isRefetching;
   }, [isRefetching]);
 
@@ -110,6 +114,9 @@ export function ChatMenuList({
           data={chats || []}
           estimatedItemSize={52}
           renderItem={renderItem}
+          onScroll={(e) => {
+            scrollOffsetRef.current = e.nativeEvent.contentOffset.y;
+          }}
           transformSectionTitle={transformSectionTitle}
           onEndReached={fetchNextPage}
           refreshControl={<AppRefreshControl onRefresh={refetch} refreshing={isRefetching} />}
