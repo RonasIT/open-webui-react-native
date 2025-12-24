@@ -13,6 +13,8 @@ import { patchCompletedMessage } from '../patch-completed-message';
 
 // NOTE: We get the source info only in the first chunk, so we need to save it until the AI response is fully generated.
 const sourcesStore: Record<string, ChatCompletionChunk['sources']> = {};
+const flushScheduled: Record<string, boolean> = {};
+const contentBuffer: Record<string, string> = {};
 
 export const handleChatCompletionEvent = async (socketResponse: ChatEventBase): Promise<void> => {
   const sessionId = socketService.socketSessionId;
@@ -25,15 +27,24 @@ export const handleChatCompletionEvent = async (socketResponse: ChatEventBase): 
   }
 
   if (!chatCompletionData?.content) return;
+  contentBuffer[chatId] = chatCompletionData.content;
 
   const queryKey = chatQueriesKeys.get(chatId).queryKey;
   const chatData = queryClient.getQueryData<ChatResponse>(queryKey);
   const storedSources = sourcesStore[chatId];
 
-  if (chatData) {
-    queryClient.setQueryData(queryKey, (oldData: ChatResponse) =>
-      patchChatMessagesWithCompletion(oldData, chatCompletionData.content, storedSources),
-    );
+  // NOTE: Limit updates to once per frame (~16ms) because frequent streaming updates
+  // can cause UI unresponsiveness on low-end Android devices.
+  if (!flushScheduled[chatId] && chatData) {
+    flushScheduled[chatId] = true;
+
+    requestAnimationFrame(() => {
+      flushScheduled[chatId] = false;
+
+      queryClient.setQueryData(queryKey, (oldData: ChatResponse) =>
+        patchChatMessagesWithCompletion(oldData, contentBuffer[chatId], storedSources),
+      );
+    });
   }
 
   if (chatCompletionData.done) {
