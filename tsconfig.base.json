@@ -86,6 +86,9 @@
       "@open-webui-react-native/mobile/chat/features/source-citation-modal": [
         "libs/mobile/chat/features/source-citation-modal/src/index.ts"
       ],
+      "@open-webui-react-native/mobile/chat/features/suggest-change-input": [
+        "libs/mobile/chat/features/suggest-change-input/src/index.ts"
+      ],
       "@open-webui-react-native/mobile/chat/features/suggestions-list": [
         "libs/mobile/chat/features/suggestions-list/src/index.ts"
       ],
@@ -104,6 +107,9 @@
       "@open-webui-react-native/mobile/chat/features/use-send-message": [
         "libs/mobile/chat/features/use-send-message/src/index.ts"
       ],
+      "@open-webui-react-native/mobile/chat/features/use-suggest-change": [
+        "libs/mobile/chat/features/use-suggest-change/src/index.ts"
+      ],
       "@open-webui-react-native/mobile/chat/features/user-message-actions": [
         "libs/mobile/chat/features/user-message-actions/src/index.ts"
       ],
@@ -116,6 +122,9 @@
       ],
       "@open-webui-react-native/mobile/chat/ui/source-citation-item": [
         "libs/mobile/chat/ui/source-citation-item/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/chat/utils/use-folder-search-list": [
+        "libs/mobile/chat/utils/use-folder-search-list/src/index.ts"
       ],
       "@open-webui-react-native/mobile/folder/features/chats-list": [
         "libs/mobile/folder/features/chats-list/src/index.ts"

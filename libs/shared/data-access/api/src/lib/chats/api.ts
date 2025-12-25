@@ -29,6 +29,7 @@ import {
   CompletedChat,
   CreateNewChatRequest,
   GetArchivedChatListRequest,
+  MoveChatToFolderRequest,
   ShareChatResponse,
 } from './models';
 import { chatService } from './service';
@@ -110,6 +111,7 @@ function useGet(
 
       return result;
     },
+    staleTime: 5000, //NOTE Needs to avoid simultaneous requests for the same chat
     ...options,
   });
 
@@ -226,6 +228,80 @@ export function useUpdate(
   });
 }
 
+export function useUpdateChatFolder(
+  options?: UseMutationOptions<
+    ChatResponse,
+    AxiosError<ApiErrorData>,
+    MoveChatToFolderRequest & { oldFolderId?: string | null }
+  >,
+): UseMutationResult<
+  ChatResponse,
+  AxiosError<ApiErrorData>,
+  MoveChatToFolderRequest & { oldFolderId?: string | null }
+> {
+  return useMutation({
+    mutationFn: (params) => chatService.updateChatFolder(params),
+
+    onSuccess: (chat, variables) => {
+      const oldFolderId = variables.oldFolderId ?? null;
+      const newFolderId = chat.folderId ?? null;
+
+      patchChatQueryData(chat.id, { folderId: newFolderId });
+
+      queryClient.setQueryData<InfiniteData<Array<ChatListItem>, number>>(
+        chatServiceConfig.getChatListQueryKey,
+        (draft) => {
+          if (!draft) return;
+
+          const pages = draft.pages.map((page) => page.filter((item) => item.id !== chat.id));
+
+          if (!newFolderId) {
+            pages[0] = [{ ...chat } as ChatListItem, ...pages[0]];
+          }
+
+          return { pages, pageParams: draft.pageParams };
+        },
+      );
+
+      queryClient.setQueryData<Array<ChatListItem>>(chatServiceConfig.getPinnedChatListQueryKey, (draft) =>
+        draft?.map((item) => (item.id === chat.id ? { ...item, folderId: newFolderId } : item)),
+      );
+
+      invalidateSearchChatsQuery();
+
+      if (oldFolderId) {
+        queryClient.setQueryData<InfiniteData<Array<ChatListItem>, number>>(
+          foldersApiConfig.getFolderChatListQueryKey(oldFolderId),
+          (draft) => {
+            if (!draft) return;
+
+            const pages = draft.pages.map((page) => page.filter((item) => item.id !== chat.id));
+
+            return { pages, pageParams: draft.pageParams };
+          },
+        );
+      }
+
+      if (newFolderId) {
+        queryClient.setQueryData<InfiniteData<Array<ChatListItem>, number>>(
+          foldersApiConfig.getFolderChatListQueryKey(newFolderId),
+          (draft) => {
+            if (!draft) return;
+
+            const pages = draft.pages.map((page) => page.filter((item) => item.id !== chat.id));
+
+            pages[0] = [{ ...chat } as ChatListItem, ...pages[0]];
+
+            return { pages, pageParams: draft.pageParams };
+          },
+        );
+      }
+    },
+
+    ...options,
+  });
+}
+
 export function useDelete(
   options?: UseMutationOptions<void, AxiosError<ApiErrorData>, { id: string; folderId?: string }>,
 ): UseMutationResult<void, AxiosError<ApiErrorData>, { id: string; folderId?: string }> {
@@ -233,7 +309,7 @@ export function useDelete(
     mutationFn: ({ id }) => chatService.delete(id),
     onSuccess: (_, { id, folderId }) => {
       // useGet query
-      queryClient.removeQueries({ queryKey: chatQueriesKeys.get(id).queryKey });
+      queryClient.setQueryData(chatQueriesKeys.get(id).queryKey, undefined);
 
       // useGetChatList query
       queryClient.setQueryData<InfiniteData<Array<ChatListItem>, number>>(
@@ -653,4 +729,5 @@ export const chatApi = {
   useUnarchiveChat,
   useGetArchivedChatList,
   useGetAllArchivedChatsJson,
+  useUpdateChatFolder,
 };

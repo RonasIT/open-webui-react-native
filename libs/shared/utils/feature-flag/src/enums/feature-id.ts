@@ -8,4 +8,5 @@ export enum FeatureID {
   VOICE_MODE = 'voice-mode', // https://app.clickup.com/t/24336023/PRD-1946
   USER_EDIT_MESSAGE = 'user-edit-message', // https://app.clickup.com/t/24336023/PRD-1976
   AI_EDIT_MESSAGE = 'ai-edit-message', // https://app.clickup.com/t/24336023/PRD-1976
+  AI_REGENERATE_MESSAGE = 'ai-regenerate-message', // https://app.clickup.com/t/24336023/PRD-2009
 }

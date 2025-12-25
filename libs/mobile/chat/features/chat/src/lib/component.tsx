@@ -7,8 +7,10 @@ import { useForm } from 'react-hook-form';
 import { InteractionManager } from 'react-native';
 import { EditMessageInput } from '@open-webui-react-native/mobile/chat/features/edit-message-input';
 import { FormChatInput, FormChatInputSchema } from '@open-webui-react-native/mobile/chat/features/form-chat-input';
+import { SuggestChangeInput } from '@open-webui-react-native/mobile/chat/features/suggest-change-input';
 import { useEditMessage } from '@open-webui-react-native/mobile/chat/features/use-edit-message';
 import { useSendMessage } from '@open-webui-react-native/mobile/chat/features/use-send-message';
+import { useSuggestChange } from '@open-webui-react-native/mobile/chat/features/use-suggest-change';
 import { useAttachedFiles } from '@open-webui-react-native/mobile/shared/features/use-attached-files';
 import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { AppKeyboardControllerView, AppSpinner, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
@@ -19,6 +21,7 @@ import { useSubscribeToQueryCache } from '@open-webui-react-native/shared/data-a
 import { webSocketConfig, webSocketState$ } from '@open-webui-react-native/shared/data-access/websocket';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { useAppStateChange } from '@open-webui-react-native/shared/utils/use-app-state-change';
+import { ActiveInputMode } from './enums';
 import { patchNewChat } from './utils';
 
 const LazyChatMessagesList = React.lazy(() => import('./components/messages-list/component'));
@@ -32,6 +35,7 @@ interface ChatProps {
 
 export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: ChatProps): ReactElement {
   const translate = useTranslation('CHAT.CHAT');
+  const translateRegeneratePrompt = useTranslation('CHAT.AI_MESSAGE_ACTIONS.REGENERATE_MESSAGE_ACTION_SHEET');
 
   const [isInputFocusing, setIsInputFocusing] = useState(false); //NOTE: Needs to avoid ChatBottomButton jumping when auto-scrolling after focus
 
@@ -39,6 +43,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
 
   const [isMessagesListLoaded, setIsMessagesListLoaded] = useState(false);
   const [isChatVisible, setIsChatVisible] = useState(false);
+  const [activeInputMode, setActiveInputMode] = useState<ActiveInputMode | null>(null);
 
   const {
     attachedFiles,
@@ -60,6 +65,15 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
     saveMessage,
     sendEditedMessage,
   } = useEditMessage({ chat, modelId: selectedModelId });
+
+  const {
+    suggestingMessageId,
+    startSuggesting,
+    cancelSuggesting,
+    control: suggestMessageControl,
+    submitSuggestion,
+    regenerateWithSuggestion,
+  } = useSuggestChange({ chat, modelId: selectedModelId });
 
   const history = chat?.chat.history;
   const isResponseGenerating = !history?.messages[history.currentId].done;
@@ -100,6 +114,47 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
     }, 1000);
   };
 
+  const handleStartEditing = (messageId: string, content: string): void => {
+    if (activeInputMode === ActiveInputMode.SUGGEST) cancelSuggesting();
+
+    startEditing(messageId, content);
+    setActiveInputMode(ActiveInputMode.EDIT);
+  };
+
+  const handleStartSuggesting = (messageId: string): void => {
+    if (activeInputMode === ActiveInputMode.EDIT) cancelEditing();
+
+    startSuggesting(messageId);
+    setActiveInputMode(ActiveInputMode.SUGGEST);
+  };
+
+  const cancelEditingWrapper = (): void => {
+    cancelEditing();
+    setActiveInputMode(null);
+  };
+
+  const cancelSuggestingWrapper = (): void => {
+    cancelSuggesting();
+    setActiveInputMode(null);
+  };
+
+  const handleQuickSuggestion = (messageId: string, message: string): void => {
+    // NOTE: Quick suggestions should not open the suggest input, they should immediately trigger regeneration
+    void regenerateWithSuggestion(messageId, message);
+  };
+
+  const handleTryAgain = (messageId: string): void => {
+    handleQuickSuggestion(messageId, '');
+  };
+
+  const handleAddDetails = (messageId: string): void => {
+    handleQuickSuggestion(messageId, translateRegeneratePrompt('TEXT_ADD_DETAILS'));
+  };
+
+  const handleMoreConcise = (messageId: string): void => {
+    handleQuickSuggestion(messageId, translateRegeneratePrompt('TEXT_MORE_CONCISE'));
+  };
+
   const onSubmit = (options: Array<ChatGenerationOption>): Promise<void> =>
     handleSubmit(({ inputValue }: FormValues<FormChatInputSchema>): void => {
       if (!selectedModelId) {
@@ -137,7 +192,11 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
       {isChatVisible && (
         <React.Suspense fallback={null}>
           <LazyChatMessagesList
-            onEditPress={startEditing}
+            onEditPress={handleStartEditing}
+            onSuggestPress={handleStartSuggesting}
+            onTryAgain={handleTryAgain}
+            onAddDetails={handleAddDetails}
+            onMoreConcise={handleMoreConcise}
             chatId={chatId}
             isInputFocusing={isInputFocusing}
             messages={chat?.chat.messages ?? []}
@@ -149,15 +208,23 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
         </React.Suspense>
       )}
       <View className={cn('pb-safe android:pb-16 pt-8 px-16', shouldHideContent && 'opacity-0')}>
-        {editingMessageId ? (
+        {activeInputMode === ActiveInputMode.EDIT && editingMessageId ? (
           <EditMessageInput
             control={editMessageControl}
             name='editMessageInputValue'
             autoFocus={true}
             onSave={saveMessage}
-            onCancel={cancelEditing}
+            onCancel={cancelEditingWrapper}
             onSend={sendEditedMessage}
             isAiMessage={history?.messages[editingMessageId]?.role === Role.ASSISTANT}
+          />
+        ) : activeInputMode === ActiveInputMode.SUGGEST && suggestingMessageId ? (
+          <SuggestChangeInput
+            control={suggestMessageControl}
+            name='suggestionInputValue'
+            autoFocus
+            onCancel={cancelSuggestingWrapper}
+            onSend={submitSuggestion}
           />
         ) : (
           <FormChatInput
@@ -173,8 +240,9 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
             attachedImages={attachedImages}
             onImageUploaded={handleImageUploaded}
             onDeleteImagePress={handleDeleteImage}
-            chatId={chatId}
             modelId={selectedModelId}
+            isResponseGenerating={isResponseGenerating}
+            chat={chat}
           />
         )}
       </View>

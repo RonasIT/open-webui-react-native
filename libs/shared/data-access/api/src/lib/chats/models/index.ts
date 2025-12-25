@@ -15,3 +15,4 @@ export * from './chat-message';
 export * from './chat-message-content';
 export * from './get-archived-chat-list-request';
 export * from './features';
+export * from './move-chat-to-folder-request';

@@ -17,7 +17,7 @@ export function patchChatMessagesWithCompletion(
   const { chat } = oldData;
   const { messages, history } = chat;
 
-  const lastMessage = messages[messages.length - 1];
+  const lastMessage = history.messages[history.currentId];
   if (lastMessage.role !== Role.ASSISTANT) return oldData;
 
   const updatedLastMessage: Message = {
@@ -41,6 +41,7 @@ export function patchChatMessagesWithCompletion(
     ? {
         ...history,
         messages: updatedHistoryMessages,
+        lastAssistantMessage: history?.lastAssistantMessage ?? updatedLastMessage,
       }
     : history;
 

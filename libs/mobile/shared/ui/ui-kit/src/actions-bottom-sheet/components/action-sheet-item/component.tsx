@@ -14,6 +14,7 @@ export interface ActionSheetItemProps extends AppPressableProps {
   iconProps?: Partial<IconProps>;
   isLoading?: boolean;
   isDanger?: boolean;
+  hasSubActions?: boolean;
 }
 
 export function ActionSheetItem({
@@ -25,6 +26,7 @@ export function ActionSheetItem({
   iconProps,
   isLoading,
   isDanger,
+  hasSubActions = false,
   ...restProps
 }: ActionSheetItemProps): ReactElement {
   return (
@@ -50,6 +52,11 @@ export function ActionSheetItem({
         )
       )}
       <AppText className={cn(`text-md-sm sm:text-md`, isDanger && 'text-status-danger')}>{title}</AppText>
+      {hasSubActions && (
+        <View className='ml-auto'>
+          <Icon name='chevronRight' />
+        </View>
+      )}
     </AppPressable>
   );
 }
