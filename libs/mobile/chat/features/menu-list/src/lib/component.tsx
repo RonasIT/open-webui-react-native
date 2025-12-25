@@ -1,5 +1,5 @@
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
-import { FlashList } from '@shopify/flash-list';
+import { useFocusEffect } from 'expo-router';
 import { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import {
   ChatActionsMenuSheet,
@@ -38,9 +38,7 @@ export function ChatMenuList({
 }: ChatMenuListProps): ReactElement {
   const translate = useTranslation('CHAT.CHAT_MENU_LIST');
   const chatActionsSheetRef = useRef<ChatActionsMenuSheetMethods>(null);
-  const listRef = useRef<FlashList<ChatListItem>>(null);
-  const previousIsRefetchingRef = useRef<boolean>(false);
-  const scrollOffsetRef = useRef(0);
+  const isScreenFocusedRef = useRef(false);
 
   const [isFirstLoading, setIsFirstLoading] = useState<boolean>(true);
 
@@ -78,6 +76,16 @@ export function ChatMenuList({
     }
   }, [isFirstLoading, isRefetching]);
 
+  useFocusEffect(
+    useCallback(() => {
+      isScreenFocusedRef.current = true;
+
+      return () => {
+        isScreenFocusedRef.current = false;
+      };
+    }, []),
+  );
+
   const renderItem = useCallback(
     ({ item }: { item: ChatListItem }) => (
       <ChatListRow
@@ -90,17 +98,6 @@ export function ChatMenuList({
     [onChatPress],
   );
 
-  // NOTE: Reset scroll position when auto refresh completes to remove extra space left by refresh control
-  useEffect(() => {
-    const wasRefetching = previousIsRefetchingRef.current;
-
-    if (wasRefetching && !isRefetching && listRef.current && scrollOffsetRef.current > 0) {
-      listRef.current.scrollToOffset({ offset: 0, animated: false });
-    }
-
-    previousIsRefetchingRef.current = isRefetching;
-  }, [isRefetching]);
-
   return (
     <View className='flex-1'>
       <PressableSearchInput onPress={onSearchPress} containerClassName='mx-16 pt-8' />
@@ -110,16 +107,14 @@ export function ChatMenuList({
         </View>
       ) : (
         <DateSectionList
-          ref={listRef}
           data={chats || []}
           estimatedItemSize={52}
           renderItem={renderItem}
-          onScroll={(e) => {
-            scrollOffsetRef.current = e.nativeEvent.contentOffset.y;
-          }}
           transformSectionTitle={transformSectionTitle}
           onEndReached={fetchNextPage}
-          refreshControl={<AppRefreshControl onRefresh={refetch} refreshing={isRefetching} />}
+          refreshControl={
+            <AppRefreshControl onRefresh={refetch} refreshing={isScreenFocusedRef.current && isRefetching} />
+          }
           ListHeaderComponent={
             <View>
               {isFeatureEnabled(FeatureID.CHAT_FOLDERS) && (
