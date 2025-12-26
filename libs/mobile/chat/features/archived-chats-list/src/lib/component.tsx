@@ -17,6 +17,7 @@ import {
   PressableSearchInput,
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { useBottomInset } from '@open-webui-react-native/mobile/shared/utils/use-bottom-inset';
 import { chatApi, ChatListItem } from '@open-webui-react-native/shared/data-access/api';
 import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
 import { ArchivedChatsActionsSheet } from './components';
@@ -33,6 +34,7 @@ export function ArchivedChatsList({
   onSearchPress,
 }: ArchivedChatsListProps): ReactElement {
   const translate = useTranslation('CHAT.ARCHIVED_CHATS_LIST');
+  const bottomInset = useBottomInset();
 
   const { filters, selectedFilter, handleFilterPress, resetFilter } = useSearchFilters();
 
@@ -110,7 +112,7 @@ export function ArchivedChatsList({
               ListEmptyComponent={
                 <ListEmptyComponent containerClassName='mt-16' description={translate('TEXT_NO_CHATS')} />
               }
-              contentContainerClassName='pb-safe android:pb-16'
+              contentContainerStyle={{ paddingBottom: bottomInset }}
             />
           )}
         </View>

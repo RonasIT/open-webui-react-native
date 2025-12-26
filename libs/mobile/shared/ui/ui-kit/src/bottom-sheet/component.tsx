@@ -28,6 +28,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SetOptional } from 'type-fest';
 import { cn, screenHeight } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { uiState$ } from '@open-webui-react-native/mobile/shared/ui/ui-state';
+import { useBottomInset } from '@open-webui-react-native/mobile/shared/utils/use-bottom-inset';
 import { View } from '../view';
 
 type NativeWindProps = {
@@ -94,7 +95,8 @@ export function AppBottomSheet({
   ...restProps
 }: AppBottomSheetPropsType): ReactElement {
   const { top } = useSafeAreaInsets();
-  const { keyboardHeight, keyboardShown } = useKeyboard();
+  const bottomInset = useBottomInset();
+  const { keyboardShown } = useKeyboard();
   const elementRef = useRef<BottomSheetModal>(null);
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
 
@@ -132,9 +134,7 @@ export function AppBottomSheet({
     <View className='flex-1 px-content-offset pt-content-offset'>{content}</View>
   ) : (
     <BottomSheetView>
-      <View
-        className='px-content-offset pt-content-offset pb-safe android:pb-16'
-        style={keyboardShown && !withoutKeyboardExtraPadding ? { paddingBottom: keyboardHeight } : undefined}>
+      <View className='px-content-offset pt-content-offset' style={{ paddingBottom: bottomInset }}>
         {content}
       </View>
     </BottomSheetView>

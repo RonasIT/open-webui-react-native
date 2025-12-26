@@ -17,6 +17,7 @@ import {
   SearchInput,
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { useBottomInset } from '@open-webui-react-native/mobile/shared/utils/use-bottom-inset';
 import { chatApi, ChatListItem } from '@open-webui-react-native/shared/data-access/api';
 import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
 import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
@@ -28,6 +29,7 @@ interface SearchArchivedChatsProps {
 
 export function SearchArchivedChats({ onArchivedChatPress, onGoBack }: SearchArchivedChatsProps): ReactElement {
   const translate = useTranslation('CHAT.ARCHIVED_CHATS_LIST');
+  const bottomInset = useBottomInset();
 
   const { filters, selectedFilter, handleFilterPress } = useSearchFilters();
 
@@ -85,7 +87,7 @@ export function SearchArchivedChats({ onArchivedChatPress, onGoBack }: SearchArc
                 {isLoading ? <AppSpinner /> : <ListEmptyComponent description={translate('TEXT_NO_CHATS')} />}
               </View>
             }
-            contentContainerClassName='pb-safe android:pb-16'
+            contentContainerStyle={{ paddingBottom: bottomInset }}
           />
         </AnimatedView>
       )}
