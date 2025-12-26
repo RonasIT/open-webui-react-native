@@ -1,6 +1,8 @@
 import { FlashList, FlashListProps } from '@shopify/flash-list';
 import { cssInterop } from 'nativewind';
-import { ReactElement, Ref } from 'react';
+import React, { ReactElement, Ref } from 'react';
+
+type FlashListInstance<T> = React.ComponentRef<typeof FlashList<T>>;
 
 const CustomizedFlashList = cssInterop(FlashList, {
   className: 'style',
@@ -12,7 +14,7 @@ const CustomizedFlashList = cssInterop(FlashList, {
 export interface AppFlashListProps<TItem> extends FlashListProps<TItem> {
   className?: string;
   contentContainerClassName?: string;
-  ref?: Ref<FlashList<TItem>>;
+  ref?: Ref<FlashListInstance<TItem>>;
 }
 
 export function AppFlashList<TItem>(props: AppFlashListProps<TItem>): ReactElement {

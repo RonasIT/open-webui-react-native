@@ -45,7 +45,7 @@ export default function ChatListScreen(): ReactElement {
 
   return (
     <ScreenWrapper safeAreaProps={{ edges: [] }} screenProps={{ noOutsideSpacing: true, scrollDisabled: true }}>
-      <View className='flex-1 bg-background-primary mt-safe'>
+      <View className='flex-1 bg-background-primary ios:mt-safe'>
         <AppHeader
           className='mt-0'
           title={translate('TEXT_CHATS')}

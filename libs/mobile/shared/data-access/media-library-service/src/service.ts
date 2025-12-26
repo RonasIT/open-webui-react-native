@@ -1,5 +1,5 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import * as MediaLibrary from 'expo-media-library';
 import { permissionAlertService } from '@open-webui-react-native/shared/utils/permission-alert';
 

@@ -73,12 +73,8 @@ export function DateSectionList<TItem>({
     [sectionedData, renderItem, sectionTitleProps],
   );
 
-  return (
-    <ListComponent
-      data={sectionedData as Array<TItem>}
-      renderItem={renderListItem}
-      estimatedItemSize={100}
-      {...restProps}
-    />
-  );
+  return <ListComponent
+    data={sectionedData as Array<TItem>}
+    renderItem={renderListItem}
+    {...restProps} />;
 }

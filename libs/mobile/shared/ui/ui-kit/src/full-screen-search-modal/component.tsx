@@ -1,7 +1,16 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 import { delay } from 'lodash-es';
-import { ForwardedRef, Fragment, ReactElement, Ref, useCallback, useImperativeHandle, useRef, useState } from 'react';
+import React, {
+  ForwardedRef,
+  Fragment,
+  ReactElement,
+  Ref,
+  useCallback,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import { InteractionManager } from 'react-native';
 import { FadeIn } from 'react-native-reanimated';
 // eslint-disable-next-line @nx/enforce-module-boundaries
@@ -43,7 +52,7 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
   modalComponent,
   ref,
 }: FullScreenSearchModalProps<Item>): ReactElement {
-  const listRef = useRef<FlashList<Item>>(null);
+  const listRef = useRef<React.ComponentRef<typeof FlashList<Item>>>(null);
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isAnimationCompleted, setIsAnimationCompleted] = useState<boolean>(false);
@@ -142,7 +151,7 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
             {isAnimationCompleted && (
               <AnimatedView className='flex-1' entering={FadeIn.duration(50)}>
                 <AppFlashList
-                  ref={listRef as Ref<FlashList<Item>>}
+                  ref={listRef as Ref<React.ComponentRef<typeof FlashList<Item>>>}
                   extraData={query}
                   contentContainerClassName='pt-24 pb-safe android:pb-16'
                   showsVerticalScrollIndicator={false}

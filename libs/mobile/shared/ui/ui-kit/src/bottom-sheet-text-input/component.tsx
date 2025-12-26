@@ -1,6 +1,6 @@
 import { delay } from 'lodash-es';
 import { ReactElement } from 'react';
-import { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
+import { TextInputProps } from 'react-native';
 import { uiState$ } from '@open-webui-react-native/mobile/shared/ui/ui-state';
 import { AppTextInput, AppInputProps } from '../text-input';
 
@@ -12,12 +12,12 @@ export const AppBottomSheetTextInput = ({
   ref,
   ...props
 }: AppBottomSheetTextInputProps): ReactElement => {
-  const handleFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>): void => {
+  const handleFocus: TextInputProps['onFocus'] = (e): void => {
     uiState$.isBottomSheetInputFocused.set(true);
     onFocus?.(e);
   };
 
-  const handleBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>): void => {
+  const handleBlur: TextInputProps['onBlur'] = (e): void => {
     onBlur?.(e);
     delay(() => uiState$.isBottomSheetInputFocused.set(false), 500);
   };

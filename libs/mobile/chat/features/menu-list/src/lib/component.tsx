@@ -96,7 +96,6 @@ export function ChatMenuList({
       ) : (
         <DateSectionList
           data={chats || []}
-          estimatedItemSize={52}
           renderItem={renderItem}
           transformSectionTitle={transformSectionTitle}
           onEndReached={fetchNextPage}

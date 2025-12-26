@@ -76,7 +76,6 @@ export function SearchArchivedChats({ onArchivedChatPress, onGoBack }: SearchArc
             data={data || []}
             onEndReached={fetchNextPage}
             keyboardShouldPersistTaps='handled'
-            estimatedItemSize={52}
             showsVerticalScrollIndicator={false}
             renderScrollComponent={AppKeyboardAvoidingView}
             renderItem={renderItem}
