@@ -9,5 +9,5 @@ export function useBottomInset(minPadding = 24): number {
     return Math.max(bottom, minPadding) + visualPadding;
   }
 
-  return bottom + visualPadding;
+  return bottom;
 }
