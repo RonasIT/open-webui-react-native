@@ -1,3 +1,4 @@
+import { useIsFocused } from '@react-navigation/native';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import {
@@ -37,6 +38,7 @@ export function ChatMenuList({
 }: ChatMenuListProps): ReactElement {
   const translate = useTranslation('CHAT.CHAT_MENU_LIST');
   const chatActionsSheetRef = useRef<ChatActionsMenuSheetMethods>(null);
+  const isFocused = useIsFocused();
 
   const [isFirstLoading, setIsFirstLoading] = useState<boolean>(true);
 
@@ -100,7 +102,7 @@ export function ChatMenuList({
           renderItem={renderItem}
           transformSectionTitle={transformSectionTitle}
           onEndReached={fetchNextPage}
-          refreshControl={<AppRefreshControl onRefresh={refetch} refreshing={isRefetching} />}
+          refreshControl={<AppRefreshControl onRefresh={refetch} refreshing={isFocused && isRefetching} />}
           ListHeaderComponent={
             <View>
               {isFeatureEnabled(FeatureID.CHAT_FOLDERS) && (
