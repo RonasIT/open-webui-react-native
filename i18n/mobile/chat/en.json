@@ -153,6 +153,9 @@
       "TEXT_LISTENING": "Listening...",
       "TEXT_THINKING": "Thinking...",
       "TEXT_TALKING": "Talking..."
+    },
+    "MESSAGE_FOLLOW_UPS": {
+      "TEXT_FOLLOW_UP": "Follow up"
     }
   }
 }

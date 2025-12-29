@@ -61,6 +61,9 @@
       "@open-webui-react-native/mobile/chat/features/edit-message-input": [
         "libs/mobile/chat/features/edit-message-input/src/index.ts"
       ],
+      "@open-webui-react-native/mobile/chat/features/follow-ups-list": [
+        "libs/mobile/chat/features/follow-ups-list/src/index.ts"
+      ],
       "@open-webui-react-native/mobile/chat/features/form-chat-input": [
         "libs/mobile/chat/features/form-chat-input/src/index.ts"
       ],

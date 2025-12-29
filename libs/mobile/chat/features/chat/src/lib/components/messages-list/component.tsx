@@ -34,6 +34,8 @@ interface ChatMessagesListProps {
   onTryAgain: (messageId: string) => void;
   onAddDetails: (messageId: string) => void;
   onMoreConcise: (messageId: string) => void;
+  onFollowUpPress: (text: string) => void;
+  isResponseGenerating: boolean;
   history?: ChatHistory;
   messages?: Array<Message>;
   editingMessageId?: string;
@@ -52,6 +54,8 @@ export default function ChatMessagesList({
   onAddDetails,
   onMoreConcise,
   editingMessageId,
+  onFollowUpPress,
+  isResponseGenerating,
 }: ChatMessagesListProps): ReactElement {
   const listRef = useRef<FlashList<Message>>(null);
   const isScrollToBottomAvailable = useRef(false);
@@ -163,6 +167,10 @@ export default function ChatMessagesList({
     completeChat(completePayload);
   };
 
+  const handleFollowUpPress = (text: string): void => {
+    onFollowUpPress(text);
+  };
+
   const renderItem = useCallback(
     ({ item, index }: { item: Message; index: number }) => {
       const message = history?.messages[item.id];
@@ -191,6 +199,9 @@ export default function ChatMessagesList({
             onPreviousSibling={showPreviousSibling}
             onNextSibling={showNextSibling}
             getSiblingsInfo={getSiblingsInfo}
+            isLast={isLast}
+            onFollowUpPress={handleFollowUpPress}
+            isResponseGenerating={isResponseGenerating}
           />
         </AiMessageActions>
       ) : (
