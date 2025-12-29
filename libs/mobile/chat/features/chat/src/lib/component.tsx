@@ -1,8 +1,9 @@
 import { useSelector } from '@legendapp/state/react';
+import { useKeyboard } from '@react-native-community/hooks';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import dayjs from 'dayjs';
 import { delay } from 'lodash-es';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { Fragment, ReactElement, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { InteractionManager } from 'react-native';
 import { EditMessageInput } from '@open-webui-react-native/mobile/chat/features/edit-message-input';
@@ -11,8 +12,9 @@ import { useEditMessage } from '@open-webui-react-native/mobile/chat/features/us
 import { useSendMessage } from '@open-webui-react-native/mobile/chat/features/use-send-message';
 import { useAttachedFiles } from '@open-webui-react-native/mobile/shared/features/use-attached-files';
 import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
-import { AppKeyboardControllerView, AppSpinner, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { AppSpinner, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
+import { useBottomInset } from '@open-webui-react-native/mobile/shared/utils/use-bottom-inset';
 import { chatApi, ChatGenerationOption, chatQueriesKeys } from '@open-webui-react-native/shared/data-access/api';
 import { Role } from '@open-webui-react-native/shared/data-access/common';
 import { useSubscribeToQueryCache } from '@open-webui-react-native/shared/data-access/query-client';
@@ -32,6 +34,8 @@ interface ChatProps {
 
 export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: ChatProps): ReactElement {
   const translate = useTranslation('CHAT.CHAT');
+  const bottomInset = useBottomInset();
+  const { keyboardShown } = useKeyboard();
 
   const [isInputFocusing, setIsInputFocusing] = useState(false); //NOTE: Needs to avoid ChatBottomButton jumping when auto-scrolling after focus
 
@@ -126,7 +130,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   }, [isNewChat, isSuccess, chatId]);
 
   return (
-    <AppKeyboardControllerView>
+    <Fragment>
       {shouldHideContent && (
         <View className='absolute w-full h-full z-50 bg-background-primary items-center justify-center'>
           <AppSpinner />
@@ -148,7 +152,9 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
           />
         </React.Suspense>
       )}
-      <View className={cn('pb-safe android:pb-16 pt-8 px-16', shouldHideContent && 'opacity-0')}>
+      <View
+        style={!keyboardShown && { paddingBottom: bottomInset }}
+        className={cn('pt-8 px-16', shouldHideContent && 'opacity-0')}>
         {editingMessageId ? (
           <EditMessageInput
             control={editMessageControl}
@@ -179,6 +185,6 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
           />
         )}
       </View>
-    </AppKeyboardControllerView>
+    </Fragment>
   );
 }

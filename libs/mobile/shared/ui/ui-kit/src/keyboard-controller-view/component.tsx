@@ -22,8 +22,8 @@ export function AppKeyboardControllerView({
 }: AppKeyboardControllerViewProps): ReactElement {
   const { top } = useSafeAreaInsets();
   const verticalOffset = Platform.select({
-    ios: isInBottomSheet ? top : top + 8,
-    android: isInBottomSheet ? 85 : 32,
+    ios: isInBottomSheet ? top : 16,
+    android: isInBottomSheet ? 85 : 16,
   });
 
   return (

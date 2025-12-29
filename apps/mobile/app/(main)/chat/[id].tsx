@@ -10,6 +10,7 @@ import {
   AppText,
   Icon,
   FullScreenSearchModal,
+  AppKeyboardControllerView,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { ChatScreenParams, useInitialNavigation } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import { modelsApi } from '@open-webui-react-native/shared/data-access/api';
@@ -48,34 +49,36 @@ export default function ChatScreen(): ReactElement {
   );
 
   return (
-    <AppScreen
-      className={cn(isOfflineMode && 'pt-20')}
-      noOutsideSpacing
-      header={
-        <AppHeader
-          title={
-            modelId || isLoading ? (
-              <FullScreenSearchModal
-                data={models || []}
-                renderTrigger={renderTrigger}
-                selectedItemId={modelId}
-                onSelectItem={onSelectModel}
-                searchPlaceholder={translate('TEXT_SELECT_A_MODEL')}
-              />
-            ) : (
-              translate('TEXT_LOADING')
-            )
-          }
-          onGoBack={handleGoBackPress}
-        />
-      }
-      scrollDisabled>
-      <NoConnectionBanner isVisible={isOfflineMode} />
-      <Chat
-        chatId={id}
-        isNewChat={!!isNewChat}
-        selectedModelId={modelId}
-        resetToChatsList={handleResetToChatsList} />
-    </AppScreen>
+    <AppKeyboardControllerView className='bg-background-primary'>
+      <AppScreen
+        className={cn(isOfflineMode && 'pt-20')}
+        noOutsideSpacing
+        header={
+          <AppHeader
+            title={
+              modelId || isLoading ? (
+                <FullScreenSearchModal
+                  data={models || []}
+                  renderTrigger={renderTrigger}
+                  selectedItemId={modelId}
+                  onSelectItem={onSelectModel}
+                  searchPlaceholder={translate('TEXT_SELECT_A_MODEL')}
+                />
+              ) : (
+                translate('TEXT_LOADING')
+              )
+            }
+            onGoBack={handleGoBackPress}
+          />
+        }
+        scrollDisabled>
+        <NoConnectionBanner isVisible={isOfflineMode} />
+        <Chat
+          chatId={id}
+          isNewChat={!!isNewChat}
+          selectedModelId={modelId}
+          resetToChatsList={handleResetToChatsList} />
+      </AppScreen>
+    </AppKeyboardControllerView>
   );
 }

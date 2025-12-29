@@ -13,6 +13,7 @@ import React, {
 } from 'react';
 import { InteractionManager } from 'react-native';
 import { FadeIn } from 'react-native-reanimated';
+import { useBottomInset } from '@open-webui-react-native/mobile/shared/utils/use-bottom-inset';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { MockFolderItemIds } from '@open-webui-react-native/shared/data-access/api';
 import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
@@ -53,6 +54,7 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
   ref,
 }: FullScreenSearchModalProps<Item>): ReactElement {
   const listRef = useRef<React.ComponentRef<typeof FlashList<Item>>>(null);
+  const bottomInset = useBottomInset();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isAnimationCompleted, setIsAnimationCompleted] = useState<boolean>(false);
@@ -153,7 +155,8 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
                 <AppFlashList
                   ref={listRef as Ref<React.ComponentRef<typeof FlashList<Item>>>}
                   extraData={query}
-                  contentContainerClassName='pt-24 pb-safe android:pb-16'
+                  contentContainerClassName='pt-24'
+                  contentContainerStyle={{ paddingBottom: bottomInset }}
                   showsVerticalScrollIndicator={false}
                   keyboardShouldPersistTaps='handled'
                   renderItem={renderItem}
