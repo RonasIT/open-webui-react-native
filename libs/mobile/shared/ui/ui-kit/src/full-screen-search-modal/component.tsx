@@ -12,7 +12,6 @@ import React, {
   useState,
 } from 'react';
 import { InteractionManager } from 'react-native';
-import { FadeIn } from 'react-native-reanimated';
 import { useBottomInset } from '@open-webui-react-native/mobile/shared/utils/use-bottom-inset';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { MockFolderItemIds } from '@open-webui-react-native/shared/data-access/api';
@@ -151,7 +150,7 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
             placeholder={searchPlaceholder} />
           <AppKeyboardControllerView keyboardVerticalOffset={0}>
             {isAnimationCompleted && (
-              <AnimatedView className='flex-1' entering={FadeIn.duration(50)}>
+              <AnimatedView className='flex-1'>
                 <AppFlashList
                   ref={listRef as Ref<React.ComponentRef<typeof FlashList<Item>>>}
                   extraData={query}

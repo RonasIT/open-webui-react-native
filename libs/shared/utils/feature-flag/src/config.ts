@@ -11,4 +11,5 @@ export const featureFlagConfig: Record<FeatureID, AppEnvName> = {
   [FeatureID.VOICE_MODE]: 'development',
   [FeatureID.USER_EDIT_MESSAGE]: 'production',
   [FeatureID.AI_EDIT_MESSAGE]: 'development',
+  [FeatureID.AI_REGENERATE_MESSAGE]: 'development',
 };

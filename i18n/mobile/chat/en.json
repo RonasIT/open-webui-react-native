@@ -121,13 +121,24 @@
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Edit",
       "TEXT_COPY": "Copy",
-      "TEXT_CONTINUE_RESPONSE": "Continue response"
+      "TEXT_CONTINUE_RESPONSE": "Continue response",
+      "TEXT_REGENERATE": "Regenerate",
+      "REGENERATE_MESSAGE_ACTION_SHEET": {
+        "TEXT_SUGGEST_A_CHANGE": "Suggest a change",
+        "TEXT_TRY_AGAIN": "Try again",
+        "TEXT_ADD_DETAILS": "Add details",
+        "TEXT_MORE_CONCISE": "More concise"
+      }
     },
     "EDIT_MESSAGE_INPUT": {
       "TEXT_EDIT_MESSAGE": "Edit message",
       "BUTTON_SAVE": "Save",
       "BUTTON_SAVE_AS_COPY": "Save as copy",
       "BUTTON_SEND": "Send",
+      "BUTTON_CANCEL": "Cancel"
+    },
+    "SUGGEST_CHANGE_INPUT": {
+      "TEXT_SUGGEST_A_CHANGE": "Suggest a change",
       "BUTTON_CANCEL": "Cancel"
     },
     "ARCHIVED_CHATS_FILTERS_SHEET": {
