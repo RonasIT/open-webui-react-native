@@ -7,6 +7,7 @@ import { useSwipeToClose } from '@open-webui-react-native/mobile/shared/features
 import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import {
   AnimatedView,
+  AppFlashList,
   AppImage,
   AppToast,
   AppZoom,
@@ -52,10 +53,10 @@ export function ImagePreviewModal({
   const { panGesture, animatedOpacityStyles, animatedScaleStyles } = useSwipeToClose({ onReachDistance: onClosePress });
 
   const renderItem: ListRenderItem<AttachedImageWithIndex> = ({ item }) => (
-    <AnimatedView style={animatedScaleStyles} className='w-screen h-screen'>
+    <AnimatedView style={animatedScaleStyles}>
       <AppZoom isDoubleTapEnabled className='flex-1'>
         <AppImage
-          className='w-screen h-screen'
+          className='w-screen h-full'
           authorizationToken={token}
           contentFit='contain'
           source={{ uri: item.url }}
@@ -82,7 +83,7 @@ export function ImagePreviewModal({
       {...modalProps}>
       <GestureHandlerRootView>
         <GestureDetector gesture={panGesture}>
-          <AnimatedView style={animatedOpacityStyles} className='w-screen h-screen bg-black'>
+          <AnimatedView style={animatedOpacityStyles} className='flex-1 bg-black'>
             <View
               className={cn(
                 'absolute flex-row w-full left-0 right-0 top-safe px-16 items-center justify-between z-10',
@@ -102,7 +103,8 @@ export function ImagePreviewModal({
                 isLoading={isDownloading}
               />
             </View>
-            <FlashList<AttachedImageWithIndex>
+            <AppFlashList<AttachedImageWithIndex>
+              className='flex-1'
               ref={listRef}
               data={images}
               renderItem={renderItem}
