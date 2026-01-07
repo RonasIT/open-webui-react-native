@@ -22,7 +22,7 @@ export default function ChatLayout(): ReactElement {
     close: async () => await voiceModeModalRef.current?.close(),
   };
 
-  const handleChatCreated = (id: string): void => router.replace(navigationConfig.main.chat.view({ id }));
+  const handleChatCreated = (id: string): void => router.push(navigationConfig.main.chat.view({ id }));
 
   return (
     <VoiceModeModalContext.Provider value={contextValue}>
