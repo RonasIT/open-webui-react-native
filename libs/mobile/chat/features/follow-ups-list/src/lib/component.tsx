@@ -1,7 +1,7 @@
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement } from 'react';
 import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
-import { AppPressable, AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { AppDivider, AppPressable, AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 
 interface FollowUpsListProps {
   onPress: (text: string) => void;
@@ -16,15 +16,18 @@ export function FollowUpsList({ onPress, followUps, containerClassName }: Follow
 
   return (
     <View className={cn(containerClassName)}>
-      <AppText className='text-sm py-8'>{translate('TEXT_FOLLOW_UP')}</AppText>
+      <AppText className='text-sm py-8 font-semibold'>{translate('TEXT_FOLLOW_UP')}</AppText>
 
-      {followUps.map((followUp) => (
-        <AppPressable
-          key={followUp}
-          onPress={() => onPress(followUp)}
-          className='active:opacity-1 active:bg-background-secondary py-8 rounded-lg'>
-          <AppText className='text-text-secondary text-sm'>{followUp}</AppText>
-        </AppPressable>
+      {followUps.map((followUp, index) => (
+        <View key={followUp}>
+          <AppPressable
+            onPress={() => onPress(followUp)}
+            className='active:opacity-1 active:bg-background-secondary py-8'>
+            <AppText className='text-text-secondary text-sm-sm'>{followUp}</AppText>
+          </AppPressable>
+
+          {index < followUps.length - 1 && <AppDivider />}
+        </View>
       ))}
     </View>
   );
