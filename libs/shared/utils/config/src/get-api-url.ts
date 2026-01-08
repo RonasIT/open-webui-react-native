@@ -9,5 +9,10 @@ export const ronasApiUrl = appEnv.select({
 });
 
 export const getApiUrl = (): string => {
-  return appStorageService.apiUrl.get() || ronasApiUrl;
+  const normalizeUrl = (url?: string): string => (url ?? '').trim().replace(/\/+$/, '');
+
+  const stored = normalizeUrl(appStorageService.apiUrl.get());
+  const fallback = normalizeUrl(ronasApiUrl);
+
+  return stored || fallback;
 };
