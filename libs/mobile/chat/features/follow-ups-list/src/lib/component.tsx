@@ -22,7 +22,7 @@ export function FollowUpsList({ onPress, followUps, containerClassName }: Follow
         <View key={followUp}>
           <AppPressable
             onPress={() => onPress(followUp)}
-            className='active:opacity-1 active:bg-background-secondary py-8'>
+            className='active:opacity-1 active:bg-background-secondary p-8'>
             <AppText className='text-text-secondary text-sm-sm'>{followUp}</AppText>
           </AppPressable>
 
