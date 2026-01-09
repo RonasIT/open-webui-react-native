@@ -14,6 +14,7 @@ import {
   PressableSearchInput,
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { useBottomInset } from '@open-webui-react-native/mobile/shared/utils/use-bottom-inset';
 import { chatApi, ChatListItem, FolderListItem, foldersApi } from '@open-webui-react-native/shared/data-access/api';
 import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
@@ -39,6 +40,7 @@ export function ChatMenuList({
   const translate = useTranslation('CHAT.CHAT_MENU_LIST');
   const chatActionsSheetRef = useRef<ChatActionsMenuSheetMethods>(null);
   const isFocused = useIsFocused();
+  const bottomInset = useBottomInset();
 
   const [isFirstLoading, setIsFirstLoading] = useState<boolean>(true);
 
@@ -98,7 +100,6 @@ export function ChatMenuList({
       ) : (
         <DateSectionList
           data={chats || []}
-          estimatedItemSize={52}
           renderItem={renderItem}
           transformSectionTitle={transformSectionTitle}
           onEndReached={fetchNextPage}
@@ -122,7 +123,8 @@ export function ChatMenuList({
             />
           }
           ListFooterComponent={isFetchingNextPage ? <AppSpinner /> : null}
-          contentContainerClassName='mt-12 pb-safe android:pb-24'
+          contentContainerClassName='mt-12'
+          contentContainerStyle={{ paddingBottom: bottomInset }}
           showsVerticalScrollIndicator={false}
         />
       )}

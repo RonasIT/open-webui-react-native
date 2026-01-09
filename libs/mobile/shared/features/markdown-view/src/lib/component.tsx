@@ -1,5 +1,4 @@
 import markdownIt from 'markdown-it';
-// @ts-expect-error - Type definitions are available, but module resolution doesn't find them
 import markdownItMath from 'markdown-it-math/no-default-renderer';
 import { colorScheme } from 'nativewind';
 import React, { PropsWithChildren, ReactElement, ReactNode, useCallback, useMemo } from 'react';

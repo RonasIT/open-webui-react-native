@@ -1,12 +1,6 @@
 import { Gesture } from 'react-native-gesture-handler';
-import {
-  Extrapolation,
-  interpolate,
-  runOnJS,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
+import { Extrapolation, interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 import { screenHeight } from '@open-webui-react-native/mobile/shared/ui/styles';
 
 interface UseSwipeToCloseParams {
@@ -55,7 +49,7 @@ export const useSwipeToClose = ({ onReachDistance, scrollDirection = 'all' }: Us
     })
     .onEnd(() => {
       if (Math.abs(translateY.value) > 125) {
-        runOnJS(onReachDistance)();
+        scheduleOnRN(onReachDistance);
         translateY.value = withTiming(0, { duration: 750 });
       } else {
         translateY.value = withTiming(0, { duration: 350 });
