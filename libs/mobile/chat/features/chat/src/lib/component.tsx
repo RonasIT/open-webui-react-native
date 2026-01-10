@@ -170,6 +170,18 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
       resetAttachments();
     })();
 
+  const handleFollowUpPress = (text: string): void => {
+    if (!selectedModelId) {
+      return ToastService.showError(translate('TEXT_MODEL_NOT_SELECTED'));
+    }
+
+    cancelEditing();
+    cancelSuggesting();
+    setActiveInputMode(null);
+
+    sendMessage(text, selectedModelId);
+  };
+
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
       delay(() => {
@@ -208,6 +220,8 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
             onLayout={handleChatMessagesListLayout}
             isMessagesListLoaded={isMessagesListLoaded}
             editingMessageId={editingMessageId}
+            onFollowUpPress={handleFollowUpPress}
+            isResponseGenerating={isResponseGenerating}
           />
         </React.Suspense>
       )}
