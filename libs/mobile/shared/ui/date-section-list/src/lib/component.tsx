@@ -8,6 +8,8 @@ import {
   View,
   AppTextProps,
   AppBottomSheetFlashList,
+  AppLegendList,
+  ListEngines,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 
 export interface DateSectionListProps<TItem> extends Omit<AppFlashListProps<TItem>, 'ref'> {
@@ -33,7 +35,16 @@ export function DateSectionList<TItem>({
   isInModal,
   ...restProps
 }: DateSectionListProps<TItem>): ReactElement {
-  const ListComponent = isInModal ? AppBottomSheetFlashList : AppFlashList;
+  const listEngine = ListEngines.LEGEND_LIST;
+
+  const ListComponent = useMemo(() => {
+    if (listEngine === ListEngines.LEGEND_LIST) {
+      // just to keep ts and lint happy
+      return AppLegendList as unknown as React.ComponentType<any>;
+    }
+
+    return (isInModal ? AppBottomSheetFlashList : AppFlashList) as unknown as React.ComponentType<any>;
+  }, [isInModal]);
 
   const sectionedData = useMemo(() => {
     const formattedData: Array<ReactElement | TItem | string> = uniqWith(
@@ -72,9 +83,24 @@ export function DateSectionList<TItem>({
     },
     [sectionedData, renderItem, sectionTitleProps],
   );
+  const keyExtractor = useCallback((item: TItem | string, index: number) => {
+    if (typeof item === 'string') {
+      return `section-${item}`;
+    }
 
-  return <ListComponent
-    data={sectionedData as Array<TItem>}
-    renderItem={renderListItem}
-    {...restProps} />;
+    // ChatListItem case
+    return (item as any).id ?? `item-${index}`;
+  }, []);
+
+  return (
+    <ListComponent
+      data={sectionedData as Array<TItem>}
+      renderItem={renderListItem}
+      keyExtractor={keyExtractor}
+      recycleItems={false}
+      maintainScrollPosition
+      drawDistance={2000}
+      {...restProps}
+    />
+  );
 }

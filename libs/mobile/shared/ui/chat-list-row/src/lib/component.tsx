@@ -23,6 +23,7 @@ export function ChatListRow({
   onLongPress,
   ...restProps
 }: ChatListRowProps): ReactElement {
+  console.count(`ChatListRow render`);
   const { delayLongPress, longPressAnimationDuration } = chatListRowConfig;
 
   const handlePress = (): void => onPress(chatId);

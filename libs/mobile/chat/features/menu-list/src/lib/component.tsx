@@ -1,6 +1,7 @@
 import { useIsFocused } from '@react-navigation/native';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
+import { InteractionManager } from 'react-native';
 import {
   ChatActionsMenuSheet,
   ChatActionsMenuSheetMethods,
@@ -29,6 +30,15 @@ interface ChatMenuListProps {
 
 const transformSectionTitle = (item: ChatListItem): string => {
   return formatDateTime(item.updatedAt, 'relative');
+};
+
+const perfMark = (label: string) => {
+  const start = performance.now();
+
+  InteractionManager.runAfterInteractions(() => {
+    const end = performance.now();
+    console.log(`[perf] ${label}: ${(end - start).toFixed(1)}ms`);
+  });
 };
 
 export function ChatMenuList({
@@ -72,11 +82,26 @@ export function ChatMenuList({
     Promise.all([refetchChats(), refetchPinnedChats(), refetchFolders()]);
   };
 
+  const fetchNextPageMeasured = useCallback(() => {
+    perfMark('chat_list_fetch_next_page');
+    fetchNextPage();
+  }, [fetchNextPage]);
+
+  const refetchMeasured = (): void => {
+    perfMark('chat_list_refresh');
+    refetch();
+  };
+
   useEffect(() => {
     if (isFirstLoading && !isRefetching) {
       setIsFirstLoading(false);
     }
   }, [isFirstLoading, isRefetching]);
+  useEffect(() => {
+    if (!isLoading) {
+      perfMark('chat_list_initial_mount');
+    }
+  }, [isLoading]);
 
   const renderItem = useCallback(
     ({ item }: { item: ChatListItem }) => (
@@ -102,8 +127,8 @@ export function ChatMenuList({
           data={chats || []}
           renderItem={renderItem}
           transformSectionTitle={transformSectionTitle}
-          onEndReached={fetchNextPage}
-          refreshControl={<AppRefreshControl onRefresh={refetch} refreshing={isFocused && isRefetching} />}
+          onEndReached={fetchNextPageMeasured}
+          refreshControl={<AppRefreshControl onRefresh={refetchMeasured} refreshing={isFocused && isRefetching} />}
           ListHeaderComponent={
             <View>
               {isFeatureEnabled(FeatureID.CHAT_FOLDERS) && (

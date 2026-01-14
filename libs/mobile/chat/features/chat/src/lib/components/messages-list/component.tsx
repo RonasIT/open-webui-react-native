@@ -1,14 +1,14 @@
 import { FlashList } from '@shopify/flash-list';
 import { useLocalSearchParams } from 'expo-router';
 import { delay } from 'lodash-es';
-import React, { ReactElement, useCallback, useRef, useState } from 'react';
+import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { useSharedValue, withTiming } from 'react-native-reanimated';
 import { AiMessageActions } from '@open-webui-react-native/mobile/chat/features/ai-message-actions';
 import { useManageMessageSiblings } from '@open-webui-react-native/mobile/chat/features/use-manage-messages-siblings';
 import { UserMessageActions } from '@open-webui-react-native/mobile/chat/features/user-message-actions';
 import { useSetSelectedModel } from '@open-webui-react-native/mobile/shared/features/use-set-selected-model';
-import { View, AppFlashList } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { View, AppFlashList, AppLegendList, ListEngines } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { ChatScreenParams } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import {
   Chat,
@@ -39,6 +39,17 @@ interface ChatMessagesListProps {
   editingMessageId?: string;
 }
 
+const perfMark = (label: string) => {
+  const start = performance.now();
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const end = performance.now();
+      console.log(`[perf] ${label}: ${(end - start).toFixed(1)}ms`);
+    });
+  });
+};
+
 export default function ChatMessagesList({
   chatId,
   history,
@@ -53,6 +64,9 @@ export default function ChatMessagesList({
   onMoreConcise,
   editingMessageId,
 }: ChatMessagesListProps): ReactElement {
+  const listEngine = ListEngines.LEGEND_LIST;
+  const didInitialMount = useRef(false);
+  const prevMessageCount = useRef(messages.length);
   const listRef = useRef<React.ComponentRef<typeof FlashList<Message>>>(null);
   const isScrollToBottomAvailable = useRef(false);
   const isScrollToBottomAvailableTimeout = useRef<NodeJS.Timeout | null | number>(null); //NOTE: number needs to fix pipeline lint error
@@ -64,6 +78,7 @@ export default function ChatMessagesList({
   const { mutate: completeChat } = chatApi.useCompleteChat();
   const { id }: ChatScreenParams = useLocalSearchParams();
   const { modelId } = useSetSelectedModel(id);
+  const ListComponent = listEngine === ListEngines.LEGEND_LIST ? AppLegendList : AppFlashList;
 
   const handleContentSizeChange = (): void => {
     //NOTE: Needs to wait until the initial scroll to the bottom or content generation finished and not show the ChatBottomButton before
@@ -124,6 +139,7 @@ export default function ChatMessagesList({
   };
 
   const handleEditPress = (index: number, messageId: string, content: string): void => {
+    perfMark('chat_message_edit_scroll');
     setAutoscrollToBottomThreshold(undefined);
     onEditPress(messageId, content);
     delay(() => {
@@ -161,6 +177,14 @@ export default function ChatMessagesList({
       model: modelId,
     });
     completeChat(completePayload);
+  };
+
+  const ChatList = () => {
+    if (listEngine === ListEngines.LEGEND_LIST) {
+      return AppLegendList;
+    }
+
+    return AppFlashList;
   };
 
   const renderItem = useCallback(
@@ -220,9 +244,24 @@ export default function ChatMessagesList({
     ],
   );
 
+  useEffect(() => {
+    if (!didInitialMount.current && messages.length > 0) {
+      didInitialMount.current = true;
+      perfMark('chat_messages_initial_mount');
+    }
+  }, [messages.length]);
+
+  useEffect(() => {
+    if (messages.length > prevMessageCount.current) {
+      perfMark('chat_message_append');
+    }
+
+    prevMessageCount.current = messages.length;
+  }, [messages.length]);
+
   return (
     <View className='relative flex-1'>
-      <AppFlashList<Message>
+      <ListComponent<Message>
         ref={listRef}
         contentContainerClassName='pb-16 px-16'
         showsVerticalScrollIndicator={false}
@@ -233,6 +272,7 @@ export default function ChatMessagesList({
         data={messages}
         renderItem={renderItem}
         // TODO: Add autoscrollToBottom logic when it implemented in lib
+        // @ts-expect-error for legend list testing purposes
         maintainVisibleContentPosition={{
           startRenderingFromBottom: true,
           animateAutoScrollToBottom: true,
