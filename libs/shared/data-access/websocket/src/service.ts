@@ -17,11 +17,16 @@ export class SocketService {
 
   public init(token: string, onConnect: () => void, onDisconnect: () => void): void {
     if (this._socket) return;
+    const apiUrl = getApiUrl();
 
     this._socket = io(getApiUrl(), {
       path: webSocketConfig.path,
       transports: webSocketConfig.transports,
       auth: { token },
+      // NOTE: Workaround required for the socket to connect to the backend, which rejects WS connections without this header.
+      extraHeaders: {
+        Origin: apiUrl,
+      },
     });
 
     this._socket.on(SocketState.CONNECT, () => {
