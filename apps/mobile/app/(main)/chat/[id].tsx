@@ -104,7 +104,10 @@ export default function ChatScreen(): ReactElement {
           isNewChat={!!isNewChat}
           selectedModelId={modelId}
           resetToChatsList={handleResetToChatsList} />
-        <ChatActionsMenuSheet ref={chatActionsSheetRef} goToChat={navigateToClonedChat} />
+        <ChatActionsMenuSheet
+          ref={chatActionsSheetRef}
+          goToChat={navigateToClonedChat}
+          isInChat />
       </AppScreen>
     </AppKeyboardControllerView>
   );

@@ -46,7 +46,7 @@ export interface ChatActionsMenuSheetProps extends Pick<ActionsBottomSheetProps,
   isInChat?: boolean;
 }
 
-export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMenuSheetProps): ReactElement {
+export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: ChatActionsMenuSheetProps): ReactElement {
   const translate = useTranslation('SHARED.CHAT_ACTIONS_MENU_SHEET');
 
   const actionsSheetRef = useRef<BottomSheetModal>(null);
@@ -172,7 +172,10 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
   const onDeleteConfirm = async (): Promise<void> => {
     await deleteChat({ id: chatId, folderId });
     actionsSheetRef.current?.close();
-    resetToChatsListScreen();
+
+    if (isInChat) {
+      resetToChatsListScreen();
+    }
   };
 
   const openShareChatModal = async (): Promise<void> => {
