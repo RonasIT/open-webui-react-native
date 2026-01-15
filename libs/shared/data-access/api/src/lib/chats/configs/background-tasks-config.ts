@@ -2,6 +2,6 @@ import { BackgroundTasks } from '../models';
 
 export const backgroundTasksConfig: BackgroundTasks = {
   titleGeneration: true,
-  followUpGeneration: false,
+  followUpGeneration: true,
   tagsGeneration: true,
 };
