@@ -20,6 +20,7 @@ import {
   FullScreenSearchModal,
   FullScreenSearchModalMethods,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { useInitialNavigation } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import {
   Chat,
   chatApi,
@@ -42,6 +43,7 @@ export interface ChatActionsMenuSheetProps extends Pick<ActionsBottomSheetProps,
   goToChat: (id: string) => void;
   isPinned?: boolean;
   ref?: ChatActionsMenuSheetRef;
+  isInChat?: boolean;
 }
 
 export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMenuSheetProps): ReactElement {
@@ -53,6 +55,7 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
   const downloadOptionsModalRef = useRef<BottomSheetModal>(null);
   const fullScreenSearchModalRef = useRef<FullScreenSearchModalMethods>(null);
   const upsertFolderSheetRef = useRef<UpsertFolderSheetMethods>(null);
+  const { resetToChatsListScreen } = useInitialNavigation();
 
   const { mutateAsync: updateChat, isPending: isUpdating } = chatApi.useUpdate();
   const { mutateAsync: updateChatFolder } = chatApi.useUpdateChatFolder();
@@ -169,6 +172,7 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref }: ChatActionsMen
   const onDeleteConfirm = async (): Promise<void> => {
     await deleteChat({ id: chatId, folderId });
     actionsSheetRef.current?.close();
+    resetToChatsListScreen();
   };
 
   const openShareChatModal = async (): Promise<void> => {
