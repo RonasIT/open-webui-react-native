@@ -10,7 +10,7 @@ export interface KnowledgeRowProps {
 
 export function KnowledgeRow({ item, onPress, isSelected }: KnowledgeRowProps): ReactElement {
   return (
-    <AppPressable onPress={onPress} className='px-16 py-12 gap-16 flex-row items-center justify-between'>
+    <AppPressable onPress={onPress} className='py-12 gap-16 flex-row items-center justify-between'>
       <Icon name={item.isDocument ? 'file' : 'database'} />
       <View className='flex-1 gap-4'>
         <AppText>{item.name}</AppText>
