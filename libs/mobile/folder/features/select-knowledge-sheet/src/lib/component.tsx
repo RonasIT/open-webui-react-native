@@ -93,14 +93,13 @@ export function SelectKnowledgeSheet({ onConfirm, ref, ...props }: SelectKnowled
             title={translate('TEXT_SELECT_KNOWLEDGE')}
             onGoBack={closeModal}
             onConfirmPress={handleConfirm}
-            className='px-16'
           />
           <SearchInput
             value={query}
             onChangeText={setQuery}
             isInBottomSheet
-            className='px-16'
             onCancel={onCancelPress}
+            placeholder={translate('TEXT_SEARCH_KNOWLEDGE')}
           />
           {isLoading ? (
             <View className='flex-1'>
