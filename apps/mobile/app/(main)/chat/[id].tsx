@@ -1,5 +1,9 @@
 import { useSelector } from '@legendapp/state/react';
 import { Chat } from '@open-webui-react-native/mobile/chat/features/chat';
+import {
+  ChatActionsMenuSheet,
+  ChatActionsMenuSheetMethods,
+} from '@open-webui-react-native/mobile/shared/features/chat-actions-menu-sheet';
 import { useSetSelectedModel } from '@open-webui-react-native/mobile/shared/features/use-set-selected-model';
 import { NoConnectionBanner } from '@open-webui-react-native/mobile/shared/ui/no-connection-banner';
 import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
@@ -11,13 +15,19 @@ import {
   Icon,
   FullScreenSearchModal,
   AppKeyboardControllerView,
+  IconButton,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { ChatScreenParams, useInitialNavigation } from '@open-webui-react-native/mobile/shared/utils/navigation';
-import { modelsApi } from '@open-webui-react-native/shared/data-access/api';
+import {
+  ChatScreenParams,
+  navigationConfig,
+  useInitialNavigation,
+} from '@open-webui-react-native/mobile/shared/utils/navigation';
+import { chatApi, modelsApi } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
+import { useNavigateOnce } from '@open-webui-react-native/shared/utils/navigation';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { useNavigationContainerRef, usePathname, useLocalSearchParams, router } from 'expo-router';
-import { ReactElement, useCallback } from 'react';
+import { ReactElement, useCallback, useRef } from 'react';
 
 export default function ChatScreen(): ReactElement {
   const translate = useTranslation('CHAT.CHAT_SCREEN');
@@ -25,13 +35,19 @@ export default function ChatScreen(): ReactElement {
   const rootNavigation = useNavigationContainerRef();
   const { id, isNewChat }: ChatScreenParams = useLocalSearchParams();
   const { resetToChatsListScreen } = useInitialNavigation();
+  const navigateOnce = useNavigateOnce();
+  const chatActionsSheetRef = useRef<ChatActionsMenuSheetMethods>(null);
+  const navigateToClonedChat = (id: string): void => navigateOnce(navigationConfig.main.chat.view({ id }));
 
   const isOfflineMode = useSelector(appState$.isOfflineMode);
 
-  const { data: models, isLoading } = modelsApi.useGetModels();
+  const { data: models, isLoading: isModelsLoading } = modelsApi.useGetModels();
+  const { data: chat, isLoading: isChatLoading } = chatApi.useGet(id);
   const { modelId, modelName, onSelectModel } = useSetSelectedModel(id);
 
   const handleGoBackPress = (): void => router.back();
+
+  const isLoading = isChatLoading || isModelsLoading;
 
   const handleResetToChatsList = useCallback((): void => {
     if (path.includes(id)) {
@@ -69,6 +85,16 @@ export default function ChatScreen(): ReactElement {
               )
             }
             onGoBack={handleGoBackPress}
+            accessoryRight={
+              <IconButton
+                className='p-0'
+                iconName='moreDots'
+                onPress={() => {
+                  if (!chat) return;
+                  chatActionsSheetRef.current?.present(chat);
+                }}
+              />
+            }
           />
         }
         scrollDisabled>
@@ -78,6 +104,10 @@ export default function ChatScreen(): ReactElement {
           isNewChat={!!isNewChat}
           selectedModelId={modelId}
           resetToChatsList={handleResetToChatsList} />
+        <ChatActionsMenuSheet
+          ref={chatActionsSheetRef}
+          goToChat={navigateToClonedChat}
+          isInChat />
       </AppScreen>
     </AppKeyboardControllerView>
   );
