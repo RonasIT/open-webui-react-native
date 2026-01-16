@@ -12,7 +12,7 @@ export default function SignInScreen(): ReactElement {
   const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   return (
-    <ScreenWrapper isKeyboardAvoiding>
+    <ScreenWrapper isKeyboardAvoiding safeAreaProps={{ edges: ['top'] }}>
       <NoConnectionBanner isVisible={isOfflineMode} />
       <SignIn onSuccess={resetToCreateChatScreen} />
     </ScreenWrapper>

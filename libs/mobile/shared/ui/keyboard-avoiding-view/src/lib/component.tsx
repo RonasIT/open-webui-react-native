@@ -1,6 +1,6 @@
-import { KeyboardAwareScrollView } from '@pietile-native-kit/keyboard-aware-scrollview';
 import { ComponentType } from 'react';
 import { ScrollViewProps, StyleProp, ViewStyle } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { commonStyle } from '@open-webui-react-native/mobile/shared/ui/styles';
 
 export type AppKeyboardAvoidingViewProps = Omit<ScrollViewProps, 'onFocus'> & {
