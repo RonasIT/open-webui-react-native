@@ -39,7 +39,6 @@ export function AppMarkdownView({
   onCitationPress,
   isContentReady,
   textColor: elementTextColor,
-  ...restProps
 }: AppMarkdownViewProps): ReactElement {
   const { isDarkColorScheme } = useColorScheme();
   const textColor = elementTextColor || (isDarkColorScheme ? colors.darkTextPrimary : colors.textPrimary);
@@ -220,7 +219,6 @@ export function AppMarkdownView({
         code_inline: { backgroundColor: isDarkColorScheme ? colors.gray700 : colors.gray75 },
       }}
       rules={markdownRules}
-      {...restProps}
       markdownit={markdownItInstance}
     />
   );
