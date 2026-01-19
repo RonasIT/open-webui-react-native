@@ -72,7 +72,9 @@ export default function ChatScreen(): ReactElement {
         header={
           <AppHeader
             title={
-              modelId || isLoading ? (
+              isLoading && !modelId ? (
+                translate('TEXT_LOADING')
+              ) : (
                 <FullScreenSearchModal
                   data={models || []}
                   renderTrigger={renderTrigger}
@@ -80,8 +82,6 @@ export default function ChatScreen(): ReactElement {
                   onSelectItem={onSelectModel}
                   searchPlaceholder={translate('TEXT_SELECT_A_MODEL')}
                 />
-              ) : (
-                translate('TEXT_LOADING')
               )
             }
             onGoBack={handleGoBackPress}
