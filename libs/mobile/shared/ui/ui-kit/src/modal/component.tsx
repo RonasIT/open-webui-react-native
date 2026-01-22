@@ -1,6 +1,6 @@
 import { useState, ReactElement, PropsWithChildren, useImperativeHandle, ForwardedRef } from 'react';
 import Modal, { ModalProps } from 'react-native-modal';
-import { IconButton } from '../icon-button';
+import { GesturePressableIconButton } from '../gesture-pressable-icon-button';
 import { AppToast } from '../toast';
 import { View } from '../view';
 
@@ -37,13 +37,12 @@ export function AppModal({ modalRef, children, ...modalProps }: AppModalProps): 
       {isVisible && (
         <View className='bg-background-primary px-24 py-20 rounded-xl border border-text-secondary'>
           {children}
-          <IconButton
+          <GesturePressableIconButton
             iconName='close'
             hitSlop={8}
             onPress={close}
             className='absolute active:opacity-1 active:bg-background-secondary bg-background-primary border border-text-secondary p-0 rounded-full items-center justify-center w-[24] h-[24] top-4 right-4'
             iconProps={{ className: 'color-text-primary', width: 16 }}
-            useGestureHandler
           />
         </View>
       )}
