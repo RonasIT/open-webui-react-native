@@ -43,6 +43,7 @@ export function AppModal({ modalRef, children, ...modalProps }: AppModalProps): 
             onPress={close}
             className='absolute active:opacity-1 active:bg-background-secondary bg-background-primary border border-text-secondary p-0 rounded-full items-center justify-center w-[24] h-[24] top-4 right-4'
             iconProps={{ className: 'color-text-primary', width: 16 }}
+            useGestureHandler
           />
         </View>
       )}
