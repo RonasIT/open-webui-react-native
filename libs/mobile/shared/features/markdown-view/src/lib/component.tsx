@@ -3,6 +3,7 @@ import markdownItMath from 'markdown-it-math/no-default-renderer';
 import { colorScheme } from 'nativewind';
 import React, { PropsWithChildren, ReactElement, ReactNode, useCallback, useMemo } from 'react';
 import { Linking } from 'react-native';
+import FitImage from 'react-native-fit-image';
 import Markdown, { ASTNode, MarkdownProps, RenderRules } from 'react-native-markdown-display';
 import { CitationPrefix } from '@open-webui-react-native/mobile/chat/features/use-citations';
 import { CodeBlock } from '@open-webui-react-native/mobile/shared/ui/code-block';
@@ -39,6 +40,7 @@ export function AppMarkdownView({
   onCitationPress,
   isContentReady,
   textColor: elementTextColor,
+  children,
 }: AppMarkdownViewProps): ReactElement {
   const { isDarkColorScheme } = useColorScheme();
   const textColor = elementTextColor || (isDarkColorScheme ? colors.darkTextPrimary : colors.textPrimary);
@@ -208,6 +210,18 @@ export function AppMarkdownView({
         </AppText>
       ),
       table: renderTable,
+      //NOTE: A props object containing a "key" prop is being spread into JSX error fix
+      image: (node: ASTNode, children, parent, styles) => {
+        const uri = node.attributes?.src;
+
+        if (!uri) return null;
+
+        return <FitImage
+          key={`image-${node.key}`}
+          source={{ uri }}
+          style={styles.image}
+          resizeMode='contain' />;
+      },
     };
   }, [fence, onCitationPress, isContentReady, renderTable]);
 
@@ -219,8 +233,9 @@ export function AppMarkdownView({
         code_inline: { backgroundColor: isDarkColorScheme ? colors.gray700 : colors.gray75 },
       }}
       rules={markdownRules}
-      markdownit={markdownItInstance}
-    />
+      markdownit={markdownItInstance}>
+      {children}
+    </Markdown>
   );
 }
 
