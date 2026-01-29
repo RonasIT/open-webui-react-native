@@ -41,7 +41,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       bundleIdentifier: appId,
       supportsTablet: false,
       buildNumber: appEnv.select({
-        default: '15',
+        default: '18',
         production: '8',
       }),
       config: {
