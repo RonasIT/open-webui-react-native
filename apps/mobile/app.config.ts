@@ -41,7 +41,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       bundleIdentifier: appId,
       supportsTablet: false,
       buildNumber: appEnv.select({
-        default: '14',
+        default: '15',
         production: '8',
       }),
       config: {
@@ -51,7 +51,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     android: {
       package: appId,
       versionCode: appEnv.select({
-        default: 14,
+        default: 15,
         production: 8,
       }),
       adaptiveIcon: {
