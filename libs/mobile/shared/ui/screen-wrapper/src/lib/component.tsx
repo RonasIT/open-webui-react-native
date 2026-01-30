@@ -25,20 +25,16 @@ export function ScreenWrapper({
   isKeyboardAvoiding,
   keyBoardAvoidingProps,
 }: PropsWithChildren<ScreenWrapperProps>): ReactElement {
-  const { header, scrollDisabled, ...restScreenProps } = screenProps || {};
-
-  const effectiveScrollDisabled = isKeyboardAvoiding ? true : scrollDisabled;
+  const { header, ...restScreenProps } = screenProps || {};
 
   const content = isKeyboardAvoiding ? (
     <AppKeyboardAvoidingView {...keyBoardAvoidingProps}>
-      <AppScreen scrollDisabled={effectiveScrollDisabled as boolean} {...(restScreenProps as AppScreenProps)}>
+      <AppScreen scrollDisabled {...restScreenProps}>
         {children}
       </AppScreen>
     </AppKeyboardAvoidingView>
   ) : (
-    <AppScreen scrollDisabled={scrollDisabled as boolean} {...(restScreenProps as AppScreenProps)}>
-      {children}
-    </AppScreen>
+    <AppScreen {...restScreenProps}>{children}</AppScreen>
   );
 
   return (
