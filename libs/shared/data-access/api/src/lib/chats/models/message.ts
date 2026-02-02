@@ -70,6 +70,9 @@ export class Message extends BaseEntity<string> {
   @Expose()
   public socketStatusData?: ChatStatusData;
 
+  @Expose({ name: 'follow_ups' })
+  public followUps?: Array<string>;
+
   constructor(message: Partial<Message>) {
     super();
     Object.assign(this, message);

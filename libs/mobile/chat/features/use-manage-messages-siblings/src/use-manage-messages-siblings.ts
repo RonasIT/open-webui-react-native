@@ -1,4 +1,4 @@
-import { filter, get, indexOf, last, map, max, min, values } from 'lodash-es';
+import { get, indexOf, last, max, min, values } from 'lodash-es';
 import { useCallback } from 'react';
 import {
   History as ChatHistory,
@@ -40,12 +40,7 @@ export function useManageMessageSiblings(chatId: string, history?: ChatHistory):
       if (!history?.messages) return;
 
       const isPrev = direction === 'prev';
-      const siblings: Array<string> = message.parentId
-        ? get(history.messages[message.parentId], 'childrenIds', [])
-        : map(
-            filter(values(history.messages), (msg) => msg.parentId === null),
-            'id',
-          );
+      const siblings = getOrderedSiblingIds(message.parentId ?? null);
 
       const currentIndex = indexOf(siblings, message.id);
       const targetIndex = isPrev ? max([currentIndex - 1, 0]) : min([currentIndex + 1, siblings.length - 1]);
@@ -64,12 +59,7 @@ export function useManageMessageSiblings(chatId: string, history?: ChatHistory):
     (message: Message) => {
       if (!history?.messages) return { siblings: [], currentIndex: -1, hasSiblings: false };
 
-      const siblings = message.parentId
-        ? get(history.messages[message.parentId], 'childrenIds', [])
-        : map(
-            filter(values(history.messages), (msg) => msg.parentId === null),
-            'id',
-          );
+      const siblings = getOrderedSiblingIds(message.parentId ?? null);
 
       const currentIndex = indexOf(siblings, message.id);
 
@@ -78,6 +68,20 @@ export function useManageMessageSiblings(chatId: string, history?: ChatHistory):
         currentIndex,
         hasSiblings: siblings.length > 1,
       };
+    },
+    [history],
+  );
+
+  const getOrderedSiblingIds = useCallback(
+    (parentId: string | null): Array<string> => {
+      if (!history?.messages) return [];
+
+      return values(history.messages)
+        .filter((msg) => msg.parentId === parentId)
+        .sort(
+          (a, b) => (a.timestamp !== b.timestamp ? a.timestamp - b.timestamp : a.id.localeCompare(b.id)), // safety fallback
+        )
+        .map((msg) => msg.id);
     },
     [history],
   );

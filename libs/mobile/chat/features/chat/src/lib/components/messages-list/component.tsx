@@ -1,7 +1,7 @@
 import { FlashList } from '@shopify/flash-list';
 import { useLocalSearchParams } from 'expo-router';
 import { delay } from 'lodash-es';
-import { ReactElement, useCallback, useRef, useState } from 'react';
+import React, { ReactElement, useCallback, useRef, useState } from 'react';
 import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { useSharedValue, withTiming } from 'react-native-reanimated';
 import { AiMessageActions } from '@open-webui-react-native/mobile/chat/features/ai-message-actions';
@@ -34,6 +34,8 @@ interface ChatMessagesListProps {
   onTryAgain: (messageId: string) => void;
   onAddDetails: (messageId: string) => void;
   onMoreConcise: (messageId: string) => void;
+  onFollowUpPress: (text: string) => void;
+  isResponseGenerating: boolean;
   history?: ChatHistory;
   messages?: Array<Message>;
   editingMessageId?: string;
@@ -52,8 +54,10 @@ export default function ChatMessagesList({
   onAddDetails,
   onMoreConcise,
   editingMessageId,
+  onFollowUpPress,
+  isResponseGenerating,
 }: ChatMessagesListProps): ReactElement {
-  const listRef = useRef<FlashList<Message>>(null);
+  const listRef = useRef<React.ComponentRef<typeof FlashList<Message>>>(null);
   const isScrollToBottomAvailable = useRef(false);
   const isScrollToBottomAvailableTimeout = useRef<NodeJS.Timeout | null | number>(null); //NOTE: number needs to fix pipeline lint error
   const isScrollToBottomVisible = useSharedValue(0);
@@ -163,6 +167,10 @@ export default function ChatMessagesList({
     completeChat(completePayload);
   };
 
+  const handleFollowUpPress = (text: string): void => {
+    onFollowUpPress(text);
+  };
+
   const renderItem = useCallback(
     ({ item, index }: { item: Message; index: number }) => {
       const message = history?.messages[item.id];
@@ -191,6 +199,9 @@ export default function ChatMessagesList({
             onPreviousSibling={showPreviousSibling}
             onNextSibling={showNextSibling}
             getSiblingsInfo={getSiblingsInfo}
+            isLast={isLast}
+            onFollowUpPress={handleFollowUpPress}
+            isResponseGenerating={isResponseGenerating}
           />
         </AiMessageActions>
       ) : (

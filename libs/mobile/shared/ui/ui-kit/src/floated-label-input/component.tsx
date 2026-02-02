@@ -1,5 +1,5 @@
 import { ReactElement, Ref, useState, useEffect } from 'react';
-import { NativeSyntheticEvent, Platform, TextInput, TextInputFocusEventData, TextInputProps } from 'react-native';
+import { Platform, TextInput, TextInputProps } from 'react-native';
 import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { IconButton } from '../icon-button';
@@ -55,7 +55,6 @@ export const FloatedLabelInput = ({
     top: labelTop.value,
     left: labelLeft.value,
     transform: [{ scale: labelScale.value }],
-    transformOrigin: 'left',
   }));
 
   const accessoryRightComponent = isPassword ? (
@@ -64,12 +63,12 @@ export const FloatedLabelInput = ({
     accessoryRight
   );
 
-  const handleFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>): void => {
+  const handleFocus: TextInputProps['onFocus'] = (e): void => {
     setIsFocused(true);
     onFocus?.(e);
   };
 
-  const handleBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>): void => {
+  const handleBlur: TextInputProps['onBlur'] = (e): void => {
     setIsFocused(false);
     onBlur?.(e);
   };
@@ -85,7 +84,7 @@ export const FloatedLabelInput = ({
       {label && (
         <AnimatedView
           className={cn('absolute z-10 pl-12')}
-          style={labelAnimatedStyle}
+          style={[labelAnimatedStyle, { transformOrigin: 'left' }]}
           pointerEvents='none'>
           <AppText
             pointerEvents='none'

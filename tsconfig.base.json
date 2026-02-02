@@ -12,7 +12,7 @@
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
@@ -60,6 +60,9 @@
       ],
       "@open-webui-react-native/mobile/chat/features/edit-message-input": [
         "libs/mobile/chat/features/edit-message-input/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/chat/features/follow-ups-list": [
+        "libs/mobile/chat/features/follow-ups-list/src/index.ts"
       ],
       "@open-webui-react-native/mobile/chat/features/form-chat-input": [
         "libs/mobile/chat/features/form-chat-input/src/index.ts"
@@ -214,6 +217,9 @@
       "@open-webui-react-native/mobile/shared/utils/compressor": ["libs/mobile/shared/utils/compressor/src/index.ts"],
       "@open-webui-react-native/mobile/shared/utils/form": ["libs/mobile/shared/utils/form/src/index.ts"],
       "@open-webui-react-native/mobile/shared/utils/navigation": ["libs/mobile/shared/utils/navigation/src/index.ts"],
+      "@open-webui-react-native/mobile/shared/utils/use-bottom-inset": [
+        "libs/mobile/shared/utils/use-bottom-inset/src/index.ts"
+      ],
       "@open-webui-react-native/mobile/shared/utils/validation": ["libs/mobile/shared/utils/validation/src/index.ts"],
       "@open-webui-react-native/shared/data-access/api": ["libs/shared/data-access/api/src/index.ts"],
       "@open-webui-react-native/shared/data-access/api-client": ["libs/shared/data-access/api-client/src/index.ts"],

@@ -1,12 +1,13 @@
 import { BaseEntity, EntityRequest } from '@ronas-it/rtkq-entity-api';
-import { useMutation, UseMutationResult } from '@tanstack/react-query';
-import { UseMutationOptions } from '@tanstack/react-query/src/types';
+import { useMutation, UseMutationOptions, UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { EntityPromiseService } from '../entity-service';
 import { QueriesKeys } from '../utils';
 
-export interface UseCreateParams<TEntity extends BaseEntity, TEntityRequest extends EntityRequest = EntityRequest>
-  extends Omit<UseMutationOptions<TEntity, AxiosError, TEntity, unknown>, 'mutationFn'> {
+export interface UseCreateParams<
+  TEntity extends BaseEntity,
+  TEntityRequest extends EntityRequest = EntityRequest,
+> extends Omit<UseMutationOptions<TEntity, AxiosError, TEntity, unknown>, 'mutationFn'> {
   entityService: EntityPromiseService<TEntity>;
   entityRequest?: TEntityRequest;
   queriesKeys: QueriesKeys;

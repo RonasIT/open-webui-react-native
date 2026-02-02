@@ -1,5 +1,5 @@
 import { ExpoConfig } from '@expo/config';
-import { EASConfig } from 'expo-constants/build/Constants.types';
+import { EASConfig } from 'expo-manifests';
 import { AppEnv } from '../../libs/shared/utils/app-env/src/env';
 import { AppEnvName } from '../../libs/shared/utils/app-env/src/app-env';
 import { compact } from 'lodash-es';
@@ -27,10 +27,10 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     slug: process.env.EXPO_PUBLIC_APP_SLUG as string,
     scheme: process.env.EXPO_PUBLIC_APP_SCHEME as string,
     owner: process.env.EXPO_PUBLIC_APP_OWNER as string,
-    version: '1.1.0',
+    version: '1.2.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
-    runtimeVersion: '1.1.0',
+    runtimeVersion: '1.2.0',
     experiments: {
       reactCompiler: true,
     },
@@ -41,8 +41,8 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       bundleIdentifier: appId,
       supportsTablet: false,
       buildNumber: appEnv.select({
-        default: '13',
-        production: '7',
+        default: '18',
+        production: '8',
       }),
       config: {
         usesNonExemptEncryption: false,
@@ -51,8 +51,8 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     android: {
       package: appId,
       versionCode: appEnv.select({
-        default: 13,
-        production: 7,
+        default: 15,
+        production: 8,
       }),
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',

@@ -1,9 +1,18 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 import { delay } from 'lodash-es';
-import { ForwardedRef, Fragment, ReactElement, Ref, useCallback, useImperativeHandle, useRef, useState } from 'react';
+import React, {
+  ForwardedRef,
+  Fragment,
+  ReactElement,
+  Ref,
+  useCallback,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import { InteractionManager } from 'react-native';
-import { FadeIn } from 'react-native-reanimated';
+import { useBottomInset } from '@open-webui-react-native/mobile/shared/utils/use-bottom-inset';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { MockFolderItemIds } from '@open-webui-react-native/shared/data-access/api';
 import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
@@ -43,7 +52,8 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
   modalComponent,
   ref,
 }: FullScreenSearchModalProps<Item>): ReactElement {
-  const listRef = useRef<FlashList<Item>>(null);
+  const listRef = useRef<React.ComponentRef<typeof FlashList<Item>>>(null);
+  const bottomInset = useBottomInset();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isAnimationCompleted, setIsAnimationCompleted] = useState<boolean>(false);
@@ -140,11 +150,12 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
             placeholder={searchPlaceholder} />
           <AppKeyboardControllerView keyboardVerticalOffset={0}>
             {isAnimationCompleted && (
-              <AnimatedView className='flex-1' entering={FadeIn.duration(50)}>
+              <AnimatedView className='flex-1'>
                 <AppFlashList
-                  ref={listRef as Ref<FlashList<Item>>}
+                  ref={listRef as Ref<React.ComponentRef<typeof FlashList<Item>>>}
                   extraData={query}
-                  contentContainerClassName='pt-24 pb-safe android:pb-16'
+                  contentContainerClassName='pt-24'
+                  contentContainerStyle={{ paddingBottom: bottomInset }}
                   showsVerticalScrollIndicator={false}
                   keyboardShouldPersistTaps='handled'
                   renderItem={renderItem}

@@ -73,7 +73,7 @@ function App(): ReactElement | null {
 
   return (
     <View className='bg-background-primary flex-1'>
-      <StatusBar className='bg-background-primary' />
+      <StatusBar className='bg-background-primary' translucent />
       <Stack>
         <Stack.Screen name='index' options={{ headerShown: false, contentStyle: { backgroundColor: 'transparent' } }} />
         <Stack.Screen name={navigationConfig.auth.root} options={{ headerShown: false }} />
