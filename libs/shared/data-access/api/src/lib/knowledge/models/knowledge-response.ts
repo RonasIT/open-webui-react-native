@@ -1,8 +1,9 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { Knowledge } from './knowledge';
 
 export class KnowledgeResponse {
   @Expose()
+  @Type(() => Knowledge)
   public items: Array<Knowledge>;
 
   @Expose()
