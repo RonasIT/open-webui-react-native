@@ -1,6 +1,6 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
 import * as DocumentPicker from 'expo-document-picker';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import { Directory, File, Paths } from 'expo-file-system/next';
 import * as Sharing from 'expo-sharing';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';

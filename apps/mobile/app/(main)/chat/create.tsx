@@ -14,13 +14,18 @@ import { appState$ } from '@open-webui-react-native/shared/data-access/app-state
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { router } from 'expo-router';
 import { ReactElement, useRef } from 'react';
+import { Keyboard, InteractionManager } from 'react-native';
 
 export default function CreateChatScreen(): ReactElement {
   const translate = useTranslation('CHAT.CREATE_CHAT');
   const upsertFolderSheetRef = useRef<UpsertFolderSheetMethods>(null);
 
-  const handleChatCreated = (id: string): void =>
-    router.replace(navigationConfig.main.chat.view({ id, isNewChat: 'true' }));
+  const handleChatCreated = (id: string): void => {
+    Keyboard.dismiss();
+    InteractionManager.runAfterInteractions(() => {
+      router.push(navigationConfig.main.chat.view({ id, isNewChat: 'true' }));
+    });
+  };
 
   const openCreateFolderModal = (): void => upsertFolderSheetRef.current?.present();
 
@@ -41,7 +46,7 @@ export default function CreateChatScreen(): ReactElement {
         className: 'pt-0',
         header: <AppHeader title={translate('TEXT_NEW_CHAT')} onGoBack={handleBackPress} />,
       }}
-      safeAreaProps={{ edges: ['bottom'] }}
+      safeAreaProps={{ edges: [] }}
       keyBoardAvoidingProps={{ enabled: !isBottomSheetInputFocused }}>
       <NoConnectionBanner isVisible={isOfflineMode} />
       <CreateChat

@@ -1,4 +1,5 @@
 import { Fragment, ReactElement, useMemo } from 'react';
+import { FollowUpsList } from '@open-webui-react-native/mobile/chat/features/follow-ups-list';
 import { MessageVersionControls } from '@open-webui-react-native/mobile/chat/features/message-version-controls';
 import { SourceCitationModal } from '@open-webui-react-native/mobile/chat/features/source-citation-modal';
 import { prepareTextWithCitations, useCitations } from '@open-webui-react-native/mobile/chat/features/use-citations';
@@ -22,6 +23,9 @@ import { SkeletonMessage } from '../skeleton-message';
 interface ChatAiMessageProps {
   message: Message;
   onEditPress: () => void;
+  isLast: boolean;
+  isResponseGenerating: boolean;
+  onFollowUpPress: (text: string) => void;
   isEditing?: boolean;
   onPreviousSibling?: UseSiblingMessagesReturn['showPreviousSibling'];
   onNextSibling?: UseSiblingMessagesReturn['showNextSibling'];
@@ -34,6 +38,9 @@ export function ChatAiMessage({
   onNextSibling,
   onPreviousSibling,
   getSiblingsInfo,
+  isLast,
+  isResponseGenerating,
+  onFollowUpPress,
 }: ChatAiMessageProps): ReactElement {
   const {
     content: text,
@@ -43,6 +50,7 @@ export function ChatAiMessage({
     done: isMessageDone,
     socketStatusData,
     timestamp,
+    followUps,
   } = message;
 
   const apiUrl = getApiUrl();
@@ -64,6 +72,7 @@ export function ChatAiMessage({
     useImagePreview();
 
   const textWithCitations = prepareTextWithCitations(text, citations);
+  const hasFollowUps = Array.isArray(followUps) && followUps.length > 0;
 
   return (
     <View>
@@ -118,6 +127,12 @@ export function ChatAiMessage({
         </Fragment>
       ) : (
         <SkeletonMessage />
+      )}
+      {!isResponseGenerating && isLast && hasFollowUps && (
+        <FollowUpsList
+          followUps={followUps}
+          onPress={onFollowUpPress}
+          containerClassName='mt-12' />
       )}
     </View>
   );

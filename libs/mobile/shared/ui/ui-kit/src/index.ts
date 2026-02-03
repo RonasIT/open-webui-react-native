@@ -41,3 +41,4 @@ export * from './sheet-header';
 export * from './keyboard-aware-scroll-view';
 export * from './pressable-search-input';
 export * from './full-screen-search-modal';
+export * from './gesture-pressable-icon-button';

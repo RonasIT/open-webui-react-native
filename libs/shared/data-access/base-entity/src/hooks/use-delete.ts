@@ -1,12 +1,19 @@
 import { BaseEntity, EntityRequest, PaginationResponse } from '@ronas-it/rtkq-entity-api';
-import { InfiniteData, useMutation, UseMutationResult, useQueryClient } from '@tanstack/react-query';
-import { UseMutationOptions } from '@tanstack/react-query/src/types';
+import {
+  InfiniteData,
+  useMutation,
+  UseMutationOptions,
+  UseMutationResult,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { EntityPromiseService } from '../entity-service';
 import { QueriesKeys } from '../utils';
 
-export interface UseDeleteParams<TEntity extends BaseEntity, TEntityRequest extends EntityRequest = EntityRequest>
-  extends Omit<UseMutationOptions<void, AxiosError, string | number, unknown>, 'mutationFn'> {
+export interface UseDeleteParams<
+  TEntity extends BaseEntity,
+  TEntityRequest extends EntityRequest = EntityRequest,
+> extends Omit<UseMutationOptions<void, AxiosError, string | number, unknown>, 'mutationFn'> {
   entityService: EntityPromiseService<TEntity>;
   entityRequest?: TEntityRequest;
   queriesKeys: QueriesKeys;
