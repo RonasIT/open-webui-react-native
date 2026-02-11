@@ -248,6 +248,9 @@ export default function ChatMessagesList({
         ItemSeparatorComponent={() => <View className='h-20' />}
         data={messages}
         renderItem={renderItem}
+        maintainVisibleContentPosition={{
+          startRenderingFromBottom: true,
+        }}
         onContentSizeChange={handleContentSizeChange}
         onScroll={handleScroll}
         scrollEventThrottle={16}
