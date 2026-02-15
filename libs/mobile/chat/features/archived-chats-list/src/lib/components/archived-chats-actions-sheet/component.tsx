@@ -19,7 +19,7 @@ interface ArchivedChatsActionsSheetProps {
 export function ArchivedChatsActionsSheet({ renderTrigger }: ArchivedChatsActionsSheetProps): ReactElement {
   const translate = useTranslation('CHAT.ARCHIVED_CHATS_LIST.ARCHIVED_CHATS_ACTIONS_SHEET');
 
-  const actionsHSeetRef = useRef<BottomSheetModal>(null);
+  const actionsSheetRef = useRef<BottomSheetModal>(null);
 
   const { unarchiveAllChats, isUnarchiving: isUnarchivingAllChats } = useUnarchiveChats();
 
@@ -35,12 +35,12 @@ export function ArchivedChatsActionsSheet({ renderTrigger }: ArchivedChatsAction
 
   const handleConfirmUnarchiveAll = async (): Promise<void> => {
     await unarchiveAllChats();
-    actionsHSeetRef.current?.close();
+    actionsSheetRef.current?.close();
   };
 
   const handleExportArchivedChats = async (): Promise<void> => {
     await exportArchivedChats();
-    actionsHSeetRef.current?.close();
+    actionsSheetRef.current?.close();
   };
 
   const actions: Array<ActionSheetItemProps> = compact([
@@ -61,5 +61,5 @@ export function ArchivedChatsActionsSheet({ renderTrigger }: ArchivedChatsAction
   return <ActionsBottomSheet
     actions={actions}
     renderTrigger={renderTrigger}
-    ref={actionsHSeetRef} />;
+    ref={actionsSheetRef} />;
 }
