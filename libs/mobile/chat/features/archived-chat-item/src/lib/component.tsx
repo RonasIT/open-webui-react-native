@@ -2,13 +2,13 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { compact } from 'lodash-es';
 import { Fragment, ReactElement, useRef } from 'react';
+import { DownloadChatOptionsSheet } from '@open-webui-react-native/mobile/shared/features/download-chat-options-sheet';
 import { ChatListRow, ChatListRowProps } from '@open-webui-react-native/mobile/shared/ui/chat-list-row';
 import { ActionsBottomSheet, ActionSheetItemProps } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { chatApi, ChatListItem } from '@open-webui-react-native/shared/data-access/api';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
-import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 interface ArchivedChatItemProps extends Partial<ChatListRowProps> {
   onItemPress: (id: string) => void;
@@ -19,6 +19,7 @@ export function ArchivedChatItem({ item, onItemPress, ...restProps }: ArchivedCh
   const translate = useTranslation('CHAT.ARCHIVED_CHATS_LIST.CHAT_ITEM');
 
   const actionsSheetRef = useRef<BottomSheetModal>(null);
+  const downloadOptionsModalRef = useRef<BottomSheetModal>(null);
 
   const { mutateAsync: deleteChat, isPending: isDeleting } = chatApi.useDelete();
   const { mutateAsync: unarchiveChat, isPending: isUnarchiving } = chatApi.useUnarchiveChat();
@@ -46,7 +47,8 @@ export function ArchivedChatItem({ item, onItemPress, ...restProps }: ArchivedCh
     await unarchiveChat(item.id);
     actionsSheetRef.current?.close();
   };
-  const handleExportChatPress = (): void => ToastService.showFeatureNotImplemented();
+
+  const handleExportChatPress = (): void => downloadOptionsModalRef.current?.present();
 
   const actions: Array<ActionSheetItemProps> = compact([
     {
@@ -80,6 +82,7 @@ export function ArchivedChatItem({ item, onItemPress, ...restProps }: ArchivedCh
         {...restProps}
       />
       <ActionsBottomSheet actions={actions} ref={actionsSheetRef} />
+      <DownloadChatOptionsSheet ref={downloadOptionsModalRef} chatId={item.id} />
     </Fragment>
   );
 }
