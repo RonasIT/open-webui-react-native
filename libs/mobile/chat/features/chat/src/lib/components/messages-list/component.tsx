@@ -191,6 +191,7 @@ export default function ChatMessagesList({
           onTryAgain={onTryAgain}
           onAddDetails={onAddDetails}
           onMoreConcise={onMoreConcise}
+          isResponseGenerating={isResponseGenerating}
           isLast={isLast}>
           <ChatAiMessage
             message={message}
