@@ -2,7 +2,7 @@ import { FlashList } from '@shopify/flash-list';
 import { useLocalSearchParams } from 'expo-router';
 import { delay } from 'lodash-es';
 import React, { ReactElement, useCallback, useRef } from 'react';
-import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
+import { GestureResponderEvent, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { useSharedValue, withTiming } from 'react-native-reanimated';
 import { AiMessageActions } from '@open-webui-react-native/mobile/chat/features/ai-message-actions';
 import { useManageMessageSiblings } from '@open-webui-react-native/mobile/chat/features/use-manage-messages-siblings';
@@ -62,7 +62,8 @@ export default function ChatMessagesList({
   const isScrollToBottomAvailableTimeout = useRef<NodeJS.Timeout | null | number>(null); //NOTE: number needs to fix pipeline lint error
   const isScrollToBottomVisible = useSharedValue(0);
   const previousScrollY = useRef(0);
-  const isNearBottomRef = useRef(true);
+  const shouldAutoscrollToBottomRef = useRef(true);
+  const previousTouchY = useRef(0);
 
   const { showPreviousSibling, showNextSibling, getSiblingsInfo } = useManageMessageSiblings(chatId, history);
   const { mutate: completeChat } = chatApi.useCompleteChat();
@@ -80,7 +81,7 @@ export default function ChatMessagesList({
       isScrollToBottomAvailable.current = true;
     }, 500);
 
-    if (isNearBottomRef.current && listRef.current && messages?.length > 0) {
+    if (shouldAutoscrollToBottomRef.current) {
       requestAnimationFrame(() => {
         listRef.current?.scrollToEnd({ animated: true });
       });
@@ -114,7 +115,6 @@ export default function ChatMessagesList({
     //NOTE: The indent of 100 is needed to display the button not immediately when we start scrolling,
     //but when a small distance has been scrolled.
     const isNearBottom = scrollY + containerHeight >= contentHeight - 100;
-    isNearBottomRef.current = isNearBottom;
 
     if (isNearBottom || isScrollingUp) {
       animateScrollToBottom(0);
@@ -127,7 +127,6 @@ export default function ChatMessagesList({
     //NOTE: Needs to hide scroll to bottom button to avoid its jumping while scrolling to bottom
     animateScrollToBottom(0);
     isScrollToBottomAvailable.current = false;
-    isNearBottomRef.current = true;
 
     delay(() => {
       isScrollToBottomAvailable.current = true;
@@ -174,6 +173,23 @@ export default function ChatMessagesList({
 
   const handleFollowUpPress = (text: string): void => {
     onFollowUpPress(text);
+  };
+
+  const handleTouchStart = (e: GestureResponderEvent): void => {
+    if (!isResponseGenerating) return;
+
+    shouldAutoscrollToBottomRef.current = false;
+    previousTouchY.current = e.nativeEvent.pageY;
+  };
+
+  const handleTouchMove = (e: GestureResponderEvent): void => {
+    if (!isResponseGenerating) return;
+
+    const { pageY } = e.nativeEvent;
+    const deltaY = pageY - previousTouchY.current;
+
+    previousTouchY.current = pageY;
+    shouldAutoscrollToBottomRef.current = deltaY < 0;
   };
 
   const renderItem = useCallback(
@@ -253,6 +269,8 @@ export default function ChatMessagesList({
         }}
         onContentSizeChange={handleContentSizeChange}
         onScroll={handleScroll}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
         scrollEventThrottle={16}
       />
       <ChatBottomButton isVisible={isScrollToBottomVisible} onPress={scrollToBottom} />
