@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useEffect, useRef } from 'react';
 import { fileSystemService } from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
@@ -24,7 +24,7 @@ export function AttachmentsMenuSheet({
   onImageUploaded,
 }: AttachmentsMenuSheetProps): ReactElement {
   const translate = useTranslation('CHAT.FORM_CHAT_INPUT.ATTACHMENTS_ACTIONS_POPUP');
-  const modalRef = useRef<BottomSheetModal>(null);
+  const modalRef = useRef<TrueSheet>(null);
   const {
     mutate: uploadFile,
     isPending: isFileUploading,
@@ -32,7 +32,9 @@ export function AttachmentsMenuSheet({
     data: file,
   } = filesApi.useUploadFile();
 
-  const closeModal = (): void => modalRef.current?.close();
+  const closeModal = (): void => {
+    modalRef.current?.dismiss();
+  };
 
   const handlePickImage = async (source: ImagePickerSource): Promise<void> => {
     const image = await imagePickerService.getImage(source);

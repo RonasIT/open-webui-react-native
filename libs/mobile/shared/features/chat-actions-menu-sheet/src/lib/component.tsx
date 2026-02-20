@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { compact, debounce, delay } from 'lodash-es';
 import { ForwardedRef, Fragment, ReactElement, useImperativeHandle, useMemo, useRef, useState } from 'react';
@@ -49,10 +49,10 @@ export interface ChatActionsMenuSheetProps extends Pick<ActionsBottomSheetProps,
 export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: ChatActionsMenuSheetProps): ReactElement {
   const translate = useTranslation('SHARED.CHAT_ACTIONS_MENU_SHEET');
 
-  const actionsSheetRef = useRef<BottomSheetModal>(null);
+  const actionsSheetRef = useRef<TrueSheet>(null);
   const renameModalRef = useRef<ActionButtonsModalMethods>(null);
-  const shareChatModalRef = useRef<BottomSheetModal>(null);
-  const downloadOptionsModalRef = useRef<BottomSheetModal>(null);
+  const shareChatModalRef = useRef<TrueSheet>(null);
+  const downloadOptionsModalRef = useRef<TrueSheet>(null);
   const fullScreenSearchModalRef = useRef<FullScreenSearchModalMethods>(null);
   const upsertFolderSheetRef = useRef<UpsertFolderSheetMethods>(null);
   const { resetToChatsListScreen } = useInitialNavigation();
@@ -77,9 +77,9 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: Chat
   });
 
   const closeModals = (): void => {
-    renameModalRef.current?.close();
-    shareChatModalRef.current?.close();
-    downloadOptionsModalRef.current?.close();
+    renameModalRef.current?.dismiss();
+    shareChatModalRef.current?.dismiss();
+    downloadOptionsModalRef.current?.dismiss();
   };
 
   useImperativeHandle(
@@ -144,7 +144,7 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: Chat
   const closeActionsModal = (): Promise<void> =>
     // Need to delay to ensure the actions modal is closed before opening the new modal
     new Promise((resolve) => {
-      actionsSheetRef?.current?.close();
+      actionsSheetRef?.current?.dismiss();
       setTimeout(() => resolve(), 600);
     });
 
@@ -155,7 +155,7 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: Chat
 
   const onRenameConfirm = async (title: string): Promise<void> => {
     await updateChat({ id: chatId, chat: { title } as Chat });
-    renameModalRef.current?.close();
+    renameModalRef.current?.dismiss();
   };
 
   const openDeleteAlert = async (): Promise<void> => {
@@ -171,7 +171,7 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: Chat
 
   const onDeleteConfirm = async (): Promise<void> => {
     await deleteChat({ id: chatId, folderId });
-    actionsSheetRef.current?.close();
+    actionsSheetRef.current?.dismiss();
 
     if (isInChat) {
       resetToChatsListScreen();
@@ -221,7 +221,7 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: Chat
       folderId: id === MockFolderItemIds.NO_FOLDER_ID ? null : id,
       oldFolderId: chatFullData?.folderId,
     });
-    fullScreenSearchModalRef.current?.close();
+    fullScreenSearchModalRef.current?.dismiss();
   };
 
   const actions: Array<ActionSheetItemProps> = compact([

@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { Fragment, PropsWithChildren, ReactElement, useImperativeHandle, useRef } from 'react';
 import {
   ActionsBottomSheet,
@@ -11,7 +11,7 @@ import { useAnimateMessage } from './hooks/use-animate-message';
 interface MessageActionsSheetWrapperProps {
   actions: Array<ActionSheetItemProps>;
   isResponseGenerating?: boolean;
-  sheetRef?: React.RefObject<BottomSheetModal | null>;
+  sheetRef?: React.RefObject<TrueSheet | null>;
 }
 
 export function MessageActionsSheetWrapper({
@@ -20,7 +20,7 @@ export function MessageActionsSheetWrapper({
   isResponseGenerating,
   children,
 }: PropsWithChildren<MessageActionsSheetWrapperProps>): ReactElement {
-  const actionsSheetRef = useRef<BottomSheetModal>(null);
+  const actionsSheetRef = useRef<TrueSheet>(null);
   const { animatedStyle, startAnimation, stopAnimation } = useAnimateMessage();
 
   const handleLongPress = (): void => {
@@ -45,7 +45,7 @@ export function MessageActionsSheetWrapper({
           actionsSheetRef.current?.present();
         },
         dismiss: handleDismissActionsSheet,
-      }) as BottomSheetModal,
+      }) as TrueSheet,
   );
 
   return (

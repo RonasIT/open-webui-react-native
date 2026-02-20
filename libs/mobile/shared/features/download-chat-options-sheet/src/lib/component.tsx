@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useState } from 'react';
 import { FileExtension } from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
@@ -7,7 +7,7 @@ import { ActionsBottomSheet, ActionSheetItemProps } from '@open-webui-react-nati
 
 export interface DownloadChatOptionsSheetProps {
   chatId: string;
-  ref?: React.RefObject<BottomSheetModal | null>;
+  ref?: React.RefObject<TrueSheet | null>;
 }
 
 export function DownloadChatOptionsSheet({ chatId, ref }: DownloadChatOptionsSheetProps): ReactElement {

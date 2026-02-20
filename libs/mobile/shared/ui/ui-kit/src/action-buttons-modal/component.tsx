@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { delay } from 'lodash-es';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } from 'react';
@@ -13,7 +13,7 @@ import { View } from '../view';
 
 export type ActionButtonsModalMethods = {
   present: (value?: string) => void;
-  close: () => void;
+  dismiss: () => void;
 };
 
 export type ActionButtonsModalRef = ForwardedRef<ActionButtonsModalMethods>;
@@ -38,7 +38,7 @@ export function ActionButtonsModal({
   isScrollable,
 }: ActionButtonsModalProps): ReactElement {
   const translate = useTranslation('SHARED.ACTION_BUTTONS_MODAL');
-  const modalRef = useRef<BottomSheetModal>(null);
+  const modalRef = useRef<TrueSheet>(null);
   const inputRef = useRef<TextInput>(null);
 
   const [value, setValue] = useState('');
@@ -49,12 +49,12 @@ export function ActionButtonsModal({
         setValue(value || '');
         modalRef.current?.present();
       },
-      close: closeModal,
+      dismiss: closeModal,
     };
   }, []);
 
   const closeModal = (): void => {
-    modalRef.current?.close();
+    modalRef.current?.dismiss();
     delay(() => inputRef.current?.blur(), 500);
   };
 
@@ -70,7 +70,6 @@ export function ActionButtonsModal({
   return (
     <AppBottomSheet
       ref={modalRef}
-      isModal={true}
       onOpen={() => inputRef.current?.focus()}
       withoutKeyboardExtraPadding
       content={

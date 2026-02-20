@@ -1,11 +1,7 @@
 import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Fragment, ReactElement, ReactNode, Ref, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
 import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
-import { uiState$ } from '@open-webui-react-native/mobile/shared/ui/ui-state';
-import { useBottomInset } from '@open-webui-react-native/mobile/shared/utils/use-bottom-inset';
 import { View } from '../view';
 
 export interface AppBottomSheetProps {
@@ -20,23 +16,27 @@ export interface AppBottomSheetProps {
   withoutBackground?: boolean;
   onBackdropPress?: () => void;
   ref?: Ref<TrueSheet>;
+  scrollable?: boolean;
+  header?: ReactElement;
+  cornerRadius?: number;
+  dimmed?: boolean;
 }
+
+export type AppBottomSheetPropsType = AppBottomSheetProps;
 
 export function AppBottomSheet({
   detents = ['auto', 0.9],
-  isScrollable,
+  scrollable,
   renderTrigger,
   content,
-  isBackdropDisabled,
+  header,
   className,
   ref,
   onOpen,
   withoutBackground,
-  onBackdropPress,
+  cornerRadius,
+  dimmed = true,
 }: AppBottomSheetProps): ReactElement {
-  const { top } = useSafeAreaInsets();
-  const bottomInset = useBottomInset();
-
   const sheetRef = useRef<TrueSheet>(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -47,12 +47,6 @@ export function AppBottomSheet({
     onOpen?.();
     setIsOpen(true);
     await sheetRef.current?.present();
-  };
-
-  const handleDismiss = async () => {
-    setIsOpen(false);
-    onBackdropPress?.();
-    uiState$.isBottomSheetInputFocused.set(false);
   };
 
   useBackHandler(() => {
@@ -70,7 +64,7 @@ export function AppBottomSheet({
   const renderedContent = (
     <View
       className={cn(
-        'px-content-offset pt-content-offset',
+        !scrollable && 'px-content-offset pt-content-offset',
         withoutBackground ? 'bg-transparent' : 'bg-background-primary',
         className,
       )}
@@ -87,8 +81,13 @@ export function AppBottomSheet({
       <TrueSheet
         ref={sheetRef}
         detents={detents}
-        cornerRadius={32}
         backgroundColor={'transparent'}
+        draggable={false}
+        scrollable={scrollable}
+        header={header}
+        cornerRadius={cornerRadius}
+        dimmed={dimmed}
+        stackBehavior='switch'
         // dismissOnBackdropPress={!isBackdropDisabled}
         // onDismiss={handleDismiss}
         // onPresent={() => setIsOpen(true)}

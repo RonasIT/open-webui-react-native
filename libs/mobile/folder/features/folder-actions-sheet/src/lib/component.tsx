@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } from 'react';
 import { fileSystemService } from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
@@ -30,7 +30,7 @@ export interface FolderActionsSheetProps extends Pick<ActionsBottomSheetProps, '
 
 export function FolderActionsSheet({ onEditPress, ref }: FolderActionsSheetProps): ReactElement {
   const translate = useTranslation('FOLDER.FOLDER_ACTIONS_SHEET');
-  const actionsSheetRef = useRef<BottomSheetModal>(null);
+  const actionsSheetRef = useRef<TrueSheet>(null);
 
   const [folder, setFolder] = useState<FolderListItem | undefined>();
   const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
@@ -51,7 +51,7 @@ export function FolderActionsSheet({ onEditPress, ref }: FolderActionsSheetProps
   const closeActionsModal = (): Promise<void> =>
     // Need to delay to ensure the actions modal is closed before opening the new modal
     new Promise((resolve) => {
-      actionsSheetRef?.current?.close();
+      actionsSheetRef?.current?.dismiss();
       setTimeout(() => resolve(), 500);
     });
 

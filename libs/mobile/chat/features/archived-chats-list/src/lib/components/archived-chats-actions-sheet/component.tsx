@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { compact } from 'lodash-es';
 import { ReactElement, useRef } from 'react';
@@ -19,7 +19,7 @@ interface ArchivedChatsActionsSheetProps {
 export function ArchivedChatsActionsSheet({ renderTrigger }: ArchivedChatsActionsSheetProps): ReactElement {
   const translate = useTranslation('CHAT.ARCHIVED_CHATS_LIST.ARCHIVED_CHATS_ACTIONS_SHEET');
 
-  const actionsSheetRef = useRef<BottomSheetModal>(null);
+  const actionsSheetRef = useRef<TrueSheet>(null);
 
   const { unarchiveAllChats, isUnarchiving: isUnarchivingAllChats } = useUnarchiveChats();
 
@@ -35,12 +35,12 @@ export function ArchivedChatsActionsSheet({ renderTrigger }: ArchivedChatsAction
 
   const handleConfirmUnarchiveAll = async (): Promise<void> => {
     await unarchiveAllChats();
-    actionsSheetRef.current?.close();
+    actionsSheetRef.current?.dismiss();
   };
 
   const handleExportArchivedChats = async (): Promise<void> => {
     await exportArchivedChats();
-    actionsSheetRef.current?.close();
+    actionsSheetRef.current?.dismiss();
   };
 
   const actions: Array<ActionSheetItemProps> = compact([

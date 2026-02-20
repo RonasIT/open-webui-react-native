@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { ReactElement, useRef } from 'react';
 import { FilterItem } from '@open-webui-react-native/mobile/chat/data-access/archived-chats-filter-state';
 import {
@@ -21,10 +21,10 @@ export function ArchivedChatsFiltersSheet({
   selectedFilter,
   onFilterPress,
 }: ArchivedChatsFiltersSheetProps): ReactElement {
-  const actionsBottomSheetRef = useRef<BottomSheetModal>(null);
+  const actionsBottomSheetRef = useRef<TrueSheet>(null);
 
   const handleFilterPress = (filter: FilterItem): void => {
-    actionsBottomSheetRef.current?.close();
+    actionsBottomSheetRef.current?.dismiss();
     onFilterPress(filter);
   };
 

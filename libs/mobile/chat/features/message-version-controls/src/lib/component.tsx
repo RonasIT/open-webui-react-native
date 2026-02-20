@@ -22,6 +22,7 @@ export function MessageVersionControls({
     currentIndex: -1,
     hasSiblings: false,
   };
+  console.log('Message id:', message.id, 'parentId:', message.parentId, 'message content:', message.content);
 
   if (!isFeatureEnabled(FeatureID.EDIT_MESSAGE) || !siblingInfo.hasSiblings) {
     return null;

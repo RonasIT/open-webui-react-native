@@ -1,4 +1,3 @@
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 import { delay } from 'lodash-es';
 import React, {
@@ -26,7 +25,7 @@ import { FullScreenSearchListItem } from './types';
 
 export type FullScreenSearchModalMethods = {
   present: () => void;
-  close: () => void;
+  dismiss: () => void;
 };
 
 export type FullScreenSearchModalRef = ForwardedRef<FullScreenSearchModalMethods>;
@@ -70,7 +69,7 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
       present: (): void => {
         setIsOpen(true);
       },
-      close,
+      dismiss: close,
     }),
     [],
   );
@@ -164,7 +163,7 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
               </AnimatedView>
             )}
           </AppKeyboardControllerView>
-          <BottomSheetModalProvider>{modalComponent}</BottomSheetModalProvider>
+          <View>{modalComponent}</View>
         </View>
       </FullScreenModal>
     </Fragment>

@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useRef } from 'react';
 import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-logout';
@@ -23,11 +23,11 @@ export function ProfileMenuSheet({ onArchivedChatsPress, ...restProps }: Profile
 
   const { data: profile } = authApi.useGetProfile();
 
-  const actionsBottomSheetRef = useRef<BottomSheetModal>(null);
+  const actionsBottomSheetRef = useRef<TrueSheet>(null);
 
   const closeActionsSheet = (): Promise<void> =>
     new Promise((resolve) => {
-      actionsBottomSheetRef.current?.close();
+      actionsBottomSheetRef.current?.dismiss();
       setTimeout(() => resolve(), 250);
     });
 

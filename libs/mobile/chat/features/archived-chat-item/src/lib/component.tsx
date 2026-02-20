@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { compact } from 'lodash-es';
 import { Fragment, ReactElement, useRef } from 'react';
@@ -18,18 +18,21 @@ interface ArchivedChatItemProps extends Partial<ChatListRowProps> {
 export function ArchivedChatItem({ item, onItemPress, ...restProps }: ArchivedChatItemProps): ReactElement {
   const translate = useTranslation('CHAT.ARCHIVED_CHATS_LIST.CHAT_ITEM');
 
-  const actionsSheetRef = useRef<BottomSheetModal>(null);
-  const downloadOptionsModalRef = useRef<BottomSheetModal>(null);
+  const actionsSheetRef = useRef<TrueSheet>(null);
+  const downloadOptionsModalRef = useRef<TrueSheet>(null);
 
   const { mutateAsync: deleteChat, isPending: isDeleting } = chatApi.useDelete();
   const { mutateAsync: unarchiveChat, isPending: isUnarchiving } = chatApi.useUnarchiveChat();
 
   const handlePress = (): void => onItemPress(item.id);
-  const handleLongPress = (): void => actionsSheetRef.current?.present();
+
+  const handleLongPress = (): void => {
+    actionsSheetRef.current?.present();
+  };
 
   const handleConfirmDeletePress = async (): Promise<void> => {
     await deleteChat({ id: item.id });
-    actionsSheetRef.current?.close();
+    actionsSheetRef.current?.dismiss();
   };
 
   const showDeleteChatAlert = (): void => {
@@ -45,10 +48,12 @@ export function ArchivedChatItem({ item, onItemPress, ...restProps }: ArchivedCh
 
   const handleUnarchiveChatPress = async (): Promise<void> => {
     await unarchiveChat(item.id);
-    actionsSheetRef.current?.close();
+    actionsSheetRef.current?.dismiss();
   };
 
-  const handleExportChatPress = (): void => downloadOptionsModalRef.current?.present();
+  const handleExportChatPress = (): void => {
+    downloadOptionsModalRef.current?.present();
+  };
 
   const actions: Array<ActionSheetItemProps> = compact([
     {

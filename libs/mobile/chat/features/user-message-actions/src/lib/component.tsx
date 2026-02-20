@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { i18n, useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import * as Clipboard from 'expo-clipboard';
 import { compact } from 'lodash-es';
@@ -21,7 +21,7 @@ export function UserMessageActions({
 }: PropsWithChildren<UserMessageActionsProps>): ReactElement {
   const translate = useTranslation('CHAT.USER_MESSAGE_ACTIONS');
 
-  const actionsSheetRef = useRef<BottomSheetModal>(null);
+  const actionsSheetRef = useRef<TrueSheet>(null);
 
   const copyToClipboard = async (): Promise<void> => {
     await Clipboard.setStringAsync(message.content);

@@ -7,7 +7,6 @@ import {
   AppText,
   View,
   AppTextProps,
-  AppBottomSheetFlashList,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 
 export interface DateSectionListProps<TItem> extends Omit<AppFlashListProps<TItem>, 'ref'> {
@@ -33,7 +32,7 @@ export function DateSectionList<TItem>({
   isInModal,
   ...restProps
 }: DateSectionListProps<TItem>): ReactElement {
-  const ListComponent = isInModal ? AppBottomSheetFlashList : AppFlashList;
+  const ListComponent = isInModal ? AppFlashList : AppFlashList;
 
   const sectionedData = useMemo(() => {
     const formattedData: Array<ReactElement | TItem | string> = uniqWith(

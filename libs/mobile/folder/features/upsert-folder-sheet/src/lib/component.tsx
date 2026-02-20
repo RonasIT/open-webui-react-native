@@ -1,17 +1,17 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSelector } from '@legendapp/state/react';
+import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { TextInput } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   SelectKnowledgeSheet,
   SelectKnowledgeSheetMethods,
 } from '@open-webui-react-native/mobile/folder/features/select-knowledge-sheet';
 import { fileSystemService } from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
 import { useAttachedFiles } from '@open-webui-react-native/mobile/shared/features/use-attached-files';
+import { AppKeyboardAwareScrollView } from '@open-webui-react-native/mobile/shared/ui/keyboard-avoiding-view';
 import {
   View,
   FormFloatedLabelInput,
@@ -20,7 +20,6 @@ import {
   SheetHeader,
   AppBottomSheet,
   AppBottomSheetPropsType,
-  AppBottomSheetKeyboardAwareScrollView,
   AppSpinner,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
@@ -49,8 +48,7 @@ export type UpsertFolderSheetProps = Partial<Omit<AppBottomSheetPropsType, 'ref'
 
 export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): ReactElement {
   const translate = useTranslation('FOLDER.UPSERT_FOLDER_SHEET');
-  const { bottom } = useSafeAreaInsets();
-  const sheetRef = useRef<BottomSheetModal>(null);
+  const sheetRef = useRef<TrueSheet>(null);
   const nameInputRef = useRef<TextInput>(null);
   const selectKnowledgeSheetRef = useRef<SelectKnowledgeSheetMethods>(null);
 
@@ -92,9 +90,13 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
 
   const files = useSelector(attachedFiles);
 
-  const closeModal = (): void => sheetRef.current?.close();
+  const closeModal = (): void => {
+    sheetRef.current?.dismiss();
+  };
 
-  const openModal = (): void => sheetRef.current?.present();
+  const openModal = (): void => {
+    sheetRef.current?.present();
+  };
 
   const handleOpen = (): void => nameInputRef.current?.focus(); //NOTE: Autofocus causes scrolling to an incorrect position
 
@@ -198,26 +200,29 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
   return (
     <AppBottomSheet
       {...props}
-      isModal={true}
       onOpen={handleOpen}
       ref={sheetRef}
-      isScrollable
-      snapPoints={['100%']}
+      detents={[1]}
+      cornerRadius={32}
+      scrollable
+      header={
+        <SheetHeader
+          title={folderId ? translate('TEXT_EDIT_FOLDER') : translate('TEXT_NEW_FOLDER')}
+          onGoBack={closeModal}
+          onConfirmPress={handleSubmit(onSubmit)}
+          confirmButtonProps={{ isLoading: isFolderCreating || isFolderUpdating }}
+          className='px-content-offset pt-content-offset'
+        />
+      }
       content={
-        <View className='flex-1 bg-background-primary'>
-          <SheetHeader
-            title={folderId ? translate('TEXT_EDIT_FOLDER') : translate('TEXT_NEW_FOLDER')}
-            onGoBack={closeModal}
-            onConfirmPress={handleSubmit(onSubmit)}
-            confirmButtonProps={{ isLoading: isFolderCreating || isFolderUpdating }}
-          />
+        <View className='bg-background-primary'>
           {isFolderLoading ? (
             <View className='flex-1'>
               <AppSpinner isFullScreen />
             </View>
           ) : (
-            <AppBottomSheetKeyboardAwareScrollView>
-              <View className='pt-8 gap-16 flex-1 bg-background-primary' style={{ paddingBottom: bottom + 24 }}>
+            <AppKeyboardAwareScrollView className='h-full pt-8 bg-background-primary px-content-offset'>
+              <View className='gap-16'>
                 <FormFloatedLabelInput
                   name='name'
                   control={control}
@@ -255,7 +260,7 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
                   </View>
                 </View>
               </View>
-            </AppBottomSheetKeyboardAwareScrollView>
+            </AppKeyboardAwareScrollView>
           )}
           <SelectKnowledgeSheet ref={selectKnowledgeSheetRef} onConfirm={setSelectedKnowledge} />
         </View>

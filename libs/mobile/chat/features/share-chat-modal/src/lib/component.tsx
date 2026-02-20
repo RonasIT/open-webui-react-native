@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import * as Clipboard from 'expo-clipboard';
 import { Fragment, ReactElement, Ref, useState } from 'react';
@@ -7,7 +7,7 @@ import { chatApi, getShareChatLink } from '@open-webui-react-native/shared/data-
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 interface ShareChatModalProps {
-  ref?: Ref<BottomSheetModal>;
+  ref?: Ref<TrueSheet>;
   chatId: string;
 }
 
@@ -67,7 +67,6 @@ export function ShareChatModal({ chatId, ref }: ShareChatModalProps): ReactEleme
   return (
     <AppBottomSheet
       ref={ref}
-      isModal={true}
       onOpen={() => setIsOpen(true)}
       content={
         !chat ? (

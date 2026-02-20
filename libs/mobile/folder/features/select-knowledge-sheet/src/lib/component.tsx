@@ -1,14 +1,15 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
-import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } from 'react';
-import { Keyboard } from 'react-native';
+import { ForwardedRef, ReactElement, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { Keyboard, TouchableOpacity } from 'react-native';
+import uuid from 'react-native-uuid';
+import { AppKeyboardAwareScrollView } from '@open-webui-react-native/mobile/shared/ui/keyboard-avoiding-view';
 import {
   AppBottomSheet,
-  AppBottomSheetKeyboardAwareScrollView,
   AppBottomSheetPropsType,
   AppFlashList,
-  AppSafeAreaView,
   AppSpinner,
+  AppText,
   ListEmptyComponent,
   SearchInput,
   SheetHeader,
@@ -31,9 +32,10 @@ export type SelectKnowledgeSheetProps = Partial<Omit<AppBottomSheetPropsType, 'r
 
 export function SelectKnowledgeSheet({ onConfirm, ref, ...props }: SelectKnowledgeSheetProps): ReactElement {
   const translate = useTranslation('FOLDER.SELECT_KNOWLEDGE_SHEET');
-  const sheetRef = useRef<BottomSheetModal>(null);
+  const sheetRef = useRef<TrueSheet>(null);
 
   const [selectedKnowledge, setSelectedKnowledge] = useState<Array<Knowledge>>([]);
+  const [testData, setTestData] = useState<Array<Knowledge>>([]);
 
   const { query, setQuery } = useDebouncedQuery();
 
@@ -41,9 +43,51 @@ export function SelectKnowledgeSheet({ onConfirm, ref, ...props }: SelectKnowled
 
   const filteredData = (knowledge ?? []).filter((item) => new RegExp(query, 'i').test(item.name));
 
-  const closeModal = (): void => sheetRef.current?.close();
+  useEffect(() => {
+    if (knowledge) {
+      setTestData(filteredData);
+    }
+  }, [knowledge]);
 
-  const openModal = (): void => sheetRef.current?.present();
+  const addTestKnowledge = (): void => {
+    const testKnowledge = new Knowledge({
+      accessControl: undefined,
+      createdAt: undefined,
+      data: undefined,
+      deletedAt: undefined,
+      description: 'Docs for frontend devs - Next.js and React Native',
+      files: undefined,
+      id: uuid.v4(),
+      meta: null,
+      name: 'Test item',
+      updatedAt: undefined,
+      user: {
+        // @ts-expect-error for testing purposes
+        createdAt: undefined,
+        deletedAt: undefined,
+        email: 'ipakhomov@ronasit.com',
+        id: '16a66684-d9f0-4379-be4b-08e9cb7e17b8',
+        name: 'Ilya Pakhomov',
+        permissions: undefined,
+        // @ts-expect-error for testing purposes
+        profileImageUrl: undefined,
+        // @ts-expect-error for testing purposes
+        role: 'admin',
+        updatedAt: undefined,
+      },
+      userId: undefined,
+    });
+
+    setTestData((prev) => [testKnowledge, ...prev]);
+  };
+
+  const closeModal = (): void => {
+    sheetRef.current?.dismiss();
+  };
+
+  const openModal = (): void => {
+    sheetRef.current?.present();
+  };
 
   const handleConfirm = (): void => {
     onConfirm(selectedKnowledge);
@@ -81,43 +125,62 @@ export function SelectKnowledgeSheet({ onConfirm, ref, ...props }: SelectKnowled
   return (
     <AppBottomSheet
       {...props}
-      isModal={true}
       ref={sheetRef}
-      isScrollable
-      snapPoints={['100%']}
-      stackBehavior='push'
-      className='px-0'
-      content={
-        <View className='flex-1 bg-background-primary'>
+      cornerRadius={32}
+      scrollable
+      detents={[1]}
+      header={
+        <View>
           <SheetHeader
             title={translate('TEXT_SELECT_KNOWLEDGE')}
             onGoBack={closeModal}
             onConfirmPress={handleConfirm}
+            className='px-content-offset pt-content-offset'
           />
+          <View className='bg-background-primary flex-row justify-center'>
+            <TouchableOpacity
+              onPress={addTestKnowledge}
+              style={{
+                padding: 8,
+                borderBottomWidth: 1,
+                borderTopWidth: 1,
+                borderRightWidth: 1,
+                borderLeftWidth: 1,
+                width: 250,
+                borderRadius: 8,
+                alignItems: 'center',
+                backgroundColor: 'white',
+              }}>
+              <AppText style={{ color: 'black' }}>Add more test knowledge</AppText>
+            </TouchableOpacity>
+          </View>
           <SearchInput
+            className='bg-background-primary px-content-offset'
             value={query}
             onChangeText={setQuery}
             isInBottomSheet
             onCancel={onCancelPress}
             placeholder={translate('TEXT_SEARCH_KNOWLEDGE')}
           />
+        </View>
+      }
+      content={
+        <View className='bg-background-primary'>
           {isLoading ? (
             <View className='flex-1'>
               <AppSpinner isFullScreen />
             </View>
           ) : (
-            <AppBottomSheetKeyboardAwareScrollView>
-              <AppSafeAreaView edges={['bottom']}>
-                <AppFlashList
-                  data={filteredData}
-                  renderItem={renderItem}
-                  className='pb-16'
-                  ListEmptyComponent={
-                    <ListEmptyComponent containerClassName='mt-16' description={translate('TEXT_NO_KNOWLEDGE')} />
-                  }
-                />
-              </AppSafeAreaView>
-            </AppBottomSheetKeyboardAwareScrollView>
+            <AppKeyboardAwareScrollView className='h-full bg-background-primary px-content-offset'>
+              <AppFlashList
+                data={testData}
+                renderItem={renderItem}
+                className='pb-16'
+                ListEmptyComponent={
+                  <ListEmptyComponent containerClassName='mt-16' description={translate('TEXT_NO_KNOWLEDGE')} />
+                }
+              />
+            </AppKeyboardAwareScrollView>
           )}
         </View>
       }
