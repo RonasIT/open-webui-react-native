@@ -19,6 +19,7 @@ interface AiMessageActionsProps {
   onAddDetails: (messageId: string) => void;
   onMoreConcise: (messageId: string) => void;
   isLast: boolean;
+  isResponseGenerating: boolean;
 }
 
 //TODO Extend with more actions - https://www.figma.com/design/YPCZjyVlD86psDwUxvMVBc/OpenWebUI-Redesign-React-Native?node-id=27540-25291&t=kg2yUIDp3UQDStLf-0
@@ -31,6 +32,7 @@ export function AiMessageActions({
   onAddDetails,
   onMoreConcise,
   isLast,
+  isResponseGenerating,
   children,
 }: PropsWithChildren<AiMessageActionsProps>): ReactElement {
   const translate = useTranslation('CHAT.AI_MESSAGE_ACTIONS');
@@ -134,7 +136,10 @@ export function AiMessageActions({
 
   return (
     <View>
-      <MessageActionsSheetWrapper actions={actions} sheetRef={actionsSheetRef}>
+      <MessageActionsSheetWrapper
+        actions={actions}
+        sheetRef={actionsSheetRef}
+        isResponseGenerating={isResponseGenerating}>
         {children}
       </MessageActionsSheetWrapper>
       <ActionsBottomSheet

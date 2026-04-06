@@ -54,7 +54,7 @@ export function AppMarkdownView({
     ) => {
       return (
         <CodeBlock
-          fenceStyle={[inheritedStyles, markdownStyles.fence]}
+          fenceStyle={inheritedStyles}
           key={`code-block-${node.key}`}
           sourceInfo={node.sourceInfo}
           content={node.content}
@@ -301,10 +301,5 @@ const markdownStyles = createStyles({
     color: colorScheme.get() === 'dark' ? colors.textForeground : colors.textPrimary,
     backgroundColor: colorScheme.get() === 'dark' ? colors.gray700 : colors.gray75,
     textDecorationLine: 'none',
-  },
-  fence: {
-    backgroundColor: colorScheme.get() === 'dark' ? colors.gray700 : colors.gray75,
-    borderRadius: 8,
-    padding: 12,
   },
 });

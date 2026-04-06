@@ -168,6 +168,12 @@
       "@open-webui-react-native/mobile/shared/features/chat-actions-menu-sheet": [
         "libs/mobile/shared/features/chat-actions-menu-sheet/src/index.ts"
       ],
+      "@open-webui-react-native/mobile/shared/features/download-chat": [
+        "libs/mobile/shared/features/download-chat/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/shared/features/download-chat-options-sheet": [
+        "libs/mobile/shared/features/download-chat-options-sheet/src/index.ts"
+      ],
       "@open-webui-react-native/mobile/shared/features/image-preview-modal": [
         "libs/mobile/shared/features/image-preview-modal/src/index.ts"
       ],

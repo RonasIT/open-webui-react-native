@@ -56,7 +56,9 @@ export function CodeBlock({
     return (
       <View className='gap-4'>
         {copyButton}
-        <AppText style={fenceStyle}>{formattedContent}</AppText>
+        <AppText style={fenceStyle} className={'bg-background-tertiary rounded-lg p-12'}>
+          {formattedContent}
+        </AppText>
       </View>
     );
   }

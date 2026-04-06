@@ -91,31 +91,32 @@ function useSearchInfinite(text: string): UseInfiniteQueryResult<Array<ChatListI
   });
 }
 
+export const getChatQueryOptions = (
+  id: string,
+  options?: Omit<UseQueryOptions<ChatResponse, AxiosError<ApiErrorData>>, 'queryKey' | 'queryFn'>,
+) => ({
+  queryKey: chatQueriesKeys.get(id).queryKey,
+  queryFn: async (): Promise<ChatResponse> => {
+    const result = await chatService.get(id);
+    const messages = result.chat.history.messages;
+
+    for (const message of Object.values(messages)) {
+      if (message.role === Role.ASSISTANT) {
+        message.done = true;
+      }
+    }
+
+    return result;
+  },
+  staleTime: 5000,
+  ...options,
+});
+
 function useGet(
   id: string,
   options?: Omit<UseQueryOptions<ChatResponse, AxiosError<ApiErrorData>>, 'queryKey' | 'queryFn'>,
 ): UseQueryResult<ChatResponse, AxiosError<ApiErrorData>> {
-  const queryKey = chatQueriesKeys.get(id).queryKey;
-
-  const result = useQuery({
-    queryKey,
-    queryFn: async () => {
-      const result = await chatService.get(id);
-      const messages = result.chat.history.messages;
-
-      for (const message of Object.values(messages)) {
-        if (message.role === Role.ASSISTANT) {
-          message.done = true;
-        }
-      }
-
-      return result;
-    },
-    staleTime: 5000, //NOTE Needs to avoid simultaneous requests for the same chat
-    ...options,
-  });
-
-  return result;
+  return useQuery(getChatQueryOptions(id, options));
 }
 
 export function useUpdate(
