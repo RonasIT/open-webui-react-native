@@ -184,31 +184,33 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
       backdropTransitionOutTiming={1}
       animationOutTiming={1}
       animationIn='fadeIn'
-      style={{ overflow: 'hidden' }}
+      style={{ overflow: 'hidden', margin: 0 }}
       {...props}>
-      <AppSafeAreaView edges={['bottom']} className='flex-1'>
-        <View className='flex-1 items-center justify-center'>
-          {isThinking || isAiSpeaking ? <Loader /> : <SpeechListener metering={metering} />}
-        </View>
-        <View className='flex-row justify-between items-center p-12'>
-          <IconButton
-            iconName='camera'
-            onPress={showUnderConstruction}
-            className='w-40 h-40 bg-background-secondary rounded-full'
-          />
-          <AppText className='text-sm-sm sm:text-sm'>
-            {isAiSpeaking
-              ? translate('TEXT_TALKING')
-              : isThinking
-                ? translate('TEXT_THINKING')
-                : translate('TEXT_LISTENING')}
-          </AppText>
-          <IconButton
-            iconName='close'
-            onPress={close}
-            className='w-40 h-40 bg-background-secondary rounded-full' />
-        </View>
-      </AppSafeAreaView>
+      <View className='flex-1 bg-background-primary'>
+        <AppSafeAreaView edges={['bottom']} className='flex-1'>
+          <View className='flex-1 items-center justify-center'>
+            {isThinking || isAiSpeaking ? <Loader /> : <SpeechListener metering={metering} />}
+          </View>
+          <View className='flex-row justify-between items-center p-24'>
+            <IconButton
+              iconName='camera'
+              onPress={showUnderConstruction}
+              className='w-40 h-40 bg-background-secondary rounded-full'
+            />
+            <AppText className='text-sm-sm sm:text-sm'>
+              {isAiSpeaking
+                ? translate('TEXT_TALKING')
+                : isThinking
+                  ? translate('TEXT_THINKING')
+                  : translate('TEXT_LISTENING')}
+            </AppText>
+            <IconButton
+              iconName='close'
+              onPress={close}
+              className='w-40 h-40 bg-background-secondary rounded-full' />
+          </View>
+        </AppSafeAreaView>
+      </View>
       <AppToast />
     </Modal>
   );

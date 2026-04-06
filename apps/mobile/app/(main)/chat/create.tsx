@@ -47,7 +47,7 @@ export default function CreateChatScreen(): ReactElement {
         header: <AppHeader title={translate('TEXT_NEW_CHAT')} onGoBack={handleBackPress} />,
       }}
       safeAreaProps={{ edges: [] }}
-      keyBoardAvoidingProps={{ enabled: !isBottomSheetInputFocused }}>
+      keyBoardAvoidingProps={{ enabled: !isBottomSheetInputFocused, bottomOffset: 60 }}>
       <NoConnectionBanner isVisible={isOfflineMode} />
       <CreateChat
         onChatCreated={handleChatCreated}

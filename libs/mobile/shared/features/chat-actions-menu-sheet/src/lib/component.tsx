@@ -11,6 +11,7 @@ import {
   UpsertFolderSheet,
   UpsertFolderSheetMethods,
 } from '@open-webui-react-native/mobile/folder/features/upsert-folder-sheet';
+import { DownloadChatOptionsSheet } from '@open-webui-react-native/mobile/shared/features/download-chat-options-sheet';
 import {
   ActionButtonsModal,
   ActionButtonsModalMethods,
@@ -31,7 +32,6 @@ import {
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
-import { DownloadChatOptionsSheet } from './components';
 import { ChatAction } from './enums';
 
 export type ChatActionsMenuSheetMethods = {

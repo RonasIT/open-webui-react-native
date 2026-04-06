@@ -118,12 +118,14 @@ export function ChatAiMessage({
             visible={isPreviewVisible}
             onClosePress={handleCloseImagePress}
           />
-          <MessageVersionControls
-            message={message}
-            onNextSibling={onNextSibling}
-            onPreviousSibling={onPreviousSibling}
-            getSiblingsInfo={getSiblingsInfo}
-          />
+          {message.parentId && (
+            <MessageVersionControls
+              message={message}
+              onNextSibling={onNextSibling}
+              onPreviousSibling={onPreviousSibling}
+              getSiblingsInfo={getSiblingsInfo}
+            />
+          )}
         </Fragment>
       ) : (
         <SkeletonMessage />

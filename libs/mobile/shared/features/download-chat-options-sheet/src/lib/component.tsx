@@ -1,14 +1,9 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useState } from 'react';
-import {
-  FileExtension,
-  fileSystemService,
-} from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
+import { FileExtension } from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
+import { createChatDownloadHandlers } from '@open-webui-react-native/mobile/shared/features/download-chat';
 import { ActionsBottomSheet, ActionSheetItemProps } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { chatQueriesKeys, ChatResponse } from '@open-webui-react-native/shared/data-access/api';
-import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
-import { getChatAsText } from '@open-webui-react-native/shared/features/get-chat-as-text';
 
 export interface DownloadChatOptionsSheetProps {
   chatId: string;
@@ -22,37 +17,23 @@ export function DownloadChatOptionsSheet({ chatId, ref }: DownloadChatOptionsShe
     FileExtension.JSON | FileExtension.TXT | FileExtension.PDF | null
   >(null);
 
-  const getChat = async (): Promise<ChatResponse> =>
-    await queryClient.fetchQuery<ChatResponse>({ queryKey: chatQueriesKeys.get(chatId).queryKey });
-
-  const onDownloadText = async (): Promise<void> => {
-    setFileTypeLoading(FileExtension.TXT);
-    const { chat } = await getChat();
-    const text = getChatAsText(chat);
-    await fileSystemService.shareTextFile(`chat-${chat.title}`, text);
-    setFileTypeLoading(null);
-  };
-
-  const onDownloadJson = async (): Promise<void> => {
-    setFileTypeLoading(FileExtension.JSON);
-    const { chat } = await getChat();
-    const jsonData = JSON.stringify([chat], null, 2);
-    await fileSystemService.shareJsonFile(`chat-export-${Date.now()}`, jsonData);
-    setFileTypeLoading(null);
-  };
+  const { downloadJson, downloadText } = createChatDownloadHandlers({
+    chatId,
+    setFileTypeLoading,
+  });
 
   const actions: Array<ActionSheetItemProps> = [
     {
       title: translate('TEXT_EXPORT_CHAT_JSON'),
       iconName: 'jsonFile',
-      onPress: onDownloadJson,
+      onPress: downloadJson,
       disabled: !!fileTypeLoading,
       isLoading: fileTypeLoading === FileExtension.JSON,
     },
     {
       title: translate('TEXT_PLAIN_TEXT'),
       iconName: 'txtFile',
-      onPress: onDownloadText,
+      onPress: downloadText,
       disabled: !!fileTypeLoading,
       isLoading: fileTypeLoading === FileExtension.TXT,
     },
