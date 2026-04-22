@@ -20,6 +20,7 @@ import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
 import { parseResponseMessageContent } from '../../utils';
 import { ChatImagesGroup } from '../images';
 import { SkeletonMessage } from '../skeleton-message';
+import { ToolOutputBottomSheet } from '../tool-output-bottom-sheet';
 
 interface ChatAiMessageProps {
   message: Message;
@@ -87,6 +88,18 @@ export function ChatAiMessage({
       {socketStatusData && <AppText className='mt-4 text-text-secondary'>{socketStatusData.description}</AppText>}
       {text ? (
         <Fragment>
+          {toolsData.length > 0 && (
+            <View className='mt-8 gap-8'>
+              {toolsData.map((tool, index) => (
+                <ToolOutputBottomSheet
+                  key={tool.id ?? `${tool.toolName}-${index}`}
+                  toolName={tool.toolName}
+                  input={tool.input}
+                  output={tool.output}
+                />
+              ))}
+            </View>
+          )}
           <ChatImagesGroup
             images={attachedImages}
             onImagePress={handleImagePress}
