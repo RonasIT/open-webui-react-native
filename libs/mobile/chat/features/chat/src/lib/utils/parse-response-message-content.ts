@@ -1,5 +1,5 @@
 import { decode } from 'html-entities';
-import { isEmpty } from 'lodash-es';
+import { parseObjectToString } from '@open-webui-react-native/shared/utils/strings';
 
 type PayloadContentType = 'json' | 'text';
 
@@ -50,7 +50,11 @@ const readQuotedAttr = (tag: string, attr: string): string | null => {
 
         continue;
       } else {
-        out += esc;
+        // e.g. `\&quot;` in attributes: keep `\`, let `&quot;` pass through for html decode
+        out += c;
+        i += 1;
+
+        continue;
       }
 
       i += 2;
@@ -114,8 +118,8 @@ const indexAfterOpenDetailsTag = (s: string): number => {
   return -1;
 };
 
-const parseJsonRecursive = (str: string): unknown => {
-  let cur: unknown = str.trim();
+const parseJsonRecursive = (str: string): string => {
+  let cur = str.trim();
 
   for (let depth = 0; depth < 32; depth++) {
     if (typeof cur !== 'string') {
@@ -198,11 +202,8 @@ const tryParseLeadingToolCallsDetails = (content: string): { tool: ToolData; res
   const argsRaw = readQuotedAttr(openTag, 'arguments') ?? '';
   const resultRaw = readQuotedAttr(openTag, 'result') ?? '';
 
-  const inputPayload = classifyAndNormalizePayload(argsRaw);
   const outputPayload = classifyAndNormalizePayload(resultRaw);
-  const parsedArgs = parseJsonRecursive(decode(argsRaw).trim());
-  const input =
-    typeof parsedArgs === 'object' && parsedArgs !== null && isEmpty(parsedArgs) ? undefined : inputPayload.normalized;
+  const input = parseObjectToString(parseJsonRecursive(decode(argsRaw).trim()));
 
   const blockEnd = leadingWs.length + openEnd + closeMatch.index + closeMatch[0].length;
   const rest = content.slice(blockEnd).trimStart();
