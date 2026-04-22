@@ -1,10 +1,13 @@
 import { decode } from 'html-entities';
 
+type PayloadContentType = 'json' | 'text';
+
 export type ToolData = {
   id?: string;
   toolName: string;
   input: string;
   output: string;
+  outputContentType: PayloadContentType;
 };
 
 export type ParseResponseMessageContentResult = {
@@ -128,15 +131,15 @@ const parseJsonRecursive = (str: string): unknown => {
   return cur;
 };
 
-const normalizeToolPayload = (raw: string): string => {
+const classifyAndNormalizePayload = (raw: string): { contentType: PayloadContentType; normalized: string } => {
   const decoded = decode(raw).trim();
   const parsed = parseJsonRecursive(decoded);
 
   if (typeof parsed === 'object' && parsed !== null) {
-    return JSON.stringify(parsed, null, 2);
+    return { contentType: 'json', normalized: JSON.stringify(parsed, null, 2) };
   }
 
-  return String(parsed);
+  return { contentType: 'text', normalized: String(parsed) };
 };
 
 const repairUtf8MisreadAsLatin1 = (s: string): string => {
@@ -194,6 +197,9 @@ const tryParseLeadingToolCallsDetails = (content: string): { tool: ToolData; res
   const argsRaw = readQuotedAttr(openTag, 'arguments') ?? '';
   const resultRaw = readQuotedAttr(openTag, 'result') ?? '';
 
+  const inputPayload = classifyAndNormalizePayload(argsRaw);
+  const outputPayload = classifyAndNormalizePayload(resultRaw);
+
   const blockEnd = leadingWs.length + openEnd + closeMatch.index + closeMatch[0].length;
   const rest = content.slice(blockEnd).trimStart();
 
@@ -201,8 +207,9 @@ const tryParseLeadingToolCallsDetails = (content: string): { tool: ToolData; res
     tool: {
       id,
       toolName,
-      input: normalizeToolPayload(argsRaw),
-      output: normalizeToolResultText(normalizeToolPayload(resultRaw)),
+      input: inputPayload.normalized,
+      output: normalizeToolResultText(outputPayload.normalized),
+      outputContentType: outputPayload.contentType,
     },
     rest,
   };
