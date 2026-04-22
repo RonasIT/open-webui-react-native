@@ -1,13 +1,14 @@
 import { decode } from 'html-entities';
 
 export type ToolData = {
+  id?: string;
   toolName: string;
   input: string;
   output: string;
 };
 
 export type ParseResponseMessageContentResult = {
-  toolsData: ToolData | null;
+  toolsData: Array<ToolData>;
   messageContent: string;
 };
 
@@ -162,45 +163,65 @@ const normalizeToolResultText = (s: string): string => {
   return t;
 };
 
-export const parseResponseMessageContent = (content: string): ParseResponseMessageContentResult => {
+const tryParseLeadingToolCallsDetails = (content: string): { tool: ToolData; rest: string } | null => {
   const leadingWs = content.match(/^\s*/)?.[0] ?? '';
   const fromDetails = content.slice(leadingWs.length);
 
   if (!fromDetails.toLowerCase().startsWith('<details')) {
-    return { toolsData: null, messageContent: content };
+    return null;
   }
 
   const openEnd = indexAfterOpenDetailsTag(fromDetails);
 
   if (openEnd === -1) {
-    return { toolsData: null, messageContent: content };
+    return null;
   }
 
   const openTag = fromDetails.slice(0, openEnd);
 
   if (!/type\s*=\s*["']?tool_calls["']?/i.test(openTag)) {
-    return { toolsData: null, messageContent: content };
+    return null;
   }
 
   const closeMatch = fromDetails.slice(openEnd).match(/<\s*\/\s*details\s*>/i);
 
   if (!closeMatch || closeMatch.index === undefined) {
-    return { toolsData: null, messageContent: content };
+    return null;
   }
 
+  const id = readQuotedAttr(openTag, 'id') ?? undefined;
   const toolName = readQuotedAttr(openTag, 'name') ?? '';
   const argsRaw = readQuotedAttr(openTag, 'arguments') ?? '';
   const resultRaw = readQuotedAttr(openTag, 'result') ?? '';
 
   const blockEnd = leadingWs.length + openEnd + closeMatch.index + closeMatch[0].length;
-  const remainder = content.slice(blockEnd).trimStart();
+  const rest = content.slice(blockEnd).trimStart();
 
   return {
-    toolsData: {
+    tool: {
+      id,
       toolName,
       input: normalizeToolPayload(argsRaw),
       output: normalizeToolResultText(normalizeToolPayload(resultRaw)),
     },
-    messageContent: remainder,
+    rest,
   };
+};
+
+export const parseResponseMessageContent = (content: string): ParseResponseMessageContentResult => {
+  const toolsData: Array<ToolData> = [];
+  let rest = content;
+
+  for (;;) {
+    const next = tryParseLeadingToolCallsDetails(rest);
+
+    if (!next) {
+      break;
+    }
+
+    toolsData.push(next.tool);
+    rest = next.rest;
+  }
+
+  return { toolsData, messageContent: rest };
 };

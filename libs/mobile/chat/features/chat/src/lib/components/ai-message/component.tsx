@@ -76,8 +76,6 @@ export function ChatAiMessage({
   const textWithCitations = prepareTextWithCitations(messageContent, citations);
   const hasFollowUps = Array.isArray(followUps) && followUps.length > 0;
 
-  console.log('toolsData', toolsData);
-
   return (
     <View>
       <View className='flex-row justify-between'>
@@ -89,6 +87,17 @@ export function ChatAiMessage({
       {socketStatusData && <AppText className='mt-4 text-text-secondary'>{socketStatusData.description}</AppText>}
       {text ? (
         <Fragment>
+          {toolsData && (
+            <View className='mt-8 gap-8'>
+              {toolsData.map((tool, index) => (
+                <View
+                  key={tool.id ?? `${tool.toolName}-${index}`}
+                  className='rounded-xl bg-background-secondary px-12 py-8'>
+                  <AppText className='text-sm font-medium text-text-primary'>{`${tool.toolName}: ${tool.output}`}</AppText>
+                </View>
+              ))}
+            </View>
+          )}
           <ChatImagesGroup
             images={attachedImages}
             onImagePress={handleImagePress}
