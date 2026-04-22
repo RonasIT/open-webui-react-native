@@ -1,6 +1,6 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
-import { ReactElement, ReactNode, useRef } from 'react';
+import { Fragment, ReactElement, ReactNode, useRef } from 'react';
 import {
   AppBottomSheet,
   AppBottomSheetKeyboardAwareScrollView,
@@ -14,7 +14,7 @@ import {
 
 export interface ToolOutputBottomSheetProps {
   toolName: string;
-  input: string;
+  input?: string;
   output: string;
 }
 
@@ -50,12 +50,16 @@ export function ToolOutputBottomSheet({ toolName, input, output }: ToolOutputBot
             className='flex-1'
             contentContainerClassName='px-content-offset pb-safe pt-8 android:pb-24'>
             <AppSafeAreaView edges={['bottom']}>
-              <AppText className='mb-8 text-xs font-medium uppercase tracking-wide text-text-secondary'>
-                {translate('TEXT_INPUT')}
-              </AppText>
-              <AppText selectable className='mb-16 text-sm-sm sm:text-sm font-mono text-text-primary'>
-                {input}
-              </AppText>
+              {!!input && (
+                <Fragment>
+                  <AppText className='mb-8 text-xs font-medium uppercase tracking-wide text-text-secondary'>
+                    {translate('TEXT_INPUT')}
+                  </AppText>
+                  <AppText selectable className='mb-16 text-sm-sm sm:text-sm font-mono text-text-primary'>
+                    {input}
+                  </AppText>
+                </Fragment>
+              )}
               <AppText className='mb-8 text-xs font-medium uppercase tracking-wide text-text-secondary'>
                 {translate('TEXT_OUTPUT')}
               </AppText>

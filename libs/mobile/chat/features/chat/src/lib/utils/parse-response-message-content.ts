@@ -1,11 +1,12 @@
 import { decode } from 'html-entities';
+import { isEmpty } from 'lodash-es';
 
 type PayloadContentType = 'json' | 'text';
 
 export type ToolData = {
   id?: string;
   toolName: string;
-  input: string;
+  input: string | undefined;
   output: string;
   outputContentType: PayloadContentType;
 };
@@ -199,6 +200,9 @@ const tryParseLeadingToolCallsDetails = (content: string): { tool: ToolData; res
 
   const inputPayload = classifyAndNormalizePayload(argsRaw);
   const outputPayload = classifyAndNormalizePayload(resultRaw);
+  const parsedArgs = parseJsonRecursive(decode(argsRaw).trim());
+  const input =
+    typeof parsedArgs === 'object' && parsedArgs !== null && isEmpty(parsedArgs) ? undefined : inputPayload.normalized;
 
   const blockEnd = leadingWs.length + openEnd + closeMatch.index + closeMatch[0].length;
   const rest = content.slice(blockEnd).trimStart();
@@ -207,7 +211,7 @@ const tryParseLeadingToolCallsDetails = (content: string): { tool: ToolData; res
     tool: {
       id,
       toolName,
-      input: inputPayload.normalized,
+      input,
       output: normalizeToolResultText(outputPayload.normalized),
       outputContentType: outputPayload.contentType,
     },
