@@ -17,6 +17,7 @@ import { Message } from '@open-webui-react-native/shared/data-access/api';
 import { FileType } from '@open-webui-react-native/shared/data-access/common';
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
+import { parseResponseMessageContent } from '../../utils';
 import { ChatImagesGroup } from '../images';
 import { SkeletonMessage } from '../skeleton-message';
 
@@ -71,8 +72,11 @@ export function ChatAiMessage({
   const { handleImagePress, handleAllPhotosPress, selectedImageIndex, isPreviewVisible, handleCloseImagePress } =
     useImagePreview();
 
-  const textWithCitations = prepareTextWithCitations(text, citations);
+  const { toolsData, messageContent } = parseResponseMessageContent(text);
+  const textWithCitations = prepareTextWithCitations(messageContent, citations);
   const hasFollowUps = Array.isArray(followUps) && followUps.length > 0;
+
+  console.log('toolsData', toolsData);
 
   return (
     <View>
