@@ -67,7 +67,7 @@ export function ChatAiMessage({
           file.type === FileType.IMAGE ? [...acc, { type: file.type, url: `${apiUrl}${file.url}`, index }] : acc,
         [] as Array<AttachedImageWithIndex>,
       ),
-    [files],
+    [apiUrl, files],
   );
 
   const { handleImagePress, handleAllPhotosPress, selectedImageIndex, isPreviewVisible, handleCloseImagePress } =

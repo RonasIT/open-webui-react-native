@@ -16,61 +16,39 @@ export type ParseResponseMessageContentResult = {
   messageContent: string;
 };
 
-const readQuotedAttr = (tag: string, attr: string): string | null => {
-  const needle = `${attr}="`;
-  const lower = tag.toLowerCase();
-  const idx = lower.indexOf(needle.toLowerCase());
+const unescapeAttributeValue = (value: string): string =>
+  value.replace(/\\(u[0-9a-fA-F]{4}|["'\\ntr])/g, (_, esc: string) => {
+    switch (esc) {
+      case 'n':
+        return '\n';
+      case 't':
+        return '\t';
+      case 'r':
+        return '\r';
+      case '"':
+        return '"';
+      case '\'':
+        return '\'';
+      case '\\':
+        return '\\';
+      default:
+        return esc.startsWith('u') ? String.fromCharCode(parseInt(esc.slice(1), 16)) : esc;
+    }
+  });
 
-  if (idx === -1) {
-    return null;
+const parseTagAttributes = (tag: string): Record<string, string> => {
+  const attrs: Record<string, string> = {};
+  const attrRe = /([^\s=/>]+)\s*=\s*(?:"((?:\\.|[^"])*)"|'((?:\\.|[^'])*)')/g;
+
+  let match: RegExpExecArray | null;
+
+  while ((match = attrRe.exec(tag)) !== null) {
+    const [, rawName, doubleQuoted, singleQuoted] = match;
+    const rawValue = doubleQuoted ?? singleQuoted ?? '';
+    attrs[rawName.toLowerCase()] = unescapeAttributeValue(rawValue);
   }
 
-  let i = idx + needle.length;
-  let out = '';
-
-  while (i < tag.length) {
-    const c = tag[i];
-
-    if (c === '\\' && i + 1 < tag.length) {
-      const esc = tag[i + 1];
-
-      if (esc === 'n') {
-        out += '\n';
-      } else if (esc === 't') {
-        out += '\t';
-      } else if (esc === 'r') {
-        out += '\r';
-      } else if (esc === '"') {
-        out += '"';
-      } else if (esc === '\\') {
-        out += '\\';
-      } else if (esc === 'u' && /^[0-9a-fA-F]{4}/.test(tag.slice(i + 2, i + 6))) {
-        out += String.fromCharCode(parseInt(tag.slice(i + 2, i + 6), 16));
-        i += 6;
-
-        continue;
-      } else {
-        // e.g. `\&quot;` in attributes: keep `\`, let `&quot;` pass through for html decode
-        out += c;
-        i += 1;
-
-        continue;
-      }
-
-      i += 2;
-
-      continue;
-    }
-
-    if (c === '"') {
-      break;
-    }
-
-    out += c;
-    i++;
-  }
-
-  return out;
+  return attrs;
 };
 
 const indexAfterOpenDetailsTag = (s: string): number => {
@@ -79,7 +57,6 @@ const indexAfterOpenDetailsTag = (s: string): number => {
   if (!open) {
     return -1;
   }
-
   let i = open[0].length;
   let inDouble = false;
   let escape = false;
@@ -90,28 +67,24 @@ const indexAfterOpenDetailsTag = (s: string): number => {
     if (escape) {
       escape = false;
       i++;
-
       continue;
     }
 
     if (c === '\\') {
       escape = true;
       i++;
-
       continue;
     }
 
     if (c === '"') {
       inDouble = !inDouble;
       i++;
-
       continue;
     }
 
     if (c === '>' && !inDouble) {
       return i + 1;
     }
-
     i++;
   }
 
@@ -147,30 +120,6 @@ const classifyAndNormalizePayload = (raw: string): { contentType: PayloadContent
   return { contentType: 'text', normalized: String(parsed) };
 };
 
-const repairUtf8MisreadAsLatin1 = (s: string): string => {
-  for (let j = 0; j < s.length; j++) {
-    if (s.charCodeAt(j) > 255) {
-      return s;
-    }
-  }
-
-  const bytes = new Uint8Array(s.length);
-
-  for (let j = 0; j < s.length; j++) {
-    bytes[j] = s.charCodeAt(j);
-  }
-
-  return new TextDecoder('utf-8', { fatal: false }).decode(bytes);
-};
-
-const normalizeToolResultText = (s: string): string => {
-  let t = String(s);
-
-  t = repairUtf8MisreadAsLatin1(t);
-
-  return t;
-};
-
 const tryParseLeadingToolCallsDetails = (content: string): { tool: ToolData; rest: string } | null => {
   const leadingWs = content.match(/^\s*/)?.[0] ?? '';
   const fromDetails = content.slice(leadingWs.length);
@@ -186,8 +135,9 @@ const tryParseLeadingToolCallsDetails = (content: string): { tool: ToolData; res
   }
 
   const openTag = fromDetails.slice(0, openEnd);
+  const attrs = parseTagAttributes(openTag);
 
-  if (!/type\s*=\s*["']?tool_calls["']?/i.test(openTag)) {
+  if ((attrs.type ?? '').toLowerCase() !== 'tool_calls') {
     return null;
   }
 
@@ -197,14 +147,13 @@ const tryParseLeadingToolCallsDetails = (content: string): { tool: ToolData; res
     return null;
   }
 
-  const id = readQuotedAttr(openTag, 'id') ?? undefined;
-  const toolName = readQuotedAttr(openTag, 'name') ?? '';
-  const argsRaw = readQuotedAttr(openTag, 'arguments') ?? '';
-  const resultRaw = readQuotedAttr(openTag, 'result') ?? '';
+  const id = attrs.id ?? undefined;
+  const toolName = attrs.name ?? '';
+  const argsRaw = attrs.arguments ?? '';
+  const resultRaw = attrs.result ?? '';
 
   const outputPayload = classifyAndNormalizePayload(resultRaw);
   const input = parseObjectToString(parseJsonRecursive(decode(argsRaw).trim()));
-
   const blockEnd = leadingWs.length + openEnd + closeMatch.index + closeMatch[0].length;
   const rest = content.slice(blockEnd).trimStart();
 
@@ -213,7 +162,7 @@ const tryParseLeadingToolCallsDetails = (content: string): { tool: ToolData; res
       id,
       toolName,
       input,
-      output: normalizeToolResultText(outputPayload.normalized),
+      output: outputPayload.normalized,
       outputContentType: outputPayload.contentType,
     },
     rest,
@@ -230,7 +179,6 @@ export const parseResponseMessageContent = (content: string): ParseResponseMessa
     if (!next) {
       break;
     }
-
     toolsData.push(next.tool);
     rest = next.rest;
   }

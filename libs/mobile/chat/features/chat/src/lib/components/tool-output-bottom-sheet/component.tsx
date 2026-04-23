@@ -1,9 +1,8 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { Fragment, ReactElement, ReactNode, useRef } from 'react';
 import {
   AppBottomSheet,
-  AppBottomSheetKeyboardAwareScrollView,
   AppPressable,
   AppSafeAreaView,
   AppText,
@@ -41,14 +40,11 @@ export function ToolOutputBottomSheet({ toolName, input, output }: ToolOutputBot
       isModal={true}
       isScrollable={true}
       snapPoints={['100%']}
-      className='px-0'
       renderTrigger={renderTrigger}
       content={
         <View className='flex-1 bg-background-primary'>
           <SheetHeader title={toolName} onGoBack={() => sheetRef.current?.close()} />
-          <AppBottomSheetKeyboardAwareScrollView
-            className='flex-1'
-            contentContainerClassName='px-content-offset pb-safe pt-8 android:pb-24'>
+          <BottomSheetScrollView className='flex-1' contentContainerClassName='pb-safe pt-8 android:pb-24'>
             <AppSafeAreaView edges={['bottom']}>
               {!!input && (
                 <Fragment>
@@ -67,7 +63,7 @@ export function ToolOutputBottomSheet({ toolName, input, output }: ToolOutputBot
                 {output}
               </AppText>
             </AppSafeAreaView>
-          </AppBottomSheetKeyboardAwareScrollView>
+          </BottomSheetScrollView>
         </View>
       }
     />
