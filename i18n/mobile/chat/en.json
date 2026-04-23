@@ -156,6 +156,13 @@
     },
     "MESSAGE_FOLLOW_UPS": {
       "TEXT_FOLLOW_UP": "Follow up"
+    },
+    "AI_MESSAGE": {
+      "TOOL_OUTPUT_SHEET": {
+        "TEXT_VIEW_RESULT_PREFIX": "View result from",
+        "TEXT_INPUT": "Input",
+        "TEXT_OUTPUT": "Output"
+      }
     }
   }
 }

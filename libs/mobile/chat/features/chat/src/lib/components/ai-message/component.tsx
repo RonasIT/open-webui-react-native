@@ -17,8 +17,10 @@ import { Message } from '@open-webui-react-native/shared/data-access/api';
 import { FileType } from '@open-webui-react-native/shared/data-access/common';
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
+import { parseResponseMessageContent } from '../../utils';
 import { ChatImagesGroup } from '../images';
 import { SkeletonMessage } from '../skeleton-message';
+import { ToolOutputBottomSheet } from '../tool-output-bottom-sheet';
 
 interface ChatAiMessageProps {
   message: Message;
@@ -65,13 +67,14 @@ export function ChatAiMessage({
           file.type === FileType.IMAGE ? [...acc, { type: file.type, url: `${apiUrl}${file.url}`, index }] : acc,
         [] as Array<AttachedImageWithIndex>,
       ),
-    [files],
+    [apiUrl, files],
   );
 
   const { handleImagePress, handleAllPhotosPress, selectedImageIndex, isPreviewVisible, handleCloseImagePress } =
     useImagePreview();
 
-  const textWithCitations = prepareTextWithCitations(text, citations);
+  const { toolsData, messageContent } = parseResponseMessageContent(text);
+  const textWithCitations = prepareTextWithCitations(messageContent, citations);
   const hasFollowUps = Array.isArray(followUps) && followUps.length > 0;
 
   return (
@@ -85,6 +88,18 @@ export function ChatAiMessage({
       {socketStatusData && <AppText className='mt-4 text-text-secondary'>{socketStatusData.description}</AppText>}
       {text ? (
         <Fragment>
+          {toolsData.length > 0 && (
+            <View className='mt-8 gap-8'>
+              {toolsData.map((tool, index) => (
+                <ToolOutputBottomSheet
+                  key={tool.id ?? `${tool.toolName}-${index}`}
+                  toolName={tool.toolName}
+                  input={tool.input}
+                  output={tool.output}
+                />
+              ))}
+            </View>
+          )}
           <ChatImagesGroup
             images={attachedImages}
             onImagePress={handleImagePress}
