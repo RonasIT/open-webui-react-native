@@ -3,9 +3,9 @@ import { appStorageService } from '@open-webui-react-native/shared/data-access/s
 import { appEnv } from '@open-webui-react-native/shared/utils/app-env';
 
 export const ronasApiUrl = appEnv.select({
-  development: 'https://dev.ai.ronas.cloud',
-  staging: 'https://dev.ai.ronas.cloud',
-  production: 'https://ai.ronas.cloud',
+  development: 'https://ai.ronas.online',
+  staging: 'https://ai.ronas.online',
+  production: 'https://ai.ronas.online',
 });
 
 export const getApiUrl = (): string => {

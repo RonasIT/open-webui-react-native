@@ -5,7 +5,7 @@ import { appStorageService } from '@open-webui-react-native/shared/data-access/s
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { apiConfig } from './config';
-import { errorCatcherInterceptor } from './interceptors';
+import { errorCatcherInterceptor, profileNotFoundInterceptor } from './interceptors';
 
 const apiServiceCache = new Map<string, ApiService>();
 
@@ -29,6 +29,7 @@ const setupInterceptors = (service: ApiService): void => {
           },
         }),
       ],
+      [null, profileNotFoundInterceptor()],
       [
         null,
         errorCatcherInterceptor({

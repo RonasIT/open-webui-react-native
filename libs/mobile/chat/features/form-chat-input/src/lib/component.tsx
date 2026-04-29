@@ -185,6 +185,14 @@ export function FormChatInput<T extends FieldValues>({
                       isSelected={options.includes(ChatGenerationOption.IMAGE_GENERATION)}
                     />
                   )}
+                  {config?.features.enableWebSearch && (
+                    <SelectOptionIcon
+                      disabled={isLoading}
+                      iconName='web'
+                      onPress={() => onGenerationOptionPress(ChatGenerationOption.WEB_SEARCH)}
+                      isSelected={options.includes(ChatGenerationOption.WEB_SEARCH)}
+                    />
+                  )}
                 </View>
                 <IconButton
                   disabled={isLoading}
