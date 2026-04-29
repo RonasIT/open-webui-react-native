@@ -51,6 +51,7 @@ import trashCan from './trash-can.svg';
 import unarchive from './unarchive.svg';
 import unpin from './unpin.svg';
 import uploadFile from './upload-file.svg';
+import web from './web.svg';
 
 export const Icons = {
   logoDark,
@@ -106,4 +107,5 @@ export const Icons = {
   keyboard,
   lessText,
   moreText,
+  web,
 };

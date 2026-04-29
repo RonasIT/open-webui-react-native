@@ -9,11 +9,15 @@ export const useLogout = (): { logout: () => Promise<void>; isLoading: boolean }
   const { mutateAsync: signOut, isPending } = authApi.useSignOut();
 
   const logout = async (): Promise<void> => {
-    await signOut();
+    try {
+      await signOut();
+    } catch {
+      // Session may already be gone; still wipe client state and redirect.
+    }
     authState$.logout();
     queryClient.removeQueries();
     cookieService.clearAll();
-    queryPersister.removeClient();
+    await queryPersister.removeClient();
   };
 
   return { logout, isLoading: isPending };

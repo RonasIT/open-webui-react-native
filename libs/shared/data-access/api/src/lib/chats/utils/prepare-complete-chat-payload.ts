@@ -65,6 +65,7 @@ export function prepareCompleteChatPayload({
     features: new Features({
       codeInterpreter: generationOptions?.includes(ChatGenerationOption.CODE_INTERPRETER),
       imageGeneration: generationOptions?.includes(ChatGenerationOption.IMAGE_GENERATION),
+      webSearch: generationOptions?.includes(ChatGenerationOption.WEB_SEARCH),
     }),
     stream: true,
     model,

@@ -5,7 +5,6 @@ import { ReactElement, useState } from 'react';
 import { AppButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { authApi } from '@open-webui-react-native/shared/data-access/api';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
-import { appEnv } from '@open-webui-react-native/shared/utils/app-env';
 import { ronasApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
@@ -35,7 +34,7 @@ export function GoogleSignInForm({ onSuccess }: GoogleSignInFormProps): ReactEle
 
       if (email) {
         appStorageService.apiUrl.set(ronasApiUrl);
-        signInWithGoogle({ email, isProduction: appEnv.current === 'production' });
+        signInWithGoogle({ email });
       } else if (signInResponse.type !== 'cancelled') {
         ToastService.showError();
       }
