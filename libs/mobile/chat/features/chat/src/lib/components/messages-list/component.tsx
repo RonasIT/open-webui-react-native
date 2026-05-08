@@ -116,6 +116,10 @@ export default function ChatMessagesList({
     //but when a small distance has been scrolled.
     const isNearBottom = scrollY + containerHeight >= contentHeight - 100;
 
+    if (!isResponseGenerating) {
+      shouldAutoscrollToBottomRef.current = isNearBottom;
+    }
+
     if (isNearBottom || isScrollingUp) {
       animateScrollToBottom(0);
     } else if (isScrollToBottomAvailable.current && !isInputFocusing) {
