@@ -302,4 +302,7 @@ const markdownStyles = createStyles({
     backgroundColor: colorScheme.get() === 'dark' ? colors.gray700 : colors.gray75,
     textDecorationLine: 'none',
   },
+  blockquote: {
+    backgroundColor: colorScheme.get() === 'dark' ? colors.gray700 : colors.gray75,
+  },
 });
