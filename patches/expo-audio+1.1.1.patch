@@ -1,0 +1,23 @@
+diff --git a/node_modules/expo-audio/android/src/main/AndroidManifest.xml b/node_modules/expo-audio/android/src/main/AndroidManifest.xml
+index 8c797aa..671c6c3 100644
+--- a/node_modules/expo-audio/android/src/main/AndroidManifest.xml
++++ b/node_modules/expo-audio/android/src/main/AndroidManifest.xml
+@@ -1,18 +1,8 @@
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+   <uses-permission android:name="android.permission.RECORD_AUDIO" />
+   <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+-  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+-  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+ 
+   <application>
+-    <service
+-      android:name=".service.AudioControlsService"
+-      android:exported="false"
+-      android:foregroundServiceType="mediaPlayback">
+-      <intent-filter>
+-        <action android:name="androidx.media3.session.MediaSessionService" />
+-      </intent-filter>
+-    </service>
+     <service
+       android:name=".service.AudioRecordingService"
+       android:exported="false"

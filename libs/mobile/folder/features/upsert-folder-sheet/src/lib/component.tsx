@@ -90,7 +90,7 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
     }
   }, [folder]);
 
-  const files = useSelector(attachedFiles);
+  const files = useSelector(attachedFiles).flatMap((file) => (file ? [file] : []));
 
   const closeModal = (): void => sheetRef.current?.close();
 
