@@ -87,10 +87,16 @@ export function FormChatInput<T extends FieldValues>({
 
   const isInputEmpty = !field.value?.trim() && files.length === 0 && images.length === 0;
 
-  const imagesForPreview = images.map((image, index) => ({
-    ...new AttachedImage({ url: toDataUrl(image.base64) }),
-    index,
-  }));
+  const imagesForPreview = images.flatMap((image, index) =>
+    image
+      ? [
+          {
+            ...new AttachedImage({ url: toDataUrl(image.base64) }),
+            index,
+          },
+        ]
+      : [],
+  );
 
   const onVoiceModePress = async (): Promise<void> => {
     if (!modelId) {

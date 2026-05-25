@@ -30,21 +30,25 @@ export function AttachedFilesList({
 
   return (
     <View className='gap-8 mb-[8]'>
-      {files?.map((file) => (
-        <AttachedFileItem
+      {files.flatMap((file) =>
+        file ? [<AttachedFileItem
           key={file.id}
           file={file}
-          onDeleteFilePress={onDeleteFilePress} />
-      ))}
+          onDeleteFilePress={onDeleteFilePress} />] : [],
+      )}
       <View className='gap-8 flex-row flex-wrap'>
-        {images?.map((image, index) => (
-          <AttachedImageItem
-            key={image.uri}
-            onImagePress={() => onImagePress(index)}
-            onDeleteImagePress={onDeleteImagePress}
-            image={image}
-          />
-        ))}
+        {images.flatMap((image, index) =>
+          image
+            ? [
+                <AttachedImageItem
+                  key={image.uri}
+                  onImagePress={() => onImagePress(index)}
+                  onDeleteImagePress={onDeleteImagePress}
+                  image={image}
+                />,
+              ]
+            : [],
+        )}
       </View>
     </View>
   );
