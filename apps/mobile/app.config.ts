@@ -1,5 +1,4 @@
 import { ExpoConfig } from '@expo/config';
-import { withAndroidManifest } from '@expo/config-plugins';
 import { EASConfig } from 'expo-manifests';
 import { AppEnv } from '../../libs/shared/utils/app-env/src/env';
 import { AppEnvName } from '../../libs/shared/utils/app-env/src/app-env';
@@ -23,37 +22,9 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     googleSignInRoute: process.env.GOOGLE_SIGN_IN_ROUTE,
   };
 
-  const withRemoveMediaPlaybackPermission = (config: ExpoConfig): ExpoConfig =>
-    withAndroidManifest(config, (config) => {
-      const manifest = config.modResults;
-
-      if (!manifest.manifest.$['xmlns:tools']) {
-        manifest.manifest.$['xmlns:tools'] = 'http://schemas.android.com/tools';
-      }
-
-      const permissions = (manifest.manifest['uses-permission'] ?? []) as Array<{ $: Record<string, string> }>;
-
-      const alreadyAdded = permissions.some(
-        (p) => p.$['android:name'] === 'android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK',
-      );
-
-      if (!alreadyAdded) {
-        permissions.push({
-          $: {
-            'android:name': 'android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK',
-            'tools:node': 'remove',
-          },
-        });
-      }
-
-      manifest.manifest['uses-permission'] = permissions as never;
-
-      return config;
-    }) as ExpoConfig;
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return withRemoveMediaPlaybackPermission({
-    name: 'Open MobileUI',
+  return {
+    name: process.env.EXPO_PUBLIC_APP_NAME,
     slug: process.env.EXPO_PUBLIC_APP_SLUG as string,
     scheme: process.env.EXPO_PUBLIC_APP_SCHEME as string,
     owner: process.env.EXPO_PUBLIC_APP_OWNER as string,
@@ -150,11 +121,12 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
             },
           ]
         : null,
+      ['./plugins/with-remove-media-playback-permission'],
     ]),
     newArchEnabled: true,
     extra,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } as any) as any;
+  } as any;
 };
 
 export default createConfig;
