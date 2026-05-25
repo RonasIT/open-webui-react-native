@@ -1,0 +1,26 @@
+diff --git a/node_modules/expo-media-library/plugin/build/withMediaLibrary.js b/node_modules/expo-media-library/plugin/build/withMediaLibrary.js
+index 4ee26b8..f7da8c8 100644
+--- a/node_modules/expo-media-library/plugin/build/withMediaLibrary.js
++++ b/node_modules/expo-media-library/plugin/build/withMediaLibrary.js
+@@ -8,7 +8,7 @@ const GRANULAR_PERMISSIONS_MAP = {
+     video: 'android.permission.READ_MEDIA_VIDEO',
+     audio: 'android.permission.READ_MEDIA_AUDIO',
+ };
+-const defaultGranularPermissions = ['photo', 'video', 'audio'];
++const defaultGranularPermissions = [];
+ function modifyAndroidManifest(manifest) {
+     // Starting with Android 10, the concept of scoped storage is introduced.
+     // Currently, to make expo-media-library working with that change, you have to add
+diff --git a/node_modules/expo-media-library/plugin/src/withMediaLibrary.ts b/node_modules/expo-media-library/plugin/src/withMediaLibrary.ts
+index 305148a..5817f77 100644
+--- a/node_modules/expo-media-library/plugin/src/withMediaLibrary.ts
++++ b/node_modules/expo-media-library/plugin/src/withMediaLibrary.ts
+@@ -15,7 +15,7 @@ const GRANULAR_PERMISSIONS_MAP: Record<GranularPermission, string> = {
+   video: 'android.permission.READ_MEDIA_VIDEO',
+   audio: 'android.permission.READ_MEDIA_AUDIO',
+ };
+-const defaultGranularPermissions: GranularPermission[] = ['photo', 'video', 'audio'];
++const defaultGranularPermissions: GranularPermission[] = [];
+ 
+ export function modifyAndroidManifest(
+   manifest: AndroidConfig.Manifest.AndroidManifest
