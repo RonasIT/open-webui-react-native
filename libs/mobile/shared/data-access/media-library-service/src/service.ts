@@ -5,7 +5,7 @@ import { permissionAlertService } from '@open-webui-react-native/shared/utils/pe
 
 export class MediaLibraryService {
   public async saveImage(source: string, authorizationToken?: string): Promise<string | void> {
-    const { status } = await MediaLibrary.requestPermissionsAsync(false, ['photo']);
+    const { status } = await MediaLibrary.requestPermissionsAsync(true);
 
     if (status === MediaLibrary.PermissionStatus.DENIED) {
       permissionAlertService.showAlert(

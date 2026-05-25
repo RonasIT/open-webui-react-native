@@ -1,4 +1,5 @@
 import { ExpoConfig } from '@expo/config';
+import { withAndroidManifest } from '@expo/config-plugins';
 import { EASConfig } from 'expo-manifests';
 import { AppEnv } from '../../libs/shared/utils/app-env/src/env';
 import { AppEnvName } from '../../libs/shared/utils/app-env/src/app-env';
@@ -22,15 +23,44 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     googleSignInRoute: process.env.GOOGLE_SIGN_IN_ROUTE,
   };
 
-  return {
-    name: process.env.EXPO_PUBLIC_APP_NAME as string,
+  const withRemoveMediaPlaybackPermission = (config: ExpoConfig): ExpoConfig =>
+    withAndroidManifest(config, (config) => {
+      const manifest = config.modResults;
+
+      if (!manifest.manifest.$['xmlns:tools']) {
+        manifest.manifest.$['xmlns:tools'] = 'http://schemas.android.com/tools';
+      }
+
+      const permissions = (manifest.manifest['uses-permission'] ?? []) as Array<{ $: Record<string, string> }>;
+
+      const alreadyAdded = permissions.some(
+        (p) => p.$['android:name'] === 'android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK',
+      );
+
+      if (!alreadyAdded) {
+        permissions.push({
+          $: {
+            'android:name': 'android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK',
+            'tools:node': 'remove',
+          },
+        });
+      }
+
+      manifest.manifest['uses-permission'] = permissions as never;
+
+      return config;
+    }) as ExpoConfig;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return withRemoveMediaPlaybackPermission({
+    name: 'Open MobileUI',
     slug: process.env.EXPO_PUBLIC_APP_SLUG as string,
     scheme: process.env.EXPO_PUBLIC_APP_SCHEME as string,
     owner: process.env.EXPO_PUBLIC_APP_OWNER as string,
-    version: '1.4.2',
+    version: '1.4.9',
     orientation: 'portrait',
     icon: './assets/icon.png',
-    runtimeVersion: '1.4.2',
+    runtimeVersion: '1.4.4',
     experiments: {
       reactCompiler: true,
     },
@@ -42,7 +72,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       supportsTablet: false,
       buildNumber: appEnv.select({
         default: '18',
-        production: '17',
+        production: '23',
       }),
       config: {
         usesNonExemptEncryption: false,
@@ -52,7 +82,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       package: appId,
       versionCode: appEnv.select({
         default: 15,
-        production: 17,
+        production: 23,
       }),
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
@@ -88,8 +118,28 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       [
         'expo-media-library',
         {
-          photosPermission: 'Allow Open MobileUI to access your photos.',
           savePhotosPermission: 'Allow Open MobileUI to save photos.',
+        },
+      ],
+      'expo-audio',
+      [
+        'expo-build-properties',
+        {
+          android: {
+            androidGradlePluginVersion: '8.3.2',
+            compileSdkVersion: 35,
+            targetSdkVersion: 35,
+            buildToolsVersion: '35.0.0',
+            ndkVersion: '27.1.12297006',
+            packagingOptions: {
+              jniLibs: {
+                useLegacyPackaging: false,
+              },
+            },
+          },
+          ios: {
+            useFrameworks: 'static',
+          },
         },
       ],
       googleAuthIosUrlScheme
@@ -103,7 +153,8 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     ]),
     newArchEnabled: true,
     extra,
-  };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } as any) as any;
 };
 
 export default createConfig;
