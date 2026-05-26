@@ -259,7 +259,7 @@ export default function ChatMessagesList({
     <View className='relative flex-1'>
       <AppFlashList<Message>
         ref={listRef}
-        contentContainerClassName='pb-[125] px-16'
+        contentContainerClassName='pb-[135] px-16'
         showsVerticalScrollIndicator={false}
         drawDistance={1500} //NOTE: Needs to avoid image jumping (while rerendering) when scrolling
         keyExtractor={(item) => item.id}
