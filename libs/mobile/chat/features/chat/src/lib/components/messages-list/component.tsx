@@ -2,13 +2,13 @@ import { FlashList } from '@shopify/flash-list';
 import { useLocalSearchParams } from 'expo-router';
 import { delay } from 'lodash-es';
 import React, { ReactElement, useCallback, useRef } from 'react';
-import { GestureResponderEvent, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
+import { GestureResponderEvent, NativeScrollEvent, NativeSyntheticEvent, ScrollViewProps } from 'react-native';
 import { useSharedValue, withTiming } from 'react-native-reanimated';
 import { AiMessageActions } from '@open-webui-react-native/mobile/chat/features/ai-message-actions';
 import { useManageMessageSiblings } from '@open-webui-react-native/mobile/chat/features/use-manage-messages-siblings';
 import { UserMessageActions } from '@open-webui-react-native/mobile/chat/features/user-message-actions';
 import { useSetSelectedModel } from '@open-webui-react-native/mobile/shared/features/use-set-selected-model';
-import { View, AppFlashList } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { AppFlashList, AppKeyboardChatScrollView, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { ChatScreenParams } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import {
   Chat,
@@ -70,6 +70,8 @@ export default function ChatMessagesList({
   const { id }: ChatScreenParams = useLocalSearchParams();
   const { modelId } = useSetSelectedModel(id);
 
+  const renderScrollComponent = useCallback((props: ScrollViewProps) => <AppKeyboardChatScrollView {...props} />, []);
+
   const handleContentSizeChange = (): void => {
     //NOTE: Needs to wait until the initial scroll to the bottom or content generation finished and not show the ChatBottomButton before
     isScrollToBottomAvailable.current = false;
@@ -89,11 +91,7 @@ export default function ChatMessagesList({
 
     if (!isMessagesListLoaded && listRef.current && messages?.length > 0) {
       delay(() => {
-        listRef.current?.scrollToIndex({
-          index: messages.length - 1,
-          animated: false,
-          viewPosition: 1,
-        });
+        listRef.current?.scrollToEnd({ animated: false });
         delay(onLayout, 125);
       }, 125);
     }
@@ -261,7 +259,7 @@ export default function ChatMessagesList({
     <View className='relative flex-1'>
       <AppFlashList<Message>
         ref={listRef}
-        contentContainerClassName='pb-16 px-16'
+        contentContainerClassName='pb-[125] px-16'
         showsVerticalScrollIndicator={false}
         drawDistance={1500} //NOTE: Needs to avoid image jumping (while rerendering) when scrolling
         keyExtractor={(item) => item.id}
@@ -272,6 +270,7 @@ export default function ChatMessagesList({
         maintainVisibleContentPosition={{
           startRenderingFromBottom: true,
         }}
+        renderScrollComponent={renderScrollComponent}
         onContentSizeChange={handleContentSizeChange}
         onScroll={handleScroll}
         onTouchStart={handleTouchStart}

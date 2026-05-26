@@ -1,5 +1,4 @@
 import { useSelector } from '@legendapp/state/react';
-import { useKeyboard } from '@react-native-community/hooks';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import dayjs from 'dayjs';
 import { delay } from 'lodash-es';
@@ -14,9 +13,8 @@ import { useSendMessage } from '@open-webui-react-native/mobile/chat/features/us
 import { useSuggestChange } from '@open-webui-react-native/mobile/chat/features/use-suggest-change';
 import { useAttachedFiles } from '@open-webui-react-native/mobile/shared/features/use-attached-files';
 import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
-import { AppSpinner, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { AppKeyboardStickyView, AppSpinner, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
-import { useBottomInset } from '@open-webui-react-native/mobile/shared/utils/use-bottom-inset';
 import { chatApi, ChatGenerationOption, chatQueriesKeys } from '@open-webui-react-native/shared/data-access/api';
 import { Role } from '@open-webui-react-native/shared/data-access/common';
 import { useSubscribeToQueryCache } from '@open-webui-react-native/shared/data-access/query-client';
@@ -38,8 +36,6 @@ interface ChatProps {
 export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: ChatProps): ReactElement {
   const translate = useTranslation('CHAT.CHAT');
   const translateRegeneratePrompt = useTranslation('CHAT.AI_MESSAGE_ACTIONS.REGENERATE_MESSAGE_ACTION_SHEET');
-  const bottomInset = useBottomInset();
-  const { keyboardShown } = useKeyboard();
 
   const [isInputFocusing, setIsInputFocusing] = useState(false); //NOTE: Needs to avoid ChatBottomButton jumping when auto-scrolling after focus
 
@@ -225,47 +221,47 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
           />
         </React.Suspense>
       )}
-      <View
-        style={!keyboardShown && { paddingBottom: bottomInset }}
-        className={cn('pt-8 px-16', shouldHideContent && 'opacity-0')}>
-        {activeInputMode === ActiveInputMode.EDIT && editingMessageId ? (
-          <EditMessageInput
-            control={editMessageControl}
-            name='editMessageInputValue'
-            autoFocus={true}
-            onSave={saveMessage}
-            onCancel={cancelEditingWrapper}
-            onSend={sendEditedMessage}
-            isAiMessage={history?.messages[editingMessageId]?.role === Role.ASSISTANT}
-          />
-        ) : activeInputMode === ActiveInputMode.SUGGEST && suggestingMessageId ? (
-          <SuggestChangeInput
-            control={suggestMessageControl}
-            name='suggestionInputValue'
-            autoFocus
-            onCancel={cancelSuggestingWrapper}
-            onSend={submitSuggestion}
-          />
-        ) : (
-          <FormChatInput
-            placeholder={translate('TEXT_INPUT_PLACEHOLDER')}
-            control={control}
-            onFocus={handleInputFocus}
-            name='inputValue'
-            onSubmit={onSubmit}
-            isLoading={isSending || !isSocketConnected || isResponseGenerating}
-            attachedFiles={attachedFiles}
-            onFileUploaded={handleFileUploaded}
-            onDeleteFilePress={handleDeleteFile}
-            attachedImages={attachedImages}
-            onImageUploaded={handleImageUploaded}
-            onDeleteImagePress={handleDeleteImage}
-            modelId={selectedModelId}
-            isResponseGenerating={isResponseGenerating}
-            chat={chat}
-          />
-        )}
-      </View>
+      <AppKeyboardStickyView className='bg-background-primary-transparent'>
+        <View className={cn('pt-8 px-16', shouldHideContent && 'opacity-0')}>
+          {activeInputMode === ActiveInputMode.EDIT && editingMessageId ? (
+            <EditMessageInput
+              control={editMessageControl}
+              name='editMessageInputValue'
+              autoFocus={true}
+              onSave={saveMessage}
+              onCancel={cancelEditingWrapper}
+              onSend={sendEditedMessage}
+              isAiMessage={history?.messages[editingMessageId]?.role === Role.ASSISTANT}
+            />
+          ) : activeInputMode === ActiveInputMode.SUGGEST && suggestingMessageId ? (
+            <SuggestChangeInput
+              control={suggestMessageControl}
+              name='suggestionInputValue'
+              autoFocus
+              onCancel={cancelSuggestingWrapper}
+              onSend={submitSuggestion}
+            />
+          ) : (
+            <FormChatInput
+              placeholder={translate('TEXT_INPUT_PLACEHOLDER')}
+              control={control}
+              onFocus={handleInputFocus}
+              name='inputValue'
+              onSubmit={onSubmit}
+              isLoading={isSending || !isSocketConnected || isResponseGenerating}
+              attachedFiles={attachedFiles}
+              onFileUploaded={handleFileUploaded}
+              onDeleteFilePress={handleDeleteFile}
+              attachedImages={attachedImages}
+              onImageUploaded={handleImageUploaded}
+              onDeleteImagePress={handleDeleteImage}
+              modelId={selectedModelId}
+              isResponseGenerating={isResponseGenerating}
+              chat={chat}
+            />
+          )}
+        </View>
+      </AppKeyboardStickyView>
     </Fragment>
   );
 }

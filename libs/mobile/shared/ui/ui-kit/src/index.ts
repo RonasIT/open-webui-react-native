@@ -39,6 +39,8 @@ export * from './header';
 export * from './full-screen-modal';
 export * from './sheet-header';
 export * from './keyboard-aware-scroll-view';
+export * from './keyboard-chat-scroll-view';
+export * from './keyboard-sticky-view';
 export * from './pressable-search-input';
 export * from './full-screen-search-modal';
 export * from './gesture-pressable-icon-button';

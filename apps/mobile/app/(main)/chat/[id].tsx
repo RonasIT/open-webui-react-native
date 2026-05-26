@@ -14,7 +14,6 @@ import {
   AppText,
   Icon,
   FullScreenSearchModal,
-  AppKeyboardControllerView,
   IconButton,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import {
@@ -65,50 +64,48 @@ export default function ChatScreen(): ReactElement {
   );
 
   return (
-    <AppKeyboardControllerView className='bg-background-primary'>
-      <AppScreen
-        className={cn(isOfflineMode && 'pt-20')}
-        noOutsideSpacing
-        header={
-          <AppHeader
-            title={
-              isLoading && !modelId ? (
-                translate('TEXT_LOADING')
-              ) : (
-                <FullScreenSearchModal
-                  data={models || []}
-                  renderTrigger={renderTrigger}
-                  selectedItemId={modelId}
-                  onSelectItem={onSelectModel}
-                  searchPlaceholder={translate('TEXT_SELECT_A_MODEL')}
-                />
-              )
-            }
-            onGoBack={handleGoBackPress}
-            accessoryRight={
-              <IconButton
-                className='p-0'
-                iconName='moreDots'
-                onPress={() => {
-                  if (!chat) return;
-                  chatActionsSheetRef.current?.present(chat);
-                }}
+    <AppScreen
+      className={cn(isOfflineMode && 'pt-20')}
+      noOutsideSpacing
+      header={
+        <AppHeader
+          title={
+            isLoading && !modelId ? (
+              translate('TEXT_LOADING')
+            ) : (
+              <FullScreenSearchModal
+                data={models || []}
+                renderTrigger={renderTrigger}
+                selectedItemId={modelId}
+                onSelectItem={onSelectModel}
+                searchPlaceholder={translate('TEXT_SELECT_A_MODEL')}
               />
-            }
-          />
-        }
-        scrollDisabled>
-        <NoConnectionBanner isVisible={isOfflineMode} />
-        <Chat
-          chatId={id}
-          isNewChat={!!isNewChat}
-          selectedModelId={modelId}
-          resetToChatsList={handleResetToChatsList} />
-        <ChatActionsMenuSheet
-          ref={chatActionsSheetRef}
-          goToChat={navigateToClonedChat}
-          isInChat />
-      </AppScreen>
-    </AppKeyboardControllerView>
+            )
+          }
+          onGoBack={handleGoBackPress}
+          accessoryRight={
+            <IconButton
+              className='p-0'
+              iconName='moreDots'
+              onPress={() => {
+                if (!chat) return;
+                chatActionsSheetRef.current?.present(chat);
+              }}
+            />
+          }
+        />
+      }
+      scrollDisabled>
+      <NoConnectionBanner isVisible={isOfflineMode} />
+      <Chat
+        chatId={id}
+        isNewChat={!!isNewChat}
+        selectedModelId={modelId}
+        resetToChatsList={handleResetToChatsList} />
+      <ChatActionsMenuSheet
+        ref={chatActionsSheetRef}
+        goToChat={navigateToClonedChat}
+        isInChat />
+    </AppScreen>
   );
 }
