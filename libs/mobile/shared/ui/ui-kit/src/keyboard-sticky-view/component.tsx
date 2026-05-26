@@ -7,7 +7,7 @@ import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 type AppKeyboardStickyViewProps = PropsWithChildren<
   KeyboardStickyViewProps & {
     className?: string;
-    safeAreaEdges: Array<Edge>;
+    safeAreaEdges?: Array<Edge>;
   }
 >;
 
