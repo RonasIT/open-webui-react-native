@@ -7,6 +7,7 @@ import { AppButton, View, FormFloatedLabelInput } from '@open-webui-react-native
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 import { appConfigurationApi, authApi } from '@open-webui-react-native/shared/data-access/api';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
+import { resolveApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
 import { UrlInputLoader } from './components';
@@ -64,7 +65,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange }: EmailSignInFormPr
   useEffect(() => {
     const refetchConfig = async (): Promise<void> => {
       if (isUrlValid) {
-        const res = await fetchWithUrl(debouncedQuery);
+        const res = await fetchWithUrl(resolveApiUrl(debouncedQuery));
 
         if (res?.name && res?.version) {
           appStorageService.apiUrl.set(debouncedQuery);
