@@ -52,7 +52,9 @@ export const useSearchFilters = (): UseFiltersResult => {
     archivedChatsFilterState$.selectedFilter.set(filter);
   };
 
-  const resetFilter = (): void => archivedChatsFilterState$.selectedFilter.set(filters[0]);
+  const resetFilter = (): void => {
+    archivedChatsFilterState$.selectedFilter.set(filters[0]);
+  };
 
   return {
     filters,

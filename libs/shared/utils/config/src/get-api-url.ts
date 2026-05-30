@@ -8,11 +8,17 @@ export const ronasApiUrl = appEnv.select({
   production: 'https://ai.ronas.online',
 });
 
-export const getApiUrl = (): string => {
-  const normalizeUrl = (url?: string): string => (url ?? '').trim().replace(/\/+$/, '');
+export const testApiUrl = 'https://ai.test-api.online';
 
+const normalizeUrl = (url?: string): string => (url ?? '').trim().replace(/\/+$/, '');
+
+export const resolveApiUrl = (url: string): string => {
+  return normalizeUrl(url) === normalizeUrl(testApiUrl) ? normalizeUrl(ronasApiUrl) : normalizeUrl(url);
+};
+
+export const getApiUrl = (): string => {
   const stored = normalizeUrl(appStorageService.apiUrl.get());
   const fallback = normalizeUrl(ronasApiUrl);
 
-  return stored || fallback;
+  return resolveApiUrl(stored || fallback);
 };
