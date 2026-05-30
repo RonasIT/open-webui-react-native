@@ -28,10 +28,10 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     slug: process.env.EXPO_PUBLIC_APP_SLUG as string,
     scheme: process.env.EXPO_PUBLIC_APP_SCHEME as string,
     owner: process.env.EXPO_PUBLIC_APP_OWNER as string,
-    version: '1.4.9',
+    version: '1.5.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
-    runtimeVersion: '1.4.4',
+    runtimeVersion: '1.5.0',
     experiments: {
       reactCompiler: true,
     },
@@ -43,7 +43,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       supportsTablet: false,
       buildNumber: appEnv.select({
         default: '18',
-        production: '23',
+        production: '24',
       }),
       config: {
         usesNonExemptEncryption: false,
@@ -53,7 +53,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       package: appId,
       versionCode: appEnv.select({
         default: 15,
-        production: 23,
+        production: 24,
       }),
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
@@ -82,17 +82,26 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       [
         'expo-image-picker',
         {
-          photosPermission: 'Allow Open MobileUI to access your photos.',
-          cameraPermission: 'Allow Open MobileUI to access your camera.',
+          photosPermission:
+            'Open MobileUI uses your photo library to let you select and share images in chat conversations and set your profile picture.',
+          cameraPermission:
+            'Open MobileUI uses your camera to let you take photos and share them directly in chat conversations.',
         },
       ],
       [
         'expo-media-library',
         {
-          savePhotosPermission: 'Allow Open MobileUI to save photos.',
+          savePhotosPermission:
+            'Open MobileUI saves photos to your library when you download images shared in chat conversations.',
         },
       ],
-      'expo-audio',
+      [
+        'expo-audio',
+        {
+          microphonePermission:
+            'Open MobileUI uses your microphone to let you record and send voice messages in chat conversations.',
+        },
+      ],
       [
         'expo-build-properties',
         {

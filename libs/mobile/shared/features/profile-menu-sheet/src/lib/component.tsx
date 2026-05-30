@@ -1,6 +1,7 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useRef } from 'react';
+import { Alert } from 'react-native';
 import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-logout';
 import {
   Avatar,
@@ -36,6 +37,25 @@ export function ProfileMenuSheet({ onArchivedChatsPress, ...restProps }: Profile
     onArchivedChatsPress();
   };
 
+  const handleDeleteAccountPress = (): void => {
+    ToastService.show(translate('TEXT_ACCOUNT_DELETION_REQUEST'));
+  };
+
+  const handleRequestDeleteAccountPress = async (): Promise<void> => {
+    await closeActionsSheet();
+    Alert.alert(
+      translate('TEXT_DELETE_ACCOUNT_TITLE'),
+      translate('TEXT_DELETE_ACCOUNT_MESSAGE'),
+      [
+        { text: translate('BUTTON_DELETE_ACCOUNT'), style: 'destructive', onPress: handleDeleteAccountPress },
+        { text: translate('BUTTON_DONT_DELETE'), style: 'cancel' },
+      ],
+      {
+        userInterfaceStyle: 'dark',
+      },
+    );
+  };
+
   const actions: Array<ActionSheetItemProps> = [
     {
       title: translate('TEXT_ARCHIVED_CHATS'),
@@ -43,6 +63,12 @@ export function ProfileMenuSheet({ onArchivedChatsPress, ...restProps }: Profile
       onPress: isFeatureEnabled(FeatureID.ARCHIVE_CHAT)
         ? handleArchivedChatsPress
         : ToastService.showFeatureNotImplemented,
+    },
+    {
+      title: translate('TEXT_DELETE_ACCOUNT'),
+      iconName: 'trashCan',
+      onPress: handleRequestDeleteAccountPress,
+      isDanger: true,
     },
     {
       title: translate('TEXT_LOGOUT'),

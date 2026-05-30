@@ -2,7 +2,13 @@
   "PROFILE": {
     "PROFILE_MENU_SHEET": {
       "TEXT_LOGOUT": "Logout",
-      "TEXT_ARCHIVED_CHATS": "Archived Chats"
+      "TEXT_ARCHIVED_CHATS": "Archived Chats",
+      "TEXT_DELETE_ACCOUNT": "Delete Account",
+      "TEXT_DELETE_ACCOUNT_TITLE": "Are you sure you want to delete your account?",
+      "TEXT_DELETE_ACCOUNT_MESSAGE": "This action will result in permanent data loss if we don't hear from you in the next 30 days.",
+      "BUTTON_DELETE_ACCOUNT": "Yes, delete my account",
+      "BUTTON_DONT_DELETE": "Don't delete",
+      "TEXT_ACCOUNT_DELETION_REQUEST": "Your account deletion request has been submitted."
     }
   }
 }
