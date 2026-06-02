@@ -71,13 +71,10 @@ While Open WebUI works in mobile browsers, Open MobileUI provides:
 - 🌙 **Dark Mode** – System-aware theme support for comfortable viewing in any lighting
 - ⌨️ **Keyboard Optimization** – Intelligent keyboard handling and input management
 
-### Enterprise Features
+### Coming Soon
 
-- 🏢 **Self-Hosted Ready** – Connect to your private Open WebUI deployment
-- 🔐 **Security First** – Secure credential storage, encrypted connections, and privacy-focused architecture
-- 📊 **Offline Mode** – Graceful handling of network interruptions
-- 🔔 **Real-time Updates** – Live notifications and instant message delivery
-- 🌍 **Internationalization** – Multi-language support (coming soon)
+- 🌍 **Internationalization** – Multi-language support
+- 🎙️ **Voice Mode** – Hands-free voice input
 
 ---
 
