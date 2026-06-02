@@ -11,7 +11,7 @@
 
 **Professional mobile client for Open WebUI** – Access your self-hosted AI assistant anywhere, anytime
 
-[Features](#features) • [Installation](#installation) • [Development](#development) • [Support](#support) • [Privacy Policy](PRIVACY_POLICY.md)
+[Features](#-features) • [Installation](#-installation) • [Development](#️-development) • [Support](#-support) • [Privacy Policy](PRIVACY_POLICY.md)
 
 <br>
 
@@ -86,23 +86,11 @@ While Open WebUI works in mobile browsers, Open MobileUI provides:
 
 ## 📥 Installation
 
-### First-Time Setup
-
 1. **Install the App** – Download Open MobileUI from the [App Store](https://apps.apple.com/us/app/open-mobileui/id6754266176) or [Google Play](https://play.google.com/store/apps/details?id=com.open.web.ui)
 2. **Launch the App** – Open the installed application
 3. **Enter Server URL** – Provide your Open WebUI instance URL (e.g., `https://your-instance.com`)
 4. **Authenticate** – Sign in with your Open WebUI credentials (email/password)
 5. **Start Chatting** – You're ready to use your AI assistant on mobile!
-
-### Build from Source
-
-See the [Development](#development) section below for detailed build instructions.
-
-### System Requirements
-
-- **Open WebUI**: active instance with accessible URL
-- **Android**: Android 8.0 (API level 26) or higher
-- **iOS**: iOS 13 or higher
 
 ## 🛠️ Development
 
@@ -161,7 +149,7 @@ For businesses requiring professional support, custom development, or enterprise
 ### Frequently Asked Questions
 
 **Q: Is this app free to use?**
-A: Yes — it's open source under GPL v3. Commercial use is allowed; see [License](#license) for the terms.
+A: Yes — it's open source under GPL v3. Commercial use is allowed; see [License](#-license) for the terms.
 
 **Q: Do I need to host my own Open WebUI instance?**
 A: Yes, this app connects to your self-hosted Open WebUI deployment. See [Open WebUI Installation](https://docs.openwebui.com/) for setup instructions.
