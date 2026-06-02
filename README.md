@@ -86,24 +86,15 @@ While Open WebUI works in mobile browsers, Open MobileUI provides:
 
 ## 📥 Installation
 
-### Quick Start
+### First-Time Setup
 
-Get started in minutes with pre-built releases or build from source.
+1. **Install the App** – Download Open MobileUI from the [App Store](https://apps.apple.com/us/app/open-mobileui/id6754266176) or [Google Play](https://play.google.com/store/apps/details?id=com.open.web.ui)
+2. **Launch the App** – Open the installed application
+3. **Enter Server URL** – Provide your Open WebUI instance URL (e.g., `https://your-instance.com`)
+4. **Authenticate** – Sign in with your Open WebUI credentials (email/password)
+5. **Start Chatting** – You're ready to use your AI assistant on mobile!
 
-### Option 1: Download Pre-built App (Recommended)
-
-#### Android
-
-1. Download the latest `.apk` file from [GitHub Releases](https://github.com/RonasIT/open-webui-react-native/releases)
-2. Enable "Install from Unknown Sources" in your Android device settings
-3. Install the APK file
-4. Launch the app and enter your Open WebUI instance URL
-
-#### iOS
-
-iOS builds are available through TestFlight or App Store (coming soon). Check [Releases](https://github.com/RonasIT/open-webui-react-native/releases) for TestFlight links.
-
-### Option 2: Build from Source
+### Build from Source
 
 See the [Development](#development) section below for detailed build instructions.
 
@@ -112,13 +103,6 @@ See the [Development](#development) section below for detailed build instruction
 - **Open WebUI**: active instance with accessible URL
 - **Android**: Android 8.0 (API level 26) or higher
 - **iOS**: iOS 13 or higher
-
-### First-Time Setup
-
-1. **Launch the App** – Open the installed application
-2. **Enter Server URL** – Provide your Open WebUI instance URL (e.g., `https://your-instance.com`)
-3. **Authenticate** – Sign in with your Open WebUI credentials (email/password)
-4. **Start Chatting** – You're ready to use your AI assistant on mobile!
 
 ## 🛠️ Development
 
