@@ -15,14 +15,10 @@ Thanks for your interest in improving Open MobileUI! Bug fixes, new features, do
 
 Before opening an issue, please [search existing issues](https://github.com/RonasIT/open-webui-react-native/issues) to avoid duplicates.
 
-When [filing a new issue](https://github.com/RonasIT/open-webui-react-native/issues/new), include as much as applies:
+When [filing a new issue](https://github.com/RonasIT/open-webui-react-native/issues/new/choose), pick the template that fits:
 
-- **What happened** vs. **what you expected**
-- **Steps to reproduce** (the more precise, the better)
-- **Environment** — app version, device + OS version, and your Open WebUI version
-- **Screenshots or logs** where relevant
-
-For feature requests, describe the use case and the problem it solves — not just the proposed solution.
+- 🐛 **Bug report** — for something that's broken. Fill in what happened vs. what you expected, precise steps to reproduce, the app + Open WebUI versions, your device + OS, and screenshots where relevant.
+- ✨ **Feature request** — for new functionality. Describe the use case and the problem it solves, not just the proposed solution.
 
 ## Development setup
 
