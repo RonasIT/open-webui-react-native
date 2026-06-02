@@ -147,105 +147,13 @@ The codebase follows a modular, scalable architecture:
 
 ### Building from Source
 
-#### Prerequisites
-
-- **Node.js** 18+ and npm
-- **Expo CLI** – `npm install -g expo-cli`
-- **EAS CLI** (for builds) – `npm install -g eas-cli`
-- **iOS Development**: Xcode 14+ (macOS only)
-- **Android Development**: Android Studio with Android SDK
-
-#### Step-by-Step Setup
-
-1. **Clone the Repository**
-
-```bash
-git clone https://github.com/RonasIT/open-webui-react-native.git
-cd open-webui-react-native
-```
-
-2. **Install Dependencies**
-
-```bash
-npm install
-```
-
-3. **Configure Expo Project**
-
-- Create an account at [expo.dev](https://expo.dev/) if you don't have one
-- Create a new project or use an existing one
-- Note your project details: `slug`, `owner`, `project ID`
-
-4. **Configure App Settings**
-
-Edit `app.config.js` (or `app.config.ts`) with your project details:
-
-```javascript
-{
-  name: "Your App Name",
-  slug: "your-app-slug",
-  owner: "your-expo-username",
-  version: "1.0.0"
-  // ... additional configuration
-}
-```
-
-5. **Set Up EAS Build** (Optional, for production builds)
-
-- Create `eas.json` following the [EAS Configuration Guide](https://docs.expo.dev/eas/json/)
-- Configure build profiles, app IDs, and credentials
-
-6. **Start Development**
-
-For development builds:
-
-```bash
-# Create a development build first (one-time setup)
-# Follow: https://docs.expo.dev/develop/development-builds/create-a-build/
-
-# Then start the Metro bundler
-npm start
-```
-
-For production builds:
-
-```bash
-npm run build:prod
-```
-
-### Development Resources
-
-- 📖 [Expo Development Builds Guide](https://docs.expo.dev/develop/development-builds/create-a-build/)
-- 📦 [EAS Build Documentation](https://docs.expo.dev/build/setup/)
-- ⚙️ [Expo Configuration Reference](https://docs.expo.dev/workflow/configuration/)
-- 🏗️ [Nx Documentation](https://nx.dev/getting-started/intro)
+For detailed setup instructions — prerequisites, cloning, configuring your own Expo project, and running the app — see the [Contributing guide](CONTRIBUTING.md#development-setup).
 
 ## 🤝 Contributing
 
 We welcome and appreciate contributions from the community! Whether you're fixing bugs, adding features, or improving documentation, your help makes this project better.
 
-### How to Contribute
-
-1. **Fork the Repository** – Create your own fork of the project
-2. **Create a Branch** – Make your changes in a feature branch
-3. **Follow Guidelines** – Adhere to our code style and commit conventions
-4. **Test Your Changes** – Ensure your changes work correctly
-5. **Submit a Pull Request** – Open a PR with a clear description of your changes
-
-### Contribution Areas
-
-- 🐛 **Bug Fixes** – Help us squash bugs and improve stability
-- ✨ **New Features** – Propose and implement new functionality
-- 📝 **Documentation** – Improve docs, add examples, or fix typos
-- 🎨 **UI/UX Improvements** – Enhance the user experience
-- ⚡ **Performance** – Optimize code and improve app performance
-- 🌍 **Internationalization** – Add translations for new languages
-
-### Getting Help
-
-- 📋 **Report Issues** – Use [GitHub Issues](https://github.com/RonasIT/open-webui-react-native/issues) for bug reports
-- 💬 **Discussions** – Join [Open WebUI Discussions](https://github.com/open-webui/open-webui/discussions) for questions
-- 📧 **Contact** – Reach out to [Ronas IT](https://ronasit.com) for enterprise support
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to report issues, set up your development environment, and submit a pull request.
 
 ---
 
