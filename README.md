@@ -1,6 +1,8 @@
-# Open MobileUI
-
 <div align="center">
+
+<img src="docs/images/logo.png" alt="Open MobileUI logo" width="120">
+
+# Open MobileUI
 
 ![License](https://img.shields.io/badge/license-GPL%20v3-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20Android-lightgrey.svg)
@@ -10,6 +12,16 @@
 **Professional mobile client for Open WebUI** – Access your self-hosted AI assistant anywhere, anytime
 
 [Features](#features) • [Installation](#installation) • [Development](#development) • [Support](#support) • [Privacy Policy](PRIVACY_POLICY.md)
+
+<br>
+
+<a href="https://apps.apple.com/us/app/open-mobileui/id6754266176">
+  <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" height="50">
+</a>
+&nbsp;&nbsp;
+<a href="https://play.google.com/store/apps/details?id=com.open.web.ui">
+  <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="50">
+</a>
 
 </div>
 
