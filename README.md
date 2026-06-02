@@ -60,7 +60,7 @@ While Open WebUI works in mobile browsers, Open MobileUI provides:
 - ✅ **Multi-Model Support** – Switch between different AI models seamlessly
 - ✅ **Chat Management** – Organize conversations with folders, search, and archive functionality
 - ✅ **Authentication** – Email/password and Google Sign-In support (requires additional setup)
-- ✅ **Secure Connections** – Supports encrypted HTTPS/WSS connections to your self-hosted Open WebUI instance (use HTTPS URLs for encrypted communication)
+- ✅ **Secure Connections** – Encrypted HTTPS/WSS connections to your self-hosted Open WebUI instance
 
 ### Mobile-Optimized Experience
 
@@ -80,24 +80,9 @@ While Open WebUI works in mobile browsers, Open MobileUI provides:
 
 ## 🎯 Use Cases
 
-### For Individuals
-
-- **On-the-Go AI Assistant** – Access your personal AI assistant from anywhere
-- **Mobile Productivity** – Get instant answers and assistance without opening a laptop
-- **Privacy-Conscious Users** – Keep your conversations private with self-hosted infrastructure
-
-### For Businesses
-
-- **Team Collaboration** – Enable your team to access company AI assistants from mobile devices
-- **Field Operations** – Support remote workers and field teams with mobile AI access
-- **Cost Efficiency** – Leverage self-hosted infrastructure without per-user mobile app licensing fees
-- **Enterprise Security** – Maintain full control over data and conversations with on-premise deployment
-
-### For Developers
-
-- **Open Source Alternative** – Professional-grade mobile client for the Open WebUI ecosystem
-- **Reference Implementation** – Well-architected React Native codebase using modern best practices
-- **Extensible Platform** – Built with modular architecture for easy customization and extension
+- **Individuals** – An on-the-go AI assistant for instant answers without reaching for a laptop
+- **Businesses** – Mobile access to company AI assistants for teams and field workers, with no per-user app licensing fees
+- **Developers** – A well-architected, extensible React Native reference client for the Open WebUI ecosystem
 
 ## 📥 Installation
 
@@ -192,16 +177,10 @@ For businesses requiring professional support, custom development, or enterprise
 ### Frequently Asked Questions
 
 **Q: Is this app free to use?**
-A: Yes! This is an open-source project released under the GNU General Public License v3 (GPL v3). You are free to use, modify, and distribute it under the terms of the GPL v3.
+A: Yes — it's open source under GPL v3. Commercial use is allowed; see [License](#license) for the terms.
 
 **Q: Do I need to host my own Open WebUI instance?**
 A: Yes, this app connects to your self-hosted Open WebUI deployment. See [Open WebUI Installation](https://docs.openwebui.com/) for setup instructions.
-
-**Q: Is my data secure?**
-A: Absolutely. All connections are encrypted, and your data stays on your self-hosted instance. The app never stores or transmits your conversations to third parties. For detailed information about data handling, see our [Privacy Policy](PRIVACY_POLICY.md).
-
-**Q: Can I use this for commercial purposes?**
-A: Yes, GPL v3 allows commercial use. However, if you distribute the software (or modified versions), you must also provide the source code and license your modifications under GPL v3. See the [LICENSE](LICENSE.txt) file for complete terms.
 
 **Q: How do I report a security vulnerability?**
 A: Please email security concerns directly to our team through [Ronas IT](https://ronasit.com) rather than opening a public issue.
