@@ -13,7 +13,7 @@ export default function ChatBottomButton({ isVisible, onPress }: ChatBottomButto
   }));
 
   return (
-    <AnimatedView style={animatedStyle} className='absolute right-16 bottom-6'>
+    <AnimatedView style={animatedStyle} className='absolute right-16 bottom-[130]'>
       <IconButton
         className='rounded-full border border-text-secondary bg-background-primary p-4'
         iconName='arrowDown'
