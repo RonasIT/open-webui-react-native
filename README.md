@@ -1,6 +1,8 @@
-# Open MobileUI
-
 <div align="center">
+
+<img src="docs/images/logo.png" alt="Open MobileUI logo" width="120">
+
+# Open MobileUI
 
 ![License](https://img.shields.io/badge/license-GPL%20v3-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20Android-lightgrey.svg)
@@ -9,7 +11,17 @@
 
 **Professional mobile client for Open WebUI** – Access your self-hosted AI assistant anywhere, anytime
 
-[Features](#features) • [Installation](#installation) • [Development](#development) • [Support](#support) • [Privacy Policy](PRIVACY_POLICY.md)
+[Features](#-features) • [Installation](#-installation) • [Development](#️-development) • [Support](#-support) • [Privacy Policy](PRIVACY_POLICY.md)
+
+<br>
+
+<a href="https://apps.apple.com/us/app/open-mobileui/id6754266176">
+  <img src="docs/images/app-store.png" alt="Download on the App Store" height="48">
+</a>
+&nbsp;&nbsp;
+<a href="https://play.google.com/store/apps/details?id=com.open.web.ui">
+  <img src="docs/images/google-play.png" alt="Get it on Google Play" height="48">
+</a>
 
 </div>
 
@@ -48,7 +60,7 @@ While Open WebUI works in mobile browsers, Open MobileUI provides:
 - ✅ **Multi-Model Support** – Switch between different AI models seamlessly
 - ✅ **Chat Management** – Organize conversations with folders, search, and archive functionality
 - ✅ **Authentication** – Email/password and Google Sign-In support (requires additional setup)
-- ✅ **Secure Connections** – Supports encrypted HTTPS/WSS connections to your self-hosted Open WebUI instance (use HTTPS URLs for encrypted communication)
+- ✅ **Secure Connections** – Encrypted HTTPS/WSS connections to your self-hosted Open WebUI instance
 
 ### Mobile-Optimized Experience
 
@@ -59,72 +71,26 @@ While Open WebUI works in mobile browsers, Open MobileUI provides:
 - 🌙 **Dark Mode** – System-aware theme support for comfortable viewing in any lighting
 - ⌨️ **Keyboard Optimization** – Intelligent keyboard handling and input management
 
-### Enterprise Features
+### Coming Soon
 
-- 🏢 **Self-Hosted Ready** – Connect to your private Open WebUI deployment
-- 🔐 **Security First** – Secure credential storage, encrypted connections, and privacy-focused architecture
-- 📊 **Offline Mode** – Graceful handling of network interruptions
-- 🔔 **Real-time Updates** – Live notifications and instant message delivery
-- 🌍 **Internationalization** – Multi-language support (coming soon)
+- 🌍 **Internationalization** – Multi-language support
+- 🎙️ **Voice Mode** – Hands-free voice input
 
 ---
 
 ## 🎯 Use Cases
 
-### For Individuals
-
-- **On-the-Go AI Assistant** – Access your personal AI assistant from anywhere
-- **Mobile Productivity** – Get instant answers and assistance without opening a laptop
-- **Privacy-Conscious Users** – Keep your conversations private with self-hosted infrastructure
-
-### For Businesses
-
-- **Team Collaboration** – Enable your team to access company AI assistants from mobile devices
-- **Field Operations** – Support remote workers and field teams with mobile AI access
-- **Cost Efficiency** – Leverage self-hosted infrastructure without per-user mobile app licensing fees
-- **Enterprise Security** – Maintain full control over data and conversations with on-premise deployment
-
-### For Developers
-
-- **Open Source Alternative** – Professional-grade mobile client for the Open WebUI ecosystem
-- **Reference Implementation** – Well-architected React Native codebase using modern best practices
-- **Extensible Platform** – Built with modular architecture for easy customization and extension
+- **Individuals** – An on-the-go AI assistant for instant answers without reaching for a laptop
+- **Businesses** – Mobile access to company AI assistants for teams and field workers, with no per-user app licensing fees
+- **Developers** – A well-architected, extensible React Native reference client for the Open WebUI ecosystem
 
 ## 📥 Installation
 
-### Quick Start
-
-Get started in minutes with pre-built releases or build from source.
-
-### Option 1: Download Pre-built App (Recommended)
-
-#### Android
-
-1. Download the latest `.apk` file from [GitHub Releases](https://github.com/RonasIT/open-webui-react-native/releases)
-2. Enable "Install from Unknown Sources" in your Android device settings
-3. Install the APK file
-4. Launch the app and enter your Open WebUI instance URL
-
-#### iOS
-
-iOS builds are available through TestFlight or App Store (coming soon). Check [Releases](https://github.com/RonasIT/open-webui-react-native/releases) for TestFlight links.
-
-### Option 2: Build from Source
-
-See the [Development](#development) section below for detailed build instructions.
-
-### System Requirements
-
-- **Open WebUI**: active instance with accessible URL
-- **Android**: Android 8.0 (API level 26) or higher
-- **iOS**: iOS 13 or higher
-
-### First-Time Setup
-
-1. **Launch the App** – Open the installed application
-2. **Enter Server URL** – Provide your Open WebUI instance URL (e.g., `https://your-instance.com`)
-3. **Authenticate** – Sign in with your Open WebUI credentials (email/password)
-4. **Start Chatting** – You're ready to use your AI assistant on mobile!
+1. **Install the App** – Download Open MobileUI from the [App Store](https://apps.apple.com/us/app/open-mobileui/id6754266176) or [Google Play](https://play.google.com/store/apps/details?id=com.open.web.ui)
+2. **Launch the App** – Open the installed application
+3. **Enter Server URL** – Provide your Open WebUI instance URL (e.g., `https://your-instance.com`)
+4. **Authenticate** – Sign in with your Open WebUI credentials (email/password)
+5. **Start Chatting** – You're ready to use your AI assistant on mobile!
 
 ## 🛠️ Development
 
@@ -147,105 +113,13 @@ The codebase follows a modular, scalable architecture:
 
 ### Building from Source
 
-#### Prerequisites
-
-- **Node.js** 18+ and npm
-- **Expo CLI** – `npm install -g expo-cli`
-- **EAS CLI** (for builds) – `npm install -g eas-cli`
-- **iOS Development**: Xcode 14+ (macOS only)
-- **Android Development**: Android Studio with Android SDK
-
-#### Step-by-Step Setup
-
-1. **Clone the Repository**
-
-```bash
-git clone https://github.com/RonasIT/open-webui-react-native.git
-cd open-webui-react-native
-```
-
-2. **Install Dependencies**
-
-```bash
-npm install
-```
-
-3. **Configure Expo Project**
-
-- Create an account at [expo.dev](https://expo.dev/) if you don't have one
-- Create a new project or use an existing one
-- Note your project details: `slug`, `owner`, `project ID`
-
-4. **Configure App Settings**
-
-Edit `app.config.js` (or `app.config.ts`) with your project details:
-
-```javascript
-{
-  name: "Your App Name",
-  slug: "your-app-slug",
-  owner: "your-expo-username",
-  version: "1.0.0"
-  // ... additional configuration
-}
-```
-
-5. **Set Up EAS Build** (Optional, for production builds)
-
-- Create `eas.json` following the [EAS Configuration Guide](https://docs.expo.dev/eas/json/)
-- Configure build profiles, app IDs, and credentials
-
-6. **Start Development**
-
-For development builds:
-
-```bash
-# Create a development build first (one-time setup)
-# Follow: https://docs.expo.dev/develop/development-builds/create-a-build/
-
-# Then start the Metro bundler
-npm start
-```
-
-For production builds:
-
-```bash
-npm run build:prod
-```
-
-### Development Resources
-
-- 📖 [Expo Development Builds Guide](https://docs.expo.dev/develop/development-builds/create-a-build/)
-- 📦 [EAS Build Documentation](https://docs.expo.dev/build/setup/)
-- ⚙️ [Expo Configuration Reference](https://docs.expo.dev/workflow/configuration/)
-- 🏗️ [Nx Documentation](https://nx.dev/getting-started/intro)
+For detailed setup instructions — prerequisites, cloning, configuring your own Expo project, and running the app — see the [Contributing guide](CONTRIBUTING.md#development-setup).
 
 ## 🤝 Contributing
 
 We welcome and appreciate contributions from the community! Whether you're fixing bugs, adding features, or improving documentation, your help makes this project better.
 
-### How to Contribute
-
-1. **Fork the Repository** – Create your own fork of the project
-2. **Create a Branch** – Make your changes in a feature branch
-3. **Follow Guidelines** – Adhere to our code style and commit conventions
-4. **Test Your Changes** – Ensure your changes work correctly
-5. **Submit a Pull Request** – Open a PR with a clear description of your changes
-
-### Contribution Areas
-
-- 🐛 **Bug Fixes** – Help us squash bugs and improve stability
-- ✨ **New Features** – Propose and implement new functionality
-- 📝 **Documentation** – Improve docs, add examples, or fix typos
-- 🎨 **UI/UX Improvements** – Enhance the user experience
-- ⚡ **Performance** – Optimize code and improve app performance
-- 🌍 **Internationalization** – Add translations for new languages
-
-### Getting Help
-
-- 📋 **Report Issues** – Use [GitHub Issues](https://github.com/RonasIT/open-webui-react-native/issues) for bug reports
-- 💬 **Discussions** – Join [Open WebUI Discussions](https://github.com/open-webui/open-webui/discussions) for questions
-- 📧 **Contact** – Reach out to [Ronas IT](https://ronasit.com) for enterprise support
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to report issues, set up your development environment, and submit a pull request.
 
 ---
 
@@ -275,16 +149,10 @@ For businesses requiring professional support, custom development, or enterprise
 ### Frequently Asked Questions
 
 **Q: Is this app free to use?**
-A: Yes! This is an open-source project released under the GNU General Public License v3 (GPL v3). You are free to use, modify, and distribute it under the terms of the GPL v3.
+A: Yes — it's open source under GPL v3. Commercial use is allowed; see [License](#-license) for the terms.
 
 **Q: Do I need to host my own Open WebUI instance?**
 A: Yes, this app connects to your self-hosted Open WebUI deployment. See [Open WebUI Installation](https://docs.openwebui.com/) for setup instructions.
-
-**Q: Is my data secure?**
-A: Absolutely. All connections are encrypted, and your data stays on your self-hosted instance. The app never stores or transmits your conversations to third parties. For detailed information about data handling, see our [Privacy Policy](PRIVACY_POLICY.md).
-
-**Q: Can I use this for commercial purposes?**
-A: Yes, GPL v3 allows commercial use. However, if you distribute the software (or modified versions), you must also provide the source code and license your modifications under GPL v3. See the [LICENSE](LICENSE.txt) file for complete terms.
 
 **Q: How do I report a security vulnerability?**
 A: Please email security concerns directly to our team through [Ronas IT](https://ronasit.com) rather than opening a public issue.
