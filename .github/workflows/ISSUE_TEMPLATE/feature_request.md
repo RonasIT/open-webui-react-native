@@ -1,10 +1,9 @@
 ---
 name: Feature request
 about: Suggest an idea to enhance Open MobileUI
-title: "[FEATURE]"
+title: '[FEATURE]'
 labels: enhancement, for review
 assignees: ipakhomov
-
 ---
 
 **Is your feature request related to a problem? Please describe.**
