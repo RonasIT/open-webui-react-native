@@ -15,7 +15,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
   const extra = {
     eas: { projectId } as EASConfig,
     sentry: {
-      dsn: 'https://3ae5dc8126bb61f3f6a582ea697a45d8@o4511502286716928.ingest.us.sentry.io/4511511143579648',
+      dsn: process.env.SENTRY_DSN,
     },
     env: appEnv.current,
     googleIosClientId: appEnv.select({
