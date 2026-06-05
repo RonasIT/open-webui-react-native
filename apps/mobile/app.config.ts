@@ -14,6 +14,10 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
 
   const extra = {
     eas: { projectId } as EASConfig,
+    sentry: {
+      dsn: process.env.SENTRY_DSN,
+    },
+    env: appEnv.current,
     googleIosClientId: appEnv.select({
       default: process.env.GOOGLE_IOS_CLIENT_ID_DEV,
       production: process.env.GOOGLE_IOS_CLIENT_ID_PROD,
