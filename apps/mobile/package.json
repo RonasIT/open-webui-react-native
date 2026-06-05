@@ -32,6 +32,7 @@
     "@react-navigation/drawer": "^7.3.9",
     "@ronas-it/react-native-common-modules": "^1.1.0",
     "@ronas-it/rtkq-entity-api": "^0.4.10",
+    "@sentry/react-native": "~7.11.0",
     "@shopify/flash-list": "2.0.2",
     "@tanstack/react-query": "^5.80.6",
     "@tanstack/react-query-persist-client": "^5.87.4",
