@@ -120,7 +120,7 @@ function RootLayout(): ReactElement | null {
 
   return (
     <KeyboardProvider>
-      <GestureHandlerRootView>
+      <GestureHandlerRootView style={{ flex: 1 }}>
         <PersistQueryClientProvider
           client={queryClient}
           persistOptions={{

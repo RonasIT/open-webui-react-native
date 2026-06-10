@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "cross-env EXPO_PUBLIC_APP_ENV=development npx expo start",
+    "start": "cross-env EXPO_PUBLIC_APP_ENV=development npx expo start -c",
     "start:prod": "cross-env EXPO_PUBLIC_APP_ENV=production npx expo start",
     "build:dev": "eas build --no-wait -p all --profile=development",
     "build:internal": "npm run build:dev -- --profile=internal",
@@ -27,7 +27,6 @@
     "@hookform/resolvers": "^5.1.1",
     "@likashefqet/react-native-image-zoom": "^4.3.0",
     "@react-native-community/netinfo": "12.0.1",
-    "@react-native-cookies/cookies": "^6.2.1",
     "@react-native-google-signin/google-signin": "^15.0.0",
     "@ronas-it/react-native-common-modules": "^1.1.0",
     "@ronas-it/rtkq-entity-api": "^1.1.1",
@@ -74,6 +73,8 @@
     "react-native-keyboard-controller": "1.21.6",
     "react-native-mmkv": "^3.2.0",
     "react-native-modal": "^14.0.0-rc.1",
+    "react-native-nitro-cookies": "^1.1.0",
+    "react-native-nitro-modules": "^0.35.9",
     "react-native-reanimated": "4.3.1",
     "react-native-safe-area-context": "~5.7.0",
     "react-native-screens": "4.25.2",
@@ -86,16 +87,14 @@
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.12",
-    "@types/luxon": "^3.6.2"
+    "@types/luxon": "^3.6.2",
+    "react-refresh": "^0.18.0"
   },
   "main": "expo-router/entry",
   "expo": {
     "doctor": {
       "reactNativeDirectoryCheck": {
-        "listUnknownPackages": false,
-        "exclude": [
-          "@react-native-cookies/cookies"
-        ]
+        "listUnknownPackages": false
       }
     }
   }
