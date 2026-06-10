@@ -13,6 +13,7 @@
   "dependencies": {
     "@expo/metro-config": "~56.0.0",
     "@expo/metro-runtime": "~56.0.13",
+    "@expo/ui": "~56.0.16",
     "@gorhom/bottom-sheet": "^5.2.8",
     "@hookform/resolvers": "^5.1.1",
     "@legendapp/state": "2.1.15",

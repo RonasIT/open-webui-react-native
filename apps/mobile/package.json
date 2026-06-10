@@ -32,6 +32,7 @@
     "@ronas-it/rtkq-entity-api": "^1.1.1",
     "@sentry/react-native": "~7.11.0",
     "@shopify/flash-list": "2.0.2",
+    "@expo/ui": "~56.0.16",
     "@tanstack/react-query": "^5.80.6",
     "@tanstack/react-query-persist-client": "^5.87.4",
     "babel-plugin-module-resolver": "^5.0.2",
