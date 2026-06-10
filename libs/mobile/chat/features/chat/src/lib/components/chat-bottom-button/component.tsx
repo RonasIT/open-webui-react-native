@@ -1,4 +1,5 @@
 import { ReactElement } from 'react';
+import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller';
 import { interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import { AnimatedView, IconButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 
@@ -8,8 +9,14 @@ interface ChatBottomButtonProps {
 }
 
 export default function ChatBottomButton({ isVisible, onPress }: ChatBottomButtonProps): ReactElement | null {
+  //NOTE: height is 0 when the keyboard is closed and -keyboardHeight when open, so it lifts the button above the keyboard
+  const { height: keyboardHeight } = useReanimatedKeyboardAnimation();
+
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: interpolate(isVisible.value, [0, 1], [0, 1]) }],
+    transform: [
+      { translateY: keyboardHeight.value ? keyboardHeight.value + 15 : 0 },
+      { scale: interpolate(isVisible.value, [0, 1], [0, 1]) },
+    ],
   }));
 
   return (

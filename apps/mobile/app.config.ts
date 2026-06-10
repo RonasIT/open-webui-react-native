@@ -33,6 +33,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     scheme: process.env.EXPO_PUBLIC_APP_SCHEME as string,
     owner: process.env.EXPO_PUBLIC_APP_OWNER as string,
     version: '1.5.0',
+    userInterfaceStyle: 'automatic',
     orientation: 'portrait',
     icon: './assets/icon.png',
     runtimeVersion: '1.5.0',
@@ -111,9 +112,9 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
         {
           android: {
             androidGradlePluginVersion: '8.3.2',
-            compileSdkVersion: 35,
+            compileSdkVersion: 36,
             targetSdkVersion: 35,
-            buildToolsVersion: '35.0.0',
+            buildToolsVersion: '36.0.0',
             ndkVersion: '27.1.12297006',
             packagingOptions: {
               jniLibs: {

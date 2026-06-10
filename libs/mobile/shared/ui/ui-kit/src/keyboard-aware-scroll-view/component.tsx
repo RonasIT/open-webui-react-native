@@ -24,7 +24,7 @@ export function AppKeyboardAwareScrollView(props: AppKeyboardAwareScrollViewProp
 }
 
 //NOTE: Bottom Sheet customizations, docs - https://kirillzyusko.github.io/react-native-keyboard-controller/docs/api/components/keyboard-aware-scroll-view#gorhombottom-sheet
-const AnimatedScrollView = Reanimated.createAnimatedComponent<KeyboardAwareScrollViewProps>(KeyboardAwareScrollView);
+const AnimatedScrollView = Reanimated.createAnimatedComponent(KeyboardAwareScrollView);
 const BottomSheetScrollViewComponent = createBottomSheetScrollableComponent<
   BottomSheetScrollViewMethods,
   BottomSheetScrollViewProps

@@ -1,15 +1,20 @@
-import { BottomSheetFlashList } from '@gorhom/bottom-sheet';
-import { BottomSheetFlashListProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetScrollable/BottomSheetFlashList';
+import { useBottomSheetScrollableCreator } from '@gorhom/bottom-sheet';
 import { ReactElement } from 'react';
+import { ScrollViewProps } from 'react-native';
 import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
-
-interface AppBottomSheetFlashListProps<TItem> extends BottomSheetFlashListProps<TItem> {
-  contentContainerClassName?: string;
-}
+import { AppFlashList, AppFlashListProps } from '../flash-list';
 
 export function AppBottomSheetFlashList<TItem>({
   contentContainerClassName,
   ...restProps
-}: AppBottomSheetFlashListProps<TItem>): ReactElement {
-  return <BottomSheetFlashList {...restProps} contentContainerClassName={cn('pb-safe', contentContainerClassName)} />;
+}: AppFlashListProps<TItem>): ReactElement {
+  const renderScrollComponent = useBottomSheetScrollableCreator<ScrollViewProps>();
+
+  return (
+    <AppFlashList
+      {...restProps}
+      renderScrollComponent={renderScrollComponent}
+      contentContainerClassName={cn('pb-safe', contentContainerClassName)}
+    />
+  );
 }

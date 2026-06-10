@@ -1,12 +1,13 @@
 import { ReactElement, ReactNode } from 'react';
 import Modal, { ModalProps } from 'react-native-modal';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createStyles } from '@open-webui-react-native/mobile/shared/ui/styles';
 
 interface FullScreenModalProps extends Partial<ModalProps> {
   children: ReactNode;
 }
 
-export function FullScreenModal({ style, ...restProps }: FullScreenModalProps): ReactElement {
+export function FullScreenModal({ style, children, ...restProps }: FullScreenModalProps): ReactElement {
   return (
     <Modal
       animationIn='fadeInUp'
@@ -15,8 +16,9 @@ export function FullScreenModal({ style, ...restProps }: FullScreenModalProps): 
       animationInTiming={100}
       animationOutTiming={100}
       style={[styles.container, style]}
-      {...restProps}
-    />
+      {...restProps}>
+      <SafeAreaProvider>{children}</SafeAreaProvider>
+    </Modal>
   );
 }
 

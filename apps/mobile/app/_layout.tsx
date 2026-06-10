@@ -25,6 +25,7 @@ import { SplashScreen, Stack, useNavigationContainerRef } from 'expo-router';
 import { ReactElement, useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import '../global.css';
 import 'reflect-metadata';
 import 'expo-dev-client';
@@ -119,25 +120,27 @@ function RootLayout(): ReactElement | null {
   }
 
   return (
-    <KeyboardProvider>
-      <GestureHandlerRootView>
-        <PersistQueryClientProvider
-          client={queryClient}
-          persistOptions={{
-            persister: queryPersister,
-            maxAge: persistStorageConfig.maxAge,
-            dehydrateOptions: {
-              shouldDehydrateQuery: (query) => query.meta?.persist !== false,
-            },
-          }}>
-          <ToastProvider>
-            <BottomSheetModalProvider>
-              <App />
-            </BottomSheetModalProvider>
-          </ToastProvider>
-        </PersistQueryClientProvider>
-      </GestureHandlerRootView>
-    </KeyboardProvider>
+    <SafeAreaProvider>
+      <KeyboardProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <PersistQueryClientProvider
+            client={queryClient}
+            persistOptions={{
+              persister: queryPersister,
+              maxAge: persistStorageConfig.maxAge,
+              dehydrateOptions: {
+                shouldDehydrateQuery: (query) => query.meta?.persist !== false,
+              },
+            }}>
+            <ToastProvider>
+              <BottomSheetModalProvider>
+                <App />
+              </BottomSheetModalProvider>
+            </ToastProvider>
+          </PersistQueryClientProvider>
+        </GestureHandlerRootView>
+      </KeyboardProvider>
+    </SafeAreaProvider>
   );
 }
 
