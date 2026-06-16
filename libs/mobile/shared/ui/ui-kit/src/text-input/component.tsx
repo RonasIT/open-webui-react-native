@@ -1,4 +1,4 @@
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import { BottomSheetTextInput as BottomSheetTextInputComponent } from '@gorhom/bottom-sheet';
 import { ComponentRef, ReactElement, Ref } from 'react';
 import { Platform, TextInput, TextInputProps, View } from 'react-native';
 import { cn, colors } from '@open-webui-react-native/mobile/shared/ui/styles';
@@ -55,13 +55,13 @@ export const AppTextInput = ({
   );
 };
 
-export type AppBottomSheetTextInputRef = ComponentRef<typeof BottomSheetTextInput>;
+export type BottomSheetTextInputRef = ComponentRef<typeof BottomSheetTextInputComponent>;
 
-export type AppBottomSheetInputProps = Omit<AppInputProps, 'ref'> & {
-  ref?: Ref<AppBottomSheetTextInputRef>;
+export type BottomSheetTextInputProps = Omit<AppInputProps, 'ref'> & {
+  ref?: Ref<BottomSheetTextInputRef>;
 };
 
-export const AppBottomSheetTextInput = ({
+export const BottomSheetTextInput = ({
   onFocus,
   onBlur,
   label,
@@ -74,7 +74,7 @@ export const AppBottomSheetTextInput = ({
   hitSlop,
   ref,
   ...inputProps
-}: AppBottomSheetInputProps): ReactElement => {
+}: BottomSheetTextInputProps): ReactElement => {
   const isIos = Platform.OS === 'ios';
 
   return (
@@ -82,7 +82,7 @@ export const AppBottomSheetTextInput = ({
       {accessoryTop}
       <View className={`flex-row gap-12 items-center max-h-[${maxHeight}]`}>
         {accessoryLeft}
-        <BottomSheetTextInput
+        <BottomSheetTextInputComponent
           ref={ref}
           className={cn(baseClasses.textClasses, isIos && '!leading-[0]', textClassName)}
           placeholderTextColor={colors.textSecondary}
