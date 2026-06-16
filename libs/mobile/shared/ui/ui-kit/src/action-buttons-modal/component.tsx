@@ -6,7 +6,7 @@ import { ToastService } from '@open-webui-react-native/shared/utils/toast-servic
 import { AppBottomSheet } from '../bottom-sheet';
 import { AppButton } from '../button';
 import { AppText } from '../text';
-import { AppBottomSheetTextInput, AppBottomSheetTextInputRef } from '../text-input';
+import { BottomSheetTextInput, BottomSheetTextInputRef } from '../text-input';
 import { View } from '../view';
 
 export type ActionButtonsModalMethods = {
@@ -37,7 +37,7 @@ export function ActionButtonsModal({
 }: ActionButtonsModalProps): ReactElement {
   const translate = useTranslation('SHARED.ACTION_BUTTONS_MODAL');
   const modalRef = useRef<BottomSheetModal>(null);
-  const inputRef = useRef<AppBottomSheetTextInputRef>(null);
+  const inputRef = useRef<BottomSheetTextInputRef>(null);
 
   const [value, setValue] = useState('');
 
@@ -82,7 +82,7 @@ export function ActionButtonsModal({
             ) : (
               description
             ))}
-          {withInput && <AppBottomSheetTextInput
+          {withInput && <BottomSheetTextInput
             ref={inputRef}
             value={value}
             onChangeText={setValue} />}
