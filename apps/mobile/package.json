@@ -24,6 +24,7 @@
     "ios": "expo run:ios"
   },
   "dependencies": {
+    "@expo/ui": "~56.0.16",
     "@hookform/resolvers": "^5.1.1",
     "@likashefqet/react-native-image-zoom": "^4.3.0",
     "@react-native-community/netinfo": "12.0.1",
@@ -32,7 +33,6 @@
     "@ronas-it/rtkq-entity-api": "^1.1.1",
     "@sentry/react-native": "~7.11.0",
     "@shopify/flash-list": "2.0.2",
-    "@expo/ui": "~56.0.16",
     "@tanstack/react-query": "^5.80.6",
     "@tanstack/react-query-persist-client": "^5.87.4",
     "babel-plugin-module-resolver": "^5.0.2",
@@ -81,6 +81,7 @@
     "react-native-screens": "4.25.2",
     "react-native-svg": "15.15.4",
     "react-native-web": "^0.21.0",
+    "react-native-webview": "13.16.1",
     "reflect-metadata": "^0.2.2",
     "tailwind-merge": "^3.3.0",
     "tailwindcss": "^3.4.17",
