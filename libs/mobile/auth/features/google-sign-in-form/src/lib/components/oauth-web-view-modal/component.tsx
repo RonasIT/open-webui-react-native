@@ -79,7 +79,7 @@ export function OauthWebViewModal({ isVisible, onClose, onGetToken }: OauthWebVi
       <AppSafeAreaView edges={['top']} className='flex-1 bg-background-primary'>
         <View className='flex-row justify-end px-16 py-12'>
           <AppPressable onPress={onClose} hitSlop={12}>
-            <AppText className='text-body'>{translate('BUTTON_CLOSE')}</AppText>
+            <AppText>{translate('BUTTON_CLOSE')}</AppText>
           </AppPressable>
         </View>
         <View className='h-full'>
