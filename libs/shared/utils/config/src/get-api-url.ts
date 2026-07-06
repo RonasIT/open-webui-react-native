@@ -8,7 +8,7 @@ export const ronasApiUrl = appEnv.select({
   production: 'https://ai.ronas.online',
 });
 
-export const testApiUrl = 'https://ai.test-api.online';
+const testApiUrl = 'https://ai.test-api.online';
 
 const normalizeUrl = (url?: string): string => (url ?? '').trim().replace(/\/+$/, '');
 
@@ -22,3 +22,9 @@ export const getApiUrl = (): string => {
 
   return resolveApiUrl(stored || fallback);
 };
+
+export const getHost = (url: string): string =>
+  url
+    .replace(/^https?:\/\//, '')
+    .split('/')[0]
+    .toLowerCase();

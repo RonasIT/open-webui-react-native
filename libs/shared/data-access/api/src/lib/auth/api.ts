@@ -2,7 +2,7 @@ import { useMutation, UseMutationOptions, UseMutationResult, useQuery, UseQueryR
 import { AxiosError } from 'axios';
 import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
 import { authApiConfig } from './config';
-import { GoogleSignInRequest, SignInRequest } from './models';
+import { SignInRequest } from './models';
 import { SignInResponse } from './models/sign-in-response';
 import { authService } from './service';
 
@@ -11,15 +11,6 @@ function useSignInWithEmailPassword(
 ): UseMutationResult<SignInResponse, AxiosError<ApiErrorData>, SignInRequest> {
   return useMutation<SignInResponse, AxiosError<ApiErrorData>, SignInRequest>({
     mutationFn: authService.signInWithEmailPassword,
-    ...props,
-  });
-}
-
-function useSignInWithGoogle(
-  props: UseMutationOptions<SignInResponse, AxiosError<ApiErrorData>, GoogleSignInRequest>,
-): UseMutationResult<SignInResponse, AxiosError<ApiErrorData>, GoogleSignInRequest> {
-  return useMutation<SignInResponse, AxiosError<ApiErrorData>, GoogleSignInRequest>({
-    mutationFn: authService.signInWithGoogle,
     ...props,
   });
 }
@@ -40,7 +31,6 @@ function useGetProfile(): UseQueryResult<SignInResponse, AxiosError> {
 
 export const authApi = {
   useSignInWithEmailPassword,
-  useSignInWithGoogle,
   useGetProfile,
   useSignOut,
 };

@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { TextInput } from 'react-native';
 import { AppButton, View, FormFloatedLabelInput } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
-import { appConfigurationApi, authApi } from '@open-webui-react-native/shared/data-access/api';
+import { appConfigurationApi, authApi, Provider } from '@open-webui-react-native/shared/data-access/api';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { resolveApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
@@ -16,10 +16,10 @@ import { EmailFormSchema } from './forms';
 
 interface EmailSignInFormProps {
   onSuccess: () => void;
-  onApiUrlChange?: (url: string) => void;
+  setOauthProviders: (providers: Array<Provider>) => void;
 }
 
-export function EmailSignInForm({ onSuccess, onApiUrlChange }: EmailSignInFormProps): ReactElement {
+export function EmailSignInForm({ onSuccess, setOauthProviders }: EmailSignInFormProps): ReactElement {
   const translate = useTranslation('AUTH.SIGN_IN.EMAIL_FORM');
   const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
@@ -59,7 +59,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange }: EmailSignInFormPr
 
   useEffect(() => {
     setValue('url', query, { shouldValidate: true });
-    onApiUrlChange?.(query);
+    setOauthProviders([]);
   }, [query]);
 
   useEffect(() => {
@@ -69,6 +69,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange }: EmailSignInFormPr
 
         if (res?.name && res?.version) {
           appStorageService.apiUrl.set(debouncedQuery);
+          setOauthProviders(Object.values(res.oauth.providers));
         }
       }
     };

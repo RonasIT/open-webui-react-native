@@ -10,8 +10,6 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
 
   const appId = process.env.EXPO_PUBLIC_APP_ID;
 
-  const googleAuthIosUrlScheme = process.env.GOOGLE_IOS_URL_SCHEME;
-
   const extra = {
     eas: { projectId } as EASConfig,
     sentry: {
@@ -127,14 +125,6 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
           },
         },
       ],
-      googleAuthIosUrlScheme
-        ? [
-            '@react-native-google-signin/google-signin',
-            {
-              iosUrlScheme: googleAuthIosUrlScheme,
-            },
-          ]
-        : null,
       ['./plugins/with-remove-media-playback-permission'],
     ]),
     newArchEnabled: true,
