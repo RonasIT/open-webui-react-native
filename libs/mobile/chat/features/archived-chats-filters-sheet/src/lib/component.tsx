@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@expo/ui/community/bottom-sheet';
 import { ReactElement, useRef } from 'react';
 import { FilterItem } from '@open-webui-react-native/mobile/chat/data-access/archived-chats-filter-state';
 import {

@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@expo/ui/community/bottom-sheet';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';

@@ -1,4 +1,3 @@
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 import { delay } from 'lodash-es';
 import React, {
@@ -164,7 +163,7 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
               </AnimatedView>
             )}
           </AppKeyboardControllerView>
-          <BottomSheetModalProvider>{modalComponent}</BottomSheetModalProvider>
+          {modalComponent}
         </View>
       </FullScreenModal>
     </Fragment>

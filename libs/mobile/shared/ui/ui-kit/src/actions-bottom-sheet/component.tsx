@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@expo/ui/community/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { Fragment, PropsWithChildren, ReactElement } from 'react';
 import { AppBottomSheet, AppBottomSheetModalProps, AppBottomSheetProps } from '../bottom-sheet';
@@ -45,7 +45,6 @@ export function ActionsBottomSheet({
       renderTrigger={renderTrigger}
       withoutBackground
       className='pt-[0px]'
-      enablePanDownToClose={false}
       content={
         <Fragment>
           <View className='rounded-2xl overflow-hidden'>{actions.map(renderActionComponent)}</View>

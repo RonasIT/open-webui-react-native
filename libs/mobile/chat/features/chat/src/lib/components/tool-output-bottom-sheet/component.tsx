@@ -1,10 +1,11 @@
-import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@expo/ui/community/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { Fragment, ReactElement, ReactNode, useRef } from 'react';
 import {
   AppBottomSheet,
   AppPressable,
   AppSafeAreaView,
+  AppScrollView,
   AppText,
   Icon,
   SheetHeader,
@@ -44,7 +45,7 @@ export function ToolOutputBottomSheet({ toolName, input, output }: ToolOutputBot
       content={
         <View className='flex-1 bg-background-primary'>
           <SheetHeader title={toolName} onGoBack={() => sheetRef.current?.close()} />
-          <BottomSheetScrollView className='flex-1' contentContainerClassName='pb-safe pt-8 android:pb-24'>
+          <AppScrollView className='flex-1' contentContainerClassName='pb-safe pt-8 android:pb-24'>
             <AppSafeAreaView edges={['bottom']}>
               {!!input && (
                 <Fragment>
@@ -63,7 +64,7 @@ export function ToolOutputBottomSheet({ toolName, input, output }: ToolOutputBot
                 {output}
               </AppText>
             </AppSafeAreaView>
-          </BottomSheetScrollView>
+          </AppScrollView>
         </View>
       }
     />

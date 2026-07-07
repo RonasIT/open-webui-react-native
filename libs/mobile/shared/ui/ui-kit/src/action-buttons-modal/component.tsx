@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@expo/ui/community/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { delay } from 'lodash-es';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } from 'react';

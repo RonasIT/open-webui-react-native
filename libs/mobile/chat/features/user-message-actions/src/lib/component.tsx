@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@expo/ui/community/bottom-sheet';
 import { i18n, useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import * as Clipboard from 'expo-clipboard';
 import { compact } from 'lodash-es';

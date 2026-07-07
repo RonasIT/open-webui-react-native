@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@expo/ui/community/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useState } from 'react';
 import { FileExtension } from '@open-webui-react-native/mobile/shared/data-access/file-system-service';

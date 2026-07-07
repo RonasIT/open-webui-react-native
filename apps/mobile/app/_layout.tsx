@@ -1,4 +1,3 @@
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { useSelector } from '@legendapp/state/react';
 import { ToastProvider } from '@open-webui-react-native/mobile/shared/features/toast';
 import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-logout';
@@ -133,9 +132,7 @@ function RootLayout(): ReactElement | null {
               },
             }}>
             <ToastProvider>
-              <BottomSheetModalProvider>
-                <App />
-              </BottomSheetModalProvider>
+              <App />
             </ToastProvider>
           </PersistQueryClientProvider>
         </GestureHandlerRootView>

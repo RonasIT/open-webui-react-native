@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@expo/ui/community/bottom-sheet';
 import { Fragment, PropsWithChildren, ReactElement, useImperativeHandle, useRef } from 'react';
 import {
   ActionsBottomSheet,
@@ -52,10 +52,8 @@ export function MessageActionsSheetWrapper({
     <Fragment>
       <ActionsBottomSheet
         onClose={handleDismissActionsSheet}
-        onBackdropPress={handleDismissActionsSheet}
         actions={actions}
-        ref={actionsSheetRef}
-      />
+        ref={actionsSheetRef} />
       <AnimatedView style={animatedStyle}>
         <AppPressable className='active:opacity-100' onLongPress={handleLongPress}>
           {children}

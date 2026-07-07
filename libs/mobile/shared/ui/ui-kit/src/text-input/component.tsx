@@ -1,4 +1,4 @@
-import { BottomSheetTextInput as BottomSheetTextInputComponent } from '@gorhom/bottom-sheet';
+import { BottomSheetTextInput as BottomSheetTextInputComponent } from '@expo/ui/community/bottom-sheet';
 import { ComponentRef, ReactElement, Ref } from 'react';
 import { Platform, TextInput, TextInputProps, View } from 'react-native';
 import { cn, colors } from '@open-webui-react-native/mobile/shared/ui/styles';

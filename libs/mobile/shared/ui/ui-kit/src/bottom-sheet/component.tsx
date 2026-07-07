@@ -1,35 +1,25 @@
 import BottomSheet, {
-  BottomSheetBackgroundProps,
+  BottomSheetMethods,
   BottomSheetModal,
-  BottomSheetModalProps,
   BottomSheetProps,
   BottomSheetView,
-} from '@gorhom/bottom-sheet';
-import { BottomSheetMethods } from '@gorhom/bottom-sheet/src/types';
-import { useBackHandler, useKeyboard } from '@react-native-community/hooks';
+} from '@expo/ui/community/bottom-sheet';
+import { useBackHandler } from '@react-native-community/hooks';
 import { delay } from 'lodash-es';
 import { remapProps } from 'nativewind';
 
-import {
-  Fragment,
-  ReactElement,
-  ReactNode,
-  Ref,
-  useCallback,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { Fragment, ReactElement, ReactNode, Ref, useImperativeHandle, useMemo, useRef, useState } from 'react';
 
-import { Keyboard, TouchableWithoutFeedback, ViewProps, StyleSheet } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ViewProps } from 'react-native';
 import { SetOptional } from 'type-fest';
-import { cn, screenHeight } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { uiState$ } from '@open-webui-react-native/mobile/shared/ui/ui-state';
 import { useBottomInset } from '@open-webui-react-native/mobile/shared/utils/use-bottom-inset';
 import { View } from '../view';
+
+type BottomSheetModalProps = BottomSheetProps & {
+  stackBehavior?: 'push' | 'switch' | 'replace';
+};
 
 type NativeWindProps = {
   className?: string;
@@ -54,81 +44,50 @@ export interface AppBottomSheetProps {
   isScrollable?: boolean;
   renderTrigger?: (params: { onPress: () => void }) => ReactNode;
   content: ReactElement | ReactNode;
-  isBackdropDisabled?: boolean;
   isModal?: boolean;
   withoutKeyboardExtraPadding?: boolean;
   bottomSheetHandleOptions?: ViewProps;
   className?: string;
   onOpen?: () => void;
   withoutBackground?: boolean;
-  onBackdropPress?: () => void;
+  stackBehavior?: BottomSheetModalProps['stackBehavior'];
 }
 
 export interface AppBottomSheetNonModalProps extends SetOptional<BottomSheetProps, 'snapPoints' | 'children'> {
   isModal?: false;
-  ref?: Ref<BottomSheet>;
+  ref?: Ref<BottomSheetMethods>;
 }
 
 export interface AppBottomSheetModalProps extends SetOptional<BottomSheetModalProps, 'snapPoints' | 'children'> {
   isModal: true;
-  ref?: Ref<BottomSheetModal>;
+  ref?: Ref<BottomSheetMethods>;
 }
 
 export type AppBottomSheetPropsType = AppBottomSheetProps & (AppBottomSheetNonModalProps | AppBottomSheetModalProps);
 
 export function AppBottomSheet({
   style: elementStyle,
+  initialSnapPoints,
   snapPoints,
   children,
   isScrollable,
   renderTrigger,
   content,
-  isBackdropDisabled,
   isModal = true,
-  withoutKeyboardExtraPadding,
-  bottomSheetHandleOptions,
   className,
   ref,
   onOpen,
   withoutBackground,
-  onBackdropPress,
+  onChange,
+  onClose,
+  onDismiss,
+  stackBehavior: _stackBehavior,
   ...restProps
 }: AppBottomSheetPropsType): ReactElement {
-  const { top } = useSafeAreaInsets();
   const bottomInset = useBottomInset();
-  const { keyboardShown } = useKeyboard();
-  const elementRef = useRef<BottomSheetModal>(null);
+  const elementRef = useRef<BottomSheetMethods>(null);
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
-
-  const opacity = useSharedValue(0);
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: opacity.value,
-  }));
-
-  const handleBackdropPress = (): void => {
-    onBackdropPress?.();
-    elementRef.current?.close();
-  };
-
-  const renderBackdrop = useCallback(
-    () =>
-      isBackdropDisabled ? null : (
-        <TouchableWithoutFeedback onPress={handleBackdropPress}>
-          <Animated.View style={[StyleSheet.absoluteFill, animatedStyle, { backgroundColor: 'black' }]} />
-        </TouchableWithoutFeedback>
-      ),
-    [isBackdropDisabled, animatedStyle],
-  );
-
-  const renderBackground = useCallback(
-    ({ style }: BottomSheetBackgroundProps) => (
-      <View
-        style={style}
-        className={cn('bg-background-primary rounded-5xl overflow-hidden', withoutBackground && 'bg-transparent')}
-      />
-    ),
-    [withoutBackground],
-  );
+  const resolvedSnapPoints = snapPoints ?? initialSnapPoints;
 
   const renderedContent = isScrollable ? (
     <View className='flex-1 px-content-offset pt-content-offset'>{content}</View>
@@ -146,30 +105,22 @@ export function AppBottomSheet({
   );
 
   const handleChange = (index: number): void => {
+    onChange?.(index);
+
     if (index !== -1) {
       onOpen?.();
 
       return setIsSheetOpen(true);
     }
+
+    onClose?.();
+    onDismiss?.();
+
     setIsSheetOpen(false);
     delay(() => uiState$.isBottomSheetInputFocused.set(false), 500);
   };
 
-  const handleAnimate = (fromIndex: number, toIndex: number, fromPosition: number, toPosition: number): void => {
-    if (keyboardShown && fromIndex !== 0) {
-      Keyboard.dismiss();
-    }
-
-    if (fromIndex < 0) {
-      opacity.value = withTiming(0.2, { duration: 200 });
-    }
-
-    if (toPosition === screenHeight - top) {
-      opacity.value = withTiming(0, { duration: 200 });
-    }
-  };
-
-  useImperativeHandle(ref, () => elementRef.current as BottomSheetModal);
+  useImperativeHandle(ref, () => elementRef.current as BottomSheetMethods);
 
   useBackHandler(() => {
     if (isSheetOpen && elementRef.current) {
@@ -187,17 +138,13 @@ export function AppBottomSheet({
     <Fragment>
       {renderedTrigger && renderedTrigger}
       <Component
-        topInset={top || 50}
-        backgroundComponent={renderBackground}
-        backgroundClassName='rounded-5xl'
         onChange={handleChange}
+        backgroundClassName={cn('bg-background-primary', withoutBackground && 'bg-transparent')}
         className={cn('rounded-5xl overflow-hidden', className)}
         enableDynamicSizing={!isScrollable}
-        onAnimate={handleAnimate}
-        snapPoints={snapPoints}
+        snapPoints={resolvedSnapPoints}
         handleComponent={() => null}
         ref={elementRef}
-        backdropComponent={renderBackdrop}
         enablePanDownToClose={true}
         {...restProps}>
         {renderedContent}
