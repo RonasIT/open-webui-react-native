@@ -12,7 +12,7 @@ import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 import { ChatGenerationOption } from '@open-webui-react-native/shared/data-access/api';
 import { webSocketState$ } from '@open-webui-react-native/shared/data-access/websocket';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
-import { SearchFolderView, SearchModelView } from './components';
+import { ExpoUiControlsPreview, SearchFolderView, SearchModelView } from './components';
 
 interface CreateChatProps {
   onChatCreated: (id: string) => void;
@@ -97,6 +97,7 @@ export function CreateChat({
         onChatCreated={onChatCreated}
         modelId={modelId}
       />
+      <ExpoUiControlsPreview />
     </View>
   );
 }
