@@ -77,6 +77,7 @@
       "TEXT_RENAME": "Rename",
       "TEXT_CLONE": "Clone",
       "TEXT_ARCHIVE": "Archive",
+      "TEXT_RESTORE": "Restore",
       "TEXT_SHARE": "Share",
       "TEXT_DOWNLOAD": "Download",
       "TEXT_DELETE": "Delete",
