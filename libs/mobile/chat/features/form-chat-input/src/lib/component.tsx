@@ -43,6 +43,7 @@ interface FormChatInputProps<T extends FieldValues> extends AppInputProps {
   isLoading?: boolean;
   isSuggestionShown?: boolean;
   isResponseGenerating?: boolean;
+  inputRerenderKey?: number;
 }
 
 export interface FormChatInputSchema {
@@ -65,6 +66,7 @@ export function FormChatInput<T extends FieldValues>({
   isLoading,
   isSuggestionShown,
   isResponseGenerating,
+  inputRerenderKey,
   ...restProps
 }: FormChatInputProps<T>): ReactElement {
   const translate = useTranslation('CHAT.FORM_CHAT_INPUT');
@@ -150,6 +152,7 @@ export function FormChatInput<T extends FieldValues>({
         />
       ) : (
         <AppTextInput
+          key={inputRerenderKey}
           value={field.value}
           onChangeText={field.onChange}
           onBlur={field.onBlur}
