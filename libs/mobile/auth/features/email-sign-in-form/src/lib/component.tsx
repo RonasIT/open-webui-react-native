@@ -1,8 +1,8 @@
+import { type TextInputRef } from '@expo/ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { TextInput } from 'react-native';
 import { AppButton, View, FormFloatedLabelInput } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 import { appConfigurationApi, authApi, Provider } from '@open-webui-react-native/shared/data-access/api';
@@ -21,8 +21,8 @@ interface EmailSignInFormProps {
 
 export function EmailSignInForm({ onSuccess, setOauthProviders }: EmailSignInFormProps): ReactElement {
   const translate = useTranslation('AUTH.SIGN_IN.EMAIL_FORM');
-  const emailRef = useRef<TextInput>(null);
-  const passwordRef = useRef<TextInput>(null);
+  const emailRef = useRef<TextInputRef>(null);
+  const passwordRef = useRef<TextInputRef>(null);
   const isApiUrlFeatureEnabled = isFeatureEnabled(FeatureID.API_URL);
 
   const { query, setQuery, debouncedQuery } = useDebouncedQuery({ initialValue: appStorageService.apiUrl.get() });

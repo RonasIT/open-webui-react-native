@@ -1,13 +1,13 @@
+import { type TextInputRef } from '@expo/ui';
 import { ReactElement } from 'react';
 import { Control, FieldValues, Path, useController } from 'react-hook-form';
-import { TextInput } from 'react-native';
 
 import { FloatedLabelInput, FloatedLabelInputProps } from '../floated-label-input';
 
 export interface FormFloatedLabelInputProps<T extends FieldValues> extends FloatedLabelInputProps {
   name: Path<T>;
   control: Control<T>;
-  inputRef?: React.Ref<TextInput>;
+  inputRef?: React.Ref<TextInputRef>;
 }
 
 export function FormFloatedLabelInput<T extends FieldValues>({

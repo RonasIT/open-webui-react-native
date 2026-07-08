@@ -1,10 +1,22 @@
+import {
+  Host,
+  TextInput as ExpoTextInput,
+  type TextInputProps as ExpoTextInputProps,
+  type TextInputRef as ExpoTextInputRef,
+  useNativeState,
+} from '@expo/ui';
+import { cssInterop } from 'nativewind';
 import { ReactElement, Ref, useState, useEffect } from 'react';
-import { Platform, TextInput, TextInputProps } from 'react-native';
+import { StyleSheet as RNStyleSheet, TextInputProps } from 'react-native';
 import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { cn, colors } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { IconButton } from '../icon-button';
 import { AppText } from '../text';
 import { AnimatedView, View } from '../view';
+
+const CustomizedExpoTextInput = cssInterop(ExpoTextInput, {
+  className: 'textStyle',
+}) as (props: ExpoTextInputProps & { className?: string }) => ReactElement;
 
 export type FloatedLabelInputProps = {
   label?: string;
@@ -15,7 +27,7 @@ export type FloatedLabelInputProps = {
   className?: string;
   textClassName?: string;
   accessoryRight?: ReactElement;
-  ref?: Ref<TextInput>;
+  ref?: Ref<ExpoTextInputRef>;
 } & TextInputProps;
 
 const baseClasses = {
@@ -24,9 +36,31 @@ const baseClasses = {
   textClasses: 'text-md-sm sm:text-md text-text-primary self-end p-[0px]',
 };
 
+const styles = RNStyleSheet.create({
+  expoInputHost: {
+    flex: 1,
+  },
+  expoInput: {
+    flex: 1,
+    borderWidth: 0,
+    padding: 0,
+    backgroundColor: 'transparent',
+  },
+  expoInputText: {
+    color: colors.textPrimary,
+    fontFamily: 'Inter',
+    fontSize: 14,
+    lineHeight: 21,
+  },
+});
+
 export const FloatedLabelInput = ({
   label,
   value,
+  defaultValue,
+  style,
+  cursorColor,
+  pointerEvents,
   placeholder,
   error,
   helperText,
@@ -40,7 +74,8 @@ export const FloatedLabelInput = ({
   onBlur,
   ...inputProps
 }: FloatedLabelInputProps): ReactElement => {
-  const isIos = Platform.OS === 'ios';
+  const inputValue = useNativeState(value ?? defaultValue ?? '');
+  const inputStyle = RNStyleSheet.flatten(style);
 
   const labelTop = useSharedValue(16);
   const labelLeft = useSharedValue(0);
@@ -50,6 +85,12 @@ export const FloatedLabelInput = ({
   const [isFocused, setIsFocused] = useState(false);
 
   const isLabelFloated = (isFocused || !!value) && !!label;
+
+  useEffect(() => {
+    if (value !== undefined && inputValue.value !== value) {
+      inputValue.value = value;
+    }
+  }, [value, inputValue]);
 
   const labelAnimatedStyle = useAnimatedStyle(() => ({
     top: labelTop.value,
@@ -63,21 +104,21 @@ export const FloatedLabelInput = ({
     accessoryRight
   );
 
-  const handleFocus: TextInputProps['onFocus'] = (e): void => {
+  const handleFocus: ExpoTextInputProps['onFocus'] = (): void => {
     setIsFocused(true);
-    onFocus?.(e);
+    (onFocus as ExpoTextInputProps['onFocus'])?.();
   };
 
-  const handleBlur: TextInputProps['onBlur'] = (e): void => {
+  const handleBlur: ExpoTextInputProps['onBlur'] = (): void => {
     setIsFocused(false);
-    onBlur?.(e);
+    (onBlur as ExpoTextInputProps['onBlur'])?.();
   };
 
   useEffect(() => {
     labelTop.value = withTiming(isLabelFloated ? 4 : 16, { duration: 180 });
     labelLeft.value = withTiming(isLabelFloated ? 4 : 0, { duration: 180 });
     labelScale.value = withTiming(isLabelFloated ? 0.8 : 1, { duration: 180 });
-  }, [isLabelFloated]);
+  }, [isLabelFloated, labelLeft, labelScale, labelTop]);
 
   return (
     <View className='gap-4'>
@@ -101,24 +142,32 @@ export const FloatedLabelInput = ({
           disabled && 'bg-background-tertiary',
           className,
         )}>
-        <TextInput
-          ref={ref}
-          value={value}
-          className={cn(
-            baseClasses.textClasses,
-            'flex-1 font-inter',
-            isIos && '!leading-[0]',
-            disabled && 'text-text-tertiary',
-            textClassName,
-          )}
-          editable={!disabled}
-          secureTextEntry={secured && isPassword}
-          placeholder={isLabelFloated ? placeholder : undefined}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
+        <Host
+          matchContents={{ vertical: true }}
+          style={styles.expoInputHost}
           hitSlop={{ top: 40 }}
-          {...inputProps}
-        />
+          pointerEvents={pointerEvents}>
+          <CustomizedExpoTextInput
+            {...(inputProps as ExpoTextInputProps)}
+            ref={ref}
+            value={inputValue}
+            className={cn(
+              baseClasses.textClasses,
+              'flex-1 font-inter',
+              disabled && 'text-text-tertiary',
+              textClassName,
+            )}
+            editable={!disabled}
+            secureTextEntry={secured && isPassword}
+            placeholder={isLabelFloated ? placeholder : undefined}
+            placeholderTextColor={colors.textSecondary}
+            cursorColor={cursorColor ?? undefined}
+            style={{ ...styles.expoInput, ...inputStyle } as ExpoTextInputProps['style']}
+            textStyle={styles.expoInputText as ExpoTextInputProps['textStyle']}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
+        </Host>
         {accessoryRightComponent}
       </View>
       {(error || helperText) && (

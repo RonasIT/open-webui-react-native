@@ -1,10 +1,10 @@
+import { type TextInputRef } from '@expo/ui';
 import { BottomSheetModal } from '@expo/ui/community/bottom-sheet';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { TextInput } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   SelectKnowledgeSheet,
@@ -51,7 +51,7 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
   const translate = useTranslation('FOLDER.UPSERT_FOLDER_SHEET');
   const { bottom } = useSafeAreaInsets();
   const sheetRef = useRef<BottomSheetModal>(null);
-  const nameInputRef = useRef<TextInput>(null);
+  const nameInputRef = useRef<TextInputRef>(null);
   const selectKnowledgeSheetRef = useRef<SelectKnowledgeSheetMethods>(null);
 
   const [folderId, setFolderId] = useState<string | null>(null);
