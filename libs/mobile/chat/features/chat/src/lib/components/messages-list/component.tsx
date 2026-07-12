@@ -4,6 +4,7 @@ import { delay } from 'lodash-es';
 import React, { ReactElement, useCallback, useRef } from 'react';
 import { GestureResponderEvent, NativeScrollEvent, NativeSyntheticEvent, ScrollViewProps } from 'react-native';
 import { useSharedValue, withTiming } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AiMessageActions } from '@open-webui-react-native/mobile/chat/features/ai-message-actions';
 import { useManageMessageSiblings } from '@open-webui-react-native/mobile/chat/features/use-manage-messages-siblings';
 import { UserMessageActions } from '@open-webui-react-native/mobile/chat/features/user-message-actions';
@@ -64,6 +65,8 @@ export default function ChatMessagesList({
   const previousScrollY = useRef(0);
   const shouldAutoscrollToBottomRef = useRef(true);
   const previousTouchY = useRef(0);
+
+  const { bottom } = useSafeAreaInsets();
 
   const { showPreviousSibling, showNextSibling, getSiblingsInfo } = useManageMessageSiblings(chatId, history);
   const { mutate: completeChat } = chatApi.useCompleteChat();
@@ -259,7 +262,8 @@ export default function ChatMessagesList({
     <View className='relative flex-1'>
       <AppFlashList<Message>
         ref={listRef}
-        contentContainerClassName='pb-[135] px-16'
+        contentContainerClassName='px-16'
+        contentContainerStyle={{ paddingBottom: bottom + 120 }}
         showsVerticalScrollIndicator={false}
         drawDistance={1500} //NOTE: Needs to avoid image jumping (while rerendering) when scrolling
         keyExtractor={(item) => item.id}
