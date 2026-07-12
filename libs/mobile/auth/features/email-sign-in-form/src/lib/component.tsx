@@ -16,10 +16,11 @@ import { EmailFormSchema } from './forms';
 
 interface EmailSignInFormProps {
   onSuccess: () => void;
+  onApiUrlChange?: (url: string) => void;
   setOauthProviders: (providers: Array<Provider>) => void;
 }
 
-export function EmailSignInForm({ onSuccess, setOauthProviders }: EmailSignInFormProps): ReactElement {
+export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }: EmailSignInFormProps): ReactElement {
   const translate = useTranslation('AUTH.SIGN_IN.EMAIL_FORM');
   const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
@@ -59,6 +60,7 @@ export function EmailSignInForm({ onSuccess, setOauthProviders }: EmailSignInFor
 
   useEffect(() => {
     setValue('url', query, { shouldValidate: true });
+    onApiUrlChange?.(query);
     setOauthProviders([]);
   }, [query]);
 

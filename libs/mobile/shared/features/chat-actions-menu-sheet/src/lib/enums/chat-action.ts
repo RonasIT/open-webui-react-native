@@ -4,6 +4,7 @@ export enum ChatAction {
   RENAME = 'rename',
   CLONE = 'clone',
   ARCHIVE = 'archive',
+  RESTORE = 'restore',
   DELETE = 'delete',
   CLOSE = 'close',
 }

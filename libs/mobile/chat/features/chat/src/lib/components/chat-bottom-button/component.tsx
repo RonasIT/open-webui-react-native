@@ -14,7 +14,7 @@ export default function ChatBottomButton({ isVisible, onPress }: ChatBottomButto
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [
-      { translateY: keyboardHeight.value ? keyboardHeight.value + 15 : 0 },
+      { translateY: keyboardHeight.value ? keyboardHeight.value + 4 : -15 },
       { scale: interpolate(isVisible.value, [0, 1], [0, 1]) },
     ],
   }));
