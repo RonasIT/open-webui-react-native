@@ -68,6 +68,9 @@
         "libs/mobile/chat/features/form-chat-input/src/index.ts"
       ],
       "@open-webui-react-native/mobile/chat/features/menu-list": ["libs/mobile/chat/features/menu-list/src/index.ts"],
+      "@open-webui-react-native/mobile/chat/features/markdown-benchmark": [
+        "libs/mobile/chat/features/markdown-benchmark/src/index.ts"
+      ],
       "@open-webui-react-native/mobile/chat/features/message-version-controls": [
         "libs/mobile/chat/features/message-version-controls/src/index.ts"
       ],

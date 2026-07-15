@@ -5,7 +5,14 @@ import React, { PropsWithChildren, ReactElement, ReactNode, useCallback, useEffe
 import { Linking } from 'react-native';
 import FitImage from 'react-native-fit-image';
 import Markdown, { ASTNode, MarkdownProps, RenderRules } from 'react-native-markdown-display';
-import { MarkdownStream, useMarkdownSession } from 'react-native-nitro-markdown';
+import {
+  CodeBlock as NitroCodeBlock,
+  MarkdownStream,
+  useMarkdownSession,
+  Markdown as NitroMarkdown,
+  MarkdownRenderers,
+  CodeBlockRendererProps,
+} from 'react-native-nitro-markdown';
 import { CitationPrefix } from '@open-webui-react-native/mobile/chat/features/use-citations';
 import { CodeBlock } from '@open-webui-react-native/mobile/shared/ui/code-block';
 import { colors, createStyles, useColorScheme, rem } from '@open-webui-react-native/mobile/shared/ui/styles';
@@ -29,7 +36,7 @@ const markdownItInstance = markdownIt().use(markdownItMath, {
   inlineAllowWhiteSpacePadding: true,
 });
 
-export type MarkdownEngine = 'nitro' | 'it';
+export type MarkdownEngine = 'nitro-stream' | 'nitro' | 'it';
 
 interface AppMarkdownViewProps extends PropsWithChildren<MarkdownProps> {
   codeBlockWidth?: number;
@@ -230,13 +237,27 @@ export function AppMarkdownView({
     };
   }, [fence, onCitationPress, isContentReady, renderTable]);
 
+  // NOTE: Nitro implementation
+
+  const renderers: MarkdownRenderers = {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    code_block({ content, language }: CodeBlockRendererProps) {
+      return (
+        <View className='rounded-lg overflow-hidden my-4 p-12 pt-4 bg-background-tertiary'>
+          <AppText className='text-sm-sm sm:text-sm'>Copy</AppText>
+          <NitroCodeBlock content={content} language={language} />
+        </View>
+      );
+    },
+  };
+
   const session = useMarkdownSession();
 
   useEffect(() => {
     session.reset(children as string);
   }, [session, children]);
 
-  if (markdownEngine === 'nitro') {
+  if (markdownEngine === 'nitro-stream') {
     return (
       <MarkdownStream
         session={session}
@@ -245,6 +266,17 @@ export function AppMarkdownView({
         options={{ gfm: true, math: true, html: true }}
         highlightCode={true}
       />
+    );
+  }
+
+  if (markdownEngine === 'nitro') {
+    return (
+      <NitroMarkdown
+        options={{ gfm: true, math: true, html: true }}
+        highlightCode={true}
+        renderers={renderers}>
+        {children as string}
+      </NitroMarkdown>
     );
   }
 

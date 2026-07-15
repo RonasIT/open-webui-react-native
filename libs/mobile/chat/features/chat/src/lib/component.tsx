@@ -7,6 +7,10 @@ import { useForm } from 'react-hook-form';
 import { InteractionManager } from 'react-native';
 import { EditMessageInput } from '@open-webui-react-native/mobile/chat/features/edit-message-input';
 import { FormChatInput, FormChatInputSchema } from '@open-webui-react-native/mobile/chat/features/form-chat-input';
+import {
+  MarkdownBenchmarkPanel,
+  MarkdownBenchmarkProvider,
+} from '@open-webui-react-native/mobile/chat/features/markdown-benchmark';
 import { SuggestChangeInput } from '@open-webui-react-native/mobile/chat/features/suggest-change-input';
 import { useEditMessage } from '@open-webui-react-native/mobile/chat/features/use-edit-message';
 import { useSendMessage } from '@open-webui-react-native/mobile/chat/features/use-send-message';
@@ -193,75 +197,78 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   }, [isNewChat, isSuccess, chatId]);
 
   return (
-    <Fragment>
-      {shouldHideContent && (
-        <View className='absolute w-full h-full z-50 bg-background-primary items-center justify-center'>
-          <AppSpinner />
-        </View>
-      )}
-      {/* NOTE: Needs hide heavy component until navigation transition is finished, otherwise it slows down the navigation */}
+    <MarkdownBenchmarkProvider>
+      <Fragment>
+        {shouldHideContent && (
+          <View className='absolute w-full h-full z-50 bg-background-primary items-center justify-center'>
+            <AppSpinner />
+          </View>
+        )}
+        {/* NOTE: Needs hide heavy component until navigation transition is finished, otherwise it slows down the navigation */}
 
-      {isChatVisible && (
-        <React.Suspense fallback={null}>
-          <LazyChatMessagesList
-            onEditPress={handleStartEditing}
-            onSuggestPress={handleStartSuggesting}
-            onTryAgain={handleTryAgain}
-            onAddDetails={handleAddDetails}
-            onMoreConcise={handleMoreConcise}
-            chatId={chatId}
-            isInputFocusing={isInputFocusing}
-            messages={chat?.chat.messages ?? []}
-            history={history}
-            onLayout={handleChatMessagesListLayout}
-            isMessagesListLoaded={isMessagesListLoaded}
-            editingMessageId={editingMessageId}
-            onFollowUpPress={handleFollowUpPress}
-            isResponseGenerating={isResponseGenerating}
-          />
-        </React.Suspense>
-      )}
-      <AppKeyboardStickyView className='bg-background-primary-transparent'>
-        <View className={cn('pt-8 px-16', shouldHideContent && 'opacity-0')}>
-          {activeInputMode === ActiveInputMode.EDIT && editingMessageId ? (
-            <EditMessageInput
-              control={editMessageControl}
-              name='editMessageInputValue'
-              autoFocus={true}
-              onSave={saveMessage}
-              onCancel={cancelEditingWrapper}
-              onSend={sendEditedMessage}
-              isAiMessage={history?.messages[editingMessageId]?.role === Role.ASSISTANT}
-            />
-          ) : activeInputMode === ActiveInputMode.SUGGEST && suggestingMessageId ? (
-            <SuggestChangeInput
-              control={suggestMessageControl}
-              name='suggestionInputValue'
-              autoFocus
-              onCancel={cancelSuggestingWrapper}
-              onSend={submitSuggestion}
-            />
-          ) : (
-            <FormChatInput
-              placeholder={translate('TEXT_INPUT_PLACEHOLDER')}
-              control={control}
-              onFocus={handleInputFocus}
-              name='inputValue'
-              onSubmit={onSubmit}
-              isLoading={isSending || !isSocketConnected || isResponseGenerating}
-              attachedFiles={attachedFiles}
-              onFileUploaded={handleFileUploaded}
-              onDeleteFilePress={handleDeleteFile}
-              attachedImages={attachedImages}
-              onImageUploaded={handleImageUploaded}
-              onDeleteImagePress={handleDeleteImage}
-              modelId={selectedModelId}
+        {isChatVisible && (
+          <React.Suspense fallback={null}>
+            <LazyChatMessagesList
+              onEditPress={handleStartEditing}
+              onSuggestPress={handleStartSuggesting}
+              onTryAgain={handleTryAgain}
+              onAddDetails={handleAddDetails}
+              onMoreConcise={handleMoreConcise}
+              chatId={chatId}
+              isInputFocusing={isInputFocusing}
+              messages={chat?.chat.messages ?? []}
+              history={history}
+              onLayout={handleChatMessagesListLayout}
+              isMessagesListLoaded={isMessagesListLoaded}
+              editingMessageId={editingMessageId}
+              onFollowUpPress={handleFollowUpPress}
               isResponseGenerating={isResponseGenerating}
-              chat={chat}
             />
-          )}
-        </View>
-      </AppKeyboardStickyView>
-    </Fragment>
+          </React.Suspense>
+        )}
+        <MarkdownBenchmarkPanel />
+        <AppKeyboardStickyView className='bg-background-primary-transparent'>
+          <View className={cn('pt-8 px-16', shouldHideContent && 'opacity-0')}>
+            {activeInputMode === ActiveInputMode.EDIT && editingMessageId ? (
+              <EditMessageInput
+                control={editMessageControl}
+                name='editMessageInputValue'
+                autoFocus={true}
+                onSave={saveMessage}
+                onCancel={cancelEditingWrapper}
+                onSend={sendEditedMessage}
+                isAiMessage={history?.messages[editingMessageId]?.role === Role.ASSISTANT}
+              />
+            ) : activeInputMode === ActiveInputMode.SUGGEST && suggestingMessageId ? (
+              <SuggestChangeInput
+                control={suggestMessageControl}
+                name='suggestionInputValue'
+                autoFocus
+                onCancel={cancelSuggestingWrapper}
+                onSend={submitSuggestion}
+              />
+            ) : (
+              <FormChatInput
+                placeholder={translate('TEXT_INPUT_PLACEHOLDER')}
+                control={control}
+                onFocus={handleInputFocus}
+                name='inputValue'
+                onSubmit={onSubmit}
+                isLoading={isSending || !isSocketConnected || isResponseGenerating}
+                attachedFiles={attachedFiles}
+                onFileUploaded={handleFileUploaded}
+                onDeleteFilePress={handleDeleteFile}
+                attachedImages={attachedImages}
+                onImageUploaded={handleImageUploaded}
+                onDeleteImagePress={handleDeleteImage}
+                modelId={selectedModelId}
+                isResponseGenerating={isResponseGenerating}
+                chat={chat}
+              />
+            )}
+          </View>
+        </AppKeyboardStickyView>
+      </Fragment>
+    </MarkdownBenchmarkProvider>
   );
 }

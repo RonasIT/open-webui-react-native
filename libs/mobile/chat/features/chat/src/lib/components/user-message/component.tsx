@@ -1,6 +1,7 @@
 import { ReactElement, useMemo } from 'react';
 import { LayoutChangeEvent } from 'react-native';
 import { AttachedFileItem } from '@open-webui-react-native/mobile/chat/features/attached-file-item';
+import { useMarkdownBenchmark } from '@open-webui-react-native/mobile/chat/features/markdown-benchmark';
 import { MessageVersionControls } from '@open-webui-react-native/mobile/chat/features/message-version-controls';
 import { UseSiblingMessagesReturn } from '@open-webui-react-native/mobile/chat/features/use-manage-messages-siblings';
 import {
@@ -51,6 +52,7 @@ function ChatUserMessageComponent({
 
   const { handleImagePress, handleAllPhotosPress, selectedImageIndex, isPreviewVisible, handleCloseImagePress } =
     useImagePreview();
+  const { markdownEngine } = useMarkdownBenchmark();
 
   return (
     <View className='gap-4'>
@@ -73,7 +75,10 @@ function ChatUserMessageComponent({
         <View className='flex-row-reverse' onLayout={onLayoutChange}>
           {!!text && (
             <View className={cn('bg-background-secondary px-12 py-8 rounded-xl max-w-[90%]', className)}>
-              <AppMarkdownView textColor={isEditing ? colors.brandPrimary : undefined} codeBlockWidth={codeBlockWidth}>
+              <AppMarkdownView
+                markdownEngine={markdownEngine}
+                textColor={isEditing ? colors.brandPrimary : undefined}
+                codeBlockWidth={codeBlockWidth}>
                 {text}
               </AppMarkdownView>
             </View>
