@@ -1,10 +1,11 @@
 import markdownIt from 'markdown-it';
 import markdownItMath from 'markdown-it-math/no-default-renderer';
 import { colorScheme } from 'nativewind';
-import React, { PropsWithChildren, ReactElement, ReactNode, useCallback, useMemo } from 'react';
+import React, { PropsWithChildren, ReactElement, ReactNode, useCallback, useEffect, useMemo } from 'react';
 import { Linking } from 'react-native';
 import FitImage from 'react-native-fit-image';
 import Markdown, { ASTNode, MarkdownProps, RenderRules } from 'react-native-markdown-display';
+import { MarkdownStream, useMarkdownSession } from 'react-native-nitro-markdown';
 import { CitationPrefix } from '@open-webui-react-native/mobile/chat/features/use-citations';
 import { CodeBlock } from '@open-webui-react-native/mobile/shared/ui/code-block';
 import { colors, createStyles, useColorScheme, rem } from '@open-webui-react-native/mobile/shared/ui/styles';
@@ -28,11 +29,14 @@ const markdownItInstance = markdownIt().use(markdownItMath, {
   inlineAllowWhiteSpacePadding: true,
 });
 
+export type MarkdownEngine = 'nitro' | 'it';
+
 interface AppMarkdownViewProps extends PropsWithChildren<MarkdownProps> {
   codeBlockWidth?: number;
   onCitationPress?: (index: string) => void;
   isContentReady?: boolean;
   textColor?: string;
+  markdownEngine?: MarkdownEngine;
 }
 
 export function AppMarkdownView({
@@ -40,6 +44,7 @@ export function AppMarkdownView({
   onCitationPress,
   isContentReady,
   textColor: elementTextColor,
+  markdownEngine = 'nitro',
   children,
 }: AppMarkdownViewProps): ReactElement {
   const { isDarkColorScheme } = useColorScheme();
@@ -224,6 +229,24 @@ export function AppMarkdownView({
       },
     };
   }, [fence, onCitationPress, isContentReady, renderTable]);
+
+  const session = useMarkdownSession();
+
+  useEffect(() => {
+    session.reset(children as string);
+  }, [session, children]);
+
+  if (markdownEngine === 'nitro') {
+    return (
+      <MarkdownStream
+        session={session}
+        updateStrategy='raf'
+        incrementalParsing
+        options={{ gfm: true, math: true, html: true }}
+        highlightCode={true}
+      />
+    );
+  }
 
   return (
     <Markdown

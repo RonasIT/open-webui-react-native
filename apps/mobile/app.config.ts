@@ -118,6 +118,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
             },
           },
           ios: {
+            deploymentTarget: '16.4',
             useFrameworks: 'static',
           },
         },
