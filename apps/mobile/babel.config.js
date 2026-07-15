@@ -22,6 +22,20 @@ module.exports = function (api) {
           },
         },
       ],
+      [
+        'react-native-boost/plugin',
+        {
+          verbose: false,
+          silent: true,
+          unistyles: false,
+          ignores: ['node_modules/**', '../../node_modules/**'],
+          optimizations: {
+            text: true,
+            view: true,
+            image: false,
+          },
+        },
+      ],
       'react-native-worklets/plugin',
     ],
     overrides: [

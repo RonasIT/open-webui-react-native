@@ -67,6 +67,7 @@
     "react": "19.2.3",
     "react-hook-form": "^7.57.0",
     "react-native": "0.85.3",
+    "react-native-boost": "^1.6.0",
     "react-native-compressor": "^1.12.0",
     "react-native-extended-stylesheet": "^0.12.0",
     "react-native-gesture-handler": "~2.31.1",

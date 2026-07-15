@@ -22,13 +22,18 @@ import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client
 import Constants from 'expo-constants';
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack, useNavigationContainerRef } from 'expo-router';
+import { cssInterop } from 'nativewind';
 import { ReactElement, useEffect } from 'react';
+import { NativeText, NativeView } from 'react-native-boost/runtime';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import '../global.css';
 import 'reflect-metadata';
 import 'expo-dev-client';
+
+cssInterop(NativeText, { className: 'style' });
+cssInterop(NativeView, { className: 'style' });
 
 export { ErrorBoundary } from 'expo-router';
 
