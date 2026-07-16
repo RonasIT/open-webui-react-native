@@ -8,5 +8,8 @@ export class KnowledgeCollectionItem extends Knowledge {
 
   constructor(data: Partial<KnowledgeCollectionItem> = {}) {
     super(data);
+    // Must be assigned in the constructor body: babel emits the bare field declaration
+    // as defineProperty(this, 'type', undefined) which runs after super() and wipes it
+    this.type = FileType.COLLECTION;
   }
 }
