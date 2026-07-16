@@ -1,4 +1,4 @@
-const { getDefaultConfig } = require('@expo/metro-config');
+const { getSentryExpoConfig } = require('@sentry/react-native/metro');
 const { withNativeWind } = require('nativewind/metro');
 const { withNxMetro } = require('@nx/expo');
 const { mergeConfig } = require('metro-config');
@@ -6,7 +6,7 @@ const path = require('path');
 
 const appRoot = __dirname;
 const monorepoRoot = path.resolve(appRoot, '../..');
-const defaultConfig = getDefaultConfig(appRoot);
+const defaultConfig = getSentryExpoConfig(appRoot);
 const { assetExts, sourceExts } = defaultConfig.resolver;
 /**
  * Metro configuration
@@ -40,4 +40,12 @@ module.exports = withNxMetro(mergeConfig(defaultConfig, customConfig), {
   extensions: [],
   // Specify folders to watch, in addition to Nx defaults (workspace libraries and node_modules)
   watchFolders: [monorepoRoot],
-}).then((config) => withNativeWind(config, { input: './global.css', inlineRem: 16 }));
+}).then((config) => {
+  // withNxMetro narrows resolver.nodeModulesPaths to the workspace root only. Re-add Expo's
+  // defaults (app-level + root node_modules) so module resolution and expo-doctor stay happy.
+  config.resolver.nodeModulesPaths = Array.from(
+    new Set([...(defaultConfig.resolver.nodeModulesPaths ?? []), ...(config.resolver.nodeModulesPaths ?? [])]),
+  );
+
+  return withNativeWind(config, { input: './global.css', inlineRem: 16 });
+});

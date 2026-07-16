@@ -63,6 +63,7 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: Chat
   const { mutateAsync: pinChat, isPending: isPinning } = chatApi.usePinChat();
   const { mutateAsync: cloneChat, isPending: isCloning } = chatApi.useCloneChat();
   const { mutateAsync: archiveChat, isPending: isArchiving } = chatApi.useArchiveChat();
+  const { mutateAsync: unarchiveChat, isPending: isUnarchiving } = chatApi.useUnarchiveChat();
   const { data: folders } = foldersApi.useGetFolders();
 
   const [activeChat, setActiveChat] = useState<ChatListItem | null>(null);
@@ -93,6 +94,8 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: Chat
   const chatId = activeChat?.id ?? '';
   const chatTitle = activeChat?.title ?? '';
   const { data: chatFullData } = chatApi.useGet(chatId, { enabled: !!chatId });
+
+  const isArchived = chatFullData?.archived;
 
   const openCreateFolderModal = (): void => {
     upsertFolderSheetRef.current?.present();
@@ -125,6 +128,9 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: Chat
               break;
             case ChatAction.ARCHIVE:
               await archiveChatHandler();
+              break;
+            case ChatAction.RESTORE:
+              await restoreChatHandler();
               break;
             case ChatAction.DELETE:
               await onDeleteConfirm();
@@ -215,6 +221,11 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: Chat
     closeActionsModal();
   };
 
+  const restoreChatHandler = async (): Promise<void> => {
+    await unarchiveChat(chatId);
+    closeActionsModal();
+  };
+
   const onFolderSelectedHandler = async (id: string | null): Promise<void> => {
     await updateChatFolder({
       id: chatId,
@@ -244,10 +255,10 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: Chat
       onPress: () => handleAction(ChatAction.CLONE),
     },
     isFeatureEnabled(FeatureID.ARCHIVE_CHAT) && {
-      title: translate('TEXT_ARCHIVE'),
-      iconName: 'archive',
-      isLoading: isArchiving,
-      onPress: () => handleAction(ChatAction.ARCHIVE),
+      title: isArchived ? translate('TEXT_RESTORE') : translate('TEXT_ARCHIVE'),
+      iconName: isArchived ? 'unarchive' : 'archive',
+      isLoading: isArchived ? isUnarchiving : isArchiving,
+      onPress: () => handleAction(isArchived ? ChatAction.RESTORE : ChatAction.ARCHIVE),
     },
     { title: translate('TEXT_SHARE'), iconName: 'exportIcon', onPress: openShareChatModal },
     { title: translate('TEXT_DOWNLOAD'), iconName: 'download', onPress: openDownloadOptionsModal },

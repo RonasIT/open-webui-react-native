@@ -1,4 +1,5 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
+import { PermissionStatus } from 'expo';
 import * as FileSystem from 'expo-file-system/legacy';
 import * as MediaLibrary from 'expo-media-library';
 import { permissionAlertService } from '@open-webui-react-native/shared/utils/permission-alert';
@@ -7,7 +8,7 @@ export class MediaLibraryService {
   public async saveImage(source: string, authorizationToken?: string): Promise<string | void> {
     const { status } = await MediaLibrary.requestPermissionsAsync(true);
 
-    if (status === MediaLibrary.PermissionStatus.DENIED) {
+    if (status === PermissionStatus.DENIED) {
       permissionAlertService.showAlert(
         i18n.t('SHARED.MEDIA_LIBRARY_SERVICE.TEXT_SETTINGS'),
         i18n.t('SHARED.MEDIA_LIBRARY_SERVICE.TEXT_SETTINGS_MESSAGE'),

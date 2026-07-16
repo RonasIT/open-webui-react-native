@@ -114,7 +114,7 @@ export function AppBottomSheet({
     () =>
       isBackdropDisabled ? null : (
         <TouchableWithoutFeedback onPress={handleBackdropPress}>
-          <Animated.View style={[StyleSheet.absoluteFillObject, animatedStyle, { backgroundColor: 'black' }]} />
+          <Animated.View style={[StyleSheet.absoluteFill, animatedStyle, { backgroundColor: 'black' }]} />
         </TouchableWithoutFeedback>
       ),
     [isBackdropDisabled, animatedStyle],

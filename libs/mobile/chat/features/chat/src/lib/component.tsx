@@ -44,6 +44,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   const [isMessagesListLoaded, setIsMessagesListLoaded] = useState(false);
   const [isChatVisible, setIsChatVisible] = useState(false);
   const [activeInputMode, setActiveInputMode] = useState<ActiveInputMode | null>(null);
+  const [inputRerenderKey, setInputRerenderKey] = useState(0);
 
   const {
     attachedFiles,
@@ -164,6 +165,8 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
       sendMessage(inputValue, selectedModelId, options, attachedFiles.get(), attachedImages.get());
       reset();
       resetAttachments();
+      // NOTE: Forces input rerender to reset it to its initial height after submit
+      setInputRerenderKey((key) => key + 1);
     })();
 
   const handleFollowUpPress = (text: string): void => {
@@ -257,6 +260,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
               onDeleteImagePress={handleDeleteImage}
               modelId={selectedModelId}
               isResponseGenerating={isResponseGenerating}
+              inputRerenderKey={inputRerenderKey}
               chat={chat}
             />
           )}

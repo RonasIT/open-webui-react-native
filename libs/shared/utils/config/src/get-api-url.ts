@@ -1,4 +1,4 @@
-// eslint-disable-next-line @nx/enforce-module-boundaries
+ 
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { appEnv } from '@open-webui-react-native/shared/utils/app-env';
 
@@ -16,9 +16,22 @@ export const resolveApiUrl = (url: string): string => {
   return normalizeUrl(url) === normalizeUrl(testApiUrl) ? normalizeUrl(ronasApiUrl) : normalizeUrl(url);
 };
 
-export const getApiUrl = (): string => {
+export const isTestApiUrl = (url?: string): boolean =>
+  normalizeUrl(url ?? appStorageService.apiUrl.get()) === normalizeUrl(testApiUrl);
+
+export const getDisplayApiUrl = (): string => {
   const stored = normalizeUrl(appStorageService.apiUrl.get());
   const fallback = normalizeUrl(ronasApiUrl);
 
-  return resolveApiUrl(stored || fallback);
+  return stored || fallback;
 };
+
+export const getApiUrl = (): string => {
+  return resolveApiUrl(getDisplayApiUrl());
+};
+
+export const getHost = (url: string): string =>
+  url
+    .replace(/^https?:\/\//, '')
+    .split('/')[0]
+    .toLowerCase();

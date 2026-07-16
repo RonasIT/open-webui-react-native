@@ -1,11 +1,11 @@
-import CookieManager from '@react-native-cookies/cookies';
+import NitroCookies from 'react-native-nitro-cookies';
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 
 class CookieService {
   public async setToken(token: string): Promise<void> {
     const apiUrl = `${getApiUrl()}/api/`;
 
-    await CookieManager.set(apiUrl, {
+    await NitroCookies.set(apiUrl, {
       name: 'token',
       value: token,
       path: '/',
@@ -15,7 +15,7 @@ class CookieService {
   }
 
   public async clearAll(): Promise<void> {
-    await CookieManager.clearAll();
+    await NitroCookies.clearAll();
   }
 }
 

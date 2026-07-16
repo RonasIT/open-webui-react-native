@@ -24,5 +24,14 @@ module.exports = function (api) {
       ],
       'react-native-worklets/plugin',
     ],
+    overrides: [
+      {
+        test: (filename) => !!filename && /libs[\\/]shared[\\/]data-access[\\/]/.test(filename),
+        plugins: [
+          ['@babel/plugin-proposal-decorators', { legacy: true }],
+          ['@babel/plugin-transform-class-properties', { loose: true }],
+        ],
+      },
+    ],
   };
 };

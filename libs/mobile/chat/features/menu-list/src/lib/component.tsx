@@ -1,5 +1,5 @@
-import { useIsFocused } from '@react-navigation/native';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
+import { useIsFocused } from 'expo-router';
 import { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import {
   ChatActionsMenuSheet,

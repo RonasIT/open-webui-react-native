@@ -17,17 +17,30 @@ import { useNetworkConnection } from '@open-webui-react-native/shared/features/n
 import { constants } from '@open-webui-react-native/shared/utils/config';
 import { setupReactotron } from '@open-webui-react-native/shared/utils/reactotron';
 import { setLanguage } from '@ronas-it/react-native-common-modules/i18n';
+import * as Sentry from '@sentry/react-native';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import Constants from 'expo-constants';
 import { useFonts } from 'expo-font';
-import { SplashScreen, Stack } from 'expo-router';
+import { SplashScreen, Stack, useNavigationContainerRef } from 'expo-router';
 import { ReactElement, useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import '../global.css';
 import 'reflect-metadata';
 import 'expo-dev-client';
 
 export { ErrorBoundary } from 'expo-router';
+
+const reactNavigationIntegration = Sentry.reactNavigationIntegration();
+
+Sentry.init({
+  dsn: Constants.expoConfig?.extra?.sentry?.dsn,
+  environment: Constants.expoConfig?.extra?.env,
+  debug: false,
+  integrations: [reactNavigationIntegration],
+  enabled: !__DEV__,
+});
 
 const translations = {
   [constants.defaultLocale]: {
@@ -85,9 +98,16 @@ function App(): ReactElement | null {
   );
 }
 
-export default function RootLayout(): ReactElement | null {
+function RootLayout(): ReactElement | null {
   useLanguage(constants.defaultLocale);
   const [isFontsLoaded] = useFonts(fonts);
+  const navigationContainerRef = useNavigationContainerRef();
+
+  useEffect(() => {
+    if (navigationContainerRef) {
+      reactNavigationIntegration.registerNavigationContainer(navigationContainerRef);
+    }
+  }, [navigationContainerRef]);
 
   useEffect(() => {
     if (isFontsLoaded) {
@@ -100,24 +120,28 @@ export default function RootLayout(): ReactElement | null {
   }
 
   return (
-    <KeyboardProvider>
-      <GestureHandlerRootView>
-        <PersistQueryClientProvider
-          client={queryClient}
-          persistOptions={{
-            persister: queryPersister,
-            maxAge: persistStorageConfig.maxAge,
-            dehydrateOptions: {
-              shouldDehydrateQuery: (query) => query.meta?.persist !== false,
-            },
-          }}>
-          <ToastProvider>
-            <BottomSheetModalProvider>
-              <App />
-            </BottomSheetModalProvider>
-          </ToastProvider>
-        </PersistQueryClientProvider>
-      </GestureHandlerRootView>
-    </KeyboardProvider>
+    <SafeAreaProvider>
+      <KeyboardProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <PersistQueryClientProvider
+            client={queryClient}
+            persistOptions={{
+              persister: queryPersister,
+              maxAge: persistStorageConfig.maxAge,
+              dehydrateOptions: {
+                shouldDehydrateQuery: (query) => query.meta?.persist !== false,
+              },
+            }}>
+            <ToastProvider>
+              <BottomSheetModalProvider>
+                <App />
+              </BottomSheetModalProvider>
+            </ToastProvider>
+          </PersistQueryClientProvider>
+        </GestureHandlerRootView>
+      </KeyboardProvider>
+    </SafeAreaProvider>
   );
 }
+
+export default Sentry.wrap(RootLayout);

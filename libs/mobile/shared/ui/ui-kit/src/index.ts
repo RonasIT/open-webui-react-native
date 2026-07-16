@@ -31,7 +31,6 @@ export * from './zoom';
 export * from './toast';
 export * from './math-svg';
 export * from './pressable';
-export * from './bottom-sheet-text-input';
 export * from './floated-label-input';
 export * from './form-floated-label-input';
 export * from './search-input';

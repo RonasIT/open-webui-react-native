@@ -10,10 +10,12 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
 
   const appId = process.env.EXPO_PUBLIC_APP_ID;
 
-  const googleAuthIosUrlScheme = process.env.GOOGLE_IOS_URL_SCHEME;
-
   const extra = {
     eas: { projectId } as EASConfig,
+    sentry: {
+      dsn: process.env.SENTRY_DSN,
+    },
+    env: appEnv.current,
     googleIosClientId: appEnv.select({
       default: process.env.GOOGLE_IOS_CLIENT_ID_DEV,
       production: process.env.GOOGLE_IOS_CLIENT_ID_PROD,
@@ -28,10 +30,11 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     slug: process.env.EXPO_PUBLIC_APP_SLUG as string,
     scheme: process.env.EXPO_PUBLIC_APP_SCHEME as string,
     owner: process.env.EXPO_PUBLIC_APP_OWNER as string,
-    version: '1.5.0',
+    version: '1.6.4',
+    userInterfaceStyle: 'automatic',
     orientation: 'portrait',
     icon: './assets/icon.png',
-    runtimeVersion: '1.5.0',
+    runtimeVersion: '1.6.4',
     experiments: {
       reactCompiler: true,
     },
@@ -43,7 +46,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       supportsTablet: false,
       buildNumber: appEnv.select({
         default: '18',
-        production: '24',
+        production: '29',
       }),
       config: {
         usesNonExemptEncryption: false,
@@ -53,7 +56,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       package: appId,
       versionCode: appEnv.select({
         default: 15,
-        production: 24,
+        production: 29,
       }),
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
@@ -107,9 +110,9 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
         {
           android: {
             androidGradlePluginVersion: '8.3.2',
-            compileSdkVersion: 35,
+            compileSdkVersion: 36,
             targetSdkVersion: 35,
-            buildToolsVersion: '35.0.0',
+            buildToolsVersion: '36.0.0',
             ndkVersion: '27.1.12297006',
             packagingOptions: {
               jniLibs: {
@@ -122,14 +125,6 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
           },
         },
       ],
-      googleAuthIosUrlScheme
-        ? [
-            '@react-native-google-signin/google-signin',
-            {
-              iosUrlScheme: googleAuthIosUrlScheme,
-            },
-          ]
-        : null,
       ['./plugins/with-remove-media-playback-permission'],
     ]),
     newArchEnabled: true,
