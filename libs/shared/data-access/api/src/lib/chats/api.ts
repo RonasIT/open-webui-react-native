@@ -575,6 +575,11 @@ function useArchiveChat(
   return useMutation<ChatResponse, AxiosError, { id: string; folderId?: string }, unknown>({
     mutationFn: ({ id }) => chatService.archiveChat(id),
     onSuccess: (_, { id, folderId }) => {
+      // useGet query
+      queryClient.setQueryData<ChatResponse>(chatQueriesKeys.get(id).queryKey, (draft) => {
+        return draft ? { ...draft, archived: true } : undefined;
+      });
+
       // useGetChatList query
       queryClient.setQueryData<InfiniteData<Array<ChatListItem>, number>>(
         chatServiceConfig.getChatListQueryKey,
@@ -634,6 +639,7 @@ function useArchiveChat(
         });
       }
 
+      invalidateArchivedChatListQuery();
       const queryCache = queryClient.getQueryCache();
       const searchInfiniteLiveQueries = queryCache.findAll({
         queryKey: archivedChatListQueryKey.searchInfinite().queryKey,
@@ -654,6 +660,11 @@ function useUnarchiveChat(
     mutationFn: (chatId) => chatService.archiveChat(chatId),
     onSuccess: (chat, chatId) => {
       if (!isSingleChat) return;
+
+      // useGet query
+      queryClient.setQueryData<ChatResponse>(chatQueriesKeys.get(chatId).queryKey, (draft) => {
+        return draft ? { ...draft, archived: false } : undefined;
+      });
 
       // useGetAllArchivedChatsJson query
       queryClient.setQueryData<Array<ChatListItem>>(chatServiceConfig.getAllArchivedChatsQueryKey, (draft) => {
