@@ -12,7 +12,7 @@ import {
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { merge } from 'lodash-es';
-import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
+import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-service';
 import { getNextPageParam, Role } from '@open-webui-react-native/shared/data-access/common';
 import { refetchOnMountWithStaleCheck } from '@open-webui-react-native/shared/data-access/persist-query-helpers';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';

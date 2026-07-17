@@ -1,6 +1,6 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
+import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-service';
 import { createEntityApi } from '@open-webui-react-native/shared/data-access/base-entity';
 import { usersApiConfig } from './config';
 import { UserSettings } from './models';

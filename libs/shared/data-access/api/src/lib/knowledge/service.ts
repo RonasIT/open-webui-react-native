@@ -1,5 +1,5 @@
 import { plainToInstance } from 'class-transformer';
-import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
+import { getApiService } from '@open-webui-react-native/shared/data-access/api-service';
 import { EntityPromiseService } from '@open-webui-react-native/shared/data-access/base-entity';
 import { knowledgeApiConfig } from './config';
 import { Knowledge, KnowledgeResponse } from './models';

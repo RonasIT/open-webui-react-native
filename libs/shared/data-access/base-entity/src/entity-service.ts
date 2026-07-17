@@ -1,4 +1,3 @@
-import { ApiService } from '@ronas-it/axios-api-client';
 import {
   BaseEntity,
   createEntityInstance,
@@ -9,6 +8,7 @@ import {
 } from '@ronas-it/rtkq-entity-api';
 import { ClassConstructor, instanceToPlain, plainToInstance } from 'class-transformer';
 import { isUndefined, omitBy } from 'lodash';
+import { NitroApiService } from '@open-webui-react-native/shared/data-access/nitro-api-client';
 
 export abstract class EntityPromiseService<
   TEntity extends BaseEntity,
@@ -19,14 +19,14 @@ export abstract class EntityPromiseService<
   protected entityConstructor: ClassConstructor<TEntity>;
   protected entitySearchRequestConstructor: ClassConstructor<TSearchRequest>;
   protected entityGetRequestConstructor: ClassConstructor<TEntityRequest>;
-  protected apiService: () => ApiService;
+  protected apiService: () => NitroApiService;
 
   constructor(options: {
     endpoint: string;
     entityConstructor: ClassConstructor<TEntity>;
     entitySearchRequestConstructor?: ClassConstructor<TSearchRequest>;
     entityGetRequestConstructor?: ClassConstructor<EntityRequest>;
-    apiService: () => ApiService;
+    apiService: () => NitroApiService;
   }) {
     this.endpoint = options.endpoint;
     this.entityConstructor = options.entityConstructor;

@@ -229,11 +229,15 @@
       "@open-webui-react-native/mobile/shared/utils/validation": ["libs/mobile/shared/utils/validation/src/index.ts"],
       "@open-webui-react-native/shared/data-access/api": ["libs/shared/data-access/api/src/index.ts"],
       "@open-webui-react-native/shared/data-access/api-client": ["libs/shared/data-access/api-client/src/index.ts"],
+      "@open-webui-react-native/shared/data-access/api-service": ["libs/shared/data-access/api-service/src/index.ts"],
       "@open-webui-react-native/shared/data-access/app-state": ["libs/shared/data-access/app-state/src/index.ts"],
       "@open-webui-react-native/shared/data-access/auth": ["libs/shared/data-access/auth/src/index.ts"],
       "@open-webui-react-native/shared/data-access/base-entity": ["libs/shared/data-access/base-entity/src/index.ts"],
       "@open-webui-react-native/shared/data-access/common": ["libs/shared/data-access/common/src/index.ts"],
       "@open-webui-react-native/shared/data-access/cookie": ["libs/shared/data-access/cookie/src/index.ts"],
+      "@open-webui-react-native/shared/data-access/nitro-api-client": [
+        "libs/shared/data-access/nitro-api-client/src/index.ts"
+      ],
       "@open-webui-react-native/shared/data-access/persist-query-helpers": [
         "libs/shared/data-access/persist-query-helpers/src/index.ts"
       ],

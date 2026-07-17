@@ -1,6 +1,6 @@
 import { createEntityInstance, EntityPartial } from '@ronas-it/rtkq-entity-api';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
-import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
+import { getApiService } from '@open-webui-react-native/shared/data-access/api-service';
 import { EntityPromiseService } from '@open-webui-react-native/shared/data-access/base-entity';
 import { chatServiceConfig } from './configs';
 import {
