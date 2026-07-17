@@ -166,7 +166,7 @@
     "metro": "^0.84.0",
     "metro-resolver": "^0.84.0",
     "metro-config": "^0.84.0",
-    "stylus": "https://github.com/stylus/stylus/archive/refs/tags/0.64.0.tar.gz"
+    "stylus": "0.64.0"
   },
   "workspaces": [
     "apps/*"
