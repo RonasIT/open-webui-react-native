@@ -30,7 +30,7 @@ export const getAudioFormData = (uri: string, name: string = 'file'): FormData =
   const match = /\.(\w+)$/.exec(uri);
   const type = match ? `audio/${match[1]}` : 'audio';
 
-  formData.append(name, { uri: fileUri, type, name: match?.[1] } as any);
+  formData.append(name, { uri: fileUri, type, name: `${name}.${match?.[1]}` } as any);
 
   return formData;
 };
