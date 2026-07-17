@@ -72,7 +72,7 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
       },
     });
 
-  const newMessage = chat?.chat.messages.find((message) => message.id === chat.chat.history.currentId);
+  const newMessage = chat?.chat.history.messages[chat.chat.history.currentId];
   const isThinking =
     isCreating || isSending || isLoading || isTranscribing || isWaitingNewMessage || isReceivingNewMessage;
 
