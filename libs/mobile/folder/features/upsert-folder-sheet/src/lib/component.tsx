@@ -28,7 +28,6 @@ import {
   filesApi,
   foldersApi,
   Knowledge,
-  KnowledgeCollectionItem,
   prepareCreateFolderPayload,
 } from '@open-webui-react-native/shared/data-access/api';
 import { AttachedFile, FileData, FileType } from '@open-webui-react-native/shared/data-access/common';
@@ -125,7 +124,7 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
       systemPrompt: form.systemPrompt,
       attachedFiles: files,
       attachedKnowledge: selectedKnowledge.map(
-        (knowledge) => new KnowledgeCollectionItem({ ...knowledge, type: FileType.COLLECTION }),
+        (knowledge) => new Knowledge({ ...knowledge, type: FileType.COLLECTION }),
       ),
     });
 

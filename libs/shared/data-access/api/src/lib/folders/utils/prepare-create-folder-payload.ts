@@ -1,12 +1,13 @@
 import { FileData } from '@open-webui-react-native/shared/data-access/common';
 import { prepareAttachedFiles } from '../../files';
-import { CreateFolderRequest, KnowledgeCollectionItem } from '../models';
+import { Knowledge } from '../../knowledge';
+import { CreateFolderRequest } from '../models';
 
 export interface PrepareCreateFolderPayloadArgs {
   name: string;
   systemPrompt?: string;
   attachedFiles?: Array<FileData>;
-  attachedKnowledge?: Array<KnowledgeCollectionItem>;
+  attachedKnowledge?: Array<Knowledge>;
 }
 
 export const prepareCreateFolderPayload = ({

@@ -1,5 +1,4 @@
 export * from './create-folder-request';
-export * from './knowledge-collection-item';
 export * from './folder-data';
 export * from './folder-list-item';
 export * from './get-folder-chat-list-request';
