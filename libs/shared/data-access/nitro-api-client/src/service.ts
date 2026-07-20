@@ -10,6 +10,7 @@ import {
   RequestOptions,
   ResponseInterceptor,
 } from './types';
+import { ApiLogger } from './utils';
 
 const joinUrl = (baseUrl: string, endpoint: string): string => {
   return `${baseUrl.replace(/\/+$/, '')}/${endpoint.replace(/^\/+/, '')}`;
@@ -54,7 +55,10 @@ export class NitroApiService {
   private readonly responseInterceptors: Array<ResponseInterceptor> = [];
   private readonly errorInterceptors: Array<ErrorInterceptor> = [];
 
-  constructor(private readonly baseUrl: string) {}
+  constructor(
+    private readonly baseUrl: string,
+    private readonly logger?: ApiLogger,
+  ) {}
 
   public useInterceptors(interceptors: {
     request?: Array<RequestInterceptor>;
@@ -100,6 +104,7 @@ export class NitroApiService {
     }
 
     const url = joinUrl(this.baseUrl, request.endpoint) + buildQueryString(request.params);
+    const startedAt = Date.now();
 
     let response: Response;
 
@@ -112,7 +117,10 @@ export class NitroApiService {
       });
     } catch (cause) {
       const message = cause instanceof Error ? cause.message : 'Network error';
-      throw await this.processError(new ApiError(message, request));
+      const error = new ApiError(message, request);
+      this.logger?.({ request, url, duration: Date.now() - startedAt, error });
+
+      throw await this.processError(error);
     }
 
     const data = await parseResponseBody(response);
@@ -122,11 +130,14 @@ export class NitroApiService {
         status: response.status,
         data,
       });
+      this.logger?.({ request, url, duration: Date.now() - startedAt, error });
 
       throw await this.processError(error);
     }
 
     let apiResponse: ApiResponse = { status: response.status, headers: response.headers, data, request };
+    // Log the raw response before response interceptors transform `data`, matching what went over the wire.
+    this.logger?.({ request, url, duration: Date.now() - startedAt, response: apiResponse });
 
     for (const interceptor of this.responseInterceptors) {
       apiResponse = await interceptor(apiResponse);

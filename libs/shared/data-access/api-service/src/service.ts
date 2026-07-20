@@ -7,6 +7,7 @@ import {
 } from '@open-webui-react-native/shared/data-access/nitro-api-client';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
+import { createReactotronApiLogger } from '@open-webui-react-native/shared/utils/reactotron';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { apiConfig } from './config';
 import { errorCatcherInterceptor, profileNotFoundInterceptor } from './interceptors';
@@ -45,7 +46,7 @@ export const getApiService = (url?: string): NitroApiService => {
     return apiServiceCache.get(apiUrl)!;
   }
 
-  const service = new NitroApiService(apiUrl);
+  const service = new NitroApiService(apiUrl, createReactotronApiLogger());
   setupInterceptors(service);
   apiServiceCache.set(apiUrl, service);
 
