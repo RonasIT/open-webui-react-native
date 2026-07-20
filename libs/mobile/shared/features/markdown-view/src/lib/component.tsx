@@ -21,6 +21,7 @@ import { MarkdownTableRenderer } from './components/markdown-table-renderer';
 import { MathBlock } from './components/math-block';
 import { TextGroup } from './components/text-group';
 import { MarkdownStyles } from './types';
+import { normalizeMathDelimiters } from './utils';
 
 const markdownItInstance = markdownIt().use(markdownItMath, {
   inlineDelimiters: [
@@ -171,7 +172,9 @@ export function AppMarkdownView({
           <View
             key={`math-inline-${node.key}-${node.content.length}`}
             className='justify-center py-5 bg-background-tertiary self-start p-4 rounded-sm mt-4'>
-            <MathSvg fontSize={14}>{node.content}</MathSvg>
+            <MathSvg fontSize={14} displayMode={false}>
+              {node.content}
+            </MathSvg>
           </View>
         );
       },
@@ -239,6 +242,8 @@ export function AppMarkdownView({
 
   // NOTE: Nitro implementation
 
+  const nitroSource = useMemo(() => normalizeMathDelimiters(String(children ?? '')), [children]);
+
   const renderers: MarkdownRenderers = {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     code_block({ content, language }: CodeBlockRendererProps) {
@@ -254,8 +259,8 @@ export function AppMarkdownView({
   const session = useMarkdownSession();
 
   useEffect(() => {
-    session.reset(children as string);
-  }, [session, children]);
+    session.reset(nitroSource);
+  }, [session, nitroSource]);
 
   if (markdownEngine === 'nitro-stream') {
     return (
@@ -275,7 +280,7 @@ export function AppMarkdownView({
         options={{ gfm: true, math: true, html: true }}
         highlightCode={true}
         renderers={renderers}>
-        {children as string}
+        {nitroSource}
       </NitroMarkdown>
     );
   }

@@ -1,17 +1,29 @@
+import { RaTeXView } from 'ratex-react-native';
 import { ReactNode } from 'react';
-import MathJax, { MathJaxProps } from 'react-native-mathjax-svg';
+import { LayoutChangeEvent, StyleProp, ViewStyle } from 'react-native';
 import { withClassNameInterop, cn } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { View } from '../view';
 
-export interface MathSvgProps extends MathJaxProps {
+export interface MathSvgProps {
   className?: string;
   children: string;
+  fontSize?: number;
+  color?: string;
+  displayMode?: boolean;
+  onLayout?: (event: LayoutChangeEvent) => void;
+  style?: StyleProp<ViewStyle>;
 }
 
-function MathSvgComponent({ className, children, ...props }: MathSvgProps): ReactNode {
+function MathSvgComponent({ children, fontSize, color, displayMode = true, onLayout, style }: MathSvgProps): ReactNode {
   return (
-    <MathJax color='transparent' {...props}>
-      {children}
-    </MathJax>
+    <View onLayout={onLayout}>
+      <RaTeXView
+        latex={children}
+        fontSize={fontSize}
+        displayMode={displayMode}
+        color={color}
+        style={style} />
+    </View>
   );
 }
 

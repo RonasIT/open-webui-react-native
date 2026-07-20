@@ -33,7 +33,8 @@ export function MathBlock({ content, isContentReady }: MathBlockProps): ReactEle
             onLayout={(event) => {
               setContentWidth(event.nativeEvent.layout.width);
             }}
-            fontSize={12}>
+            fontSize={12}
+            displayMode>
             {renderedContent}
           </MathSvg>
         ) : (

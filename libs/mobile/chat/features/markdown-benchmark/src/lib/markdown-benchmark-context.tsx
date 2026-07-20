@@ -52,7 +52,7 @@ export function MarkdownBenchmarkProvider({ children }: PropsWithChildren): Reac
 
   const value = useMemo(
     (): MarkdownBenchmarkContextValue => ({
-      markdownEngine: 'nitro-stream',
+      markdownEngine: 'nitro',
       autoScrollEnabled,
       setAutoScrollEnabled,
       autoScrollSpeed,
