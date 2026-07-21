@@ -1,5 +1,6 @@
 import { BaseEntity } from '@ronas-it/rtkq-entity-api';
 import { Expose, Type } from 'class-transformer';
+import { FileType } from '@open-webui-react-native/shared/data-access/common';
 import { Profile } from '../../auth/models/profile';
 import { KnowledgeAccessControl } from './knowledge-access-control';
 import { KnowledgeData } from './knowledge-data';
@@ -33,6 +34,9 @@ export class Knowledge extends BaseEntity<string> {
   @Expose()
   @Type(() => KnowledgeFile)
   public files: Array<KnowledgeFile>;
+
+  @Expose()
+  public type?: FileType.COLLECTION;
 
   public get isDocument(): boolean {
     return !!this.meta?.document;

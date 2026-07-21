@@ -2,7 +2,7 @@ import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import dayjs from 'dayjs';
 import { delay } from 'lodash-es';
-import React, { Fragment, ReactElement, useEffect, useState } from 'react';
+import React, { Fragment, ReactElement, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { InteractionManager } from 'react-native';
 import { EditMessageInput } from '@open-webui-react-native/mobile/chat/features/edit-message-input';
@@ -15,7 +15,12 @@ import { useAttachedFiles } from '@open-webui-react-native/mobile/shared/feature
 import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { AppKeyboardStickyView, AppSpinner, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
-import { chatApi, ChatGenerationOption, chatQueriesKeys } from '@open-webui-react-native/shared/data-access/api';
+import {
+  chatApi,
+  ChatGenerationOption,
+  chatQueriesKeys,
+  createMessagesList,
+} from '@open-webui-react-native/shared/data-access/api';
 import { Role } from '@open-webui-react-native/shared/data-access/common';
 import { useSubscribeToQueryCache } from '@open-webui-react-native/shared/data-access/query-client';
 import { webSocketConfig, webSocketState$ } from '@open-webui-react-native/shared/data-access/websocket';
@@ -77,6 +82,8 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   } = useSuggestChange({ chat, modelId: selectedModelId });
 
   const history = chat?.chat.history;
+  // NOTE: chat.messages is a legacy snapshot the backend no longer maintains, so the current branch is derived from history
+  const messages = useMemo(() => (history ? createMessagesList(history, history.currentId) : []), [history]);
   const isResponseGenerating = !history?.messages[history.currentId].done;
 
   const shouldHideContent = isLoading || isRefetching || !isMessagesListLoaded || !selectedModelId;
@@ -214,7 +221,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
             onMoreConcise={handleMoreConcise}
             chatId={chatId}
             isInputFocusing={isInputFocusing}
-            messages={chat?.chat.messages ?? []}
+            messages={messages}
             history={history}
             onLayout={handleChatMessagesListLayout}
             isMessagesListLoaded={isMessagesListLoaded}

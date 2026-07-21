@@ -26,15 +26,15 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return {
-    name: process.env.EXPO_PUBLIC_APP_NAME,
+    name: process.env.EXPO_PUBLIC_APP_NAME as string,
     slug: process.env.EXPO_PUBLIC_APP_SLUG as string,
     scheme: process.env.EXPO_PUBLIC_APP_SCHEME as string,
     owner: process.env.EXPO_PUBLIC_APP_OWNER as string,
-    version: '1.6.4',
+    version: '1.6.5',
     userInterfaceStyle: 'automatic',
     orientation: 'portrait',
     icon: './assets/icon.png',
-    runtimeVersion: '1.6.4',
+    runtimeVersion: '1.6.5',
     experiments: {
       reactCompiler: true,
     },
@@ -46,7 +46,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       supportsTablet: false,
       buildNumber: appEnv.select({
         default: '18',
-        production: '29',
+        production: '31',
       }),
       config: {
         usesNonExemptEncryption: false,
@@ -56,7 +56,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       package: appId,
       versionCode: appEnv.select({
         default: 15,
-        production: 29,
+        production: 31,
       }),
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
