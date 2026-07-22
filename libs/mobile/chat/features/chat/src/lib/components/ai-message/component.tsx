@@ -1,6 +1,5 @@
 import { Fragment, ReactElement, useMemo } from 'react';
 import { FollowUpsList } from '@open-webui-react-native/mobile/chat/features/follow-ups-list';
-import { useMarkdownBenchmark } from '@open-webui-react-native/mobile/chat/features/markdown-benchmark';
 import { MessageVersionControls } from '@open-webui-react-native/mobile/chat/features/message-version-controls';
 import { SourceCitationModal } from '@open-webui-react-native/mobile/chat/features/source-citation-modal';
 import { prepareTextWithCitations, useCitations } from '@open-webui-react-native/mobile/chat/features/use-citations';
@@ -78,8 +77,6 @@ export function ChatAiMessage({
   const textWithCitations = prepareTextWithCitations(messageContent, citations);
   const hasFollowUps = Array.isArray(followUps) && followUps.length > 0;
 
-  const { markdownEngine } = useMarkdownBenchmark();
-
   return (
     <View>
       <View className='flex-row justify-between'>
@@ -87,7 +84,6 @@ export function ChatAiMessage({
         <AppText className='text-sm-sm sm:text-sm text-text-secondary'>
           {formatDateTime(timestamp, 'chat-relative-time')}
         </AppText>
-        <AppText className='text-sm-sm sm:text-sm text-status-danger'>{markdownEngine}</AppText>
       </View>
       {socketStatusData && <AppText className='mt-4 text-text-secondary'>{socketStatusData.description}</AppText>}
       {text ? (
@@ -113,7 +109,6 @@ export function ChatAiMessage({
             containerClassName='mt-8'
           />
           <AppMarkdownView
-            markdownEngine={markdownEngine}
             isContentReady={isMessageDone}
             onCitationPress={handleInlineCitationPress}
             textColor={isEditing ? colors.brandPrimary : undefined}>

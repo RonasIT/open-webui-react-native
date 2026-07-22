@@ -34,6 +34,7 @@ export function CodeBlock({
   const { isDarkColorScheme } = useColorScheme();
 
   const handleCopy = async (): Promise<void> => {
+    console.log('content', content);
     await Clipboard.setStringAsync(content);
     ToastService.showSuccess(translate('TEXT_COPIED_TO_CLIPBOARD'));
   };

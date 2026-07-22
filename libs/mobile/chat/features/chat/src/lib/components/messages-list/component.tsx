@@ -1,15 +1,10 @@
 import { FlashList } from '@shopify/flash-list';
 import { useLocalSearchParams } from 'expo-router';
 import { delay } from 'lodash-es';
-import React, { ReactElement, useCallback, useEffect, useRef } from 'react';
+import React, { ReactElement, useCallback, useRef } from 'react';
 import { GestureResponderEvent, NativeScrollEvent, NativeSyntheticEvent, ScrollViewProps } from 'react-native';
 import { useSharedValue, withTiming } from 'react-native-reanimated';
 import { AiMessageActions } from '@open-webui-react-native/mobile/chat/features/ai-message-actions';
-import {
-  useConstantAutoScroll,
-  useMarkdownBenchmark,
-  useScrollMetricsRef,
-} from '@open-webui-react-native/mobile/chat/features/markdown-benchmark';
 import { useManageMessageSiblings } from '@open-webui-react-native/mobile/chat/features/use-manage-messages-siblings';
 import { UserMessageActions } from '@open-webui-react-native/mobile/chat/features/user-message-actions';
 import { useSetSelectedModel } from '@open-webui-react-native/mobile/shared/features/use-set-selected-model';
@@ -70,30 +65,6 @@ export default function ChatMessagesList({
   const shouldAutoscrollToBottomRef = useRef(true);
   const previousTouchY = useRef(0);
 
-  const { autoScrollEnabled, autoScrollSpeed, setAutoScrollEnabled, registerScrollToTop } = useMarkdownBenchmark();
-  const { maxOffsetRef, updateScrollMetrics } = useScrollMetricsRef();
-  const getMaxOffset = useCallback(() => maxOffsetRef.current, [maxOffsetRef]);
-
-  const handleAutoScrollEnd = useCallback(() => {
-    setAutoScrollEnabled(false);
-  }, [setAutoScrollEnabled]);
-
-  useConstantAutoScroll({
-    listRef,
-    enabled: autoScrollEnabled,
-    speed: autoScrollSpeed,
-    mode: 'once',
-    direction: 'up',
-    getMaxOffset,
-    onAutoScrollEnd: handleAutoScrollEnd,
-  });
-
-  useEffect(() => {
-    return registerScrollToTop(() => {
-      listRef.current?.scrollToOffset({ offset: 0, animated: false });
-    });
-  }, [registerScrollToTop]);
-
   const { showPreviousSibling, showNextSibling, getSiblingsInfo } = useManageMessageSiblings(chatId, history);
   const { mutate: completeChat } = chatApi.useCompleteChat();
   const { id }: ChatScreenParams = useLocalSearchParams();
@@ -112,13 +83,13 @@ export default function ChatMessagesList({
       isScrollToBottomAvailable.current = true;
     }, 500);
 
-    if (shouldAutoscrollToBottomRef.current && !autoScrollEnabled) {
+    if (shouldAutoscrollToBottomRef.current) {
       requestAnimationFrame(() => {
         listRef.current?.scrollToEnd({ animated: true });
       });
     }
 
-    if (!isMessagesListLoaded && listRef.current && messages?.length > 0 && !autoScrollEnabled) {
+    if (!isMessagesListLoaded && listRef.current && messages?.length > 0) {
       delay(() => {
         listRef.current?.scrollToEnd({ animated: false });
         delay(onLayout, 125);
@@ -135,12 +106,6 @@ export default function ChatMessagesList({
     const scrollY = contentOffset.y;
     const contentHeight = contentSize.height;
     const containerHeight = layoutMeasurement.height;
-
-    updateScrollMetrics(contentHeight, containerHeight);
-
-    if (autoScrollEnabled) {
-      return;
-    }
 
     const isScrollingUp = scrollY < previousScrollY.current;
     previousScrollY.current = scrollY;
@@ -312,7 +277,7 @@ export default function ChatMessagesList({
         onTouchMove={handleTouchMove}
         scrollEventThrottle={16}
       />
-      {!autoScrollEnabled && <ChatBottomButton isVisible={isScrollToBottomVisible} onPress={scrollToBottom} />}
+      <ChatBottomButton isVisible={isScrollToBottomVisible} onPress={scrollToBottom} />
     </View>
   );
 }
