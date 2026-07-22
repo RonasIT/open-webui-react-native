@@ -30,7 +30,7 @@ import {
   Knowledge,
   prepareCreateFolderPayload,
 } from '@open-webui-react-native/shared/data-access/api';
-import { AttachedFile, FileData } from '@open-webui-react-native/shared/data-access/common';
+import { AttachedFile, FileData, FileType } from '@open-webui-react-native/shared/data-access/common';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { getDocumentFormData } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
@@ -123,7 +123,9 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
       name: form.name,
       systemPrompt: form.systemPrompt,
       attachedFiles: files,
-      attachedKnowledge: selectedKnowledge,
+      attachedKnowledge: selectedKnowledge.map(
+        (knowledge) => new Knowledge({ ...knowledge, type: FileType.COLLECTION }),
+      ),
     });
 
     if (folderId) {

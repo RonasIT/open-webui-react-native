@@ -30,7 +30,8 @@ class FoldersService extends EntityPromiseService<FolderResponse> {
   }
 
   public async updateFolder(params: UpdateFolderRequest): Promise<FolderResponse> {
-    const request = instanceToPlain<UpdateFolderRequest>(new UpdateFolderRequest(params));
+    // Backend forbids extra fields in the body (`id` is passed via URL only)
+    const { id, ...request } = instanceToPlain<UpdateFolderRequest>(new UpdateFolderRequest(params));
 
     const response = await getApiService().post<FolderResponse>(
       `${foldersApiConfig.route}/${params.id}/update`,
