@@ -1,11 +1,16 @@
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import * as Clipboard from 'expo-clipboard';
-import { ReactElement, useMemo, useState } from 'react';
+import { ReactElement, useCallback, useMemo } from 'react';
 import { StyleProp, TextStyle, ViewStyle } from 'react-native';
 import CodeHighlighter from 'react-native-code-highlighter';
 import { github, stackoverflowDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-import { screenWidth, spacings, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
-import { View, AppText, TouchableHighlight } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
+import {
+  View,
+  AppText,
+  TouchableHighlight,
+  HorizontalOverflowScroll,
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 interface CodeBlockProps {
@@ -22,22 +27,17 @@ export function CodeBlock({
   content,
   sourceInfo,
   textStyle,
-  codeBlockWidth: elementCodeBlockWidth = screenWidth - spacings.screenHorizontalOffset - 24, //NOTE 24 is the padding of the code block
-  minCodeBlockWidth = 320,
+  codeBlockWidth,
   scrollViewStyle,
   fenceStyle,
 }: CodeBlockProps): ReactElement {
   const translate = useTranslation('SHARED.CODE_BLOCK');
-  const codeBlockWidth = Math.max(elementCodeBlockWidth, minCodeBlockWidth);
-  const [codeContentWidth, setCodeContentWidth] = useState(0);
-  const isScrollEnabled = codeContentWidth < codeBlockWidth;
   const { isDarkColorScheme } = useColorScheme();
 
-  const handleCopy = async (): Promise<void> => {
-    console.log('content', content);
+  const handleCopy = useCallback(async (): Promise<void> => {
     await Clipboard.setStringAsync(content);
     ToastService.showSuccess(translate('TEXT_COPIED_TO_CLIPBOARD'));
-  };
+  }, [content, translate]);
 
   const copyButton = useMemo(
     () => (
@@ -66,35 +66,35 @@ export function CodeBlock({
 
   //NOTE styles from createStyles does not work
   return (
-    <View className='rounded-lg overflow-hidden my-4 p-12 pt-4 bg-background-tertiary'>
+    <View
+      className='rounded-lg my-4 p-12 pt-4 bg-background-tertiary'
+      style={codeBlockWidth ? { maxWidth: codeBlockWidth } : undefined}>
       <View className='flex-row items-center mb-8'>
         <AppText className='text-sm-sm sm:text-sm'>{sourceInfo}</AppText>
         {copyButton}
       </View>
-      <CodeHighlighter
-        customStyle={{ backgroundColor: 'transparent' }}
-        hljsStyle={isDarkColorScheme ? stackoverflowDark : github}
-        scrollViewProps={{
-          onLayout: (event) => {
-            setCodeContentWidth(event.nativeEvent.layout.width);
-          },
-          contentContainerStyle: [
-            {
-              width: codeBlockWidth,
-              borderRadius: 10,
+      <HorizontalOverflowScroll showsHorizontalScrollIndicator={false}>
+        <CodeHighlighter
+          customStyle={{ backgroundColor: 'transparent' }}
+          hljsStyle={isDarkColorScheme ? stackoverflowDark : github}
+          scrollViewProps={{
+            scrollEnabled: false,
+            showsHorizontalScrollIndicator: false,
+            contentContainerStyle: [
+              {
+                borderRadius: 10,
+                backgroundColor: 'transparent',
+              },
+              scrollViewStyle,
+            ],
+            style: {
               backgroundColor: 'transparent',
             },
-            scrollViewStyle,
-          ],
-          scrollEnabled: isScrollEnabled,
-          showsHorizontalScrollIndicator: false,
-          style: {
-            backgroundColor: 'transparent',
-          },
-        }}
-        textStyle={textStyle}>
-        {content}
-      </CodeHighlighter>
+          }}
+          textStyle={textStyle}>
+          {content}
+        </CodeHighlighter>
+      </HorizontalOverflowScroll>
     </View>
   );
 }

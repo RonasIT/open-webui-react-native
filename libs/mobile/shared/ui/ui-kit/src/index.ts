@@ -6,6 +6,7 @@ export * from './screen';
 export * from './safe-area-view';
 export * from './view';
 export * from './scroll-view';
+export * from './horizontal-overflow-scroll';
 export * from './icon';
 export * from './divider';
 export * from './avatar';

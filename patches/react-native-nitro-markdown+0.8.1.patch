@@ -1,0 +1,181 @@
+diff --git a/node_modules/react-native-nitro-markdown/lib/commonjs/renderers/code.js b/node_modules/react-native-nitro-markdown/lib/commonjs/renderers/code.js
+index 830449d..21d7cee 100644
+--- a/node_modules/react-native-nitro-markdown/lib/commonjs/renderers/code.js
++++ b/node_modules/react-native-nitro-markdown/lib/commonjs/renderers/code.js
+@@ -31,10 +31,7 @@ const CodeBlock = ({
+     children: [showLanguage ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
+       style: styles.codeLanguage,
+       children: language
+-    }) : null, /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.ScrollView, {
+-      horizontal: true,
+-      showsHorizontalScrollIndicator: false,
+-      bounces: false,
++    }) : null, /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.View, {
+       children: highlightedTokens ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
+         style: styles.codeBlockText,
+         selectable: true,
+diff --git a/node_modules/react-native-nitro-markdown/lib/commonjs/renderers/table/index.js b/node_modules/react-native-nitro-markdown/lib/commonjs/renderers/table/index.js
+index c252cb0..3d371d4 100644
+--- a/node_modules/react-native-nitro-markdown/lib/commonjs/renderers/table/index.js
++++ b/node_modules/react-native-nitro-markdown/lib/commonjs/renderers/table/index.js
+@@ -180,11 +180,8 @@ const TableRenderer = ({
+           })
+         }, `measure-cell-${rowIndex}-${colIndex}`))
+       }, `measure-row-${rowIndex}`))]
+-    }) : null, /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.ScrollView, {
+-      horizontal: true,
+-      showsHorizontalScrollIndicator: true,
++    }) : null, /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.View, {
+       style: styles.tableScroll,
+-      bounces: false,
+       children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactNative.View, {
+         style: [styles.table, tableBackgroundStyle],
+         children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.View, {
+@@ -245,7 +242,8 @@ const createTableStyles = theme => {
+       paddingHorizontal: 12
+     },
+     tableScroll: {
+-      flexGrow: 0
++      flexGrow: 0,
++      alignSelf: "flex-start"
+     },
+     table: {
+       borderRadius: borderRadius.m,
+diff --git a/node_modules/react-native-nitro-markdown/lib/module/renderers/code.js b/node_modules/react-native-nitro-markdown/lib/module/renderers/code.js
+index a8c4118..defede7 100644
+--- a/node_modules/react-native-nitro-markdown/lib/module/renderers/code.js
++++ b/node_modules/react-native-nitro-markdown/lib/module/renderers/code.js
+@@ -1,7 +1,7 @@
+ "use strict";
+ 
+ import { useMemo } from "react";
+-import { View, Text, StyleSheet, ScrollView, Platform } from "react-native";
++import { View, Text, StyleSheet, Platform } from "react-native";
+ import { getCachedStyles } from "./style-cache.js";
+ import { getTextContent } from "../headless.js";
+ import { useMarkdownContext } from "../MarkdownContext.js";
+@@ -27,10 +27,7 @@ export const CodeBlock = ({
+     children: [showLanguage ? /*#__PURE__*/_jsx(Text, {
+       style: styles.codeLanguage,
+       children: language
+-    }) : null, /*#__PURE__*/_jsx(ScrollView, {
+-      horizontal: true,
+-      showsHorizontalScrollIndicator: false,
+-      bounces: false,
++    }) : null, /*#__PURE__*/_jsx(View, {
+       children: highlightedTokens ? /*#__PURE__*/_jsx(Text, {
+         style: styles.codeBlockText,
+         selectable: true,
+diff --git a/node_modules/react-native-nitro-markdown/lib/module/renderers/table/index.js b/node_modules/react-native-nitro-markdown/lib/module/renderers/table/index.js
+index ef706ce..432cde7 100644
+--- a/node_modules/react-native-nitro-markdown/lib/module/renderers/table/index.js
++++ b/node_modules/react-native-nitro-markdown/lib/module/renderers/table/index.js
+@@ -1,7 +1,7 @@
+ "use strict";
+ 
+ import { useEffect, useMemo, useRef, useReducer, useCallback } from "react";
+-import { View, StyleSheet, ScrollView, Platform } from "react-native";
++import { View, StyleSheet, Platform } from "react-native";
+ import { CellContent } from "./cell-content.js";
+ import { columnWidthsReducer, DEFAULT_MIN_COLUMN_WIDTH, DEFAULT_MEASUREMENT_STABILIZE_MS } from "./table-reducer.js";
+ import { extractTableData, estimateColumnWidths } from "./table-utils.js";
+@@ -176,11 +176,8 @@ export const TableRenderer = ({
+           })
+         }, `measure-cell-${rowIndex}-${colIndex}`))
+       }, `measure-row-${rowIndex}`))]
+-    }) : null, /*#__PURE__*/_jsx(ScrollView, {
+-      horizontal: true,
+-      showsHorizontalScrollIndicator: true,
++    }) : null, /*#__PURE__*/_jsx(View, {
+       style: styles.tableScroll,
+-      bounces: false,
+       children: /*#__PURE__*/_jsxs(View, {
+         style: [styles.table, tableBackgroundStyle],
+         children: [/*#__PURE__*/_jsx(View, {
+@@ -240,7 +237,8 @@ const createTableStyles = theme => {
+       paddingHorizontal: 12
+     },
+     tableScroll: {
+-      flexGrow: 0
++      flexGrow: 0,
++      alignSelf: "flex-start"
+     },
+     table: {
+       borderRadius: borderRadius.m,
+diff --git a/node_modules/react-native-nitro-markdown/src/renderers/code.tsx b/node_modules/react-native-nitro-markdown/src/renderers/code.tsx
+index 0a0f457..d2e34f3 100644
+--- a/node_modules/react-native-nitro-markdown/src/renderers/code.tsx
++++ b/node_modules/react-native-nitro-markdown/src/renderers/code.tsx
+@@ -3,7 +3,6 @@ import {
+   View,
+   Text,
+   StyleSheet,
+-  ScrollView,
+   Platform,
+   type ViewStyle,
+   type TextStyle,
+@@ -57,11 +56,7 @@ export const CodeBlock: FC<CodeBlockProps> = ({
+       {showLanguage ? (
+         <Text style={styles.codeLanguage}>{language}</Text>
+       ) : null}
+-      <ScrollView
+-        horizontal
+-        showsHorizontalScrollIndicator={false}
+-        bounces={false}
+-      >
++      <View>
+         {highlightedTokens ? (
+           <Text style={styles.codeBlockText} selectable>
+             {highlightedTokens.map((token: HighlightedToken, i: number) => {
+@@ -80,7 +75,7 @@ export const CodeBlock: FC<CodeBlockProps> = ({
+             {displayContent}
+           </Text>
+         )}
+-      </ScrollView>
++      </View>
+     </View>
+   );
+ };
+diff --git a/node_modules/react-native-nitro-markdown/src/renderers/table/index.tsx b/node_modules/react-native-nitro-markdown/src/renderers/table/index.tsx
+index aff9850..134b187 100644
+--- a/node_modules/react-native-nitro-markdown/src/renderers/table/index.tsx
++++ b/node_modules/react-native-nitro-markdown/src/renderers/table/index.tsx
+@@ -10,7 +10,6 @@ import {
+ import {
+   View,
+   StyleSheet,
+-  ScrollView,
+   Platform,
+   type ViewStyle,
+   type LayoutChangeEvent,
+@@ -272,12 +271,7 @@ export const TableRenderer: FC<TableRendererProps> = ({
+         </View>
+       ) : null}
+ 
+-      <ScrollView
+-        horizontal
+-        showsHorizontalScrollIndicator
+-        style={styles.tableScroll}
+-        bounces={false}
+-      >
++      <View style={styles.tableScroll}>
+         <View style={[styles.table, tableBackgroundStyle]}>
+           <View style={styles.headerRow}>
+             {headers.map((cell, colIndex) => (
+@@ -334,7 +328,7 @@ export const TableRenderer: FC<TableRendererProps> = ({
+             </View>
+           ))}
+         </View>
+-      </ScrollView>
++      </View>
+     </View>
+   );
+ };
+@@ -366,6 +360,7 @@ const createTableStyles = (theme: MarkdownTheme) => {
+     },
+     tableScroll: {
+       flexGrow: 0,
++      alignSelf: "flex-start",
+     },
+     table: {
+       borderRadius: borderRadius.m,
