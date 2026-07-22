@@ -20,4 +20,7 @@ reactions are plugged in through interceptors (see `shared/data-access/api-servi
 - For GET/DELETE the second argument is query params; for POST/PUT/PATCH it is the JSON body.
 - `FormData` bodies (including React Native file parts `{ uri, type, name }`) are uploaded natively
   by nitro-fetch, which also sets the multipart boundary.
-- Cookies are always sent (`credentials: 'include'`).
+- The constructor is `(baseUrl, config?)` where `config` is `{ logger?, credentials? }`.
+- Cookies are sent by default (`credentials: 'include'`). Change globally with
+  `new NitroApiService(url, { credentials: 'omit' })`, or per request via the `credentials` option
+  (`RequestCredentials`: `'include' | 'omit' | 'same-origin'`; `'omit'` skips the native cookie jar).

@@ -50,6 +50,11 @@ const parseResponseBody = async (response: Response): Promise<unknown> => {
   }
 };
 
+export type NitroApiServiceConfig = {
+  logger?: ApiLogger;
+  credentials?: RequestCredentials;
+};
+
 export class NitroApiService {
   private readonly requestInterceptors: Array<RequestInterceptor> = [];
   private readonly responseInterceptors: Array<ResponseInterceptor> = [];
@@ -57,7 +62,7 @@ export class NitroApiService {
 
   constructor(
     private readonly baseUrl: string,
-    private readonly logger?: ApiLogger,
+    private readonly config?: NitroApiServiceConfig,
   ) {}
 
   public useInterceptors(interceptors: {
@@ -105,6 +110,7 @@ export class NitroApiService {
 
     const url = joinUrl(this.baseUrl, request.endpoint) + buildQueryString(request.params);
     const startedAt = Date.now();
+    const credentials = options?.credentials ?? this.config?.credentials ?? 'include';
 
     let response: Response;
 
@@ -113,12 +119,12 @@ export class NitroApiService {
         method: request.method,
         headers: request.headers,
         body: this.prepareBody(request),
-        credentials: 'include',
+        credentials,
       });
     } catch (cause) {
       const message = cause instanceof Error ? cause.message : 'Network error';
       const error = new ApiError(message, request);
-      this.logger?.({ request, url, duration: Date.now() - startedAt, error });
+      this.config?.logger?.({ request, url, duration: Date.now() - startedAt, error });
 
       throw await this.processError(error);
     }
@@ -130,13 +136,13 @@ export class NitroApiService {
         status: response.status,
         data,
       });
-      this.logger?.({ request, url, duration: Date.now() - startedAt, error });
+      this.config?.logger?.({ request, url, duration: Date.now() - startedAt, error });
 
       throw await this.processError(error);
     }
 
     let apiResponse: ApiResponse = { status: response.status, headers: response.headers, data, request };
-    this.logger?.({ request, url, duration: Date.now() - startedAt, response: apiResponse });
+    this.config?.logger?.({ request, url, duration: Date.now() - startedAt, response: apiResponse });
 
     for (const interceptor of this.responseInterceptors) {
       apiResponse = await interceptor(apiResponse);

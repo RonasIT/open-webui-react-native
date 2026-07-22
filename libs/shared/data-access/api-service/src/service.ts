@@ -46,7 +46,7 @@ export const getApiService = (url?: string): NitroApiService => {
     return apiServiceCache.get(apiUrl)!;
   }
 
-  const service = new NitroApiService(apiUrl, createReactotronApiLogger());
+  const service = new NitroApiService(apiUrl, { logger: createReactotronApiLogger(), credentials: 'include' });
   setupInterceptors(service);
   apiServiceCache.set(apiUrl, service);
 

@@ -9,7 +9,7 @@ export class AppConfigurationService {
       appConfigurationApiConfig.route,
       { skipToast },
       {
-        withCredentials: true,
+        credentials: 'include',
       },
     );
 

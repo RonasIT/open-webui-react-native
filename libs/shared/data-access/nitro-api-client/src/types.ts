@@ -6,8 +6,8 @@ export type QueryParams = Record<string, any>;
 
 export type RequestOptions = {
   headers?: Record<string, string>;
-  // Accepted for call-site compatibility with the axios client. Cookies are always sent.
-  withCredentials?: boolean;
+  // Overrides the service-level cookie default for this request ('include' | 'omit' | 'same-origin').
+  credentials?: RequestCredentials;
 };
 
 // A request being prepared: interceptors receive it and may modify headers, params, etc.

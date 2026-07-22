@@ -49,7 +49,7 @@ export const getApiService = (url?: string): ApiService => {
     return apiServiceCache.get(apiUrl)!;
   }
 
-  const service = new ApiService(apiUrl);
+  const service = new ApiService(apiUrl, { withCredentials: true });
   setupInterceptors(service);
   apiServiceCache.set(apiUrl, service);
 
