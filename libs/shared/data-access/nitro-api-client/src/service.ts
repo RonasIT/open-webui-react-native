@@ -1,4 +1,4 @@
-import { fetch } from 'react-native-nitro-fetch';
+import { fetch as nitroFetch } from 'react-native-nitro-fetch';
 import { ApiError } from './api-error';
 import {
   ApiRequest,
@@ -109,7 +109,7 @@ export class NitroApiService {
     let response: Response;
 
     try {
-      response = await fetch(url, {
+      response = await nitroFetch(url, {
         method: request.method,
         headers: request.headers,
         body: this.prepareBody(request),
@@ -136,7 +136,6 @@ export class NitroApiService {
     }
 
     let apiResponse: ApiResponse = { status: response.status, headers: response.headers, data, request };
-    // Log the raw response before response interceptors transform `data`, matching what went over the wire.
     this.logger?.({ request, url, duration: Date.now() - startedAt, response: apiResponse });
 
     for (const interceptor of this.responseInterceptors) {
@@ -152,7 +151,6 @@ export class NitroApiService {
     }
 
     if (request.body instanceof FormData) {
-      // Content-Type with the multipart boundary is set by nitro-fetch itself.
       return request.body;
     }
 
