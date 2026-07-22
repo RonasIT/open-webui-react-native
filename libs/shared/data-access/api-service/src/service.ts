@@ -1,13 +1,13 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import {
+  createReactotronApiLogger,
   NitroApiService,
   tokenInterceptor,
   unauthorizedInterceptor,
 } from '@open-webui-react-native/shared/data-access/nitro-api-client';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
-import { createReactotronApiLogger } from '@open-webui-react-native/shared/utils/reactotron';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { apiConfig } from './config';
 import { errorCatcherInterceptor, profileNotFoundInterceptor } from './interceptors';

@@ -1,13 +1,4 @@
-// Structural shape of a completed API call. Declared locally on purpose: this `type:utils`
-// lib must not import from a `type:data-access` lib (Nx boundary). It stays assignable to
-// `ApiLogger` from the nitro-api-client — the match is enforced where the two are wired together.
-interface ApiCallLog {
-  request: { method: string; params?: Record<string, any>; body?: unknown; headers: Record<string, string> };
-  url: string;
-  duration: number;
-  response?: { status: number; headers: unknown; data: unknown };
-  error?: { response?: { status: number; data?: unknown }; message: string };
-}
+import { ApiCallLog } from './api-logger';
 
 // Minimal view of the Reactotron instance we need. Avoids leaking the full `ReactotronReactNative`
 // type here and lets us pass parsed object bodies (Reactotron serializes them for display).
@@ -41,7 +32,8 @@ const toHeaderRecord = (headers: unknown): Record<string, string> => {
 
 // Feeds nitro-api-client requests into Reactotron's network Timeline, reproducing the cards the
 // XHR-based monitor showed before the nitro-fetch migration (nitro-fetch runs natively, bypassing
-// the JS XMLHttpRequest that Reactotron's built-in monitor patches).
+// the JS XMLHttpRequest that Reactotron's built-in monitor patches). It lives here, next to the
+// client, because it is only needed when requests go through nitro-fetch.
 // Returns a no-op outside `__DEV__` or when reactotron-react-native is not installed.
 export const createReactotronApiLogger = (): ((log: ApiCallLog) => void) => {
   if (!__DEV__) {
