@@ -1,7 +1,7 @@
 import { FlashList } from '@shopify/flash-list';
 import { useLocalSearchParams } from 'expo-router';
 import { delay } from 'lodash-es';
-import React, { ReactElement, useCallback, useRef } from 'react';
+import React, { ReactElement, useCallback, useMemo, useRef } from 'react';
 import { GestureResponderEvent, NativeScrollEvent, NativeSyntheticEvent, ScrollViewProps } from 'react-native';
 import { useSharedValue, withTiming } from 'react-native-reanimated';
 import { AiMessageActions } from '@open-webui-react-native/mobile/chat/features/ai-message-actions';
@@ -41,6 +41,12 @@ interface ChatMessagesListProps {
   editingMessageId?: string;
 }
 
+const MessagesListItemSeparator = (): ReactElement => <View className='h-20' />;
+
+const messagesListKeyExtractor = (item: Message): string => item.id;
+
+const messagesListGetItemType = (item: Message): Role => item.role;
+
 export default function ChatMessagesList({
   chatId,
   history,
@@ -70,9 +76,21 @@ export default function ChatMessagesList({
   const { id }: ChatScreenParams = useLocalSearchParams();
   const { modelId } = useSetSelectedModel(id);
 
+  const lastAssistantMessageId = useMemo(() => {
+    for (let index = messages.length - 1; index >= 0; index--) {
+      const messageId = messages[index]?.id;
+
+      if (messageId && history?.messages[messageId]?.role === Role.ASSISTANT) {
+        return messageId;
+      }
+    }
+
+    return undefined;
+  }, [history?.messages, messages]);
+
   const renderScrollComponent = useCallback((props: ScrollViewProps) => <AppKeyboardChatScrollView {...props} />, []);
 
-  const handleContentSizeChange = (): void => {
+  const handleContentSizeChange = useCallback((): void => {
     //NOTE: Needs to wait until the initial scroll to the bottom or content generation finished and not show the ChatBottomButton before
     isScrollToBottomAvailable.current = false;
 
@@ -89,43 +107,49 @@ export default function ChatMessagesList({
       });
     }
 
-    if (!isMessagesListLoaded && listRef.current && messages?.length > 0) {
+    if (!isMessagesListLoaded && listRef.current && messages.length > 0) {
       delay(() => {
         listRef.current?.scrollToEnd({ animated: false });
         delay(onLayout, 125);
       }, 125);
     }
-  };
+  }, [isMessagesListLoaded, messages.length, onLayout]);
 
-  const animateScrollToBottom = (value: number): void => {
-    isScrollToBottomVisible.value = withTiming(value, { duration: 200 });
-  };
+  const animateScrollToBottom = useCallback(
+    (value: number): void => {
+      isScrollToBottomVisible.value = withTiming(value, { duration: 200 });
+    },
+    [isScrollToBottomVisible],
+  );
 
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>): void => {
-    const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
-    const scrollY = contentOffset.y;
-    const contentHeight = contentSize.height;
-    const containerHeight = layoutMeasurement.height;
+  const handleScroll = useCallback(
+    (event: NativeSyntheticEvent<NativeScrollEvent>): void => {
+      const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
+      const scrollY = contentOffset.y;
+      const contentHeight = contentSize.height;
+      const containerHeight = layoutMeasurement.height;
 
-    const isScrollingUp = scrollY < previousScrollY.current;
-    previousScrollY.current = scrollY;
+      const isScrollingUp = scrollY < previousScrollY.current;
+      previousScrollY.current = scrollY;
 
-    //NOTE: The indent of 100 is needed to display the button not immediately when we start scrolling,
-    //but when a small distance has been scrolled.
-    const isNearBottom = scrollY + containerHeight >= contentHeight - 100;
+      //NOTE: The indent of 100 is needed to display the button not immediately when we start scrolling,
+      //but when a small distance has been scrolled.
+      const isNearBottom = scrollY + containerHeight >= contentHeight - 100;
 
-    if (!isResponseGenerating) {
-      shouldAutoscrollToBottomRef.current = isNearBottom;
-    }
+      if (!isResponseGenerating) {
+        shouldAutoscrollToBottomRef.current = isNearBottom;
+      }
 
-    if (isNearBottom || isScrollingUp) {
-      animateScrollToBottom(0);
-    } else if (isScrollToBottomAvailable.current && !isInputFocusing) {
-      animateScrollToBottom(1);
-    }
-  };
+      if (isNearBottom || isScrollingUp) {
+        animateScrollToBottom(0);
+      } else if (isScrollToBottomAvailable.current && !isInputFocusing) {
+        animateScrollToBottom(1);
+      }
+    },
+    [animateScrollToBottom, isInputFocusing, isResponseGenerating],
+  );
 
-  const scrollToBottom = (): void => {
+  const scrollToBottom = useCallback((): void => {
     //NOTE: Needs to hide scroll to bottom button to avoid its jumping while scrolling to bottom
     animateScrollToBottom(0);
     isScrollToBottomAvailable.current = false;
@@ -135,75 +159,86 @@ export default function ChatMessagesList({
     }, 1000);
 
     listRef.current?.scrollToEnd({ animated: true });
-  };
+  }, [animateScrollToBottom]);
 
-  const handleEditPress = (index: number, messageId: string, content: string): void => {
-    onEditPress(messageId, content);
-    delay(() => {
-      listRef.current?.scrollToIndex({
-        index: index,
-        viewOffset: 20,
-        animated: true,
-      });
-    }, 500);
-  };
+  const handleEditPress = useCallback(
+    (index: number, messageId: string, content: string): void => {
+      onEditPress(messageId, content);
+      delay(() => {
+        listRef.current?.scrollToIndex({
+          index,
+          viewOffset: 20,
+          animated: true,
+        });
+      }, 500);
+    },
+    [onEditPress],
+  );
 
-  const handleContinueResponsePress = (messageId: string): void => {
-    if (!modelId) return;
+  const handleContinueResponsePress = useCallback(
+    (messageId: string): void => {
+      if (!modelId) return;
 
-    patchChatQueryData(chatId, {
-      chat: {
-        history: {
-          messages: {
-            [messageId]: {
-              done: false,
+      patchChatQueryData(chatId, {
+        chat: {
+          history: {
+            messages: {
+              [messageId]: {
+                done: false,
+              },
             },
           },
-        },
-      } as Chat,
-    });
+        } as Chat,
+      });
 
-    const completePayload = prepareCompleteChatPayload({
-      chatId,
-      messages,
-      messageId: messageId,
-      sessionId: socketService.socketSessionId,
-      model: modelId,
-    });
-    completeChat(completePayload);
-  };
+      const completePayload = prepareCompleteChatPayload({
+        chatId,
+        messages,
+        messageId,
+        sessionId: socketService.socketSessionId,
+        model: modelId,
+      });
+      completeChat(completePayload);
+    },
+    [chatId, completeChat, messages, modelId],
+  );
 
-  const handleFollowUpPress = (text: string): void => {
-    onFollowUpPress(text);
-  };
+  const handleFollowUpPress = useCallback(
+    (text: string): void => {
+      onFollowUpPress(text);
+    },
+    [onFollowUpPress],
+  );
 
-  const handleTouchStart = (e: GestureResponderEvent): void => {
-    if (!isResponseGenerating) return;
+  const handleTouchStart = useCallback(
+    (e: GestureResponderEvent): void => {
+      if (!isResponseGenerating) return;
 
-    shouldAutoscrollToBottomRef.current = false;
-    previousTouchY.current = e.nativeEvent.pageY;
-  };
+      shouldAutoscrollToBottomRef.current = false;
+      previousTouchY.current = e.nativeEvent.pageY;
+    },
+    [isResponseGenerating],
+  );
 
-  const handleTouchMove = (e: GestureResponderEvent): void => {
-    if (!isResponseGenerating) return;
+  const handleTouchMove = useCallback(
+    (e: GestureResponderEvent): void => {
+      if (!isResponseGenerating) return;
 
-    const { pageY } = e.nativeEvent;
-    const deltaY = pageY - previousTouchY.current;
+      const { pageY } = e.nativeEvent;
+      const deltaY = pageY - previousTouchY.current;
 
-    previousTouchY.current = pageY;
-    shouldAutoscrollToBottomRef.current = deltaY < 0;
-  };
+      previousTouchY.current = pageY;
+      shouldAutoscrollToBottomRef.current = deltaY < 0;
+    },
+    [isResponseGenerating],
+  );
 
   const renderItem = useCallback(
     ({ item, index }: { item: Message; index: number }) => {
       const message = history?.messages[item.id];
       if (!message) return null;
 
-      const lastAssistantMessageInUIList = [...messages]
-        .reverse()
-        .find((m) => history?.messages[m.id]?.role === Role.ASSISTANT);
-
-      const isLast = item.id === lastAssistantMessageInUIList?.id;
+      const isLast = item.id === lastAssistantMessageId;
 
       return item.role === Role.ASSISTANT ? (
         <AiMessageActions
@@ -241,17 +276,21 @@ export default function ChatMessagesList({
       );
     },
     [
-      history,
-      onEditPress,
       editingMessageId,
-      showPreviousSibling,
-      showNextSibling,
       getSiblingsInfo,
-      modelId,
+      handleContinueResponsePress,
+      handleEditPress,
+      handleFollowUpPress,
+      history?.messages,
+      isResponseGenerating,
+      lastAssistantMessageId,
+      onAddDetails,
+      onEditPress,
+      onMoreConcise,
       onSuggestPress,
       onTryAgain,
-      onAddDetails,
-      onMoreConcise,
+      showNextSibling,
+      showPreviousSibling,
     ],
   );
 
@@ -262,9 +301,9 @@ export default function ChatMessagesList({
         contentContainerClassName='pb-[135] px-16'
         showsVerticalScrollIndicator={false}
         drawDistance={1500} //NOTE: Needs to avoid image jumping (while rerendering) when scrolling
-        keyExtractor={(item) => item.id}
-        getItemType={(item) => item.role}
-        ItemSeparatorComponent={() => <View className='h-20' />}
+        keyExtractor={messagesListKeyExtractor}
+        getItemType={messagesListGetItemType}
+        ItemSeparatorComponent={MessagesListItemSeparator}
         data={messages}
         renderItem={renderItem}
         maintainVisibleContentPosition={{
