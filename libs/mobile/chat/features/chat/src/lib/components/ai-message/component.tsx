@@ -110,6 +110,7 @@ export function ChatAiMessage({
           />
           <AppMarkdownView
             isContentReady={isMessageDone}
+            isStreaming={isResponseGenerating && isLast}
             onCitationPress={handleInlineCitationPress}
             textColor={isEditing ? colors.brandPrimary : undefined}>
             {textWithCitations}
