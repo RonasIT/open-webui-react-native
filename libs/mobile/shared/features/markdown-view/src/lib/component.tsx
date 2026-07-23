@@ -1,6 +1,7 @@
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import * as ExpoClipboard from 'expo-clipboard';
 import { memo, PropsWithChildren, ReactElement, useCallback, useLayoutEffect, useMemo, useRef } from 'react';
+import { TextStyle } from 'react-native';
 import { MarkdownProps } from 'react-native-markdown-display';
 import {
   CodeBlock as NitroCodeBlock,
@@ -13,7 +14,10 @@ import {
   useMarkdownSession,
   TableOptions,
   ParserOptions,
+  LinkRendererProps,
+  PartialMarkdownTheme,
 } from 'react-native-nitro-markdown';
+import { colors, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
 import {
   AppText,
   HorizontalOverflowScroll,
@@ -21,6 +25,7 @@ import {
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
+import { appMarkdownViewConfig } from './config';
 import { normalizeMathDelimiters } from './utils';
 
 const NITRO_PARSER_OPTIONS_BASE: Omit<ParserOptions, 'math'> = {
@@ -64,18 +69,40 @@ interface MarkdownBodyProps {
   codeBlockWidth?: number;
   highlightCode: boolean;
   isStreaming: boolean;
+  onCitationPress?: (index: string) => void;
+  textColor?: string;
 }
 
 function hasMathSyntax(markdown: string): boolean {
   return MATH_HINT_PATTERN.test(markdown);
 }
 
-function useMarkdownRenderConfig({ source, codeBlockWidth, highlightCode, isStreaming }: MarkdownBodyProps): {
+function getCitationIdFromHref(href: string): string | undefined {
+  const { citationHrefPrefix } = appMarkdownViewConfig;
+
+  if (!href.startsWith(citationHrefPrefix)) {
+    return undefined;
+  }
+
+  return href.slice(citationHrefPrefix.length) || undefined;
+}
+
+function useMarkdownRenderConfig({
+  source,
+  codeBlockWidth,
+  highlightCode,
+  isStreaming,
+  onCitationPress,
+  textColor,
+}: MarkdownBodyProps): {
   parserOptions: ParserOptions;
   tableOptions: TableOptions;
   renderers: MarkdownRenderers;
+  theme?: PartialMarkdownTheme;
+  onLinkPress?: (href: string) => boolean;
 } {
   const translate = useTranslation('SHARED.CODE_BLOCK');
+  const { isDarkColorScheme } = useColorScheme();
   const enableMath = useMemo(() => hasMathSyntax(source), [source]);
 
   const parserOptions = useMemo<ParserOptions>(
@@ -88,12 +115,41 @@ function useMarkdownRenderConfig({ source, codeBlockWidth, highlightCode, isStre
 
   const tableOptions = isStreaming ? TABLE_OPTIONS_STREAMING : TABLE_OPTIONS_STATIC;
 
+  const citationLinkStyle = useMemo<TextStyle>(
+    () => ({
+      color: isDarkColorScheme ? colors.textForeground : colors.textPrimary,
+      backgroundColor: isDarkColorScheme ? colors.gray700 : colors.gray75,
+      textDecorationLine: 'none',
+    }),
+    [isDarkColorScheme],
+  );
+
+  const theme = useMemo<PartialMarkdownTheme | undefined>(
+    () => (textColor ? { colors: { text: textColor, heading: textColor } } : undefined),
+    [textColor],
+  );
+
   const handleCopy = useCallback(
     async (content: string): Promise<void> => {
       await ExpoClipboard.setStringAsync(content);
       ToastService.showSuccess(translate('TEXT_COPIED_TO_CLIPBOARD'));
     },
     [translate],
+  );
+
+  const handleLinkPress = useCallback(
+    (href: string): boolean => {
+      const citationId = getCitationIdFromHref(href);
+
+      if (citationId) {
+        onCitationPress?.(citationId);
+
+        return false;
+      }
+
+      return true;
+    },
+    [onCitationPress],
   );
 
   const renderers: MarkdownRenderers = useMemo(
@@ -128,14 +184,31 @@ function useMarkdownRenderConfig({ source, codeBlockWidth, highlightCode, isStre
           </View>
         );
       },
+      link({ href, children }: LinkRendererProps) {
+        const citationId = getCitationIdFromHref(href);
+
+        if (!citationId) {
+          return undefined;
+        }
+
+        return (
+          <AppText style={citationLinkStyle} onPress={() => onCitationPress?.(citationId)}>
+            {`\u00A0`}
+            {children}
+            {`\u00A0`}
+          </AppText>
+        );
+      },
     }),
-    [codeBlockWidth, handleCopy, highlightCode, translate],
+    [citationLinkStyle, codeBlockWidth, handleCopy, highlightCode, onCitationPress, translate],
   );
 
   return {
     parserOptions,
     tableOptions,
     renderers,
+    theme,
+    onLinkPress: handleLinkPress,
   };
 }
 
@@ -143,15 +216,19 @@ function AppMarkdownStreamingBody({
   source,
   codeBlockWidth,
   highlightCode,
+  onCitationPress,
+  textColor,
 }: Omit<MarkdownBodyProps, 'isStreaming'>): ReactElement {
   const initialSourceRef = useRef(source);
   const sessionController = useMarkdownSession(initialSourceRef.current);
   const previousSourceRef = useRef(initialSourceRef.current);
-  const { parserOptions, tableOptions, renderers } = useMarkdownRenderConfig({
+  const { parserOptions, tableOptions, renderers, theme, onLinkPress } = useMarkdownRenderConfig({
     source,
     codeBlockWidth,
     highlightCode,
     isStreaming: true,
+    onCitationPress,
+    textColor,
   });
 
   useLayoutEffect(() => {
@@ -180,6 +257,8 @@ function AppMarkdownStreamingBody({
       highlightCode={highlightCode}
       tableOptions={tableOptions}
       renderers={renderers}
+      theme={theme}
+      onLinkPress={onLinkPress}
     />
   );
 }
@@ -188,12 +267,16 @@ function AppMarkdownStaticBody({
   source,
   codeBlockWidth,
   highlightCode,
+  onCitationPress,
+  textColor,
 }: Omit<MarkdownBodyProps, 'isStreaming'>): ReactElement {
-  const { parserOptions, tableOptions, renderers } = useMarkdownRenderConfig({
+  const { parserOptions, tableOptions, renderers, theme, onLinkPress } = useMarkdownRenderConfig({
     source,
     codeBlockWidth,
     highlightCode,
     isStreaming: false,
+    onCitationPress,
+    textColor,
   });
 
   return (
@@ -201,7 +284,9 @@ function AppMarkdownStaticBody({
       options={parserOptions}
       highlightCode={highlightCode}
       tableOptions={tableOptions}
-      renderers={renderers}>
+      renderers={renderers}
+      theme={theme}
+      onLinkPress={onLinkPress}>
       {source}
     </NitroMarkdown>
   );
@@ -212,6 +297,8 @@ function AppMarkdownViewComponent({
   codeBlockWidth,
   isContentReady,
   isStreaming = false,
+  onCitationPress,
+  textColor,
 }: AppMarkdownViewProps): ReactElement {
   const nitroSource = useMemo(() => normalizeMathDelimiters(String(children ?? '')), [children]);
   const highlightCode = (isContentReady ?? true) && !isStreaming;
@@ -221,14 +308,22 @@ function AppMarkdownViewComponent({
       <AppMarkdownStreamingBody
         source={nitroSource}
         codeBlockWidth={codeBlockWidth}
-        highlightCode={highlightCode} />
+        highlightCode={highlightCode}
+        onCitationPress={onCitationPress}
+        textColor={textColor}
+      />
     );
   }
 
-  return <AppMarkdownStaticBody
-    source={nitroSource}
-    codeBlockWidth={codeBlockWidth}
-    highlightCode={highlightCode} />;
+  return (
+    <AppMarkdownStaticBody
+      source={nitroSource}
+      codeBlockWidth={codeBlockWidth}
+      highlightCode={highlightCode}
+      onCitationPress={onCitationPress}
+      textColor={textColor}
+    />
+  );
 }
 
 export const AppMarkdownView = memo(AppMarkdownViewComponent);
