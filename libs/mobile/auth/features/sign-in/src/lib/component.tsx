@@ -16,10 +16,10 @@ export function SignIn(props: SignInProps): ReactElement {
   const { onSuccess } = props;
   const translate = useTranslation('AUTH.SIGN_IN');
   const [apiUrlInput, setApiUrlInput] = useState<string>();
-  const [providers, setProviders] = useState<Array<Provider>>([]);
+  const [providers, setProviders] = useState<Partial<Record<Provider, string>>>({});
 
-  const showGoogleSignIn = !isTestApiUrl(apiUrlInput) && providers.includes(Provider.GOOGLE);
-  const showOidcSignIn = !isTestApiUrl(apiUrlInput) && providers.includes(Provider.OIDC);
+  const showGoogleSignIn = !isTestApiUrl(apiUrlInput) && Provider.GOOGLE in providers;
+  const showOidcSignIn = !isTestApiUrl(apiUrlInput) && Provider.OIDC in providers;
 
   const handleSuccess = (): void => {
     onSuccess();
@@ -45,7 +45,7 @@ export function SignIn(props: SignInProps): ReactElement {
       )}
       {showOidcSignIn && (
         <View className='pt-40'>
-          <OdicSignIn onSuccess={handleSuccess} />
+          <OdicSignIn providerName={providers[Provider.OIDC] || 'SSO'} onSuccess={handleSuccess} />
         </View>
       )}
     </View>

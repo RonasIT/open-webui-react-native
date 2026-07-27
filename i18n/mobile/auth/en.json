@@ -14,7 +14,7 @@
         "BUTTON_CONTINUE_WITH_GOOGLE": "Continue with Google"
       },
       "OIDC_FORM": {
-        "BUTTON_CONTINUE_WITH_SSO": "Continue with SSO"
+        "BUTTON_CONTINUE_WITH": "Continue with {{provider}}"
       },
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "Close",

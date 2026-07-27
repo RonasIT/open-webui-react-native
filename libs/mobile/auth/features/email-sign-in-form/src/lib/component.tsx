@@ -17,7 +17,9 @@ import { EmailFormSchema } from './forms';
 interface EmailSignInFormProps {
   onSuccess: () => void;
   onApiUrlChange?: (url: string) => void;
-  setOauthProviders: (providers: Array<Provider>) => void;
+  // Full provider map { key: label } from /api/config — keeps both the provider key
+  // (for show/hide + login URL) and its display label (for the button text).
+  setOauthProviders: (providers: Partial<Record<Provider, string>>) => void;
 }
 
 export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }: EmailSignInFormProps): ReactElement {
@@ -61,7 +63,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
   useEffect(() => {
     setValue('url', query, { shouldValidate: true });
     onApiUrlChange?.(query);
-    setOauthProviders([]);
+    setOauthProviders({});
   }, [query]);
 
   useEffect(() => {
@@ -71,7 +73,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
 
         if (res?.name && res?.version) {
           appStorageService.apiUrl.set(debouncedQuery);
-          setOauthProviders(Object.keys(res.oauth.providers) as Array<Provider>);
+          setOauthProviders(res.oauth.providers);
         }
       }
     };

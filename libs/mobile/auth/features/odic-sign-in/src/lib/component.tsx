@@ -6,10 +6,12 @@ import { Provider } from '@open-webui-react-native/shared/data-access/api';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 
 interface OdicSignInProps {
+  // Display name from /api/config (OAUTH_PROVIDER_NAME), e.g. "Test SSO" / "Keycloak".
+  providerName: string;
   onSuccess?: () => void;
 }
 
-export function OdicSignIn({ onSuccess }: OdicSignInProps): ReactElement {
+export function OdicSignIn({ providerName, onSuccess }: OdicSignInProps): ReactElement {
   const translate = useTranslation('AUTH.SIGN_IN.OIDC_FORM');
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -30,7 +32,7 @@ export function OdicSignIn({ onSuccess }: OdicSignInProps): ReactElement {
 
   return (
     <Fragment>
-      <AppButton text={translate('BUTTON_CONTINUE_WITH_SSO')} onPress={handleSignInPress} />
+      <AppButton text={translate('BUTTON_CONTINUE_WITH', { provider: providerName })} onPress={handleSignInPress} />
       <OauthWebView
         isVisible={isModalVisible}
         provider={Provider.OIDC}
