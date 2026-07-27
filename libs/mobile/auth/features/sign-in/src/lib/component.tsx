@@ -45,7 +45,7 @@ export function SignIn(props: SignInProps): ReactElement {
       )}
       {showOidcSignIn && (
         <View className='pt-40'>
-          <OdicSignIn />
+          <OdicSignIn onSuccess={handleSuccess} />
         </View>
       )}
     </View>

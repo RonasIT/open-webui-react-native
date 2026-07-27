@@ -10,20 +10,23 @@ import {
   FullScreenModal,
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { authService } from '@open-webui-react-native/shared/data-access/api';
+import { authService, Provider } from '@open-webui-react-native/shared/data-access/api';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { getApiUrl, getHost } from '@open-webui-react-native/shared/utils/config';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { mobileUserAgent, tokenCaptureScript } from './script';
 
-export type OauthWebViewModalProps = {
+export type OauthWebViewProps = {
   isVisible: boolean;
+  // Which provider flow to open — the only provider-specific bit. Everything else
+  // (host detection, token capture, validation) is identical for every provider.
+  provider: Provider;
   onClose: () => void;
   onGetToken: (token: string) => void;
 };
 
-export function OauthWebViewModal({ isVisible, onClose, onGetToken }: OauthWebViewModalProps): ReactElement {
-  const translate = useTranslation('AUTH.SIGN_IN.GOOGLE_FORM.OAUTH_WEB_VIEW_MODAL');
+export function OauthWebView({ isVisible, provider, onClose, onGetToken }: OauthWebViewProps): ReactElement {
+  const translate = useTranslation('AUTH.SIGN_IN.OAUTH_WEB_VIEW_MODAL');
   const webViewRef = useRef<WebView>(null);
   const isTokenCaptured = useRef(false);
 
@@ -87,7 +90,7 @@ export function OauthWebViewModal({ isVisible, onClose, onGetToken }: OauthWebVi
           {isVisible && (
             <WebView
               ref={webViewRef}
-              source={{ uri: `${apiUrl}/oauth/google/login` }}
+              source={{ uri: `${apiUrl}/oauth/${provider}/login` }}
               userAgent={mobileUserAgent}
               incognito
               thirdPartyCookiesEnabled

@@ -1,8 +1,9 @@
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { Fragment, ReactElement, useState } from 'react';
+import { OauthWebView } from '@open-webui-react-native/mobile/auth/features/oauth-web-view';
 import { AppButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { Provider } from '@open-webui-react-native/shared/data-access/api';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
-import { OauthWebViewModal } from './components';
 
 interface GoogleSignInFormProps {
   onSuccess?: () => void;
@@ -34,10 +35,12 @@ export function GoogleSignInForm({ onSuccess }: GoogleSignInFormProps): ReactEle
         iconName='googleLogo'
         onPress={handleSignInWithGooglePress}
       />
-      <OauthWebViewModal
+      <OauthWebView
         isVisible={isModalVisible}
+        provider={Provider.GOOGLE}
         onClose={handleCloseModal}
-        onGetToken={handleToken} />
+        onGetToken={handleToken}
+      />
     </Fragment>
   );
 }
