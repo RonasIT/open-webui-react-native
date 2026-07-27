@@ -16,6 +16,9 @@
           "BUTTON_CLOSE": "Close",
           "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "This sign-in method is unavailable. Please use another option to continue."
         }
+      },
+      "OIDC_FORM": {
+        "BUTTON_CONTINUE_WITH_SSO": "Continue with SSO"
       }
     }
   }

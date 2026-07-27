@@ -71,7 +71,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
 
         if (res?.name && res?.version) {
           appStorageService.apiUrl.set(debouncedQuery);
-          setOauthProviders(Object.values(res.oauth.providers));
+          setOauthProviders(Object.keys(res.oauth.providers) as Array<Provider>);
         }
       }
     };

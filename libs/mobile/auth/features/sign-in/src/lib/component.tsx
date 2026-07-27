@@ -2,6 +2,7 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useState } from 'react';
 import { EmailSignInForm } from '@open-webui-react-native/mobile/auth/features/email-sign-in-form';
 import { GoogleSignInForm } from '@open-webui-react-native/mobile/auth/features/google-sign-in-form';
+import { OdicSignIn } from '@open-webui-react-native/mobile/auth/features/odic-sign-in';
 import { AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { Provider } from '@open-webui-react-native/shared/data-access/api';
 import { isTestApiUrl } from '@open-webui-react-native/shared/utils/config';
@@ -18,6 +19,7 @@ export function SignIn(props: SignInProps): ReactElement {
   const [providers, setProviders] = useState<Array<Provider>>([]);
 
   const showGoogleSignIn = !isTestApiUrl(apiUrlInput) && providers.includes(Provider.GOOGLE);
+  const showOidcSignIn = !isTestApiUrl(apiUrlInput) && providers.includes(Provider.OIDC);
 
   const handleSuccess = (): void => {
     onSuccess();
@@ -39,6 +41,11 @@ export function SignIn(props: SignInProps): ReactElement {
       {showGoogleSignIn && (
         <View className='pt-40'>
           <GoogleSignInForm onSuccess={handleSuccess} />
+        </View>
+      )}
+      {showOidcSignIn && (
+        <View className='pt-40'>
+          <OdicSignIn />
         </View>
       )}
     </View>
