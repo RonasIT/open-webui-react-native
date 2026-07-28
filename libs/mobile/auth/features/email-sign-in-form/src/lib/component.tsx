@@ -17,8 +17,6 @@ import { EmailFormSchema } from './forms';
 interface EmailSignInFormProps {
   onSuccess: () => void;
   onApiUrlChange?: (url: string) => void;
-  // Full provider map { key: label } from /api/config — keeps both the provider key
-  // (for show/hide + login URL) and its display label (for the button text).
   setOauthProviders: (providers: Partial<Record<Provider, string>>) => void;
 }
 

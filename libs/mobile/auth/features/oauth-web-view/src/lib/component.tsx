@@ -18,8 +18,6 @@ import { mobileUserAgent, tokenCaptureScript } from './script';
 
 export type OauthWebViewProps = {
   isVisible: boolean;
-  // Which provider flow to open — the only provider-specific bit. Everything else
-  // (host detection, token capture, validation) is identical for every provider.
   provider: Provider;
   onClose: () => void;
   onGetToken: (token: string) => void;
