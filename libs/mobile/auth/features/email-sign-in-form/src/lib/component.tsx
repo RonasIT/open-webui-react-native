@@ -17,7 +17,7 @@ import { EmailFormSchema } from './forms';
 interface EmailSignInFormProps {
   onSuccess: () => void;
   onApiUrlChange?: (url: string) => void;
-  setOauthProviders: (providers: Array<Provider>) => void;
+  setOauthProviders: (providers: Partial<Record<Provider, string>>) => void;
 }
 
 export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }: EmailSignInFormProps): ReactElement {
@@ -61,7 +61,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
   useEffect(() => {
     setValue('url', query, { shouldValidate: true });
     onApiUrlChange?.(query);
-    setOauthProviders([]);
+    setOauthProviders({});
   }, [query]);
 
   useEffect(() => {
@@ -71,7 +71,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
 
         if (res?.name && res?.version) {
           appStorageService.apiUrl.set(debouncedQuery);
-          setOauthProviders(Object.values(res.oauth.providers));
+          setOauthProviders(res.oauth.providers);
         }
       }
     };

@@ -3,4 +3,5 @@ export enum Provider {
   MICROSOFT = 'microsoft',
   GITHUB = 'github',
   FEISHU = 'feishu',
+  OIDC = 'oidc',
 }

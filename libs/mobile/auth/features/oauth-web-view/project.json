@@ -1,0 +1,9 @@
+{
+  "name": "mobile/auth/features/oauth-web-view",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mobile/auth/features/oauth-web-view/src",
+  "projectType": "library",
+  "tags": ["app:mobile", "scope:auth", "type:features"],
+  "// targets": "to see all targets run: nx show project mobile/auth/features/oauth-web-view --web",
+  "targets": {}
+}

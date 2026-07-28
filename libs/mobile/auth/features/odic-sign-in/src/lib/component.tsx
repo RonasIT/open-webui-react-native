@@ -5,16 +5,18 @@ import { AppButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { Provider } from '@open-webui-react-native/shared/data-access/api';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 
-interface GoogleSignInFormProps {
+interface OdicSignInProps {
+  // Display name from /api/config (OAUTH_PROVIDER_NAME), e.g. "Test SSO" / "Keycloak".
+  providerName: string;
   onSuccess?: () => void;
 }
 
-export function GoogleSignInForm({ onSuccess }: GoogleSignInFormProps): ReactElement {
-  const translate = useTranslation('AUTH.SIGN_IN.GOOGLE_FORM');
+export function OdicSignIn({ providerName, onSuccess }: OdicSignInProps): ReactElement {
+  const translate = useTranslation('AUTH.SIGN_IN.OIDC_FORM');
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const handleSignInWithGooglePress = async (): Promise<void> => setIsModalVisible(true);
+  const handleSignInPress = async (): Promise<void> => setIsModalVisible(true);
 
   const handleCloseModal = (): void => setIsModalVisible(false);
 
@@ -30,14 +32,10 @@ export function GoogleSignInForm({ onSuccess }: GoogleSignInFormProps): ReactEle
 
   return (
     <Fragment>
-      <AppButton
-        text={translate('BUTTON_CONTINUE_WITH_GOOGLE')}
-        iconName='googleLogo'
-        onPress={handleSignInWithGooglePress}
-      />
+      <AppButton text={translate('BUTTON_CONTINUE_WITH', { provider: providerName })} onPress={handleSignInPress} />
       <OauthWebView
         isVisible={isModalVisible}
-        provider={Provider.GOOGLE}
+        provider={Provider.OIDC}
         onClose={handleCloseModal}
         onGetToken={handleToken}
       />
