@@ -1,6 +1,8 @@
-import { Image } from 'react-native-compressor';
-import { CompressorOptions } from 'react-native-compressor/lib/typescript/Image';
+import { Image as ImageCompressor } from 'react-native-compressor';
 
-export const compressImage = async (path: string, options?: CompressorOptions): Promise<string> => {
-  return Image.compress(path, options);
+export const compressImage = async (
+  path: string,
+  options?: NonNullable<Parameters<typeof ImageCompressor.compress>[1]>,
+): Promise<string> => {
+  return ImageCompressor.compress(path, options);
 };
