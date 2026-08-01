@@ -33,7 +33,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
     handleSubmit,
     setValue,
     formState: { isValid, errors },
-  } = useForm({
+  } = useForm<EmailFormSchema>({
     defaultValues: new EmailFormSchema(),
     resolver: yupResolver(EmailFormSchema.validationSchema),
   });

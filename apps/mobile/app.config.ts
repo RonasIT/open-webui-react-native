@@ -103,29 +103,10 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
         {
           microphonePermission:
             'Open MobileUI uses your microphone to let you record and send voice messages in chat conversations.',
+          enableBackgroundPlayback: false,
+          enableBackgroundRecording: false,
         },
       ],
-      [
-        'expo-build-properties',
-        {
-          android: {
-            androidGradlePluginVersion: '8.3.2',
-            compileSdkVersion: 36,
-            targetSdkVersion: 35,
-            buildToolsVersion: '36.0.0',
-            ndkVersion: '27.1.12297006',
-            packagingOptions: {
-              jniLibs: {
-                useLegacyPackaging: false,
-              },
-            },
-          },
-          ios: {
-            useFrameworks: 'static',
-          },
-        },
-      ],
-      ['./plugins/with-remove-media-playback-permission'],
     ]),
     newArchEnabled: true,
     extra,
