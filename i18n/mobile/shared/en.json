@@ -4,7 +4,7 @@
       "TEXT_INVALID_EMAIL": "Please enter a valid email address",
       "TEXT_REQUIRED_EMAIL": "Please enter your email",
       "TEXT_REQUIRED_PASSWORD": "Please enter your password",
-      "TEXT_INVALID_URL": "Please enter a valid URL in format https://your.domain",
+      "TEXT_INVALID_URL": "Please enter a valid server URL, e.g. https://your.domain or http://192.168.1.10:3000",
       "TEXT_REQUIRED_FOLDER_NAME": "Please enter a folder name"
     },
     "COMMON": {

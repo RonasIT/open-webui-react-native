@@ -51,6 +51,14 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       config: {
         usesNonExemptEncryption: false,
       },
+      infoPlist: {
+        // Allow connecting to self-hosted Open WebUI servers that are reachable
+        // only over plain HTTP (local network, Docker, Raspberry Pi, Tailscale).
+        NSAppTransportSecurity: {
+          NSAllowsArbitraryLoads: true,
+          NSAllowsLocalNetworking: true,
+        },
+      },
     },
     android: {
       package: appId,
@@ -105,6 +113,16 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
             'Open MobileUI uses your microphone to let you record and send voice messages in chat conversations.',
           enableBackgroundPlayback: false,
           enableBackgroundRecording: false,
+        },
+      ],
+      [
+        'expo-build-properties',
+        {
+          android: {
+            // Allow plain HTTP connections to self-hosted servers (local network,
+            // Tailscale, etc.). Mirrors iOS NSAllowsArbitraryLoads above.
+            usesCleartextTraffic: true,
+          },
         },
       ],
     ]),
