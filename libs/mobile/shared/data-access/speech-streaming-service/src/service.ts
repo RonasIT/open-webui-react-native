@@ -1,6 +1,7 @@
 import { setAudioModeAsync } from 'expo-audio';
 import * as Speech from 'expo-speech';
 import { SpeechStreamingServiceEvent } from './enums';
+import { removeFencedCodeBlocks } from './remove-fenced-code-blocks';
 
 const textBreakpoints = ['.', '!', '?', ',', ';', ':', '-'];
 
@@ -26,7 +27,9 @@ class SpeechStreamingService {
   };
 
   public handleContent(text: string, isDone?: boolean): void {
-    const unspokenText = text.slice(this.spokenText.length);
+    // NOTE: Speak from text with code fences removed; cursor tracks speakable length
+    const speakableText = removeFencedCodeBlocks(text, { holdIncomplete: !isDone });
+    const unspokenText = speakableText.slice(this.spokenText.length);
 
     let textToSpeak = '';
 
