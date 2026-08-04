@@ -75,6 +75,7 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
             startChatCreationRef.current(text, modelIdRef.current);
           }
 
+          speechStreamingService.resumeContentSpeaking();
           setIsWaitingNewMessage(true);
         } else {
           startSpeechRecording();
@@ -87,14 +88,17 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     isCreating || isSending || isLoading || isTranscribing || isWaitingNewMessage || isReceivingNewMessage;
 
   const close = async (): Promise<void> => {
-    await stopSpeechRecording();
-    await speechStreamingService.stopContentSpeaking();
+    // NOTE: Stop TTS immediately; isStopped is set sync so late handleContent/speakText no-ops
+    const stopSpeakingPromise = speechStreamingService.stopContentSpeaking();
+    speechStreamingService.clearListeners();
     clearSilenceTimeout();
     setIsUserSpeaking(false);
     setIsAiSpeaking(false);
     setIsWaitingNewMessage(false);
     setIsReceivingNewMessage(false);
     setIsVisible(false);
+    await stopSpeakingPromise;
+    await stopSpeechRecording();
   };
 
   useImperativeHandle(

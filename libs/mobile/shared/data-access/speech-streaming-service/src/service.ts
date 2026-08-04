@@ -7,10 +7,12 @@ const textBreakpoints = ['.', '!', '?', ',', ';', ':', '-'];
 
 class SpeechStreamingService {
   private spokenText: string;
+  private isStopped: boolean;
   private listeners: Map<string, Array<(...args: Array<any>) => void>> = new Map();
 
   constructor() {
     this.spokenText = '';
+    this.isStopped = true;
   }
 
   public onSpeakingStart(callback: () => void): () => void {
@@ -21,12 +23,23 @@ class SpeechStreamingService {
     return this.addEventListener(SpeechStreamingServiceEvent.SPEAKING_END, callback);
   }
 
-  public stopContentSpeaking = async (): Promise<void> => {
-    await Speech.stop();
+  public resumeContentSpeaking = (): void => {
+    this.isStopped = false;
     this.spokenText = '';
   };
 
+  public stopContentSpeaking = async (): Promise<void> => {
+    // NOTE: Set before await so in-flight speakText calls bail out after setAudioModeAsync
+    this.isStopped = true;
+    this.spokenText = '';
+    await Speech.stop();
+  };
+
   public handleContent(text: string, isDone?: boolean): void {
+    if (this.isStopped) {
+      return;
+    }
+
     // NOTE: Speak cleaned markdown; cursor tracks speakable length
     const speakableText = prepareSpeakableText(text, { holdIncomplete: !isDone });
     const unspokenText = speakableText.slice(this.spokenText.length);
@@ -69,15 +82,28 @@ class SpeechStreamingService {
   }
 
   private speakText = async (text: string, isDone?: boolean): Promise<void> => {
+    if (this.isStopped) {
+      return;
+    }
+
     // NOTE: Need to set audio mode to allow speech in silent mode on iOS
     await setAudioModeAsync({
       playsInSilentMode: true,
     });
 
+    // NOTE: stopContentSpeaking may have been called while awaiting audio mode
+    if (this.isStopped) {
+      return;
+    }
+
     Speech.speak(text, {
       // NOTE: Only English is working good for now
       language: 'en-US',
       onDone: () => {
+        if (this.isStopped) {
+          return;
+        }
+
         if (isDone) {
           this.emit(SpeechStreamingServiceEvent.SPEAKING_END);
           this.spokenText = '';
