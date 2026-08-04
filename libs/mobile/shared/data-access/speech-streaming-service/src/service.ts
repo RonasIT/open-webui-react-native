@@ -1,7 +1,7 @@
 import { setAudioModeAsync } from 'expo-audio';
 import * as Speech from 'expo-speech';
 import { SpeechStreamingServiceEvent } from './enums';
-import { removeFencedCodeBlocks } from './remove-fenced-code-blocks';
+import { prepareSpeakableText } from './prepare-speakable-text';
 
 const textBreakpoints = ['.', '!', '?', ',', ';', ':', '-'];
 
@@ -27,17 +27,22 @@ class SpeechStreamingService {
   };
 
   public handleContent(text: string, isDone?: boolean): void {
-    // NOTE: Speak from text with code fences removed; cursor tracks speakable length
-    const speakableText = removeFencedCodeBlocks(text, { holdIncomplete: !isDone });
+    // NOTE: Speak cleaned markdown; cursor tracks speakable length
+    const speakableText = prepareSpeakableText(text, { holdIncomplete: !isDone });
     const unspokenText = speakableText.slice(this.spokenText.length);
 
     let textToSpeak = '';
 
-    // NOTE: We need to separate text by breakpoints to make it more natural
-    for (let i = unspokenText.length - 1; i >= 0; i--) {
-      if (textBreakpoints.includes(unspokenText[i])) {
-        textToSpeak = unspokenText.slice(0, i + 1);
-        break;
+    if (isDone) {
+      // NOTE: Flush all leftover speakable text when the message is complete
+      textToSpeak = unspokenText;
+    } else {
+      // NOTE: Separate text by breakpoints to make streaming speech more natural
+      for (let i = unspokenText.length - 1; i >= 0; i--) {
+        if (textBreakpoints.includes(unspokenText[i])) {
+          textToSpeak = unspokenText.slice(0, i + 1);
+          break;
+        }
       }
     }
 
@@ -48,11 +53,13 @@ class SpeechStreamingService {
 
       this.spokenText = this.spokenText + textToSpeak;
 
-      this.speakText(textToSpeak);
+      this.speakText(textToSpeak, isDone);
+
+      return;
     }
 
     if (isDone) {
-      // NOTE: If the text is done, we need to stop speaking and emit the event
+      // NOTE: All speakable text was already queued; emit end after the speech queue drains
       this.speakText('', true);
     }
   }
