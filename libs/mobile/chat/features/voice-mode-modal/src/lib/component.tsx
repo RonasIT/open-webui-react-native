@@ -43,6 +43,11 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
   const [chatId, setChatId] = useState<string | undefined>(undefined);
   const [modelId, setModelId] = useState<string>('');
 
+  const chatIdRef = useRef(chatId);
+  const modelIdRef = useRef(modelId);
+  chatIdRef.current = chatId;
+  modelIdRef.current = modelId;
+
   const handleChatCreated = (id: string): void => {
     if (isVisible) {
       setChatId(id);
@@ -54,15 +59,20 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
   const { sendMessage, isLoading: isSending } = useSendMessage({ chatData: chat });
   const { startChatCreation, isLoading: isCreating } = useCreateNewChat({ onSuccess: handleChatCreated });
 
+  const sendMessageRef = useRef(sendMessage);
+  const startChatCreationRef = useRef(startChatCreation);
+  sendMessageRef.current = sendMessage;
+  startChatCreationRef.current = startChatCreation;
+
   const { isTranscribing, startSpeechRecording, stopSpeechRecording, completeSpeechRecording, metering } =
     useDictateMode({
       updateIntervalMillis: 100,
       onCompleteRecording: (text: string) => {
         if (text.trim().length) {
-          if (chatId) {
-            sendMessage(text, modelId);
+          if (chatIdRef.current) {
+            sendMessageRef.current(text, modelIdRef.current);
           } else {
-            startChatCreation(text, modelId);
+            startChatCreationRef.current(text, modelIdRef.current);
           }
 
           setIsWaitingNewMessage(true);
@@ -137,20 +147,28 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
   }, [isVisible]);
 
   useEffect(() => {
-    if (isVisible) {
-      if (isWaitingNewMessage && newMessage && !newMessage.done) {
-        // NOTE: In this case, we start receiving a new message via WebSocket
+    if (!isVisible) {
+      return;
+    }
+
+    if (isWaitingNewMessage && newMessage) {
+      if (!newMessage.done) {
+        // NOTE: Start receiving a new message via WebSocket
         setIsWaitingNewMessage(false);
         setIsReceivingNewMessage(true);
         speechStreamingService.handleContent(newMessage.content);
+      } else if (newMessage.content.trim()) {
+        // NOTE: Reply already finished before streaming subscription (common on create-chat)
+        setIsWaitingNewMessage(false);
+        speechStreamingService.handleContent(newMessage.content, true);
       }
+    }
 
-      if (isReceivingNewMessage && newMessage) {
-        speechStreamingService.handleContent(newMessage.content, newMessage.done);
+    if (isReceivingNewMessage && newMessage) {
+      speechStreamingService.handleContent(newMessage.content, newMessage.done);
 
-        if (newMessage.done) {
-          setIsReceivingNewMessage(false);
-        }
+      if (newMessage.done) {
+        setIsReceivingNewMessage(false);
       }
     }
   }, [isVisible, isWaitingNewMessage, isReceivingNewMessage, newMessage?.content.length, newMessage?.done]);

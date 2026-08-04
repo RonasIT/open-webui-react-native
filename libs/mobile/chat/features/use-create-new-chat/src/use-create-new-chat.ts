@@ -2,11 +2,14 @@ import dayjs from 'dayjs';
 import {
   chatApi,
   ChatGenerationOption,
+  chatQueriesKeys,
+  ChatResponse,
   patchChatList,
   prepareCompleteChatPayload,
   prepareCreateChatPayload,
 } from '@open-webui-react-native/shared/data-access/api';
 import { FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { socketService } from '@open-webui-react-native/shared/data-access/websocket';
 
 interface UseCreateNewChatArgs {
@@ -32,6 +35,15 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
 
     createNewChat(payload, {
       onSuccess: (data) => {
+        // NOTE: Seed get-chat cache so socket streaming and VoiceMode can track the assistant reply
+        const assistantMessage = data.chat.history.messages[data.chat.history.currentId];
+
+        if (assistantMessage) {
+          assistantMessage.done = false;
+        }
+
+        queryClient.setQueryData<ChatResponse>(chatQueriesKeys.get(data.id).queryKey, data);
+
         onSuccess?.(data.id);
         patchChatList({
           id: data.id,
