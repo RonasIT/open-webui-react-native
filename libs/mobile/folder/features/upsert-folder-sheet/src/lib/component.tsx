@@ -31,6 +31,7 @@ import {
   prepareCreateFolderPayload,
 } from '@open-webui-react-native/shared/data-access/api';
 import { AttachedFile, FileData, FileType } from '@open-webui-react-native/shared/data-access/common';
+import { AnalyticsEvent, analyticsService } from '@open-webui-react-native/shared/utils/analytics-service';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { getDocumentFormData } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
@@ -135,6 +136,7 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
       });
     } else {
       await createFolder(payload);
+      analyticsService.trackEvent(AnalyticsEvent.NEW_FOLDER_CREATED);
     }
     closeModal();
     resetKnowledge();

@@ -11,6 +11,7 @@ import { View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 import { ChatGenerationOption } from '@open-webui-react-native/shared/data-access/api';
 import { webSocketState$ } from '@open-webui-react-native/shared/data-access/websocket';
+import { AnalyticsEvent, analyticsService } from '@open-webui-react-native/shared/utils/analytics-service';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { SearchFolderView, SearchModelView } from './components';
 
@@ -43,6 +44,7 @@ export function CreateChat({
     reset();
     resetAttachments();
     onChatCreated(id);
+    analyticsService.trackEvent(AnalyticsEvent.NEW_CHAT_CREATED);
   };
 
   const { startChatCreation, isLoading: isCreating } = useCreateNewChat({ onSuccess: handleChatCreated });
@@ -62,7 +64,12 @@ export function CreateChat({
         return ToastService.showError(translate('TEXT_MODEL_NOT_SELECTED'));
       }
 
+      if (options.includes(ChatGenerationOption.IMAGE_GENERATION)) {
+        analyticsService.trackEvent(AnalyticsEvent.GENERATE_IMAGE_USED);
+      }
+
       startChatCreation(inputValue, modelId, options, attachedFiles.get(), attachedImages.get(), folderId);
+      analyticsService.trackEvent(AnalyticsEvent.MESSAGE_SENT, { modelId });
     })();
 
   useEffect(() => {
