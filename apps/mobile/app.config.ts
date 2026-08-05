@@ -15,6 +15,10 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     sentry: {
       dsn: process.env.SENTRY_DSN,
     },
+    amplitude: {
+      apiKeyDev: process.env.AMPLITUDE_API_KEY_DEV,
+      apiKeyProd: process.env.AMPLITUDE_API_KEY_PROD,
+    },
     env: appEnv.current,
     googleIosClientId: appEnv.select({
       default: process.env.GOOGLE_IOS_CLIENT_ID_DEV,
