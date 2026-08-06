@@ -7,7 +7,7 @@ import {
   MessageSource,
   Role,
 } from '@open-webui-react-native/shared/data-access/common';
-import { ChatStatusData } from '@open-webui-react-native/shared/data-access/websocket';
+import { ChatCompletionOutputItem, ChatStatusData } from '@open-webui-react-native/shared/data-access/websocket';
 
 export class Message extends BaseEntity<string> {
   @Expose({ name: 'user_id' })
@@ -21,6 +21,13 @@ export class Message extends BaseEntity<string> {
 
   @Expose()
   public content: string;
+
+  // NOTE: Open WebUI 0.11.0+ persists assistant text as an `output` array (Responses API
+  // format) in addition to `content`. Kept so the client can derive text itself and stay
+  // compatible with both the old (flat `content`) and new (`output`) backend formats.
+  @Expose()
+  @Type(() => ChatCompletionOutputItem)
+  public output?: Array<ChatCompletionOutputItem>;
 
   @Expose()
   public childrenIds?: Array<string>;

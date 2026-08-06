@@ -3,6 +3,7 @@ import { queryClient } from '@open-webui-react-native/shared/data-access/query-c
 import {
   ChatEventBase,
   ChatCompletionChunk,
+  getOutputText,
   socketService,
 } from '@open-webui-react-native/shared/data-access/websocket';
 import { chatQueriesKeys } from '../../chat-queries-keys';
@@ -15,6 +16,9 @@ import { patchCompletedMessage } from '../patch-completed-message';
 const sourcesStore: Record<string, ChatCompletionChunk['sources']> = {};
 const flushScheduled: Record<string, boolean> = {};
 const contentBuffer: Record<string, string> = {};
+// NOTE: Buffer the raw `output` array so it can be persisted on the message. The backend seeds
+// "Continue Response" from the stored `output`; if we drop it, continue starts from scratch.
+const outputBuffer: Record<string, ChatCompletionChunk['output']> = {};
 
 export const handleChatCompletionEvent = async (socketResponse: ChatEventBase): Promise<void> => {
   const sessionId = socketService.socketSessionId;
@@ -26,31 +30,43 @@ export const handleChatCompletionEvent = async (socketResponse: ChatEventBase): 
     sourcesStore[chatId] = chatCompletionData.sources;
   }
 
-  if (!chatCompletionData?.content) return;
-  contentBuffer[chatId] = chatCompletionData.content;
+  // NOTE: Since Open WebUI 0.11.0 the completion stream delivers assistant text inside an
+  // `output` array (Responses API format) instead of a flat `content` string. Fall back to it
+  // so streamed content renders and — importantly — the terminal `done` event below still runs.
+  const content = chatCompletionData.content || getOutputText(chatCompletionData.output);
+
+  if (chatCompletionData.output) {
+    outputBuffer[chatId] = chatCompletionData.output;
+  }
 
   const queryKey = chatQueriesKeys.get(chatId).queryKey;
-  const chatData = queryClient.getQueryData<ChatResponse>(queryKey);
   const storedSources = sourcesStore[chatId];
 
-  // NOTE: Limit updates to once per frame (~16ms) because frequent streaming updates
-  // can cause UI unresponsiveness on low-end Android devices.
-  if (!flushScheduled[chatId] && chatData) {
-    flushScheduled[chatId] = true;
+  if (content) {
+    contentBuffer[chatId] = content;
 
-    requestAnimationFrame(() => {
-      flushScheduled[chatId] = false;
+    const chatData = queryClient.getQueryData<ChatResponse>(queryKey);
 
-      queryClient.setQueryData(queryKey, (oldData: ChatResponse) =>
-        patchChatMessagesWithCompletion(oldData, contentBuffer[chatId], storedSources),
-      );
-    });
+    // NOTE: Limit updates to once per frame (~16ms) because frequent streaming updates
+    // can cause UI unresponsiveness on low-end Android devices.
+    if (!flushScheduled[chatId] && chatData) {
+      flushScheduled[chatId] = true;
+
+      requestAnimationFrame(() => {
+        flushScheduled[chatId] = false;
+
+        queryClient.setQueryData(queryKey, (oldData: ChatResponse) =>
+          patchChatMessagesWithCompletion(oldData, contentBuffer[chatId], storedSources, outputBuffer[chatId]),
+        );
+      });
+    }
   }
 
   if (chatCompletionData.done) {
     delete sourcesStore[chatId];
 
     queryClient.setQueryData(queryKey, (oldData: ChatResponse) => patchCompletedMessage(oldData));
-    handleCompletedChat(chatCompletionData.content, socketResponse.chatId, sessionId, storedSources);
+    handleCompletedChat(contentBuffer[chatId] ?? content, chatId, sessionId, storedSources, outputBuffer[chatId]);
+    delete outputBuffer[chatId];
   }
 };
