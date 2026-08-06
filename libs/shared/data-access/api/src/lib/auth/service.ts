@@ -14,7 +14,17 @@ class AuthService {
   }
 
   public async signOut(): Promise<void> {
-    await getApiService().get(`${authApiConfig.route}/signout`);
+    try {
+      await getApiService().post(`${authApiConfig.route}/signout`, undefined, { params: { skipToast: true } });
+    } catch (error) {
+      // Fallback for Open WebUI < 0.6.23 (before PR #24420), where /signout was GET.
+      if ((error as { response?: { status?: number } })?.response?.status === 405) {
+        await getApiService().get(`${authApiConfig.route}/signout`);
+
+        return;
+      }
+      throw error;
+    }
   }
 
   public async getProfile(): Promise<SignInResponse> {

@@ -2,6 +2,7 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useState } from 'react';
 import { EmailSignInForm } from '@open-webui-react-native/mobile/auth/features/email-sign-in-form';
 import { GoogleSignInForm } from '@open-webui-react-native/mobile/auth/features/google-sign-in-form';
+import { OdicSignIn } from '@open-webui-react-native/mobile/auth/features/odic-sign-in';
 import { AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { Provider } from '@open-webui-react-native/shared/data-access/api';
 import { isTestApiUrl } from '@open-webui-react-native/shared/utils/config';
@@ -15,9 +16,10 @@ export function SignIn(props: SignInProps): ReactElement {
   const { onSuccess } = props;
   const translate = useTranslation('AUTH.SIGN_IN');
   const [apiUrlInput, setApiUrlInput] = useState<string>();
-  const [providers, setProviders] = useState<Array<Provider>>([]);
+  const [providers, setProviders] = useState<Partial<Record<Provider, string>>>({});
 
-  const showGoogleSignIn = !isTestApiUrl(apiUrlInput) && providers.includes(Provider.GOOGLE);
+  const showGoogleSignIn = !isTestApiUrl(apiUrlInput) && Provider.GOOGLE in providers;
+  const showOidcSignIn = !isTestApiUrl(apiUrlInput) && Provider.OIDC in providers;
 
   const handleSuccess = (): void => {
     onSuccess();
@@ -39,6 +41,11 @@ export function SignIn(props: SignInProps): ReactElement {
       {showGoogleSignIn && (
         <View className='pt-40'>
           <GoogleSignInForm onSuccess={handleSuccess} />
+        </View>
+      )}
+      {showOidcSignIn && (
+        <View className='pt-40'>
+          <OdicSignIn providerName={providers[Provider.OIDC] || 'SSO'} onSuccess={handleSuccess} />
         </View>
       )}
     </View>

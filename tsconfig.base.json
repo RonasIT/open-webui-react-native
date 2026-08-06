@@ -21,6 +21,7 @@
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
       "@open-webui-react-native/mobile/auth/features/email-sign-in-form": [
@@ -28,6 +29,12 @@
       ],
       "@open-webui-react-native/mobile/auth/features/google-sign-in-form": [
         "libs/mobile/auth/features/google-sign-in-form/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/auth/features/oauth-web-view": [
+        "libs/mobile/auth/features/oauth-web-view/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/auth/features/odic-sign-in": [
+        "libs/mobile/auth/features/odic-sign-in/src/index.ts"
       ],
       "@open-webui-react-native/mobile/auth/features/sign-in": ["libs/mobile/auth/features/sign-in/src/index.ts"],
       "@open-webui-react-native/mobile/chat/data-access/archived-chats-filter-state": [

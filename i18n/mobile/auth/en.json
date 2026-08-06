@@ -11,11 +11,14 @@
         "BUTTON_SIGN_IN": "Sign In"
       },
       "GOOGLE_FORM": {
-        "BUTTON_CONTINUE_WITH_GOOGLE": "Continue with Google",
-        "OAUTH_WEB_VIEW_MODAL": {
-          "BUTTON_CLOSE": "Close",
-          "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "This sign-in method is unavailable. Please use another option to continue."
-        }
+        "BUTTON_CONTINUE_WITH_GOOGLE": "Continue with Google"
+      },
+      "OIDC_FORM": {
+        "BUTTON_CONTINUE_WITH": "Continue with {{provider}}"
+      },
+      "OAUTH_WEB_VIEW_MODAL": {
+        "BUTTON_CLOSE": "Close",
+        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "This sign-in method is unavailable. Please use another option to continue."
       }
     }
   }

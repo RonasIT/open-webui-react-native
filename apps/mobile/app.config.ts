@@ -30,11 +30,11 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     slug: process.env.EXPO_PUBLIC_APP_SLUG as string,
     scheme: process.env.EXPO_PUBLIC_APP_SCHEME as string,
     owner: process.env.EXPO_PUBLIC_APP_OWNER as string,
-    version: '1.6.5',
+    version: '1.8.1',
     userInterfaceStyle: 'automatic',
     orientation: 'portrait',
     icon: './assets/icon.png',
-    runtimeVersion: '1.6.5',
+    runtimeVersion: '1.8.1',
     experiments: {
       reactCompiler: true,
     },
@@ -46,17 +46,25 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       supportsTablet: false,
       buildNumber: appEnv.select({
         default: '18',
-        production: '31',
+        production: '35',
       }),
       config: {
         usesNonExemptEncryption: false,
+      },
+      infoPlist: {
+        // Allow connecting to self-hosted Open WebUI servers that are reachable
+        // only over plain HTTP (local network, Docker, Raspberry Pi, Tailscale).
+        NSAppTransportSecurity: {
+          NSAllowsArbitraryLoads: true,
+          NSAllowsLocalNetworking: true,
+        },
       },
     },
     android: {
       package: appId,
       versionCode: appEnv.select({
         default: 15,
-        production: 31,
+        production: 35,
       }),
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
@@ -103,29 +111,20 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
         {
           microphonePermission:
             'Open MobileUI uses your microphone to let you record and send voice messages in chat conversations.',
+          enableBackgroundPlayback: false,
+          enableBackgroundRecording: false,
         },
       ],
       [
         'expo-build-properties',
         {
           android: {
-            androidGradlePluginVersion: '8.3.2',
-            compileSdkVersion: 36,
-            targetSdkVersion: 35,
-            buildToolsVersion: '36.0.0',
-            ndkVersion: '27.1.12297006',
-            packagingOptions: {
-              jniLibs: {
-                useLegacyPackaging: false,
-              },
-            },
-          },
-          ios: {
-            useFrameworks: 'static',
+            // Allow plain HTTP connections to self-hosted servers (local network,
+            // Tailscale, etc.). Mirrors iOS NSAllowsArbitraryLoads above.
+            usesCleartextTraffic: true,
           },
         },
       ],
-      ['./plugins/with-remove-media-playback-permission'],
     ]),
     newArchEnabled: true,
     extra,
