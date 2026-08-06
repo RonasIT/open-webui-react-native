@@ -16,6 +16,18 @@ export class ChatCompletionOutputItem {
   @Expose()
   public type?: string;
 
+  // NOTE: These are echoed back to the backend when persisting the assistant message so that
+  // "Continue Response" can seed generation from the prior `output` (see handle-completed-chat).
+  // Kept faithful to the Responses-API item shape.
+  @Expose()
+  public id?: string;
+
+  @Expose()
+  public role?: string;
+
+  @Expose()
+  public status?: string;
+
   @Expose()
   @Type(() => ChatCompletionOutputContentPart)
   public content?: Array<ChatCompletionOutputContentPart>;

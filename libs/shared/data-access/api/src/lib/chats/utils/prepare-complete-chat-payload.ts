@@ -11,6 +11,11 @@ export interface PrepareCompleteChatPayloadArgs {
   sessionId: string;
   model: string;
   generationOptions?: Array<ChatGenerationOption>;
+  // The parent user message of the assistant turn being generated. The backend uses it to
+  // link the assistant's parentId; omitting it orphans the user message (drops from the branch).
+  userMessage?: Message;
+  // Set only for "Continue Response": id of the existing assistant message to keep and extend.
+  assistantMessageId?: string;
 }
 
 export function prepareCompleteChatPayload({
@@ -20,6 +25,8 @@ export function prepareCompleteChatPayload({
   sessionId,
   model,
   generationOptions,
+  userMessage,
+  assistantMessageId,
 }: PrepareCompleteChatPayloadArgs): CompleteChatRequest {
   const prepareChatMessages = (): Array<ChatMessage> => {
     return messages.map((message) => {
@@ -74,6 +81,9 @@ export function prepareCompleteChatPayload({
     id: messageId,
     sessionId,
     files,
+    userMessage,
+    parentId: userMessage?.parentId ?? null,
+    assistantMessageId,
   });
 
   return request;

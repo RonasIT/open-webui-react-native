@@ -16,6 +16,9 @@ import { patchCompletedMessage } from '../patch-completed-message';
 const sourcesStore: Record<string, ChatCompletionChunk['sources']> = {};
 const flushScheduled: Record<string, boolean> = {};
 const contentBuffer: Record<string, string> = {};
+// NOTE: Buffer the raw `output` array so it can be persisted on the message. The backend seeds
+// "Continue Response" from the stored `output`; if we drop it, continue starts from scratch.
+const outputBuffer: Record<string, ChatCompletionChunk['output']> = {};
 
 export const handleChatCompletionEvent = async (socketResponse: ChatEventBase): Promise<void> => {
   const sessionId = socketService.socketSessionId;
@@ -31,6 +34,10 @@ export const handleChatCompletionEvent = async (socketResponse: ChatEventBase): 
   // `output` array (Responses API format) instead of a flat `content` string. Fall back to it
   // so streamed content renders and — importantly — the terminal `done` event below still runs.
   const content = chatCompletionData.content || getOutputText(chatCompletionData.output);
+
+  if (chatCompletionData.output) {
+    outputBuffer[chatId] = chatCompletionData.output;
+  }
 
   const queryKey = chatQueriesKeys.get(chatId).queryKey;
   const storedSources = sourcesStore[chatId];
@@ -49,7 +56,7 @@ export const handleChatCompletionEvent = async (socketResponse: ChatEventBase): 
         flushScheduled[chatId] = false;
 
         queryClient.setQueryData(queryKey, (oldData: ChatResponse) =>
-          patchChatMessagesWithCompletion(oldData, contentBuffer[chatId], storedSources),
+          patchChatMessagesWithCompletion(oldData, contentBuffer[chatId], storedSources, outputBuffer[chatId]),
         );
       });
     }
@@ -59,6 +66,7 @@ export const handleChatCompletionEvent = async (socketResponse: ChatEventBase): 
     delete sourcesStore[chatId];
 
     queryClient.setQueryData(queryKey, (oldData: ChatResponse) => patchCompletedMessage(oldData));
-    handleCompletedChat(contentBuffer[chatId] ?? content, chatId, sessionId, storedSources);
+    handleCompletedChat(contentBuffer[chatId] ?? content, chatId, sessionId, storedSources, outputBuffer[chatId]);
+    delete outputBuffer[chatId];
   }
 };

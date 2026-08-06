@@ -5,6 +5,7 @@ export function patchChatMessagesWithCompletion(
   oldData: ChatResponse | undefined,
   newContent: string,
   sources?: Array<MessageSource>,
+  output?: Message['output'],
 ): ChatResponse | undefined {
   if (
     !oldData ||
@@ -23,6 +24,7 @@ export function patchChatMessagesWithCompletion(
   const updatedLastMessage: Message = {
     ...lastMessage,
     content: newContent,
+    output: output ?? lastMessage.output,
     sources: sources,
     socketStatusData: history.messages[lastMessage.id]?.socketStatusData,
   };
