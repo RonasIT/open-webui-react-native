@@ -26,7 +26,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return {
-    name: 'Open MobileUI',
+    name: process.env.EXPO_PUBLIC_APP_NAME as string,
     slug: process.env.EXPO_PUBLIC_APP_SLUG as string,
     scheme: process.env.EXPO_PUBLIC_APP_SCHEME as string,
     owner: process.env.EXPO_PUBLIC_APP_OWNER as string,
