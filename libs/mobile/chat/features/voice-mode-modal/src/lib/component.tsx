@@ -1,4 +1,5 @@
-import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
+import { i18n, useTranslation } from '@ronas-it/react-native-common-modules/i18n';
+import { CameraType, useCameraPermissions } from 'expo-camera';
 import { ForwardedRef, ReactElement, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import Modal, { ModalProps } from 'react-native-modal';
 import { useCreateNewChat } from '@open-webui-react-native/mobile/chat/features/use-create-new-chat';
@@ -8,8 +9,9 @@ import { useDictateMode } from '@open-webui-react-native/mobile/shared/features/
 import { colors, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { AppSafeAreaView, AppText, AppToast, IconButton, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { chatApi } from '@open-webui-react-native/shared/data-access/api';
+import { ImageData as ChatImageData } from '@open-webui-react-native/shared/data-access/common';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
-import { Loader, SpeechListener } from './components';
+import { CameraPreview, CameraPreviewMethods, Loader, SpeechListener } from './components';
 import { voiceModeModalConfig } from './config';
 
 export type VoiceModeModalMethods = {
@@ -29,8 +31,12 @@ const { meteringSilenceThreshold, meteringSilenceDuration } = voiceModeModalConf
 export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalProps): ReactElement {
   const translate = useTranslation('CHAT.VOICE_MODE_MODAL');
   const { isDarkColorScheme } = useColorScheme();
+  const [, requestCameraPermission] = useCameraPermissions();
 
   const silenceTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cameraPreviewRef = useRef<CameraPreviewMethods>(null);
+  const pendingImageRef = useRef<ChatImageData | null>(null);
+  const isCameraOnRef = useRef(false);
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -43,10 +49,14 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
   const [chatId, setChatId] = useState<string | undefined>(undefined);
   const [modelId, setModelId] = useState<string>('');
 
+  const [isCameraOn, setIsCameraOn] = useState(false);
+  const [cameraFacing, setCameraFacing] = useState<CameraType>('front');
+
   const chatIdRef = useRef(chatId);
   const modelIdRef = useRef(modelId);
   chatIdRef.current = chatId;
   modelIdRef.current = modelId;
+  isCameraOnRef.current = isCameraOn;
 
   const handleChatCreated = (id: string): void => {
     if (isVisible) {
@@ -68,11 +78,14 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     useDictateMode({
       updateIntervalMillis: 100,
       onCompleteRecording: (text: string) => {
+        const attachedImages = pendingImageRef.current ? [pendingImageRef.current] : undefined;
+        pendingImageRef.current = null;
+
         if (text.trim().length) {
           if (chatIdRef.current) {
-            sendMessageRef.current(text, modelIdRef.current);
+            sendMessageRef.current(text, modelIdRef.current, undefined, undefined, attachedImages);
           } else {
-            startChatCreationRef.current(text, modelIdRef.current);
+            startChatCreationRef.current(text, modelIdRef.current, undefined, undefined, attachedImages);
           }
 
           speechStreamingService.resumeContentSpeaking();
@@ -87,11 +100,17 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
   const isThinking =
     isCreating || isSending || isLoading || isTranscribing || isWaitingNewMessage || isReceivingNewMessage;
 
+  const stopCamera = (): void => {
+    setIsCameraOn(false);
+  };
+
   const close = async (): Promise<void> => {
     // NOTE: Stop TTS immediately; isStopped is set sync so late handleContent/speakText no-ops
     const stopSpeakingPromise = speechStreamingService.stopContentSpeaking();
     speechStreamingService.clearListeners();
     clearSilenceTimeout();
+    stopCamera();
+    pendingImageRef.current = null;
     setIsUserSpeaking(false);
     setIsAiSpeaking(false);
     setIsWaitingNewMessage(false);
@@ -116,7 +135,31 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     [],
   );
 
-  const showUnderConstruction = (): void => ToastService.showFeatureNotImplemented();
+  const startCamera = async (): Promise<void> => {
+    const permission = await requestCameraPermission();
+
+    if (!permission.granted) {
+      ToastService.showError(i18n.t('SHARED.IMAGE_PICKER_SERVICE.TEXT_ACCESS_DENIED'));
+
+      return;
+    }
+
+    setIsCameraOn(true);
+  };
+
+  const flipCameraFacing = (): void => {
+    setCameraFacing((current) => (current === 'back' ? 'front' : 'back'));
+  };
+
+  const capturePendingImage = async (): Promise<void> => {
+    if (!isCameraOnRef.current) {
+      pendingImageRef.current = null;
+
+      return;
+    }
+
+    pendingImageRef.current = (await cameraPreviewRef.current?.takePicture()) ?? null;
+  };
 
   const clearSilenceTimeout = (): void => {
     if (silenceTimeout.current) {
@@ -131,8 +174,11 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     }
 
     silenceTimeout.current = setTimeout(() => {
-      setIsUserSpeaking(false);
-      completeSpeechRecording();
+      void (async () => {
+        setIsUserSpeaking(false);
+        await capturePendingImage();
+        await completeSpeechRecording();
+      })();
     }, meteringSilenceDuration);
   };
 
@@ -210,13 +256,29 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
       {...props}>
       <View className='flex-1 bg-background-primary'>
         <AppSafeAreaView edges={['bottom']} className='flex-1'>
-          <View className='flex-1 items-center justify-center'>
-            {isThinking || isAiSpeaking ? <Loader /> : <SpeechListener metering={metering} />}
+          <View className='flex-1 items-center justify-center px-24'>
+            {isCameraOn ? (
+              <View className='w-full items-center justify-center'>
+                <CameraPreview
+                  ref={cameraPreviewRef}
+                  facing={cameraFacing}
+                  onClose={stopCamera} />
+                {(isThinking || isAiSpeaking) && (
+                  <View className='absolute inset-0 items-center justify-center'>
+                    <Loader />
+                  </View>
+                )}
+              </View>
+            ) : isThinking || isAiSpeaking ? (
+              <Loader />
+            ) : (
+              <SpeechListener metering={metering} />
+            )}
           </View>
           <View className='flex-row justify-between items-center p-24'>
             <IconButton
-              iconName='camera'
-              onPress={showUnderConstruction}
+              iconName={isCameraOn ? 'refresh' : 'camera'}
+              onPress={isCameraOn ? flipCameraFacing : startCamera}
               className='w-40 h-40 bg-background-secondary rounded-full'
             />
             <AppText className='text-sm-sm sm:text-sm'>
