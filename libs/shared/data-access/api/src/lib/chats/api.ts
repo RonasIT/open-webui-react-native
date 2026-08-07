@@ -16,7 +16,11 @@ import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-cl
 import { getNextPageParam, Role } from '@open-webui-react-native/shared/data-access/common';
 import { refetchOnMountWithStaleCheck } from '@open-webui-react-native/shared/data-access/persist-query-helpers';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
-import { useSubscribeToEvent, WebSocketEventName } from '@open-webui-react-native/shared/data-access/websocket';
+import {
+  getOutputText,
+  useSubscribeToEvent,
+  WebSocketEventName,
+} from '@open-webui-react-native/shared/data-access/websocket';
 import { foldersApiConfig } from '../folders';
 import { archivedChatListQueryKey } from './archived-chat-list-query-keys';
 import { chatQueriesKeys } from './chat-queries-keys';
@@ -103,6 +107,12 @@ export const getChatQueryOptions = (
     for (const message of Object.values(messages)) {
       if (message.role === Role.ASSISTANT) {
         message.done = true;
+
+        // NOTE: Backends on Open WebUI 0.11.0+ may return assistant text only in the `output`
+        // array. Derive `content` from it when absent so both old and new formats render.
+        if (!message.content) {
+          message.content = getOutputText(message.output);
+        }
       }
     }
 

@@ -166,12 +166,20 @@ export default function ChatMessagesList({
       } as Chat,
     });
 
+    // NOTE: The backend links the (existing) assistant message's parentId from `user_message`.
+    // Passing the parent user turn + `assistantMessageId` keeps that link intact — otherwise the
+    // backend nulls parentId and the user message drops out of the rendered branch.
+    const assistantMessage = history?.messages[messageId];
+    const userMessage = assistantMessage?.parentId ? history?.messages[assistantMessage.parentId] : undefined;
+
     const completePayload = prepareCompleteChatPayload({
       chatId,
       messages,
-      messageId: messageId,
+      messageId,
       sessionId: socketService.socketSessionId,
       model: modelId,
+      userMessage,
+      assistantMessageId: messageId,
     });
     completeChat(completePayload);
   };
