@@ -5,6 +5,7 @@ import { amplitudeApiKey } from './config';
 class AnalyticsService {
   public init(): void {
     init(amplitudeApiKey as string, undefined, {
+      serverZone: 'EU',
       trackingOptions: {
         adid: false,
         appSetId: false,
