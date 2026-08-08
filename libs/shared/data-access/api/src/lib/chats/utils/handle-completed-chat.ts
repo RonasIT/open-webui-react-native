@@ -11,6 +11,7 @@ export const handleCompletedChat = async (
   chatId: string,
   sessionId: string,
   sources?: Array<MessageSource>,
+  output?: Message['output'],
 ): Promise<void> => {
   const chatData = queryClient.getQueryData<ChatResponse>(chatQueriesKeys.get(chatId).queryKey);
 
@@ -20,8 +21,11 @@ export const handleCompletedChat = async (
 
   const { chat } = chatData;
 
+  // NOTE: Persist `output` alongside `content`. The backend replaces the whole message object on
+  // save (merge_history), so dropping `output` here wipes it server-side — which breaks
+  // "Continue Response" (the backend seeds continuation from the stored `output`).
   const updatedMessages = chat.messages.map((msg, i, arr) =>
-    i === arr.length - 1 ? { ...msg, content: message, done: true, sources } : msg,
+    i === arr.length - 1 ? { ...msg, content: message, output: output ?? msg.output, done: true, sources } : msg,
   );
 
   const updatedMessageMap: Record<string, Message> = Object.fromEntries(updatedMessages.map((msg) => [msg.id, msg]));
