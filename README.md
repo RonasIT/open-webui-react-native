@@ -7,7 +7,7 @@
 ![License](https://img.shields.io/badge/license-GPL%20v3-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20Android-lightgrey.svg)
 ![React Native](https://img.shields.io/badge/React%20Native-0.79-blue.svg)
-![Open WebUI](https://img.shields.io/badge/Open%20WebUI-0.6.34+-green.svg)
+![Open WebUI](https://img.shields.io/badge/Open%20WebUI-0.11.0+-green.svg)
 
 **Professional mobile client for Open WebUI** – Access your self-hosted AI assistant anywhere, anytime
 
