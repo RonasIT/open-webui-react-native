@@ -112,7 +112,6 @@ export function FormChatInput<T extends FieldValues>({
 
   const handleSuggestionPress = (suggestion: string): void => {
     field.onChange(suggestion);
-    analyticsService.trackEvent(AnalyticsEvent.SUGGESTION_USED);
   };
 
   const onGenerationOptionPress = (option: ChatGenerationOption): void => setOptions((state) => xor(state, [option]));

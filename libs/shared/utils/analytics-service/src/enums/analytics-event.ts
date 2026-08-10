@@ -3,6 +3,6 @@ export enum AnalyticsEvent {
   NEW_FOLDER_CREATED = 'new_folder_created',
   GENERATE_IMAGE_USED = 'generate_image_used',
   DICTATION_MODE_USED = 'dictation_mode_used',
-  SUGGESTION_USED = 'suggestion_used',
+  FOLLOW_UP_USED = 'follow_up_used',
   MESSAGE_SENT = 'message_sent',
 }
