@@ -258,6 +258,7 @@
         "libs/shared/features/use-init-requests/src/index.ts"
       ],
       "@open-webui-react-native/shared/utils/alert-service": ["libs/shared/utils/alert-service/src/index.ts"],
+      "@open-webui-react-native/shared/utils/analytics-service": ["libs/shared/utils/analytics-service/src/index.ts"],
       "@open-webui-react-native/shared/utils/app-env": ["libs/shared/utils/app-env/src/index.ts"],
       "@open-webui-react-native/shared/utils/config": ["libs/shared/utils/config/src/index.ts"],
       "@open-webui-react-native/shared/utils/date": ["libs/shared/utils/date/src/index.ts"],

@@ -14,6 +14,7 @@ import {
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { useSocket } from '@open-webui-react-native/shared/data-access/websocket';
 import { useNetworkConnection } from '@open-webui-react-native/shared/features/network';
+import { analyticsService } from '@open-webui-react-native/shared/utils/analytics-service';
 import { constants } from '@open-webui-react-native/shared/utils/config';
 import { setupReactotron } from '@open-webui-react-native/shared/utils/reactotron';
 import { setLanguage } from '@ronas-it/react-native-common-modules/i18n';
@@ -56,6 +57,7 @@ const translations = {
 const useLanguage = setLanguage(translations, constants.defaultLocale);
 
 setupReactotron('open-web-ui');
+analyticsService.init();
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();

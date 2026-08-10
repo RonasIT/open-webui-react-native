@@ -21,6 +21,7 @@ import {
 } from '@open-webui-react-native/shared/data-access/api';
 import { Role } from '@open-webui-react-native/shared/data-access/common';
 import { socketService } from '@open-webui-react-native/shared/data-access/websocket';
+import { AnalyticsEvent, analyticsService } from '@open-webui-react-native/shared/utils/analytics-service';
 import { ChatAiMessage } from '../ai-message';
 import { ChatBottomButton } from '../chat-bottom-button';
 import { ChatUserMessage } from '../user-message';
@@ -185,6 +186,7 @@ export default function ChatMessagesList({
   };
 
   const handleFollowUpPress = (text: string): void => {
+    analyticsService.trackEvent(AnalyticsEvent.FOLLOW_UP_USED);
     onFollowUpPress(text);
   };
 

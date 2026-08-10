@@ -24,6 +24,7 @@ import {
 import { Role } from '@open-webui-react-native/shared/data-access/common';
 import { useSubscribeToQueryCache } from '@open-webui-react-native/shared/data-access/query-client';
 import { webSocketConfig, webSocketState$ } from '@open-webui-react-native/shared/data-access/websocket';
+import { AnalyticsEvent, analyticsService } from '@open-webui-react-native/shared/utils/analytics-service';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { useAppStateChange } from '@open-webui-react-native/shared/utils/use-app-state-change';
 import { ActiveInputMode } from './enums';
@@ -169,7 +170,12 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
         return ToastService.showError(translate('TEXT_MODEL_NOT_SELECTED'));
       }
 
+      if (options.includes(ChatGenerationOption.IMAGE_GENERATION)) {
+        analyticsService.trackEvent(AnalyticsEvent.GENERATE_IMAGE_USED);
+      }
+
       sendMessage(inputValue, selectedModelId, options, attachedFiles.get(), attachedImages.get());
+      analyticsService.trackEvent(AnalyticsEvent.MESSAGE_SENT, { modelId: selectedModelId });
       reset();
       resetAttachments();
       // NOTE: Forces input rerender to reset it to its initial height after submit
