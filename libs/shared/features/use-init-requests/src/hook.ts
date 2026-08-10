@@ -10,7 +10,7 @@ export const useInitRequests = (): UseInitRequestsResult => {
   const { isLoading: isModelsLoading } = modelsApi.useGetModels();
   const { data: profile, isLoading: isProfileLoading } = authApi.useGetProfile();
   const { isLoading: isUserSettingsLoading } = usersApi.useGetUserSettings();
-  const { isLoading: isConfigurationLoading } = appConfigurationApi.useGetAppConfiguration();
+  const { data: configuration, isLoading: isConfigurationLoading } = appConfigurationApi.useGetAppConfiguration();
 
   const isLoading = isModelsLoading || isProfileLoading || isUserSettingsLoading || isConfigurationLoading;
 
@@ -19,6 +19,12 @@ export const useInitRequests = (): UseInitRequestsResult => {
       analyticsService.setUser(profile.id);
     }
   }, [profile]);
+
+  useEffect(() => {
+    if (configuration?.version) {
+      analyticsService.setUserProperties({ apiVersion: configuration.version });
+    }
+  }, [configuration]);
 
   return { isLoading };
 };

@@ -1,4 +1,4 @@
-import { init, setUserId, reset, Types, track } from '@amplitude/analytics-react-native';
+import { init, setUserId, reset, Types, track, identify, Identify } from '@amplitude/analytics-react-native';
 import Constants from 'expo-constants';
 import { amplitudeApiKey } from './config';
 
@@ -30,6 +30,14 @@ class AnalyticsService {
 
   public resetUser(): void {
     reset();
+  }
+
+  public setUserProperties(properties: Record<string, string | number | boolean>): void {
+    const event = new Identify();
+
+    Object.entries(properties).forEach(([key, value]) => event.set(key, value));
+
+    identify(event);
   }
 
   public trackEvent(eventName: string, eventProperties?: Record<string, unknown>): void {
