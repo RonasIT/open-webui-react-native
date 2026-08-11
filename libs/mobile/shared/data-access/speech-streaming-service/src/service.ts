@@ -5,14 +5,25 @@ import { prepareSpeakableText } from './prepare-speakable-text';
 
 const textBreakpoints = ['.', '!', '?', ',', ';', ':', '-'];
 
+type SpeechQueueItem = {
+  text: string;
+  isFinal: boolean;
+};
+
 class SpeechStreamingService {
   private spokenText: string;
   private isStopped: boolean;
+  private speechGeneration: number;
+  private queue: Array<SpeechQueueItem>;
+  private isProcessingQueue: boolean;
   private listeners: Map<string, Array<(...args: Array<any>) => void>> = new Map();
 
   constructor() {
     this.spokenText = '';
     this.isStopped = true;
+    this.speechGeneration = 0;
+    this.queue = [];
+    this.isProcessingQueue = false;
   }
 
   public onSpeakingStart(callback: () => void): () => void {
@@ -26,13 +37,17 @@ class SpeechStreamingService {
   public resumeContentSpeaking = (): void => {
     this.isStopped = false;
     this.spokenText = '';
+    this.queue = [];
   };
 
   public stopContentSpeaking = async (): Promise<void> => {
-    // NOTE: Set before await so in-flight speakText calls bail out after setAudioModeAsync
+    // NOTE: Bump generation before await so in-flight onDone / queue work becomes stale
+    this.speechGeneration += 1;
     this.isStopped = true;
     this.spokenText = '';
+    this.queue = [];
     await Speech.stop();
+    this.isProcessingQueue = false;
   };
 
   public handleContent(text: string, isDone?: boolean): void {
@@ -65,15 +80,14 @@ class SpeechStreamingService {
       }
 
       this.spokenText = this.spokenText + textToSpeak;
-
-      this.speakText(textToSpeak, isDone);
+      this.enqueue({ text: textToSpeak, isFinal: !!isDone });
 
       return;
     }
 
     if (isDone) {
       // NOTE: All speakable text was already queued; emit end after the speech queue drains
-      this.speakText('', true);
+      this.enqueue({ text: '', isFinal: true });
     }
   }
 
@@ -81,8 +95,57 @@ class SpeechStreamingService {
     this.listeners.clear();
   }
 
-  private speakText = async (text: string, isDone?: boolean): Promise<void> => {
+  private enqueue(item: SpeechQueueItem): void {
     if (this.isStopped) {
+      return;
+    }
+
+    this.queue.push(item);
+    void this.processQueue();
+  }
+
+  private processQueue = async (): Promise<void> => {
+    if (this.isProcessingQueue) {
+      return;
+    }
+
+    this.isProcessingQueue = true;
+    const generation = this.speechGeneration;
+
+    try {
+      while (this.queue.length > 0) {
+        if (this.isStopped || generation !== this.speechGeneration) {
+          break;
+        }
+
+        const item = this.queue.shift();
+
+        if (!item) {
+          break;
+        }
+
+        if (item.text.trim()) {
+          await this.speakSegment(item.text, generation);
+        }
+
+        if (this.isStopped || generation !== this.speechGeneration) {
+          break;
+        }
+
+        if (item.isFinal) {
+          this.emit(SpeechStreamingServiceEvent.SPEAKING_END);
+          this.spokenText = '';
+        }
+      }
+    } finally {
+      if (generation === this.speechGeneration) {
+        this.isProcessingQueue = false;
+      }
+    }
+  };
+
+  private speakSegment = async (text: string, generation: number): Promise<void> => {
+    if (this.isStopped || generation !== this.speechGeneration) {
       return;
     }
 
@@ -91,24 +154,24 @@ class SpeechStreamingService {
       playsInSilentMode: true,
     });
 
-    // NOTE: stopContentSpeaking may have been called while awaiting audio mode
-    if (this.isStopped) {
+    if (this.isStopped || generation !== this.speechGeneration) {
       return;
     }
 
-    Speech.speak(text, {
-      // NOTE: Only English is working good for now
-      language: 'en-US',
-      onDone: () => {
-        if (this.isStopped) {
-          return;
-        }
+    await new Promise<void>((resolve) => {
+      if (this.isStopped || generation !== this.speechGeneration) {
+        resolve();
 
-        if (isDone) {
-          this.emit(SpeechStreamingServiceEvent.SPEAKING_END);
-          this.spokenText = '';
-        }
-      },
+        return;
+      }
+
+      Speech.speak(text, {
+        // NOTE: Only English is working good for now
+        language: 'en-US',
+        onDone: () => resolve(),
+        onStopped: () => resolve(),
+        onError: () => resolve(),
+      });
     });
   };
 
