@@ -34,6 +34,7 @@ import logoLight from './logo-light.svg';
 import logoSmallDark from './logo-small-dark.svg';
 import logoSmallLight from './logo-small-light.svg';
 import logout from './logout.svg';
+import message from './message.svg';
 import microphone from './microphone.svg';
 import moreDots from './more-dots.svg';
 import moreText from './more-text.svg';
@@ -44,6 +45,7 @@ import plusInCircle from './plus-in-circle.svg';
 import plus from './plus.svg';
 import refresh from './refresh.svg';
 import search from './search.svg';
+import star from './star.svg';
 import stop from './stop.svg';
 import strokeLeft from './stroke-left.svg';
 import tick from './tick.svg';
@@ -96,11 +98,13 @@ export const Icons = {
   plusInCircle,
   folderPlus,
   folder,
+  message,
   microphone,
   unarchive,
   closeSM,
   strokeLeft,
   tick,
+  star,
   stop,
   play,
   refresh,
