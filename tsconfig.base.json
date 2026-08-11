@@ -269,6 +269,9 @@
       "@open-webui-react-native/shared/utils/objects": ["libs/shared/utils/objects/src/index.ts"],
       "@open-webui-react-native/shared/utils/permission-alert": ["libs/shared/utils/permission-alert/src/index.ts"],
       "@open-webui-react-native/shared/utils/reactotron": ["libs/shared/utils/reactotron/src/index.ts"],
+      "@open-webui-react-native/shared/utils/store-review-service": [
+        "libs/shared/utils/store-review-service/src/index.ts"
+      ],
       "@open-webui-react-native/shared/utils/strings": ["libs/shared/utils/strings/src/index.ts"],
       "@open-webui-react-native/shared/utils/toast-service": ["libs/shared/utils/toast-service/src/index.ts"],
       "@open-webui-react-native/shared/utils/use-app-state-change": [
