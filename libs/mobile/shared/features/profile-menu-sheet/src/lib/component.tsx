@@ -16,9 +16,14 @@ import { ToastService } from '@open-webui-react-native/shared/utils/toast-servic
 
 interface ProfileMenuSheetProps extends Pick<AppBottomSheetProps, 'renderTrigger'> {
   onArchivedChatsPress: () => void;
+  onSettingsPress: () => void;
 }
 
-export function ProfileMenuSheet({ onArchivedChatsPress, ...restProps }: ProfileMenuSheetProps): ReactElement {
+export function ProfileMenuSheet({
+  onArchivedChatsPress,
+  onSettingsPress,
+  ...restProps
+}: ProfileMenuSheetProps): ReactElement {
   const translate = useTranslation('PROFILE.PROFILE_MENU_SHEET');
   const { logout, isLoading } = useLogout();
 
@@ -35,6 +40,11 @@ export function ProfileMenuSheet({ onArchivedChatsPress, ...restProps }: Profile
   const handleArchivedChatsPress = async (): Promise<void> => {
     await closeActionsSheet();
     onArchivedChatsPress();
+  };
+
+  const handleSettingsPress = async (): Promise<void> => {
+    await closeActionsSheet();
+    onSettingsPress();
   };
 
   const handleDeleteAccountPress = (): void => {
@@ -57,6 +67,11 @@ export function ProfileMenuSheet({ onArchivedChatsPress, ...restProps }: Profile
   };
 
   const actions: Array<ActionSheetItemProps> = [
+    {
+      title: translate('TEXT_SETTINGS'),
+      iconName: 'moreDots',
+      onPress: handleSettingsPress,
+    },
     {
       title: translate('TEXT_ARCHIVED_CHATS'),
       iconName: 'archive',
