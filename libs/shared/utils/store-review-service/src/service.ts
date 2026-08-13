@@ -1,4 +1,4 @@
-import { storeUrl } from 'expo-store-review';
+import { storeUrl, hasAction, requestReview } from 'expo-store-review';
 import { Linking, Platform } from 'react-native';
 
 class StoreReviewService {
@@ -10,6 +10,18 @@ class StoreReviewService {
 
     if (canOpenUrl) {
       await Linking.openURL(`${url}${isAndroid ? '&showAllReviews=true' : `?action=write-review`}`);
+    }
+  }
+
+  public async requestStoreReview(): Promise<boolean> {
+    const isAvailable = await hasAction();
+
+    if (isAvailable) {
+      await requestReview();
+
+      return true;
+    } else {
+      return false;
     }
   }
 }
