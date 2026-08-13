@@ -24,6 +24,7 @@
     "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
+      "@expo/ui": ["node_modules/@expo/ui/build/universal/index.d.ts"],
       "@open-webui-react-native/mobile/auth/features/email-sign-in-form": [
         "libs/mobile/auth/features/email-sign-in-form/src/index.ts"
       ],

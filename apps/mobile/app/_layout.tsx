@@ -101,7 +101,8 @@ function App(): ReactElement | null {
 }
 
 function RootLayout(): ReactElement | null {
-  useLanguage(constants.defaultLocale);
+  const locale = useSelector(appState$.locale);
+  useLanguage(locale);
   const [isFontsLoaded] = useFonts(fonts);
   const navigationContainerRef = useNavigationContainerRef();
 
@@ -136,7 +137,7 @@ function RootLayout(): ReactElement | null {
             }}>
             <ToastProvider>
               <BottomSheetModalProvider>
-                <App />
+                <App key={locale} />
               </BottomSheetModalProvider>
             </ToastProvider>
           </PersistQueryClientProvider>

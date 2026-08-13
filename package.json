@@ -14,7 +14,7 @@
     "@amplitude/analytics-react-native": "^1.6.8",
     "@expo/metro-config": "~57.0.0",
     "@expo/metro-runtime": "~57.0.7",
-    "@expo/ui": "~57.0.7",
+    "@expo/ui": "~57.0.10",
     "@gorhom/bottom-sheet": "^5.2.8",
     "@hookform/resolvers": "^5.1.1",
     "@legendapp/state": "2.1.15",

@@ -11,6 +11,7 @@ export const storage = new MMKV({
 class AppStorageService {
   public token = new StorageItem('token', storage);
   public apiUrl = new StorageItem('apiUrl', storage);
+  public locale = new StorageItem('locale', storage);
 }
 
 export const appStorageService = new AppStorageService();
