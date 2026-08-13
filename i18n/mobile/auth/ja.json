@@ -1,0 +1,25 @@
+{
+  "AUTH": {
+    "SIGN_IN": {
+      "TEXT_TITLE_EXTERNAL": "サインイン",
+      "TEXT_YOU_LOGGED_IN": "ログインしました。",
+      "EMAIL_FORM": {
+        "TEXT_EMAIL_ADDRESS": "メールアドレス",
+        "TEXT_PASSWORD": "パスワード",
+        "TEXT_API_URL": "API URL",
+        "TEXT_ENTER_YOUR_PASSWORD": "パスワードを入力",
+        "BUTTON_SIGN_IN": "サインイン"
+      },
+      "GOOGLE_FORM": {
+        "BUTTON_CONTINUE_WITH_GOOGLE": "Google で続行"
+      },
+      "OIDC_FORM": {
+        "BUTTON_CONTINUE_WITH": "{{provider}} で続行"
+      },
+      "OAUTH_WEB_VIEW_MODAL": {
+        "BUTTON_CLOSE": "閉じる",
+        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "このサインイン方法は利用できません。別の方法をお試しください。"
+      }
+    }
+  }
+}

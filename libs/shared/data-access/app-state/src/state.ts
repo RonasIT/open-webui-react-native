@@ -1,15 +1,23 @@
 import { observable, Observable } from '@legendapp/state';
+import { getLocales } from 'expo-localization';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { cookieService } from '@open-webui-react-native/shared/data-access/cookie';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { constants, LanguageCode } from '@open-webui-react-native/shared/utils/config';
 
+const isSupportedLocale = (locale?: string | null): locale is LanguageCode =>
+  Object.values(LanguageCode).includes(locale as LanguageCode);
+
 const getInitialLocale = (): LanguageCode => {
   const storedLocale = appStorageService.locale.get();
 
-  return Object.values(LanguageCode).includes(storedLocale as LanguageCode)
-    ? (storedLocale as LanguageCode)
-    : constants.defaultLocale;
+  if (isSupportedLocale(storedLocale)) {
+    return storedLocale;
+  }
+
+  const deviceLanguageCode = getLocales()[0]?.languageCode;
+
+  return isSupportedLocale(deviceLanguageCode) ? deviceLanguageCode : constants.defaultLocale;
 };
 
 interface AppState {

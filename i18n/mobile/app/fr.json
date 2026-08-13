@@ -1,0 +1,11 @@
+{
+  "APP": {
+    "CHAT_LIST_SCREEN": {
+      "TEXT_CHATS": "Discussions"
+    },
+    "SETTINGS_SCREEN": {
+      "TEXT_SETTINGS": "Paramètres",
+      "TEXT_LANGUAGE": "Langue"
+    }
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "SHARED": {
+    "VALIDATION": {
+      "TEXT_INVALID_EMAIL": "请输入有效的电子邮箱地址",
+      "TEXT_REQUIRED_EMAIL": "请输入您的电子邮箱",
+      "TEXT_REQUIRED_PASSWORD": "请输入您的密码",
+      "TEXT_INVALID_URL": "请输入有效的服务器 URL，例如 https://your.domain 或 http://192.168.1.10:3000",
+      "TEXT_REQUIRED_FOLDER_NAME": "请输入文件夹名称"
+    },
+    "COMMON": {
+      "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "功能尚未实现。",
+      "TEXT_NEW_CHAT": "新聊天",
+      "BUTTON_CANCEL": "取消",
+      "BUTTON_CONFIRM": "确认",
+      "BUTTON_OPEN_SETTINGS": "打开设置",
+      "TEXT_UNABLE_TO_OPEN_SETTINGS": "无法打开设置",
+      "TEXT_SETTINGS": "设置",
+      "TEXT_DISABLED_IN_OFFLINE_MODE": "离线模式下功能已禁用",
+      "ACTIONS_BOTTOM_SHEET": {
+        "BUTTON_CANCEL": "取消"
+      },
+      "TEXT_COPIED_TO_CLIPBOARD": "已复制到剪贴板"
+    },
+    "API_ERRORS": {
+      "TEXT_SOMETHING_WENT_WRONG": "出了点问题",
+      "TEXT_YOUR_SESSION_HAS_EXPIRED": "会话已过期。请重新登录",
+      "TEXT_FORBIDDEN_ERROR": "您无权执行此操作",
+      "TEXT_INTERNAL_SERVER_ERROR": "加载数据出错",
+      "TEXT_NOT_FOUND_ERROR": "未找到数据"
+    },
+    "DATES": {
+      "TEXT_TODAY": "今天",
+      "TEXT_YESTERDAY": "昨天",
+      "TEXT_LAST_DAYS": "最近 {{days}} 天",
+      "TEXT_AT_TIME": "{{time}}",
+      "TEXT_TODAY_TIME": "今天 {{time}}",
+      "TEXT_YESTERDAY_TIME": "昨天 {{time}}"
+    },
+    "CODE_BLOCK": {
+      "TEXT_COPIED_TO_CLIPBOARD": "已复制到剪贴板",
+      "TEXT_COPY": "复制"
+    },
+    "SOCKET_SERVICE": {
+      "TEXT_CONNECTION_ERROR": "连接错误"
+    },
+    "IMAGE_PICKER_SERVICE": {
+      "TEXT_ACCESS_DENIED": "访问被拒绝"
+    },
+    "ACTION_BUTTONS_MODAL": {
+      "BUTTON_CONFIRM": "确认",
+      "BUTTON_CANCEL": "取消",
+      "TEXT_TITLE_CAN_NOT_BE_EMPTY": "标题不能为空"
+    },
+    "MEDIA_LIBRARY_SERVICE": {
+      "TEXT_SUCCESSFULLY_SAVED": "图片保存成功",
+      "TEXT_ERROR_DURING_SAVING": "保存图片时出错",
+      "TEXT_SETTINGS": "设置",
+      "TEXT_SETTINGS_MESSAGE": "请在设置中允许相机访问。Settings > Open Web UI > Photos > All Photos"
+    },
+    "FILE_SYSTEM_SERVICE": {
+      "TEXT_SHARE": "分享 {{fileName}}",
+      "TEXT_SHARING_IS_NOT_AVAILABLE": "此设备不支持分享"
+    },
+    "USE_AUDIO_RECORDER": {
+      "TEXT_NO_ACCESS": "无访问权限",
+      "TEXT_APP_NEEDS_ACCESS": "应用需要访问设备麦克风"
+    },
+    "NO_CONNECTION_BANNER": {
+      "TEXT_YOU_ARE_OFFLINE": "您处于离线状态！"
+    },
+    "PRESSABLE_SEARCH_INPUT": {
+      "TEXT_SEARCH_CHATS": "搜索聊天"
+    },
+    "CHAT_ACTIONS_MENU_SHEET": {
+      "TEXT_PIN": "置顶",
+      "TEXT_UNPIN": "取消置顶",
+      "TEXT_RENAME": "重命名",
+      "TEXT_CLONE": "克隆",
+      "TEXT_ARCHIVE": "归档",
+      "TEXT_RESTORE": "恢复",
+      "TEXT_SHARE": "分享",
+      "TEXT_DOWNLOAD": "下载",
+      "TEXT_DELETE": "删除",
+      "TEXT_KEEP": "保留",
+      "TEXT_RENAME_CHAT": "重命名聊天",
+      "TEXT_DELETE_CHAT": "删除聊天？",
+      "TEXT_THIS_WILL_DELETE": "这将删除 {{name}}",
+      "TEXT_CLONE_OF": "{{title}} 的副本",
+      "TEXT_CHAT_ACTIONS": "聊天操作",
+      "TEXT_MOVE_TO_FOLDER": "移动到文件夹",
+      "DOWNLOAD_CHAT_OPTIONS_SHEET": {
+        "TEXT_EXPORT_CHAT_JSON": "导出聊天 (.json)",
+        "TEXT_PLAIN_TEXT": "纯文本 (.txt)",
+        "TEXT_PDF_DOCUMENT": "PDF 文档 (.pdf)"
+      },
+      "MOVE_CHAT_TO_FOLDER_MODAL": {
+        "TEXT_SEARCH_FOLDER": "搜索文件夹",
+        "TEXT_NO_FOLDERS": "没有文件夹",
+        "TEXT_CREATE_NEW_FOLDER": "创建文件夹",
+        "TEXT_NO_FOLDER": "无文件夹"
+      }
+    },
+    "SEARCH_INPUT": {
+      "BUTTON_CANCEL": "取消",
+      "TEXT_SEARCH_CHATS": "搜索聊天"
+    }
+  }
+}

@@ -80,6 +80,7 @@
     "immer": "^10.1.1",
     "lodash-es": "^4.17.21",
     "luxon": "^3.6.1",
+    "make-plural": "^7.5.0",
     "markdown-it-math": "^5.2.1",
     "nativewind": "^4.1.23",
     "patch-package": "^8.0.0",

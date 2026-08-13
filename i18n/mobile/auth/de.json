@@ -1,0 +1,25 @@
+{
+  "AUTH": {
+    "SIGN_IN": {
+      "TEXT_TITLE_EXTERNAL": "Anmelden",
+      "TEXT_YOU_LOGGED_IN": "Sie sind jetzt angemeldet.",
+      "EMAIL_FORM": {
+        "TEXT_EMAIL_ADDRESS": "E-Mail-Adresse",
+        "TEXT_PASSWORD": "Passwort",
+        "TEXT_API_URL": "API-URL",
+        "TEXT_ENTER_YOUR_PASSWORD": "Passwort eingeben",
+        "BUTTON_SIGN_IN": "Anmelden"
+      },
+      "GOOGLE_FORM": {
+        "BUTTON_CONTINUE_WITH_GOOGLE": "Mit Google fortfahren"
+      },
+      "OIDC_FORM": {
+        "BUTTON_CONTINUE_WITH": "Mit {{provider}} fortfahren"
+      },
+      "OAUTH_WEB_VIEW_MODAL": {
+        "BUTTON_CLOSE": "Schließen",
+        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Diese Anmeldemethode ist nicht verfügbar. Bitte wählen Sie eine andere Option."
+      }
+    }
+  }
+}

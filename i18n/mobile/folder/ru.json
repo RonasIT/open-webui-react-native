@@ -1,0 +1,36 @@
+{
+  "FOLDER": {
+    "CHATS_LIST": {
+      "TEXT_NO_CHATS": "В этой папке нет чатов."
+    },
+    "FOLDER_ACTIONS_SHEET": {
+      "TEXT_EDIT": "Изменить",
+      "TEXT_EXPORT": "Экспорт",
+      "TEXT_DELETE": "Удалить",
+      "TEXT_KEEP": "Оставить",
+      "TEXT_DELETE_FOLDER": "Удалить папку?",
+      "TEXT_THIS_WILL_DELETE": "Будет удалено: {{name}}"
+    },
+    "UPSERT_FOLDER_SHEET": {
+      "TEXT_NEW_FOLDER": "Новая папка",
+      "TEXT_EDIT_FOLDER": "Изменить папку",
+      "TEXT_FOLDER_NAME": "Название папки",
+      "TEXT_DOCUMENT": "Документ",
+      "TEXT_FILE": "Файл",
+      "TEXT_COLLECTION": "Коллекция",
+      "TEXT_FOLDER_NAME_PLACEHOLDER": "напр. Моя папка",
+      "TEXT_SYSTEM_PROMPT": "Системный промпт",
+      "TEXT_KNOWLEDGE": "База знаний",
+      "BUTTON_SELECT_KNOWLEDGE": "Выбрать базу знаний",
+      "BUTTON_UPLOAD_FILES": "Загрузить файлы",
+      "TEXT_CREATE": "Создать",
+      "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Нельзя загрузить пустой файл.",
+      "TEXT_UNSUPPORTED_TYPE": "Неподдерживаемый тип."
+    },
+    "SELECT_KNOWLEDGE_SHEET": {
+      "TEXT_SEARCH_KNOWLEDGE": "Поиск по базе знаний",
+      "TEXT_SELECT_KNOWLEDGE": "Выбрать базу знаний",
+      "TEXT_NO_KNOWLEDGE": "База знаний пуста."
+    }
+  }
+}
