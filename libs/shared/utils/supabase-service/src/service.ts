@@ -1,6 +1,8 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { decode } from 'base64-arraybuffer';
 import Constants from 'expo-constants';
-import { SubmitFeedbackRequest } from './models';
+import { SupabaseBucket, SupabaseTable } from './enums';
+import { SubmitFeedbackAttachment, SubmitFeedbackRequest } from './models';
 
 class SupabaseService {
   private client: SupabaseClient;
@@ -18,17 +20,38 @@ class SupabaseService {
   }
 
   public async submit(request: SubmitFeedbackRequest): Promise<void> {
-    const { error } = await this.client.from('feedback').insert({
+    const attachmentPaths = request.attachments?.length
+      ? await Promise.all(request.attachments.map((attachment, index) => this.uploadAttachment(attachment, index)))
+      : [];
+
+    const { error } = await this.client.from(SupabaseTable.FEEDBACK).insert({
       message: request.message,
       platform: request.platform,
       app_version: request.appVersion,
       api_version: request.apiVersion,
-      user_id: request.userId,
+      app_user_id: request.userId,
+      attachment_paths: attachmentPaths,
     });
 
     if (error) {
       throw error;
     }
+  }
+
+  private async uploadAttachment(attachment: SubmitFeedbackAttachment, index: number): Promise<string> {
+    const path = `${Date.now()}-${index}-${attachment.fileName ?? 'image.jpg'}`;
+
+    const { error } = await this.client.storage
+      .from(SupabaseBucket.FEEDBACK_ATTACHMENTS)
+      .upload(path, decode(attachment.base64), {
+        contentType: attachment.mimeType,
+      });
+
+    if (error) {
+      throw error;
+    }
+
+    return path;
   }
 }
 
