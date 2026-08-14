@@ -2,6 +2,8 @@ import alert from './alert.svg';
 import archive from './archive.svg';
 import arrowDown from './arrow-down.svg';
 import arrowUp from './arrow-up.svg';
+import attachmentRound from './attachment-round.svg';
+import attachment from './attachment.svg';
 import camera from './camera.svg';
 import checkedSmall from './checked-small.svg';
 import checked from './checked.svg';
@@ -72,6 +74,8 @@ export const Icons = {
   checked,
   search,
   arrowUp,
+  attachmentRound,
+  attachment,
   arrowDown,
   moreDots,
   archive,
