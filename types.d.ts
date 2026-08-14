@@ -2,3 +2,4 @@
 // Issue: https://github.com/gustavopch/tsc-files/issues/20
 // TODO: Uncomment the line below if you have an Expo app
 import 'node_modules/@nx/expo/typings/svg.d.ts';
+import 'apps/mobile/nativewind-env.d.ts';

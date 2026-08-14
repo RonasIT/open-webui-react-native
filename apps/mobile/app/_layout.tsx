@@ -17,6 +17,7 @@ import { useNetworkConnection } from '@open-webui-react-native/shared/features/n
 import { analyticsService } from '@open-webui-react-native/shared/utils/analytics-service';
 import { constants } from '@open-webui-react-native/shared/utils/config';
 import { setupReactotron } from '@open-webui-react-native/shared/utils/reactotron';
+import { supabaseService } from '@open-webui-react-native/shared/utils/supabase-service';
 import { setLanguage } from '@ronas-it/react-native-common-modules/i18n';
 import * as Sentry from '@sentry/react-native';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
@@ -30,6 +31,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import '../global.css';
 import 'reflect-metadata';
 import 'expo-dev-client';
+import 'react-native-url-polyfill/auto';
 
 export { ErrorBoundary } from 'expo-router';
 
@@ -58,6 +60,7 @@ const useLanguage = setLanguage(translations, constants.defaultLocale);
 
 setupReactotron('open-web-ui');
 analyticsService.init();
+supabaseService.init();
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
