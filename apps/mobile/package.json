@@ -48,6 +48,7 @@
     "axios-observable": "^2.1.0",
     "babel-plugin-module-resolver": "^5.0.2",
     "babel-plugin-react-compiler": "^19.0.0-beta-af1b7da-20250417",
+    "base64-arraybuffer": "^1.0.2",
     "class-transformer": "^0.5.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
