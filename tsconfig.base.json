@@ -175,6 +175,9 @@
       "@open-webui-react-native/mobile/shared/features/chat-actions-menu-sheet": [
         "libs/mobile/shared/features/chat-actions-menu-sheet/src/index.ts"
       ],
+      "@open-webui-react-native/mobile/shared/features/contact-support-sheet": [
+        "libs/mobile/shared/features/contact-support-sheet/src/index.ts"
+      ],
       "@open-webui-react-native/mobile/shared/features/download-chat": [
         "libs/mobile/shared/features/download-chat/src/index.ts"
       ],
@@ -273,6 +276,7 @@
         "libs/shared/utils/store-review-service/src/index.ts"
       ],
       "@open-webui-react-native/shared/utils/strings": ["libs/shared/utils/strings/src/index.ts"],
+      "@open-webui-react-native/shared/utils/supabase-service": ["libs/shared/utils/supabase-service/src/index.ts"],
       "@open-webui-react-native/shared/utils/toast-service": ["libs/shared/utils/toast-service/src/index.ts"],
       "@open-webui-react-native/shared/utils/use-app-state-change": [
         "libs/shared/utils/use-app-state-change/src/index.ts"

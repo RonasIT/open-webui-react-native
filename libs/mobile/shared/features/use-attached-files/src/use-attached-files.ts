@@ -25,6 +25,7 @@ export function useAttachedFiles(): typeof result {
         mimeType: ImageMimeType.JPEG,
         uri: compressed,
         base64: await fileSystemService.convertToBase64(compressed),
+        fileName: image.fileName,
       };
     }
 

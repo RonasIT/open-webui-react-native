@@ -5,7 +5,8 @@
       "TEXT_REQUIRED_EMAIL": "Please enter your email",
       "TEXT_REQUIRED_PASSWORD": "Please enter your password",
       "TEXT_INVALID_URL": "Please enter a valid server URL, e.g. https://your.domain or http://192.168.1.10:3000",
-      "TEXT_REQUIRED_FOLDER_NAME": "Please enter a folder name"
+      "TEXT_REQUIRED_FOLDER_NAME": "Please enter a folder name",
+      "TEXT_REQUIRED_MESSAGE": "Please enter a message"
     },
     "COMMON": {
       "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "Feature is not implemented yet.",
@@ -103,6 +104,12 @@
     "SEARCH_INPUT": {
       "BUTTON_CANCEL": "Cancel",
       "TEXT_SEARCH_CHATS": "Search chats"
+    },
+    "CONTACT_SUPPORT_SHEET": {
+      "TEXT_REPORT_BUG": "Report a bug",
+      "TEXT_YOUR_MESSAGE": "Your message",
+      "TEXT_MESSAGE_SENT": "Thank you for your feedback! Your message has been sent successfully",
+      "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Attach screenshots or video"
     }
   }
 }
