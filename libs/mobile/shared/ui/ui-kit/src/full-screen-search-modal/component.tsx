@@ -88,7 +88,8 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
     setIsOpen(true);
     const index = (combinedData ?? []).findIndex((item) => item.id === selectedItemId);
 
-    if (combinedData.length > 0) {
+    //NOTE The selected item may be absent from the list, so there is nothing to scroll to
+    if (index >= 0) {
       //NOTE Scroll cannot be triggered immediately, because bottom sheet is not fully opened yet
       delay(() => {
         if (index === combinedData.length - 1) {

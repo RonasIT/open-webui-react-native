@@ -1,4 +1,5 @@
 import { Expose, Type } from 'class-transformer';
+import { AIModelInfo } from './model-info';
 import { OpenAIModel } from './open-ai-model';
 
 export class AIModel {
@@ -26,6 +27,10 @@ export class AIModel {
   @Expose()
   @Type(() => OpenAIModel)
   public openai: OpenAIModel;
+
+  @Expose()
+  @Type(() => AIModelInfo)
+  public info?: AIModelInfo;
 
   constructor(request: Partial<AIModel>) {
     Object.assign(this, request);

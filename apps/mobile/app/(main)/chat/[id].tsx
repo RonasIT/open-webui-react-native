@@ -21,12 +21,12 @@ import {
   navigationConfig,
   useInitialNavigation,
 } from '@open-webui-react-native/mobile/shared/utils/navigation';
-import { chatApi, modelsApi } from '@open-webui-react-native/shared/data-access/api';
+import { chatApi, getSelectableModels, modelsApi } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { useNavigateOnce } from '@open-webui-react-native/shared/utils/navigation';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { useNavigationContainerRef, usePathname, useLocalSearchParams, router } from 'expo-router';
-import { ReactElement, useCallback, useRef } from 'react';
+import { ReactElement, useCallback, useMemo, useRef } from 'react';
 
 export default function ChatScreen(): ReactElement {
   const translate = useTranslation('CHAT.CHAT_SCREEN');
@@ -43,6 +43,8 @@ export default function ChatScreen(): ReactElement {
   const { data: models, isLoading: isModelsLoading } = modelsApi.useGetModels();
   const { data: chat, isLoading: isChatLoading } = chatApi.useGet(id);
   const { modelId, modelName, onSelectModel } = useSetSelectedModel(id);
+
+  const selectableModels = useMemo(() => getSelectableModels(models), [models]);
 
   const handleGoBackPress = (): void => router.back();
 
@@ -74,7 +76,7 @@ export default function ChatScreen(): ReactElement {
               translate('TEXT_LOADING')
             ) : (
               <FullScreenSearchModal
-                data={models || []}
+                data={selectableModels}
                 renderTrigger={renderTrigger}
                 selectedItemId={modelId}
                 onSelectItem={onSelectModel}
