@@ -152,6 +152,9 @@
       "@open-webui-react-native/mobile/profile/features/menu-sheet": [
         "libs/mobile/profile/features/menu-sheet/src/index.ts"
       ],
+      "@open-webui-react-native/mobile/settings/features/settings": [
+        "libs/mobile/settings/features/settings/src/index.ts"
+      ],
       "@open-webui-react-native/mobile/shared/data-access/base-entity": [
         "libs/mobile/shared/data-access/base-entity/src/index.ts"
       ],

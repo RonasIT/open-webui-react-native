@@ -50,5 +50,9 @@
   {
     "sourceTag": "scope:folder",
     "onlyDependOnLibsWithTags": ["scope:folder", "scope:shared"]
+  },
+  {
+    "sourceTag": "scope:settings",
+    "onlyDependOnLibsWithTags": ["scope:settings", "scope:shared"]
   }
 ]

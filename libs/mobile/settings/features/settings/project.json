@@ -1,0 +1,9 @@
+{
+  "name": "mobile/settings/features/settings",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mobile/settings/features/settings/src",
+  "projectType": "library",
+  "tags": ["app:mobile", "scope:settings", "type:features"],
+  "// targets": "to see all targets run: nx show project mobile/settings/features/settings --web",
+  "targets": {}
+}
