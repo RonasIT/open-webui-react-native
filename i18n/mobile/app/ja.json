@@ -4,7 +4,7 @@
       "TEXT_CHATS": "チャット"
     },
     "SETTINGS_SCREEN": {
-      "TEXT_SETTINGS": "設定",
+      "TEXT_SETTINGS": "プロフィールと設定",
       "TEXT_LANGUAGE": "言語",
       "TEXT_MARKDOWN_RENDERER": "Select Markdown Renderer",
       "TEXT_MARKDOWN_RENDERER_DEFAULT": "Default",

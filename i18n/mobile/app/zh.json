@@ -4,7 +4,7 @@
       "TEXT_CHATS": "聊天"
     },
     "SETTINGS_SCREEN": {
-      "TEXT_SETTINGS": "设置",
+      "TEXT_SETTINGS": "个人资料和设置",
       "TEXT_LANGUAGE": "语言",
       "TEXT_MARKDOWN_RENDERER": "Select Markdown Renderer",
       "TEXT_MARKDOWN_RENDERER_DEFAULT": "Default",
