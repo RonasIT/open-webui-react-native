@@ -1,0 +1,11 @@
+{
+  "APP": {
+    "CHAT_LIST_SCREEN": {
+      "TEXT_CHATS": "聊天"
+    },
+    "SETTINGS_SCREEN": {
+      "TEXT_SETTINGS": "设置",
+      "TEXT_LANGUAGE": "语言"
+    }
+  }
+}

@@ -33,6 +33,8 @@ export default function ChatListScreen(): ReactElement {
   const handleArchivedChatsPress = (): void =>
     navigateOnce(`${navigationConfig.main.chat.index}/${navigationConfig.main.chat.archivedChats}`);
 
+  const handleSettingsPress = (): void => navigateOnce(navigationConfig.main.settings);
+
   const handleFolderPress = (id: string, title: string): void =>
     router.navigate(navigationConfig.main.folder.view({ id, title }));
 
@@ -49,7 +51,9 @@ export default function ChatListScreen(): ReactElement {
         <AppHeader
           className='mt-0'
           title={translate('TEXT_CHATS')}
-          accessoryLeft={<ProfileMenuSheet onArchivedChatsPress={handleArchivedChatsPress} />}
+          accessoryLeft={
+            <ProfileMenuSheet onArchivedChatsPress={handleArchivedChatsPress} onSettingsPress={handleSettingsPress} />
+          }
           accessoryRight={
             <View className='flex-row gap-12'>
               {isFeatureEnabled(FeatureID.CHAT_FOLDERS) && (

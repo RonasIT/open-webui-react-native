@@ -1,0 +1,15 @@
+{
+  "PROFILE": {
+    "PROFILE_MENU_SHEET": {
+      "TEXT_LOGOUT": "Sair",
+      "TEXT_ARCHIVED_CHATS": "Chats arquivados",
+      "TEXT_SETTINGS": "Configurações",
+      "TEXT_DELETE_ACCOUNT": "Excluir conta",
+      "TEXT_DELETE_ACCOUNT_TITLE": "Tem certeza de que deseja excluir sua conta?",
+      "TEXT_DELETE_ACCOUNT_MESSAGE": "Esta ação resultará na perda permanente de dados se não tivermos notícias suas nos próximos 30 dias.",
+      "BUTTON_DELETE_ACCOUNT": "Sim, excluir minha conta",
+      "BUTTON_DONT_DELETE": "Não excluir",
+      "TEXT_ACCOUNT_DELETION_REQUEST": "Sua solicitação de exclusão de conta foi enviada."
+    }
+  }
+}

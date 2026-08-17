@@ -1,0 +1,168 @@
+{
+  "CHAT": {
+    "CHAT_SCREEN": {
+      "TEXT_LOADING": "Carregando...",
+      "TEXT_SELECT_A_MODEL": "Selecionar um modelo"
+    },
+    "CHAT": {
+      "TEXT_INPUT_PLACEHOLDER": "Enviar uma mensagem",
+      "TEXT_MODEL_NOT_SELECTED": "Modelo não selecionado"
+    },
+    "CHAT_MENU_LIST": {
+      "PINNED_CHAT_LIST": {
+        "TEXT_PINNED": "Fixados"
+      },
+      "TEXT_NEW_CHAT": "Novo chat",
+      "TEXT_SEARCH": "Pesquisar",
+      "TEXT_THERE_ARE_NO_CHATS": "Não há chats"
+    },
+    "SEARCH_CHATS_LIST": {
+      "TEXT_THERE_ARE_NO_CHATS": "Não há chats"
+    },
+    "FORM_CHAT_INPUT": {
+      "TEXT_MODEL_NOT_SELECTED": "Modelo não selecionado",
+      "ATTACHMENTS_ACTIONS_POPUP": {
+        "TEXT_CAPTURE": "Capturar",
+        "TEXT_CHOOSE_FROM_GALLERY": "Escolher da galeria",
+        "TEXT_UPLOAD_FILES": "Enviar arquivos",
+        "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Não é possível enviar um arquivo vazio."
+      }
+    },
+    "SHARE_CHAT_MODAL": {
+      "TEXT_SHARE_CHAT": "Compartilhar chat",
+      "TEXT_DESCRIPTION_NOT_SHARED": "As mensagens enviadas após a criação do link não serão compartilhadas. Os usuários com o URL poderão ver o chat compartilhado.",
+      "TEXT_DESCRIPTION_SHARED_1": "Você compartilhou este chat",
+      "TEXT_BEFORE_LINK": "antes",
+      "TEXT_DESCRIPTION_SHARED_2": "Clique aqui para",
+      "TEXT_DELETE_LINK": "excluir este link",
+      "TEXT_DESCRIPTION_SHARED_3": "e criar um novo link compartilhado.",
+      "BUTTON_COPY_LINK": "Copiar link",
+      "BUTTON_UPDATE_AND_COPY_LINK": "Atualizar e copiar link",
+      "TEXT_LINK_COPIED": "Link copiado para a área de transferência"
+    },
+    "CREATE_CHAT": {
+      "TEXT_NEW_CHAT": "Novo chat",
+      "TEXT_PLACEHOLDER": "Como posso ajudar você hoje?",
+      "TEXT_MODEL_NOT_SELECTED": "Modelo não selecionado",
+      "TEXT_SELECT_A_MODEL": "Selecionar um modelo",
+      "SEARCH_MODEL_VIEW": {
+        "TEXT_SELECT_A_MODEL": "Selecionar um modelo",
+        "TEXT_SEARCH_MODEL": "Pesquisar modelo"
+      },
+      "SEARCH_FOLDER_VIEW": {
+        "TEXT_SEARCH_FOLDER": "Pesquisar pasta",
+        "TEXT_NO_FOLDER": "Nenhuma pasta",
+        "TEXT_CREATE_NEW_FOLDER": "Criar nova pasta"
+      },
+      "SUGGESTIONS_LIST": {
+        "TEXT_SUGGESTED": "Sugestões",
+        "TEXT_SUGGESTION_TITLE_1": "Ajude-me a estudar",
+        "TEXT_SUGGESTION_SUBTITLE_1": "vocabulário para um vestibular",
+        "TEXT_SUGGESTION_CONTENT_1": "Ajude-me a estudar vocabulário: escreva uma frase com um espaço em branco para eu tentar escolher a opção correta.",
+        "TEXT_SUGGESTION_TITLE_2": "Me dê ideias",
+        "TEXT_SUGGESTION_SUBTITLE_2": "sobre o que fazer com a arte dos meus filhos",
+        "TEXT_SUGGESTION_CONTENT_2": "Quais são 5 coisas criativas que eu poderia fazer com a arte dos meus filhos? Não quero jogá-las fora, mas também ocupam muito espaço.",
+        "TEXT_SUGGESTION_TITLE_3": "Conte-me um fato divertido",
+        "TEXT_SUGGESTION_SUBTITLE_3": "sobre o Império Romano",
+        "TEXT_SUGGESTION_CONTENT_3": "Conte-me um fato divertido aleatório sobre o Império Romano",
+        "TEXT_SUGGESTION_TITLE_4": "Mostre-me um trecho de código",
+        "TEXT_SUGGESTION_SUBTITLE_4": "de um cabeçalho fixo de site",
+        "TEXT_SUGGESTION_CONTENT_4": "Mostre-me um trecho de código de um cabeçalho fixo de site em CSS e JavaScript.",
+        "TEXT_SUGGESTION_TITLE_5": "Explique o trading de opções",
+        "TEXT_SUGGESTION_SUBTITLE_5": "se eu já sei comprar e vender ações",
+        "TEXT_SUGGESTION_CONTENT_5": "Explique o trading de opções em termos simples se eu já estiver familiarizado com a compra e venda de ações.",
+        "TEXT_SUGGESTION_TITLE_6": "Superar a procrastinação",
+        "TEXT_SUGGESTION_SUBTITLE_6": "me dê dicas",
+        "TEXT_SUGGESTION_CONTENT_6": "Você poderia começar perguntando sobre as situações em que mais procrastino e depois me dar algumas sugestões para superar isso?"
+      }
+    },
+    "ATTACHED_FILE_ITEM": {
+      "TEXT_FILE": "Arquivo",
+      "TEXT_DOCUMENT": "Documento",
+      "TEXT_COLLECTION": "Coleção",
+      "FILE_INFO_MODAL": {
+        "TEXT_FORMATTING_DISCLAIMER": "A formatação pode ser inconsistente em relação à origem.",
+        "TEXT_NO_PREVIEW_AVAILABLE": "Pré-visualização indisponível",
+        "TEXT_EXTRACTED_LINES": {
+          "one": "{{count}} linha extraída",
+          "other": "{{count}} linhas extraídas"
+        }
+      }
+    },
+    "SOURCE_CITATION_MODAL": {
+      "TEXT_CITATION": "Citação",
+      "TEXT_SOURCE": "Fonte",
+      "TEXT_RELEVANCE": "Relevância",
+      "TEXT_CONTENT": "Conteúdo",
+      "TEXT_NO_PREVIEW_AVAILABLE": "Pré-visualização indisponível"
+    },
+    "ARCHIVED_CHATS_LIST": {
+      "TEXT_ARCHIVED_CHATS": "Chats arquivados",
+      "TEXT_NO_CHATS": "Não há chats arquivados.",
+      "CHAT_ITEM": {
+        "TEXT_DELETE_CHAT": "Excluir chat?",
+        "TEXT_THIS_WILL_DELETE": "Isso excluirá {{name}}",
+        "TEXT_RESTORE": "Restaurar",
+        "TEXT_EXPORT": "Exportar",
+        "TEXT_DELETE": "Excluir",
+        "TEXT_KEEP": "Manter"
+      },
+      "ARCHIVED_CHATS_ACTIONS_SHEET": {
+        "TEXT_UNARCHIVE_CHATS": "Desarquivar todos os chats?",
+        "TEXT_ARE_YOU_SURE": "Tem certeza de que deseja desarquivar todos os chats arquivados?",
+        "BUTTON_RESTORE_ALL_CHATS": "Restaurar todos os chats",
+        "BUTTON_EXPORT_ALL_CHATS": "Exportar todos os chats"
+      }
+    },
+    "USER_MESSAGE_ACTIONS": {
+      "TEXT_EDIT": "Editar",
+      "TEXT_COPY": "Copiar"
+    },
+    "AI_MESSAGE_ACTIONS": {
+      "TEXT_EDIT": "Editar",
+      "TEXT_COPY": "Copiar",
+      "TEXT_CONTINUE_RESPONSE": "Continuar resposta",
+      "TEXT_REGENERATE": "Regenerar",
+      "REGENERATE_MESSAGE_ACTION_SHEET": {
+        "TEXT_SUGGEST_A_CHANGE": "Sugerir uma alteração",
+        "TEXT_TRY_AGAIN": "Tentar novamente",
+        "TEXT_ADD_DETAILS": "Adicionar detalhes",
+        "TEXT_MORE_CONCISE": "Mais conciso"
+      }
+    },
+    "EDIT_MESSAGE_INPUT": {
+      "TEXT_EDIT_MESSAGE": "Editar mensagem",
+      "BUTTON_SAVE": "Salvar",
+      "BUTTON_SAVE_AS_COPY": "Salvar como cópia",
+      "BUTTON_SEND": "Enviar",
+      "BUTTON_CANCEL": "Cancelar"
+    },
+    "SUGGEST_CHANGE_INPUT": {
+      "TEXT_SUGGEST_A_CHANGE": "Sugerir uma alteração",
+      "BUTTON_CANCEL": "Cancelar"
+    },
+    "ARCHIVED_CHATS_FILTERS_SHEET": {
+      "USE_SEARCH_FILTERS": {
+        "TEXT_MOST_RECENT": "Mais recentes",
+        "TEXT_OLDEST": "Mais antigos",
+        "TEXT_A-Z": "A-Z",
+        "TEXT_Z-A": "Z-A"
+      }
+    },
+    "VOICE_MODE_MODAL": {
+      "TEXT_LISTENING": "Ouvindo...",
+      "TEXT_THINKING": "Pensando...",
+      "TEXT_TALKING": "Falando..."
+    },
+    "MESSAGE_FOLLOW_UPS": {
+      "TEXT_FOLLOW_UP": "Continuação"
+    },
+    "AI_MESSAGE": {
+      "TOOL_OUTPUT_SHEET": {
+        "TEXT_VIEW_RESULT_PREFIX": "Ver resultado de",
+        "TEXT_INPUT": "Entrada",
+        "TEXT_OUTPUT": "Saída"
+      }
+    }
+  }
+}

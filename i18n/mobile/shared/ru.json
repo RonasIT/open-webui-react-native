@@ -1,0 +1,108 @@
+{
+  "SHARED": {
+    "VALIDATION": {
+      "TEXT_INVALID_EMAIL": "Введите корректный адрес электронной почты",
+      "TEXT_REQUIRED_EMAIL": "Введите адрес электронной почты",
+      "TEXT_REQUIRED_PASSWORD": "Введите пароль",
+      "TEXT_INVALID_URL": "Введите корректный URL сервера, напр. https://your.domain или http://192.168.1.10:3000",
+      "TEXT_REQUIRED_FOLDER_NAME": "Введите название папки"
+    },
+    "COMMON": {
+      "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "Функция пока не реализована.",
+      "TEXT_NEW_CHAT": "Новый чат",
+      "BUTTON_CANCEL": "Отмена",
+      "BUTTON_CONFIRM": "Подтвердить",
+      "BUTTON_OPEN_SETTINGS": "Открыть настройки",
+      "TEXT_UNABLE_TO_OPEN_SETTINGS": "Не удалось открыть настройки",
+      "TEXT_SETTINGS": "Настройки",
+      "TEXT_DISABLED_IN_OFFLINE_MODE": "Функции недоступны в офлайн-режиме",
+      "ACTIONS_BOTTOM_SHEET": {
+        "BUTTON_CANCEL": "Отмена"
+      },
+      "TEXT_COPIED_TO_CLIPBOARD": "Скопировано в буфер обмена"
+    },
+    "API_ERRORS": {
+      "TEXT_SOMETHING_WENT_WRONG": "Что-то пошло не так",
+      "TEXT_YOUR_SESSION_HAS_EXPIRED": "Сеанс истёк. Войдите снова",
+      "TEXT_FORBIDDEN_ERROR": "У вас нет доступа к этому действию",
+      "TEXT_INTERNAL_SERVER_ERROR": "Ошибка загрузки данных",
+      "TEXT_NOT_FOUND_ERROR": "Данные не найдены"
+    },
+    "DATES": {
+      "TEXT_TODAY": "Сегодня",
+      "TEXT_YESTERDAY": "Вчера",
+      "TEXT_LAST_DAYS": "Последние {{days}} дн.",
+      "TEXT_AT_TIME": "в {{time}}",
+      "TEXT_TODAY_TIME": "Сегодня {{time}}",
+      "TEXT_YESTERDAY_TIME": "Вчера {{time}}"
+    },
+    "CODE_BLOCK": {
+      "TEXT_COPIED_TO_CLIPBOARD": "Скопировано в буфер обмена",
+      "TEXT_COPY": "Копировать"
+    },
+    "SOCKET_SERVICE": {
+      "TEXT_CONNECTION_ERROR": "Ошибка соединения"
+    },
+    "IMAGE_PICKER_SERVICE": {
+      "TEXT_ACCESS_DENIED": "Доступ запрещён"
+    },
+    "ACTION_BUTTONS_MODAL": {
+      "BUTTON_CONFIRM": "Подтвердить",
+      "BUTTON_CANCEL": "Отмена",
+      "TEXT_TITLE_CAN_NOT_BE_EMPTY": "Название не может быть пустым"
+    },
+    "MEDIA_LIBRARY_SERVICE": {
+      "TEXT_SUCCESSFULLY_SAVED": "Изображение успешно сохранено",
+      "TEXT_ERROR_DURING_SAVING": "Произошла ошибка при сохранении изображения",
+      "TEXT_SETTINGS": "Настройки",
+      "TEXT_SETTINGS_MESSAGE": "Разрешите доступ к камере в настройках. Settings > Open Web UI > Photos > All Photos"
+    },
+    "FILE_SYSTEM_SERVICE": {
+      "TEXT_SHARE": "Поделиться {{fileName}}",
+      "TEXT_SHARING_IS_NOT_AVAILABLE": "Обмен недоступен на этом устройстве"
+    },
+    "USE_AUDIO_RECORDER": {
+      "TEXT_NO_ACCESS": "Нет доступа",
+      "TEXT_APP_NEEDS_ACCESS": "Приложению нужен доступ к микрофону устройства"
+    },
+    "NO_CONNECTION_BANNER": {
+      "TEXT_YOU_ARE_OFFLINE": "Вы офлайн!"
+    },
+    "PRESSABLE_SEARCH_INPUT": {
+      "TEXT_SEARCH_CHATS": "Поиск чатов"
+    },
+    "CHAT_ACTIONS_MENU_SHEET": {
+      "TEXT_PIN": "Закрепить",
+      "TEXT_UNPIN": "Открепить",
+      "TEXT_RENAME": "Переименовать",
+      "TEXT_CLONE": "Клонировать",
+      "TEXT_ARCHIVE": "В архив",
+      "TEXT_RESTORE": "Восстановить",
+      "TEXT_SHARE": "Поделиться",
+      "TEXT_DOWNLOAD": "Скачать",
+      "TEXT_DELETE": "Удалить",
+      "TEXT_KEEP": "Оставить",
+      "TEXT_RENAME_CHAT": "Переименовать чат",
+      "TEXT_DELETE_CHAT": "Удалить чат?",
+      "TEXT_THIS_WILL_DELETE": "Будет удалено: {{name}}",
+      "TEXT_CLONE_OF": "Копия {{title}}",
+      "TEXT_CHAT_ACTIONS": "Действия с чатом",
+      "TEXT_MOVE_TO_FOLDER": "Переместить в папку",
+      "DOWNLOAD_CHAT_OPTIONS_SHEET": {
+        "TEXT_EXPORT_CHAT_JSON": "Экспорт чата (.json)",
+        "TEXT_PLAIN_TEXT": "Обычный текст (.txt)",
+        "TEXT_PDF_DOCUMENT": "PDF-документ (.pdf)"
+      },
+      "MOVE_CHAT_TO_FOLDER_MODAL": {
+        "TEXT_SEARCH_FOLDER": "Поиск папки",
+        "TEXT_NO_FOLDERS": "Папок нет",
+        "TEXT_CREATE_NEW_FOLDER": "Создать папку",
+        "TEXT_NO_FOLDER": "Без папки"
+      }
+    },
+    "SEARCH_INPUT": {
+      "BUTTON_CANCEL": "Отмена",
+      "TEXT_SEARCH_CHATS": "Поиск чатов"
+    }
+  }
+}

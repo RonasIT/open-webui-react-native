@@ -1,0 +1,15 @@
+{
+  "PROFILE": {
+    "PROFILE_MENU_SHEET": {
+      "TEXT_LOGOUT": "Abmelden",
+      "TEXT_ARCHIVED_CHATS": "Archivierte Chats",
+      "TEXT_SETTINGS": "Einstellungen",
+      "TEXT_DELETE_ACCOUNT": "Konto löschen",
+      "TEXT_DELETE_ACCOUNT_TITLE": "Möchten Sie Ihr Konto wirklich löschen?",
+      "TEXT_DELETE_ACCOUNT_MESSAGE": "Diese Aktion führt zu einem dauerhaften Datenverlust, wenn wir in den nächsten 30 Tagen nichts von Ihnen hören.",
+      "BUTTON_DELETE_ACCOUNT": "Ja, mein Konto löschen",
+      "BUTTON_DONT_DELETE": "Nicht löschen",
+      "TEXT_ACCOUNT_DELETION_REQUEST": "Ihre Anfrage zur Kontolöschung wurde übermittelt."
+    }
+  }
+}
