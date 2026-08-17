@@ -5,7 +5,10 @@
     },
     "SETTINGS_SCREEN": {
       "TEXT_SETTINGS": "設定",
-      "TEXT_LANGUAGE": "言語"
+      "TEXT_LANGUAGE": "言語",
+      "TEXT_MARKDOWN_RENDERER": "Select Markdown Renderer",
+      "TEXT_MARKDOWN_RENDERER_DEFAULT": "Default",
+      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro markdown experimental"
     }
   }
 }

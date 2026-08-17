@@ -5,7 +5,10 @@
     },
     "SETTINGS_SCREEN": {
       "TEXT_SETTINGS": "Settings",
-      "TEXT_LANGUAGE": "Language"
+      "TEXT_LANGUAGE": "Language",
+      "TEXT_MARKDOWN_RENDERER": "Select Markdown Renderer",
+      "TEXT_MARKDOWN_RENDERER_DEFAULT": "Default",
+      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro markdown experimental"
     }
   }
 }
