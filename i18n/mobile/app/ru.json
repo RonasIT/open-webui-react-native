@@ -30,7 +30,7 @@
       "TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE": "Разметка Markdown в сообщениях пользователя",
       "TEXT_MARKDOWN_RENDERER": "Обработчик Markdown",
       "TEXT_MARKDOWN_RENDERER_DEFAULT": "По умолчанию",
-      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro Markdown (экспериментально)",
+      "TEXT_MARKDOWN_RENDERER_NITRO": "Экспериментальный",
       "PROFILE_AVATAR_SHEET": {
         "TEXT_TITLE": "Аватар профиля",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "Загрузить изображение профиля",
@@ -58,6 +58,12 @@
         "TEXT_TITLE": "Связаться с поддержкой",
         "TEXT_MESSAGE_PLACEHOLDER": "Ваше сообщение",
         "BUTTON_ATTACH": "Прикрепить скриншоты или видео"
+      },
+      "LANGUAGE_SHEET": {
+        "TEXT_TITLE": "Язык"
+      },
+      "MARKDOWN_RENDERER_SHEET": {
+        "TEXT_TITLE": "Обработчик Markdown"
       }
     }
   }

@@ -30,7 +30,7 @@
       "TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE": "Markdown in Benutzernachrichten darstellen",
       "TEXT_MARKDOWN_RENDERER": "Markdown-Renderer",
       "TEXT_MARKDOWN_RENDERER_DEFAULT": "Standard",
-      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro Markdown (experimentell)",
+      "TEXT_MARKDOWN_RENDERER_NITRO": "Experimentell",
       "PROFILE_AVATAR_SHEET": {
         "TEXT_TITLE": "Profilbild",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "Profilbild hochladen",
@@ -58,6 +58,12 @@
         "TEXT_TITLE": "Support kontaktieren",
         "TEXT_MESSAGE_PLACEHOLDER": "Ihre Nachricht",
         "BUTTON_ATTACH": "Screenshots oder Video anhängen"
+      },
+      "LANGUAGE_SHEET": {
+        "TEXT_TITLE": "Sprache"
+      },
+      "MARKDOWN_RENDERER_SHEET": {
+        "TEXT_TITLE": "Markdown-Renderer"
       }
     }
   }

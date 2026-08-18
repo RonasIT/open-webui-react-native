@@ -6,7 +6,12 @@ import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-l
 import { Avatar, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { authApi, modelsApi } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
-import { availableLanguages, availableMarkdownRenderers } from '@open-webui-react-native/shared/utils/config';
+import {
+  availableLanguages,
+  availableMarkdownRenderers,
+  LanguageCode,
+  MarkdownRenderer,
+} from '@open-webui-react-native/shared/utils/config';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import {
   ChangePasswordSheet,
@@ -19,6 +24,8 @@ import {
   ProfileAvatarSheetMethods,
   ProfileNameSheet,
   ProfileNameSheetMethods,
+  SelectionSheet,
+  SelectionSheetMethods,
 } from './components';
 import { SettingsToggles } from './types';
 
@@ -49,6 +56,8 @@ export function Settings(): ReactElement {
   const defaultModelSheetRef = useRef<DefaultModelSheetMethods>(null);
   const changePasswordSheetRef = useRef<ChangePasswordSheetMethods>(null);
   const contactSupportSheetRef = useRef<ContactSupportSheetMethods>(null);
+  const languageSheetRef = useRef<SelectionSheetMethods>(null);
+  const markdownRendererSheetRef = useRef<SelectionSheetMethods>(null);
 
   const createToggleHandler =
     (toggle: keyof SettingsToggles) =>
@@ -60,6 +69,12 @@ export function Settings(): ReactElement {
   const markdownRendererOption = availableMarkdownRenderers.find(({ code }) => code === markdownRenderer);
   const defaultModelName = models?.find(({ id }) => id === defaultModelId)?.name;
 
+  const languageItems = availableLanguages.map(({ code, label }) => ({ value: code, label }));
+  const markdownRendererItems = availableMarkdownRenderers.map(({ code, labelKey }) => ({
+    value: code,
+    label: translate(labelKey),
+  }));
+
   const generalOptions: Array<SettingsSectionOption> = [
     {
       label: translate('TEXT_DEFAULT_MODEL'),
@@ -67,7 +82,11 @@ export function Settings(): ReactElement {
       onPress: () => defaultModelSheetRef.current?.present(),
     },
     { label: translate('TEXT_DEFAULT_SYSTEM_PROMPT'), onPress: ToastService.showFeatureNotImplemented },
-    { label: translate('TEXT_LANGUAGE'), value: languageLabel, onPress: ToastService.showFeatureNotImplemented },
+    {
+      label: translate('TEXT_LANGUAGE'),
+      value: languageLabel,
+      onPress: () => languageSheetRef.current?.present(),
+    },
   ];
 
   const profileOptions: Array<SettingsSectionOption> = [
@@ -150,9 +169,17 @@ export function Settings(): ReactElement {
     {
       label: translate('TEXT_MARKDOWN_RENDERER'),
       value: markdownRendererOption && translate(markdownRendererOption.labelKey),
-      onPress: ToastService.showFeatureNotImplemented,
+      onPress: () => markdownRendererSheetRef.current?.present(),
     },
   ];
+
+  const handleLanguageChange = (value: LanguageCode): void => {
+    appState$.setLocale(value);
+  };
+
+  const handleMarkdownRendererChange = (value: MarkdownRenderer): void => {
+    appState$.setMarkdownRenderer(value);
+  };
 
   return (
     <View className='pb-32'>
@@ -180,6 +207,20 @@ export function Settings(): ReactElement {
         selectedModelId={defaultModelId}
         onConfirm={setDefaultModelId} />
       <ContactSupportSheet ref={contactSupportSheetRef} />
+      <SelectionSheet
+        ref={languageSheetRef}
+        title={translate('LANGUAGE_SHEET.TEXT_TITLE')}
+        items={languageItems}
+        selectedValue={locale}
+        onConfirm={handleLanguageChange}
+      />
+      <SelectionSheet
+        ref={markdownRendererSheetRef}
+        title={translate('MARKDOWN_RENDERER_SHEET.TEXT_TITLE')}
+        items={markdownRendererItems}
+        selectedValue={markdownRenderer}
+        onConfirm={handleMarkdownRendererChange}
+      />
     </View>
   );
 }

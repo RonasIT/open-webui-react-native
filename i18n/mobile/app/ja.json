@@ -30,7 +30,7 @@
       "TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE": "ユーザーメッセージで Markdown を表示",
       "TEXT_MARKDOWN_RENDERER": "Markdown レンダラー",
       "TEXT_MARKDOWN_RENDERER_DEFAULT": "デフォルト",
-      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro Markdown（実験的）",
+      "TEXT_MARKDOWN_RENDERER_NITRO": "実験的",
       "PROFILE_AVATAR_SHEET": {
         "TEXT_TITLE": "プロフィール画像",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "プロフィール画像をアップロード",
@@ -58,6 +58,12 @@
         "TEXT_TITLE": "サポートに問い合わせる",
         "TEXT_MESSAGE_PLACEHOLDER": "メッセージ",
         "BUTTON_ATTACH": "スクリーンショットまたは動画を添付"
+      },
+      "LANGUAGE_SHEET": {
+        "TEXT_TITLE": "言語"
+      },
+      "MARKDOWN_RENDERER_SHEET": {
+        "TEXT_TITLE": "Markdown レンダラー"
       }
     }
   }
