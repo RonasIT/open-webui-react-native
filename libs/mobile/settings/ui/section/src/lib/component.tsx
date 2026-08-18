@@ -14,20 +14,20 @@ interface SettingsSectionProps {
 
 export function SettingsSection({ title, options }: SettingsSectionProps): ReactElement {
   return (
-    <View>
-      <AppText className='text-sm-sm sm:text-sm text-text-secondary pb-8'>{title}</AppText>
+    <View className='py-12'>
+      <AppText className='text-sm-sm sm:text-sm text-text-secondary py-8'>{title}</AppText>
       {options.map((option) => (
         <View key={option.label}>
           <AppPressable
             onPress={option.onPress}
             className='flex-row items-center justify-between py-14 active:opacity-100 active:bg-background-secondary'>
-            <AppText className='text-text-secondary'>{option.label}</AppText>
+            <AppText className='text-text-primary'>{option.label}</AppText>
             <View className='flex-row items-center gap-8'>
-              {option.value && <AppText>{option.value}</AppText>}
+              {option.value && <AppText className='text-text-secondary'>{option.value}</AppText>}
               <Icon name='chevronRight' className='shrink-0 color-text-secondary' />
             </View>
           </AppPressable>
-          <AppDivider />
+          <AppDivider className='text-text-tertiary' />
         </View>
       ))}
     </View>

@@ -2,6 +2,7 @@ import { Host, Picker } from '@expo/ui';
 import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement } from 'react';
+import { SettingsSection } from '@open-webui-react-native/mobile/settings/ui/section';
 import { useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { AppImage, AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { authApi } from '@open-webui-react-native/shared/data-access/api';
@@ -66,6 +67,14 @@ export function Settings(): ReactElement {
           </Picker>
         </Host>
       </View>
+      <SettingsSection
+        title={translate('TEXT_MARKDOWN_RENDERER')}
+        options={availableMarkdownRenderers.map(({ code, labelKey }) => ({
+          label: translate(labelKey),
+          value: code,
+          onPress: () => handleMarkdownRendererChange(code),
+        }))}
+      />
     </View>
   );
 }
