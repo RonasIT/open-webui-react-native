@@ -1,13 +1,23 @@
 import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useRef, useState } from 'react';
 import { SettingsSection, SettingsSectionOption } from '@open-webui-react-native/mobile/settings/ui/section';
 import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-logout';
 import { Avatar, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { authApi } from '@open-webui-react-native/shared/data-access/api';
+import { authApi, modelsApi } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { availableLanguages, availableMarkdownRenderers } from '@open-webui-react-native/shared/utils/config';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
+import {
+  ContactSupportSheet,
+  ContactSupportSheetMethods,
+  DefaultModelSheet,
+  DefaultModelSheetMethods,
+  ProfileAvatarSheet,
+  ProfileAvatarSheetMethods,
+  ProfileNameSheet,
+  ProfileNameSheetMethods,
+} from './components';
 import { SettingsToggles } from './types';
 
 const initialToggles: SettingsToggles = {
@@ -27,8 +37,15 @@ export function Settings(): ReactElement {
   const { logout } = useLogout();
 
   const { data: profile } = authApi.useGetProfile();
+  const { data: models } = modelsApi.useGetModels();
 
   const [toggles, setToggles] = useState(initialToggles);
+  const [defaultModelId, setDefaultModelId] = useState<string>();
+
+  const profileAvatarSheetRef = useRef<ProfileAvatarSheetMethods>(null);
+  const profileNameSheetRef = useRef<ProfileNameSheetMethods>(null);
+  const defaultModelSheetRef = useRef<DefaultModelSheetMethods>(null);
+  const contactSupportSheetRef = useRef<ContactSupportSheetMethods>(null);
 
   const createToggleHandler =
     (toggle: keyof SettingsToggles) =>
@@ -38,19 +55,28 @@ export function Settings(): ReactElement {
   const avatarSource = profile?.profileImageUrl ? { uri: profile.profileImageUrl } : undefined;
   const languageLabel = availableLanguages.find(({ code }) => code === locale)?.label;
   const markdownRendererOption = availableMarkdownRenderers.find(({ code }) => code === markdownRenderer);
+  const defaultModelName = models?.find(({ id }) => id === defaultModelId)?.name;
 
   const generalOptions: Array<SettingsSectionOption> = [
-    { label: translate('TEXT_DEFAULT_MODEL'), onPress: ToastService.showFeatureNotImplemented },
+    {
+      label: translate('TEXT_DEFAULT_MODEL'),
+      value: defaultModelName,
+      onPress: () => defaultModelSheetRef.current?.present(),
+    },
     { label: translate('TEXT_DEFAULT_SYSTEM_PROMPT'), onPress: ToastService.showFeatureNotImplemented },
     { label: translate('TEXT_LANGUAGE'), value: languageLabel, onPress: ToastService.showFeatureNotImplemented },
   ];
 
   const profileOptions: Array<SettingsSectionOption> = [
-    { label: translate('TEXT_PROFILE_NAME'), value: profile?.name, onPress: ToastService.showFeatureNotImplemented },
+    {
+      label: translate('TEXT_PROFILE_NAME'),
+      value: profile?.name,
+      onPress: () => profileNameSheetRef.current?.present(),
+    },
     {
       label: translate('TEXT_AVATAR'),
       accessoryRight: <Avatar source={avatarSource} name={profile?.name} />,
-      onPress: ToastService.showFeatureNotImplemented,
+      onPress: () => profileAvatarSheetRef.current?.present(),
     },
     {
       label: translate('TEXT_CHANGE_PASSWORD'),
@@ -61,7 +87,11 @@ export function Settings(): ReactElement {
   ];
 
   const feedbackOptions: Array<SettingsSectionOption> = [
-    { label: translate('TEXT_CONTACT_SUPPORT'), iconName: 'message', onPress: ToastService.showFeatureNotImplemented },
+    {
+      label: translate('TEXT_CONTACT_SUPPORT'),
+      iconName: 'message',
+      onPress: () => contactSupportSheetRef.current?.present(),
+    },
     { label: translate('TEXT_RATE_APP'), iconName: 'star', onPress: ToastService.showFeatureNotImplemented },
   ];
 
@@ -136,6 +166,16 @@ export function Settings(): ReactElement {
       <SettingsSection title={translate('TEXT_SECTION_FEEDBACK')} options={feedbackOptions} />
       <SettingsSection title={translate('TEXT_SECTION_CHATS')} options={chatsOptions} />
       <SettingsSection options={preferenceOptions} />
+      <ProfileAvatarSheet
+        ref={profileAvatarSheetRef}
+        name={profile?.name}
+        imageUrl={profile?.profileImageUrl} />
+      <ProfileNameSheet ref={profileNameSheetRef} name={profile?.name} />
+      <DefaultModelSheet
+        ref={defaultModelSheetRef}
+        selectedModelId={defaultModelId}
+        onConfirm={setDefaultModelId} />
+      <ContactSupportSheet ref={contactSupportSheetRef} />
     </View>
   );
 }

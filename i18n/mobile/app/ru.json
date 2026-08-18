@@ -30,7 +30,26 @@
       "TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE": "Разметка Markdown в сообщениях пользователя",
       "TEXT_MARKDOWN_RENDERER": "Обработчик Markdown",
       "TEXT_MARKDOWN_RENDERER_DEFAULT": "По умолчанию",
-      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro Markdown (экспериментально)"
+      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro Markdown (экспериментально)",
+      "PROFILE_AVATAR_SHEET": {
+        "TEXT_TITLE": "Аватар профиля",
+        "BUTTON_UPLOAD_PROFILE_IMAGE": "Загрузить изображение профиля",
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "Вернуть аватар по умолчанию"
+      },
+      "PROFILE_NAME_SHEET": {
+        "TEXT_TITLE": "Имя профиля",
+        "TEXT_PROFILE_NAME": "Имя профиля"
+      },
+      "DEFAULT_MODEL_SHEET": {
+        "TEXT_TITLE": "Модель по умолчанию",
+        "TEXT_SEARCH_MODEL": "Поиск модели",
+        "TEXT_NO_MODELS": "Моделей нет."
+      },
+      "CONTACT_SUPPORT_SHEET": {
+        "TEXT_TITLE": "Связаться с поддержкой",
+        "TEXT_MESSAGE_PLACEHOLDER": "Ваше сообщение",
+        "BUTTON_ATTACH": "Прикрепить скриншоты или видео"
+      }
     }
   }
 }

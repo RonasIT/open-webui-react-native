@@ -30,7 +30,26 @@
       "TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE": "在用户消息中渲染 Markdown",
       "TEXT_MARKDOWN_RENDERER": "Markdown 渲染器",
       "TEXT_MARKDOWN_RENDERER_DEFAULT": "默认",
-      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro Markdown（实验性）"
+      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro Markdown（实验性）",
+      "PROFILE_AVATAR_SHEET": {
+        "TEXT_TITLE": "个人资料头像",
+        "BUTTON_UPLOAD_PROFILE_IMAGE": "上传头像",
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "恢复默认头像"
+      },
+      "PROFILE_NAME_SHEET": {
+        "TEXT_TITLE": "个人资料名称",
+        "TEXT_PROFILE_NAME": "个人资料名称"
+      },
+      "DEFAULT_MODEL_SHEET": {
+        "TEXT_TITLE": "默认模型",
+        "TEXT_SEARCH_MODEL": "搜索模型",
+        "TEXT_NO_MODELS": "暂无模型。"
+      },
+      "CONTACT_SUPPORT_SHEET": {
+        "TEXT_TITLE": "联系客服",
+        "TEXT_MESSAGE_PLACEHOLDER": "您的留言",
+        "BUTTON_ATTACH": "附加截图或视频"
+      }
     }
   }
 }

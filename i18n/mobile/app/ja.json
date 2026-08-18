@@ -30,7 +30,26 @@
       "TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE": "ユーザーメッセージで Markdown を表示",
       "TEXT_MARKDOWN_RENDERER": "Markdown レンダラー",
       "TEXT_MARKDOWN_RENDERER_DEFAULT": "デフォルト",
-      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro Markdown（実験的）"
+      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro Markdown（実験的）",
+      "PROFILE_AVATAR_SHEET": {
+        "TEXT_TITLE": "プロフィール画像",
+        "BUTTON_UPLOAD_PROFILE_IMAGE": "プロフィール画像をアップロード",
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "デフォルトのアバターに戻す"
+      },
+      "PROFILE_NAME_SHEET": {
+        "TEXT_TITLE": "プロフィール名",
+        "TEXT_PROFILE_NAME": "プロフィール名"
+      },
+      "DEFAULT_MODEL_SHEET": {
+        "TEXT_TITLE": "デフォルトモデル",
+        "TEXT_SEARCH_MODEL": "モデルを検索",
+        "TEXT_NO_MODELS": "モデルがありません。"
+      },
+      "CONTACT_SUPPORT_SHEET": {
+        "TEXT_TITLE": "サポートに問い合わせる",
+        "TEXT_MESSAGE_PLACEHOLDER": "メッセージ",
+        "BUTTON_ATTACH": "スクリーンショットまたは動画を添付"
+      }
     }
   }
 }

@@ -5,7 +5,8 @@
       "TEXT_REQUIRED_EMAIL": "Veuillez saisir votre e-mail",
       "TEXT_REQUIRED_PASSWORD": "Veuillez saisir votre mot de passe",
       "TEXT_INVALID_URL": "Veuillez saisir une URL de serveur valide, ex. https://your.domain ou http://192.168.1.10:3000",
-      "TEXT_REQUIRED_FOLDER_NAME": "Veuillez saisir un nom de dossier"
+      "TEXT_REQUIRED_FOLDER_NAME": "Veuillez saisir un nom de dossier",
+      "TEXT_REQUIRED_PROFILE_NAME": "Veuillez saisir un nom de profil"
     },
     "COMMON": {
       "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "Cette fonctionnalité n’est pas encore implémentée.",

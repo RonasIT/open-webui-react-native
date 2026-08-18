@@ -5,7 +5,8 @@
       "TEXT_REQUIRED_EMAIL": "Introduce tu correo electrónico",
       "TEXT_REQUIRED_PASSWORD": "Introduce tu contraseña",
       "TEXT_INVALID_URL": "Introduce una URL de servidor válida, p. ej. https://your.domain o http://192.168.1.10:3000",
-      "TEXT_REQUIRED_FOLDER_NAME": "Introduce un nombre de carpeta"
+      "TEXT_REQUIRED_FOLDER_NAME": "Introduce un nombre de carpeta",
+      "TEXT_REQUIRED_PROFILE_NAME": "Introduce un nombre de perfil"
     },
     "COMMON": {
       "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "La función aún no está implementada.",

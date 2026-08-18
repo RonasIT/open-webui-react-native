@@ -30,7 +30,26 @@
       "TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE": "Renderizar Markdown en los mensajes del usuario",
       "TEXT_MARKDOWN_RENDERER": "Renderizador de Markdown",
       "TEXT_MARKDOWN_RENDERER_DEFAULT": "Predeterminado",
-      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro Markdown (experimental)"
+      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro Markdown (experimental)",
+      "PROFILE_AVATAR_SHEET": {
+        "TEXT_TITLE": "Avatar del perfil",
+        "BUTTON_UPLOAD_PROFILE_IMAGE": "Subir imagen de perfil",
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "Restaurar avatar predeterminado"
+      },
+      "PROFILE_NAME_SHEET": {
+        "TEXT_TITLE": "Nombre del perfil",
+        "TEXT_PROFILE_NAME": "Nombre del perfil"
+      },
+      "DEFAULT_MODEL_SHEET": {
+        "TEXT_TITLE": "Modelo predeterminado",
+        "TEXT_SEARCH_MODEL": "Buscar modelo",
+        "TEXT_NO_MODELS": "No hay modelos."
+      },
+      "CONTACT_SUPPORT_SHEET": {
+        "TEXT_TITLE": "Contactar con soporte",
+        "TEXT_MESSAGE_PLACEHOLDER": "Tu mensaje",
+        "BUTTON_ATTACH": "Adjuntar capturas de pantalla o vídeo"
+      }
     }
   }
 }

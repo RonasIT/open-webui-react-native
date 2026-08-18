@@ -5,7 +5,8 @@
       "TEXT_REQUIRED_EMAIL": "Please enter your email",
       "TEXT_REQUIRED_PASSWORD": "Please enter your password",
       "TEXT_INVALID_URL": "Please enter a valid server URL, e.g. https://your.domain or http://192.168.1.10:3000",
-      "TEXT_REQUIRED_FOLDER_NAME": "Please enter a folder name"
+      "TEXT_REQUIRED_FOLDER_NAME": "Please enter a folder name",
+      "TEXT_REQUIRED_PROFILE_NAME": "Please enter a profile name"
     },
     "COMMON": {
       "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "Feature is not implemented yet.",

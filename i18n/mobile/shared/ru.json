@@ -5,7 +5,8 @@
       "TEXT_REQUIRED_EMAIL": "Введите адрес электронной почты",
       "TEXT_REQUIRED_PASSWORD": "Введите пароль",
       "TEXT_INVALID_URL": "Введите корректный URL сервера, напр. https://your.domain или http://192.168.1.10:3000",
-      "TEXT_REQUIRED_FOLDER_NAME": "Введите название папки"
+      "TEXT_REQUIRED_FOLDER_NAME": "Введите название папки",
+      "TEXT_REQUIRED_PROFILE_NAME": "Введите имя профиля"
     },
     "COMMON": {
       "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "Функция пока не реализована.",

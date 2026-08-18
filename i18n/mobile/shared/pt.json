@@ -5,7 +5,8 @@
       "TEXT_REQUIRED_EMAIL": "Digite seu e-mail",
       "TEXT_REQUIRED_PASSWORD": "Digite sua senha",
       "TEXT_INVALID_URL": "Digite uma URL de servidor válida, ex.: https://your.domain ou http://192.168.1.10:3000",
-      "TEXT_REQUIRED_FOLDER_NAME": "Digite um nome de pasta"
+      "TEXT_REQUIRED_FOLDER_NAME": "Digite um nome de pasta",
+      "TEXT_REQUIRED_PROFILE_NAME": "Digite um nome de perfil"
     },
     "COMMON": {
       "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "O recurso ainda não foi implementado.",
