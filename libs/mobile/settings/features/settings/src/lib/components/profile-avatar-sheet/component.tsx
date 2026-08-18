@@ -64,7 +64,7 @@ export function ProfileAvatarSheet({ name, imageUrl, ref, ...props }: ProfileAva
             title={translate('TEXT_TITLE')}
             onGoBack={closeSheet}
             onConfirmPress={closeSheet} />
-          <View className='gap-8' style={{ paddingBottom: bottom + 24 }}>
+          <View className='gap-8'>
             <View className='items-center justify-center py-32'>
               <Avatar
                 source={currentImageUrl ? { uri: currentImageUrl } : undefined}
@@ -75,12 +75,14 @@ export function ProfileAvatarSheet({ name, imageUrl, ref, ...props }: ProfileAva
             </View>
             <AppButton
               variant='outline'
+              size='sm'
               iconName='exportIcon'
               text={translate('BUTTON_UPLOAD_PROFILE_IMAGE')}
               onPress={handleUploadPress}
             />
             <AppButton
               variant='outline'
+              size='sm'
               disabled={!pickedImageUri}
               text={translate('BUTTON_RESTORE_DEFAULT_AVATAR')}
               onPress={handleRestoreDefaultPress}

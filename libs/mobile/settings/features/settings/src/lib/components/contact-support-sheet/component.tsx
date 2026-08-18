@@ -104,6 +104,7 @@ export function ContactSupportSheet({ ref, ...props }: ContactSupportSheetProps)
             <AppButton
               variant='outline'
               iconName='link'
+              size='sm'
               text={translate('BUTTON_ATTACH')}
               onPress={handleAttachPress}
             />
