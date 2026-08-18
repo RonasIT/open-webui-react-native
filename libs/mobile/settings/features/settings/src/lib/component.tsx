@@ -9,6 +9,8 @@ import { appState$ } from '@open-webui-react-native/shared/data-access/app-state
 import { availableLanguages, availableMarkdownRenderers } from '@open-webui-react-native/shared/utils/config';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import {
+  ChangePasswordSheet,
+  ChangePasswordSheetMethods,
   ContactSupportSheet,
   ContactSupportSheetMethods,
   DefaultModelSheet,
@@ -45,6 +47,7 @@ export function Settings(): ReactElement {
   const profileAvatarSheetRef = useRef<ProfileAvatarSheetMethods>(null);
   const profileNameSheetRef = useRef<ProfileNameSheetMethods>(null);
   const defaultModelSheetRef = useRef<DefaultModelSheetMethods>(null);
+  const changePasswordSheetRef = useRef<ChangePasswordSheetMethods>(null);
   const contactSupportSheetRef = useRef<ContactSupportSheetMethods>(null);
 
   const createToggleHandler =
@@ -81,7 +84,7 @@ export function Settings(): ReactElement {
     {
       label: translate('TEXT_CHANGE_PASSWORD'),
       iconName: 'key',
-      onPress: ToastService.showFeatureNotImplemented,
+      onPress: () => changePasswordSheetRef.current?.present(),
     },
     { type: 'action', label: translate('TEXT_LOGOUT'), iconName: 'logout', isDanger: true, onPress: logout },
   ];
@@ -171,6 +174,7 @@ export function Settings(): ReactElement {
         name={profile?.name}
         imageUrl={profile?.profileImageUrl} />
       <ProfileNameSheet ref={profileNameSheetRef} name={profile?.name} />
+      <ChangePasswordSheet ref={changePasswordSheetRef} />
       <DefaultModelSheet
         ref={defaultModelSheetRef}
         selectedModelId={defaultModelId}

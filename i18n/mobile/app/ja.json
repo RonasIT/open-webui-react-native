@@ -40,6 +40,15 @@
         "TEXT_TITLE": "プロフィール名",
         "TEXT_PROFILE_NAME": "プロフィール名"
       },
+      "CHANGE_PASSWORD_SHEET": {
+        "TEXT_TITLE": "パスワードを変更",
+        "TEXT_CURRENT_PASSWORD": "現在のパスワード",
+        "TEXT_ENTER_CURRENT_PASSWORD": "現在のパスワードを入力してください",
+        "TEXT_NEW_PASSWORD": "新しいパスワード",
+        "TEXT_ENTER_NEW_PASSWORD": "新しいパスワードを入力してください",
+        "TEXT_CONFIRM_NEW_PASSWORD": "新しいパスワードの確認",
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "新しいパスワードをもう一度入力してください"
+      },
       "DEFAULT_MODEL_SHEET": {
         "TEXT_TITLE": "デフォルトモデル",
         "TEXT_SEARCH_MODEL": "モデルを検索",

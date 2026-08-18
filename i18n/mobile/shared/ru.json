@@ -6,7 +6,11 @@
       "TEXT_REQUIRED_PASSWORD": "Введите пароль",
       "TEXT_INVALID_URL": "Введите корректный URL сервера, напр. https://your.domain или http://192.168.1.10:3000",
       "TEXT_REQUIRED_FOLDER_NAME": "Введите название папки",
-      "TEXT_REQUIRED_PROFILE_NAME": "Введите имя профиля"
+      "TEXT_REQUIRED_PROFILE_NAME": "Введите имя профиля",
+      "TEXT_REQUIRED_CURRENT_PASSWORD": "Введите текущий пароль",
+      "TEXT_REQUIRED_NEW_PASSWORD": "Введите новый пароль",
+      "TEXT_REQUIRED_CONFIRM_PASSWORD": "Подтвердите новый пароль",
+      "TEXT_PASSWORDS_DO_NOT_MATCH": "Пароли не совпадают"
     },
     "COMMON": {
       "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "Функция пока не реализована.",

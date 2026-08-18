@@ -40,6 +40,15 @@
         "TEXT_TITLE": "Имя профиля",
         "TEXT_PROFILE_NAME": "Имя профиля"
       },
+      "CHANGE_PASSWORD_SHEET": {
+        "TEXT_TITLE": "Изменить пароль",
+        "TEXT_CURRENT_PASSWORD": "Текущий пароль",
+        "TEXT_ENTER_CURRENT_PASSWORD": "Введите текущий пароль",
+        "TEXT_NEW_PASSWORD": "Новый пароль",
+        "TEXT_ENTER_NEW_PASSWORD": "Введите новый пароль",
+        "TEXT_CONFIRM_NEW_PASSWORD": "Подтвердите новый пароль",
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Повторите новый пароль"
+      },
       "DEFAULT_MODEL_SHEET": {
         "TEXT_TITLE": "Модель по умолчанию",
         "TEXT_SEARCH_MODEL": "Поиск модели",

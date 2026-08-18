@@ -40,6 +40,15 @@
         "TEXT_TITLE": "Nom du profil",
         "TEXT_PROFILE_NAME": "Nom du profil"
       },
+      "CHANGE_PASSWORD_SHEET": {
+        "TEXT_TITLE": "Modifier le mot de passe",
+        "TEXT_CURRENT_PASSWORD": "Mot de passe actuel",
+        "TEXT_ENTER_CURRENT_PASSWORD": "Saisissez votre mot de passe actuel",
+        "TEXT_NEW_PASSWORD": "Nouveau mot de passe",
+        "TEXT_ENTER_NEW_PASSWORD": "Saisissez votre nouveau mot de passe",
+        "TEXT_CONFIRM_NEW_PASSWORD": "Confirmer le nouveau mot de passe",
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Répétez votre nouveau mot de passe"
+      },
       "DEFAULT_MODEL_SHEET": {
         "TEXT_TITLE": "Modèle par défaut",
         "TEXT_SEARCH_MODEL": "Rechercher un modèle",
