@@ -5,10 +5,32 @@
     },
     "SETTINGS_SCREEN": {
       "TEXT_SETTINGS": "Profil et paramètres",
+      "TEXT_SECTION_GENERAL": "Général",
+      "TEXT_SECTION_PROFILE": "Profil",
+      "TEXT_SECTION_FEEDBACK": "Commentaires",
+      "TEXT_SECTION_CHATS": "Discussions",
+      "TEXT_DEFAULT_MODEL": "Modèle par défaut",
+      "TEXT_DEFAULT_SYSTEM_PROMPT": "Prompt système par défaut",
       "TEXT_LANGUAGE": "Langue",
-      "TEXT_MARKDOWN_RENDERER": "Select Markdown Renderer",
-      "TEXT_MARKDOWN_RENDERER_DEFAULT": "Default",
-      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro markdown experimental"
+      "TEXT_PROFILE_NAME": "Nom du profil",
+      "TEXT_AVATAR": "Avatar",
+      "TEXT_CHANGE_PASSWORD": "Modifier le mot de passe",
+      "TEXT_LOGOUT": "Déconnexion",
+      "TEXT_CONTACT_SUPPORT": "Contacter le support",
+      "TEXT_RATE_APP": "Noter l'application",
+      "TEXT_ARCHIVED_CHATS": "Discussions archivées",
+      "TEXT_EXPORT_ALL_CHATS": "Exporter toutes les discussions",
+      "TEXT_ARCHIVE_ALL": "Tout archiver",
+      "TEXT_DELETE_ALL": "Tout supprimer",
+      "TEXT_ALWAYS_ON_WEB_SEARCH": "Recherche web toujours active",
+      "TEXT_HAPTIC_FEEDBACK": "Retour haptique",
+      "TEXT_ENABLE_MESSAGE_QUEUE": "Activer la file d'attente des messages",
+      "TEXT_CHAT_BUBBLE_UI": "Interface à bulles de discussion",
+      "TEXT_TEMPORARY_CHAT_BY_DEFAULT": "Discussion temporaire par défaut",
+      "TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE": "Afficher le Markdown dans les messages de l'utilisateur",
+      "TEXT_MARKDOWN_RENDERER": "Moteur de rendu Markdown",
+      "TEXT_MARKDOWN_RENDERER_DEFAULT": "Par défaut",
+      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro Markdown (expérimental)"
     }
   }
 }

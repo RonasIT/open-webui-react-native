@@ -8,6 +8,7 @@ export * from './view';
 export * from './scroll-view';
 export * from './icon';
 export * from './divider';
+export * from './switch';
 export * from './avatar';
 export * from './icon-button';
 export * from './bottom-sheet';

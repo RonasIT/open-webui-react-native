@@ -5,10 +5,32 @@
     },
     "SETTINGS_SCREEN": {
       "TEXT_SETTINGS": "Perfil y ajustes",
+      "TEXT_SECTION_GENERAL": "General",
+      "TEXT_SECTION_PROFILE": "Perfil",
+      "TEXT_SECTION_FEEDBACK": "Comentarios",
+      "TEXT_SECTION_CHATS": "Chats",
+      "TEXT_DEFAULT_MODEL": "Modelo predeterminado",
+      "TEXT_DEFAULT_SYSTEM_PROMPT": "Prompt de sistema predeterminado",
       "TEXT_LANGUAGE": "Idioma",
-      "TEXT_MARKDOWN_RENDERER": "Select Markdown Renderer",
-      "TEXT_MARKDOWN_RENDERER_DEFAULT": "Default",
-      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro markdown experimental"
+      "TEXT_PROFILE_NAME": "Nombre del perfil",
+      "TEXT_AVATAR": "Avatar",
+      "TEXT_CHANGE_PASSWORD": "Cambiar contraseña",
+      "TEXT_LOGOUT": "Cerrar sesión",
+      "TEXT_CONTACT_SUPPORT": "Contactar con soporte",
+      "TEXT_RATE_APP": "Valorar la aplicación",
+      "TEXT_ARCHIVED_CHATS": "Chats archivados",
+      "TEXT_EXPORT_ALL_CHATS": "Exportar todos los chats",
+      "TEXT_ARCHIVE_ALL": "Archivar todo",
+      "TEXT_DELETE_ALL": "Eliminar todo",
+      "TEXT_ALWAYS_ON_WEB_SEARCH": "Búsqueda web siempre activa",
+      "TEXT_HAPTIC_FEEDBACK": "Respuesta háptica",
+      "TEXT_ENABLE_MESSAGE_QUEUE": "Activar cola de mensajes",
+      "TEXT_CHAT_BUBBLE_UI": "Interfaz de burbujas de chat",
+      "TEXT_TEMPORARY_CHAT_BY_DEFAULT": "Chat temporal por defecto",
+      "TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE": "Renderizar Markdown en los mensajes del usuario",
+      "TEXT_MARKDOWN_RENDERER": "Renderizador de Markdown",
+      "TEXT_MARKDOWN_RENDERER_DEFAULT": "Predeterminado",
+      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro Markdown (experimental)"
     }
   }
 }

@@ -5,10 +5,32 @@
     },
     "SETTINGS_SCREEN": {
       "TEXT_SETTINGS": "Профиль и настройки",
+      "TEXT_SECTION_GENERAL": "Общие",
+      "TEXT_SECTION_PROFILE": "Профиль",
+      "TEXT_SECTION_FEEDBACK": "Обратная связь",
+      "TEXT_SECTION_CHATS": "Чаты",
+      "TEXT_DEFAULT_MODEL": "Модель по умолчанию",
+      "TEXT_DEFAULT_SYSTEM_PROMPT": "Системный промпт по умолчанию",
       "TEXT_LANGUAGE": "Язык",
-      "TEXT_MARKDOWN_RENDERER": "Select Markdown Renderer",
-      "TEXT_MARKDOWN_RENDERER_DEFAULT": "Default",
-      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro markdown experimental"
+      "TEXT_PROFILE_NAME": "Имя профиля",
+      "TEXT_AVATAR": "Аватар",
+      "TEXT_CHANGE_PASSWORD": "Изменить пароль",
+      "TEXT_LOGOUT": "Выйти",
+      "TEXT_CONTACT_SUPPORT": "Связаться с поддержкой",
+      "TEXT_RATE_APP": "Оценить приложение",
+      "TEXT_ARCHIVED_CHATS": "Архивные чаты",
+      "TEXT_EXPORT_ALL_CHATS": "Экспортировать все чаты",
+      "TEXT_ARCHIVE_ALL": "Архивировать все",
+      "TEXT_DELETE_ALL": "Удалить все",
+      "TEXT_ALWAYS_ON_WEB_SEARCH": "Всегда искать в интернете",
+      "TEXT_HAPTIC_FEEDBACK": "Тактильная отдача",
+      "TEXT_ENABLE_MESSAGE_QUEUE": "Включить очередь сообщений",
+      "TEXT_CHAT_BUBBLE_UI": "Сообщения в виде облачков",
+      "TEXT_TEMPORARY_CHAT_BY_DEFAULT": "Временный чат по умолчанию",
+      "TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE": "Разметка Markdown в сообщениях пользователя",
+      "TEXT_MARKDOWN_RENDERER": "Обработчик Markdown",
+      "TEXT_MARKDOWN_RENDERER_DEFAULT": "По умолчанию",
+      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro Markdown (экспериментально)"
     }
   }
 }

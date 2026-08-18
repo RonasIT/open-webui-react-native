@@ -5,10 +5,32 @@
     },
     "SETTINGS_SCREEN": {
       "TEXT_SETTINGS": "Perfil e configurações",
+      "TEXT_SECTION_GENERAL": "Geral",
+      "TEXT_SECTION_PROFILE": "Perfil",
+      "TEXT_SECTION_FEEDBACK": "Feedback",
+      "TEXT_SECTION_CHATS": "Chats",
+      "TEXT_DEFAULT_MODEL": "Modelo padrão",
+      "TEXT_DEFAULT_SYSTEM_PROMPT": "Prompt de sistema padrão",
       "TEXT_LANGUAGE": "Idioma",
-      "TEXT_MARKDOWN_RENDERER": "Select Markdown Renderer",
-      "TEXT_MARKDOWN_RENDERER_DEFAULT": "Default",
-      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro markdown experimental"
+      "TEXT_PROFILE_NAME": "Nome do perfil",
+      "TEXT_AVATAR": "Avatar",
+      "TEXT_CHANGE_PASSWORD": "Alterar senha",
+      "TEXT_LOGOUT": "Sair",
+      "TEXT_CONTACT_SUPPORT": "Falar com o suporte",
+      "TEXT_RATE_APP": "Avaliar o aplicativo",
+      "TEXT_ARCHIVED_CHATS": "Chats arquivados",
+      "TEXT_EXPORT_ALL_CHATS": "Exportar todos os chats",
+      "TEXT_ARCHIVE_ALL": "Arquivar tudo",
+      "TEXT_DELETE_ALL": "Excluir tudo",
+      "TEXT_ALWAYS_ON_WEB_SEARCH": "Busca na web sempre ativa",
+      "TEXT_HAPTIC_FEEDBACK": "Resposta tátil",
+      "TEXT_ENABLE_MESSAGE_QUEUE": "Ativar fila de mensagens",
+      "TEXT_CHAT_BUBBLE_UI": "Interface de balões de chat",
+      "TEXT_TEMPORARY_CHAT_BY_DEFAULT": "Chat temporário por padrão",
+      "TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE": "Renderizar Markdown nas mensagens do usuário",
+      "TEXT_MARKDOWN_RENDERER": "Renderizador de Markdown",
+      "TEXT_MARKDOWN_RENDERER_DEFAULT": "Padrão",
+      "TEXT_MARKDOWN_RENDERER_NITRO": "Nitro Markdown (experimental)"
     }
   }
 }
