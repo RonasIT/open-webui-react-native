@@ -3,7 +3,8 @@ import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement } from 'react';
 import { useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
-import { AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { AppImage, AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { authApi } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import {
   availableLanguages,
@@ -18,6 +19,8 @@ export function Settings(): ReactElement {
   const locale = useSelector(appState$.locale);
   const markdownRenderer = useSelector(appState$.markdownRenderer);
 
+  const { data: profile } = authApi.useGetProfile();
+
   const handleLanguageChange = (value: LanguageCode): void => {
     appState$.setLocale(value);
   };
@@ -28,6 +31,15 @@ export function Settings(): ReactElement {
 
   return (
     <View>
+      <View className='py-16 items-center justify-center'>
+        <View className='w-64 h-64 rounded-full justify-center items-center'>
+          <AppImage
+            source={{ uri: profile?.profileImageUrl }}
+            className='w-full h-full rounded-full'
+            contentFit='cover'
+          />
+        </View>
+      </View>
       <View className='flex-row items-center justify-between py-12'>
         <AppText className='text-h4-sm sm:text-h4'>{translate('TEXT_LANGUAGE')}</AppText>
         <Host matchContents colorScheme={colorScheme}>

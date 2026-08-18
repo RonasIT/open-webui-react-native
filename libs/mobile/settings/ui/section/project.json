@@ -1,0 +1,9 @@
+{
+  "name": "mobile/settings/ui/section",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mobile/settings/ui/section/src",
+  "projectType": "library",
+  "tags": ["app:mobile", "scope:settings", "type:ui"],
+  "// targets": "to see all targets run: nx show project mobile/settings/ui/section --web",
+  "targets": {}
+}
