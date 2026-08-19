@@ -1,6 +1,7 @@
 import { plainToInstance } from 'class-transformer';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { ChatEventBase, ChatFilesData } from '@open-webui-react-native/shared/data-access/websocket';
+import { hapticFeedbackService } from '@open-webui-react-native/shared/utils/haptic-feedback-service';
 import { chatQueriesKeys } from '../../chat-queries-keys';
 import { ChatResponse } from '../../models';
 
@@ -40,4 +41,8 @@ export const handleChatFilesEvent = async (socketResponse: ChatEventBase): Promi
       },
     };
   });
+
+  if (socketData.files?.length) {
+    await hapticFeedbackService.trigger();
+  }
 };
