@@ -35,7 +35,6 @@ import { SettingsToggles } from './types';
 
 const initialToggles: SettingsToggles = {
   isWebSearchAlwaysOn: true,
-  isHapticFeedbackEnabled: true,
   isMessageQueueEnabled: true,
   isChatBubbleUIEnabled: true,
   isTemporaryChatEnabled: true,
@@ -47,6 +46,7 @@ export function Settings(): ReactElement {
   const translate = useTranslation('APP.SETTINGS_SCREEN');
   const locale = useSelector(appState$.locale);
   const markdownRenderer = useSelector(appState$.markdownRenderer);
+  const isHapticFeedbackEnabled = useSelector(appState$.isHapticFeedbackEnabled);
   const { logout } = useLogout();
   const navigateOnce = useNavigateOnce();
 
@@ -202,8 +202,8 @@ export function Settings(): ReactElement {
     {
       type: 'switch',
       label: translate('TEXT_HAPTIC_FEEDBACK'),
-      isEnabled: toggles.isHapticFeedbackEnabled,
-      onValueChange: createToggleHandler('isHapticFeedbackEnabled'),
+      isEnabled: isHapticFeedbackEnabled,
+      onValueChange: appState$.setHapticFeedbackEnabled,
     },
     {
       type: 'switch',
