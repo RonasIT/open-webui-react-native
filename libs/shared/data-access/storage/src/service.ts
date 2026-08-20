@@ -12,6 +12,7 @@ class AppStorageService {
   public token = new StorageItem('token', storage);
   public apiUrl = new StorageItem('apiUrl', storage);
   public locale = new StorageItem('locale', storage);
+  public markdownRenderer = new StorageItem('markdownRenderer', storage);
 }
 
 export const appStorageService = new AppStorageService();

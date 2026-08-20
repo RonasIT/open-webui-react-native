@@ -4,8 +4,67 @@
       "TEXT_CHATS": "チャット"
     },
     "SETTINGS_SCREEN": {
-      "TEXT_SETTINGS": "設定",
-      "TEXT_LANGUAGE": "言語"
+      "TEXT_SETTINGS": "プロフィールと設定",
+      "TEXT_SECTION_GENERAL": "一般",
+      "TEXT_SECTION_PROFILE": "プロフィール",
+      "TEXT_SECTION_FEEDBACK": "フィードバック",
+      "TEXT_SECTION_CHATS": "チャット",
+      "TEXT_DEFAULT_MODEL": "デフォルトモデル",
+      "TEXT_DEFAULT_SYSTEM_PROMPT": "デフォルトのシステムプロンプト",
+      "TEXT_LANGUAGE": "言語",
+      "TEXT_PROFILE_NAME": "プロフィール名",
+      "TEXT_AVATAR": "アバター",
+      "TEXT_CHANGE_PASSWORD": "パスワードを変更",
+      "TEXT_LOGOUT": "ログアウト",
+      "TEXT_CONTACT_SUPPORT": "サポートに問い合わせる",
+      "TEXT_RATE_APP": "アプリを評価",
+      "TEXT_ARCHIVED_CHATS": "アーカイブ済みチャット",
+      "TEXT_EXPORT_ALL_CHATS": "すべてのチャットをエクスポート",
+      "TEXT_ARCHIVE_ALL": "すべてアーカイブ",
+      "TEXT_DELETE_ALL": "すべて削除",
+      "TEXT_ALWAYS_ON_WEB_SEARCH": "ウェブ検索を常に有効にする",
+      "TEXT_HAPTIC_FEEDBACK": "触覚フィードバック",
+      "TEXT_ENABLE_MESSAGE_QUEUE": "メッセージキューを有効にする",
+      "TEXT_CHAT_BUBBLE_UI": "吹き出し表示",
+      "TEXT_TEMPORARY_CHAT_BY_DEFAULT": "デフォルトで一時チャットを使用",
+      "TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE": "ユーザーメッセージで Markdown を表示",
+      "TEXT_MARKDOWN_RENDERER": "Markdown レンダラー",
+      "TEXT_MARKDOWN_RENDERER_DEFAULT": "デフォルト",
+      "TEXT_MARKDOWN_RENDERER_NITRO": "実験的",
+      "PROFILE_AVATAR_SHEET": {
+        "TEXT_TITLE": "プロフィール画像",
+        "BUTTON_UPLOAD_PROFILE_IMAGE": "プロフィール画像をアップロード",
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "デフォルトのアバターに戻す"
+      },
+      "PROFILE_NAME_SHEET": {
+        "TEXT_TITLE": "プロフィール名",
+        "TEXT_PROFILE_NAME": "プロフィール名"
+      },
+      "CHANGE_PASSWORD_SHEET": {
+        "TEXT_TITLE": "パスワードを変更",
+        "TEXT_CURRENT_PASSWORD": "現在のパスワード",
+        "TEXT_ENTER_CURRENT_PASSWORD": "現在のパスワードを入力してください",
+        "TEXT_NEW_PASSWORD": "新しいパスワード",
+        "TEXT_ENTER_NEW_PASSWORD": "新しいパスワードを入力してください",
+        "TEXT_CONFIRM_NEW_PASSWORD": "新しいパスワードの確認",
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "新しいパスワードをもう一度入力してください"
+      },
+      "DEFAULT_MODEL_SHEET": {
+        "TEXT_TITLE": "デフォルトモデル",
+        "TEXT_SEARCH_MODEL": "モデルを検索",
+        "TEXT_NO_MODELS": "モデルがありません。"
+      },
+      "CONTACT_SUPPORT_SHEET": {
+        "TEXT_TITLE": "サポートに問い合わせる",
+        "TEXT_MESSAGE_PLACEHOLDER": "メッセージ",
+        "BUTTON_ATTACH": "スクリーンショットまたは動画を添付"
+      },
+      "LANGUAGE_SHEET": {
+        "TEXT_TITLE": "言語"
+      },
+      "MARKDOWN_RENDERER_SHEET": {
+        "TEXT_TITLE": "Markdown レンダラー"
+      }
     }
   }
 }

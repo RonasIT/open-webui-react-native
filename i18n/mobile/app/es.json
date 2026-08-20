@@ -4,8 +4,67 @@
       "TEXT_CHATS": "Chats"
     },
     "SETTINGS_SCREEN": {
-      "TEXT_SETTINGS": "Ajustes",
-      "TEXT_LANGUAGE": "Idioma"
+      "TEXT_SETTINGS": "Perfil y ajustes",
+      "TEXT_SECTION_GENERAL": "General",
+      "TEXT_SECTION_PROFILE": "Perfil",
+      "TEXT_SECTION_FEEDBACK": "Comentarios",
+      "TEXT_SECTION_CHATS": "Chats",
+      "TEXT_DEFAULT_MODEL": "Modelo predeterminado",
+      "TEXT_DEFAULT_SYSTEM_PROMPT": "Prompt de sistema predeterminado",
+      "TEXT_LANGUAGE": "Idioma",
+      "TEXT_PROFILE_NAME": "Nombre del perfil",
+      "TEXT_AVATAR": "Avatar",
+      "TEXT_CHANGE_PASSWORD": "Cambiar contraseña",
+      "TEXT_LOGOUT": "Cerrar sesión",
+      "TEXT_CONTACT_SUPPORT": "Contactar con soporte",
+      "TEXT_RATE_APP": "Valorar la aplicación",
+      "TEXT_ARCHIVED_CHATS": "Chats archivados",
+      "TEXT_EXPORT_ALL_CHATS": "Exportar todos los chats",
+      "TEXT_ARCHIVE_ALL": "Archivar todo",
+      "TEXT_DELETE_ALL": "Eliminar todo",
+      "TEXT_ALWAYS_ON_WEB_SEARCH": "Búsqueda web siempre activa",
+      "TEXT_HAPTIC_FEEDBACK": "Respuesta háptica",
+      "TEXT_ENABLE_MESSAGE_QUEUE": "Activar cola de mensajes",
+      "TEXT_CHAT_BUBBLE_UI": "Interfaz de burbujas de chat",
+      "TEXT_TEMPORARY_CHAT_BY_DEFAULT": "Chat temporal por defecto",
+      "TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE": "Renderizar Markdown en los mensajes del usuario",
+      "TEXT_MARKDOWN_RENDERER": "Renderizador de Markdown",
+      "TEXT_MARKDOWN_RENDERER_DEFAULT": "Predeterminado",
+      "TEXT_MARKDOWN_RENDERER_NITRO": "Experimental",
+      "PROFILE_AVATAR_SHEET": {
+        "TEXT_TITLE": "Avatar del perfil",
+        "BUTTON_UPLOAD_PROFILE_IMAGE": "Subir imagen de perfil",
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "Restaurar avatar predeterminado"
+      },
+      "PROFILE_NAME_SHEET": {
+        "TEXT_TITLE": "Nombre del perfil",
+        "TEXT_PROFILE_NAME": "Nombre del perfil"
+      },
+      "CHANGE_PASSWORD_SHEET": {
+        "TEXT_TITLE": "Cambiar contraseña",
+        "TEXT_CURRENT_PASSWORD": "Contraseña actual",
+        "TEXT_ENTER_CURRENT_PASSWORD": "Introduce tu contraseña actual",
+        "TEXT_NEW_PASSWORD": "Nueva contraseña",
+        "TEXT_ENTER_NEW_PASSWORD": "Introduce tu nueva contraseña",
+        "TEXT_CONFIRM_NEW_PASSWORD": "Confirmar nueva contraseña",
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Repite tu nueva contraseña"
+      },
+      "DEFAULT_MODEL_SHEET": {
+        "TEXT_TITLE": "Modelo predeterminado",
+        "TEXT_SEARCH_MODEL": "Buscar modelo",
+        "TEXT_NO_MODELS": "No hay modelos."
+      },
+      "CONTACT_SUPPORT_SHEET": {
+        "TEXT_TITLE": "Contactar con soporte",
+        "TEXT_MESSAGE_PLACEHOLDER": "Tu mensaje",
+        "BUTTON_ATTACH": "Adjuntar capturas de pantalla o vídeo"
+      },
+      "LANGUAGE_SHEET": {
+        "TEXT_TITLE": "Idioma"
+      },
+      "MARKDOWN_RENDERER_SHEET": {
+        "TEXT_TITLE": "Renderizador de Markdown"
+      }
     }
   }
 }
