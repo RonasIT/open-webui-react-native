@@ -39,7 +39,8 @@ class SupabaseService {
   }
 
   private async uploadAttachment(attachment: SubmitFeedbackAttachment, index: number): Promise<string> {
-    const path = `${Date.now()}-${index}-${attachment.fileName ?? 'image.jpg'}`;
+    const fallbackFileName = attachment.mimeType?.startsWith('video/') ? 'video.mp4' : 'image.jpg';
+    const path = `${Date.now()}-${index}-${attachment.fileName ?? fallbackFileName}`;
 
     const { error } = await this.client.storage
       .from(SupabaseBucket.FEEDBACK_ATTACHMENTS)

@@ -64,16 +64,16 @@ export function ContactSupportSheet({ ref, ...props }: ContactSupportSheetProps)
   const handleOpen = (): void => inputRef.current?.focus();
 
   const handlePickImage = async (): Promise<void> => {
-    const image = await imagePickerService.getImage(ImagePickerSource.GALLERY);
+    const image = await imagePickerService.getImage(ImagePickerSource.GALLERY_WITH_VIDEO);
     const asset = image?.assets?.[0];
 
-    if (!asset || !asset.base64) {
+    if (!asset) {
       return;
     }
 
     handleImageUploaded({
       uri: asset.uri,
-      base64: asset.base64,
+      base64: asset.base64 ?? '',
       mimeType: asset.mimeType,
       fileName: asset.fileName || undefined,
     });
