@@ -192,9 +192,6 @@
       "@open-webui-react-native/mobile/shared/features/markdown-view": [
         "libs/mobile/shared/features/markdown-view/src/index.ts"
       ],
-      "@open-webui-react-native/mobile/shared/features/profile-menu-sheet": [
-        "libs/mobile/shared/features/profile-menu-sheet/src/index.ts"
-      ],
       "@open-webui-react-native/mobile/shared/features/sidebar-menu": [
         "libs/mobile/shared/features/sidebar-menu/src/index.ts"
       ],
