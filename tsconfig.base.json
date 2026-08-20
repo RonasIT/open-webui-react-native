@@ -24,6 +24,7 @@
     "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
+      "@expo/ui": ["node_modules/@expo/ui/build/universal/index.d.ts"],
       "@open-webui-react-native/mobile/auth/features/email-sign-in-form": [
         "libs/mobile/auth/features/email-sign-in-form/src/index.ts"
       ],
@@ -151,6 +152,10 @@
       "@open-webui-react-native/mobile/profile/features/menu-sheet": [
         "libs/mobile/profile/features/menu-sheet/src/index.ts"
       ],
+      "@open-webui-react-native/mobile/settings/features/settings": [
+        "libs/mobile/settings/features/settings/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/settings/ui/section": ["libs/mobile/settings/ui/section/src/index.ts"],
       "@open-webui-react-native/mobile/shared/data-access/base-entity": [
         "libs/mobile/shared/data-access/base-entity/src/index.ts"
       ],

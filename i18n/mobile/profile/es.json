@@ -1,0 +1,15 @@
+{
+  "PROFILE": {
+    "PROFILE_MENU_SHEET": {
+      "TEXT_LOGOUT": "Cerrar sesión",
+      "TEXT_ARCHIVED_CHATS": "Chats archivados",
+      "TEXT_SETTINGS": "Ajustes",
+      "TEXT_DELETE_ACCOUNT": "Eliminar cuenta",
+      "TEXT_DELETE_ACCOUNT_TITLE": "¿Seguro que quieres eliminar tu cuenta?",
+      "TEXT_DELETE_ACCOUNT_MESSAGE": "Esta acción provocará la pérdida permanente de datos si no tenemos noticias tuyas en los próximos 30 días.",
+      "BUTTON_DELETE_ACCOUNT": "Sí, eliminar mi cuenta",
+      "BUTTON_DONT_DELETE": "No eliminar",
+      "TEXT_ACCOUNT_DELETION_REQUEST": "Se ha enviado la solicitud de eliminación de cuenta."
+    }
+  }
+}

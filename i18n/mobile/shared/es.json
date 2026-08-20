@@ -1,0 +1,113 @@
+{
+  "SHARED": {
+    "VALIDATION": {
+      "TEXT_INVALID_EMAIL": "Introduce una dirección de correo válida",
+      "TEXT_REQUIRED_EMAIL": "Introduce tu correo electrónico",
+      "TEXT_REQUIRED_PASSWORD": "Introduce tu contraseña",
+      "TEXT_INVALID_URL": "Introduce una URL de servidor válida, p. ej. https://your.domain o http://192.168.1.10:3000",
+      "TEXT_REQUIRED_FOLDER_NAME": "Introduce un nombre de carpeta",
+      "TEXT_REQUIRED_PROFILE_NAME": "Introduce un nombre de perfil",
+      "TEXT_REQUIRED_CURRENT_PASSWORD": "Introduce tu contraseña actual",
+      "TEXT_REQUIRED_NEW_PASSWORD": "Introduce una nueva contraseña",
+      "TEXT_REQUIRED_CONFIRM_PASSWORD": "Confirma tu nueva contraseña",
+      "TEXT_PASSWORDS_DO_NOT_MATCH": "Las contraseñas no coinciden"
+    },
+    "COMMON": {
+      "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "La función aún no está implementada.",
+      "TEXT_NEW_CHAT": "Nuevo chat",
+      "BUTTON_CANCEL": "Cancelar",
+      "BUTTON_CONFIRM": "Confirmar",
+      "BUTTON_OPEN_SETTINGS": "Abrir ajustes",
+      "TEXT_UNABLE_TO_OPEN_SETTINGS": "No se pueden abrir los ajustes",
+      "TEXT_SETTINGS": "Ajustes",
+      "TEXT_DISABLED_IN_OFFLINE_MODE": "Las funciones están desactivadas en modo sin conexión",
+      "ACTIONS_BOTTOM_SHEET": {
+        "BUTTON_CANCEL": "Cancelar"
+      },
+      "TEXT_COPIED_TO_CLIPBOARD": "Copiado al portapapeles"
+    },
+    "API_ERRORS": {
+      "TEXT_SOMETHING_WENT_WRONG": "Algo salió mal",
+      "TEXT_YOUR_SESSION_HAS_EXPIRED": "Tu sesión ha caducado. Inicia sesión de nuevo",
+      "TEXT_FORBIDDEN_ERROR": "No tienes acceso a esta acción",
+      "TEXT_INTERNAL_SERVER_ERROR": "Error al cargar los datos",
+      "TEXT_NOT_FOUND_ERROR": "Datos no encontrados"
+    },
+    "DATES": {
+      "TEXT_TODAY": "Hoy",
+      "TEXT_YESTERDAY": "Ayer",
+      "TEXT_LAST_DAYS": "Últimos {{days}} días",
+      "TEXT_AT_TIME": "a las {{time}}",
+      "TEXT_TODAY_TIME": "Hoy {{time}}",
+      "TEXT_YESTERDAY_TIME": "Ayer {{time}}"
+    },
+    "CODE_BLOCK": {
+      "TEXT_COPIED_TO_CLIPBOARD": "Copiado al portapapeles",
+      "TEXT_COPY": "Copiar"
+    },
+    "SOCKET_SERVICE": {
+      "TEXT_CONNECTION_ERROR": "Error de conexión"
+    },
+    "IMAGE_PICKER_SERVICE": {
+      "TEXT_ACCESS_DENIED": "Acceso denegado"
+    },
+    "ACTION_BUTTONS_MODAL": {
+      "BUTTON_CONFIRM": "Confirmar",
+      "BUTTON_CANCEL": "Cancelar",
+      "TEXT_TITLE_CAN_NOT_BE_EMPTY": "El título no puede estar vacío"
+    },
+    "MEDIA_LIBRARY_SERVICE": {
+      "TEXT_SUCCESSFULLY_SAVED": "Imagen guardada correctamente",
+      "TEXT_ERROR_DURING_SAVING": "Se produjo un error al guardar la imagen",
+      "TEXT_SETTINGS": "Ajustes",
+      "TEXT_SETTINGS_MESSAGE": "Permite el acceso a la cámara desde ajustes. Settings > Open Web UI > Photos > All Photos"
+    },
+    "FILE_SYSTEM_SERVICE": {
+      "TEXT_SHARE": "Compartir {{fileName}}",
+      "TEXT_SHARING_IS_NOT_AVAILABLE": "Compartir no está disponible en este dispositivo"
+    },
+    "USE_AUDIO_RECORDER": {
+      "TEXT_NO_ACCESS": "Sin acceso",
+      "TEXT_APP_NEEDS_ACCESS": "La app necesita acceso al micrófono del dispositivo"
+    },
+    "NO_CONNECTION_BANNER": {
+      "TEXT_YOU_ARE_OFFLINE": "¡Estás sin conexión!"
+    },
+    "PRESSABLE_SEARCH_INPUT": {
+      "TEXT_SEARCH_CHATS": "Buscar chats"
+    },
+    "CHAT_ACTIONS_MENU_SHEET": {
+      "TEXT_PIN": "Fijar",
+      "TEXT_UNPIN": "Desfijar",
+      "TEXT_RENAME": "Renombrar",
+      "TEXT_CLONE": "Clonar",
+      "TEXT_ARCHIVE": "Archivar",
+      "TEXT_RESTORE": "Restaurar",
+      "TEXT_SHARE": "Compartir",
+      "TEXT_DOWNLOAD": "Descargar",
+      "TEXT_DELETE": "Eliminar",
+      "TEXT_KEEP": "Conservar",
+      "TEXT_RENAME_CHAT": "Renombrar chat",
+      "TEXT_DELETE_CHAT": "¿Eliminar chat?",
+      "TEXT_THIS_WILL_DELETE": "Se eliminará {{name}}",
+      "TEXT_CLONE_OF": "Copia de {{title}}",
+      "TEXT_CHAT_ACTIONS": "Acciones del chat",
+      "TEXT_MOVE_TO_FOLDER": "Mover a carpeta",
+      "DOWNLOAD_CHAT_OPTIONS_SHEET": {
+        "TEXT_EXPORT_CHAT_JSON": "Exportar chat (.json)",
+        "TEXT_PLAIN_TEXT": "Texto plano (.txt)",
+        "TEXT_PDF_DOCUMENT": "Documento PDF (.pdf)"
+      },
+      "MOVE_CHAT_TO_FOLDER_MODAL": {
+        "TEXT_SEARCH_FOLDER": "Buscar carpeta",
+        "TEXT_NO_FOLDERS": "No hay carpetas",
+        "TEXT_CREATE_NEW_FOLDER": "Crear carpeta",
+        "TEXT_NO_FOLDER": "Sin carpeta"
+      }
+    },
+    "SEARCH_INPUT": {
+      "BUTTON_CANCEL": "Cancelar",
+      "TEXT_SEARCH_CHATS": "Buscar chats"
+    }
+  }
+}

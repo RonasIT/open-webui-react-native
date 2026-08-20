@@ -20,6 +20,7 @@ export const navigationConfig = {
   },
   main: {
     root: groups.main,
+    settings: 'settings',
     chat: {
       index: prefixes.chat,
       create: 'create',

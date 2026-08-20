@@ -1,0 +1,36 @@
+{
+  "FOLDER": {
+    "CHATS_LIST": {
+      "TEXT_NO_CHATS": "此文件夹中没有聊天。"
+    },
+    "FOLDER_ACTIONS_SHEET": {
+      "TEXT_EDIT": "编辑",
+      "TEXT_EXPORT": "导出",
+      "TEXT_DELETE": "删除",
+      "TEXT_KEEP": "保留",
+      "TEXT_DELETE_FOLDER": "删除文件夹？",
+      "TEXT_THIS_WILL_DELETE": "这将删除 {{name}}"
+    },
+    "UPSERT_FOLDER_SHEET": {
+      "TEXT_NEW_FOLDER": "新建文件夹",
+      "TEXT_EDIT_FOLDER": "编辑文件夹",
+      "TEXT_FOLDER_NAME": "文件夹名称",
+      "TEXT_DOCUMENT": "文档",
+      "TEXT_FILE": "文件",
+      "TEXT_COLLECTION": "集合",
+      "TEXT_FOLDER_NAME_PLACEHOLDER": "例如：我的文件夹",
+      "TEXT_SYSTEM_PROMPT": "系统提示词",
+      "TEXT_KNOWLEDGE": "知识库",
+      "BUTTON_SELECT_KNOWLEDGE": "选择知识库",
+      "BUTTON_UPLOAD_FILES": "上传文件",
+      "TEXT_CREATE": "创建",
+      "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "无法上传空文件。",
+      "TEXT_UNSUPPORTED_TYPE": "不支持的类型。"
+    },
+    "SELECT_KNOWLEDGE_SHEET": {
+      "TEXT_SEARCH_KNOWLEDGE": "搜索知识库",
+      "TEXT_SELECT_KNOWLEDGE": "选择知识库",
+      "TEXT_NO_KNOWLEDGE": "暂无知识库。"
+    }
+  }
+}

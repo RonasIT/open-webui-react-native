@@ -1,0 +1,168 @@
+{
+  "CHAT": {
+    "CHAT_SCREEN": {
+      "TEXT_LOADING": "Wird geladen...",
+      "TEXT_SELECT_A_MODEL": "Modell auswählen"
+    },
+    "CHAT": {
+      "TEXT_INPUT_PLACEHOLDER": "Nachricht senden",
+      "TEXT_MODEL_NOT_SELECTED": "Kein Modell ausgewählt"
+    },
+    "CHAT_MENU_LIST": {
+      "PINNED_CHAT_LIST": {
+        "TEXT_PINNED": "Angepinnt"
+      },
+      "TEXT_NEW_CHAT": "Neuer Chat",
+      "TEXT_SEARCH": "Suchen",
+      "TEXT_THERE_ARE_NO_CHATS": "Es gibt keine Chats"
+    },
+    "SEARCH_CHATS_LIST": {
+      "TEXT_THERE_ARE_NO_CHATS": "Es gibt keine Chats"
+    },
+    "FORM_CHAT_INPUT": {
+      "TEXT_MODEL_NOT_SELECTED": "Kein Modell ausgewählt",
+      "ATTACHMENTS_ACTIONS_POPUP": {
+        "TEXT_CAPTURE": "Aufnehmen",
+        "TEXT_CHOOSE_FROM_GALLERY": "Aus Galerie wählen",
+        "TEXT_UPLOAD_FILES": "Dateien hochladen",
+        "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Sie können keine leere Datei hochladen."
+      }
+    },
+    "SHARE_CHAT_MODAL": {
+      "TEXT_SHARE_CHAT": "Chat teilen",
+      "TEXT_DESCRIPTION_NOT_SHARED": "Nachrichten, die Sie nach dem Erstellen des Links senden, werden nicht geteilt. Nutzer mit der URL können den geteilten Chat ansehen.",
+      "TEXT_DESCRIPTION_SHARED_1": "Sie haben diesen Chat geteilt",
+      "TEXT_BEFORE_LINK": "zuvor",
+      "TEXT_DESCRIPTION_SHARED_2": "Klicken Sie hier, um",
+      "TEXT_DELETE_LINK": "diesen Link zu löschen",
+      "TEXT_DESCRIPTION_SHARED_3": "und einen neuen geteilten Link zu erstellen.",
+      "BUTTON_COPY_LINK": "Link kopieren",
+      "BUTTON_UPDATE_AND_COPY_LINK": "Aktualisieren und Link kopieren",
+      "TEXT_LINK_COPIED": "Link in die Zwischenablage kopiert"
+    },
+    "CREATE_CHAT": {
+      "TEXT_NEW_CHAT": "Neuer Chat",
+      "TEXT_PLACEHOLDER": "Wie kann ich Ihnen heute helfen?",
+      "TEXT_MODEL_NOT_SELECTED": "Kein Modell ausgewählt",
+      "TEXT_SELECT_A_MODEL": "Modell auswählen",
+      "SEARCH_MODEL_VIEW": {
+        "TEXT_SELECT_A_MODEL": "Modell auswählen",
+        "TEXT_SEARCH_MODEL": "Modell suchen"
+      },
+      "SEARCH_FOLDER_VIEW": {
+        "TEXT_SEARCH_FOLDER": "Ordner suchen",
+        "TEXT_NO_FOLDER": "Kein Ordner",
+        "TEXT_CREATE_NEW_FOLDER": "Neuen Ordner erstellen"
+      },
+      "SUGGESTIONS_LIST": {
+        "TEXT_SUGGESTED": "Vorschläge",
+        "TEXT_SUGGESTION_TITLE_1": "Hilf mir beim Lernen",
+        "TEXT_SUGGESTION_SUBTITLE_1": "Vokabeln für eine Aufnahmeprüfung",
+        "TEXT_SUGGESTION_CONTENT_1": "Hilf mir, Vokabeln zu lernen: Schreibe einen Satz mit einer Lücke, und ich versuche, die richtige Option zu wählen.",
+        "TEXT_SUGGESTION_TITLE_2": "Gib mir Ideen",
+        "TEXT_SUGGESTION_SUBTITLE_2": "was ich mit der Kunst meiner Kinder machen kann",
+        "TEXT_SUGGESTION_CONTENT_2": "Was sind 5 kreative Dinge, die ich mit der Kunst meiner Kinder machen könnte? Ich möchte sie nicht wegwerfen, aber sie nehmen auch so viel Platz ein.",
+        "TEXT_SUGGESTION_TITLE_3": "Erzähl mir eine Fun Fact",
+        "TEXT_SUGGESTION_SUBTITLE_3": "über das Römische Reich",
+        "TEXT_SUGGESTION_CONTENT_3": "Erzähl mir eine zufällige Fun Fact über das Römische Reich",
+        "TEXT_SUGGESTION_TITLE_4": "Zeig mir ein Code-Snippet",
+        "TEXT_SUGGESTION_SUBTITLE_4": "eines Sticky Headers einer Website",
+        "TEXT_SUGGESTION_CONTENT_4": "Zeig mir ein Code-Snippet eines Sticky Headers einer Website in CSS und JavaScript.",
+        "TEXT_SUGGESTION_TITLE_5": "Erkläre Optionshandel",
+        "TEXT_SUGGESTION_SUBTITLE_5": "wenn ich Aktienkauf und -verkauf kenne",
+        "TEXT_SUGGESTION_CONTENT_5": "Erkläre Optionshandel in einfachen Worten, wenn ich mit dem Kauf und Verkauf von Aktien vertraut bin.",
+        "TEXT_SUGGESTION_TITLE_6": "Prokrastination überwinden",
+        "TEXT_SUGGESTION_SUBTITLE_6": "gib mir Tipps",
+        "TEXT_SUGGESTION_CONTENT_6": "Könntest du zuerst nach Situationen fragen, in denen ich am meisten prokrastiniere, und mir dann einige Vorschläge geben, wie ich das überwinden kann?"
+      }
+    },
+    "ATTACHED_FILE_ITEM": {
+      "TEXT_FILE": "Datei",
+      "TEXT_DOCUMENT": "Dokument",
+      "TEXT_COLLECTION": "Sammlung",
+      "FILE_INFO_MODAL": {
+        "TEXT_FORMATTING_DISCLAIMER": "Die Formatierung kann von der Quelle abweichen.",
+        "TEXT_NO_PREVIEW_AVAILABLE": "Keine Vorschau verfügbar",
+        "TEXT_EXTRACTED_LINES": {
+          "one": "{{count}} extrahierte Zeile",
+          "other": "{{count}} extrahierte Zeilen"
+        }
+      }
+    },
+    "SOURCE_CITATION_MODAL": {
+      "TEXT_CITATION": "Zitat",
+      "TEXT_SOURCE": "Quelle",
+      "TEXT_RELEVANCE": "Relevanz",
+      "TEXT_CONTENT": "Inhalt",
+      "TEXT_NO_PREVIEW_AVAILABLE": "Keine Vorschau verfügbar"
+    },
+    "ARCHIVED_CHATS_LIST": {
+      "TEXT_ARCHIVED_CHATS": "Archivierte Chats",
+      "TEXT_NO_CHATS": "Es gibt keine archivierten Chats.",
+      "CHAT_ITEM": {
+        "TEXT_DELETE_CHAT": "Chat löschen?",
+        "TEXT_THIS_WILL_DELETE": "Dadurch wird {{name}} gelöscht",
+        "TEXT_RESTORE": "Wiederherstellen",
+        "TEXT_EXPORT": "Exportieren",
+        "TEXT_DELETE": "Löschen",
+        "TEXT_KEEP": "Behalten"
+      },
+      "ARCHIVED_CHATS_ACTIONS_SHEET": {
+        "TEXT_UNARCHIVE_CHATS": "Alle Chats aus dem Archiv holen?",
+        "TEXT_ARE_YOU_SURE": "Sind Sie sicher, dass Sie alle archivierten Chats aus dem Archiv holen möchten?",
+        "BUTTON_RESTORE_ALL_CHATS": "Alle Chats wiederherstellen",
+        "BUTTON_EXPORT_ALL_CHATS": "Alle Chats exportieren"
+      }
+    },
+    "USER_MESSAGE_ACTIONS": {
+      "TEXT_EDIT": "Bearbeiten",
+      "TEXT_COPY": "Kopieren"
+    },
+    "AI_MESSAGE_ACTIONS": {
+      "TEXT_EDIT": "Bearbeiten",
+      "TEXT_COPY": "Kopieren",
+      "TEXT_CONTINUE_RESPONSE": "Antwort fortsetzen",
+      "TEXT_REGENERATE": "Neu generieren",
+      "REGENERATE_MESSAGE_ACTION_SHEET": {
+        "TEXT_SUGGEST_A_CHANGE": "Änderung vorschlagen",
+        "TEXT_TRY_AGAIN": "Erneut versuchen",
+        "TEXT_ADD_DETAILS": "Details hinzufügen",
+        "TEXT_MORE_CONCISE": "Prägnanter"
+      }
+    },
+    "EDIT_MESSAGE_INPUT": {
+      "TEXT_EDIT_MESSAGE": "Nachricht bearbeiten",
+      "BUTTON_SAVE": "Speichern",
+      "BUTTON_SAVE_AS_COPY": "Als Kopie speichern",
+      "BUTTON_SEND": "Senden",
+      "BUTTON_CANCEL": "Abbrechen"
+    },
+    "SUGGEST_CHANGE_INPUT": {
+      "TEXT_SUGGEST_A_CHANGE": "Änderung vorschlagen",
+      "BUTTON_CANCEL": "Abbrechen"
+    },
+    "ARCHIVED_CHATS_FILTERS_SHEET": {
+      "USE_SEARCH_FILTERS": {
+        "TEXT_MOST_RECENT": "Neueste",
+        "TEXT_OLDEST": "Älteste",
+        "TEXT_A-Z": "A-Z",
+        "TEXT_Z-A": "Z-A"
+      }
+    },
+    "VOICE_MODE_MODAL": {
+      "TEXT_LISTENING": "Hört zu...",
+      "TEXT_THINKING": "Denkt nach...",
+      "TEXT_TALKING": "Spricht..."
+    },
+    "MESSAGE_FOLLOW_UPS": {
+      "TEXT_FOLLOW_UP": "Nachfrage"
+    },
+    "AI_MESSAGE": {
+      "TOOL_OUTPUT_SHEET": {
+        "TEXT_VIEW_RESULT_PREFIX": "Ergebnis anzeigen von",
+        "TEXT_INPUT": "Eingabe",
+        "TEXT_OUTPUT": "Ausgabe"
+      }
+    }
+  }
+}

@@ -29,6 +29,7 @@ export default function MainLayout(): ReactElement {
       }}>
       <Stack.Screen name={navigationConfig.main.chat.index} />
       <Stack.Screen name={navigationConfig.main.folder.index} />
+      <Stack.Screen name={navigationConfig.main.settings} />
     </Stack>
   );
 }

@@ -28,6 +28,7 @@ import gallery from './gallery.svg';
 import generatedImage from './generated-image.svg';
 import googleLogo from './google.svg';
 import headphones from './headphones.svg';
+import key from './key.svg';
 import keyboard from './keyboard.svg';
 import lessText from './less-text.svg';
 import link from './link.svg';
@@ -116,4 +117,5 @@ export const Icons = {
   lessText,
   moreText,
   web,
+  key,
 };

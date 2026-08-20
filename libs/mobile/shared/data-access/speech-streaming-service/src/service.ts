@@ -1,15 +1,29 @@
 import { setAudioModeAsync } from 'expo-audio';
 import * as Speech from 'expo-speech';
 import { SpeechStreamingServiceEvent } from './enums';
+import { prepareSpeakableText } from './prepare-speakable-text';
 
 const textBreakpoints = ['.', '!', '?', ',', ';', ':', '-'];
 
+type SpeechQueueItem = {
+  text: string;
+  isFinal: boolean;
+};
+
 class SpeechStreamingService {
   private spokenText: string;
+  private isStopped: boolean;
+  private speechGeneration: number;
+  private queue: Array<SpeechQueueItem>;
+  private isProcessingQueue: boolean;
   private listeners: Map<string, Array<(...args: Array<any>) => void>> = new Map();
 
   constructor() {
     this.spokenText = '';
+    this.isStopped = true;
+    this.speechGeneration = 0;
+    this.queue = [];
+    this.isProcessingQueue = false;
   }
 
   public onSpeakingStart(callback: () => void): () => void {
@@ -20,21 +34,43 @@ class SpeechStreamingService {
     return this.addEventListener(SpeechStreamingServiceEvent.SPEAKING_END, callback);
   }
 
-  public stopContentSpeaking = async (): Promise<void> => {
-    await Speech.stop();
+  public resumeContentSpeaking = (): void => {
+    this.isStopped = false;
     this.spokenText = '';
+    this.queue = [];
+  };
+
+  public stopContentSpeaking = async (): Promise<void> => {
+    // NOTE: Bump generation before await so in-flight onDone / queue work becomes stale
+    this.speechGeneration += 1;
+    this.isStopped = true;
+    this.spokenText = '';
+    this.queue = [];
+    await Speech.stop();
+    this.isProcessingQueue = false;
   };
 
   public handleContent(text: string, isDone?: boolean): void {
-    const unspokenText = text.slice(this.spokenText.length);
+    if (this.isStopped) {
+      return;
+    }
+
+    // NOTE: Speak cleaned markdown; cursor tracks speakable length
+    const speakableText = prepareSpeakableText(text, { holdIncomplete: !isDone });
+    const unspokenText = speakableText.slice(this.spokenText.length);
 
     let textToSpeak = '';
 
-    // NOTE: We need to separate text by breakpoints to make it more natural
-    for (let i = unspokenText.length - 1; i >= 0; i--) {
-      if (textBreakpoints.includes(unspokenText[i])) {
-        textToSpeak = unspokenText.slice(0, i + 1);
-        break;
+    if (isDone) {
+      // NOTE: Flush all leftover speakable text when the message is complete
+      textToSpeak = unspokenText;
+    } else {
+      // NOTE: Separate text by breakpoints to make streaming speech more natural
+      for (let i = unspokenText.length - 1; i >= 0; i--) {
+        if (textBreakpoints.includes(unspokenText[i])) {
+          textToSpeak = unspokenText.slice(0, i + 1);
+          break;
+        }
       }
     }
 
@@ -44,13 +80,14 @@ class SpeechStreamingService {
       }
 
       this.spokenText = this.spokenText + textToSpeak;
+      this.enqueue({ text: textToSpeak, isFinal: !!isDone });
 
-      this.speakText(textToSpeak);
+      return;
     }
 
     if (isDone) {
-      // NOTE: If the text is done, we need to stop speaking and emit the event
-      this.speakText('', true);
+      // NOTE: All speakable text was already queued; emit end after the speech queue drains
+      this.enqueue({ text: '', isFinal: true });
     }
   }
 
@@ -58,21 +95,83 @@ class SpeechStreamingService {
     this.listeners.clear();
   }
 
-  private speakText = async (text: string, isDone?: boolean): Promise<void> => {
+  private enqueue(item: SpeechQueueItem): void {
+    if (this.isStopped) {
+      return;
+    }
+
+    this.queue.push(item);
+    void this.processQueue();
+  }
+
+  private processQueue = async (): Promise<void> => {
+    if (this.isProcessingQueue) {
+      return;
+    }
+
+    this.isProcessingQueue = true;
+    const generation = this.speechGeneration;
+
+    try {
+      while (this.queue.length > 0) {
+        if (this.isStopped || generation !== this.speechGeneration) {
+          break;
+        }
+
+        const item = this.queue.shift();
+
+        if (!item) {
+          break;
+        }
+
+        if (item.text.trim()) {
+          await this.speakSegment(item.text, generation);
+        }
+
+        if (this.isStopped || generation !== this.speechGeneration) {
+          break;
+        }
+
+        if (item.isFinal) {
+          this.emit(SpeechStreamingServiceEvent.SPEAKING_END);
+          this.spokenText = '';
+        }
+      }
+    } finally {
+      if (generation === this.speechGeneration) {
+        this.isProcessingQueue = false;
+      }
+    }
+  };
+
+  private speakSegment = async (text: string, generation: number): Promise<void> => {
+    if (this.isStopped || generation !== this.speechGeneration) {
+      return;
+    }
+
     // NOTE: Need to set audio mode to allow speech in silent mode on iOS
     await setAudioModeAsync({
       playsInSilentMode: true,
     });
 
-    Speech.speak(text, {
-      // NOTE: Only English is working good for now
-      language: 'en-US',
-      onDone: () => {
-        if (isDone) {
-          this.emit(SpeechStreamingServiceEvent.SPEAKING_END);
-          this.spokenText = '';
-        }
-      },
+    if (this.isStopped || generation !== this.speechGeneration) {
+      return;
+    }
+
+    await new Promise<void>((resolve) => {
+      if (this.isStopped || generation !== this.speechGeneration) {
+        resolve();
+
+        return;
+      }
+
+      Speech.speak(text, {
+        // NOTE: Only English is working good for now
+        language: 'en-US',
+        onDone: () => resolve(),
+        onStopped: () => resolve(),
+        onError: () => resolve(),
+      });
     });
   };
 

@@ -1,0 +1,25 @@
+{
+  "AUTH": {
+    "SIGN_IN": {
+      "TEXT_TITLE_EXTERNAL": "Entrar",
+      "TEXT_YOU_LOGGED_IN": "Você entrou na sua conta.",
+      "EMAIL_FORM": {
+        "TEXT_EMAIL_ADDRESS": "Endereço de e-mail",
+        "TEXT_PASSWORD": "Senha",
+        "TEXT_API_URL": "URL da API",
+        "TEXT_ENTER_YOUR_PASSWORD": "Digite sua senha",
+        "BUTTON_SIGN_IN": "Entrar"
+      },
+      "GOOGLE_FORM": {
+        "BUTTON_CONTINUE_WITH_GOOGLE": "Continuar com o Google"
+      },
+      "OIDC_FORM": {
+        "BUTTON_CONTINUE_WITH": "Continuar com {{provider}}"
+      },
+      "OAUTH_WEB_VIEW_MODAL": {
+        "BUTTON_CLOSE": "Fechar",
+        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Este método de login não está disponível. Use outra opção para continuar."
+      }
+    }
+  }
+}

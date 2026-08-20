@@ -1,0 +1,113 @@
+{
+  "SHARED": {
+    "VALIDATION": {
+      "TEXT_INVALID_EMAIL": "Veuillez saisir une adresse e-mail valide",
+      "TEXT_REQUIRED_EMAIL": "Veuillez saisir votre e-mail",
+      "TEXT_REQUIRED_PASSWORD": "Veuillez saisir votre mot de passe",
+      "TEXT_INVALID_URL": "Veuillez saisir une URL de serveur valide, ex. https://your.domain ou http://192.168.1.10:3000",
+      "TEXT_REQUIRED_FOLDER_NAME": "Veuillez saisir un nom de dossier",
+      "TEXT_REQUIRED_PROFILE_NAME": "Veuillez saisir un nom de profil",
+      "TEXT_REQUIRED_CURRENT_PASSWORD": "Veuillez saisir votre mot de passe actuel",
+      "TEXT_REQUIRED_NEW_PASSWORD": "Veuillez saisir un nouveau mot de passe",
+      "TEXT_REQUIRED_CONFIRM_PASSWORD": "Veuillez confirmer votre nouveau mot de passe",
+      "TEXT_PASSWORDS_DO_NOT_MATCH": "Les mots de passe ne correspondent pas"
+    },
+    "COMMON": {
+      "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "Cette fonctionnalité n’est pas encore implémentée.",
+      "TEXT_NEW_CHAT": "Nouvelle discussion",
+      "BUTTON_CANCEL": "Annuler",
+      "BUTTON_CONFIRM": "Confirmer",
+      "BUTTON_OPEN_SETTINGS": "Ouvrir les paramètres",
+      "TEXT_UNABLE_TO_OPEN_SETTINGS": "Impossible d’ouvrir les paramètres",
+      "TEXT_SETTINGS": "Paramètres",
+      "TEXT_DISABLED_IN_OFFLINE_MODE": "Les fonctionnalités sont désactivées en mode hors ligne",
+      "ACTIONS_BOTTOM_SHEET": {
+        "BUTTON_CANCEL": "Annuler"
+      },
+      "TEXT_COPIED_TO_CLIPBOARD": "Copié dans le presse-papiers"
+    },
+    "API_ERRORS": {
+      "TEXT_SOMETHING_WENT_WRONG": "Une erreur s’est produite",
+      "TEXT_YOUR_SESSION_HAS_EXPIRED": "Votre session a expiré. Veuillez vous reconnecter",
+      "TEXT_FORBIDDEN_ERROR": "Vous n’avez pas accès à cette action",
+      "TEXT_INTERNAL_SERVER_ERROR": "Erreur de chargement des données",
+      "TEXT_NOT_FOUND_ERROR": "Données introuvables"
+    },
+    "DATES": {
+      "TEXT_TODAY": "Aujourd’hui",
+      "TEXT_YESTERDAY": "Hier",
+      "TEXT_LAST_DAYS": "{{days}} derniers jours",
+      "TEXT_AT_TIME": "à {{time}}",
+      "TEXT_TODAY_TIME": "Aujourd’hui {{time}}",
+      "TEXT_YESTERDAY_TIME": "Hier {{time}}"
+    },
+    "CODE_BLOCK": {
+      "TEXT_COPIED_TO_CLIPBOARD": "Copié dans le presse-papiers",
+      "TEXT_COPY": "Copier"
+    },
+    "SOCKET_SERVICE": {
+      "TEXT_CONNECTION_ERROR": "Erreur de connexion"
+    },
+    "IMAGE_PICKER_SERVICE": {
+      "TEXT_ACCESS_DENIED": "Accès refusé"
+    },
+    "ACTION_BUTTONS_MODAL": {
+      "BUTTON_CONFIRM": "Confirmer",
+      "BUTTON_CANCEL": "Annuler",
+      "TEXT_TITLE_CAN_NOT_BE_EMPTY": "Le titre ne peut pas être vide"
+    },
+    "MEDIA_LIBRARY_SERVICE": {
+      "TEXT_SUCCESSFULLY_SAVED": "Image enregistrée avec succès",
+      "TEXT_ERROR_DURING_SAVING": "Une erreur s’est produite lors de l’enregistrement de l’image",
+      "TEXT_SETTINGS": "Paramètres",
+      "TEXT_SETTINGS_MESSAGE": "Autorisez l’accès à la caméra dans les paramètres. Settings > Open Web UI > Photos > All Photos"
+    },
+    "FILE_SYSTEM_SERVICE": {
+      "TEXT_SHARE": "Partager {{fileName}}",
+      "TEXT_SHARING_IS_NOT_AVAILABLE": "Le partage n’est pas disponible sur cet appareil"
+    },
+    "USE_AUDIO_RECORDER": {
+      "TEXT_NO_ACCESS": "Aucun accès",
+      "TEXT_APP_NEEDS_ACCESS": "L’application a besoin d’accéder au microphone de votre appareil"
+    },
+    "NO_CONNECTION_BANNER": {
+      "TEXT_YOU_ARE_OFFLINE": "Vous êtes hors ligne !"
+    },
+    "PRESSABLE_SEARCH_INPUT": {
+      "TEXT_SEARCH_CHATS": "Rechercher des discussions"
+    },
+    "CHAT_ACTIONS_MENU_SHEET": {
+      "TEXT_PIN": "Épingler",
+      "TEXT_UNPIN": "Désépingler",
+      "TEXT_RENAME": "Renommer",
+      "TEXT_CLONE": "Cloner",
+      "TEXT_ARCHIVE": "Archiver",
+      "TEXT_RESTORE": "Restaurer",
+      "TEXT_SHARE": "Partager",
+      "TEXT_DOWNLOAD": "Télécharger",
+      "TEXT_DELETE": "Supprimer",
+      "TEXT_KEEP": "Conserver",
+      "TEXT_RENAME_CHAT": "Renommer la discussion",
+      "TEXT_DELETE_CHAT": "Supprimer la discussion ?",
+      "TEXT_THIS_WILL_DELETE": "Cela supprimera {{name}}",
+      "TEXT_CLONE_OF": "Clone de {{title}}",
+      "TEXT_CHAT_ACTIONS": "Actions de la discussion",
+      "TEXT_MOVE_TO_FOLDER": "Déplacer vers un dossier",
+      "DOWNLOAD_CHAT_OPTIONS_SHEET": {
+        "TEXT_EXPORT_CHAT_JSON": "Exporter la discussion (.json)",
+        "TEXT_PLAIN_TEXT": "Texte brut (.txt)",
+        "TEXT_PDF_DOCUMENT": "Document PDF (.pdf)"
+      },
+      "MOVE_CHAT_TO_FOLDER_MODAL": {
+        "TEXT_SEARCH_FOLDER": "Rechercher un dossier",
+        "TEXT_NO_FOLDERS": "Aucun dossier",
+        "TEXT_CREATE_NEW_FOLDER": "Créer un dossier",
+        "TEXT_NO_FOLDER": "Aucun dossier"
+      }
+    },
+    "SEARCH_INPUT": {
+      "BUTTON_CANCEL": "Annuler",
+      "TEXT_SEARCH_CHATS": "Rechercher des discussions"
+    }
+  }
+}

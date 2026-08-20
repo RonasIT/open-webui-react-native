@@ -1,0 +1,113 @@
+{
+  "SHARED": {
+    "VALIDATION": {
+      "TEXT_INVALID_EMAIL": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+      "TEXT_REQUIRED_EMAIL": "Bitte geben Sie Ihre E-Mail-Adresse ein",
+      "TEXT_REQUIRED_PASSWORD": "Bitte geben Sie Ihr Passwort ein",
+      "TEXT_INVALID_URL": "Bitte geben Sie eine gültige Server-URL ein, z. B. https://your.domain oder http://192.168.1.10:3000",
+      "TEXT_REQUIRED_FOLDER_NAME": "Bitte geben Sie einen Ordnernamen ein",
+      "TEXT_REQUIRED_PROFILE_NAME": "Bitte geben Sie einen Profilnamen ein",
+      "TEXT_REQUIRED_CURRENT_PASSWORD": "Bitte geben Sie Ihr aktuelles Passwort ein",
+      "TEXT_REQUIRED_NEW_PASSWORD": "Bitte geben Sie ein neues Passwort ein",
+      "TEXT_REQUIRED_CONFIRM_PASSWORD": "Bitte bestätigen Sie Ihr neues Passwort",
+      "TEXT_PASSWORDS_DO_NOT_MATCH": "Die Passwörter stimmen nicht überein"
+    },
+    "COMMON": {
+      "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "Funktion ist noch nicht implementiert.",
+      "TEXT_NEW_CHAT": "Neuer Chat",
+      "BUTTON_CANCEL": "Abbrechen",
+      "BUTTON_CONFIRM": "Bestätigen",
+      "BUTTON_OPEN_SETTINGS": "Einstellungen öffnen",
+      "TEXT_UNABLE_TO_OPEN_SETTINGS": "Einstellungen können nicht geöffnet werden",
+      "TEXT_SETTINGS": "Einstellungen",
+      "TEXT_DISABLED_IN_OFFLINE_MODE": "Funktionen sind im Offline-Modus deaktiviert",
+      "ACTIONS_BOTTOM_SHEET": {
+        "BUTTON_CANCEL": "Abbrechen"
+      },
+      "TEXT_COPIED_TO_CLIPBOARD": "In die Zwischenablage kopiert"
+    },
+    "API_ERRORS": {
+      "TEXT_SOMETHING_WENT_WRONG": "Etwas ist schiefgelaufen",
+      "TEXT_YOUR_SESSION_HAS_EXPIRED": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an",
+      "TEXT_FORBIDDEN_ERROR": "Sie haben keinen Zugriff auf diese Aktion",
+      "TEXT_INTERNAL_SERVER_ERROR": "Fehler beim Laden der Daten",
+      "TEXT_NOT_FOUND_ERROR": "Daten nicht gefunden"
+    },
+    "DATES": {
+      "TEXT_TODAY": "Heute",
+      "TEXT_YESTERDAY": "Gestern",
+      "TEXT_LAST_DAYS": "Letzte {{days}} Tage",
+      "TEXT_AT_TIME": "um {{time}}",
+      "TEXT_TODAY_TIME": "Heute {{time}}",
+      "TEXT_YESTERDAY_TIME": "Gestern {{time}}"
+    },
+    "CODE_BLOCK": {
+      "TEXT_COPIED_TO_CLIPBOARD": "In die Zwischenablage kopiert",
+      "TEXT_COPY": "Kopieren"
+    },
+    "SOCKET_SERVICE": {
+      "TEXT_CONNECTION_ERROR": "Verbindungsfehler"
+    },
+    "IMAGE_PICKER_SERVICE": {
+      "TEXT_ACCESS_DENIED": "Zugriff verweigert"
+    },
+    "ACTION_BUTTONS_MODAL": {
+      "BUTTON_CONFIRM": "Bestätigen",
+      "BUTTON_CANCEL": "Abbrechen",
+      "TEXT_TITLE_CAN_NOT_BE_EMPTY": "Titel darf nicht leer sein"
+    },
+    "MEDIA_LIBRARY_SERVICE": {
+      "TEXT_SUCCESSFULLY_SAVED": "Bild erfolgreich gespeichert",
+      "TEXT_ERROR_DURING_SAVING": "Beim Speichern des Bildes ist ein Fehler aufgetreten",
+      "TEXT_SETTINGS": "Einstellungen",
+      "TEXT_SETTINGS_MESSAGE": "Erlauben Sie den Kamerazugriff in den Einstellungen. Settings > Open Web UI > Photos > All Photos"
+    },
+    "FILE_SYSTEM_SERVICE": {
+      "TEXT_SHARE": "{{fileName}} teilen",
+      "TEXT_SHARING_IS_NOT_AVAILABLE": "Teilen ist auf diesem Gerät nicht verfügbar"
+    },
+    "USE_AUDIO_RECORDER": {
+      "TEXT_NO_ACCESS": "Kein Zugriff",
+      "TEXT_APP_NEEDS_ACCESS": "Die App benötigt Zugriff auf das Mikrofon Ihres Geräts"
+    },
+    "NO_CONNECTION_BANNER": {
+      "TEXT_YOU_ARE_OFFLINE": "Sie sind offline!"
+    },
+    "PRESSABLE_SEARCH_INPUT": {
+      "TEXT_SEARCH_CHATS": "Chats suchen"
+    },
+    "CHAT_ACTIONS_MENU_SHEET": {
+      "TEXT_PIN": "Anheften",
+      "TEXT_UNPIN": "Lösen",
+      "TEXT_RENAME": "Umbenennen",
+      "TEXT_CLONE": "Klonen",
+      "TEXT_ARCHIVE": "Archivieren",
+      "TEXT_RESTORE": "Wiederherstellen",
+      "TEXT_SHARE": "Teilen",
+      "TEXT_DOWNLOAD": "Herunterladen",
+      "TEXT_DELETE": "Löschen",
+      "TEXT_KEEP": "Behalten",
+      "TEXT_RENAME_CHAT": "Chat umbenennen",
+      "TEXT_DELETE_CHAT": "Chat löschen?",
+      "TEXT_THIS_WILL_DELETE": "Dadurch wird {{name}} gelöscht",
+      "TEXT_CLONE_OF": "Klon von {{title}}",
+      "TEXT_CHAT_ACTIONS": "Chat-Aktionen",
+      "TEXT_MOVE_TO_FOLDER": "In Ordner verschieben",
+      "DOWNLOAD_CHAT_OPTIONS_SHEET": {
+        "TEXT_EXPORT_CHAT_JSON": "Chat exportieren (.json)",
+        "TEXT_PLAIN_TEXT": "Nur Text (.txt)",
+        "TEXT_PDF_DOCUMENT": "PDF-Dokument (.pdf)"
+      },
+      "MOVE_CHAT_TO_FOLDER_MODAL": {
+        "TEXT_SEARCH_FOLDER": "Ordner suchen",
+        "TEXT_NO_FOLDERS": "Keine Ordner vorhanden",
+        "TEXT_CREATE_NEW_FOLDER": "Ordner erstellen",
+        "TEXT_NO_FOLDER": "Kein Ordner"
+      }
+    },
+    "SEARCH_INPUT": {
+      "BUTTON_CANCEL": "Abbrechen",
+      "TEXT_SEARCH_CHATS": "Chats suchen"
+    }
+  }
+}

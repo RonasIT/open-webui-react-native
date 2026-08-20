@@ -1,0 +1,25 @@
+{
+  "AUTH": {
+    "SIGN_IN": {
+      "TEXT_TITLE_EXTERNAL": "Вход",
+      "TEXT_YOU_LOGGED_IN": "Вы вошли в систему.",
+      "EMAIL_FORM": {
+        "TEXT_EMAIL_ADDRESS": "Адрес электронной почты",
+        "TEXT_PASSWORD": "Пароль",
+        "TEXT_API_URL": "API URL",
+        "TEXT_ENTER_YOUR_PASSWORD": "Введите пароль",
+        "BUTTON_SIGN_IN": "Войти"
+      },
+      "GOOGLE_FORM": {
+        "BUTTON_CONTINUE_WITH_GOOGLE": "Продолжить с Google"
+      },
+      "OIDC_FORM": {
+        "BUTTON_CONTINUE_WITH": "Продолжить с {{provider}}"
+      },
+      "OAUTH_WEB_VIEW_MODAL": {
+        "BUTTON_CLOSE": "Закрыть",
+        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Этот способ входа недоступен. Пожалуйста, выберите другой вариант."
+      }
+    }
+  }
+}

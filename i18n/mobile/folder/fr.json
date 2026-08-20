@@ -1,0 +1,36 @@
+{
+  "FOLDER": {
+    "CHATS_LIST": {
+      "TEXT_NO_CHATS": "Il n’y a aucune discussion dans ce dossier."
+    },
+    "FOLDER_ACTIONS_SHEET": {
+      "TEXT_EDIT": "Modifier",
+      "TEXT_EXPORT": "Exporter",
+      "TEXT_DELETE": "Supprimer",
+      "TEXT_KEEP": "Conserver",
+      "TEXT_DELETE_FOLDER": "Supprimer le dossier ?",
+      "TEXT_THIS_WILL_DELETE": "Cela supprimera {{name}}"
+    },
+    "UPSERT_FOLDER_SHEET": {
+      "TEXT_NEW_FOLDER": "Nouveau dossier",
+      "TEXT_EDIT_FOLDER": "Modifier le dossier",
+      "TEXT_FOLDER_NAME": "Nom du dossier",
+      "TEXT_DOCUMENT": "Document",
+      "TEXT_FILE": "Fichier",
+      "TEXT_COLLECTION": "Collection",
+      "TEXT_FOLDER_NAME_PLACEHOLDER": "ex. Mon dossier",
+      "TEXT_SYSTEM_PROMPT": "Invite système",
+      "TEXT_KNOWLEDGE": "Connaissances",
+      "BUTTON_SELECT_KNOWLEDGE": "Sélectionner des connaissances",
+      "BUTTON_UPLOAD_FILES": "Téléverser des fichiers",
+      "TEXT_CREATE": "Créer",
+      "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Vous ne pouvez pas téléverser un fichier vide.",
+      "TEXT_UNSUPPORTED_TYPE": "Type non pris en charge."
+    },
+    "SELECT_KNOWLEDGE_SHEET": {
+      "TEXT_SEARCH_KNOWLEDGE": "Rechercher des connaissances",
+      "TEXT_SELECT_KNOWLEDGE": "Sélectionner des connaissances",
+      "TEXT_NO_KNOWLEDGE": "Aucune connaissance."
+    }
+  }
+}

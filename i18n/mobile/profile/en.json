@@ -3,6 +3,7 @@
     "PROFILE_MENU_SHEET": {
       "TEXT_LOGOUT": "Logout",
       "TEXT_ARCHIVED_CHATS": "Archived Chats",
+      "TEXT_SETTINGS": "Settings",
       "TEXT_REPORT_BUG": "Report a bug",
       "TEXT_RATE_APP": "Rate app",
       "TEXT_DELETE_ACCOUNT": "Delete Account",
