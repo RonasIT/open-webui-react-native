@@ -16,6 +16,9 @@ export interface PrepareCompleteChatPayloadArgs {
   userMessage?: Message;
   // Set only for "Continue Response": id of the existing assistant message to keep and extend.
   assistantMessageId?: string;
+  // The user's default system prompt (Settings > General). Prepended to every completion
+  // request rather than persisted into chat history, since the full history is resent each call.
+  systemPrompt?: string;
 }
 
 export function prepareCompleteChatPayload({
@@ -27,9 +30,20 @@ export function prepareCompleteChatPayload({
   generationOptions,
   userMessage,
   assistantMessageId,
+  systemPrompt,
 }: PrepareCompleteChatPayloadArgs): CompleteChatRequest {
   const prepareChatMessages = (): Array<ChatMessage> => {
-    return messages.map((message) => {
+    const trimmedSystemPrompt = systemPrompt?.trim();
+    const systemMessage = trimmedSystemPrompt
+      ? [
+          new ChatMessage({
+            role: Role.SYSTEM,
+            content: [new ChatMessageContent({ type: 'text', text: trimmedSystemPrompt })],
+          }),
+        ]
+      : [];
+
+    const historyMessages = messages.map((message) => {
       const content: Array<ChatMessageContent> = [];
 
       if (message.content) {
@@ -59,6 +73,8 @@ export function prepareCompleteChatPayload({
         content,
       });
     });
+
+    return [...systemMessage, ...historyMessages];
   };
 
   // Only files should be included in `files` field

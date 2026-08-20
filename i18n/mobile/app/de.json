@@ -12,6 +12,8 @@
       "TEXT_DEFAULT_MODEL": "Standardmodell",
       "TEXT_DEFAULT_SYSTEM_PROMPT": "Standard-System-Prompt",
       "TEXT_LANGUAGE": "Sprache",
+      "TEXT_NOT_SET": "Nicht festgelegt",
+      "TEXT_LOAD_ERROR": "Laden fehlgeschlagen",
       "TEXT_PROFILE_NAME": "Profilname",
       "TEXT_AVATAR": "Avatar",
       "TEXT_CHANGE_PASSWORD": "Passwort ändern",
@@ -53,6 +55,10 @@
         "TEXT_TITLE": "Standardmodell",
         "TEXT_SEARCH_MODEL": "Modell suchen",
         "TEXT_NO_MODELS": "Es gibt keine Modelle."
+      },
+      "DEFAULT_SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "Standard-System-Prompt",
+        "TEXT_LABEL": "Standard-System-Prompt"
       },
       "CONTACT_SUPPORT_SHEET": {
         "TEXT_TITLE": "Support kontaktieren",

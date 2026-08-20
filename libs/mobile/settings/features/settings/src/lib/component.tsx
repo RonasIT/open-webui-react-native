@@ -4,9 +4,16 @@ import { ReactElement, useRef, useState } from 'react';
 import { Alert } from 'react-native';
 import { SettingsSection, SettingsSectionOption } from '@open-webui-react-native/mobile/settings/ui/section';
 import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-logout';
+import { useSetSelectedModel } from '@open-webui-react-native/mobile/shared/features/use-set-selected-model';
 import { Avatar, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
-import { authApi, modelsApi } from '@open-webui-react-native/shared/data-access/api';
+import {
+  authApi,
+  modelsApi,
+  UiSettings,
+  UserSettings,
+  usersApi,
+} from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import {
   availableLanguages,
@@ -24,6 +31,8 @@ import {
   ContactSupportSheetMethods,
   DefaultModelSheet,
   DefaultModelSheetMethods,
+  DefaultSystemPromptSheet,
+  DefaultSystemPromptSheetMethods,
   ProfileAvatarSheet,
   ProfileAvatarSheetMethods,
   ProfileNameSheet,
@@ -51,14 +60,17 @@ export function Settings(): ReactElement {
   const navigateOnce = useNavigateOnce();
 
   const { data: profile } = authApi.useGetProfile();
-  const { data: models } = modelsApi.useGetModels();
+  const { isError: isModelsError } = modelsApi.useGetModels();
+  const { data: settings, isError: isSettingsError } = usersApi.useGetUserSettings();
+  const { mutate: updateUserSettings } = usersApi.useUpdateUserSettings();
+  const { modelId: defaultModelId, modelName: defaultModelName } = useSetSelectedModel();
 
   const [toggles, setToggles] = useState(initialToggles);
-  const [defaultModelId, setDefaultModelId] = useState<string>();
 
   const profileAvatarSheetRef = useRef<ProfileAvatarSheetMethods>(null);
   const profileNameSheetRef = useRef<ProfileNameSheetMethods>(null);
   const defaultModelSheetRef = useRef<DefaultModelSheetMethods>(null);
+  const defaultSystemPromptSheetRef = useRef<DefaultSystemPromptSheetMethods>(null);
   const changePasswordSheetRef = useRef<ChangePasswordSheetMethods>(null);
   const contactSupportSheetRef = useRef<ContactSupportSheetMethods>(null);
   const languageSheetRef = useRef<SelectionSheetMethods>(null);
@@ -72,7 +84,12 @@ export function Settings(): ReactElement {
   const avatarSource = profile?.profileImageUrl ? { uri: profile.profileImageUrl } : undefined;
   const languageLabel = availableLanguages.find(({ code }) => code === locale)?.label;
   const markdownRendererOption = availableMarkdownRenderers.find(({ code }) => code === markdownRenderer);
-  const defaultModelName = models?.find(({ id }) => id === defaultModelId)?.name;
+
+  const isGeneralDataError = isSettingsError || isModelsError;
+  const defaultModelValue = isGeneralDataError
+    ? translate('TEXT_LOAD_ERROR')
+    : (defaultModelName ?? translate('TEXT_NOT_SET'));
+  const defaultSystemPromptValue = isSettingsError ? translate('TEXT_LOAD_ERROR') : settings?.ui.system;
 
   const languageItems = availableLanguages.map(({ code, label }) => ({ value: code, label }));
   const markdownRendererItems = availableMarkdownRenderers.map(({ code, labelKey }) => ({
@@ -82,6 +99,22 @@ export function Settings(): ReactElement {
 
   const handleLanguageChange = (value: LanguageCode): void => {
     appState$.setLocale(value);
+  };
+
+  const handleDefaultModelChange = (modelId: string): void => {
+    if (!settings) {
+      return;
+    }
+
+    updateUserSettings(new UserSettings({ ui: new UiSettings({ ...settings.ui, models: [modelId] }) }));
+  };
+
+  const handleDefaultSystemPromptChange = (systemPrompt: string): void => {
+    if (!settings) {
+      return;
+    }
+
+    updateUserSettings(new UserSettings({ ui: new UiSettings({ ...settings.ui, system: systemPrompt }) }));
   };
 
   const handleMarkdownRendererChange = (value: MarkdownRenderer): void => {
@@ -128,10 +161,14 @@ export function Settings(): ReactElement {
   const generalOptions: Array<SettingsSectionOption> = [
     {
       label: translate('TEXT_DEFAULT_MODEL'),
-      value: defaultModelName,
+      value: defaultModelValue,
       onPress: () => defaultModelSheetRef.current?.present(),
     },
-    { label: translate('TEXT_DEFAULT_SYSTEM_PROMPT'), onPress: ToastService.showFeatureNotImplemented },
+    {
+      label: translate('TEXT_DEFAULT_SYSTEM_PROMPT'),
+      value: defaultSystemPromptValue,
+      onPress: () => defaultSystemPromptSheetRef.current?.present(),
+    },
     {
       label: translate('TEXT_LANGUAGE'),
       value: languageLabel,
@@ -260,7 +297,13 @@ export function Settings(): ReactElement {
       <DefaultModelSheet
         ref={defaultModelSheetRef}
         selectedModelId={defaultModelId}
-        onConfirm={setDefaultModelId} />
+        onConfirm={handleDefaultModelChange}
+      />
+      <DefaultSystemPromptSheet
+        ref={defaultSystemPromptSheetRef}
+        systemPrompt={settings?.ui.system}
+        onConfirm={handleDefaultSystemPromptChange}
+      />
       <ContactSupportSheet ref={contactSupportSheetRef} />
       <SelectionSheet
         ref={languageSheetRef}

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDefaultSystemPrompt } from '@open-webui-react-native/mobile/shared/features/use-default-system-prompt';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 import {
   chatApi,
@@ -26,6 +27,7 @@ export interface EditMessageSchema {
 export const useEditMessage = ({ chat, modelId }: UseEditMessageProps): typeof result => {
   const [editingMessageId, setEditingMessageId] = useState<string>();
   const socketSessionId = socketService.socketSessionId;
+  const systemPrompt = useDefaultSystemPrompt();
 
   const { control, handleSubmit, reset } = useForm<FormValues<EditMessageSchema>>({
     defaultValues: {
@@ -88,6 +90,7 @@ export const useEditMessage = ({ chat, modelId }: UseEditMessageProps): typeof r
           messages: data.chat!.messages,
           sessionId: socketSessionId,
           model: modelId,
+          systemPrompt,
         });
 
         completeChat(completePayload);
