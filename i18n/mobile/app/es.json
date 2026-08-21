@@ -36,7 +36,10 @@
       "PROFILE_AVATAR_SHEET": {
         "TEXT_TITLE": "Avatar del perfil",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "Subir imagen de perfil",
-        "BUTTON_RESTORE_DEFAULT_AVATAR": "Restaurar avatar predeterminado"
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "Restaurar avatar predeterminado",
+        "TEXT_UNSUPPORTED_IMAGE_TYPE": "Tipo de imagen no compatible. Elige una imagen PNG, JPEG, GIF o WEBP",
+        "TEXT_IMAGE_TOO_LARGE": "Esta imagen es demasiado grande. Elige una más pequeña",
+        "TEXT_UPLOAD_FAILED": "No se pudo procesar la imagen. Prueba con otra"
       },
       "PROFILE_NAME_SHEET": {
         "TEXT_TITLE": "Nombre del perfil",
@@ -49,7 +52,8 @@
         "TEXT_NEW_PASSWORD": "Nueva contraseña",
         "TEXT_ENTER_NEW_PASSWORD": "Introduce tu nueva contraseña",
         "TEXT_CONFIRM_NEW_PASSWORD": "Confirmar nueva contraseña",
-        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Repite tu nueva contraseña"
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Repite tu nueva contraseña",
+        "TEXT_PASSWORD_CHANGED": "Tu contraseña ha sido cambiada"
       },
       "DEFAULT_MODEL_SHEET": {
         "TEXT_TITLE": "Modelo predeterminado",

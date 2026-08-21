@@ -10,7 +10,9 @@
       "TEXT_REQUIRED_CURRENT_PASSWORD": "現在のパスワードを入力してください",
       "TEXT_REQUIRED_NEW_PASSWORD": "新しいパスワードを入力してください",
       "TEXT_REQUIRED_CONFIRM_PASSWORD": "新しいパスワードを確認してください",
-      "TEXT_PASSWORDS_DO_NOT_MATCH": "パスワードが一致しません"
+      "TEXT_PASSWORDS_DO_NOT_MATCH": "パスワードが一致しません",
+      "TEXT_INVALID_PROFILE_NAME": "プロフィール名には文字、スペース、ハイフン、アポストロフィのみ使用できます",
+      "TEXT_PASSWORD_TOO_SHORT": "パスワードは8文字以上で入力してください"
     },
     "COMMON": {
       "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "この機能はまだ実装されていません。",

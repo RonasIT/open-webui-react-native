@@ -10,7 +10,9 @@
       "TEXT_REQUIRED_CURRENT_PASSWORD": "Please enter your current password",
       "TEXT_REQUIRED_NEW_PASSWORD": "Please enter a new password",
       "TEXT_REQUIRED_CONFIRM_PASSWORD": "Please confirm your new password",
-      "TEXT_PASSWORDS_DO_NOT_MATCH": "Passwords do not match"
+      "TEXT_PASSWORDS_DO_NOT_MATCH": "Passwords do not match",
+      "TEXT_INVALID_PROFILE_NAME": "Profile name can only contain letters, spaces, hyphens and apostrophes",
+      "TEXT_PASSWORD_TOO_SHORT": "Password must be at least 8 characters long"
     },
     "COMMON": {
       "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "Feature is not implemented yet.",

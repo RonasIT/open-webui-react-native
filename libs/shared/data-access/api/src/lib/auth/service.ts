@@ -1,8 +1,8 @@
-import { plainToInstance } from 'class-transformer';
+import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { authApiConfig } from './config';
-import { SignInResponse, SignInRequest } from './models';
+import { SignInResponse, SignInRequest, UpdateProfileRequest, UpdatePasswordRequest } from './models';
 
 class AuthService {
   public async signInWithEmailPassword(request: SignInRequest): Promise<SignInResponse> {
@@ -31,6 +31,16 @@ class AuthService {
     const response: SignInResponse = await getApiService().get(`${authApiConfig.route}/`);
 
     return plainToInstance(SignInResponse, response);
+  }
+
+  public async updateProfile(request: UpdateProfileRequest): Promise<UpdateProfileRequest> {
+    await getApiService().post(`${authApiConfig.route}/update/profile`, instanceToPlain(request));
+
+    return request;
+  }
+
+  public async updatePassword(request: UpdatePasswordRequest): Promise<void> {
+    await getApiService().post(`${authApiConfig.route}/update/password`, instanceToPlain(request));
   }
 }
 

@@ -1,7 +1,6 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   imagePickerService,
   ImagePickerSource,
@@ -14,6 +13,26 @@ import {
   SheetHeader,
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { compressImage } from '@open-webui-react-native/mobile/shared/utils/compressor';
+import { authApi, UpdateProfileRequest } from '@open-webui-react-native/shared/data-access/api';
+import { toDataUrl } from '@open-webui-react-native/shared/utils/files';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
+
+// The backend only accepts base64 data URIs for these raster formats (any other, e.g. SVG, is a stored-XSS vector).
+const ALLOWED_AVATAR_MIME_TYPES = new Set(['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp']);
+const ALLOWED_AVATAR_EXTENSIONS = new Set(['png', 'jpg', 'jpeg', 'gif', 'webp']);
+const MAX_AVATAR_SOURCE_FILE_SIZE = 10 * 1024 * 1024; // 10 MB, before it's compressed and resized
+const AVATAR_SIZE = 250;
+
+function isAllowedAvatarAsset(asset: { mimeType?: string; uri: string }): boolean {
+  if (asset.mimeType) {
+    return ALLOWED_AVATAR_MIME_TYPES.has(asset.mimeType.toLowerCase());
+  }
+
+  const extension = asset.uri.split('.').pop()?.toLowerCase().split('?')[0];
+
+  return ALLOWED_AVATAR_EXTENSIONS.has(extension ?? '');
+}
 
 export type ProfileAvatarSheetMethods = {
   present: () => void;
@@ -29,27 +48,80 @@ export type ProfileAvatarSheetProps = Partial<Omit<AppBottomSheetPropsType, 'ref
 
 export function ProfileAvatarSheet({ name, imageUrl, ref, ...props }: ProfileAvatarSheetProps): ReactElement {
   const translate = useTranslation('APP.SETTINGS_SCREEN.PROFILE_AVATAR_SHEET');
-  const { bottom } = useSafeAreaInsets();
   const sheetRef = useRef<BottomSheetModal>(null);
 
-  const [pickedImageUri, setPickedImageUri] = useState<string | null>(null);
+  const [pickedImageDataUrl, setPickedImageDataUrl] = useState<string | null>(null);
+  const [isProcessingImage, setIsProcessingImage] = useState(false);
+
+  const { mutate: updateProfile, isPending } = authApi.useUpdateProfile();
 
   const closeSheet = (): void => sheetRef.current?.close();
 
-  useImperativeHandle(ref, () => ({ present: () => sheetRef.current?.present() }), []);
+  useImperativeHandle(
+    ref,
+    () => ({
+      present: () => {
+        setPickedImageDataUrl(null);
+        sheetRef.current?.present();
+      },
+    }),
+    [],
+  );
 
   const handleUploadPress = async (): Promise<void> => {
     const image = await imagePickerService.getImage(ImagePickerSource.GALLERY);
     const asset = image?.assets?.[0];
 
-    if (asset) {
-      setPickedImageUri(asset.uri);
+    if (!asset) {
+      return;
+    }
+
+    if (!isAllowedAvatarAsset(asset)) {
+      ToastService.showError(translate('TEXT_UNSUPPORTED_IMAGE_TYPE'));
+
+      return;
+    }
+
+    if (asset.fileSize && asset.fileSize > MAX_AVATAR_SOURCE_FILE_SIZE) {
+      ToastService.showError(translate('TEXT_IMAGE_TOO_LARGE'));
+
+      return;
+    }
+
+    setIsProcessingImage(true);
+
+    try {
+      const compressedBase64 = await compressImage(asset.uri, {
+        maxWidth: AVATAR_SIZE,
+        maxHeight: AVATAR_SIZE,
+        quality: 0.8,
+        output: 'jpg',
+        returnableOutputType: 'base64',
+      });
+
+      setPickedImageDataUrl(toDataUrl(compressedBase64, 'image/jpeg'));
+    } catch {
+      ToastService.showError(translate('TEXT_UPLOAD_FAILED'));
+    } finally {
+      setIsProcessingImage(false);
     }
   };
 
-  const handleRestoreDefaultPress = (): void => setPickedImageUri(null);
+  const handleRestoreDefaultPress = (): void => setPickedImageDataUrl(null);
 
-  const currentImageUrl = pickedImageUri || imageUrl;
+  const handleConfirmPress = (): void => {
+    if (!pickedImageDataUrl || isPending) {
+      closeSheet();
+
+      return;
+    }
+
+    updateProfile(new UpdateProfileRequest({ name: name || '', profileImageUrl: pickedImageDataUrl }), {
+      onSuccess: closeSheet,
+    });
+  };
+
+  const currentImageUrl = pickedImageDataUrl || imageUrl;
 
   return (
     <AppBottomSheet
@@ -63,7 +135,9 @@ export function ProfileAvatarSheet({ name, imageUrl, ref, ...props }: ProfileAva
           <SheetHeader
             title={translate('TEXT_TITLE')}
             onGoBack={closeSheet}
-            onConfirmPress={closeSheet} />
+            onConfirmPress={handleConfirmPress}
+            confirmButtonProps={{ isLoading: isPending, disabled: isPending }}
+          />
           <View className='gap-8'>
             <View className='items-center justify-center py-32'>
               <Avatar
@@ -77,13 +151,15 @@ export function ProfileAvatarSheet({ name, imageUrl, ref, ...props }: ProfileAva
               variant='outline'
               size='sm'
               iconName='exportIcon'
+              isLoading={isProcessingImage}
+              disabled={isProcessingImage || isPending}
               text={translate('BUTTON_UPLOAD_PROFILE_IMAGE')}
               onPress={handleUploadPress}
             />
             <AppButton
               variant='outline'
               size='sm'
-              disabled={!pickedImageUri}
+              disabled={!pickedImageDataUrl || isPending}
               text={translate('BUTTON_RESTORE_DEFAULT_AVATAR')}
               onPress={handleRestoreDefaultPress}
             />

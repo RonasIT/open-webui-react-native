@@ -10,7 +10,9 @@
       "TEXT_REQUIRED_CURRENT_PASSWORD": "Digite sua senha atual",
       "TEXT_REQUIRED_NEW_PASSWORD": "Digite uma nova senha",
       "TEXT_REQUIRED_CONFIRM_PASSWORD": "Confirme sua nova senha",
-      "TEXT_PASSWORDS_DO_NOT_MATCH": "As senhas não coincidem"
+      "TEXT_PASSWORDS_DO_NOT_MATCH": "As senhas não coincidem",
+      "TEXT_INVALID_PROFILE_NAME": "O nome de perfil só pode conter letras, espaços, hífens e apóstrofos",
+      "TEXT_PASSWORD_TOO_SHORT": "A senha deve ter pelo menos 8 caracteres"
     },
     "COMMON": {
       "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "O recurso ainda não foi implementado.",
