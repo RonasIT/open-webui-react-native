@@ -1,0 +1,9 @@
+{
+  "name": "mobile-settings-features-contact-support-sheet",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mobile/settings/features/contact-support-sheet/src",
+  "projectType": "library",
+  "tags": ["app:mobile", "type:features", "scope:settings"],
+  "// targets": "to see all targets run: nx show project mobile-settings-features-contact-support-sheet --web",
+  "targets": {}
+}

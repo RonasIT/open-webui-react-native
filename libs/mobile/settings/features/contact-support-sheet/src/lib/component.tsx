@@ -38,7 +38,7 @@ export type ContactSupportSheetProps = Partial<Omit<AppBottomSheetPropsType, 're
 };
 
 export function ContactSupportSheet({ ref, ...props }: ContactSupportSheetProps): ReactElement {
-  const translate = useTranslation('SHARED.CONTACT_SUPPORT_SHEET');
+  const translate = useTranslation('APP.SETTINGS_SCREEN.CONTACT_SUPPORT_SHEET');
   const { bottom } = useSafeAreaInsets();
 
   const sheetRef = useRef<BottomSheetModal>(null);

@@ -152,6 +152,9 @@
       "@open-webui-react-native/mobile/profile/features/menu-sheet": [
         "libs/mobile/profile/features/menu-sheet/src/index.ts"
       ],
+      "@open-webui-react-native/mobile/settings/features/contact-support-sheet": [
+        "libs/mobile/settings/features/contact-support-sheet/src/index.ts"
+      ],
       "@open-webui-react-native/mobile/settings/features/settings": [
         "libs/mobile/settings/features/settings/src/index.ts"
       ],
@@ -179,9 +182,6 @@
       ],
       "@open-webui-react-native/mobile/shared/features/chat-actions-menu-sheet": [
         "libs/mobile/shared/features/chat-actions-menu-sheet/src/index.ts"
-      ],
-      "@open-webui-react-native/mobile/shared/features/contact-support-sheet": [
-        "libs/mobile/shared/features/contact-support-sheet/src/index.ts"
       ],
       "@open-webui-react-native/mobile/shared/features/download-chat": [
         "libs/mobile/shared/features/download-chat/src/index.ts"
