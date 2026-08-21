@@ -117,7 +117,7 @@ export function Settings(): ReactElement {
 
   const feedbackOptions: Array<SettingsSectionOption> = [
     {
-      label: translate('TEXT_CONTACT_SUPPORT'),
+      label: translate('TEXT_REPORT_A_BUG'),
       iconName: 'message',
       onPress: () => contactSupportSheetRef.current?.present(),
     },

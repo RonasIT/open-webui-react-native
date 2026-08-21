@@ -58,7 +58,11 @@ export function ContactSupportSheet({ ref, ...props }: ContactSupportSheetProps)
     resolver: yupResolver(ContactSupportFormSchema.validationSchema),
   });
 
-  const closeModal = (): void => sheetRef.current?.close();
+  const closeModal = (): void => {
+    sheetRef.current?.close();
+    reset(new ContactSupportFormSchema());
+    resetAttachments();
+  };
 
   const openModal = (): void => sheetRef.current?.present();
 
@@ -100,8 +104,6 @@ export function ContactSupportSheet({ ref, ...props }: ContactSupportSheetProps)
       });
 
       closeModal();
-      reset(new ContactSupportFormSchema());
-      resetAttachments();
       ToastService.showSuccess(translate('TEXT_MESSAGE_SENT'));
     } catch {
       ToastService.showError();
