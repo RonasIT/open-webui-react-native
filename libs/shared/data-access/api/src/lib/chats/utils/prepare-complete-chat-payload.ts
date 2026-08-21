@@ -3,9 +3,10 @@ import { AttachedFile, FileType, Role } from '@open-webui-react-native/shared/da
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { usersApiConfig } from '../../users/config';
 import { UserSettings } from '../../users/models';
+import { chatQueriesKeys } from '../chat-queries-keys';
 import { backgroundTasksConfig } from '../configs';
 import { ChatGenerationOption } from '../enums';
-import { ChatMessage, ChatMessageContent, CompleteChatRequest, Features, Message } from '../models';
+import { ChatMessage, ChatMessageContent, ChatResponse, CompleteChatRequest, Features, Message } from '../models';
 
 export interface PrepareCompleteChatPayloadArgs {
   chatId: string;
@@ -32,11 +33,15 @@ export function prepareCompleteChatPayload({
   assistantMessageId,
 }: PrepareCompleteChatPayloadArgs): CompleteChatRequest {
   const prepareChatMessages = (): Array<ChatMessage> => {
-    // The user's default system prompt (Settings > General). Prepended to every completion
-    // request rather than persisted into chat history, since the full history is resent each call.
-    const systemPrompt = queryClient
+    const chatResponse = queryClient.getQueryData<ChatResponse>(chatQueriesKeys.get(chatId).queryKey);
+    const chatSystemPrompt = (chatResponse?.chat.params?.system as string | undefined)?.trim();
+    const globalSystemPrompt = queryClient
       .getQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey)
       ?.ui.system?.trim();
+    // The user's default system prompt (Settings > General). Prepended to every completion
+    // request rather than persisted into chat history, since the full history is resent each call.
+    // Chat system prompt overrides the global system prompt.
+    const systemPrompt = chatSystemPrompt || globalSystemPrompt;
     const systemMessage = systemPrompt
       ? [
           new ChatMessage({
