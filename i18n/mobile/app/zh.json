@@ -58,7 +58,8 @@
         "TEXT_REPORT_BUG": "报告错误",
         "TEXT_YOUR_MESSAGE": "您的消息",
         "TEXT_MESSAGE_SENT": "感谢您的反馈！您的消息已成功发送",
-        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "添加截图或视频"
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "添加截图或视频",
+        "TEXT_ATTACHMENTS_LIMIT_REACHED": "最多只能添加 {{count}} 个附件"
       },
       "LANGUAGE_SHEET": {
         "TEXT_TITLE": "语言"

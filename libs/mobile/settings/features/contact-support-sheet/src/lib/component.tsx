@@ -25,6 +25,7 @@ import { appConfigurationApi, authApi, supabaseApi } from '@open-webui-react-nat
 import { ImageData } from '@open-webui-react-native/shared/data-access/common';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { AttachmentRow } from './components';
+import { contactSupportSheetConfig } from './config';
 import { ContactSupportFormSchema } from './forms';
 
 export type ContactSupportSheetMethods = {
@@ -64,6 +65,14 @@ export function ContactSupportSheet({ ref, ...props }: ContactSupportSheetProps)
   const handleOpen = (): void => inputRef.current?.focus();
 
   const handlePickImage = async (): Promise<void> => {
+    if (images.length >= contactSupportSheetConfig.maxAttachmentsCount) {
+      ToastService.showError(
+        translate('TEXT_ATTACHMENTS_LIMIT_REACHED', { count: contactSupportSheetConfig.maxAttachmentsCount }),
+      );
+
+      return;
+    }
+
     const image = await imagePickerService.getImage(ImagePickerSource.GALLERY_WITH_VIDEO);
     const asset = image?.assets?.[0];
 

@@ -58,7 +58,8 @@
         "TEXT_REPORT_BUG": "不具合を報告",
         "TEXT_YOUR_MESSAGE": "メッセージ",
         "TEXT_MESSAGE_SENT": "フィードバックをありがとうございます！メッセージが正常に送信されました",
-        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "スクリーンショットまたは動画を添付"
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "スクリーンショットまたは動画を添付",
+        "TEXT_ATTACHMENTS_LIMIT_REACHED": "添付できるファイルは最大{{count}}件までです"
       },
       "LANGUAGE_SHEET": {
         "TEXT_TITLE": "言語"

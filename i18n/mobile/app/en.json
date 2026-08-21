@@ -58,7 +58,8 @@
         "TEXT_REPORT_BUG": "Report a bug",
         "TEXT_YOUR_MESSAGE": "Your message",
         "TEXT_MESSAGE_SENT": "Thank you for your feedback! Your message has been sent successfully",
-        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Attach screenshots or video"
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Attach screenshots or video",
+        "TEXT_ATTACHMENTS_LIMIT_REACHED": "You can attach up to {{count}} files"
       },
       "LANGUAGE_SHEET": {
         "TEXT_TITLE": "Language"

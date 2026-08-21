@@ -58,7 +58,8 @@
         "TEXT_REPORT_BUG": "Сообщить об ошибке",
         "TEXT_YOUR_MESSAGE": "Введите сообщение",
         "TEXT_MESSAGE_SENT": "Спасибо за отзыв! Ваше сообщение успешно отправлено",
-        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Прикрепить скриншот или видео"
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Прикрепить скриншот или видео",
+        "TEXT_ATTACHMENTS_LIMIT_REACHED": "Можно прикрепить не более {{count}} вложений"
       },
       "LANGUAGE_SHEET": {
         "TEXT_TITLE": "Язык"

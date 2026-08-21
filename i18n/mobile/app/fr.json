@@ -58,7 +58,8 @@
         "TEXT_REPORT_BUG": "Signaler un bug",
         "TEXT_YOUR_MESSAGE": "Votre message",
         "TEXT_MESSAGE_SENT": "Merci pour votre retour ! Votre message a été envoyé avec succès",
-        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Joindre des captures d'écran ou une vidéo"
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Joindre des captures d'écran ou une vidéo",
+        "TEXT_ATTACHMENTS_LIMIT_REACHED": "Vous pouvez joindre jusqu'à {{count}} fichiers"
       },
       "LANGUAGE_SHEET": {
         "TEXT_TITLE": "Langue"
