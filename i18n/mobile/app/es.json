@@ -66,7 +66,17 @@
       },
       "MARKDOWN_RENDERER_SHEET": {
         "TEXT_TITLE": "Renderizador de Markdown"
-      }
+      },
+      "TEXT_DELETE_ACCOUNT": "Eliminar cuenta",
+      "TEXT_DELETE_ACCOUNT_TITLE": "¿Seguro que quieres eliminar tu cuenta?",
+      "TEXT_DELETE_ACCOUNT_MESSAGE": "Esta acción provocará la pérdida permanente de datos si no tenemos noticias tuyas en los próximos 30 días.",
+      "BUTTON_DELETE_ACCOUNT": "Sí, eliminar mi cuenta",
+      "BUTTON_DONT_DELETE": "No eliminar",
+      "TEXT_ACCOUNT_DELETION_REQUEST": "Se ha enviado la solicitud de eliminación de cuenta.",
+      "TEXT_LOGOUT_TITLE": "¿Cerrar sesión?",
+      "TEXT_LOGOUT_MESSAGE": "¿Seguro que quieres cerrar sesión?",
+      "BUTTON_LOGOUT": "Cerrar sesión",
+      "BUTTON_CANCEL": "Cancelar"
     }
   }
 }

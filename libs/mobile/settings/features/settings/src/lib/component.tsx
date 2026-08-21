@@ -1,6 +1,7 @@
 import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useRef, useState } from 'react';
+import { Alert } from 'react-native';
 import {
   ContactSupportSheet,
   ContactSupportSheetMethods,
@@ -8,6 +9,7 @@ import {
 import { SettingsSection, SettingsSectionOption } from '@open-webui-react-native/mobile/settings/ui/section';
 import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-logout';
 import { Avatar, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import { authApi, modelsApi } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import {
@@ -16,6 +18,8 @@ import {
   LanguageCode,
   MarkdownRenderer,
 } from '@open-webui-react-native/shared/utils/config';
+import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
+import { useNavigateOnce } from '@open-webui-react-native/shared/utils/navigation';
 import { storeReviewService } from '@open-webui-react-native/shared/utils/store-review-service';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import {
@@ -47,6 +51,7 @@ export function Settings(): ReactElement {
   const locale = useSelector(appState$.locale);
   const markdownRenderer = useSelector(appState$.markdownRenderer);
   const { logout } = useLogout();
+  const navigateOnce = useNavigateOnce();
 
   const { data: profile } = authApi.useGetProfile();
   const { data: models } = modelsApi.useGetModels();
@@ -78,6 +83,51 @@ export function Settings(): ReactElement {
     label: translate(labelKey),
   }));
 
+  const handleLanguageChange = (value: LanguageCode): void => {
+    appState$.setLocale(value);
+  };
+
+  const handleMarkdownRendererChange = (value: MarkdownRenderer): void => {
+    appState$.setMarkdownRenderer(value);
+  };
+
+  const handleArchivedChatsPress = (): void =>
+    isFeatureEnabled(FeatureID.ARCHIVE_CHAT)
+      ? navigateOnce(`${navigationConfig.main.chat.index}/${navigationConfig.main.chat.archivedChats}`)
+      : ToastService.showFeatureNotImplemented();
+
+  const handleDeleteAccountPress = (): void => {
+    ToastService.show(translate('TEXT_ACCOUNT_DELETION_REQUEST'));
+  };
+
+  const handleRequestDeleteAccountPress = (): void => {
+    Alert.alert(
+      translate('TEXT_DELETE_ACCOUNT_TITLE'),
+      translate('TEXT_DELETE_ACCOUNT_MESSAGE'),
+      [
+        { text: translate('BUTTON_DELETE_ACCOUNT'), style: 'destructive', onPress: handleDeleteAccountPress },
+        { text: translate('BUTTON_DONT_DELETE'), style: 'cancel' },
+      ],
+      {
+        userInterfaceStyle: 'dark',
+      },
+    );
+  };
+
+  const handleRequestLogoutPress = (): void => {
+    Alert.alert(
+      translate('TEXT_LOGOUT_TITLE'),
+      translate('TEXT_LOGOUT_MESSAGE'),
+      [
+        { text: translate('BUTTON_LOGOUT'), style: 'destructive', onPress: logout },
+        { text: translate('BUTTON_CANCEL'), style: 'cancel' },
+      ],
+      {
+        userInterfaceStyle: 'dark',
+      },
+    );
+  };
+
   const generalOptions: Array<SettingsSectionOption> = [
     {
       label: translate('TEXT_DEFAULT_MODEL'),
@@ -108,7 +158,20 @@ export function Settings(): ReactElement {
       iconName: 'key',
       onPress: () => changePasswordSheetRef.current?.present(),
     },
-    { type: 'action', label: translate('TEXT_LOGOUT'), iconName: 'logout', isDanger: true, onPress: logout },
+    {
+      type: 'action',
+      label: translate('TEXT_DELETE_ACCOUNT'),
+      iconName: 'trashCan',
+      isDanger: true,
+      onPress: handleRequestDeleteAccountPress,
+    },
+    {
+      type: 'action',
+      label: translate('TEXT_LOGOUT'),
+      iconName: 'logout',
+      isDanger: true,
+      onPress: handleRequestLogoutPress,
+    },
   ];
 
   const handleRateAppPress = (): void => {
@@ -125,7 +188,7 @@ export function Settings(): ReactElement {
   ];
 
   const chatsOptions: Array<SettingsSectionOption> = [
-    { label: translate('TEXT_ARCHIVED_CHATS'), iconName: 'archive', onPress: ToastService.showFeatureNotImplemented },
+    { label: translate('TEXT_ARCHIVED_CHATS'), iconName: 'archive', onPress: handleArchivedChatsPress },
     { type: 'action', label: translate('TEXT_EXPORT_ALL_CHATS'), onPress: ToastService.showFeatureNotImplemented },
     { type: 'action', label: translate('TEXT_ARCHIVE_ALL'), onPress: ToastService.showFeatureNotImplemented },
     {
@@ -179,14 +242,6 @@ export function Settings(): ReactElement {
       onPress: () => markdownRendererSheetRef.current?.present(),
     },
   ];
-
-  const handleLanguageChange = (value: LanguageCode): void => {
-    appState$.setLocale(value);
-  };
-
-  const handleMarkdownRendererChange = (value: MarkdownRenderer): void => {
-    appState$.setMarkdownRenderer(value);
-  };
 
   return (
     <View className='pb-32'>

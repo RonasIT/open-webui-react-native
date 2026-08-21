@@ -66,7 +66,17 @@
       },
       "MARKDOWN_RENDERER_SHEET": {
         "TEXT_TITLE": "Markdown 渲染器"
-      }
+      },
+      "TEXT_DELETE_ACCOUNT": "删除账户",
+      "TEXT_DELETE_ACCOUNT_TITLE": "确定要删除您的账户吗？",
+      "TEXT_DELETE_ACCOUNT_MESSAGE": "如果在接下来的 30 天内未收到您的回复，此操作将导致数据永久丢失。",
+      "BUTTON_DELETE_ACCOUNT": "是的，删除我的账户",
+      "BUTTON_DONT_DELETE": "不要删除",
+      "TEXT_ACCOUNT_DELETION_REQUEST": "您的账户删除请求已提交。",
+      "TEXT_LOGOUT_TITLE": "要退出登录吗？",
+      "TEXT_LOGOUT_MESSAGE": "您确定要退出登录吗？",
+      "BUTTON_LOGOUT": "退出登录",
+      "BUTTON_CANCEL": "取消"
     }
   }
 }

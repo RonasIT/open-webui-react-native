@@ -66,7 +66,17 @@
       },
       "MARKDOWN_RENDERER_SHEET": {
         "TEXT_TITLE": "Обработчик Markdown"
-      }
+      },
+      "TEXT_DELETE_ACCOUNT": "Удалить аккаунт",
+      "TEXT_DELETE_ACCOUNT_TITLE": "Вы уверены, что хотите удалить аккаунт?",
+      "TEXT_DELETE_ACCOUNT_MESSAGE": "Это действие приведёт к безвозвратной потере данных, если мы не получим от вас ответа в течение следующих 30 дней.",
+      "BUTTON_DELETE_ACCOUNT": "Да, удалить мой аккаунт",
+      "BUTTON_DONT_DELETE": "Не удалять",
+      "TEXT_ACCOUNT_DELETION_REQUEST": "Запрос на удаление аккаунта отправлен.",
+      "TEXT_LOGOUT_TITLE": "Выйти?",
+      "TEXT_LOGOUT_MESSAGE": "Вы уверены, что хотите выйти?",
+      "BUTTON_LOGOUT": "Выйти",
+      "BUTTON_CANCEL": "Отмена"
     }
   }
 }
