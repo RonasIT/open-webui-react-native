@@ -1,6 +1,10 @@
 import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useRef, useState } from 'react';
+import {
+  ContactSupportSheet,
+  ContactSupportSheetMethods,
+} from '@open-webui-react-native/mobile/settings/features/contact-support-sheet';
 import { SettingsSection, SettingsSectionOption } from '@open-webui-react-native/mobile/settings/ui/section';
 import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-logout';
 import { Avatar, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
@@ -12,12 +16,11 @@ import {
   LanguageCode,
   MarkdownRenderer,
 } from '@open-webui-react-native/shared/utils/config';
+import { storeReviewService } from '@open-webui-react-native/shared/utils/store-review-service';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import {
   ChangePasswordSheet,
   ChangePasswordSheetMethods,
-  ContactSupportSheet,
-  ContactSupportSheetMethods,
   DefaultModelSheet,
   DefaultModelSheetMethods,
   ProfileAvatarSheet,
@@ -108,13 +111,17 @@ export function Settings(): ReactElement {
     { type: 'action', label: translate('TEXT_LOGOUT'), iconName: 'logout', isDanger: true, onPress: logout },
   ];
 
+  const handleRateAppPress = (): void => {
+    storeReviewService.openStoreReview();
+  };
+
   const feedbackOptions: Array<SettingsSectionOption> = [
     {
       label: translate('TEXT_CONTACT_SUPPORT'),
       iconName: 'message',
       onPress: () => contactSupportSheetRef.current?.present(),
     },
-    { label: translate('TEXT_RATE_APP'), iconName: 'star', onPress: ToastService.showFeatureNotImplemented },
+    { label: translate('TEXT_RATE_APP'), iconName: 'star', onPress: handleRateAppPress },
   ];
 
   const chatsOptions: Array<SettingsSectionOption> = [

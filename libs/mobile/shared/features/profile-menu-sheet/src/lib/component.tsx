@@ -1,11 +1,7 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
-import { Fragment, ReactElement, useRef } from 'react';
+import { ReactElement, useRef } from 'react';
 import { Alert } from 'react-native';
-import {
-  ContactSupportSheet,
-  ContactSupportSheetMethods,
-} from '@open-webui-react-native/mobile/shared/features/contact-support-sheet';
 import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-logout';
 import {
   Avatar,
@@ -16,7 +12,6 @@ import {
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { authApi } from '@open-webui-react-native/shared/data-access/api';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
-import { storeReviewService } from '@open-webui-react-native/shared/utils/store-review-service';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 interface ProfileMenuSheetProps extends Pick<AppBottomSheetProps, 'renderTrigger'> {
@@ -35,7 +30,6 @@ export function ProfileMenuSheet({
   const { data: profile } = authApi.useGetProfile();
 
   const actionsBottomSheetRef = useRef<BottomSheetModal>(null);
-  const contactSupportSheetRef = useRef<ContactSupportSheetMethods>(null);
 
   const closeActionsSheet = (): Promise<void> =>
     new Promise((resolve) => {
@@ -51,10 +45,6 @@ export function ProfileMenuSheet({
   const handleSettingsPress = async (): Promise<void> => {
     await closeActionsSheet();
     onSettingsPress();
-  };
-
-  const handleRateAppPress = (): void => {
-    storeReviewService.openStoreReview();
   };
 
   const handleDeleteAccountPress = (): void => {
@@ -90,16 +80,6 @@ export function ProfileMenuSheet({
         : ToastService.showFeatureNotImplemented,
     },
     {
-      title: translate('TEXT_REPORT_BUG'),
-      iconName: 'message',
-      onPress: () => contactSupportSheetRef.current?.present(),
-    },
-    {
-      title: translate('TEXT_RATE_APP'),
-      iconName: 'star',
-      onPress: handleRateAppPress,
-    },
-    {
       title: translate('TEXT_DELETE_ACCOUNT'),
       iconName: 'trashCan',
       onPress: handleRequestDeleteAccountPress,
@@ -122,13 +102,10 @@ export function ProfileMenuSheet({
   );
 
   return (
-    <Fragment>
-      <ActionsBottomSheet
-        ref={actionsBottomSheetRef}
-        renderTrigger={renderTrigger}
-        actions={actions}
-        {...restProps} />
-      <ContactSupportSheet ref={contactSupportSheetRef} />
-    </Fragment>
+    <ActionsBottomSheet
+      ref={actionsBottomSheetRef}
+      renderTrigger={renderTrigger}
+      actions={actions}
+      {...restProps} />
   );
 }
