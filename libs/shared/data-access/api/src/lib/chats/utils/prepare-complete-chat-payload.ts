@@ -1,5 +1,8 @@
 import { uniqBy } from 'lodash-es';
 import { AttachedFile, FileType, Role } from '@open-webui-react-native/shared/data-access/common';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
+import { usersApiConfig } from '../../users/config';
+import { UserSettings } from '../../users/models';
 import { backgroundTasksConfig } from '../configs';
 import { ChatGenerationOption } from '../enums';
 import { ChatMessage, ChatMessageContent, CompleteChatRequest, Features, Message } from '../models';
@@ -16,9 +19,6 @@ export interface PrepareCompleteChatPayloadArgs {
   userMessage?: Message;
   // Set only for "Continue Response": id of the existing assistant message to keep and extend.
   assistantMessageId?: string;
-  // The user's default system prompt (Settings > General). Prepended to every completion
-  // request rather than persisted into chat history, since the full history is resent each call.
-  systemPrompt?: string;
 }
 
 export function prepareCompleteChatPayload({
@@ -30,15 +30,18 @@ export function prepareCompleteChatPayload({
   generationOptions,
   userMessage,
   assistantMessageId,
-  systemPrompt,
 }: PrepareCompleteChatPayloadArgs): CompleteChatRequest {
   const prepareChatMessages = (): Array<ChatMessage> => {
-    const trimmedSystemPrompt = systemPrompt?.trim();
-    const systemMessage = trimmedSystemPrompt
+    // The user's default system prompt (Settings > General). Prepended to every completion
+    // request rather than persisted into chat history, since the full history is resent each call.
+    const systemPrompt = queryClient
+      .getQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey)
+      ?.ui.system?.trim();
+    const systemMessage = systemPrompt
       ? [
           new ChatMessage({
             role: Role.SYSTEM,
-            content: [new ChatMessageContent({ type: 'text', text: trimmedSystemPrompt })],
+            content: [new ChatMessageContent({ type: 'text', text: systemPrompt })],
           }),
         ]
       : [];
