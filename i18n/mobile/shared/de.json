@@ -6,6 +6,7 @@
       "TEXT_REQUIRED_PASSWORD": "Bitte geben Sie Ihr Passwort ein",
       "TEXT_INVALID_URL": "Bitte geben Sie eine gültige Server-URL ein, z. B. https://your.domain oder http://192.168.1.10:3000",
       "TEXT_REQUIRED_FOLDER_NAME": "Bitte geben Sie einen Ordnernamen ein",
+      "TEXT_REQUIRED_MESSAGE": "Bitte geben Sie eine Nachricht ein",
       "TEXT_REQUIRED_PROFILE_NAME": "Bitte geben Sie einen Profilnamen ein",
       "TEXT_REQUIRED_CURRENT_PASSWORD": "Bitte geben Sie Ihr aktuelles Passwort ein",
       "TEXT_REQUIRED_NEW_PASSWORD": "Bitte geben Sie ein neues Passwort ein",

@@ -55,9 +55,10 @@
         "TEXT_NO_MODELS": "モデルがありません。"
       },
       "CONTACT_SUPPORT_SHEET": {
-        "TEXT_TITLE": "サポートに問い合わせる",
-        "TEXT_MESSAGE_PLACEHOLDER": "メッセージ",
-        "BUTTON_ATTACH": "スクリーンショットまたは動画を添付"
+        "TEXT_REPORT_BUG": "不具合を報告",
+        "TEXT_YOUR_MESSAGE": "メッセージ",
+        "TEXT_MESSAGE_SENT": "フィードバックをありがとうございます！メッセージが正常に送信されました",
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "スクリーンショットまたは動画を添付"
       },
       "LANGUAGE_SHEET": {
         "TEXT_TITLE": "言語"

@@ -6,6 +6,7 @@
       "TEXT_REQUIRED_PASSWORD": "Digite sua senha",
       "TEXT_INVALID_URL": "Digite uma URL de servidor válida, ex.: https://your.domain ou http://192.168.1.10:3000",
       "TEXT_REQUIRED_FOLDER_NAME": "Digite um nome de pasta",
+      "TEXT_REQUIRED_MESSAGE": "Digite uma mensagem",
       "TEXT_REQUIRED_PROFILE_NAME": "Digite um nome de perfil",
       "TEXT_REQUIRED_CURRENT_PASSWORD": "Digite sua senha atual",
       "TEXT_REQUIRED_NEW_PASSWORD": "Digite uma nova senha",

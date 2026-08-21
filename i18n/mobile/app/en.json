@@ -55,9 +55,10 @@
         "TEXT_NO_MODELS": "There are no models."
       },
       "CONTACT_SUPPORT_SHEET": {
-        "TEXT_TITLE": "Contact support",
-        "TEXT_MESSAGE_PLACEHOLDER": "Your message",
-        "BUTTON_ATTACH": "Attach screenshots or video"
+        "TEXT_REPORT_BUG": "Report a bug",
+        "TEXT_YOUR_MESSAGE": "Your message",
+        "TEXT_MESSAGE_SENT": "Thank you for your feedback! Your message has been sent successfully",
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Attach screenshots or video"
       },
       "LANGUAGE_SHEET": {
         "TEXT_TITLE": "Language"

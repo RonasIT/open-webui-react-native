@@ -6,6 +6,7 @@
       "TEXT_REQUIRED_PASSWORD": "パスワードを入力してください",
       "TEXT_INVALID_URL": "有効なサーバー URL を入力してください（例: https://your.domain または http://192.168.1.10:3000）",
       "TEXT_REQUIRED_FOLDER_NAME": "フォルダ名を入力してください",
+      "TEXT_REQUIRED_MESSAGE": "メッセージを入力してください",
       "TEXT_REQUIRED_PROFILE_NAME": "プロフィール名を入力してください",
       "TEXT_REQUIRED_CURRENT_PASSWORD": "現在のパスワードを入力してください",
       "TEXT_REQUIRED_NEW_PASSWORD": "新しいパスワードを入力してください",

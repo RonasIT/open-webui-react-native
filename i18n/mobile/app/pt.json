@@ -55,9 +55,10 @@
         "TEXT_NO_MODELS": "Não há modelos."
       },
       "CONTACT_SUPPORT_SHEET": {
-        "TEXT_TITLE": "Falar com o suporte",
-        "TEXT_MESSAGE_PLACEHOLDER": "Sua mensagem",
-        "BUTTON_ATTACH": "Anexar capturas de tela ou vídeo"
+        "TEXT_REPORT_BUG": "Reportar um bug",
+        "TEXT_YOUR_MESSAGE": "Sua mensagem",
+        "TEXT_MESSAGE_SENT": "Obrigado pelo seu feedback! Sua mensagem foi enviada com sucesso",
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Anexar capturas de tela ou vídeo"
       },
       "LANGUAGE_SHEET": {
         "TEXT_TITLE": "Idioma"

@@ -6,6 +6,7 @@
       "TEXT_REQUIRED_PASSWORD": "请输入您的密码",
       "TEXT_INVALID_URL": "请输入有效的服务器 URL，例如 https://your.domain 或 http://192.168.1.10:3000",
       "TEXT_REQUIRED_FOLDER_NAME": "请输入文件夹名称",
+      "TEXT_REQUIRED_MESSAGE": "请输入消息内容",
       "TEXT_REQUIRED_PROFILE_NAME": "请输入个人资料名称",
       "TEXT_REQUIRED_CURRENT_PASSWORD": "请输入当前密码",
       "TEXT_REQUIRED_NEW_PASSWORD": "请输入新密码",

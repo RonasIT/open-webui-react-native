@@ -55,9 +55,10 @@
         "TEXT_NO_MODELS": "Моделей нет."
       },
       "CONTACT_SUPPORT_SHEET": {
-        "TEXT_TITLE": "Связаться с поддержкой",
-        "TEXT_MESSAGE_PLACEHOLDER": "Ваше сообщение",
-        "BUTTON_ATTACH": "Прикрепить скриншоты или видео"
+        "TEXT_REPORT_BUG": "Сообщить об ошибке",
+        "TEXT_YOUR_MESSAGE": "Введите сообщение",
+        "TEXT_MESSAGE_SENT": "Спасибо за отзыв! Ваше сообщение успешно отправлено",
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Прикрепить скриншот или видео"
       },
       "LANGUAGE_SHEET": {
         "TEXT_TITLE": "Язык"

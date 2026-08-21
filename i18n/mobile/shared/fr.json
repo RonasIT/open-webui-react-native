@@ -6,6 +6,7 @@
       "TEXT_REQUIRED_PASSWORD": "Veuillez saisir votre mot de passe",
       "TEXT_INVALID_URL": "Veuillez saisir une URL de serveur valide, ex. https://your.domain ou http://192.168.1.10:3000",
       "TEXT_REQUIRED_FOLDER_NAME": "Veuillez saisir un nom de dossier",
+      "TEXT_REQUIRED_MESSAGE": "Veuillez saisir un message",
       "TEXT_REQUIRED_PROFILE_NAME": "Veuillez saisir un nom de profil",
       "TEXT_REQUIRED_CURRENT_PASSWORD": "Veuillez saisir votre mot de passe actuel",
       "TEXT_REQUIRED_NEW_PASSWORD": "Veuillez saisir un nouveau mot de passe",
