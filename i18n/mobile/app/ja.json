@@ -37,7 +37,6 @@
         "TEXT_TITLE": "プロフィール画像",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "プロフィール画像をアップロード",
         "BUTTON_RESTORE_DEFAULT_AVATAR": "デフォルトのアバターに戻す",
-        "TEXT_UNSUPPORTED_IMAGE_TYPE": "サポートされていない画像形式です。PNG、JPEG、GIF、WEBPのいずれかを選択してください",
         "TEXT_IMAGE_TOO_LARGE": "この画像は大きすぎます。より小さい画像を選択してください",
         "TEXT_UPLOAD_FAILED": "画像の処理に失敗しました。別の画像をお試しください"
       },

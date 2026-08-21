@@ -11,7 +11,6 @@
       "TEXT_REQUIRED_NEW_PASSWORD": "Введите новый пароль",
       "TEXT_REQUIRED_CONFIRM_PASSWORD": "Подтвердите новый пароль",
       "TEXT_PASSWORDS_DO_NOT_MATCH": "Пароли не совпадают",
-      "TEXT_INVALID_PROFILE_NAME": "Имя профиля может содержать только буквы, пробелы, дефисы и апострофы",
       "TEXT_PASSWORD_TOO_SHORT": "Пароль должен содержать не менее 8 символов"
     },
     "COMMON": {

@@ -37,7 +37,6 @@
         "TEXT_TITLE": "个人资料头像",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "上传头像",
         "BUTTON_RESTORE_DEFAULT_AVATAR": "恢复默认头像",
-        "TEXT_UNSUPPORTED_IMAGE_TYPE": "不支持的图片格式。请选择 PNG、JPEG、GIF 或 WEBP 格式的图片",
         "TEXT_IMAGE_TOO_LARGE": "图片太大,请选择较小的图片",
         "TEXT_UPLOAD_FAILED": "图片处理失败,请尝试其他图片"
       },

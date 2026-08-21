@@ -11,7 +11,6 @@
       "TEXT_REQUIRED_NEW_PASSWORD": "请输入新密码",
       "TEXT_REQUIRED_CONFIRM_PASSWORD": "请确认新密码",
       "TEXT_PASSWORDS_DO_NOT_MATCH": "两次输入的密码不一致",
-      "TEXT_INVALID_PROFILE_NAME": "个人资料姓名只能包含字母、空格、连字符和撇号",
       "TEXT_PASSWORD_TOO_SHORT": "密码长度至少为8个字符"
     },
     "COMMON": {

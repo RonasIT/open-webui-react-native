@@ -17,22 +17,7 @@ import { compressImage } from '@open-webui-react-native/mobile/shared/utils/comp
 import { authApi, UpdateProfileRequest } from '@open-webui-react-native/shared/data-access/api';
 import { toDataUrl } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
-
-// The backend only accepts base64 data URIs for these raster formats (any other, e.g. SVG, is a stored-XSS vector).
-const ALLOWED_AVATAR_MIME_TYPES = new Set(['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp']);
-const ALLOWED_AVATAR_EXTENSIONS = new Set(['png', 'jpg', 'jpeg', 'gif', 'webp']);
-const MAX_AVATAR_SOURCE_FILE_SIZE = 10 * 1024 * 1024; // 10 MB, before it's compressed and resized
-const AVATAR_SIZE = 250;
-
-function isAllowedAvatarAsset(asset: { mimeType?: string; uri: string }): boolean {
-  if (asset.mimeType) {
-    return ALLOWED_AVATAR_MIME_TYPES.has(asset.mimeType.toLowerCase());
-  }
-
-  const extension = asset.uri.split('.').pop()?.toLowerCase().split('?')[0];
-
-  return ALLOWED_AVATAR_EXTENSIONS.has(extension ?? '');
-}
+import { profileAvatarSheetConfig } from './config';
 
 export type ProfileAvatarSheetMethods = {
   present: () => void;
@@ -76,13 +61,7 @@ export function ProfileAvatarSheet({ name, imageUrl, ref, ...props }: ProfileAva
       return;
     }
 
-    if (!isAllowedAvatarAsset(asset)) {
-      ToastService.showError(translate('TEXT_UNSUPPORTED_IMAGE_TYPE'));
-
-      return;
-    }
-
-    if (asset.fileSize && asset.fileSize > MAX_AVATAR_SOURCE_FILE_SIZE) {
+    if (asset.fileSize && asset.fileSize > profileAvatarSheetConfig.maxSourceFileSize) {
       ToastService.showError(translate('TEXT_IMAGE_TOO_LARGE'));
 
       return;
@@ -92,8 +71,8 @@ export function ProfileAvatarSheet({ name, imageUrl, ref, ...props }: ProfileAva
 
     try {
       const compressedBase64 = await compressImage(asset.uri, {
-        maxWidth: AVATAR_SIZE,
-        maxHeight: AVATAR_SIZE,
+        maxWidth: profileAvatarSheetConfig.avatarSize,
+        maxHeight: profileAvatarSheetConfig.avatarSize,
         quality: 0.8,
         output: 'jpg',
         returnableOutputType: 'base64',

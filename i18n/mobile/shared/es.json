@@ -11,7 +11,6 @@
       "TEXT_REQUIRED_NEW_PASSWORD": "Introduce una nueva contraseña",
       "TEXT_REQUIRED_CONFIRM_PASSWORD": "Confirma tu nueva contraseña",
       "TEXT_PASSWORDS_DO_NOT_MATCH": "Las contraseñas no coinciden",
-      "TEXT_INVALID_PROFILE_NAME": "El nombre de perfil solo puede contener letras, espacios, guiones y apóstrofes",
       "TEXT_PASSWORD_TOO_SHORT": "La contraseña debe tener al menos 8 caracteres"
     },
     "COMMON": {

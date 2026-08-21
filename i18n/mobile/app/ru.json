@@ -37,7 +37,6 @@
         "TEXT_TITLE": "Аватар профиля",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "Загрузить изображение профиля",
         "BUTTON_RESTORE_DEFAULT_AVATAR": "Вернуть аватар по умолчанию",
-        "TEXT_UNSUPPORTED_IMAGE_TYPE": "Неподдерживаемый формат изображения. Выберите PNG, JPEG, GIF или WEBP",
         "TEXT_IMAGE_TOO_LARGE": "Изображение слишком большое. Выберите файл меньшего размера",
         "TEXT_UPLOAD_FAILED": "Не удалось обработать изображение. Попробуйте выбрать другое"
       },

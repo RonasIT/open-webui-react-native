@@ -11,7 +11,6 @@
       "TEXT_REQUIRED_NEW_PASSWORD": "Veuillez saisir un nouveau mot de passe",
       "TEXT_REQUIRED_CONFIRM_PASSWORD": "Veuillez confirmer votre nouveau mot de passe",
       "TEXT_PASSWORDS_DO_NOT_MATCH": "Les mots de passe ne correspondent pas",
-      "TEXT_INVALID_PROFILE_NAME": "Le nom de profil ne peut contenir que des lettres, des espaces, des tirets et des apostrophes",
       "TEXT_PASSWORD_TOO_SHORT": "Le mot de passe doit comporter au moins 8 caractères"
     },
     "COMMON": {

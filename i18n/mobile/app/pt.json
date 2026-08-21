@@ -37,7 +37,6 @@
         "TEXT_TITLE": "Avatar do perfil",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "Enviar imagem de perfil",
         "BUTTON_RESTORE_DEFAULT_AVATAR": "Restaurar avatar padrão",
-        "TEXT_UNSUPPORTED_IMAGE_TYPE": "Tipo de imagem não suportado. Escolha uma imagem PNG, JPEG, GIF ou WEBP",
         "TEXT_IMAGE_TOO_LARGE": "Esta imagem é muito grande. Escolha uma menor",
         "TEXT_UPLOAD_FAILED": "Falha ao processar a imagem. Tente outra"
       },

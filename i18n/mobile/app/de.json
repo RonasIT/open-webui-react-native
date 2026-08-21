@@ -37,7 +37,6 @@
         "TEXT_TITLE": "Profilbild",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "Profilbild hochladen",
         "BUTTON_RESTORE_DEFAULT_AVATAR": "Standard-Avatar wiederherstellen",
-        "TEXT_UNSUPPORTED_IMAGE_TYPE": "Nicht unterstützter Bildtyp. Bitte wählen Sie ein PNG-, JPEG-, GIF- oder WEBP-Bild",
         "TEXT_IMAGE_TOO_LARGE": "Dieses Bild ist zu groß. Bitte wählen Sie ein kleineres",
         "TEXT_UPLOAD_FAILED": "Das Bild konnte nicht verarbeitet werden. Bitte versuchen Sie ein anderes"
       },
