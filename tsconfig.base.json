@@ -270,6 +270,9 @@
       "@open-webui-react-native/shared/utils/deep-memo": ["libs/shared/utils/deep-memo/src/index.ts"],
       "@open-webui-react-native/shared/utils/feature-flag": ["libs/shared/utils/feature-flag/src/index.ts"],
       "@open-webui-react-native/shared/utils/files": ["libs/shared/utils/files/src/index.ts"],
+      "@open-webui-react-native/shared/utils/haptic-feedback-service": [
+        "libs/shared/utils/haptic-feedback-service/src/index.ts"
+      ],
       "@open-webui-react-native/shared/utils/navigation": ["libs/shared/utils/navigation/src/index.ts"],
       "@open-webui-react-native/shared/utils/objects": ["libs/shared/utils/objects/src/index.ts"],
       "@open-webui-react-native/shared/utils/permission-alert": ["libs/shared/utils/permission-alert/src/index.ts"],

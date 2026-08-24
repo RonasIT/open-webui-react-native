@@ -48,11 +48,17 @@ export function SheetHeader({
 
   return (
     <View className={cn('flex-row items-center justify-between bg-background-primary pb-10', className)} {...restProps}>
-      <View className='min-w-64 items-start justify-center'>
+      <View className='min-w-64 shrink-0 items-start justify-center'>
         {accessoryLeft ? accessoryLeft : renderDefaultCancelButton()}
       </View>
-      {typeof title === 'string' ? <AppText className='font-medium'>{title}</AppText> : title}
-      <View className='min-w-64 items-end justify-center'>
+      {typeof title === 'string' ? (
+        <AppText className='mx-8 flex-1 text-center font-medium' numberOfLines={1}>
+          {title}
+        </AppText>
+      ) : (
+        <View className='mx-8 flex-1 items-center'>{title}</View>
+      )}
+      <View className='min-w-64 shrink-0 items-end justify-center'>
         {accessoryRight ? accessoryRight : renderDefaultActionButton()}
       </View>
     </View>

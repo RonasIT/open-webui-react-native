@@ -12,6 +12,8 @@
       "TEXT_DEFAULT_MODEL": "Modelo predeterminado",
       "TEXT_DEFAULT_SYSTEM_PROMPT": "Prompt de sistema predeterminado",
       "TEXT_LANGUAGE": "Idioma",
+      "TEXT_NOT_SET": "No establecido",
+      "TEXT_LOAD_ERROR": "Error al cargar",
       "TEXT_PROFILE_NAME": "Nombre del perfil",
       "TEXT_AVATAR": "Avatar",
       "TEXT_CHANGE_PASSWORD": "Cambiar contraseña",
@@ -53,6 +55,10 @@
         "TEXT_TITLE": "Modelo predeterminado",
         "TEXT_SEARCH_MODEL": "Buscar modelo",
         "TEXT_NO_MODELS": "No hay modelos."
+      },
+      "DEFAULT_SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "Prompt de sistema predeterminado",
+        "TEXT_LABEL": "Prompt de sistema predeterminado"
       },
       "CONTACT_SUPPORT_SHEET": {
         "TEXT_REPORT_BUG": "Informar un error",

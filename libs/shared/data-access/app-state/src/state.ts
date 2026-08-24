@@ -4,6 +4,7 @@ import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { cookieService } from '@open-webui-react-native/shared/data-access/cookie';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { constants, LanguageCode, MarkdownRenderer } from '@open-webui-react-native/shared/utils/config';
+import { hapticFeedbackService } from '@open-webui-react-native/shared/utils/haptic-feedback-service';
 
 const isSupportedLocale = (locale?: string | null): locale is LanguageCode =>
   Object.values(LanguageCode).includes(locale as LanguageCode);
@@ -33,6 +34,15 @@ const getInitialMarkdownRenderer = (): MarkdownRenderer => {
   return constants.defaultMarkdownRenderer;
 };
 
+const getInitialHapticFeedbackEnabled = (): boolean => {
+  const storedValue = appStorageService.hapticFeedback.getBoolean();
+  const isEnabled = storedValue ?? true;
+
+  hapticFeedbackService.setEnabled(isEnabled);
+
+  return isEnabled;
+};
+
 interface AppState {
   init: () => Promise<void>;
   isInitialLoadingFinished: boolean;
@@ -42,6 +52,8 @@ interface AppState {
   setLocale: (locale: LanguageCode) => void;
   markdownRenderer: MarkdownRenderer;
   setMarkdownRenderer: (renderer: MarkdownRenderer) => void;
+  isHapticFeedbackEnabled: boolean;
+  setHapticFeedbackEnabled: (isEnabled: boolean) => void;
 }
 
 export const appState$: Observable<AppState> = observable<AppState>({
@@ -66,8 +78,14 @@ export const appState$: Observable<AppState> = observable<AppState>({
     appStorageService.markdownRenderer.set(renderer);
     appState$.markdownRenderer.set(renderer);
   },
+  setHapticFeedbackEnabled: (isEnabled) => {
+    appStorageService.hapticFeedback.set(isEnabled);
+    hapticFeedbackService.setEnabled(isEnabled);
+    appState$.isHapticFeedbackEnabled.set(isEnabled);
+  },
   isInitialLoadingFinished: false,
   isOfflineMode: false,
   locale: getInitialLocale(),
   markdownRenderer: getInitialMarkdownRenderer(),
+  isHapticFeedbackEnabled: getInitialHapticFeedbackEnabled(),
 });
