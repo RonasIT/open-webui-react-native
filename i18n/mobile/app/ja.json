@@ -12,6 +12,8 @@
       "TEXT_DEFAULT_MODEL": "デフォルトモデル",
       "TEXT_DEFAULT_SYSTEM_PROMPT": "デフォルトのシステムプロンプト",
       "TEXT_LANGUAGE": "言語",
+      "TEXT_NOT_SET": "未設定",
+      "TEXT_LOAD_ERROR": "読み込みに失敗しました",
       "TEXT_PROFILE_NAME": "プロフィール名",
       "TEXT_AVATAR": "アバター",
       "TEXT_CHANGE_PASSWORD": "パスワードを変更",
@@ -53,6 +55,10 @@
         "TEXT_TITLE": "デフォルトモデル",
         "TEXT_SEARCH_MODEL": "モデルを検索",
         "TEXT_NO_MODELS": "モデルがありません。"
+      },
+      "DEFAULT_SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "デフォルトのシステムプロンプト",
+        "TEXT_LABEL": "デフォルトのシステムプロンプト"
       },
       "CONTACT_SUPPORT_SHEET": {
         "TEXT_TITLE": "サポートに問い合わせる",

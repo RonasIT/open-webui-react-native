@@ -11,11 +11,9 @@ export function SettingsSectionItem({ option }: SettingsSectionItemProps): React
   const { label, iconName, isDanger } = option;
 
   const title = (
-    <View className='shrink flex-row items-center gap-12'>
+    <View className='shrink-0 flex-row items-center gap-12'>
       {iconName && <Icon name={iconName} className={cn('shrink-0', isDanger && 'color-status-danger')} />}
-      <AppText numberOfLines={1} className={cn('shrink', isDanger && 'text-status-danger')}>
-        {label}
-      </AppText>
+      <AppText className={cn('shrink-0', isDanger && 'text-status-danger')}>{label}</AppText>
     </View>
   );
 
@@ -34,10 +32,14 @@ export function SettingsSectionItem({ option }: SettingsSectionItemProps): React
       className='flex-row items-center justify-between gap-12 py-14 active:opacity-100 active:bg-background-secondary'>
       {title}
       {option.type !== 'action' && (
-        <View className='shrink-0 flex-row items-center gap-8'>
-          {!!option.value && <AppText className='text-text-secondary'>{option.value}</AppText>}
+        <View className='min-w-0 flex-1 flex-row items-center justify-end gap-8'>
+          {!!option.value && (
+            <AppText numberOfLines={1} className='shrink text-right text-text-secondary'>
+              {option.value}
+            </AppText>
+          )}
           {option.accessoryRight}
-          <Icon name='chevronRight' className='color-text-secondary' />
+          <Icon name='chevronRight' className='shrink-0 color-text-secondary' />
         </View>
       )}
     </AppPressable>

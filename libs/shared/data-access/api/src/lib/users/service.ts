@@ -1,4 +1,4 @@
-import { plainToInstance } from 'class-transformer';
+import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
 import { EntityPromiseService } from '@open-webui-react-native/shared/data-access/base-entity';
 import { usersApiConfig } from './config';
@@ -19,6 +19,15 @@ export class UsersService extends EntityPromiseService<User> {
     );
 
     return plainToInstance(UserSettings, response);
+  }
+
+  public async updateUserSettings(settings: UserSettings): Promise<UserSettings> {
+    await getApiService().post(
+      `${usersApiConfig.versionedRoute}${usersApiConfig.route}/settings/update`,
+      instanceToPlain(settings),
+    );
+
+    return settings;
   }
 }
 

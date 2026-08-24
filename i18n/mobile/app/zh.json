@@ -12,6 +12,8 @@
       "TEXT_DEFAULT_MODEL": "默认模型",
       "TEXT_DEFAULT_SYSTEM_PROMPT": "默认系统提示词",
       "TEXT_LANGUAGE": "语言",
+      "TEXT_NOT_SET": "未设置",
+      "TEXT_LOAD_ERROR": "加载失败",
       "TEXT_PROFILE_NAME": "个人资料名称",
       "TEXT_AVATAR": "头像",
       "TEXT_CHANGE_PASSWORD": "修改密码",
@@ -53,6 +55,10 @@
         "TEXT_TITLE": "默认模型",
         "TEXT_SEARCH_MODEL": "搜索模型",
         "TEXT_NO_MODELS": "暂无模型。"
+      },
+      "DEFAULT_SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "默认系统提示词",
+        "TEXT_LABEL": "默认系统提示词"
       },
       "CONTACT_SUPPORT_SHEET": {
         "TEXT_TITLE": "联系客服",
