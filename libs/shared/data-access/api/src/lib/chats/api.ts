@@ -746,6 +746,14 @@ function invalidateAllChatListsQueries(): void {
   queryClient.invalidateQueries({ queryKey: foldersApiConfig.getFolderChatsQueryKeyPrefix, exact: false });
   // NOTE: Also invalidates chatServiceConfig.getAllArchivedChatsQueryKey
   invalidateArchivedChatListQuery();
+
+  // NOTE: Bulk archive/delete doesn't tell us which chat ids were affected — clear every individually
+  // cached chat (mirroring useDelete's single-chat cache clear) so a screen still holding one of them
+  // notices via useSubscribeToQueryCache('removed') instead of rendering stale, now-gone data.
+  queryClient
+    .getQueryCache()
+    .findAll({ queryKey: chatQueriesKeys.get._def })
+    .forEach((query) => queryClient.setQueryData(query.queryKey, undefined));
 }
 
 export function useArchiveAllChats(

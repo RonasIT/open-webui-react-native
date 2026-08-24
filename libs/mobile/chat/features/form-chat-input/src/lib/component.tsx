@@ -44,6 +44,7 @@ interface FormChatInputProps<T extends FieldValues> extends AppInputProps {
   isLoading?: boolean;
   isSuggestionShown?: boolean;
   isResponseGenerating?: boolean;
+  isMessageQueueEnabled?: boolean;
   inputRerenderKey?: number;
 }
 
@@ -67,6 +68,7 @@ export function FormChatInput<T extends FieldValues>({
   isLoading,
   isSuggestionShown,
   isResponseGenerating,
+  isMessageQueueEnabled,
   inputRerenderKey,
   ...restProps
 }: FormChatInputProps<T>): ReactElement {
@@ -180,6 +182,7 @@ export function FormChatInput<T extends FieldValues>({
               isVoiceModeAvailable={isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty}
               onStopGenerationPress={onStopGenerationPress}
               isResponseGenerating={isResponseGenerating}
+              isMessageQueueEnabled={isMessageQueueEnabled}
               isLoading={isLoading || isMicrophonePreparing}>
               <View className='flex-row flex-1 justify-between'>
                 <View className='gap-16 flex-row '>

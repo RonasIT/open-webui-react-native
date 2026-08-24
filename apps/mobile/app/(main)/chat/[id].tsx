@@ -100,8 +100,11 @@ export default function ChatScreen(): ReactElement {
             <IconButton
               className='p-0'
               iconName='moreDots'
+              // NOTE: Temporary chats are never persisted — none of the chat actions (pin, rename,
+              // clone, archive, delete, share, move-to-folder) are meaningful for one.
+              disabled={!chat || isTemporaryChat}
               onPress={() => {
-                if (!chat) return;
+                if (!chat || isTemporaryChat) return;
                 chatActionsSheetRef.current?.present(chat);
               }}
             />

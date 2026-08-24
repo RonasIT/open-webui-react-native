@@ -14,8 +14,10 @@ import {
   UiSettings,
   UserSettings,
   usersApi,
+  usersApiConfig,
 } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
 import {
   availableLanguages,
@@ -56,7 +58,9 @@ export function Settings(): ReactElement {
   const { data: profile } = authApi.useGetProfile();
   const { isError: isModelsError } = modelsApi.useGetModels();
   const { data: settings, isError: isSettingsError } = usersApi.useGetUserSettings();
-  const { mutate: updateUserSettings } = usersApi.useUpdateUserSettings();
+  const { mutate: updateUserSettings } = usersApi.useUpdateUserSettings({
+    onError: () => ToastService.showError(),
+  });
   const { modelId: defaultModelId, modelName: defaultModelName } = useSetSelectedModel();
   const { mutate: archiveAllChats, isPending: isArchivingAllChats } = chatApi.useArchiveAllChats({
     onError: () => ToastService.showError(),
@@ -126,11 +130,15 @@ export function Settings(): ReactElement {
   const createUiSettingToggleHandler =
     <K extends keyof UiSettings>(key: K) =>
     (value: UiSettings[K]): void => {
-      if (!settings) {
+      // NOTE: Read the latest cached settings (not the `settings` render closure) so two rapid
+      // toggle taps before a re-render don't clobber each other with a stale `ui` snapshot.
+      const latestSettings = queryClient.getQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey);
+
+      if (!latestSettings) {
         return;
       }
 
-      updateUserSettings(new UserSettings({ ui: new UiSettings({ ...settings.ui, [key]: value }) }));
+      updateUserSettings(new UserSettings({ ui: new UiSettings({ ...latestSettings.ui, [key]: value }) }));
     };
 
   const handleArchivedChatsPress = (): void =>

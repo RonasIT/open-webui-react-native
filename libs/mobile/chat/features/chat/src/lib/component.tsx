@@ -23,7 +23,7 @@ import {
   isTemporaryChatId,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
-import { Role } from '@open-webui-react-native/shared/data-access/common';
+import { FileData, ImageData, Role } from '@open-webui-react-native/shared/data-access/common';
 import { useSubscribeToQueryCache } from '@open-webui-react-native/shared/data-access/query-client';
 import { webSocketConfig, webSocketState$ } from '@open-webui-react-native/shared/data-access/websocket';
 import { AnalyticsEvent, analyticsService } from '@open-webui-react-native/shared/utils/analytics-service';
@@ -59,6 +59,8 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   const [queuedMessage, setQueuedMessage] = useState<{
     inputValue: string;
     options: Array<ChatGenerationOption>;
+    attachedFiles: Array<FileData>;
+    attachedImages: Array<ImageData>;
   } | null>(null);
 
   const {
@@ -103,9 +105,9 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   // NOTE: chat.messages is a legacy snapshot the backend no longer maintains, so the current branch is derived from history
   const messages = useMemo(() => (history ? createMessagesList(history, history.currentId) : []), [history]);
   const isResponseGenerating = !history?.messages[history.currentId].done;
-  // NOTE: With message queueing enabled, a generating response no longer force-disables the composer or
-  // swaps the send button for "stop" — the user trades the visible stop-generation action for being able
-  // to compose/send the next message immediately (queued via `queuedMessage`).
+  // NOTE: With message queueing enabled, a generating response no longer force-disables the text input —
+  // the user can keep typing and submit the next message immediately (queued via `queuedMessage`). The
+  // Stop button (isResponseGenerating prop below) still renders regardless, alongside the send button.
   const isComposerBlockedByGeneration = isResponseGenerating && !isMessageQueueEnabled;
 
   const shouldHideContent = isLoading || isRefetching || !isMessagesListLoaded || !selectedModelId;
@@ -197,7 +199,14 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
       }
 
       if (isResponseGenerating && isMessageQueueEnabled) {
-        setQueuedMessage({ inputValue, options });
+        // NOTE: Snapshot attachments now — they're cleared by resetAttachments() below and must not
+        // be re-read live when this queued message is flushed later.
+        setQueuedMessage({
+          inputValue,
+          options,
+          attachedFiles: attachedFiles.get(),
+          attachedImages: attachedImages.get(),
+        });
         ToastService.show(translate('TEXT_MESSAGE_QUEUED'));
       } else {
         sendMessage(inputValue, selectedModelId, options, attachedFiles.get(), attachedImages.get());
@@ -242,12 +251,12 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
         queuedMessage.inputValue,
         selectedModelId,
         queuedMessage.options,
-        attachedFiles.get(),
-        attachedImages.get(),
+        queuedMessage.attachedFiles,
+        queuedMessage.attachedImages,
       );
       setQueuedMessage(null);
     }
-  }, [isResponseGenerating, queuedMessage, selectedModelId, sendMessage, attachedFiles, attachedImages]);
+  }, [isResponseGenerating, queuedMessage, selectedModelId, sendMessage]);
 
   return (
     <Fragment>
@@ -313,7 +322,8 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
               onImageUploaded={handleImageUploaded}
               onDeleteImagePress={handleDeleteImage}
               modelId={selectedModelId}
-              isResponseGenerating={isComposerBlockedByGeneration}
+              isResponseGenerating={isResponseGenerating}
+              isMessageQueueEnabled={isMessageQueueEnabled}
               inputRerenderKey={inputRerenderKey}
               chat={chat}
             />

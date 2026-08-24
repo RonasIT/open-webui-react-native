@@ -6,6 +6,9 @@ export interface ChatInputBottomRowProps extends PropsWithChildren {
   onVoiceModePress: () => void;
   onStopGenerationPress: () => void;
   isResponseGenerating?: boolean;
+  // NOTE: When queueing is enabled, the send button must stay reachable alongside Stop, so the
+  // next message can still be composed/queued while a response is generating.
+  isMessageQueueEnabled?: boolean;
   isVoiceModeAvailable?: boolean;
   isSubmitDisabled?: boolean;
   isLoading?: boolean;
@@ -19,26 +22,30 @@ export function ChatInputBottomRow({
   children,
   isSubmitDisabled,
   isResponseGenerating,
+  isMessageQueueEnabled,
   onStopGenerationPress,
 }: ChatInputBottomRowProps): ReactElement {
+  const showSendButton = !isResponseGenerating || isMessageQueueEnabled;
+
   return (
     <View className='flex-row justify-between items-center mt-12'>
       {children}
-      {isResponseGenerating ? (
-        <IconButton
+      <View className='flex-row items-center gap-8'>
+        {isResponseGenerating && <IconButton
           iconName='stop'
           className='p-0'
-          onPress={onStopGenerationPress} />
-      ) : (
-        <IconButton
-          disabled={isSubmitDisabled}
-          onPress={isVoiceModeAvailable ? onVoiceModePress : onSubmit}
-          iconName={isVoiceModeAvailable ? 'headphones' : 'arrowUp'}
-          className='rounded-full self-end bg-text-primary p-4'
-          iconProps={{ className: 'color-background-primary' }}
-          isLoading={isLoading}
-        />
-      )}
+          onPress={onStopGenerationPress} />}
+        {showSendButton && (
+          <IconButton
+            disabled={isSubmitDisabled}
+            onPress={isVoiceModeAvailable ? onVoiceModePress : onSubmit}
+            iconName={isVoiceModeAvailable ? 'headphones' : 'arrowUp'}
+            className='rounded-full self-end bg-text-primary p-4'
+            iconProps={{ className: 'color-background-primary' }}
+            isLoading={isLoading}
+          />
+        )}
+      </View>
     </View>
   );
 }
