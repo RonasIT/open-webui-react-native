@@ -1,8 +1,10 @@
+import { EntityPartial } from '@ronas-it/rtkq-entity-api';
 import { useCallback } from 'react';
 import {
   ChatGenerationOption,
   ChatResponse,
   chatApi,
+  isTemporaryChatId,
   patchChatQueryData,
   prepareCompleteChatPayload,
   prepareSendMessagePayload,
@@ -39,19 +41,30 @@ export function useSendMessage({ chatData }: UseSendMessageArgs): typeof result 
 
       const payload = prepareSendMessagePayload({ prompt, chatData, model, attachedFiles, attachedImages });
 
-      updateChat(payload, {
-        onSuccess: (data) => {
-          const completePayload = prepareCompleteChatPayload({
-            chatId: data.id,
-            messageId: data.chat!.history.currentId,
-            messages: data.chat!.messages,
-            sessionId: socketSessionId,
-            model,
-            generationOptions,
-          });
+      const triggerCompletion = (data: EntityPartial<ChatResponse>): void => {
+        const completePayload = prepareCompleteChatPayload({
+          chatId: data.id!,
+          messageId: data.chat!.history.currentId,
+          messages: data.chat!.messages,
+          sessionId: socketSessionId,
+          model,
+          generationOptions,
+        });
 
-          completeChat(completePayload);
-        },
+        completeChat(completePayload);
+      };
+
+      // NOTE: Temporary chats are never persisted (no POST /chats/{id}) — apply the same optimistic
+      // cache patch `useUpdate`'s onMutate would have done, then trigger completion directly.
+      if (isTemporaryChatId(payload.id)) {
+        patchChatQueryData(payload.id!, payload);
+        triggerCompletion(payload);
+
+        return;
+      }
+
+      updateChat(payload, {
+        onSuccess: triggerCompletion,
       });
     },
     [chatData, socketSessionId, updateChat, completeChat],

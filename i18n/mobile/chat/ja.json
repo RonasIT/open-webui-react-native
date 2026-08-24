@@ -2,7 +2,8 @@
   "CHAT": {
     "CHAT_SCREEN": {
       "TEXT_LOADING": "読み込み中...",
-      "TEXT_SELECT_A_MODEL": "モデルを選択"
+      "TEXT_SELECT_A_MODEL": "モデルを選択",
+      "TEXT_TEMPORARY_CHAT": "一時チャット"
     },
     "CHAT": {
       "TEXT_INPUT_PLACEHOLDER": "メッセージを送信",

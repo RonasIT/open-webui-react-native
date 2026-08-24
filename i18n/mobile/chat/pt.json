@@ -2,7 +2,8 @@
   "CHAT": {
     "CHAT_SCREEN": {
       "TEXT_LOADING": "Carregando...",
-      "TEXT_SELECT_A_MODEL": "Selecionar um modelo"
+      "TEXT_SELECT_A_MODEL": "Selecionar um modelo",
+      "TEXT_TEMPORARY_CHAT": "Chat temporário"
     },
     "CHAT": {
       "TEXT_INPUT_PLACEHOLDER": "Enviar uma mensagem",

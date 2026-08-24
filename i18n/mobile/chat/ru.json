@@ -2,7 +2,8 @@
   "CHAT": {
     "CHAT_SCREEN": {
       "TEXT_LOADING": "Загрузка...",
-      "TEXT_SELECT_A_MODEL": "Выберите модель"
+      "TEXT_SELECT_A_MODEL": "Выберите модель",
+      "TEXT_TEMPORARY_CHAT": "Временный чат"
     },
     "CHAT": {
       "TEXT_INPUT_PLACEHOLDER": "Отправить сообщение",

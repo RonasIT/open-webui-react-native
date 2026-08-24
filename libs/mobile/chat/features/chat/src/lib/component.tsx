@@ -20,6 +20,7 @@ import {
   ChatGenerationOption,
   chatQueriesKeys,
   createMessagesList,
+  isTemporaryChatId,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import { Role } from '@open-webui-react-native/shared/data-access/common';
@@ -70,7 +71,15 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
     resetAttachments,
   } = useAttachedFiles();
 
-  const { data: chat, refetch, isLoading, isRefetching, isSuccess } = chatApi.useGet(chatId);
+  const isTemporaryChat = isTemporaryChatId(chatId);
+  // NOTE: Temporary chats are never persisted, so there's nothing to fetch — read the client-seeded cache only.
+  const {
+    data: chat,
+    refetch,
+    isLoading,
+    isRefetching,
+    isSuccess,
+  } = chatApi.useGet(chatId, { enabled: !isTemporaryChat });
   const { sendMessage, isLoading: isSending } = useSendMessage({ chatData: chat });
   const {
     editingMessageId,
@@ -110,6 +119,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   useAppStateChange({
     onChange: (lastStatusChangeTimeStamp) => {
       if (
+        !isTemporaryChat &&
         lastStatusChangeTimeStamp &&
         dayjs().diff(lastStatusChangeTimeStamp, 'seconds') > webSocketConfig.pingTimeout
       ) {

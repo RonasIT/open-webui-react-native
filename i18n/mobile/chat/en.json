@@ -2,7 +2,8 @@
   "CHAT": {
     "CHAT_SCREEN": {
       "TEXT_LOADING": "Loading...",
-      "TEXT_SELECT_A_MODEL": "Select a model"
+      "TEXT_SELECT_A_MODEL": "Select a model",
+      "TEXT_TEMPORARY_CHAT": "Temporary Chat"
     },
     "CHAT": {
       "TEXT_INPUT_PLACEHOLDER": "Send a message",

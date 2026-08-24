@@ -2,7 +2,8 @@
   "CHAT": {
     "CHAT_SCREEN": {
       "TEXT_LOADING": "加载中...",
-      "TEXT_SELECT_A_MODEL": "选择模型"
+      "TEXT_SELECT_A_MODEL": "选择模型",
+      "TEXT_TEMPORARY_CHAT": "临时聊天"
     },
     "CHAT": {
       "TEXT_INPUT_PLACEHOLDER": "发送消息",
