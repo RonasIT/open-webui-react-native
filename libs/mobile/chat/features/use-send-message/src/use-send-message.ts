@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import {
   ChatGenerationOption,
   ChatResponse,
@@ -24,34 +25,37 @@ export function useSendMessage({ chatData }: UseSendMessageArgs): typeof result 
     },
   });
 
-  const sendMessage = (
-    prompt: string,
-    model: string,
-    generationOptions?: Array<ChatGenerationOption>,
-    attachedFiles?: Array<FileData>,
-    attachedImages?: Array<ImageData>,
-  ): void => {
-    if (!chatData) {
-      return;
-    }
+  const sendMessage = useCallback(
+    (
+      prompt: string,
+      model: string,
+      generationOptions?: Array<ChatGenerationOption>,
+      attachedFiles?: Array<FileData>,
+      attachedImages?: Array<ImageData>,
+    ): void => {
+      if (!chatData) {
+        return;
+      }
 
-    const payload = prepareSendMessagePayload({ prompt, chatData, model, attachedFiles, attachedImages });
+      const payload = prepareSendMessagePayload({ prompt, chatData, model, attachedFiles, attachedImages });
 
-    updateChat(payload, {
-      onSuccess: (data) => {
-        const completePayload = prepareCompleteChatPayload({
-          chatId: data.id,
-          messageId: data.chat!.history.currentId,
-          messages: data.chat!.messages,
-          sessionId: socketSessionId,
-          model,
-          generationOptions,
-        });
+      updateChat(payload, {
+        onSuccess: (data) => {
+          const completePayload = prepareCompleteChatPayload({
+            chatId: data.id,
+            messageId: data.chat!.history.currentId,
+            messages: data.chat!.messages,
+            sessionId: socketSessionId,
+            model,
+            generationOptions,
+          });
 
-        completeChat(completePayload);
-      },
-    });
-  };
+          completeChat(completePayload);
+        },
+      });
+    },
+    [chatData, socketSessionId, updateChat, completeChat],
+  );
 
   const result = {
     sendMessage,

@@ -738,6 +738,40 @@ export function useGetAllArchivedChatsJson(): UseQueryResult<Array<ChatListItem>
   });
 }
 
+function invalidateAllChatListsQueries(): void {
+  queryClient.invalidateQueries({ queryKey: chatServiceConfig.getChatListQueryKey });
+  queryClient.invalidateQueries({ queryKey: chatServiceConfig.getPinnedChatListQueryKey });
+  // NOTE: Invalidate all folders chat lists regardless of folderId
+  queryClient.invalidateQueries({ queryKey: foldersApiConfig.getFolderChatListQueryKeyPrefix, exact: false });
+  queryClient.invalidateQueries({ queryKey: foldersApiConfig.getFolderChatsQueryKeyPrefix, exact: false });
+  // NOTE: Also invalidates chatServiceConfig.getAllArchivedChatsQueryKey
+  invalidateArchivedChatListQuery();
+}
+
+export function useArchiveAllChats(
+  options?: UseMutationOptions<void, AxiosError<ApiErrorData>, void>,
+): UseMutationResult<void, AxiosError<ApiErrorData>, void> {
+  return useMutation({
+    mutationFn: () => chatService.archiveAllChats(),
+    onSuccess: () => {
+      invalidateAllChatListsQueries();
+    },
+    ...options,
+  });
+}
+
+export function useDeleteAllChats(
+  options?: UseMutationOptions<void, AxiosError<ApiErrorData>, void>,
+): UseMutationResult<void, AxiosError<ApiErrorData>, void> {
+  return useMutation({
+    mutationFn: () => chatService.deleteAllChats(),
+    onSuccess: () => {
+      invalidateAllChatListsQueries();
+    },
+    ...options,
+  });
+}
+
 export const chatApi = {
   useGet,
   useUpdate,
@@ -757,4 +791,6 @@ export const chatApi = {
   useGetArchivedChatList,
   useGetAllArchivedChatsJson,
   useUpdateChatFolder,
+  useArchiveAllChats,
+  useDeleteAllChats,
 };

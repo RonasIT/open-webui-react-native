@@ -9,4 +9,7 @@ export enum FeatureID {
   USER_EDIT_MESSAGE = 'user-edit-message', // https://app.clickup.com/t/24336023/PRD-1976
   AI_EDIT_MESSAGE = 'ai-edit-message', // https://app.clickup.com/t/24336023/PRD-1976
   AI_REGENERATE_MESSAGE = 'ai-regenerate-message', // https://app.clickup.com/t/24336023/PRD-2009
+  ARCHIVE_ALL_CHATS = 'archive-all-chats', // https://app.clickup.com/t/24336023/PRD-2695
+  DELETE_ALL_CHATS = 'delete-all-chats', // https://app.clickup.com/t/24336023/PRD-2695
+  EXPORT_ALL_CHATS = 'export-all-chats', // https://app.clickup.com/t/24336023/PRD-2695
 }

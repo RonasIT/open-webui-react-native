@@ -5,18 +5,18 @@ import {
   UtiType,
 } from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
-import { archivedChatsApiConfig } from '../config';
+import { settingsApiConfig } from '../config';
 
-interface UseExportArchivedChatsResult {
+interface UseExportAllChatsResult {
   isExporting: boolean;
-  exportArchivedChats: () => Promise<void>;
+  exportAllChats: () => Promise<void>;
 }
 
-export const useExportArchivedChats = (): UseExportArchivedChatsResult => {
+export const useExportAllChats = (): UseExportAllChatsResult => {
   const [isExporting, setIsExporting] = useState(false);
-  const { exportAllChatsApiURL, downloadFileName } = archivedChatsApiConfig;
+  const { exportAllChatsApiURL, downloadFileName } = settingsApiConfig;
 
-  const exportArchivedChats = async (): Promise<void> => {
+  const exportAllChats = async (): Promise<void> => {
     setIsExporting(true);
 
     try {
@@ -28,5 +28,5 @@ export const useExportArchivedChats = (): UseExportArchivedChatsResult => {
     }
   };
 
-  return { isExporting, exportArchivedChats };
+  return { isExporting, exportAllChats };
 };

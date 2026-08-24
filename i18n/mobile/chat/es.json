@@ -6,7 +6,8 @@
     },
     "CHAT": {
       "TEXT_INPUT_PLACEHOLDER": "Enviar un mensaje",
-      "TEXT_MODEL_NOT_SELECTED": "Modelo no seleccionado"
+      "TEXT_MODEL_NOT_SELECTED": "Modelo no seleccionado",
+      "TEXT_MESSAGE_QUEUED": "Mensaje en cola"
     },
     "CHAT_MENU_LIST": {
       "PINNED_CHAT_LIST": {

@@ -66,6 +66,18 @@ export class FileSystemService {
     }
   }
 
+  public async downloadAndShareFile(
+    uri: string,
+    fileName: string,
+    mimeType: MimeType,
+    utiType: UtiType,
+  ): Promise<void> {
+    const fileUri = `${FileSystem.documentDirectory}${fileName}`;
+    const downloadedFile = await this.downloadFile(uri, fileUri);
+
+    await this.shareAsync(downloadedFile.uri, fileName, mimeType, utiType);
+  }
+
   private createTemporaryFile(fileName: string, content: string, extension: FileExtension): string {
     const file = new File(this._cacheDirectory, `${fileName}.${extension}`);
     file.write(content);

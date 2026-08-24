@@ -6,7 +6,8 @@
     },
     "CHAT": {
       "TEXT_INPUT_PLACEHOLDER": "メッセージを送信",
-      "TEXT_MODEL_NOT_SELECTED": "モデルが選択されていません"
+      "TEXT_MODEL_NOT_SELECTED": "モデルが選択されていません",
+      "TEXT_MESSAGE_QUEUED": "メッセージをキューに追加しました"
     },
     "CHAT_MENU_LIST": {
       "PINNED_CHAT_LIST": {

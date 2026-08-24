@@ -20,6 +20,7 @@ import {
   ChatGenerationOption,
   chatQueriesKeys,
   createMessagesList,
+  usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import { Role } from '@open-webui-react-native/shared/data-access/common';
 import { useSubscribeToQueryCache } from '@open-webui-react-native/shared/data-access/query-client';
@@ -46,11 +47,18 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   const [isInputFocusing, setIsInputFocusing] = useState(false); //NOTE: Needs to avoid ChatBottomButton jumping when auto-scrolling after focus
 
   const isSocketConnected = useSelector(webSocketState$.isSocketConnected);
+  const { data: userSettings } = usersApi.useGetUserSettings();
+  // NOTE: Default matches the Open WebUI web app's own fallback (Interface.svelte)
+  const isMessageQueueEnabled = userSettings?.ui.enableMessageQueue ?? true;
 
   const [isMessagesListLoaded, setIsMessagesListLoaded] = useState(false);
   const [isChatVisible, setIsChatVisible] = useState(false);
   const [activeInputMode, setActiveInputMode] = useState<ActiveInputMode | null>(null);
   const [inputRerenderKey, setInputRerenderKey] = useState(0);
+  const [queuedMessage, setQueuedMessage] = useState<{
+    inputValue: string;
+    options: Array<ChatGenerationOption>;
+  } | null>(null);
 
   const {
     attachedFiles,
@@ -86,6 +94,10 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   // NOTE: chat.messages is a legacy snapshot the backend no longer maintains, so the current branch is derived from history
   const messages = useMemo(() => (history ? createMessagesList(history, history.currentId) : []), [history]);
   const isResponseGenerating = !history?.messages[history.currentId].done;
+  // NOTE: With message queueing enabled, a generating response no longer force-disables the composer or
+  // swaps the send button for "stop" — the user trades the visible stop-generation action for being able
+  // to compose/send the next message immediately (queued via `queuedMessage`).
+  const isComposerBlockedByGeneration = isResponseGenerating && !isMessageQueueEnabled;
 
   const shouldHideContent = isLoading || isRefetching || !isMessagesListLoaded || !selectedModelId;
 
@@ -174,7 +186,13 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
         analyticsService.trackEvent(AnalyticsEvent.GENERATE_IMAGE_USED);
       }
 
-      sendMessage(inputValue, selectedModelId, options, attachedFiles.get(), attachedImages.get());
+      if (isResponseGenerating && isMessageQueueEnabled) {
+        setQueuedMessage({ inputValue, options });
+        ToastService.show(translate('TEXT_MESSAGE_QUEUED'));
+      } else {
+        sendMessage(inputValue, selectedModelId, options, attachedFiles.get(), attachedImages.get());
+      }
+
       analyticsService.trackEvent(AnalyticsEvent.MESSAGE_SENT, { modelId: selectedModelId });
       reset();
       resetAttachments();
@@ -207,6 +225,19 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
       patchNewChat(chatId);
     }
   }, [isNewChat, isSuccess, chatId]);
+
+  useEffect(() => {
+    if (!isResponseGenerating && queuedMessage && selectedModelId) {
+      sendMessage(
+        queuedMessage.inputValue,
+        selectedModelId,
+        queuedMessage.options,
+        attachedFiles.get(),
+        attachedImages.get(),
+      );
+      setQueuedMessage(null);
+    }
+  }, [isResponseGenerating, queuedMessage, selectedModelId, sendMessage, attachedFiles, attachedImages]);
 
   return (
     <Fragment>
@@ -264,7 +295,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
               onFocus={handleInputFocus}
               name='inputValue'
               onSubmit={onSubmit}
-              isLoading={isSending || !isSocketConnected || isResponseGenerating}
+              isLoading={isSending || !isSocketConnected || isComposerBlockedByGeneration}
               attachedFiles={attachedFiles}
               onFileUploaded={handleFileUploaded}
               onDeleteFilePress={handleDeleteFile}
@@ -272,7 +303,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
               onImageUploaded={handleImageUploaded}
               onDeleteImagePress={handleDeleteImage}
               modelId={selectedModelId}
-              isResponseGenerating={isResponseGenerating}
+              isResponseGenerating={isComposerBlockedByGeneration}
               inputRerenderKey={inputRerenderKey}
               chat={chat}
             />

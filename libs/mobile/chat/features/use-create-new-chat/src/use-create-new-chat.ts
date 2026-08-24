@@ -31,6 +31,8 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
     attachedImages?: Array<ImageData>,
     folderId?: string,
   ): void => {
+    // TODO: Apply usersApi.useGetUserSettings().data?.ui.temporaryChatByDefault here once this client
+    // supports non-persisted chats (no client-side-only chat mode exists yet, unlike the web app).
     const payload = prepareCreateChatPayload({ prompt, model, attachedFiles, attachedImages, folderId });
 
     createNewChat(payload, {

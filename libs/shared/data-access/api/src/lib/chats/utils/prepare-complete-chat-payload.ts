@@ -32,12 +32,12 @@ export function prepareCompleteChatPayload({
   userMessage,
   assistantMessageId,
 }: PrepareCompleteChatPayloadArgs): CompleteChatRequest {
+  const userSettings = queryClient.getQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey);
+
   const prepareChatMessages = (): Array<ChatMessage> => {
     const chatResponse = queryClient.getQueryData<ChatResponse>(chatQueriesKeys.get(chatId).queryKey);
     const chatSystemPrompt = (chatResponse?.chat.params?.system as string | undefined)?.trim();
-    const globalSystemPrompt = queryClient
-      .getQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey)
-      ?.ui.system?.trim();
+    const globalSystemPrompt = userSettings?.ui.system?.trim();
     // The user's default system prompt (Settings > General). Prepended to every completion
     // request rather than persisted into chat history, since the full history is resent each call.
     // Chat system prompt overrides the global system prompt.
@@ -96,7 +96,7 @@ export function prepareCompleteChatPayload({
     features: new Features({
       codeInterpreter: generationOptions?.includes(ChatGenerationOption.CODE_INTERPRETER),
       imageGeneration: generationOptions?.includes(ChatGenerationOption.IMAGE_GENERATION),
-      webSearch: generationOptions?.includes(ChatGenerationOption.WEB_SEARCH),
+      webSearch: (userSettings?.ui.webSearch ?? false) || generationOptions?.includes(ChatGenerationOption.WEB_SEARCH),
     }),
     stream: true,
     model,
