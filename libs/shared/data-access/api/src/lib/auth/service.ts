@@ -34,9 +34,12 @@ class AuthService {
   }
 
   public async updateProfile(request: UpdateProfileRequest): Promise<UpdateProfileRequest> {
-    await getApiService().post(`${authApiConfig.route}/update/profile`, instanceToPlain(request));
+    const response: UpdateProfileRequest = await getApiService().post(
+      `${authApiConfig.route}/update/profile`,
+      instanceToPlain(request),
+    );
 
-    return request;
+    return plainToInstance(UpdateProfileRequest, response);
   }
 
   public async updatePassword(request: UpdatePasswordRequest): Promise<void> {

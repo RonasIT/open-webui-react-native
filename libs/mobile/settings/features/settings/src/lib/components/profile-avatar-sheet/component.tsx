@@ -89,13 +89,13 @@ export function ProfileAvatarSheet({ name, imageUrl, ref, ...props }: ProfileAva
   const handleRestoreDefaultPress = (): void => setPickedImageDataUrl(null);
 
   const handleConfirmPress = (): void => {
-    if (!pickedImageDataUrl || isPending) {
+    if (!pickedImageDataUrl || !name || isPending) {
       closeSheet();
 
       return;
     }
 
-    updateProfile(new UpdateProfileRequest({ name: name || '', profileImageUrl: pickedImageDataUrl }), {
+    updateProfile(new UpdateProfileRequest({ name, profileImageUrl: pickedImageDataUrl }), {
       onSuccess: closeSheet,
     });
   };

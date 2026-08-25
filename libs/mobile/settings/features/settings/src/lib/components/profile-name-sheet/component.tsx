@@ -62,6 +62,12 @@ export function ProfileNameSheet({ name, avatarUrl, ref, ...props }: ProfileName
       return;
     }
 
+    if (name === undefined) {
+      closeSheet();
+
+      return;
+    }
+
     updateProfile(new UpdateProfileRequest({ name: values.name, profileImageUrl: avatarUrl || '' }), {
       onSuccess: closeSheet,
     });
