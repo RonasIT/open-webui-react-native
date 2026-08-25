@@ -94,8 +94,6 @@ export function Settings(): ReactElement {
   const defaultSystemPromptValue = isSettingsError ? translate('TEXT_LOAD_ERROR') : settings?.ui.system;
   const profileNameValue = isProfileError ? translate('TEXT_LOAD_ERROR') : profile?.name;
 
-  // NOTE: Defaults match the Open WebUI web app's own fallbacks (Interface.svelte) so a fresh
-  // account looks the same on mobile and web before the user changes anything.
   const isWebSearchAlwaysOnEnabled = settings?.ui.webSearch ?? false;
   const isMessageQueueEnabled = settings?.ui.enableMessageQueue ?? true;
   const isChatBubbleUIEnabled = settings?.ui.chatBubble ?? true;
@@ -190,12 +188,10 @@ export function Settings(): ReactElement {
   };
 
   const createChatActionHandler = ({
-    featureID,
     isPending,
     action,
     confirm,
   }: {
-    featureID: FeatureID;
     isPending: boolean;
     action: () => void;
     confirm?: { title: string; message: string; confirmButtonStyle?: 'destructive' };
@@ -207,10 +203,6 @@ export function Settings(): ReactElement {
     };
 
     return (): void => {
-      if (!isFeatureEnabled(featureID)) {
-        return ToastService.showFeatureNotImplemented();
-      }
-
       if (confirm) {
         alertService.confirm({ ...confirm, onConfirm: guardedAction });
       } else {
@@ -220,7 +212,6 @@ export function Settings(): ReactElement {
   };
 
   const handleArchiveAllChatsPress = createChatActionHandler({
-    featureID: FeatureID.ARCHIVE_ALL_CHATS,
     isPending: isArchivingAllChats,
     action: archiveAllChats,
     confirm: {
@@ -230,7 +221,6 @@ export function Settings(): ReactElement {
   });
 
   const handleDeleteAllChatsPress = createChatActionHandler({
-    featureID: FeatureID.DELETE_ALL_CHATS,
     isPending: isDeletingAllChats,
     action: deleteAllChats,
     confirm: {
@@ -241,7 +231,6 @@ export function Settings(): ReactElement {
   });
 
   const handleExportAllChatsPress = createChatActionHandler({
-    featureID: FeatureID.EXPORT_ALL_CHATS,
     isPending: isExportingAllChats,
     action: exportAllChats,
   });

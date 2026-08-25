@@ -30,8 +30,6 @@ function useUpdateUserSettings(
 ): UseMutationResult<UserSettings, AxiosError<ApiErrorData>, UserSettings, UpdateUserSettingsContext> {
   return useMutation<UserSettings, AxiosError<ApiErrorData>, UserSettings, UpdateUserSettingsContext>({
     mutationFn: usersService.updateUserSettings,
-    // NOTE: Applied optimistically so toggles (e.g. Settings > Chats switches) flip instantly instead of
-    // waiting for the round trip — without this the switch briefly snaps back before the response lands.
     onMutate: async (settings) => {
       await queryClient.cancelQueries({ queryKey: usersApiConfig.getUserSettingsQueryKey });
 

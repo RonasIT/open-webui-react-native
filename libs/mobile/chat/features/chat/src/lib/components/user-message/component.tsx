@@ -40,7 +40,6 @@ function ChatUserMessageComponent({
   const { files, content: text, timestamp } = message;
 
   const { data: userSettings } = usersApi.useGetUserSettings();
-  // NOTE: Defaults match the Open WebUI web app's own fallbacks (Interface.svelte)
   const isChatBubbleUIEnabled = userSettings?.ui.chatBubble ?? true;
   const isUserMessageMarkdownEnabled = userSettings?.ui.renderMarkdownInUserMessages ?? true;
 

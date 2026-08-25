@@ -12,7 +12,4 @@ export const featureFlagConfig: Record<FeatureID, AppEnvName> = {
   [FeatureID.USER_EDIT_MESSAGE]: 'production',
   [FeatureID.AI_EDIT_MESSAGE]: 'development',
   [FeatureID.AI_REGENERATE_MESSAGE]: 'development',
-  [FeatureID.ARCHIVE_ALL_CHATS]: 'development',
-  [FeatureID.DELETE_ALL_CHATS]: 'development',
-  [FeatureID.EXPORT_ALL_CHATS]: 'development',
 };

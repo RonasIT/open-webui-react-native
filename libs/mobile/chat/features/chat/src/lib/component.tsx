@@ -49,7 +49,6 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
 
   const isSocketConnected = useSelector(webSocketState$.isSocketConnected);
   const { data: userSettings } = usersApi.useGetUserSettings();
-  // NOTE: Default matches the Open WebUI web app's own fallback (Interface.svelte)
   const isMessageQueueEnabled = userSettings?.ui.enableMessageQueue ?? true;
 
   const [isMessagesListLoaded, setIsMessagesListLoaded] = useState(false);
