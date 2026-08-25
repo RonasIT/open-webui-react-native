@@ -13,6 +13,8 @@ import {
   SheetHeader,
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { authApi, UpdatePasswordRequest } from '@open-webui-react-native/shared/data-access/api';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { ChangePasswordFormSchema } from '../../forms';
 
 export type ChangePasswordSheetMethods = {
@@ -32,6 +34,8 @@ export function ChangePasswordSheet({ ref, ...props }: ChangePasswordSheetProps)
   const currentPasswordRef = useRef<TextInput>(null);
   const newPasswordRef = useRef<TextInput>(null);
   const confirmPasswordRef = useRef<TextInput>(null);
+
+  const { mutate: updatePassword, isPending } = authApi.useUpdatePassword();
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: new ChangePasswordFormSchema(),
@@ -54,6 +58,19 @@ export function ChangePasswordSheet({ ref, ...props }: ChangePasswordSheetProps)
   //NOTE: Autofocus causes scrolling to an incorrect position
   const handleOpen = (): void => currentPasswordRef.current?.focus();
 
+  const handleConfirmPress = handleSubmit((values) => {
+    if (isPending) {
+      return;
+    }
+
+    updatePassword(new UpdatePasswordRequest({ password: values.currentPassword, newPassword: values.newPassword }), {
+      onSuccess: () => {
+        closeSheet();
+        ToastService.showSuccess(translate('TEXT_PASSWORD_CHANGED'));
+      },
+    });
+  });
+
   return (
     <AppBottomSheet
       {...props}
@@ -67,7 +84,8 @@ export function ChangePasswordSheet({ ref, ...props }: ChangePasswordSheetProps)
           <SheetHeader
             title={translate('TEXT_TITLE')}
             onGoBack={closeSheet}
-            onConfirmPress={handleSubmit(closeSheet)}
+            onConfirmPress={handleConfirmPress}
+            confirmButtonProps={{ isLoading: isPending, disabled: isPending }}
           />
           <AppBottomSheetKeyboardAwareScrollView>
             <View className='pt-8 gap-16' style={{ paddingBottom: bottom + 24 }}>
@@ -105,7 +123,7 @@ export function ChangePasswordSheet({ ref, ...props }: ChangePasswordSheetProps)
                 enablesReturnKeyAutomatically
                 label={translate('TEXT_CONFIRM_NEW_PASSWORD')}
                 placeholder={translate('TEXT_ENTER_CONFIRM_NEW_PASSWORD')}
-                onSubmitEditing={handleSubmit(closeSheet)}
+                onSubmitEditing={handleConfirmPress}
               />
             </View>
           </AppBottomSheetKeyboardAwareScrollView>

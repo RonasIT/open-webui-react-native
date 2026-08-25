@@ -11,7 +11,8 @@
       "TEXT_REQUIRED_CURRENT_PASSWORD": "请输入当前密码",
       "TEXT_REQUIRED_NEW_PASSWORD": "请输入新密码",
       "TEXT_REQUIRED_CONFIRM_PASSWORD": "请确认新密码",
-      "TEXT_PASSWORDS_DO_NOT_MATCH": "两次输入的密码不一致"
+      "TEXT_PASSWORDS_DO_NOT_MATCH": "两次输入的密码不一致",
+      "TEXT_PASSWORD_TOO_SHORT": "密码长度至少为8个字符"
     },
     "COMMON": {
       "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "功能尚未实现。",

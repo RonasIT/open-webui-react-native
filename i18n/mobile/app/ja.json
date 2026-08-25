@@ -36,7 +36,9 @@
       "PROFILE_AVATAR_SHEET": {
         "TEXT_TITLE": "プロフィール画像",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "プロフィール画像をアップロード",
-        "BUTTON_RESTORE_DEFAULT_AVATAR": "デフォルトのアバターに戻す"
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "デフォルトのアバターに戻す",
+        "TEXT_IMAGE_TOO_LARGE": "この画像は大きすぎます。より小さい画像を選択してください",
+        "TEXT_UPLOAD_FAILED": "画像の処理に失敗しました。別の画像をお試しください"
       },
       "PROFILE_NAME_SHEET": {
         "TEXT_TITLE": "プロフィール名",
@@ -49,7 +51,8 @@
         "TEXT_NEW_PASSWORD": "新しいパスワード",
         "TEXT_ENTER_NEW_PASSWORD": "新しいパスワードを入力してください",
         "TEXT_CONFIRM_NEW_PASSWORD": "新しいパスワードの確認",
-        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "新しいパスワードをもう一度入力してください"
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "新しいパスワードをもう一度入力してください",
+        "TEXT_PASSWORD_CHANGED": "パスワードが変更されました"
       },
       "DEFAULT_MODEL_SHEET": {
         "TEXT_TITLE": "デフォルトモデル",

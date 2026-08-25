@@ -26,6 +26,7 @@ import {
   MarkdownRenderer,
 } from '@open-webui-react-native/shared/utils/config';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
+import { hapticFeedbackService } from '@open-webui-react-native/shared/utils/haptic-feedback-service';
 import { useNavigateOnce } from '@open-webui-react-native/shared/utils/navigation';
 import { storeReviewService } from '@open-webui-react-native/shared/utils/store-review-service';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
@@ -62,7 +63,7 @@ export function Settings(): ReactElement {
   const { logout } = useLogout();
   const navigateOnce = useNavigateOnce();
 
-  const { data: profile } = authApi.useGetProfile();
+  const { data: profile, isError: isProfileError } = authApi.useGetProfile();
   const { isError: isModelsError } = modelsApi.useGetModels();
   const { data: settings, isError: isSettingsError } = usersApi.useGetUserSettings();
   const { mutate: updateUserSettings } = usersApi.useUpdateUserSettings();
@@ -93,6 +94,7 @@ export function Settings(): ReactElement {
     ? translate('TEXT_LOAD_ERROR')
     : (defaultModelName ?? translate('TEXT_NOT_SET'));
   const defaultSystemPromptValue = isSettingsError ? translate('TEXT_LOAD_ERROR') : settings?.ui.system;
+  const profileNameValue = isProfileError ? translate('TEXT_LOAD_ERROR') : profile?.name;
 
   const languageItems = availableLanguages.map(({ code, label }) => ({ value: code, label }));
   const markdownRendererItems = availableMarkdownRenderers.map(({ code, labelKey }) => ({
@@ -129,10 +131,6 @@ export function Settings(): ReactElement {
       ? navigateOnce(`${navigationConfig.main.chat.index}/${navigationConfig.main.chat.archivedChats}`)
       : ToastService.showFeatureNotImplemented();
 
-  const handleDeleteAccountPress = (): void => {
-    ToastService.show(translate('TEXT_ACCOUNT_DELETION_REQUEST'));
-  };
-
   const handleRequestDeleteAccountPress = (): void => {
     Alert.alert(
       translate('TEXT_DELETE_ACCOUNT_TITLE'),
@@ -147,12 +145,22 @@ export function Settings(): ReactElement {
     );
   };
 
+  const handleDeleteAccountPress = (): void => {
+    hapticFeedbackService.trigger();
+    ToastService.show(translate('TEXT_ACCOUNT_DELETION_REQUEST'));
+  };
+
+  const handleLogoutPress = (): void => {
+    hapticFeedbackService.trigger();
+    logout();
+  };
+
   const handleRequestLogoutPress = (): void => {
     Alert.alert(
       translate('TEXT_LOGOUT_TITLE'),
       translate('TEXT_LOGOUT_MESSAGE'),
       [
-        { text: translate('BUTTON_LOGOUT'), style: 'destructive', onPress: logout },
+        { text: translate('BUTTON_LOGOUT'), style: 'destructive', onPress: handleLogoutPress },
         { text: translate('BUTTON_CANCEL'), style: 'cancel' },
       ],
       {
@@ -182,7 +190,7 @@ export function Settings(): ReactElement {
   const profileOptions: Array<SettingsSectionOption> = [
     {
       label: translate('TEXT_PROFILE_NAME'),
-      value: profile?.name,
+      value: profileNameValue,
       onPress: () => profileNameSheetRef.current?.present(),
     },
     {
@@ -299,7 +307,10 @@ export function Settings(): ReactElement {
         ref={profileAvatarSheetRef}
         name={profile?.name}
         imageUrl={profile?.profileImageUrl} />
-      <ProfileNameSheet ref={profileNameSheetRef} name={profile?.name} />
+      <ProfileNameSheet
+        ref={profileNameSheetRef}
+        name={profile?.name}
+        avatarUrl={profile?.profileImageUrl} />
       <ChangePasswordSheet ref={changePasswordSheetRef} />
       <DefaultModelSheet
         ref={defaultModelSheetRef}

@@ -36,7 +36,9 @@
       "PROFILE_AVATAR_SHEET": {
         "TEXT_TITLE": "Profile avatar",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "Upload profile image",
-        "BUTTON_RESTORE_DEFAULT_AVATAR": "Restore default avatar"
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "Restore default avatar",
+        "TEXT_IMAGE_TOO_LARGE": "This image is too large. Please choose a smaller one",
+        "TEXT_UPLOAD_FAILED": "Failed to process the image. Please try another one"
       },
       "PROFILE_NAME_SHEET": {
         "TEXT_TITLE": "Profile name",
@@ -49,7 +51,8 @@
         "TEXT_NEW_PASSWORD": "New password",
         "TEXT_ENTER_NEW_PASSWORD": "Enter your new password",
         "TEXT_CONFIRM_NEW_PASSWORD": "Confirm new password",
-        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Repeat your new password"
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Repeat your new password",
+        "TEXT_PASSWORD_CHANGED": "Your password has been changed"
       },
       "DEFAULT_MODEL_SHEET": {
         "TEXT_TITLE": "Default model",

@@ -11,7 +11,8 @@
       "TEXT_REQUIRED_CURRENT_PASSWORD": "Введите текущий пароль",
       "TEXT_REQUIRED_NEW_PASSWORD": "Введите новый пароль",
       "TEXT_REQUIRED_CONFIRM_PASSWORD": "Подтвердите новый пароль",
-      "TEXT_PASSWORDS_DO_NOT_MATCH": "Пароли не совпадают"
+      "TEXT_PASSWORDS_DO_NOT_MATCH": "Пароли не совпадают",
+      "TEXT_PASSWORD_TOO_SHORT": "Пароль должен содержать не менее 8 символов"
     },
     "COMMON": {
       "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "Функция пока не реализована.",

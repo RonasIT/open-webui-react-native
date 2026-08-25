@@ -36,7 +36,9 @@
       "PROFILE_AVATAR_SHEET": {
         "TEXT_TITLE": "Аватар профиля",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "Загрузить изображение профиля",
-        "BUTTON_RESTORE_DEFAULT_AVATAR": "Вернуть аватар по умолчанию"
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "Вернуть аватар по умолчанию",
+        "TEXT_IMAGE_TOO_LARGE": "Изображение слишком большое. Выберите файл меньшего размера",
+        "TEXT_UPLOAD_FAILED": "Не удалось обработать изображение. Попробуйте выбрать другое"
       },
       "PROFILE_NAME_SHEET": {
         "TEXT_TITLE": "Имя профиля",
@@ -49,7 +51,8 @@
         "TEXT_NEW_PASSWORD": "Новый пароль",
         "TEXT_ENTER_NEW_PASSWORD": "Введите новый пароль",
         "TEXT_CONFIRM_NEW_PASSWORD": "Подтвердите новый пароль",
-        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Повторите новый пароль"
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Повторите новый пароль",
+        "TEXT_PASSWORD_CHANGED": "Пароль успешно изменён"
       },
       "DEFAULT_MODEL_SHEET": {
         "TEXT_TITLE": "Модель по умолчанию",

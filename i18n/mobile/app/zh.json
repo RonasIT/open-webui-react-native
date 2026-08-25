@@ -36,7 +36,9 @@
       "PROFILE_AVATAR_SHEET": {
         "TEXT_TITLE": "个人资料头像",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "上传头像",
-        "BUTTON_RESTORE_DEFAULT_AVATAR": "恢复默认头像"
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "恢复默认头像",
+        "TEXT_IMAGE_TOO_LARGE": "图片太大,请选择较小的图片",
+        "TEXT_UPLOAD_FAILED": "图片处理失败,请尝试其他图片"
       },
       "PROFILE_NAME_SHEET": {
         "TEXT_TITLE": "个人资料名称",
@@ -49,7 +51,8 @@
         "TEXT_NEW_PASSWORD": "新密码",
         "TEXT_ENTER_NEW_PASSWORD": "请输入新密码",
         "TEXT_CONFIRM_NEW_PASSWORD": "确认新密码",
-        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "请再次输入新密码"
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "请再次输入新密码",
+        "TEXT_PASSWORD_CHANGED": "密码已修改"
       },
       "DEFAULT_MODEL_SHEET": {
         "TEXT_TITLE": "默认模型",

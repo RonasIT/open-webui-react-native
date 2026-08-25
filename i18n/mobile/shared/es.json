@@ -11,7 +11,8 @@
       "TEXT_REQUIRED_CURRENT_PASSWORD": "Introduce tu contraseña actual",
       "TEXT_REQUIRED_NEW_PASSWORD": "Introduce una nueva contraseña",
       "TEXT_REQUIRED_CONFIRM_PASSWORD": "Confirma tu nueva contraseña",
-      "TEXT_PASSWORDS_DO_NOT_MATCH": "Las contraseñas no coinciden"
+      "TEXT_PASSWORDS_DO_NOT_MATCH": "Las contraseñas no coinciden",
+      "TEXT_PASSWORD_TOO_SHORT": "La contraseña debe tener al menos 8 caracteres"
     },
     "COMMON": {
       "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "La función aún no está implementada.",
