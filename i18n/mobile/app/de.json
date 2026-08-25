@@ -18,7 +18,7 @@
       "TEXT_AVATAR": "Avatar",
       "TEXT_CHANGE_PASSWORD": "Passwort ändern",
       "TEXT_LOGOUT": "Abmelden",
-      "TEXT_CONTACT_SUPPORT": "Support kontaktieren",
+      "TEXT_REPORT_A_BUG": "Fehler melden",
       "TEXT_RATE_APP": "App bewerten",
       "TEXT_ARCHIVED_CHATS": "Archivierte Chats",
       "TEXT_EXPORT_ALL_CHATS": "Alle Chats exportieren",
@@ -61,9 +61,11 @@
         "TEXT_LABEL": "Standard-System-Prompt"
       },
       "CONTACT_SUPPORT_SHEET": {
-        "TEXT_TITLE": "Support kontaktieren",
-        "TEXT_MESSAGE_PLACEHOLDER": "Ihre Nachricht",
-        "BUTTON_ATTACH": "Screenshots oder Video anhängen"
+        "TEXT_REPORT_BUG": "Fehler melden",
+        "TEXT_YOUR_MESSAGE": "Ihre Nachricht",
+        "TEXT_MESSAGE_SENT": "Vielen Dank für Ihr Feedback! Ihre Nachricht wurde erfolgreich gesendet",
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Screenshots oder Video anhängen",
+        "TEXT_ATTACHMENTS_LIMIT_REACHED": "Sie können maximal {{count}} Dateien anhängen"
       },
       "LANGUAGE_SHEET": {
         "TEXT_TITLE": "Sprache"

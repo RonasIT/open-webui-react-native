@@ -2,7 +2,7 @@ import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import dayjs from 'dayjs';
 import { delay } from 'lodash-es';
-import React, { Fragment, ReactElement, useEffect, useMemo, useState } from 'react';
+import React, { Fragment, ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { InteractionManager } from 'react-native';
 import { EditMessageInput } from '@open-webui-react-native/mobile/chat/features/edit-message-input';
@@ -28,7 +28,7 @@ import { AnalyticsEvent, analyticsService } from '@open-webui-react-native/share
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { useAppStateChange } from '@open-webui-react-native/shared/utils/use-app-state-change';
 import { ActiveInputMode } from './enums';
-import { patchNewChat } from './utils';
+import { patchNewChat, requestStoreReview } from './utils';
 
 const LazyChatMessagesList = React.lazy(() => import('./components/messages-list/component'));
 
@@ -85,7 +85,11 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   const history = chat?.chat.history;
   // NOTE: chat.messages is a legacy snapshot the backend no longer maintains, so the current branch is derived from history
   const messages = useMemo(() => (history ? createMessagesList(history, history.currentId) : []), [history]);
-  const isResponseGenerating = !history?.messages[history.currentId].done;
+  const currentMessage = history?.messages[history.currentId];
+  const isResponseGenerating = !currentMessage?.done;
+  const isAssistantMessage = currentMessage?.role === Role.ASSISTANT;
+
+  const firstMessageGeneratedRef = useRef(false);
 
   const shouldHideContent = isLoading || isRefetching || !isMessagesListLoaded || !selectedModelId;
 
@@ -207,6 +211,13 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
       patchNewChat(chatId);
     }
   }, [isNewChat, isSuccess, chatId]);
+
+  useEffect(() => {
+    if (isNewChat && !firstMessageGeneratedRef.current && isAssistantMessage && currentMessage.done) {
+      firstMessageGeneratedRef.current = true;
+      requestStoreReview(chatId);
+    }
+  }, [isNewChat, chatId, currentMessage?.done, isAssistantMessage]);
 
   return (
     <Fragment>

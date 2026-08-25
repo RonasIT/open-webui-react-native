@@ -14,6 +14,8 @@ class AppStorageService {
   public locale = new StorageItem('locale', storage);
   public markdownRenderer = new StorageItem('markdownRenderer', storage);
   public hapticFeedback = new StorageItem('hapticFeedback', storage);
+  public createdChatsIds = new StorageItem('createdChatsIds', storage);
+  public isRateAppReviewed = new StorageItem('isRateAppReviewed', storage);
 }
 
 export const appStorageService = new AppStorageService();

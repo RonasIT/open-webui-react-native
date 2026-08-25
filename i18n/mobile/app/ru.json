@@ -18,7 +18,7 @@
       "TEXT_AVATAR": "Аватар",
       "TEXT_CHANGE_PASSWORD": "Изменить пароль",
       "TEXT_LOGOUT": "Выйти",
-      "TEXT_CONTACT_SUPPORT": "Связаться с поддержкой",
+      "TEXT_REPORT_A_BUG": "Сообщить об ошибке",
       "TEXT_RATE_APP": "Оценить приложение",
       "TEXT_ARCHIVED_CHATS": "Архивные чаты",
       "TEXT_EXPORT_ALL_CHATS": "Экспортировать все чаты",
@@ -61,9 +61,11 @@
         "TEXT_LABEL": "Системный промпт по умолчанию"
       },
       "CONTACT_SUPPORT_SHEET": {
-        "TEXT_TITLE": "Связаться с поддержкой",
-        "TEXT_MESSAGE_PLACEHOLDER": "Ваше сообщение",
-        "BUTTON_ATTACH": "Прикрепить скриншоты или видео"
+        "TEXT_REPORT_BUG": "Сообщить об ошибке",
+        "TEXT_YOUR_MESSAGE": "Введите сообщение",
+        "TEXT_MESSAGE_SENT": "Спасибо за отзыв! Ваше сообщение успешно отправлено",
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Прикрепить скриншот или видео",
+        "TEXT_ATTACHMENTS_LIMIT_REACHED": "Можно прикрепить не более {{count}} вложений"
       },
       "LANGUAGE_SHEET": {
         "TEXT_TITLE": "Язык"

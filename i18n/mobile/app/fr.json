@@ -18,7 +18,7 @@
       "TEXT_AVATAR": "Avatar",
       "TEXT_CHANGE_PASSWORD": "Modifier le mot de passe",
       "TEXT_LOGOUT": "Déconnexion",
-      "TEXT_CONTACT_SUPPORT": "Contacter le support",
+      "TEXT_REPORT_A_BUG": "Signaler un bug",
       "TEXT_RATE_APP": "Noter l'application",
       "TEXT_ARCHIVED_CHATS": "Discussions archivées",
       "TEXT_EXPORT_ALL_CHATS": "Exporter toutes les discussions",
@@ -61,9 +61,11 @@
         "TEXT_LABEL": "Prompt système par défaut"
       },
       "CONTACT_SUPPORT_SHEET": {
-        "TEXT_TITLE": "Contacter le support",
-        "TEXT_MESSAGE_PLACEHOLDER": "Votre message",
-        "BUTTON_ATTACH": "Joindre des captures d'écran ou une vidéo"
+        "TEXT_REPORT_BUG": "Signaler un bug",
+        "TEXT_YOUR_MESSAGE": "Votre message",
+        "TEXT_MESSAGE_SENT": "Merci pour votre retour ! Votre message a été envoyé avec succès",
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Joindre des captures d'écran ou une vidéo",
+        "TEXT_ATTACHMENTS_LIMIT_REACHED": "Vous pouvez joindre jusqu'à {{count}} fichiers"
       },
       "LANGUAGE_SHEET": {
         "TEXT_TITLE": "Langue"

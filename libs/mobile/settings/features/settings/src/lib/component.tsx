@@ -2,6 +2,10 @@ import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useRef, useState } from 'react';
 import { Alert } from 'react-native';
+import {
+  ContactSupportSheet,
+  ContactSupportSheetMethods,
+} from '@open-webui-react-native/mobile/settings/features/contact-support-sheet';
 import { SettingsSection, SettingsSectionOption } from '@open-webui-react-native/mobile/settings/ui/section';
 import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-logout';
 import { useSetSelectedModel } from '@open-webui-react-native/mobile/shared/features/use-set-selected-model';
@@ -23,12 +27,11 @@ import {
 } from '@open-webui-react-native/shared/utils/config';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { useNavigateOnce } from '@open-webui-react-native/shared/utils/navigation';
+import { storeReviewService } from '@open-webui-react-native/shared/utils/store-review-service';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import {
   ChangePasswordSheet,
   ChangePasswordSheetMethods,
-  ContactSupportSheet,
-  ContactSupportSheetMethods,
   DefaultModelSheet,
   DefaultModelSheetMethods,
   DefaultSystemPromptSheet,
@@ -208,13 +211,17 @@ export function Settings(): ReactElement {
     },
   ];
 
+  const handleRateAppPress = (): void => {
+    storeReviewService.openStoreReview();
+  };
+
   const feedbackOptions: Array<SettingsSectionOption> = [
     {
-      label: translate('TEXT_CONTACT_SUPPORT'),
+      label: translate('TEXT_REPORT_A_BUG'),
       iconName: 'message',
       onPress: () => contactSupportSheetRef.current?.present(),
     },
-    { label: translate('TEXT_RATE_APP'), iconName: 'star', onPress: ToastService.showFeatureNotImplemented },
+    { label: translate('TEXT_RATE_APP'), iconName: 'star', onPress: handleRateAppPress },
   ];
 
   const chatsOptions: Array<SettingsSectionOption> = [

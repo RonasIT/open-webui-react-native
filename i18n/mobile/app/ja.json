@@ -18,7 +18,7 @@
       "TEXT_AVATAR": "アバター",
       "TEXT_CHANGE_PASSWORD": "パスワードを変更",
       "TEXT_LOGOUT": "ログアウト",
-      "TEXT_CONTACT_SUPPORT": "サポートに問い合わせる",
+      "TEXT_REPORT_A_BUG": "不具合を報告",
       "TEXT_RATE_APP": "アプリを評価",
       "TEXT_ARCHIVED_CHATS": "アーカイブ済みチャット",
       "TEXT_EXPORT_ALL_CHATS": "すべてのチャットをエクスポート",
@@ -61,9 +61,11 @@
         "TEXT_LABEL": "デフォルトのシステムプロンプト"
       },
       "CONTACT_SUPPORT_SHEET": {
-        "TEXT_TITLE": "サポートに問い合わせる",
-        "TEXT_MESSAGE_PLACEHOLDER": "メッセージ",
-        "BUTTON_ATTACH": "スクリーンショットまたは動画を添付"
+        "TEXT_REPORT_BUG": "不具合を報告",
+        "TEXT_YOUR_MESSAGE": "メッセージ",
+        "TEXT_MESSAGE_SENT": "フィードバックをありがとうございます！メッセージが正常に送信されました",
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "スクリーンショットまたは動画を添付",
+        "TEXT_ATTACHMENTS_LIMIT_REACHED": "添付できるファイルは最大{{count}}件までです"
       },
       "LANGUAGE_SHEET": {
         "TEXT_TITLE": "言語"

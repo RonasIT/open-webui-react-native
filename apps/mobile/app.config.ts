@@ -19,6 +19,10 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       apiKeyDev: process.env.AMPLITUDE_API_KEY_DEV,
       apiKeyProd: process.env.AMPLITUDE_API_KEY_PROD,
     },
+    supabase: {
+      url: process.env.SUPABASE_URL,
+      publishableKey: process.env.SUPABASE_PUBLISHABLE_KEY,
+    },
     env: appEnv.current,
     googleIosClientId: appEnv.select({
       default: process.env.GOOGLE_IOS_CLIENT_ID_DEV,
@@ -47,6 +51,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     },
     ios: {
       bundleIdentifier: appId,
+      appStoreUrl: `https://apps.apple.com/app/id${process.env.EXPO_PUBLIC_IOS_APP_STORE_ID}`,
       supportsTablet: false,
       buildNumber: appEnv.select({
         default: '18',
@@ -66,6 +71,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     },
     android: {
       package: appId,
+      playStoreUrl: `https://play.google.com/store/apps/details?id=${appId}`,
       versionCode: appEnv.select({
         default: 15,
         production: 36,

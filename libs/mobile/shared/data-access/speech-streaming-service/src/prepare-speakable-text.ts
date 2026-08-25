@@ -20,10 +20,7 @@ export const prepareSpeakableText = (
   return result;
 };
 
-const removeDetailsBlocks = (
-  text: string,
-  { holdIncomplete = false }: PrepareSpeakableTextOptions,
-): string => {
+const removeDetailsBlocks = (text: string, { holdIncomplete = false }: PrepareSpeakableTextOptions): string => {
   let result = '';
   let index = 0;
 
@@ -132,7 +129,9 @@ const stripMarkdownForSpeech = (text: string): string => {
 
 // NOTE: Avoid trim() so streaming speakable prefixes stay stable for the spoken cursor
 const normalizeSpeakableWhitespace = (text: string): string =>
-  text.replace(/[^\S\n]+/g, ' ').replace(/\n{3,}/g, '\n\n').replace(/ ?\n ?/g, '\n');
+  text
+    .replace(/[^\S\n]+/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .replace(/ ?\n ?/g, '\n');
 
-const appendBoundarySpace = (text: string): string =>
-  text.length > 0 && !/\s$/.test(text) ? `${text} ` : text;
+const appendBoundarySpace = (text: string): string => (text.length > 0 && !/\s$/.test(text) ? `${text} ` : text);
