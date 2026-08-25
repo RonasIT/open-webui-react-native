@@ -18,7 +18,7 @@
       "TEXT_AVATAR": "Avatar",
       "TEXT_CHANGE_PASSWORD": "Modifier le mot de passe",
       "TEXT_LOGOUT": "Déconnexion",
-      "TEXT_CONTACT_SUPPORT": "Contacter le support",
+      "TEXT_REPORT_A_BUG": "Signaler un bug",
       "TEXT_RATE_APP": "Noter l'application",
       "TEXT_ARCHIVED_CHATS": "Discussions archivées",
       "TEXT_EXPORT_ALL_CHATS": "Exporter toutes les discussions",
@@ -40,7 +40,9 @@
       "PROFILE_AVATAR_SHEET": {
         "TEXT_TITLE": "Avatar du profil",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "Téléverser une image de profil",
-        "BUTTON_RESTORE_DEFAULT_AVATAR": "Restaurer l'avatar par défaut"
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "Restaurer l'avatar par défaut",
+        "TEXT_IMAGE_TOO_LARGE": "Cette image est trop volumineuse. Choisissez-en une plus petite",
+        "TEXT_UPLOAD_FAILED": "Échec du traitement de l'image. Essayez-en une autre"
       },
       "PROFILE_NAME_SHEET": {
         "TEXT_TITLE": "Nom du profil",
@@ -53,7 +55,8 @@
         "TEXT_NEW_PASSWORD": "Nouveau mot de passe",
         "TEXT_ENTER_NEW_PASSWORD": "Saisissez votre nouveau mot de passe",
         "TEXT_CONFIRM_NEW_PASSWORD": "Confirmer le nouveau mot de passe",
-        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Répétez votre nouveau mot de passe"
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Répétez votre nouveau mot de passe",
+        "TEXT_PASSWORD_CHANGED": "Votre mot de passe a été modifié"
       },
       "DEFAULT_MODEL_SHEET": {
         "TEXT_TITLE": "Modèle par défaut",
@@ -65,9 +68,11 @@
         "TEXT_LABEL": "Prompt système par défaut"
       },
       "CONTACT_SUPPORT_SHEET": {
-        "TEXT_TITLE": "Contacter le support",
-        "TEXT_MESSAGE_PLACEHOLDER": "Votre message",
-        "BUTTON_ATTACH": "Joindre des captures d'écran ou une vidéo"
+        "TEXT_REPORT_BUG": "Signaler un bug",
+        "TEXT_YOUR_MESSAGE": "Votre message",
+        "TEXT_MESSAGE_SENT": "Merci pour votre retour ! Votre message a été envoyé avec succès",
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Joindre des captures d'écran ou une vidéo",
+        "TEXT_ATTACHMENTS_LIMIT_REACHED": "Vous pouvez joindre jusqu'à {{count}} fichiers"
       },
       "LANGUAGE_SHEET": {
         "TEXT_TITLE": "Langue"

@@ -18,7 +18,7 @@
       "TEXT_AVATAR": "Avatar",
       "TEXT_CHANGE_PASSWORD": "Change password",
       "TEXT_LOGOUT": "Logout",
-      "TEXT_CONTACT_SUPPORT": "Contact support",
+      "TEXT_REPORT_A_BUG": "Report a bug",
       "TEXT_RATE_APP": "Rate app",
       "TEXT_ARCHIVED_CHATS": "Archived chats",
       "TEXT_EXPORT_ALL_CHATS": "Export all chats",
@@ -40,7 +40,9 @@
       "PROFILE_AVATAR_SHEET": {
         "TEXT_TITLE": "Profile avatar",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "Upload profile image",
-        "BUTTON_RESTORE_DEFAULT_AVATAR": "Restore default avatar"
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "Restore default avatar",
+        "TEXT_IMAGE_TOO_LARGE": "This image is too large. Please choose a smaller one",
+        "TEXT_UPLOAD_FAILED": "Failed to process the image. Please try another one"
       },
       "PROFILE_NAME_SHEET": {
         "TEXT_TITLE": "Profile name",
@@ -53,7 +55,8 @@
         "TEXT_NEW_PASSWORD": "New password",
         "TEXT_ENTER_NEW_PASSWORD": "Enter your new password",
         "TEXT_CONFIRM_NEW_PASSWORD": "Confirm new password",
-        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Repeat your new password"
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Repeat your new password",
+        "TEXT_PASSWORD_CHANGED": "Your password has been changed"
       },
       "DEFAULT_MODEL_SHEET": {
         "TEXT_TITLE": "Default model",
@@ -65,9 +68,11 @@
         "TEXT_LABEL": "Default system prompt"
       },
       "CONTACT_SUPPORT_SHEET": {
-        "TEXT_TITLE": "Contact support",
-        "TEXT_MESSAGE_PLACEHOLDER": "Your message",
-        "BUTTON_ATTACH": "Attach screenshots or video"
+        "TEXT_REPORT_BUG": "Report a bug",
+        "TEXT_YOUR_MESSAGE": "Your message",
+        "TEXT_MESSAGE_SENT": "Thank you for your feedback! Your message has been sent successfully",
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Attach screenshots or video",
+        "TEXT_ATTACHMENTS_LIMIT_REACHED": "You can attach up to {{count}} files"
       },
       "LANGUAGE_SHEET": {
         "TEXT_TITLE": "Language"

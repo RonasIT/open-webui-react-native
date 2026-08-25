@@ -1,5 +1,5 @@
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
-import { ReactElement } from 'react';
+import { ReactElement, useMemo } from 'react';
 import {
   AppPressable,
   AppText,
@@ -8,7 +8,7 @@ import {
   Icon,
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { AIModel, modelsApi } from '@open-webui-react-native/shared/data-access/api';
+import { AIModel, getSelectableModels, modelsApi } from '@open-webui-react-native/shared/data-access/api';
 
 type SearchModelViewProps = Omit<FullScreenSearchModalProps<AIModel>, 'searchPlaceholder' | 'data' | 'renderTrigger'>;
 
@@ -17,6 +17,9 @@ export function SearchModelView({ selectedItemId, ...props }: SearchModelViewPro
 
   const { data: models } = modelsApi.useGetModels();
 
+  const selectableModels = useMemo(() => getSelectableModels(models), [models]);
+
+  //NOTE Resolved from the full list, so a chat started on a hidden model still shows its name
   const selectedModelName = models?.find((model) => model.id === selectedItemId)?.name;
 
   const renderTrigger = ({ onPress }: { onPress: () => void }): ReactElement => (
@@ -31,7 +34,7 @@ export function SearchModelView({ selectedItemId, ...props }: SearchModelViewPro
   return (
     <View className='pb-[51px] items-center'>
       <FullScreenSearchModal
-        data={models || []}
+        data={selectableModels}
         selectedItemId={selectedItemId}
         renderTrigger={renderTrigger}
         searchPlaceholder={translate('TEXT_SEARCH_MODEL')}

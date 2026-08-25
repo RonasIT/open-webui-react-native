@@ -18,7 +18,7 @@
       "TEXT_AVATAR": "Аватар",
       "TEXT_CHANGE_PASSWORD": "Изменить пароль",
       "TEXT_LOGOUT": "Выйти",
-      "TEXT_CONTACT_SUPPORT": "Связаться с поддержкой",
+      "TEXT_REPORT_A_BUG": "Сообщить об ошибке",
       "TEXT_RATE_APP": "Оценить приложение",
       "TEXT_ARCHIVED_CHATS": "Архивные чаты",
       "TEXT_EXPORT_ALL_CHATS": "Экспортировать все чаты",
@@ -40,7 +40,9 @@
       "PROFILE_AVATAR_SHEET": {
         "TEXT_TITLE": "Аватар профиля",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "Загрузить изображение профиля",
-        "BUTTON_RESTORE_DEFAULT_AVATAR": "Вернуть аватар по умолчанию"
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "Вернуть аватар по умолчанию",
+        "TEXT_IMAGE_TOO_LARGE": "Изображение слишком большое. Выберите файл меньшего размера",
+        "TEXT_UPLOAD_FAILED": "Не удалось обработать изображение. Попробуйте выбрать другое"
       },
       "PROFILE_NAME_SHEET": {
         "TEXT_TITLE": "Имя профиля",
@@ -53,7 +55,8 @@
         "TEXT_NEW_PASSWORD": "Новый пароль",
         "TEXT_ENTER_NEW_PASSWORD": "Введите новый пароль",
         "TEXT_CONFIRM_NEW_PASSWORD": "Подтвердите новый пароль",
-        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Повторите новый пароль"
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Повторите новый пароль",
+        "TEXT_PASSWORD_CHANGED": "Пароль успешно изменён"
       },
       "DEFAULT_MODEL_SHEET": {
         "TEXT_TITLE": "Модель по умолчанию",
@@ -65,9 +68,11 @@
         "TEXT_LABEL": "Системный промпт по умолчанию"
       },
       "CONTACT_SUPPORT_SHEET": {
-        "TEXT_TITLE": "Связаться с поддержкой",
-        "TEXT_MESSAGE_PLACEHOLDER": "Ваше сообщение",
-        "BUTTON_ATTACH": "Прикрепить скриншоты или видео"
+        "TEXT_REPORT_BUG": "Сообщить об ошибке",
+        "TEXT_YOUR_MESSAGE": "Введите сообщение",
+        "TEXT_MESSAGE_SENT": "Спасибо за отзыв! Ваше сообщение успешно отправлено",
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Прикрепить скриншот или видео",
+        "TEXT_ATTACHMENTS_LIMIT_REACHED": "Можно прикрепить не более {{count}} вложений"
       },
       "LANGUAGE_SHEET": {
         "TEXT_TITLE": "Язык"

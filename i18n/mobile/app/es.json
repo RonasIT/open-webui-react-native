@@ -18,7 +18,7 @@
       "TEXT_AVATAR": "Avatar",
       "TEXT_CHANGE_PASSWORD": "Cambiar contraseña",
       "TEXT_LOGOUT": "Cerrar sesión",
-      "TEXT_CONTACT_SUPPORT": "Contactar con soporte",
+      "TEXT_REPORT_A_BUG": "Informar un error",
       "TEXT_RATE_APP": "Valorar la aplicación",
       "TEXT_ARCHIVED_CHATS": "Chats archivados",
       "TEXT_EXPORT_ALL_CHATS": "Exportar todos los chats",
@@ -40,7 +40,9 @@
       "PROFILE_AVATAR_SHEET": {
         "TEXT_TITLE": "Avatar del perfil",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "Subir imagen de perfil",
-        "BUTTON_RESTORE_DEFAULT_AVATAR": "Restaurar avatar predeterminado"
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "Restaurar avatar predeterminado",
+        "TEXT_IMAGE_TOO_LARGE": "Esta imagen es demasiado grande. Elige una más pequeña",
+        "TEXT_UPLOAD_FAILED": "No se pudo procesar la imagen. Prueba con otra"
       },
       "PROFILE_NAME_SHEET": {
         "TEXT_TITLE": "Nombre del perfil",
@@ -53,7 +55,8 @@
         "TEXT_NEW_PASSWORD": "Nueva contraseña",
         "TEXT_ENTER_NEW_PASSWORD": "Introduce tu nueva contraseña",
         "TEXT_CONFIRM_NEW_PASSWORD": "Confirmar nueva contraseña",
-        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Repite tu nueva contraseña"
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Repite tu nueva contraseña",
+        "TEXT_PASSWORD_CHANGED": "Tu contraseña ha sido cambiada"
       },
       "DEFAULT_MODEL_SHEET": {
         "TEXT_TITLE": "Modelo predeterminado",
@@ -65,9 +68,11 @@
         "TEXT_LABEL": "Prompt de sistema predeterminado"
       },
       "CONTACT_SUPPORT_SHEET": {
-        "TEXT_TITLE": "Contactar con soporte",
-        "TEXT_MESSAGE_PLACEHOLDER": "Tu mensaje",
-        "BUTTON_ATTACH": "Adjuntar capturas de pantalla o vídeo"
+        "TEXT_REPORT_BUG": "Informar un error",
+        "TEXT_YOUR_MESSAGE": "Tu mensaje",
+        "TEXT_MESSAGE_SENT": "¡Gracias por tus comentarios! Tu mensaje se ha enviado correctamente",
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Adjuntar capturas de pantalla o video",
+        "TEXT_ATTACHMENTS_LIMIT_REACHED": "Puedes adjuntar hasta {{count}} archivos"
       },
       "LANGUAGE_SHEET": {
         "TEXT_TITLE": "Idioma"

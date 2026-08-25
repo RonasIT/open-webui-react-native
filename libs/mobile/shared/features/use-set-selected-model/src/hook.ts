@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import {
   appConfigurationApi,
   chatApi,
+  isModelSelectable,
   isTemporaryChatId,
   modelsApi,
   usersApi,
@@ -47,7 +48,9 @@ export const useSetSelectedModel = (chatId?: string): UseSetSelectedModelResult 
       chatId && chat?.chat.models?.[0],
       settings?.ui.models?.[0],
       ...(config?.defaultModels?.split(',') ?? []),
-      models[0].id,
+      //NOTE Explicit candidates above are honoured even when hidden, but the implicit fallback
+      //NOTE should not start a chat on a model the picker does not offer
+      (models.find(isModelSelectable) ?? models[0]).id,
     ].filter(Boolean);
 
     for (const candidateId of modelCandidatesIds) {

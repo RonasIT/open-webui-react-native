@@ -13,6 +13,7 @@ import {
   SheetHeader,
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { authApi, UpdateProfileRequest } from '@open-webui-react-native/shared/data-access/api';
 import { ProfileNameFormSchema } from '../../forms';
 
 export type ProfileNameSheetMethods = {
@@ -23,14 +24,17 @@ export type ProfileNameSheetRef = ForwardedRef<ProfileNameSheetMethods>;
 
 export type ProfileNameSheetProps = Partial<Omit<AppBottomSheetPropsType, 'ref'>> & {
   name?: string;
+  avatarUrl?: string;
   ref?: ProfileNameSheetRef;
 };
 
-export function ProfileNameSheet({ name, ref, ...props }: ProfileNameSheetProps): ReactElement {
+export function ProfileNameSheet({ name, avatarUrl, ref, ...props }: ProfileNameSheetProps): ReactElement {
   const translate = useTranslation('APP.SETTINGS_SCREEN.PROFILE_NAME_SHEET');
   const { bottom } = useSafeAreaInsets();
   const sheetRef = useRef<BottomSheetModal>(null);
   const nameInputRef = useRef<TextInput>(null);
+
+  const { mutate: updateProfile, isPending } = authApi.useUpdateProfile();
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: new ProfileNameFormSchema(),
@@ -53,6 +57,22 @@ export function ProfileNameSheet({ name, ref, ...props }: ProfileNameSheetProps)
   //NOTE: Autofocus causes scrolling to an incorrect position
   const handleOpen = (): void => nameInputRef.current?.focus();
 
+  const handleConfirmPress = handleSubmit((values) => {
+    if (isPending) {
+      return;
+    }
+
+    if (name === undefined) {
+      closeSheet();
+
+      return;
+    }
+
+    updateProfile(new UpdateProfileRequest({ name: values.name, profileImageUrl: avatarUrl || '' }), {
+      onSuccess: closeSheet,
+    });
+  });
+
   return (
     <AppBottomSheet
       {...props}
@@ -66,7 +86,8 @@ export function ProfileNameSheet({ name, ref, ...props }: ProfileNameSheetProps)
           <SheetHeader
             title={translate('TEXT_TITLE')}
             onGoBack={closeSheet}
-            onConfirmPress={handleSubmit(closeSheet)}
+            onConfirmPress={handleConfirmPress}
+            confirmButtonProps={{ isLoading: isPending, disabled: isPending }}
           />
           <AppBottomSheetKeyboardAwareScrollView>
             <View className='pt-8 gap-16' style={{ paddingBottom: bottom + 24 }}>

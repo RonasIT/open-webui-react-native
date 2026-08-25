@@ -25,6 +25,13 @@ export function useAttachedFiles(): typeof result {
         mimeType: ImageMimeType.JPEG,
         uri: compressed,
         base64: await fileSystemService.convertToBase64(compressed),
+        fileName: image.fileName,
+      };
+    } else if (!image.base64) {
+      // NOTE: expo-image-picker only base64-encodes images, not videos, so videos need to be read from disk
+      processed = {
+        ...image,
+        base64: await fileSystemService.convertToBase64(image.uri),
       };
     }
 

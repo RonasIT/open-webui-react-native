@@ -15,7 +15,9 @@ export class ChangePasswordFormSchema {
   public static get validationSchema(): Yup.ObjectSchema<ChangePasswordFormSchema> {
     return Yup.object().shape({
       currentPassword: Yup.string().required(i18n.t('SHARED.VALIDATION.TEXT_REQUIRED_CURRENT_PASSWORD')),
-      newPassword: Yup.string().required(i18n.t('SHARED.VALIDATION.TEXT_REQUIRED_NEW_PASSWORD')),
+      newPassword: Yup.string()
+        .required(i18n.t('SHARED.VALIDATION.TEXT_REQUIRED_NEW_PASSWORD'))
+        .min(8, i18n.t('SHARED.VALIDATION.TEXT_PASSWORD_TOO_SHORT')),
       confirmPassword: Yup.string()
         .required(i18n.t('SHARED.VALIDATION.TEXT_REQUIRED_CONFIRM_PASSWORD'))
         .oneOf([Yup.ref('newPassword')], i18n.t('SHARED.VALIDATION.TEXT_PASSWORDS_DO_NOT_MATCH')),

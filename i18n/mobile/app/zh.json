@@ -18,7 +18,7 @@
       "TEXT_AVATAR": "头像",
       "TEXT_CHANGE_PASSWORD": "修改密码",
       "TEXT_LOGOUT": "退出登录",
-      "TEXT_CONTACT_SUPPORT": "联系客服",
+      "TEXT_REPORT_A_BUG": "报告错误",
       "TEXT_RATE_APP": "为应用评分",
       "TEXT_ARCHIVED_CHATS": "已归档聊天",
       "TEXT_EXPORT_ALL_CHATS": "导出所有聊天",
@@ -40,7 +40,9 @@
       "PROFILE_AVATAR_SHEET": {
         "TEXT_TITLE": "个人资料头像",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "上传头像",
-        "BUTTON_RESTORE_DEFAULT_AVATAR": "恢复默认头像"
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "恢复默认头像",
+        "TEXT_IMAGE_TOO_LARGE": "图片太大,请选择较小的图片",
+        "TEXT_UPLOAD_FAILED": "图片处理失败,请尝试其他图片"
       },
       "PROFILE_NAME_SHEET": {
         "TEXT_TITLE": "个人资料名称",
@@ -53,7 +55,8 @@
         "TEXT_NEW_PASSWORD": "新密码",
         "TEXT_ENTER_NEW_PASSWORD": "请输入新密码",
         "TEXT_CONFIRM_NEW_PASSWORD": "确认新密码",
-        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "请再次输入新密码"
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "请再次输入新密码",
+        "TEXT_PASSWORD_CHANGED": "密码已修改"
       },
       "DEFAULT_MODEL_SHEET": {
         "TEXT_TITLE": "默认模型",
@@ -65,9 +68,11 @@
         "TEXT_LABEL": "默认系统提示词"
       },
       "CONTACT_SUPPORT_SHEET": {
-        "TEXT_TITLE": "联系客服",
-        "TEXT_MESSAGE_PLACEHOLDER": "您的留言",
-        "BUTTON_ATTACH": "附加截图或视频"
+        "TEXT_REPORT_BUG": "报告错误",
+        "TEXT_YOUR_MESSAGE": "您的消息",
+        "TEXT_MESSAGE_SENT": "感谢您的反馈！您的消息已成功发送",
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "添加截图或视频",
+        "TEXT_ATTACHMENTS_LIMIT_REACHED": "最多只能添加 {{count}} 个附件"
       },
       "LANGUAGE_SHEET": {
         "TEXT_TITLE": "语言"

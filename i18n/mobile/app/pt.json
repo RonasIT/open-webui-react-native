@@ -18,7 +18,7 @@
       "TEXT_AVATAR": "Avatar",
       "TEXT_CHANGE_PASSWORD": "Alterar senha",
       "TEXT_LOGOUT": "Sair",
-      "TEXT_CONTACT_SUPPORT": "Falar com o suporte",
+      "TEXT_REPORT_A_BUG": "Reportar um bug",
       "TEXT_RATE_APP": "Avaliar o aplicativo",
       "TEXT_ARCHIVED_CHATS": "Chats arquivados",
       "TEXT_EXPORT_ALL_CHATS": "Exportar todos os chats",
@@ -40,7 +40,9 @@
       "PROFILE_AVATAR_SHEET": {
         "TEXT_TITLE": "Avatar do perfil",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "Enviar imagem de perfil",
-        "BUTTON_RESTORE_DEFAULT_AVATAR": "Restaurar avatar padrão"
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "Restaurar avatar padrão",
+        "TEXT_IMAGE_TOO_LARGE": "Esta imagem é muito grande. Escolha uma menor",
+        "TEXT_UPLOAD_FAILED": "Falha ao processar a imagem. Tente outra"
       },
       "PROFILE_NAME_SHEET": {
         "TEXT_TITLE": "Nome do perfil",
@@ -53,7 +55,8 @@
         "TEXT_NEW_PASSWORD": "Nova senha",
         "TEXT_ENTER_NEW_PASSWORD": "Digite sua nova senha",
         "TEXT_CONFIRM_NEW_PASSWORD": "Confirmar nova senha",
-        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Repita sua nova senha"
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Repita sua nova senha",
+        "TEXT_PASSWORD_CHANGED": "Sua senha foi alterada"
       },
       "DEFAULT_MODEL_SHEET": {
         "TEXT_TITLE": "Modelo padrão",
@@ -65,9 +68,11 @@
         "TEXT_LABEL": "Prompt de sistema padrão"
       },
       "CONTACT_SUPPORT_SHEET": {
-        "TEXT_TITLE": "Falar com o suporte",
-        "TEXT_MESSAGE_PLACEHOLDER": "Sua mensagem",
-        "BUTTON_ATTACH": "Anexar capturas de tela ou vídeo"
+        "TEXT_REPORT_BUG": "Reportar um bug",
+        "TEXT_YOUR_MESSAGE": "Sua mensagem",
+        "TEXT_MESSAGE_SENT": "Obrigado pelo seu feedback! Sua mensagem foi enviada com sucesso",
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Anexar capturas de tela ou vídeo",
+        "TEXT_ATTACHMENTS_LIMIT_REACHED": "Você pode anexar até {{count}} arquivos"
       },
       "LANGUAGE_SHEET": {
         "TEXT_TITLE": "Idioma"

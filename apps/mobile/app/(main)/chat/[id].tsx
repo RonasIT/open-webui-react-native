@@ -22,12 +22,17 @@ import {
   navigationConfig,
   useInitialNavigation,
 } from '@open-webui-react-native/mobile/shared/utils/navigation';
-import { chatApi, isTemporaryChatId, modelsApi } from '@open-webui-react-native/shared/data-access/api';
+import {
+  chatApi,
+  getSelectableModels,
+  isTemporaryChatId,
+  modelsApi,
+} from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { useNavigateOnce } from '@open-webui-react-native/shared/utils/navigation';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { useNavigationContainerRef, usePathname, useLocalSearchParams, router } from 'expo-router';
-import { ReactElement, useCallback, useRef } from 'react';
+import { ReactElement, useCallback, useMemo, useRef } from 'react';
 
 export default function ChatScreen(): ReactElement {
   const translate = useTranslation('CHAT.CHAT_SCREEN');
@@ -46,6 +51,8 @@ export default function ChatScreen(): ReactElement {
   // NOTE: Temporary chats are never persisted, so there's nothing to fetch — read the client-seeded cache only.
   const { data: chat, isLoading: isChatLoading } = chatApi.useGet(id, { enabled: !isTemporaryChat });
   const { modelId, modelName, onSelectModel } = useSetSelectedModel(id);
+
+  const selectableModels = useMemo(() => getSelectableModels(models), [models]);
 
   const handleGoBackPress = (): void => router.back();
 
@@ -86,7 +93,7 @@ export default function ChatScreen(): ReactElement {
                   </View>
                 )}
                 <FullScreenSearchModal
-                  data={models || []}
+                  data={selectableModels}
                   renderTrigger={renderTrigger}
                   selectedItemId={modelId}
                   onSelectItem={onSelectModel}
