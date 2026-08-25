@@ -202,9 +202,6 @@
       "@open-webui-react-native/mobile/shared/features/use-audio-recorder": [
         "libs/mobile/shared/features/use-audio-recorder/src/index.ts"
       ],
-      "@open-webui-react-native/mobile/shared/features/use-default-system-prompt": [
-        "libs/mobile/shared/features/use-default-system-prompt/src/index.ts"
-      ],
       "@open-webui-react-native/mobile/shared/features/use-dictate-mode": [
         "libs/mobile/shared/features/use-dictate-mode/src/index.ts"
       ],

@@ -1,8 +1,12 @@
 import { uniqBy } from 'lodash-es';
 import { AttachedFile, FileType, Role } from '@open-webui-react-native/shared/data-access/common';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
+import { usersApiConfig } from '../../users/config';
+import { UserSettings } from '../../users/models';
+import { chatQueriesKeys } from '../chat-queries-keys';
 import { backgroundTasksConfig } from '../configs';
 import { ChatGenerationOption } from '../enums';
-import { ChatMessage, ChatMessageContent, CompleteChatRequest, Features, Message } from '../models';
+import { ChatMessage, ChatMessageContent, ChatResponse, CompleteChatRequest, Features, Message } from '../models';
 
 export interface PrepareCompleteChatPayloadArgs {
   chatId: string;
@@ -16,9 +20,6 @@ export interface PrepareCompleteChatPayloadArgs {
   userMessage?: Message;
   // Set only for "Continue Response": id of the existing assistant message to keep and extend.
   assistantMessageId?: string;
-  // The user's default system prompt (Settings > General). Prepended to every completion
-  // request rather than persisted into chat history, since the full history is resent each call.
-  systemPrompt?: string;
 }
 
 export function prepareCompleteChatPayload({
@@ -30,15 +31,22 @@ export function prepareCompleteChatPayload({
   generationOptions,
   userMessage,
   assistantMessageId,
-  systemPrompt,
 }: PrepareCompleteChatPayloadArgs): CompleteChatRequest {
   const prepareChatMessages = (): Array<ChatMessage> => {
-    const trimmedSystemPrompt = systemPrompt?.trim();
-    const systemMessage = trimmedSystemPrompt
+    const chatResponse = queryClient.getQueryData<ChatResponse>(chatQueriesKeys.get(chatId).queryKey);
+    const chatSystemPrompt = (chatResponse?.chat.params?.system as string | undefined)?.trim();
+    const globalSystemPrompt = queryClient
+      .getQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey)
+      ?.ui.system?.trim();
+    // The user's default system prompt (Settings > General). Prepended to every completion
+    // request rather than persisted into chat history, since the full history is resent each call.
+    // Chat system prompt overrides the global system prompt.
+    const systemPrompt = chatSystemPrompt || globalSystemPrompt;
+    const systemMessage = systemPrompt
       ? [
           new ChatMessage({
             role: Role.SYSTEM,
-            content: [new ChatMessageContent({ type: 'text', text: trimmedSystemPrompt })],
+            content: [new ChatMessageContent({ type: 'text', text: systemPrompt })],
           }),
         ]
       : [];

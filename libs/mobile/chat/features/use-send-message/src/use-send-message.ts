@@ -1,4 +1,3 @@
-import { useDefaultSystemPrompt } from '@open-webui-react-native/mobile/shared/features/use-default-system-prompt';
 import {
   ChatGenerationOption,
   ChatResponse,
@@ -16,7 +15,6 @@ interface UseSendMessageArgs {
 
 export function useSendMessage({ chatData }: UseSendMessageArgs): typeof result {
   const socketSessionId = socketService.socketSessionId;
-  const systemPrompt = useDefaultSystemPrompt();
 
   const { mutate: completeChat, isPending: isChatCompleting } = chatApi.useCompleteChat();
 
@@ -48,7 +46,6 @@ export function useSendMessage({ chatData }: UseSendMessageArgs): typeof result 
           sessionId: socketSessionId,
           model,
           generationOptions,
-          systemPrompt,
         });
 
         completeChat(completePayload);

@@ -8,7 +8,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AiMessageActions } from '@open-webui-react-native/mobile/chat/features/ai-message-actions';
 import { useManageMessageSiblings } from '@open-webui-react-native/mobile/chat/features/use-manage-messages-siblings';
 import { UserMessageActions } from '@open-webui-react-native/mobile/chat/features/user-message-actions';
-import { useDefaultSystemPrompt } from '@open-webui-react-native/mobile/shared/features/use-default-system-prompt';
 import { useSetSelectedModel } from '@open-webui-react-native/mobile/shared/features/use-set-selected-model';
 import { AppFlashList, AppKeyboardChatScrollView, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { ChatScreenParams } from '@open-webui-react-native/mobile/shared/utils/navigation';
@@ -74,7 +73,6 @@ export default function ChatMessagesList({
   const { mutate: completeChat } = chatApi.useCompleteChat();
   const { id }: ChatScreenParams = useLocalSearchParams();
   const { modelId } = useSetSelectedModel(id);
-  const systemPrompt = useDefaultSystemPrompt();
 
   const renderScrollComponent = useCallback((props: ScrollViewProps) => <AppKeyboardChatScrollView {...props} />, []);
 
@@ -183,7 +181,6 @@ export default function ChatMessagesList({
       model: modelId,
       userMessage,
       assistantMessageId: messageId,
-      systemPrompt,
     });
     completeChat(completePayload);
   };

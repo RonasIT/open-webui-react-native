@@ -7,7 +7,7 @@
 ![License](https://img.shields.io/badge/license-GPL%20v3-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20Android-lightgrey.svg)
 ![React Native](https://img.shields.io/badge/React%20Native-0.79-blue.svg)
-![Open WebUI](https://img.shields.io/badge/Open%20WebUI-0.6.34+-green.svg)
+![Open WebUI](https://img.shields.io/badge/Open%20WebUI-0.11.0+-green.svg)
 
 **Professional mobile client for Open WebUI** – Access your self-hosted AI assistant anywhere, anytime
 
@@ -29,7 +29,7 @@
 
 ## 📱 Overview
 
-**Open MobileUI** is a production-ready, cross-platform mobile application that brings the full power of [Open WebUI](https://github.com/open-webui/open-webui) to iOS and Android devices. Built with React Native by [Ronas IT](https://ronasit.com), Open MobileUI transforms your self-hosted AI assistant into a native mobile experience.
+**Open MobileUI** is a production-ready, cross-platform mobile application that brings the full power of [Open WebUI](https://github.com/open-webui/open-webui) to iOS and Android devices. Built with React Native by [Ronas IT](https://ronasit.com/services/react-native-app-development/?utm_source=github&utm_medium=referral&utm_campaign=open_webui_react_native), Open MobileUI transforms your self-hosted AI assistant into a native mobile experience.
 
 ### Why Choose a Native Mobile App?
 
@@ -142,7 +142,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for how to report issues, set up your dev
 
 For businesses requiring professional support, custom development, or enterprise features:
 
-- 🌐 **Website**: [Ronas IT](https://ronasit.com)
+- 🌐 **Website**: [Ronas IT](https://ronasit.com?utm_source=github&utm_medium=referral&utm_campaign=open_webui_react_native)
 - 📧 **Contact**: Reach out through our website for enterprise inquiries
 - 🏢 **Services**: Custom mobile development, consulting, and dedicated support
 
@@ -155,7 +155,7 @@ A: Yes — it's open source under GPL v3. Commercial use is allowed; see [Licens
 A: Yes, this app connects to your self-hosted Open WebUI deployment. See [Open WebUI Installation](https://docs.openwebui.com/) for setup instructions.
 
 **Q: How do I report a security vulnerability?**
-A: Please email security concerns directly to our team through [Ronas IT](https://ronasit.com) rather than opening a public issue.
+A: Please email security concerns directly to our team through [Ronas IT](https://ronasit.com?utm_source=github&utm_medium=referral&utm_campaign=open_webui_react_native) rather than opening a public issue.
 
 ---
 
@@ -163,7 +163,7 @@ A: Please email security concerns directly to our team through [Ronas IT](https:
 
 This project is licensed under the **GNU General Public License v3 (GPL v3)**.
 
-**Note**: If you need to use this code in a proprietary application without GPL v3 obligations, please contact [Ronas IT](https://ronasit.com) to discuss alternative licensing options.
+**Note**: If you need to use this code in a proprietary application without GPL v3 obligations, please contact [Ronas IT](https://ronasit.com?utm_source=github&utm_medium=referral&utm_campaign=open_webui_react_native) to discuss alternative licensing options.
 
 ## 🔒 Privacy
 
@@ -181,10 +181,10 @@ Open MobileUI is designed with privacy in mind. All your conversations and data 
 
 <div align="center">
 
-**Built with ❤️ by [Ronas IT](https://ronasit.com)**
+**Built with ❤️ by [Ronas IT](https://ronasit.com?utm_source=github&utm_medium=referral&utm_campaign=open_webui_react_native)**
 
 _Professional mobile development services • Open source contributors_
 
-[Website](https://ronasit.com) • [GitHub](https://github.com/RonasIT) • [Email](mailto:hello@ronasit.com)
+[Website](https://ronasit.com?utm_source=github&utm_medium=referral&utm_campaign=open_webui_react_native) • [GitHub](https://github.com/RonasIT) • [Email](mailto:hello@ronasit.com)
 
 </div>

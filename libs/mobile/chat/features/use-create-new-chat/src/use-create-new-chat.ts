@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { useDefaultSystemPrompt } from '@open-webui-react-native/mobile/shared/features/use-default-system-prompt';
 import {
   chatApi,
   ChatGenerationOption,
@@ -19,7 +18,6 @@ interface UseCreateNewChatArgs {
 
 export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof result {
   const socketSessionId = socketService.socketSessionId;
-  const systemPrompt = useDefaultSystemPrompt();
 
   const { mutate: completeChat, isPending: isChatCompleting } = chatApi.useCompleteChat();
 
@@ -62,7 +60,6 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
           sessionId: socketSessionId,
           model,
           generationOptions,
-          systemPrompt,
         });
 
         completeChat(completePayload);

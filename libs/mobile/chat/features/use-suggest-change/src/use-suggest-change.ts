@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 import { Control, useForm, UseFormHandleSubmit } from 'react-hook-form';
 import uuid from 'react-native-uuid';
-import { useDefaultSystemPrompt } from '@open-webui-react-native/mobile/shared/features/use-default-system-prompt';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 import {
   chatApi,
@@ -36,7 +35,6 @@ export interface UseSuggestChangeReturn {
 
 export const useSuggestChange = ({ chat, modelId }: UseSuggestChangeProps): UseSuggestChangeReturn => {
   const [suggestingMessageId, setSuggestingMessageId] = useState<string>();
-  const systemPrompt = useDefaultSystemPrompt();
 
   const { control, handleSubmit, reset } = useForm<FormValues<SuggestChangeSchema>>({
     defaultValues: { suggestionInputValue: '' },
@@ -96,7 +94,6 @@ export const useSuggestChange = ({ chat, modelId }: UseSuggestChangeProps): UseS
       messages: regenerationMessages,
       sessionId: socketService.socketSessionId,
       model: modelId,
-      systemPrompt,
     });
 
     completeChat(payload);
