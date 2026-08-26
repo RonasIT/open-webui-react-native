@@ -8,7 +8,7 @@ import { speechStreamingService } from '@open-webui-react-native/mobile/shared/d
 import { useDictateMode } from '@open-webui-react-native/mobile/shared/features/use-dictate-mode';
 import { colors, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { AppSafeAreaView, AppText, AppToast, IconButton, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { chatApi } from '@open-webui-react-native/shared/data-access/api';
+import { chatApi, isTemporaryChatId } from '@open-webui-react-native/shared/data-access/api';
 import { ImageData as ChatImageData } from '@open-webui-react-native/shared/data-access/common';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { CameraPreview, CameraPreviewMethods, Loader, SpeechListener } from './components';
@@ -65,7 +65,10 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     }
   };
 
-  const { data: chat, isLoading } = chatApi.useGet(chatId as string, { enabled: !!chatId });
+  // NOTE: Temporary chats are never persisted, so there's nothing to fetch — read the client-seeded cache only.
+  const { data: chat, isLoading } = chatApi.useGet(chatId as string, {
+    enabled: !!chatId && !isTemporaryChatId(chatId),
+  });
   const { sendMessage, isLoading: isSending } = useSendMessage({ chatData: chat });
   const { startChatCreation, isLoading: isCreating } = useCreateNewChat({ onSuccess: handleChatCreated });
 

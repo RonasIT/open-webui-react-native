@@ -2,11 +2,13 @@
   "CHAT": {
     "CHAT_SCREEN": {
       "TEXT_LOADING": "加载中...",
-      "TEXT_SELECT_A_MODEL": "选择模型"
+      "TEXT_SELECT_A_MODEL": "选择模型",
+      "TEXT_TEMPORARY_CHAT": "临时聊天"
     },
     "CHAT": {
       "TEXT_INPUT_PLACEHOLDER": "发送消息",
-      "TEXT_MODEL_NOT_SELECTED": "未选择模型"
+      "TEXT_MODEL_NOT_SELECTED": "未选择模型",
+      "TEXT_MESSAGE_QUEUED": "消息已加入队列"
     },
     "CHAT_MENU_LIST": {
       "PINNED_CHAT_LIST": {

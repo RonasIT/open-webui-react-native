@@ -21,11 +21,29 @@ function useGetUserSettings(): UseQueryResult<UserSettings, AxiosError<ApiErrorD
   });
 }
 
+interface UpdateUserSettingsContext {
+  previousSettings?: UserSettings;
+}
+
 function useUpdateUserSettings(
-  props?: UseMutationOptions<UserSettings, AxiosError<ApiErrorData>, UserSettings>,
-): UseMutationResult<UserSettings, AxiosError<ApiErrorData>, UserSettings> {
-  return useMutation<UserSettings, AxiosError<ApiErrorData>, UserSettings>({
+  props?: UseMutationOptions<UserSettings, AxiosError<ApiErrorData>, UserSettings, UpdateUserSettingsContext>,
+): UseMutationResult<UserSettings, AxiosError<ApiErrorData>, UserSettings, UpdateUserSettingsContext> {
+  return useMutation<UserSettings, AxiosError<ApiErrorData>, UserSettings, UpdateUserSettingsContext>({
     mutationFn: usersService.updateUserSettings,
+    onMutate: async (settings) => {
+      await queryClient.cancelQueries({ queryKey: usersApiConfig.getUserSettingsQueryKey });
+
+      const previousSettings = queryClient.getQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey);
+
+      queryClient.setQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey, settings);
+
+      return { previousSettings };
+    },
+    onError: (_error, _settings, context) => {
+      if (context?.previousSettings) {
+        queryClient.setQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey, context.previousSettings);
+      }
+    },
     onSuccess: (settings) => {
       queryClient.setQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey, settings);
     },

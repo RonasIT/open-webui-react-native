@@ -15,13 +15,19 @@ import {
   Icon,
   FullScreenSearchModal,
   IconButton,
+  View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import {
   ChatScreenParams,
   navigationConfig,
   useInitialNavigation,
 } from '@open-webui-react-native/mobile/shared/utils/navigation';
-import { chatApi, getSelectableModels, modelsApi } from '@open-webui-react-native/shared/data-access/api';
+import {
+  chatApi,
+  getSelectableModels,
+  isTemporaryChatId,
+  modelsApi,
+} from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { useNavigateOnce } from '@open-webui-react-native/shared/utils/navigation';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
@@ -39,9 +45,11 @@ export default function ChatScreen(): ReactElement {
   const navigateToClonedChat = (id: string): void => navigateOnce(navigationConfig.main.chat.view({ id }));
 
   const isOfflineMode = useSelector(appState$.isOfflineMode);
+  const isTemporaryChat = isTemporaryChatId(id);
 
   const { data: models, isLoading: isModelsLoading } = modelsApi.useGetModels();
-  const { data: chat, isLoading: isChatLoading } = chatApi.useGet(id);
+  // NOTE: Temporary chats are never persisted, so there's nothing to fetch — read the client-seeded cache only.
+  const { data: chat, isLoading: isChatLoading } = chatApi.useGet(id, { enabled: !isTemporaryChat });
   const { modelId, modelName, onSelectModel } = useSetSelectedModel(id);
 
   const selectableModels = useMemo(() => getSelectableModels(models), [models]);
@@ -75,13 +83,23 @@ export default function ChatScreen(): ReactElement {
             isLoading && !modelId ? (
               translate('TEXT_LOADING')
             ) : (
-              <FullScreenSearchModal
-                data={selectableModels}
-                renderTrigger={renderTrigger}
-                selectedItemId={modelId}
-                onSelectItem={onSelectModel}
-                searchPlaceholder={translate('TEXT_SELECT_A_MODEL')}
-              />
+              <View className='items-center'>
+                {isTemporaryChat && (
+                  <View className='flex-row items-center gap-4'>
+                    <Icon name='eyeClosed' className='size-12 shrink-0 color-text-secondary' />
+                    <AppText className='text-xs-sm sm:text-xs text-text-secondary'>
+                      {translate('TEXT_TEMPORARY_CHAT')}
+                    </AppText>
+                  </View>
+                )}
+                <FullScreenSearchModal
+                  data={selectableModels}
+                  renderTrigger={renderTrigger}
+                  selectedItemId={modelId}
+                  onSelectItem={onSelectModel}
+                  searchPlaceholder={translate('TEXT_SELECT_A_MODEL')}
+                />
+              </View>
             )
           }
           onGoBack={handleGoBackPress}
@@ -89,8 +107,11 @@ export default function ChatScreen(): ReactElement {
             <IconButton
               className='p-0'
               iconName='moreDots'
+              // NOTE: Temporary chats are never persisted — none of the chat actions (pin, rename,
+              // clone, archive, delete, share, move-to-folder) are meaningful for one.
+              disabled={!chat || isTemporaryChat}
               onPress={() => {
-                if (!chat) return;
+                if (!chat || isTemporaryChat) return;
                 chatActionsSheetRef.current?.present(chat);
               }}
             />

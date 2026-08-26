@@ -1,12 +1,15 @@
 import dayjs from 'dayjs';
 import {
+  Chat,
   chatApi,
   ChatGenerationOption,
   chatQueriesKeys,
   ChatResponse,
+  createTemporaryChatId,
   patchChatList,
   prepareCompleteChatPayload,
   prepareCreateChatPayload,
+  usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import { FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
@@ -23,6 +26,8 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
 
   const { mutate: createNewChat, isPending: isChatCreating } = chatApi.useCreateNewChat();
 
+  const { data: userSettings } = usersApi.useGetUserSettings();
+
   const startChatCreation = (
     prompt: string,
     model: string,
@@ -32,6 +37,38 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
     folderId?: string,
   ): void => {
     const payload = prepareCreateChatPayload({ prompt, model, attachedFiles, attachedImages, folderId });
+
+    // NOTE: Temporary chats are never persisted (no POST /chats/new, no chat-list entry) — they only
+    // exist client-side for this session, matching the Open WebUI web app's "Temporary Chat" behavior.
+    if (userSettings?.ui.temporaryChatByDefault) {
+      const id = createTemporaryChatId();
+      const chatResponse = new ChatResponse({
+        id,
+        title: payload.chat.title,
+        chat: new Chat({ ...payload.chat, id }),
+        createdAt: dayjs(),
+        updatedAt: dayjs(),
+        archived: false,
+        pinned: false,
+        meta: {},
+      });
+
+      queryClient.setQueryData<ChatResponse>(chatQueriesKeys.get(id).queryKey, chatResponse);
+      onSuccess?.(id);
+
+      completeChat(
+        prepareCompleteChatPayload({
+          chatId: id,
+          messageId: chatResponse.chat.history.currentId,
+          messages: chatResponse.chat.messages,
+          sessionId: socketSessionId,
+          model,
+          generationOptions,
+        }),
+      );
+
+      return;
+    }
 
     createNewChat(payload, {
       onSuccess: (data) => {

@@ -2,11 +2,13 @@
   "CHAT": {
     "CHAT_SCREEN": {
       "TEXT_LOADING": "Загрузка...",
-      "TEXT_SELECT_A_MODEL": "Выберите модель"
+      "TEXT_SELECT_A_MODEL": "Выберите модель",
+      "TEXT_TEMPORARY_CHAT": "Временный чат"
     },
     "CHAT": {
       "TEXT_INPUT_PLACEHOLDER": "Отправить сообщение",
-      "TEXT_MODEL_NOT_SELECTED": "Модель не выбрана"
+      "TEXT_MODEL_NOT_SELECTED": "Модель не выбрана",
+      "TEXT_MESSAGE_QUEUED": "Сообщение добавлено в очередь"
     },
     "CHAT_MENU_LIST": {
       "PINNED_CHAT_LIST": {

@@ -1,6 +1,6 @@
 import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
-import { ReactElement, useRef, useState } from 'react';
+import { ReactElement, useRef } from 'react';
 import { Alert } from 'react-native';
 import {
   ContactSupportSheet,
@@ -13,12 +13,16 @@ import { Avatar, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import {
   authApi,
+  chatApi,
   modelsApi,
   UiSettings,
   UserSettings,
   usersApi,
+  usersApiConfig,
 } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
+import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
 import {
   availableLanguages,
   availableMarkdownRenderers,
@@ -44,15 +48,7 @@ import {
   SelectionSheet,
   SelectionSheetMethods,
 } from './components';
-import { SettingsToggles } from './types';
-
-const initialToggles: SettingsToggles = {
-  isWebSearchAlwaysOn: true,
-  isMessageQueueEnabled: true,
-  isChatBubbleUIEnabled: true,
-  isTemporaryChatEnabled: true,
-  isUserMessageMarkdownEnabled: true,
-};
+import { useExportAllChats } from './hooks';
 
 // NOTE: Work in progress, not all features are implemented yet.
 export function Settings(): ReactElement {
@@ -66,10 +62,17 @@ export function Settings(): ReactElement {
   const { data: profile, isError: isProfileError } = authApi.useGetProfile();
   const { isError: isModelsError } = modelsApi.useGetModels();
   const { data: settings, isError: isSettingsError } = usersApi.useGetUserSettings();
-  const { mutate: updateUserSettings } = usersApi.useUpdateUserSettings();
+  const { mutate: updateUserSettings } = usersApi.useUpdateUserSettings({
+    onError: () => ToastService.showError(),
+  });
   const { modelId: defaultModelId, modelName: defaultModelName } = useSetSelectedModel();
-
-  const [toggles, setToggles] = useState(initialToggles);
+  const { mutate: archiveAllChats, isPending: isArchivingAllChats } = chatApi.useArchiveAllChats({
+    onError: () => ToastService.showError(),
+  });
+  const { mutate: deleteAllChats, isPending: isDeletingAllChats } = chatApi.useDeleteAllChats({
+    onError: () => ToastService.showError(),
+  });
+  const { exportAllChats, isExporting: isExportingAllChats } = useExportAllChats();
 
   const profileAvatarSheetRef = useRef<ProfileAvatarSheetMethods>(null);
   const profileNameSheetRef = useRef<ProfileNameSheetMethods>(null);
@@ -79,11 +82,6 @@ export function Settings(): ReactElement {
   const contactSupportSheetRef = useRef<ContactSupportSheetMethods>(null);
   const languageSheetRef = useRef<SelectionSheetMethods>(null);
   const markdownRendererSheetRef = useRef<SelectionSheetMethods>(null);
-
-  const createToggleHandler =
-    (toggle: keyof SettingsToggles) =>
-    (isEnabled: boolean): void =>
-      setToggles((currentToggles) => ({ ...currentToggles, [toggle]: isEnabled }));
 
   const avatarSource = profile?.profileImageUrl ? { uri: profile.profileImageUrl } : undefined;
   const languageLabel = availableLanguages.find(({ code }) => code === locale)?.label;
@@ -95,6 +93,12 @@ export function Settings(): ReactElement {
     : (defaultModelName ?? translate('TEXT_NOT_SET'));
   const defaultSystemPromptValue = isSettingsError ? translate('TEXT_LOAD_ERROR') : settings?.ui.system;
   const profileNameValue = isProfileError ? translate('TEXT_LOAD_ERROR') : profile?.name;
+
+  const isWebSearchAlwaysOnEnabled = settings?.ui.webSearch ?? false;
+  const isMessageQueueEnabled = settings?.ui.enableMessageQueue ?? true;
+  const isChatBubbleUIEnabled = settings?.ui.chatBubble ?? true;
+  const isTemporaryChatByDefaultEnabled = settings?.ui.temporaryChatByDefault ?? false;
+  const isUserMessageMarkdownEnabled = settings?.ui.renderMarkdownInUserMessages ?? true;
 
   const languageItems = availableLanguages.map(({ code, label }) => ({ value: code, label }));
   const markdownRendererItems = availableMarkdownRenderers.map(({ code, labelKey }) => ({
@@ -125,6 +129,20 @@ export function Settings(): ReactElement {
   const handleMarkdownRendererChange = (value: MarkdownRenderer): void => {
     appState$.setMarkdownRenderer(value);
   };
+
+  const createUiSettingToggleHandler =
+    <K extends keyof UiSettings>(key: K) =>
+    (value: UiSettings[K]): void => {
+      // NOTE: Read the latest cached settings (not the `settings` render closure) so two rapid
+      // toggle taps before a re-render don't clobber each other with a stale `ui` snapshot.
+      const latestSettings = queryClient.getQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey);
+
+      if (!latestSettings) {
+        return;
+      }
+
+      updateUserSettings(new UserSettings({ ui: new UiSettings({ ...latestSettings.ui, [key]: value }) }));
+    };
 
   const handleArchivedChatsPress = (): void =>
     isFeatureEnabled(FeatureID.ARCHIVE_CHAT)
@@ -168,6 +186,54 @@ export function Settings(): ReactElement {
       },
     );
   };
+
+  const createChatActionHandler = ({
+    isPending,
+    action,
+    confirm,
+  }: {
+    isPending: boolean;
+    action: () => void;
+    confirm?: { title: string; message: string; confirmButtonStyle?: 'destructive' };
+  }): (() => void) => {
+    const guardedAction = (): void => {
+      if (!isPending) {
+        action();
+      }
+    };
+
+    return (): void => {
+      if (confirm) {
+        alertService.confirm({ ...confirm, onConfirm: guardedAction });
+      } else {
+        guardedAction();
+      }
+    };
+  };
+
+  const handleArchiveAllChatsPress = createChatActionHandler({
+    isPending: isArchivingAllChats,
+    action: archiveAllChats,
+    confirm: {
+      title: translate('TEXT_ARCHIVE_ALL_CHATS_TITLE'),
+      message: translate('TEXT_ARCHIVE_ALL_CHATS_MESSAGE'),
+    },
+  });
+
+  const handleDeleteAllChatsPress = createChatActionHandler({
+    isPending: isDeletingAllChats,
+    action: deleteAllChats,
+    confirm: {
+      title: translate('TEXT_DELETE_ALL_CHATS_TITLE'),
+      message: translate('TEXT_DELETE_ALL_CHATS_MESSAGE'),
+      confirmButtonStyle: 'destructive',
+    },
+  });
+
+  const handleExportAllChatsPress = createChatActionHandler({
+    isPending: isExportingAllChats,
+    action: exportAllChats,
+  });
 
   const generalOptions: Array<SettingsSectionOption> = [
     {
@@ -234,13 +300,13 @@ export function Settings(): ReactElement {
 
   const chatsOptions: Array<SettingsSectionOption> = [
     { label: translate('TEXT_ARCHIVED_CHATS'), iconName: 'archive', onPress: handleArchivedChatsPress },
-    { type: 'action', label: translate('TEXT_EXPORT_ALL_CHATS'), onPress: ToastService.showFeatureNotImplemented },
-    { type: 'action', label: translate('TEXT_ARCHIVE_ALL'), onPress: ToastService.showFeatureNotImplemented },
+    { type: 'action', label: translate('TEXT_EXPORT_ALL_CHATS'), onPress: handleExportAllChatsPress },
+    { type: 'action', label: translate('TEXT_ARCHIVE_ALL'), onPress: handleArchiveAllChatsPress },
     {
       type: 'action',
       label: translate('TEXT_DELETE_ALL'),
       isDanger: true,
-      onPress: ToastService.showFeatureNotImplemented,
+      onPress: handleDeleteAllChatsPress,
     },
   ];
 
@@ -248,8 +314,8 @@ export function Settings(): ReactElement {
     {
       type: 'switch',
       label: translate('TEXT_ALWAYS_ON_WEB_SEARCH'),
-      isEnabled: toggles.isWebSearchAlwaysOn,
-      onValueChange: createToggleHandler('isWebSearchAlwaysOn'),
+      isEnabled: isWebSearchAlwaysOnEnabled,
+      onValueChange: createUiSettingToggleHandler('webSearch'),
     },
     {
       type: 'switch',
@@ -260,26 +326,26 @@ export function Settings(): ReactElement {
     {
       type: 'switch',
       label: translate('TEXT_ENABLE_MESSAGE_QUEUE'),
-      isEnabled: toggles.isMessageQueueEnabled,
-      onValueChange: createToggleHandler('isMessageQueueEnabled'),
+      isEnabled: isMessageQueueEnabled,
+      onValueChange: createUiSettingToggleHandler('enableMessageQueue'),
     },
     {
       type: 'switch',
       label: translate('TEXT_CHAT_BUBBLE_UI'),
-      isEnabled: toggles.isChatBubbleUIEnabled,
-      onValueChange: createToggleHandler('isChatBubbleUIEnabled'),
+      isEnabled: isChatBubbleUIEnabled,
+      onValueChange: createUiSettingToggleHandler('chatBubble'),
     },
     {
       type: 'switch',
       label: translate('TEXT_TEMPORARY_CHAT_BY_DEFAULT'),
-      isEnabled: toggles.isTemporaryChatEnabled,
-      onValueChange: createToggleHandler('isTemporaryChatEnabled'),
+      isEnabled: isTemporaryChatByDefaultEnabled,
+      onValueChange: createUiSettingToggleHandler('temporaryChatByDefault'),
     },
     {
       type: 'switch',
       label: translate('TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE'),
-      isEnabled: toggles.isUserMessageMarkdownEnabled,
-      onValueChange: createToggleHandler('isUserMessageMarkdownEnabled'),
+      isEnabled: isUserMessageMarkdownEnabled,
+      onValueChange: createUiSettingToggleHandler('renderMarkdownInUserMessages'),
     },
     {
       label: translate('TEXT_MARKDOWN_RENDERER'),

@@ -1,7 +1,10 @@
+import { EntityPartial } from '@ronas-it/rtkq-entity-api';
+import { useCallback } from 'react';
 import {
   ChatGenerationOption,
   ChatResponse,
   chatApi,
+  isTemporaryChatId,
   patchChatQueryData,
   prepareCompleteChatPayload,
   prepareSendMessagePayload,
@@ -24,23 +27,23 @@ export function useSendMessage({ chatData }: UseSendMessageArgs): typeof result 
     },
   });
 
-  const sendMessage = (
-    prompt: string,
-    model: string,
-    generationOptions?: Array<ChatGenerationOption>,
-    attachedFiles?: Array<FileData>,
-    attachedImages?: Array<ImageData>,
-  ): void => {
-    if (!chatData) {
-      return;
-    }
+  const sendMessage = useCallback(
+    (
+      prompt: string,
+      model: string,
+      generationOptions?: Array<ChatGenerationOption>,
+      attachedFiles?: Array<FileData>,
+      attachedImages?: Array<ImageData>,
+    ): void => {
+      if (!chatData) {
+        return;
+      }
 
-    const payload = prepareSendMessagePayload({ prompt, chatData, model, attachedFiles, attachedImages });
+      const payload = prepareSendMessagePayload({ prompt, chatData, model, attachedFiles, attachedImages });
 
-    updateChat(payload, {
-      onSuccess: (data) => {
+      const triggerCompletion = (data: EntityPartial<ChatResponse>): void => {
         const completePayload = prepareCompleteChatPayload({
-          chatId: data.id,
+          chatId: data.id!,
           messageId: data.chat!.history.currentId,
           messages: data.chat!.messages,
           sessionId: socketSessionId,
@@ -49,9 +52,23 @@ export function useSendMessage({ chatData }: UseSendMessageArgs): typeof result 
         });
 
         completeChat(completePayload);
-      },
-    });
-  };
+      };
+
+      // NOTE: Temporary chats are never persisted (no POST /chats/{id}) — apply the same optimistic
+      // cache patch `useUpdate`'s onMutate would have done, then trigger completion directly.
+      if (isTemporaryChatId(payload.id)) {
+        patchChatQueryData(payload.id!, payload);
+        triggerCompletion(payload);
+
+        return;
+      }
+
+      updateChat(payload, {
+        onSuccess: triggerCompletion,
+      });
+    },
+    [chatData, socketSessionId, updateChat, completeChat],
+  );
 
   const result = {
     sendMessage,

@@ -3,6 +3,7 @@ import {
   appConfigurationApi,
   chatApi,
   isModelSelectable,
+  isTemporaryChatId,
   modelsApi,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
@@ -24,13 +25,17 @@ export const useSetSelectedModel = (chatId?: string): UseSetSelectedModelResult 
     isLoading: isConfigLoading,
   } = appConfigurationApi.useGetAppConfiguration();
   const { data: models, isSuccess: isModelsSuccess, isLoading: isModelsLoading } = modelsApi.useGetModels();
+  const isTemporaryChat = isTemporaryChatId(chatId);
   const {
     data: chat,
     isSuccess: isChatSuccess,
     isLoading: isChatLoading,
-  } = chatApi.useGet(chatId as string, { enabled: !!chatId });
+  } = chatApi.useGet(chatId as string, { enabled: !!chatId && !isTemporaryChat });
 
-  const isDataReceived = isSettingsSuccess && isConfigSuccess && isModelsSuccess && (!chatId || isChatSuccess);
+  // NOTE: Temporary chats are never persisted, so their useGet query is disabled above (it can't
+  // succeed) — the seeded cache value it still returns is enough, don't wait on isChatSuccess for it.
+  const isDataReceived =
+    isSettingsSuccess && isConfigSuccess && isModelsSuccess && (!chatId || isTemporaryChat || isChatSuccess);
 
   const isLoading = isSettingsLoading || isConfigLoading || isModelsLoading || isChatLoading;
 

@@ -2,11 +2,13 @@
   "CHAT": {
     "CHAT_SCREEN": {
       "TEXT_LOADING": "Loading...",
-      "TEXT_SELECT_A_MODEL": "Select a model"
+      "TEXT_SELECT_A_MODEL": "Select a model",
+      "TEXT_TEMPORARY_CHAT": "Temporary Chat"
     },
     "CHAT": {
       "TEXT_INPUT_PLACEHOLDER": "Send a message",
-      "TEXT_MODEL_NOT_SELECTED": "Model not selected"
+      "TEXT_MODEL_NOT_SELECTED": "Model not selected",
+      "TEXT_MESSAGE_QUEUED": "Message queued"
     },
     "CHAT_MENU_LIST": {
       "PINNED_CHAT_LIST": {
