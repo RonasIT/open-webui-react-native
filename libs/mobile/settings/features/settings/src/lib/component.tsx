@@ -355,7 +355,7 @@ export function Settings(): ReactElement {
   ];
 
   return (
-    <View className='pb-32'>
+    <View className='pb-safe'>
       <View className='py-16 items-center justify-center'>
         <Avatar
           source={avatarSource}
