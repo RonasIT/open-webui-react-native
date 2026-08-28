@@ -16,13 +16,6 @@ import { getApiUrl, getHost } from '@open-webui-react-native/shared/utils/config
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { mobileUserAgent, tokenCaptureScript } from './script';
 
-export type OauthWebViewProps = {
-  isVisible: boolean;
-  provider: Provider;
-  onClose: () => void;
-  onGetToken: (token: string) => void;
-};
-
 // If the token cookie doesn't appear shortly after we land back on Open WebUI,
 // fail loudly instead of leaving the user on a stuck spinner.
 const TOKEN_CAPTURE_TIMEOUT = 6000;
@@ -36,11 +29,18 @@ const getPath = (url: string): string =>
     .split('?')[0]
     .split('#')[0];
 
+export type OauthWebViewProps = {
+  isVisible: boolean;
+  provider: Provider;
+  onClose: () => void;
+  onGetToken: (token: string) => void;
+};
+
 export function OauthWebView({ isVisible, provider, onClose, onGetToken }: OauthWebViewProps): ReactElement {
   const translate = useTranslation('AUTH.SIGN_IN.OAUTH_WEB_VIEW_MODAL');
   const webViewRef = useRef<WebView>(null);
   const isTokenCaptured = useRef(false);
-  const captureTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const captureTokenTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const apiUrl = getApiUrl();
   const apiHost = getHost(apiUrl);
@@ -51,13 +51,13 @@ export function OauthWebView({ isVisible, provider, onClose, onGetToken }: Oauth
   const [isProcessing, setIsProcessing] = useState(false);
 
   const clearCaptureTimeout = (): void => {
-    if (captureTimeout.current) {
-      clearTimeout(captureTimeout.current);
-      captureTimeout.current = null;
+    if (captureTokenTimeout.current) {
+      clearTimeout(captureTokenTimeout.current);
+      captureTokenTimeout.current = null;
     }
   };
 
-  const failFlow = (): void => {
+  const handleFailOauthFlow = (): void => {
     clearCaptureTimeout();
     setIsProcessing(false);
     ToastService.showError(translate('TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE'));
@@ -86,7 +86,7 @@ export function OauthWebView({ isVisible, provider, onClose, onGetToken }: Oauth
 
     // Backend signals OAuth failures by redirecting to `/auth?error=...`.
     if (/[?&]error=/.test(state.url)) {
-      failFlow();
+      handleFailOauthFlow();
 
       return;
     }
@@ -95,9 +95,9 @@ export function OauthWebView({ isVisible, provider, onClose, onGetToken }: Oauth
     webViewRef.current?.injectJavaScript(tokenCaptureScript);
 
     clearCaptureTimeout();
-    captureTimeout.current = setTimeout(() => {
+    captureTokenTimeout.current = setTimeout(() => {
       if (!isTokenCaptured.current) {
-        failFlow();
+        handleFailOauthFlow();
       }
     }, TOKEN_CAPTURE_TIMEOUT);
   };
@@ -111,7 +111,7 @@ export function OauthWebView({ isVisible, provider, onClose, onGetToken }: Oauth
       setIsProcessing(false);
       onGetToken(token);
     } catch {
-      failFlow();
+      handleFailOauthFlow();
     }
   };
 
