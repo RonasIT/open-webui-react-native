@@ -38,11 +38,13 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     slug: process.env.EXPO_PUBLIC_APP_SLUG as string,
     scheme: process.env.EXPO_PUBLIC_APP_SCHEME as string,
     owner: process.env.EXPO_PUBLIC_APP_OWNER as string,
-    version: '1.8.2',
+    version: '1.9.0',
     userInterfaceStyle: 'automatic',
     orientation: 'portrait',
     icon: './assets/icon.png',
-    runtimeVersion: '1.8.2',
+    runtimeVersion: {
+      policy: 'appVersion',
+    },
     experiments: {
       reactCompiler: true,
     },
@@ -55,7 +57,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       supportsTablet: false,
       buildNumber: appEnv.select({
         default: '18',
-        production: '36',
+        production: '38',
       }),
       config: {
         usesNonExemptEncryption: false,
@@ -74,7 +76,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       playStoreUrl: `https://play.google.com/store/apps/details?id=${appId}`,
       versionCode: appEnv.select({
         default: 15,
-        production: 36,
+        production: 38,
       }),
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
