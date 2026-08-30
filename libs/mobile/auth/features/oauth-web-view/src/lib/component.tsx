@@ -45,10 +45,14 @@ export function OauthWebView({ isVisible, provider, onClose, onGetToken }: Oauth
   const apiUrl = getApiUrl();
   const apiHost = getHost(apiUrl);
 
-  // Spinner is driven by the real page-load state and the token-validation step —
-  // never by "are we on the provider host", so the IdP login form is always usable.
+  // Spinner is driven by the real page-load state and the token-validation step.
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
+  // Whether the WebView is currently on a cross-origin IdP page (e.g. Google).
+  // We suppress the page-load spinner there: on Android some IdP pages don't fire
+  // `onLoadEnd` reliably, which would leave the loader stuck over an otherwise-usable
+  // login page. This only gates the spinner — success is still detected by path below.
+  const [isOnProviderPage, setIsOnProviderPage] = useState(false);
 
   const clearCaptureTimeout = (): void => {
     if (captureTokenTimeout.current) {
@@ -66,11 +70,15 @@ export function OauthWebView({ isVisible, provider, onClose, onGetToken }: Oauth
   };
 
   const handleNavigationStateChange = (state: WebViewNavigation): void => {
+    const host = getHost(state.url);
+    // Update the provider-page flag on every navigation event (loading included),
+    // so the spinner is suppressed as soon as we leave our host for the IdP.
+    setIsOnProviderPage(host !== apiHost);
+
     if (state.loading || isTokenCaptured.current) {
       return;
     }
 
-    const host = getHost(state.url);
     const path = getPath(state.url);
 
     // Open WebUI ends the OAuth flow by redirecting to its own `/oauth/<provider>/callback`
@@ -130,6 +138,7 @@ export function OauthWebView({ isVisible, provider, onClose, onGetToken }: Oauth
       isTokenCaptured.current = false;
       setIsPageLoading(true);
       setIsProcessing(false);
+      setIsOnProviderPage(false);
     }
 
     return clearCaptureTimeout;
@@ -144,7 +153,7 @@ export function OauthWebView({ isVisible, provider, onClose, onGetToken }: Oauth
           </AppPressable>
         </View>
         <View className='h-full'>
-          {(isPageLoading || isProcessing) && <AppSpinner size='large' isFullScreen />}
+          {((isPageLoading && !isOnProviderPage) || isProcessing) && <AppSpinner size='large' isFullScreen />}
           {isVisible && (
             <WebView
               ref={webViewRef}
