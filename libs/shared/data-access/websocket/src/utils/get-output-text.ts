@@ -1,4 +1,4 @@
-import { ChatCompletionOutputItem } from './chat-completion-chunk';
+import { ChatCompletionOutputItem } from '../models/chat-event-data/chat-completion-chunk';
 
 // NOTE: Mirrors the backend `get_output_text` (open_webui/utils/misc.py). Concatenates the
 // text of every `message` output item, joining separate messages with a newline. Non-message

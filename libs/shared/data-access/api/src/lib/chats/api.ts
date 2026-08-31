@@ -43,6 +43,7 @@ import {
   invalidateArchivedChatListQuery,
   invalidateSearchChatsQuery,
   patchChatQueryData,
+  resetChatStreamBuffer,
 } from './utils';
 
 function useGetChatList(): UseInfiniteQueryResult<Array<ChatListItem>, AxiosError<ApiErrorData>> {
@@ -540,7 +541,13 @@ function useCompleteChat(
   options?: UseMutationOptions<CompleteChatResponse, AxiosError, CompleteChatRequest>,
 ): UseMutationResult<CompleteChatResponse, AxiosError, CompleteChatRequest> {
   return useMutation({
-    mutationFn: (params) => chatService.completeChat(params),
+    // NOTE: Drop any streaming state left over from a previous (possibly interrupted) response
+    // before a new one starts, otherwise its trailing text would prefix the next answer.
+    mutationFn: (params) => {
+      resetChatStreamBuffer(params.chatId);
+
+      return chatService.completeChat(params);
+    },
     ...options,
   });
 }
