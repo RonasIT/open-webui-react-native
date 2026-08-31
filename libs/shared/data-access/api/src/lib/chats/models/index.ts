@@ -16,3 +16,5 @@ export * from './chat-message-content';
 export * from './get-archived-chat-list-request';
 export * from './features';
 export * from './move-chat-to-folder-request';
+export * from './complete-chat-params';
+export * from './resolve-tool-call-request';

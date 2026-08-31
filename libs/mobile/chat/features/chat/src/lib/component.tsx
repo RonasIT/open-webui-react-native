@@ -20,6 +20,7 @@ import {
   ChatGenerationOption,
   chatQueriesKeys,
   createMessagesList,
+  getPendingToolCall,
   isTemporaryChatId,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
@@ -104,8 +105,16 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   // NOTE: chat.messages is a legacy snapshot the backend no longer maintains, so the current branch is derived from history
   const messages = useMemo(() => (history ? createMessagesList(history, history.currentId) : []), [history]);
   const currentMessage = history?.messages[history.currentId];
-  const isResponseGenerating = !currentMessage?.done;
+  // NOTE: Two states keep `done: false` while nothing is actually being generated, and both hang the
+  // spinner, the Stop button and the composer unless excluded here: a turn paused on tool approval
+  // (the backend is waiting for the user), and a failed turn — the backend persists the error on the
+  // message but never sets `done`, so reopening the chat brings the stuck state right back.
+  const isAwaitingToolApproval = Boolean(getPendingToolCall(currentMessage));
+
+  const hasFailed = Boolean(currentMessage?.error?.content);
+  const isResponseGenerating = !currentMessage?.done && !isAwaitingToolApproval && !hasFailed;
   const isAssistantMessage = currentMessage?.role === Role.ASSISTANT;
+
   // NOTE: With message queueing enabled, a generating response no longer force-disables the text input —
   // the user can keep typing and submit the next message immediately (queued via `queuedMessage`). The
   // Stop button (isResponseGenerating prop below) still renders regardless, alongside the send button.

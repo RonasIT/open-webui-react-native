@@ -28,6 +28,10 @@
         "TEXT_CHOOSE_FROM_GALLERY": "从相册选择",
         "TEXT_UPLOAD_FILES": "上传文件",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "无法上传空文件。"
+      },
+      "TOOL_PERMISSIONS_POPUP": {
+        "TEXT_FULL_ACCESS": "完全访问",
+        "TEXT_ASK_FOR_APPROVAL": "每次询问"
       }
     },
     "SHARE_CHAT_MODAL": {
@@ -163,6 +167,18 @@
         "TEXT_VIEW_RESULT_PREFIX": "查看来自以下工具的结果",
         "TEXT_INPUT": "输入",
         "TEXT_OUTPUT": "输出"
+      },
+      "TOOL_APPROVAL_CARD": {
+        "TEXT_ALLOW_PREFIX": "允许",
+        "BUTTON_ALLOW": "允许",
+        "BUTTON_DENY": "拒绝"
+      },
+      "ASK_USER_CARD": {
+        "TEXT_OTHER": "其他",
+        "TEXT_OTHER_PLACEHOLDER": "输入你的回答",
+        "BUTTON_NEXT": "下一步",
+        "BUTTON_SUBMIT": "发送",
+        "BUTTON_DENY": "跳过"
       }
     }
   }

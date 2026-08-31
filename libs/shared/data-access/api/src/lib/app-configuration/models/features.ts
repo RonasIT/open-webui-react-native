@@ -67,6 +67,11 @@ export class Features {
   @Expose({ name: 'enable_onedrive_integration' })
   public enableOnedriveIntegration: boolean;
 
+  // NOTE: Open WebUI 0.11.1+. Off unless the server sets ENABLE_TOOL_PERMISSIONS — with it off the
+  // backend forces `tool_approval_mode: 'full'`, so the approval UI has nothing to show.
+  @Expose({ name: 'enable_tool_permissions' })
+  public enableToolPermissions: boolean;
+
   constructor(partial: Partial<Features>) {
     Object.assign(this, partial);
   }

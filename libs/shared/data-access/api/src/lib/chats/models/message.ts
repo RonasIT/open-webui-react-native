@@ -7,7 +7,11 @@ import {
   MessageSource,
   Role,
 } from '@open-webui-react-native/shared/data-access/common';
-import { ChatCompletionOutputItem, ChatStatusData } from '@open-webui-react-native/shared/data-access/websocket';
+import {
+  ChatCompletionOutputItem,
+  ChatMessageError,
+  ChatStatusData,
+} from '@open-webui-react-native/shared/data-access/websocket';
 
 export class Message extends BaseEntity<string> {
   @Expose({ name: 'user_id' })
@@ -72,6 +76,11 @@ export class Message extends BaseEntity<string> {
 
   @Expose()
   public done?: boolean;
+
+  // NOTE: The backend persists a failed turn's error on the message itself, so it survives a reload.
+  @Expose()
+  @Type(() => ChatMessageError)
+  public error?: ChatMessageError;
 
   // We need this field to keep track of the chat status via socket events
   @Expose()

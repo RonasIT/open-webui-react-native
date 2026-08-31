@@ -28,6 +28,10 @@
         "TEXT_CHOOSE_FROM_GALLERY": "Выбрать из галереи",
         "TEXT_UPLOAD_FILES": "Загрузить файлы",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Нельзя загрузить пустой файл."
+      },
+      "TOOL_PERMISSIONS_POPUP": {
+        "TEXT_FULL_ACCESS": "Полный доступ",
+        "TEXT_ASK_FOR_APPROVAL": "Спрашивать разрешение"
       }
     },
     "SHARE_CHAT_MODAL": {
@@ -165,6 +169,18 @@
         "TEXT_VIEW_RESULT_PREFIX": "Посмотреть результат от",
         "TEXT_INPUT": "Ввод",
         "TEXT_OUTPUT": "Вывод"
+      },
+      "TOOL_APPROVAL_CARD": {
+        "TEXT_ALLOW_PREFIX": "Разрешить",
+        "BUTTON_ALLOW": "Разрешить",
+        "BUTTON_DENY": "Отклонить"
+      },
+      "ASK_USER_CARD": {
+        "TEXT_OTHER": "Свой ответ",
+        "TEXT_OTHER_PLACEHOLDER": "Введите ответ",
+        "BUTTON_NEXT": "Далее",
+        "BUTTON_SUBMIT": "Отправить",
+        "BUTTON_DENY": "Пропустить"
       }
     }
   }
