@@ -788,17 +788,19 @@ export function useDeleteAllChats(
   });
 }
 
-type ResolveToolCallArgs = {
-  chatId: string;
-  messageId: string;
-  request: ResolveToolCallRequest;
-};
-
 // NOTE: The endpoint restarts generation on the backend, so there is nothing to patch here — the
 // continued answer and the updated `output` arrive over the socket into the same assistant message.
 export function useResolveToolCall(
-  options?: UseMutationOptions<void, AxiosError<ApiErrorData>, ResolveToolCallArgs>,
-): UseMutationResult<void, AxiosError<ApiErrorData>, ResolveToolCallArgs> {
+  options?: UseMutationOptions<
+    void,
+    AxiosError<ApiErrorData>,
+    { chatId: string; messageId: string; request: ResolveToolCallRequest }
+  >,
+): UseMutationResult<
+  void,
+  AxiosError<ApiErrorData>,
+  { chatId: string; messageId: string; request: ResolveToolCallRequest }
+> {
   return useMutation({
     mutationFn: ({ chatId, messageId, request }) => chatService.resolveToolCall(chatId, messageId, request),
     ...options,
