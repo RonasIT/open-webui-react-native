@@ -1,5 +1,5 @@
-import { ChatCompletionOutputItem } from './chat-completion-chunk';
-import { ResponseStreamEvent } from './response-stream-event';
+import { ChatCompletionOutputItem } from '../models/chat-event-data/chat-completion-chunk';
+import { ResponseStreamEvent } from '../models/chat-event-data/response-stream-event';
 
 const MESSAGE_ITEM_TYPE = 'message';
 // NOTE: Delta kinds that carry user-visible answer text. Reasoning (`reasoning_text`,
