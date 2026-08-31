@@ -26,7 +26,7 @@ import { AnalyticsEvent, analyticsService } from '@open-webui-react-native/share
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { toDataUrl } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
-import { AttachmentsMenuSheet, ChatInputBottomRow, SelectOptionIcon } from './components';
+import { AttachmentsMenuSheet, ChatInputBottomRow, SelectOptionIcon, ToolPermissionsMenuSheet } from './components';
 
 interface FormChatInputProps<T extends FieldValues> extends AppInputProps {
   name: Path<T>;
@@ -207,6 +207,7 @@ export function FormChatInput<T extends FieldValues>({
                       isSelected={options.includes(ChatGenerationOption.WEB_SEARCH)}
                     />
                   )}
+                  {config?.features.enableToolPermissions && <ToolPermissionsMenuSheet disabled={isLoading} />}
                 </View>
                 <IconButton
                   disabled={isLoading}

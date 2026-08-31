@@ -28,6 +28,10 @@
         "TEXT_CHOOSE_FROM_GALLERY": "ギャラリーから選択",
         "TEXT_UPLOAD_FILES": "ファイルをアップロード",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "空のファイルはアップロードできません。"
+      },
+      "TOOL_PERMISSIONS_POPUP": {
+        "TEXT_FULL_ACCESS": "フルアクセス",
+        "TEXT_ASK_FOR_APPROVAL": "毎回確認する"
       }
     },
     "SHARE_CHAT_MODAL": {
@@ -163,6 +167,11 @@
         "TEXT_VIEW_RESULT_PREFIX": "次の結果を表示",
         "TEXT_INPUT": "入力",
         "TEXT_OUTPUT": "出力"
+      },
+      "TOOL_APPROVAL_CARD": {
+        "TEXT_ALLOW_PREFIX": "許可",
+        "BUTTON_ALLOW": "許可",
+        "BUTTON_DENY": "拒否"
       }
     }
   }

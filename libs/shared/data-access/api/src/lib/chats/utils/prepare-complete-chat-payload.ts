@@ -1,12 +1,23 @@
 import { uniqBy } from 'lodash-es';
 import { AttachedFile, FileType, Role } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
+import { appConfigurationApiConfig } from '../../app-configuration/config';
+import { Configuration } from '../../app-configuration/models';
 import { usersApiConfig } from '../../users/config';
 import { UserSettings } from '../../users/models';
 import { chatQueriesKeys } from '../chat-queries-keys';
 import { backgroundTasksConfig } from '../configs';
-import { ChatGenerationOption } from '../enums';
-import { ChatMessage, ChatMessageContent, ChatResponse, CompleteChatRequest, Features, Message } from '../models';
+import { ChatGenerationOption, ToolApprovalMode } from '../enums';
+import {
+  ChatMessage,
+  ChatMessageContent,
+  ChatResponse,
+  CompleteChatParams,
+  CompleteChatRequest,
+  Features,
+  Message,
+} from '../models';
+import { toolApprovalState$ } from '../state';
 
 export interface PrepareCompleteChatPayloadArgs {
   chatId: string;
@@ -33,6 +44,18 @@ export function prepareCompleteChatPayload({
   assistantMessageId,
 }: PrepareCompleteChatPayloadArgs): CompleteChatRequest {
   const userSettings = queryClient.getQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey);
+
+  // NOTE: `tool_approval_mode` exists only on Open WebUI 0.11.1+. Older backends do not recognise it
+  // and forward the whole `params` object to the model provider, which rejects the request with
+  // "Unknown parameter: 'tool_approval_mode'" — so the param is sent only when the server
+  // advertises the feature, and only when it actually changes behaviour (`ask`).
+  const configuration = queryClient.getQueryData<Configuration>(appConfigurationApiConfig.getConfigQueryKey);
+  const toolApprovalMode = toolApprovalState$.mode.peek();
+  const isToolApprovalSupported = configuration?.features?.enableToolPermissions === true;
+  const params =
+    isToolApprovalSupported && toolApprovalMode === ToolApprovalMode.ASK
+      ? new CompleteChatParams({ toolApprovalMode })
+      : undefined;
 
   const prepareChatMessages = (): Array<ChatMessage> => {
     const chatResponse = queryClient.getQueryData<ChatResponse>(chatQueriesKeys.get(chatId).queryKey);
@@ -98,6 +121,7 @@ export function prepareCompleteChatPayload({
       imageGeneration: generationOptions?.includes(ChatGenerationOption.IMAGE_GENERATION),
       webSearch: (userSettings?.ui.webSearch ?? false) || generationOptions?.includes(ChatGenerationOption.WEB_SEARCH),
     }),
+    params,
     stream: true,
     model,
     messages: prepareChatMessages(),

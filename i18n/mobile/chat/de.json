@@ -28,6 +28,10 @@
         "TEXT_CHOOSE_FROM_GALLERY": "Aus Galerie wählen",
         "TEXT_UPLOAD_FILES": "Dateien hochladen",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Sie können keine leere Datei hochladen."
+      },
+      "TOOL_PERMISSIONS_POPUP": {
+        "TEXT_FULL_ACCESS": "Vollzugriff",
+        "TEXT_ASK_FOR_APPROVAL": "Um Erlaubnis fragen"
       }
     },
     "SHARE_CHAT_MODAL": {
@@ -164,6 +168,11 @@
         "TEXT_VIEW_RESULT_PREFIX": "Ergebnis anzeigen von",
         "TEXT_INPUT": "Eingabe",
         "TEXT_OUTPUT": "Ausgabe"
+      },
+      "TOOL_APPROVAL_CARD": {
+        "TEXT_ALLOW_PREFIX": "Zulassen",
+        "BUTTON_ALLOW": "Zulassen",
+        "BUTTON_DENY": "Ablehnen"
       }
     }
   }

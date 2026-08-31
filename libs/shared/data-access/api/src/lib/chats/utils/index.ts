@@ -19,3 +19,4 @@ export * from './prepare-update-message-to-send-payload';
 export * from './prepare-edit-assistant-message-payload';
 export * from './prepare-copy-edited-message-payload';
 export * from './temporary-chat-id';
+export * from './get-pending-tool-call';

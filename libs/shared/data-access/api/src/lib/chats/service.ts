@@ -13,6 +13,7 @@ import {
   GetArchivedChatListRequest,
   GetChatListRequest,
   MoveChatToFolderRequest,
+  ResolveToolCallRequest,
   SearchChatListRequest,
   ShareChatResponse,
 } from './models';
@@ -117,6 +118,15 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
     );
 
     return plainToInstance(CompleteChatResponse, response);
+  }
+
+  public async resolveToolCall(chatId: string, messageId: string, params: ResolveToolCallRequest): Promise<void> {
+    const request = instanceToPlain<ResolveToolCallRequest>(params);
+
+    await getApiService().post<void>(
+      `${chatServiceConfig.versionedRoute}/${chatId}/messages/${messageId}/resolve`,
+      request,
+    );
   }
 
   public async handleCompletedChat(params: CompletedChat): Promise<CompletedChat> {

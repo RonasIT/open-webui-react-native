@@ -12,8 +12,14 @@ import {
 } from '@open-webui-react-native/mobile/shared/features/image-preview-modal';
 import { AppMarkdownView } from '@open-webui-react-native/mobile/shared/features/markdown-view';
 import { colors } from '@open-webui-react-native/mobile/shared/ui/styles';
-import { AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { Message } from '@open-webui-react-native/shared/data-access/api';
+import { AppText, Icon, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import {
+  chatApi,
+  getPendingToolCall,
+  Message,
+  ResolveToolCallRequest,
+  ToolCallResolveAction,
+} from '@open-webui-react-native/shared/data-access/api';
 import { FileType } from '@open-webui-react-native/shared/data-access/common';
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
@@ -21,9 +27,11 @@ import { parseResponseMessageContent } from '../../utils';
 import { ChatImagesGroup } from '../images';
 import { SkeletonMessage } from '../skeleton-message';
 import { ToolOutputBottomSheet } from '../tool-output-bottom-sheet';
+import { ToolApprovalCard } from './components';
 
 interface ChatAiMessageProps {
   message: Message;
+  chatId: string;
   onEditPress: () => void;
   isLast: boolean;
   isResponseGenerating: boolean;
@@ -36,6 +44,7 @@ interface ChatAiMessageProps {
 
 export function ChatAiMessage({
   message,
+  chatId,
   isEditing,
   onNextSibling,
   onPreviousSibling,
@@ -53,6 +62,7 @@ export function ChatAiMessage({
     socketStatusData,
     timestamp,
     followUps,
+    error: messageError,
   } = message;
 
   const apiUrl = getApiUrl();
@@ -73,9 +83,25 @@ export function ChatAiMessage({
   const { handleImagePress, handleAllPhotosPress, selectedImageIndex, isPreviewVisible, handleCloseImagePress } =
     useImagePreview();
 
+  // NOTE: Failures surface through the api-client error interceptor's toast, so no onError here.
+  const { mutate: resolveToolCall, isPending: isResolvingToolCall } = chatApi.useResolveToolCall();
+
   const { toolsData, messageContent } = parseResponseMessageContent(text);
   const textWithCitations = prepareTextWithCitations(messageContent, citations);
   const hasFollowUps = Array.isArray(followUps) && followUps.length > 0;
+  const pendingToolCall = getPendingToolCall(message);
+
+  const resolvePendingToolCall = (action: ToolCallResolveAction): void => {
+    if (!pendingToolCall) {
+      return;
+    }
+
+    resolveToolCall({
+      chatId,
+      messageId: message.id,
+      request: new ResolveToolCallRequest({ callId: pendingToolCall.callId, action }),
+    });
+  };
 
   return (
     <View>
@@ -86,6 +112,25 @@ export function ChatAiMessage({
         </AppText>
       </View>
       {socketStatusData && <AppText className='mt-4 text-text-secondary'>{socketStatusData.description}</AppText>}
+      {!!messageError?.content && (
+        <View className='mt-8 flex-row items-center gap-8 rounded-xl bg-background-secondary px-12 py-10'>
+          <Icon name='alert' className='size-20 shrink-0 color-status-danger' />
+          <AppText selectable className='text-sm-sm sm:text-sm min-w-0 flex-1 text-text-secondary'>
+            {messageError.content}
+          </AppText>
+        </View>
+      )}
+      {pendingToolCall && !pendingToolCall.isAskUser && (
+        <View className='mt-8'>
+          <ToolApprovalCard
+            toolName={pendingToolCall.toolName}
+            toolArguments={pendingToolCall.toolArguments}
+            isResolving={isResolvingToolCall}
+            onAllowPress={() => resolvePendingToolCall(ToolCallResolveAction.APPROVE)}
+            onDenyPress={() => resolvePendingToolCall(ToolCallResolveAction.REJECT)}
+          />
+        </View>
+      )}
       {text ? (
         <Fragment>
           {toolsData.length > 0 && (
@@ -143,7 +188,10 @@ export function ChatAiMessage({
           )}
         </Fragment>
       ) : (
-        <SkeletonMessage />
+        // NOTE: A turn paused on tool approval, or one that failed before producing any text, has
+        // no body of its own — the card above is the body. A skeleton there reads as "still
+        // generating", which is exactly what neither state is.
+        !pendingToolCall && !messageError?.content && <SkeletonMessage />
       )}
       {!isResponseGenerating && isLast && hasFollowUps && (
         <FollowUpsList

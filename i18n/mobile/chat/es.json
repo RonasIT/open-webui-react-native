@@ -28,6 +28,10 @@
         "TEXT_CHOOSE_FROM_GALLERY": "Elegir de la galería",
         "TEXT_UPLOAD_FILES": "Subir archivos",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "No puedes subir un archivo vacío."
+      },
+      "TOOL_PERMISSIONS_POPUP": {
+        "TEXT_FULL_ACCESS": "Acceso completo",
+        "TEXT_ASK_FOR_APPROVAL": "Pedir aprobación"
       }
     },
     "SHARE_CHAT_MODAL": {
@@ -164,6 +168,11 @@
         "TEXT_VIEW_RESULT_PREFIX": "Ver resultado de",
         "TEXT_INPUT": "Entrada",
         "TEXT_OUTPUT": "Salida"
+      },
+      "TOOL_APPROVAL_CARD": {
+        "TEXT_ALLOW_PREFIX": "Permitir",
+        "BUTTON_ALLOW": "Permitir",
+        "BUTTON_DENY": "Denegar"
       }
     }
   }

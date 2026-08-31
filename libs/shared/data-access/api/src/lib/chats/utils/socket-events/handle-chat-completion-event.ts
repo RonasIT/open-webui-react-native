@@ -49,6 +49,12 @@ export const handleChatCompletionEvent = async (socketResponse: ChatEventBase): 
 
   if (content) {
     buffer.content = content;
+  }
+
+  // NOTE: A snapshot can change `output` without changing the visible text — a tool call awaiting
+  // the user's approval arrives exactly like that. Flushing on `output` too is what lets the UI see
+  // it; keying the flush off `content` alone left such a snapshot stuck in the buffer.
+  if (content || chatCompletionData.output) {
     scheduleChatStreamFlush(chatId);
   }
 
