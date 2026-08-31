@@ -173,6 +173,13 @@
         "TEXT_ALLOW_PREFIX": "Permitir",
         "BUTTON_ALLOW": "Permitir",
         "BUTTON_DENY": "Negar"
+      },
+      "ASK_USER_CARD": {
+        "TEXT_OTHER": "Outra",
+        "TEXT_OTHER_PLACEHOLDER": "Digite sua resposta",
+        "BUTTON_NEXT": "Próximo",
+        "BUTTON_SUBMIT": "Enviar",
+        "BUTTON_DENY": "Ignorar"
       }
     }
   }

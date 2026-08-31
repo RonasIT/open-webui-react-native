@@ -44,6 +44,18 @@ export function prepareCompleteChatPayload({
   assistantMessageId,
 }: PrepareCompleteChatPayloadArgs): CompleteChatRequest {
   const userSettings = queryClient.getQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey);
+  const chatResponse = queryClient.getQueryData<ChatResponse>(chatQueriesKeys.get(chatId).queryKey);
+
+  // NOTE: The backend re-saves the assistant placeholder on every completion and takes its parentId
+  // from `user_message` — omitting it persists the turn with `parentId: null`, overwriting the link
+  // the client just saved. A completed turn hides this (handleCompletedChat rewrites the history at
+  // the end), but a turn that never completes — one paused on tool approval — stays orphaned, and
+  // `.../resolve` then answers 409 "Tool call parent message is missing". Derived from the cache
+  // instead of being threaded through all six completion entry points.
+  const assistantMessage = chatResponse?.chat.history.messages[messageId];
+  const resolvedUserMessage =
+    userMessage ??
+    (assistantMessage?.parentId ? chatResponse?.chat.history.messages[assistantMessage.parentId] : undefined);
 
   // NOTE: `tool_approval_mode` exists only on Open WebUI 0.11.1+. Older backends do not recognise it
   // and forward the whole `params` object to the model provider, which rejects the request with
@@ -58,7 +70,6 @@ export function prepareCompleteChatPayload({
       : undefined;
 
   const prepareChatMessages = (): Array<ChatMessage> => {
-    const chatResponse = queryClient.getQueryData<ChatResponse>(chatQueriesKeys.get(chatId).queryKey);
     const chatSystemPrompt = (chatResponse?.chat.params?.system as string | undefined)?.trim();
     const globalSystemPrompt = userSettings?.ui.system?.trim();
     // The user's default system prompt (Settings > General). Prepended to every completion
@@ -129,8 +140,8 @@ export function prepareCompleteChatPayload({
     id: messageId,
     sessionId,
     files,
-    userMessage,
-    parentId: userMessage?.parentId ?? null,
+    userMessage: resolvedUserMessage,
+    parentId: resolvedUserMessage?.parentId ?? null,
     assistantMessageId,
   });
 

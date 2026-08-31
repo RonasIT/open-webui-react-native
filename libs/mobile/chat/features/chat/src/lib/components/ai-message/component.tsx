@@ -14,9 +14,12 @@ import { AppMarkdownView } from '@open-webui-react-native/mobile/shared/features
 import { colors } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { AppText, Icon, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import {
+  AskUserDraftAnswers,
+  buildAskUserAnswers,
   chatApi,
   getPendingToolCall,
   Message,
+  parseAskUserPrompt,
   ResolveToolCallRequest,
   ToolCallResolveAction,
 } from '@open-webui-react-native/shared/data-access/api';
@@ -27,7 +30,7 @@ import { parseResponseMessageContent } from '../../utils';
 import { ChatImagesGroup } from '../images';
 import { SkeletonMessage } from '../skeleton-message';
 import { ToolOutputBottomSheet } from '../tool-output-bottom-sheet';
-import { ToolApprovalCard } from './components';
+import { AskUserCard, ToolApprovalCard } from './components';
 
 interface ChatAiMessageProps {
   message: Message;
@@ -90,8 +93,11 @@ export function ChatAiMessage({
   const textWithCitations = prepareTextWithCitations(messageContent, citations);
   const hasFollowUps = Array.isArray(followUps) && followUps.length > 0;
   const pendingToolCall = getPendingToolCall(message);
+  // NOTE: An `ask_user` call is a pause too, but it carries questions in its arguments and expects
+  // answers instead of an approval — the backend rejects `approve` for it with 400.
+  const askUserPrompt = pendingToolCall?.isAskUser ? parseAskUserPrompt(pendingToolCall.toolArguments) : undefined;
 
-  const resolvePendingToolCall = (action: ToolCallResolveAction): void => {
+  const resolvePendingToolCall = (action: ToolCallResolveAction, draftAnswers?: AskUserDraftAnswers): void => {
     if (!pendingToolCall) {
       return;
     }
@@ -99,7 +105,11 @@ export function ChatAiMessage({
     resolveToolCall({
       chatId,
       messageId: message.id,
-      request: new ResolveToolCallRequest({ callId: pendingToolCall.callId, action }),
+      request: new ResolveToolCallRequest({
+        callId: pendingToolCall.callId,
+        action,
+        answers: draftAnswers && buildAskUserAnswers(draftAnswers),
+      }),
     });
   };
 
@@ -127,6 +137,19 @@ export function ChatAiMessage({
             toolArguments={pendingToolCall.toolArguments}
             isResolving={isResolvingToolCall}
             onAllowPress={() => resolvePendingToolCall(ToolCallResolveAction.APPROVE)}
+            onDenyPress={() => resolvePendingToolCall(ToolCallResolveAction.REJECT)}
+          />
+        </View>
+      )}
+      {pendingToolCall && askUserPrompt && (
+        <View className='mt-8'>
+          <AskUserCard
+            // NOTE: Keyed by call so the draft answers reset when a new question arrives instead of
+            // carrying over from the previous one.
+            key={pendingToolCall.callId}
+            prompt={askUserPrompt}
+            isResolving={isResolvingToolCall}
+            onSubmit={(answers) => resolvePendingToolCall(ToolCallResolveAction.ANSWER, answers)}
             onDenyPress={() => resolvePendingToolCall(ToolCallResolveAction.REJECT)}
           />
         </View>

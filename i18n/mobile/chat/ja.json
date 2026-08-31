@@ -172,6 +172,13 @@
         "TEXT_ALLOW_PREFIX": "許可",
         "BUTTON_ALLOW": "許可",
         "BUTTON_DENY": "拒否"
+      },
+      "ASK_USER_CARD": {
+        "TEXT_OTHER": "その他",
+        "TEXT_OTHER_PLACEHOLDER": "回答を入力",
+        "BUTTON_NEXT": "次へ",
+        "BUTTON_SUBMIT": "送信",
+        "BUTTON_DENY": "スキップ"
       }
     }
   }
