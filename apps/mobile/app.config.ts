@@ -9,6 +9,8 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
   const appEnv = new AppEnv((process.env.EXPO_PUBLIC_APP_ENV as AppEnvName) || 'development');
 
   const appId = process.env.EXPO_PUBLIC_APP_ID;
+  const iosAppStoreId = process.env.EXPO_PUBLIC_IOS_APP_STORE_ID;
+  const playStoreAppId = process.env.EXPO_PUBLIC_PLAY_STORE_APP_ID || appId;
 
   const extra = {
     eas: { projectId } as EASConfig,
@@ -53,11 +55,11 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     },
     ios: {
       bundleIdentifier: appId,
-      appStoreUrl: `https://apps.apple.com/app/id${process.env.EXPO_PUBLIC_IOS_APP_STORE_ID}`,
+      appStoreUrl: `https://apps.apple.com/app/id${iosAppStoreId}`,
       supportsTablet: false,
       buildNumber: appEnv.select({
         default: '18',
-        production: '40',
+        production: '41',
       }),
       config: {
         usesNonExemptEncryption: false,
@@ -73,10 +75,10 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     },
     android: {
       package: appId,
-      playStoreUrl: `https://play.google.com/store/apps/details?id=${appId}`,
+      playStoreUrl: `https://play.google.com/store/apps/details?id=${playStoreAppId}`,
       versionCode: appEnv.select({
         default: 15,
-        production: 40,
+        production: 41,
       }),
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
