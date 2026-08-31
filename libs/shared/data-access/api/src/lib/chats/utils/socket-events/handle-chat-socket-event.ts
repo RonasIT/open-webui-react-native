@@ -5,6 +5,7 @@ import { handleChatFilesEvent } from './handle-chat-files-event';
 import { handleChatMessageFollowUpsEvent } from './handle-chat-message-follow-ups-event';
 import { handleChatStatusEvent } from './handle-chat-status-event';
 import { handleChatTitleEvent } from './handle-chat-title-event';
+import { handleResponseCompletionEvent } from './handle-response-completion-event';
 
 export const handleChatSocketEvent = (socketResponse: ChatEventBase): void => {
   const response = plainToInstance(ChatEventBase, socketResponse);
@@ -12,6 +13,9 @@ export const handleChatSocketEvent = (socketResponse: ChatEventBase): void => {
   switch (socketResponse.data.type) {
     case ChatEventType.COMPLETION:
       handleChatCompletionEvent(response);
+      break;
+    case ChatEventType.RESPONSE_COMPLETION:
+      handleResponseCompletionEvent(response);
       break;
     case ChatEventType.TITLE:
       handleChatTitleEvent(response);
