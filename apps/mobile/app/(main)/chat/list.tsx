@@ -7,11 +7,10 @@ import {
   UpsertFolderSheet,
   UpsertFolderSheetMethods,
 } from '@open-webui-react-native/mobile/folder/features/upsert-folder-sheet';
-import { ProfileMenuSheet } from '@open-webui-react-native/mobile/shared/features/profile-menu-sheet';
 import { ScreenWrapper } from '@open-webui-react-native/mobile/shared/ui/screen-wrapper';
-import { AppHeader, IconButton, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { AppHeader, AppPressable, Avatar, IconButton, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
-import { FolderListItem } from '@open-webui-react-native/shared/data-access/api';
+import { authApi, FolderListItem } from '@open-webui-react-native/shared/data-access/api';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { useNavigateOnce } from '@open-webui-react-native/shared/utils/navigation';
@@ -24,6 +23,7 @@ export default function ChatListScreen(): ReactElement {
   const translate = useTranslation('APP.CHAT_LIST_SCREEN');
   const folderActionsSheetRef = useRef<FolderActionsSheetMethods>(null);
   const upsertFolderSheetRef = useRef<UpsertFolderSheetMethods>(null);
+  const { data: profile } = authApi.useGetProfile();
 
   const handleChatPress = (id: string): void => navigateOnce(navigationConfig.main.chat.view({ id }));
 
@@ -32,6 +32,8 @@ export default function ChatListScreen(): ReactElement {
 
   const handleArchivedChatsPress = (): void =>
     navigateOnce(`${navigationConfig.main.chat.index}/${navigationConfig.main.chat.archivedChats}`);
+
+  const handleSettingsPress = (): void => navigateOnce(navigationConfig.main.settings);
 
   const handleFolderPress = (id: string, title: string): void =>
     router.navigate(navigationConfig.main.folder.view({ id, title }));
@@ -49,7 +51,14 @@ export default function ChatListScreen(): ReactElement {
         <AppHeader
           className='mt-0'
           title={translate('TEXT_CHATS')}
-          accessoryLeft={<ProfileMenuSheet onArchivedChatsPress={handleArchivedChatsPress} />}
+          accessoryLeft={
+            <AppPressable onPress={handleSettingsPress}>
+              <Avatar
+                source={profile?.profileImageUrl ? { uri: profile.profileImageUrl } : undefined}
+                name={profile?.name}
+              />
+            </AppPressable>
+          }
           accessoryRight={
             <View className='flex-row gap-12'>
               {isFeatureEnabled(FeatureID.CHAT_FOLDERS) && (

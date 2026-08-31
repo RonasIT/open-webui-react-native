@@ -2,6 +2,94 @@
   "APP": {
     "CHAT_LIST_SCREEN": {
       "TEXT_CHATS": "Chats"
+    },
+    "SETTINGS_SCREEN": {
+      "TEXT_SETTINGS": "Profile and settings",
+      "TEXT_SECTION_GENERAL": "General",
+      "TEXT_SECTION_PROFILE": "Profile",
+      "TEXT_SECTION_FEEDBACK": "Feedback",
+      "TEXT_SECTION_CHATS": "Chats",
+      "TEXT_DEFAULT_MODEL": "Default model",
+      "TEXT_DEFAULT_SYSTEM_PROMPT": "Default system prompt",
+      "TEXT_LANGUAGE": "Language",
+      "TEXT_NOT_SET": "Not set",
+      "TEXT_LOAD_ERROR": "Failed to load",
+      "TEXT_PROFILE_NAME": "Profile name",
+      "TEXT_AVATAR": "Avatar",
+      "TEXT_CHANGE_PASSWORD": "Change password",
+      "TEXT_LOGOUT": "Logout",
+      "TEXT_REPORT_A_BUG": "Report a bug",
+      "TEXT_RATE_APP": "Rate app",
+      "TEXT_ARCHIVED_CHATS": "Archived chats",
+      "TEXT_EXPORT_ALL_CHATS": "Export all chats",
+      "TEXT_ARCHIVE_ALL": "Archive all",
+      "TEXT_ARCHIVE_ALL_CHATS_TITLE": "Archive All Chats",
+      "TEXT_ARCHIVE_ALL_CHATS_MESSAGE": "Are you sure you want to archive all chats? This action cannot be undone.",
+      "TEXT_DELETE_ALL": "Delete all",
+      "TEXT_DELETE_ALL_CHATS_TITLE": "Delete All Chats",
+      "TEXT_DELETE_ALL_CHATS_MESSAGE": "Are you sure you want to delete all chats? This action cannot be undone.",
+      "TEXT_ALWAYS_ON_WEB_SEARCH": "Always-on web search",
+      "TEXT_HAPTIC_FEEDBACK": "Haptic feedback",
+      "TEXT_ENABLE_MESSAGE_QUEUE": "Enable message queue",
+      "TEXT_CHAT_BUBBLE_UI": "Chat bubble UI",
+      "TEXT_TEMPORARY_CHAT_BY_DEFAULT": "Temporary chat by default",
+      "TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE": "Render markdown in user message",
+      "TEXT_MARKDOWN_RENDERER": "Markdown renderer",
+      "TEXT_MARKDOWN_RENDERER_DEFAULT": "Default",
+      "TEXT_MARKDOWN_RENDERER_NITRO": "Experimental",
+      "PROFILE_AVATAR_SHEET": {
+        "TEXT_TITLE": "Profile avatar",
+        "BUTTON_UPLOAD_PROFILE_IMAGE": "Upload profile image",
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "Restore default avatar",
+        "TEXT_IMAGE_TOO_LARGE": "This image is too large. Please choose a smaller one",
+        "TEXT_UPLOAD_FAILED": "Failed to process the image. Please try another one"
+      },
+      "PROFILE_NAME_SHEET": {
+        "TEXT_TITLE": "Profile name",
+        "TEXT_PROFILE_NAME": "Profile name"
+      },
+      "CHANGE_PASSWORD_SHEET": {
+        "TEXT_TITLE": "Change password",
+        "TEXT_CURRENT_PASSWORD": "Current password",
+        "TEXT_ENTER_CURRENT_PASSWORD": "Enter your current password",
+        "TEXT_NEW_PASSWORD": "New password",
+        "TEXT_ENTER_NEW_PASSWORD": "Enter your new password",
+        "TEXT_CONFIRM_NEW_PASSWORD": "Confirm new password",
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Repeat your new password",
+        "TEXT_PASSWORD_CHANGED": "Your password has been changed"
+      },
+      "DEFAULT_MODEL_SHEET": {
+        "TEXT_TITLE": "Default model",
+        "TEXT_SEARCH_MODEL": "Search model",
+        "TEXT_NO_MODELS": "There are no models."
+      },
+      "DEFAULT_SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "Default system prompt",
+        "TEXT_LABEL": "Default system prompt"
+      },
+      "CONTACT_SUPPORT_SHEET": {
+        "TEXT_REPORT_BUG": "Report a bug",
+        "TEXT_YOUR_MESSAGE": "Your message",
+        "TEXT_MESSAGE_SENT": "Thank you for your feedback! Your message has been sent successfully",
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Attach screenshots or video",
+        "TEXT_ATTACHMENTS_LIMIT_REACHED": "You can attach up to {{count}} files"
+      },
+      "LANGUAGE_SHEET": {
+        "TEXT_TITLE": "Language"
+      },
+      "MARKDOWN_RENDERER_SHEET": {
+        "TEXT_TITLE": "Markdown renderer"
+      },
+      "TEXT_DELETE_ACCOUNT": "Delete Account",
+      "TEXT_DELETE_ACCOUNT_TITLE": "Are you sure you want to delete your account?",
+      "TEXT_DELETE_ACCOUNT_MESSAGE": "This action will result in permanent data loss if we don't hear from you in the next 30 days.",
+      "BUTTON_DELETE_ACCOUNT": "Yes, delete my account",
+      "BUTTON_DONT_DELETE": "Don't delete",
+      "TEXT_ACCOUNT_DELETION_REQUEST": "Your account deletion request has been submitted.",
+      "TEXT_LOGOUT_TITLE": "Logout?",
+      "TEXT_LOGOUT_MESSAGE": "Are you sure you want to log out?",
+      "BUTTON_LOGOUT": "Logout",
+      "BUTTON_CANCEL": "Cancel"
     }
   }
 }

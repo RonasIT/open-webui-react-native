@@ -20,6 +20,10 @@ export class StorageItem implements StorageItemMethods {
     return this.storage.getString(this.key);
   }
 
+  public getBoolean(): boolean | undefined {
+    return this.storage.getBoolean(this.key);
+  }
+
   public remove(): void {
     this.storage.delete(this.key);
   }

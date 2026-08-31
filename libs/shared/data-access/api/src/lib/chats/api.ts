@@ -79,10 +79,15 @@ function useGetPinnedChatList(): UseQueryResult<Array<ChatListItem>, AxiosError<
 }
 
 function useSearchInfinite(text: string): UseInfiniteQueryResult<Array<ChatListItem>, AxiosError<ApiErrorData>> {
+  const searchText = text.trim();
+
   return useInfiniteQuery({
-    queryFn: ({ pageParam }) => chatService.searchChatList({ page: pageParam, text }),
+    queryFn: ({ pageParam }) =>
+      searchText
+        ? chatService.searchChatList({ page: pageParam, text: searchText })
+        : chatService.getChatList({ page: pageParam }),
     // TODO: Temporary solution because useUpdate patches are broken; remove when omit endpoint logic is implemented
-    queryKey: getSearchChatsQueryKey(text),
+    queryKey: getSearchChatsQueryKey(searchText),
     initialPageParam: 1,
     getNextPageParam: (lastPage, result, lastPageParam) =>
       getNextPageParam({ lastPage, result, lastPageParam, itemsPerPage: chatServiceConfig.chatsPerPage }),
@@ -733,6 +738,48 @@ export function useGetAllArchivedChatsJson(): UseQueryResult<Array<ChatListItem>
   });
 }
 
+function invalidateAllChatListsQueries(): void {
+  queryClient.invalidateQueries({ queryKey: chatServiceConfig.getChatListQueryKey });
+  queryClient.invalidateQueries({ queryKey: chatServiceConfig.getPinnedChatListQueryKey });
+  // NOTE: Invalidate all folders chat lists regardless of folderId
+  queryClient.invalidateQueries({ queryKey: foldersApiConfig.getFolderChatListQueryKeyPrefix, exact: false });
+  queryClient.invalidateQueries({ queryKey: foldersApiConfig.getFolderChatsQueryKeyPrefix, exact: false });
+  // NOTE: Also invalidates chatServiceConfig.getAllArchivedChatsQueryKey
+  invalidateArchivedChatListQuery();
+
+  // NOTE: Bulk archive/delete doesn't tell us which chat ids were affected — clear every individually
+  // cached chat (mirroring useDelete's single-chat cache clear) so a screen still holding one of them
+  // notices via useSubscribeToQueryCache('removed') instead of rendering stale, now-gone data.
+  queryClient
+    .getQueryCache()
+    .findAll({ queryKey: chatQueriesKeys.get._def })
+    .forEach((query) => queryClient.setQueryData(query.queryKey, undefined));
+}
+
+export function useArchiveAllChats(
+  options?: UseMutationOptions<void, AxiosError<ApiErrorData>, void>,
+): UseMutationResult<void, AxiosError<ApiErrorData>, void> {
+  return useMutation({
+    mutationFn: () => chatService.archiveAllChats(),
+    onSuccess: () => {
+      invalidateAllChatListsQueries();
+    },
+    ...options,
+  });
+}
+
+export function useDeleteAllChats(
+  options?: UseMutationOptions<void, AxiosError<ApiErrorData>, void>,
+): UseMutationResult<void, AxiosError<ApiErrorData>, void> {
+  return useMutation({
+    mutationFn: () => chatService.deleteAllChats(),
+    onSuccess: () => {
+      invalidateAllChatListsQueries();
+    },
+    ...options,
+  });
+}
+
 export const chatApi = {
   useGet,
   useUpdate,
@@ -752,4 +799,6 @@ export const chatApi = {
   useGetArchivedChatList,
   useGetAllArchivedChatsJson,
   useUpdateChatFolder,
+  useArchiveAllChats,
+  useDeleteAllChats,
 };

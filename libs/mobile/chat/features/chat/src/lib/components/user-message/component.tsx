@@ -10,7 +10,7 @@ import {
 import { AppMarkdownView } from '@open-webui-react-native/mobile/shared/features/markdown-view';
 import { cn, colors, screenWidth, spacings } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { Message } from '@open-webui-react-native/shared/data-access/api';
+import { Message, usersApi } from '@open-webui-react-native/shared/data-access/api';
 import { AttachedFile, FileType } from '@open-webui-react-native/shared/data-access/common';
 import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
 import { deepMemo } from '@open-webui-react-native/shared/utils/deep-memo';
@@ -39,6 +39,10 @@ function ChatUserMessageComponent({
 }: ChatUserMessageProps): ReactElement {
   const { files, content: text, timestamp } = message;
 
+  const { data: userSettings } = usersApi.useGetUserSettings();
+  const isChatBubbleUIEnabled = userSettings?.ui.chatBubble ?? true;
+  const isUserMessageMarkdownEnabled = userSettings?.ui.renderMarkdownInUserMessages ?? true;
+
   const attachedFiles = useMemo(
     () => (files?.filter((file) => file.type === FileType.FILE) as Array<AttachedFile>) ?? [],
     [files],
@@ -51,6 +55,26 @@ function ChatUserMessageComponent({
 
   const { handleImagePress, handleAllPhotosPress, selectedImageIndex, isPreviewVisible, handleCloseImagePress } =
     useImagePreview();
+
+  // NOTE: `isChatBubbleUIEnabled === false` flattens the user bubble to plain flowing text (matching the AI
+  // message style), independently of `isUserMessageMarkdownEnabled` which only controls markdown rendering.
+  const renderMessageContent = (): ReactElement => {
+    const content = isUserMessageMarkdownEnabled ? (
+      <AppMarkdownView textColor={isEditing ? colors.brandPrimary : undefined} codeBlockWidth={codeBlockWidth}>
+        {text}
+      </AppMarkdownView>
+    ) : (
+      <AppText className={isEditing ? 'text-brand-primary' : undefined}>{text}</AppText>
+    );
+
+    if (!isChatBubbleUIEnabled) {
+      return content;
+    }
+
+    return (
+      <View className={cn('bg-background-secondary px-12 py-8 rounded-xl max-w-[90%]', className)}>{content}</View>
+    );
+  };
 
   return (
     <View className='gap-4'>
@@ -71,13 +95,7 @@ function ChatUserMessageComponent({
           onShowAllImages={handleAllPhotosPress}
         />
         <View className='flex-row-reverse' onLayout={onLayoutChange}>
-          {!!text && (
-            <View className={cn('bg-background-secondary px-12 py-8 rounded-xl max-w-[90%]', className)}>
-              <AppMarkdownView textColor={isEditing ? colors.brandPrimary : undefined} codeBlockWidth={codeBlockWidth}>
-                {text}
-              </AppMarkdownView>
-            </View>
-          )}
+          {!!text && renderMessageContent()}
         </View>
         <ImagePreviewModal
           initialIndex={selectedImageIndex}

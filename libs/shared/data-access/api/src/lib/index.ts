@@ -8,3 +8,4 @@ export * from './audio';
 export * from './folders';
 export * from './knowledge';
 export * from './tasks';
+export * from './supabase';

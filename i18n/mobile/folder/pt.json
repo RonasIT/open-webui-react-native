@@ -1,0 +1,36 @@
+{
+  "FOLDER": {
+    "CHATS_LIST": {
+      "TEXT_NO_CHATS": "Não há chats nesta pasta."
+    },
+    "FOLDER_ACTIONS_SHEET": {
+      "TEXT_EDIT": "Editar",
+      "TEXT_EXPORT": "Exportar",
+      "TEXT_DELETE": "Excluir",
+      "TEXT_KEEP": "Manter",
+      "TEXT_DELETE_FOLDER": "Excluir pasta?",
+      "TEXT_THIS_WILL_DELETE": "Isso excluirá {{name}}"
+    },
+    "UPSERT_FOLDER_SHEET": {
+      "TEXT_NEW_FOLDER": "Nova pasta",
+      "TEXT_EDIT_FOLDER": "Editar pasta",
+      "TEXT_FOLDER_NAME": "Nome da pasta",
+      "TEXT_DOCUMENT": "Documento",
+      "TEXT_FILE": "Arquivo",
+      "TEXT_COLLECTION": "Coleção",
+      "TEXT_FOLDER_NAME_PLACEHOLDER": "ex.: Minha pasta",
+      "TEXT_SYSTEM_PROMPT": "Prompt do sistema",
+      "TEXT_KNOWLEDGE": "Conhecimento",
+      "BUTTON_SELECT_KNOWLEDGE": "Selecionar conhecimento",
+      "BUTTON_UPLOAD_FILES": "Enviar arquivos",
+      "TEXT_CREATE": "Criar",
+      "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Você não pode enviar um arquivo vazio.",
+      "TEXT_UNSUPPORTED_TYPE": "Tipo não suportado."
+    },
+    "SELECT_KNOWLEDGE_SHEET": {
+      "TEXT_SEARCH_KNOWLEDGE": "Pesquisar conhecimento",
+      "TEXT_SELECT_KNOWLEDGE": "Selecionar conhecimento",
+      "TEXT_NO_KNOWLEDGE": "Não há conhecimento."
+    }
+  }
+}

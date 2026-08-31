@@ -22,6 +22,7 @@ import {
 } from '@open-webui-react-native/shared/data-access/api';
 import { AttachedImage, FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
+import { AnalyticsEvent, analyticsService } from '@open-webui-react-native/shared/utils/analytics-service';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { toDataUrl } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
@@ -43,6 +44,7 @@ interface FormChatInputProps<T extends FieldValues> extends AppInputProps {
   isLoading?: boolean;
   isSuggestionShown?: boolean;
   isResponseGenerating?: boolean;
+  isMessageQueueEnabled?: boolean;
   inputRerenderKey?: number;
 }
 
@@ -66,6 +68,7 @@ export function FormChatInput<T extends FieldValues>({
   isLoading,
   isSuggestionShown,
   isResponseGenerating,
+  isMessageQueueEnabled,
   inputRerenderKey,
   ...restProps
 }: FormChatInputProps<T>): ReactElement {
@@ -125,6 +128,7 @@ export function FormChatInput<T extends FieldValues>({
   const onCompleteRecording = (text: string): void => {
     setIsDictateMode(false);
     field.onChange(text);
+    analyticsService.trackEvent(AnalyticsEvent.DICTATION_MODE_USED);
   };
 
   const onStopGenerationPress = async (): Promise<void> => {
@@ -178,6 +182,7 @@ export function FormChatInput<T extends FieldValues>({
               isVoiceModeAvailable={isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty}
               onStopGenerationPress={onStopGenerationPress}
               isResponseGenerating={isResponseGenerating}
+              isMessageQueueEnabled={isMessageQueueEnabled}
               isLoading={isLoading || isMicrophonePreparing}>
               <View className='flex-row flex-1 justify-between'>
                 <View className='gap-16 flex-row '>

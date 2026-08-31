@@ -1,0 +1,169 @@
+{
+  "CHAT": {
+    "CHAT_SCREEN": {
+      "TEXT_LOADING": "加载中...",
+      "TEXT_SELECT_A_MODEL": "选择模型",
+      "TEXT_TEMPORARY_CHAT": "临时聊天"
+    },
+    "CHAT": {
+      "TEXT_INPUT_PLACEHOLDER": "发送消息",
+      "TEXT_MODEL_NOT_SELECTED": "未选择模型",
+      "TEXT_MESSAGE_QUEUED": "消息已加入队列"
+    },
+    "CHAT_MENU_LIST": {
+      "PINNED_CHAT_LIST": {
+        "TEXT_PINNED": "已置顶"
+      },
+      "TEXT_NEW_CHAT": "新对话",
+      "TEXT_SEARCH": "搜索",
+      "TEXT_THERE_ARE_NO_CHATS": "暂无对话"
+    },
+    "SEARCH_CHATS_LIST": {
+      "TEXT_THERE_ARE_NO_CHATS": "暂无对话"
+    },
+    "FORM_CHAT_INPUT": {
+      "TEXT_MODEL_NOT_SELECTED": "未选择模型",
+      "ATTACHMENTS_ACTIONS_POPUP": {
+        "TEXT_CAPTURE": "拍摄",
+        "TEXT_CHOOSE_FROM_GALLERY": "从相册选择",
+        "TEXT_UPLOAD_FILES": "上传文件",
+        "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "无法上传空文件。"
+      }
+    },
+    "SHARE_CHAT_MODAL": {
+      "TEXT_SHARE_CHAT": "分享对话",
+      "TEXT_DESCRIPTION_NOT_SHARED": "创建链接后发送的消息不会被分享。拥有该 URL 的用户可以查看已分享的对话。",
+      "TEXT_DESCRIPTION_SHARED_1": "您已分享此对话",
+      "TEXT_BEFORE_LINK": "之前",
+      "TEXT_DESCRIPTION_SHARED_2": "点击此处",
+      "TEXT_DELETE_LINK": "删除此链接",
+      "TEXT_DESCRIPTION_SHARED_3": "并创建新的分享链接。",
+      "BUTTON_COPY_LINK": "复制链接",
+      "BUTTON_UPDATE_AND_COPY_LINK": "更新并复制链接",
+      "TEXT_LINK_COPIED": "链接已复制到剪贴板"
+    },
+    "CREATE_CHAT": {
+      "TEXT_NEW_CHAT": "新对话",
+      "TEXT_PLACEHOLDER": "今天我能为您做什么？",
+      "TEXT_MODEL_NOT_SELECTED": "未选择模型",
+      "TEXT_SELECT_A_MODEL": "选择模型",
+      "SEARCH_MODEL_VIEW": {
+        "TEXT_SELECT_A_MODEL": "选择模型",
+        "TEXT_SEARCH_MODEL": "搜索模型"
+      },
+      "SEARCH_FOLDER_VIEW": {
+        "TEXT_SEARCH_FOLDER": "搜索文件夹",
+        "TEXT_NO_FOLDER": "无文件夹",
+        "TEXT_CREATE_NEW_FOLDER": "创建新文件夹"
+      },
+      "SUGGESTIONS_LIST": {
+        "TEXT_SUGGESTED": "建议",
+        "TEXT_SUGGESTION_TITLE_1": "帮我学习",
+        "TEXT_SUGGESTION_SUBTITLE_1": "大学入学考试的词汇",
+        "TEXT_SUGGESTION_CONTENT_1": "帮我学习词汇：写一个填空句子，我来试着选择正确的选项。",
+        "TEXT_SUGGESTION_TITLE_2": "给我一些想法",
+        "TEXT_SUGGESTION_SUBTITLE_2": "如何处理孩子们的画作",
+        "TEXT_SUGGESTION_CONTENT_2": "对于孩子们的画作，我能做哪 5 件有创意的事？我不想扔掉它们，但它们也太占地方了。",
+        "TEXT_SUGGESTION_TITLE_3": "告诉我一个有趣的事实",
+        "TEXT_SUGGESTION_SUBTITLE_3": "关于罗马帝国",
+        "TEXT_SUGGESTION_CONTENT_3": "告诉我一个关于罗马帝国的随机有趣事实",
+        "TEXT_SUGGESTION_TITLE_4": "给我看一段代码",
+        "TEXT_SUGGESTION_SUBTITLE_4": "网站粘性页眉的",
+        "TEXT_SUGGESTION_CONTENT_4": "给我看一段网站粘性页眉的 CSS 和 JavaScript 代码片段。",
+        "TEXT_SUGGESTION_TITLE_5": "解释期权交易",
+        "TEXT_SUGGESTION_SUBTITLE_5": "如果我熟悉买卖股票",
+        "TEXT_SUGGESTION_CONTENT_5": "用简单的话解释期权交易，假设我已经熟悉买卖股票。",
+        "TEXT_SUGGESTION_TITLE_6": "克服拖延",
+        "TEXT_SUGGESTION_SUBTITLE_6": "给我一些建议",
+        "TEXT_SUGGESTION_CONTENT_6": "你能先问问我最容易拖延的情况，然后再给我一些克服拖延的建议吗？"
+      }
+    },
+    "ATTACHED_FILE_ITEM": {
+      "TEXT_FILE": "文件",
+      "TEXT_DOCUMENT": "文档",
+      "TEXT_COLLECTION": "集合",
+      "FILE_INFO_MODAL": {
+        "TEXT_FORMATTING_DISCLAIMER": "格式可能与源文件不一致。",
+        "TEXT_NO_PREVIEW_AVAILABLE": "暂无预览",
+        "TEXT_EXTRACTED_LINES": {
+          "other": "{{count}} 行已提取"
+        }
+      }
+    },
+    "SOURCE_CITATION_MODAL": {
+      "TEXT_CITATION": "引用",
+      "TEXT_SOURCE": "来源",
+      "TEXT_RELEVANCE": "相关度",
+      "TEXT_CONTENT": "内容",
+      "TEXT_NO_PREVIEW_AVAILABLE": "暂无预览"
+    },
+    "ARCHIVED_CHATS_LIST": {
+      "TEXT_ARCHIVED_CHATS": "已归档对话",
+      "TEXT_NO_CHATS": "暂无已归档对话。",
+      "CHAT_ITEM": {
+        "TEXT_DELETE_CHAT": "删除对话？",
+        "TEXT_THIS_WILL_DELETE": "这将删除 {{name}}",
+        "TEXT_RESTORE": "恢复",
+        "TEXT_EXPORT": "导出",
+        "TEXT_DELETE": "删除",
+        "TEXT_KEEP": "保留"
+      },
+      "ARCHIVED_CHATS_ACTIONS_SHEET": {
+        "TEXT_UNARCHIVE_CHATS": "取消归档所有对话？",
+        "TEXT_ARE_YOU_SURE": "确定要取消归档所有已归档对话吗？",
+        "BUTTON_RESTORE_ALL_CHATS": "恢复所有对话",
+        "BUTTON_EXPORT_ALL_CHATS": "导出所有对话"
+      }
+    },
+    "USER_MESSAGE_ACTIONS": {
+      "TEXT_EDIT": "编辑",
+      "TEXT_COPY": "复制"
+    },
+    "AI_MESSAGE_ACTIONS": {
+      "TEXT_EDIT": "编辑",
+      "TEXT_COPY": "复制",
+      "TEXT_CONTINUE_RESPONSE": "继续回复",
+      "TEXT_REGENERATE": "重新生成",
+      "REGENERATE_MESSAGE_ACTION_SHEET": {
+        "TEXT_SUGGEST_A_CHANGE": "建议修改",
+        "TEXT_TRY_AGAIN": "再试一次",
+        "TEXT_ADD_DETAILS": "添加细节",
+        "TEXT_MORE_CONCISE": "更简洁"
+      }
+    },
+    "EDIT_MESSAGE_INPUT": {
+      "TEXT_EDIT_MESSAGE": "编辑消息",
+      "BUTTON_SAVE": "保存",
+      "BUTTON_SAVE_AS_COPY": "另存为副本",
+      "BUTTON_SEND": "发送",
+      "BUTTON_CANCEL": "取消"
+    },
+    "SUGGEST_CHANGE_INPUT": {
+      "TEXT_SUGGEST_A_CHANGE": "建议修改",
+      "BUTTON_CANCEL": "取消"
+    },
+    "ARCHIVED_CHATS_FILTERS_SHEET": {
+      "USE_SEARCH_FILTERS": {
+        "TEXT_MOST_RECENT": "最新",
+        "TEXT_OLDEST": "最早",
+        "TEXT_A-Z": "A-Z",
+        "TEXT_Z-A": "Z-A"
+      }
+    },
+    "VOICE_MODE_MODAL": {
+      "TEXT_LISTENING": "正在聆听...",
+      "TEXT_THINKING": "正在思考...",
+      "TEXT_TALKING": "正在说话..."
+    },
+    "MESSAGE_FOLLOW_UPS": {
+      "TEXT_FOLLOW_UP": "追问"
+    },
+    "AI_MESSAGE": {
+      "TOOL_OUTPUT_SHEET": {
+        "TEXT_VIEW_RESULT_PREFIX": "查看来自以下工具的结果",
+        "TEXT_INPUT": "输入",
+        "TEXT_OUTPUT": "输出"
+      }
+    }
+  }
+}

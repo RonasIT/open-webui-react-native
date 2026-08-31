@@ -1,0 +1,171 @@
+{
+  "CHAT": {
+    "CHAT_SCREEN": {
+      "TEXT_LOADING": "Загрузка...",
+      "TEXT_SELECT_A_MODEL": "Выберите модель",
+      "TEXT_TEMPORARY_CHAT": "Временный чат"
+    },
+    "CHAT": {
+      "TEXT_INPUT_PLACEHOLDER": "Отправить сообщение",
+      "TEXT_MODEL_NOT_SELECTED": "Модель не выбрана",
+      "TEXT_MESSAGE_QUEUED": "Сообщение добавлено в очередь"
+    },
+    "CHAT_MENU_LIST": {
+      "PINNED_CHAT_LIST": {
+        "TEXT_PINNED": "Закреплённые"
+      },
+      "TEXT_NEW_CHAT": "Новый чат",
+      "TEXT_SEARCH": "Поиск",
+      "TEXT_THERE_ARE_NO_CHATS": "Чатов нет"
+    },
+    "SEARCH_CHATS_LIST": {
+      "TEXT_THERE_ARE_NO_CHATS": "Чатов нет"
+    },
+    "FORM_CHAT_INPUT": {
+      "TEXT_MODEL_NOT_SELECTED": "Модель не выбрана",
+      "ATTACHMENTS_ACTIONS_POPUP": {
+        "TEXT_CAPTURE": "Сделать снимок",
+        "TEXT_CHOOSE_FROM_GALLERY": "Выбрать из галереи",
+        "TEXT_UPLOAD_FILES": "Загрузить файлы",
+        "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Нельзя загрузить пустой файл."
+      }
+    },
+    "SHARE_CHAT_MODAL": {
+      "TEXT_SHARE_CHAT": "Поделиться чатом",
+      "TEXT_DESCRIPTION_NOT_SHARED": "Сообщения, отправленные после создания ссылки, не будут доступны. Пользователи с URL смогут просматривать общий чат.",
+      "TEXT_DESCRIPTION_SHARED_1": "Вы поделились этим чатом",
+      "TEXT_BEFORE_LINK": "ранее",
+      "TEXT_DESCRIPTION_SHARED_2": "Нажмите здесь, чтобы",
+      "TEXT_DELETE_LINK": "удалить эту ссылку",
+      "TEXT_DESCRIPTION_SHARED_3": "и создать новую общую ссылку.",
+      "BUTTON_COPY_LINK": "Скопировать ссылку",
+      "BUTTON_UPDATE_AND_COPY_LINK": "Обновить и скопировать ссылку",
+      "TEXT_LINK_COPIED": "Ссылка скопирована в буфер обмена"
+    },
+    "CREATE_CHAT": {
+      "TEXT_NEW_CHAT": "Новый чат",
+      "TEXT_PLACEHOLDER": "Чем я могу помочь сегодня?",
+      "TEXT_MODEL_NOT_SELECTED": "Модель не выбрана",
+      "TEXT_SELECT_A_MODEL": "Выберите модель",
+      "SEARCH_MODEL_VIEW": {
+        "TEXT_SELECT_A_MODEL": "Выберите модель",
+        "TEXT_SEARCH_MODEL": "Поиск модели"
+      },
+      "SEARCH_FOLDER_VIEW": {
+        "TEXT_SEARCH_FOLDER": "Поиск папки",
+        "TEXT_NO_FOLDER": "Нет папки",
+        "TEXT_CREATE_NEW_FOLDER": "Создать новую папку"
+      },
+      "SUGGESTIONS_LIST": {
+        "TEXT_SUGGESTED": "Рекомендации",
+        "TEXT_SUGGESTION_TITLE_1": "Помоги мне учиться",
+        "TEXT_SUGGESTION_SUBTITLE_1": "словарный запас для вступительного экзамена в колледж",
+        "TEXT_SUGGESTION_CONTENT_1": "Помоги мне учить слова: напиши предложение с пропуском, а я попробую выбрать правильный вариант.",
+        "TEXT_SUGGESTION_TITLE_2": "Дай идеи",
+        "TEXT_SUGGESTION_SUBTITLE_2": "что делать с детскими рисунками",
+        "TEXT_SUGGESTION_CONTENT_2": "Какие 5 творческих идей можно сделать с детскими рисунками? Не хочу их выбрасывать, но они занимают слишком много места.",
+        "TEXT_SUGGESTION_TITLE_3": "Расскажи интересный факт",
+        "TEXT_SUGGESTION_SUBTITLE_3": "о Римской империи",
+        "TEXT_SUGGESTION_CONTENT_3": "Расскажи случайный интересный факт о Римской империи",
+        "TEXT_SUGGESTION_TITLE_4": "Покажи фрагмент кода",
+        "TEXT_SUGGESTION_SUBTITLE_4": "липкого заголовка сайта",
+        "TEXT_SUGGESTION_CONTENT_4": "Покажи фрагмент кода липкого заголовка сайта на CSS и JavaScript.",
+        "TEXT_SUGGESTION_TITLE_5": "Объясни торговлю опционами",
+        "TEXT_SUGGESTION_SUBTITLE_5": "если я знаком с покупкой и продажей акций",
+        "TEXT_SUGGESTION_CONTENT_5": "Объясни торговлю опционами простыми словами, если я знаком с покупкой и продажей акций.",
+        "TEXT_SUGGESTION_TITLE_6": "Преодолеть прокрастинацию",
+        "TEXT_SUGGESTION_SUBTITLE_6": "дай советы",
+        "TEXT_SUGGESTION_CONTENT_6": "Можешь сначала спросить меня о ситуациях, когда я чаще всего откладываю дела, а затем дать несколько советов, как это преодолеть?"
+      }
+    },
+    "ATTACHED_FILE_ITEM": {
+      "TEXT_FILE": "Файл",
+      "TEXT_DOCUMENT": "Документ",
+      "TEXT_COLLECTION": "Коллекция",
+      "FILE_INFO_MODAL": {
+        "TEXT_FORMATTING_DISCLAIMER": "Форматирование может отличаться от исходного.",
+        "TEXT_NO_PREVIEW_AVAILABLE": "Предпросмотр недоступен",
+        "TEXT_EXTRACTED_LINES": {
+          "one": "{{count}} извлечённая строка",
+          "few": "{{count}} извлечённые строки",
+          "many": "{{count}} извлечённых строк"
+        }
+      }
+    },
+    "SOURCE_CITATION_MODAL": {
+      "TEXT_CITATION": "Цитата",
+      "TEXT_SOURCE": "Источник",
+      "TEXT_RELEVANCE": "Релевантность",
+      "TEXT_CONTENT": "Содержание",
+      "TEXT_NO_PREVIEW_AVAILABLE": "Предпросмотр недоступен"
+    },
+    "ARCHIVED_CHATS_LIST": {
+      "TEXT_ARCHIVED_CHATS": "Архивные чаты",
+      "TEXT_NO_CHATS": "Архивных чатов нет.",
+      "CHAT_ITEM": {
+        "TEXT_DELETE_CHAT": "Удалить чат?",
+        "TEXT_THIS_WILL_DELETE": "Будет удалён {{name}}",
+        "TEXT_RESTORE": "Восстановить",
+        "TEXT_EXPORT": "Экспорт",
+        "TEXT_DELETE": "Удалить",
+        "TEXT_KEEP": "Оставить"
+      },
+      "ARCHIVED_CHATS_ACTIONS_SHEET": {
+        "TEXT_UNARCHIVE_CHATS": "Разархивировать все чаты?",
+        "TEXT_ARE_YOU_SURE": "Вы уверены, что хотите разархивировать все архивные чаты?",
+        "BUTTON_RESTORE_ALL_CHATS": "Восстановить все чаты",
+        "BUTTON_EXPORT_ALL_CHATS": "Экспортировать все чаты"
+      }
+    },
+    "USER_MESSAGE_ACTIONS": {
+      "TEXT_EDIT": "Изменить",
+      "TEXT_COPY": "Копировать"
+    },
+    "AI_MESSAGE_ACTIONS": {
+      "TEXT_EDIT": "Изменить",
+      "TEXT_COPY": "Копировать",
+      "TEXT_CONTINUE_RESPONSE": "Продолжить ответ",
+      "TEXT_REGENERATE": "Перегенерировать",
+      "REGENERATE_MESSAGE_ACTION_SHEET": {
+        "TEXT_SUGGEST_A_CHANGE": "Предложить изменение",
+        "TEXT_TRY_AGAIN": "Попробовать снова",
+        "TEXT_ADD_DETAILS": "Добавить детали",
+        "TEXT_MORE_CONCISE": "Более кратко"
+      }
+    },
+    "EDIT_MESSAGE_INPUT": {
+      "TEXT_EDIT_MESSAGE": "Редактировать сообщение",
+      "BUTTON_SAVE": "Сохранить",
+      "BUTTON_SAVE_AS_COPY": "Сохранить как копию",
+      "BUTTON_SEND": "Отправить",
+      "BUTTON_CANCEL": "Отмена"
+    },
+    "SUGGEST_CHANGE_INPUT": {
+      "TEXT_SUGGEST_A_CHANGE": "Предложить изменение",
+      "BUTTON_CANCEL": "Отмена"
+    },
+    "ARCHIVED_CHATS_FILTERS_SHEET": {
+      "USE_SEARCH_FILTERS": {
+        "TEXT_MOST_RECENT": "Сначала новые",
+        "TEXT_OLDEST": "Сначала старые",
+        "TEXT_A-Z": "A-Z",
+        "TEXT_Z-A": "Z-A"
+      }
+    },
+    "VOICE_MODE_MODAL": {
+      "TEXT_LISTENING": "Слушаю...",
+      "TEXT_THINKING": "Думаю...",
+      "TEXT_TALKING": "Говорю..."
+    },
+    "MESSAGE_FOLLOW_UPS": {
+      "TEXT_FOLLOW_UP": "Уточнение"
+    },
+    "AI_MESSAGE": {
+      "TOOL_OUTPUT_SHEET": {
+        "TEXT_VIEW_RESULT_PREFIX": "Посмотреть результат от",
+        "TEXT_INPUT": "Ввод",
+        "TEXT_OUTPUT": "Вывод"
+      }
+    }
+  }
+}

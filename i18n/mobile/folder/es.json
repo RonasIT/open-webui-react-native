@@ -1,0 +1,36 @@
+{
+  "FOLDER": {
+    "CHATS_LIST": {
+      "TEXT_NO_CHATS": "No hay chats en esta carpeta."
+    },
+    "FOLDER_ACTIONS_SHEET": {
+      "TEXT_EDIT": "Editar",
+      "TEXT_EXPORT": "Exportar",
+      "TEXT_DELETE": "Eliminar",
+      "TEXT_KEEP": "Conservar",
+      "TEXT_DELETE_FOLDER": "¿Eliminar carpeta?",
+      "TEXT_THIS_WILL_DELETE": "Se eliminará {{name}}"
+    },
+    "UPSERT_FOLDER_SHEET": {
+      "TEXT_NEW_FOLDER": "Nueva carpeta",
+      "TEXT_EDIT_FOLDER": "Editar carpeta",
+      "TEXT_FOLDER_NAME": "Nombre de la carpeta",
+      "TEXT_DOCUMENT": "Documento",
+      "TEXT_FILE": "Archivo",
+      "TEXT_COLLECTION": "Colección",
+      "TEXT_FOLDER_NAME_PLACEHOLDER": "p. ej. Mi carpeta",
+      "TEXT_SYSTEM_PROMPT": "Prompt del sistema",
+      "TEXT_KNOWLEDGE": "Conocimiento",
+      "BUTTON_SELECT_KNOWLEDGE": "Seleccionar conocimiento",
+      "BUTTON_UPLOAD_FILES": "Subir archivos",
+      "TEXT_CREATE": "Crear",
+      "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "No puedes subir un archivo vacío.",
+      "TEXT_UNSUPPORTED_TYPE": "Tipo no compatible."
+    },
+    "SELECT_KNOWLEDGE_SHEET": {
+      "TEXT_SEARCH_KNOWLEDGE": "Buscar conocimiento",
+      "TEXT_SELECT_KNOWLEDGE": "Seleccionar conocimiento",
+      "TEXT_NO_KNOWLEDGE": "No hay conocimiento."
+    }
+  }
+}

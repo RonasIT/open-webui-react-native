@@ -174,6 +174,14 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
       }),
     );
   }
+
+  public async archiveAllChats(): Promise<void> {
+    await getApiService().post<void>(`${chatServiceConfig.versionedRoute}/archive/all`);
+  }
+
+  public async deleteAllChats(): Promise<void> {
+    await getApiService().delete<void>(`${chatServiceConfig.versionedRoute}/`);
+  }
 }
 
 export const chatService = new ChatService();

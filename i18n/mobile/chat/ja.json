@@ -1,0 +1,169 @@
+{
+  "CHAT": {
+    "CHAT_SCREEN": {
+      "TEXT_LOADING": "読み込み中...",
+      "TEXT_SELECT_A_MODEL": "モデルを選択",
+      "TEXT_TEMPORARY_CHAT": "一時チャット"
+    },
+    "CHAT": {
+      "TEXT_INPUT_PLACEHOLDER": "メッセージを送信",
+      "TEXT_MODEL_NOT_SELECTED": "モデルが選択されていません",
+      "TEXT_MESSAGE_QUEUED": "メッセージをキューに追加しました"
+    },
+    "CHAT_MENU_LIST": {
+      "PINNED_CHAT_LIST": {
+        "TEXT_PINNED": "ピン留め"
+      },
+      "TEXT_NEW_CHAT": "新しいチャット",
+      "TEXT_SEARCH": "検索",
+      "TEXT_THERE_ARE_NO_CHATS": "チャットはありません"
+    },
+    "SEARCH_CHATS_LIST": {
+      "TEXT_THERE_ARE_NO_CHATS": "チャットはありません"
+    },
+    "FORM_CHAT_INPUT": {
+      "TEXT_MODEL_NOT_SELECTED": "モデルが選択されていません",
+      "ATTACHMENTS_ACTIONS_POPUP": {
+        "TEXT_CAPTURE": "撮影",
+        "TEXT_CHOOSE_FROM_GALLERY": "ギャラリーから選択",
+        "TEXT_UPLOAD_FILES": "ファイルをアップロード",
+        "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "空のファイルはアップロードできません。"
+      }
+    },
+    "SHARE_CHAT_MODAL": {
+      "TEXT_SHARE_CHAT": "チャットを共有",
+      "TEXT_DESCRIPTION_NOT_SHARED": "リンク作成後に送信したメッセージは共有されません。URL を持つユーザーは共有されたチャットを閲覧できます。",
+      "TEXT_DESCRIPTION_SHARED_1": "このチャットを共有しました",
+      "TEXT_BEFORE_LINK": "以前",
+      "TEXT_DESCRIPTION_SHARED_2": "ここをクリックして",
+      "TEXT_DELETE_LINK": "このリンクを削除",
+      "TEXT_DESCRIPTION_SHARED_3": "し、新しい共有リンクを作成します。",
+      "BUTTON_COPY_LINK": "リンクをコピー",
+      "BUTTON_UPDATE_AND_COPY_LINK": "更新してリンクをコピー",
+      "TEXT_LINK_COPIED": "リンクをクリップボードにコピーしました"
+    },
+    "CREATE_CHAT": {
+      "TEXT_NEW_CHAT": "新しいチャット",
+      "TEXT_PLACEHOLDER": "今日はどのようにお手伝いできますか？",
+      "TEXT_MODEL_NOT_SELECTED": "モデルが選択されていません",
+      "TEXT_SELECT_A_MODEL": "モデルを選択",
+      "SEARCH_MODEL_VIEW": {
+        "TEXT_SELECT_A_MODEL": "モデルを選択",
+        "TEXT_SEARCH_MODEL": "モデルを検索"
+      },
+      "SEARCH_FOLDER_VIEW": {
+        "TEXT_SEARCH_FOLDER": "フォルダを検索",
+        "TEXT_NO_FOLDER": "フォルダなし",
+        "TEXT_CREATE_NEW_FOLDER": "新しいフォルダを作成"
+      },
+      "SUGGESTIONS_LIST": {
+        "TEXT_SUGGESTED": "おすすめ",
+        "TEXT_SUGGESTION_TITLE_1": "勉強を手伝って",
+        "TEXT_SUGGESTION_SUBTITLE_1": "大学入試の語彙",
+        "TEXT_SUGGESTION_CONTENT_1": "語彙の学習を手伝って：穴埋めの文を書いて、正しい選択肢を選ばせてください。",
+        "TEXT_SUGGESTION_TITLE_2": "アイデアをください",
+        "TEXT_SUGGESTION_SUBTITLE_2": "子どもの作品の活用方法",
+        "TEXT_SUGGESTION_CONTENT_2": "子どもの作品でできるクリエイティブなことは5つ何ですか？捨てたくはないけれど、場所も取りすぎます。",
+        "TEXT_SUGGESTION_TITLE_3": "おもしろい豆知識を教えて",
+        "TEXT_SUGGESTION_SUBTITLE_3": "ローマ帝国について",
+        "TEXT_SUGGESTION_CONTENT_3": "ローマ帝国に関するランダムなおもしろい豆知識を教えて",
+        "TEXT_SUGGESTION_TITLE_4": "コードスニペットを見せて",
+        "TEXT_SUGGESTION_SUBTITLE_4": "ウェブサイトのスティッキーヘッダーの",
+        "TEXT_SUGGESTION_CONTENT_4": "ウェブサイトのスティッキーヘッダーのコードスニペットを CSS と JavaScript で見せてください。",
+        "TEXT_SUGGESTION_TITLE_5": "オプション取引を説明して",
+        "TEXT_SUGGESTION_SUBTITLE_5": "株式の売買に慣れている場合",
+        "TEXT_SUGGESTION_CONTENT_5": "株式の売買に慣れている前提で、オプション取引をわかりやすく説明してください。",
+        "TEXT_SUGGESTION_TITLE_6": "先延ばしを克服する",
+        "TEXT_SUGGESTION_SUBTITLE_6": "ヒントをください",
+        "TEXT_SUGGESTION_CONTENT_6": "まず、最も先延ばししがちな場面について聞いてから、克服のための提案をいくつかくれますか？"
+      }
+    },
+    "ATTACHED_FILE_ITEM": {
+      "TEXT_FILE": "ファイル",
+      "TEXT_DOCUMENT": "ドキュメント",
+      "TEXT_COLLECTION": "コレクション",
+      "FILE_INFO_MODAL": {
+        "TEXT_FORMATTING_DISCLAIMER": "書式は元のソースと一致しない場合があります。",
+        "TEXT_NO_PREVIEW_AVAILABLE": "プレビューはありません",
+        "TEXT_EXTRACTED_LINES": {
+          "other": "{{count}} 行を抽出"
+        }
+      }
+    },
+    "SOURCE_CITATION_MODAL": {
+      "TEXT_CITATION": "引用",
+      "TEXT_SOURCE": "ソース",
+      "TEXT_RELEVANCE": "関連度",
+      "TEXT_CONTENT": "内容",
+      "TEXT_NO_PREVIEW_AVAILABLE": "プレビューはありません"
+    },
+    "ARCHIVED_CHATS_LIST": {
+      "TEXT_ARCHIVED_CHATS": "アーカイブ済みチャット",
+      "TEXT_NO_CHATS": "アーカイブ済みチャットはありません。",
+      "CHAT_ITEM": {
+        "TEXT_DELETE_CHAT": "チャットを削除しますか？",
+        "TEXT_THIS_WILL_DELETE": "{{name}} が削除されます",
+        "TEXT_RESTORE": "復元",
+        "TEXT_EXPORT": "エクスポート",
+        "TEXT_DELETE": "削除",
+        "TEXT_KEEP": "保持"
+      },
+      "ARCHIVED_CHATS_ACTIONS_SHEET": {
+        "TEXT_UNARCHIVE_CHATS": "すべてのチャットのアーカイブを解除しますか？",
+        "TEXT_ARE_YOU_SURE": "アーカイブ済みのすべてのチャットのアーカイブを解除してもよろしいですか？",
+        "BUTTON_RESTORE_ALL_CHATS": "すべてのチャットを復元",
+        "BUTTON_EXPORT_ALL_CHATS": "すべてのチャットをエクスポート"
+      }
+    },
+    "USER_MESSAGE_ACTIONS": {
+      "TEXT_EDIT": "編集",
+      "TEXT_COPY": "コピー"
+    },
+    "AI_MESSAGE_ACTIONS": {
+      "TEXT_EDIT": "編集",
+      "TEXT_COPY": "コピー",
+      "TEXT_CONTINUE_RESPONSE": "回答を続ける",
+      "TEXT_REGENERATE": "再生成",
+      "REGENERATE_MESSAGE_ACTION_SHEET": {
+        "TEXT_SUGGEST_A_CHANGE": "変更を提案",
+        "TEXT_TRY_AGAIN": "もう一度試す",
+        "TEXT_ADD_DETAILS": "詳細を追加",
+        "TEXT_MORE_CONCISE": "より簡潔に"
+      }
+    },
+    "EDIT_MESSAGE_INPUT": {
+      "TEXT_EDIT_MESSAGE": "メッセージを編集",
+      "BUTTON_SAVE": "保存",
+      "BUTTON_SAVE_AS_COPY": "コピーとして保存",
+      "BUTTON_SEND": "送信",
+      "BUTTON_CANCEL": "キャンセル"
+    },
+    "SUGGEST_CHANGE_INPUT": {
+      "TEXT_SUGGEST_A_CHANGE": "変更を提案",
+      "BUTTON_CANCEL": "キャンセル"
+    },
+    "ARCHIVED_CHATS_FILTERS_SHEET": {
+      "USE_SEARCH_FILTERS": {
+        "TEXT_MOST_RECENT": "最新順",
+        "TEXT_OLDEST": "古い順",
+        "TEXT_A-Z": "A-Z",
+        "TEXT_Z-A": "Z-A"
+      }
+    },
+    "VOICE_MODE_MODAL": {
+      "TEXT_LISTENING": "聞いています...",
+      "TEXT_THINKING": "考えています...",
+      "TEXT_TALKING": "話しています..."
+    },
+    "MESSAGE_FOLLOW_UPS": {
+      "TEXT_FOLLOW_UP": "フォローアップ"
+    },
+    "AI_MESSAGE": {
+      "TOOL_OUTPUT_SHEET": {
+        "TEXT_VIEW_RESULT_PREFIX": "次の結果を表示",
+        "TEXT_INPUT": "入力",
+        "TEXT_OUTPUT": "出力"
+      }
+    }
+  }
+}

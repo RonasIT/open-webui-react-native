@@ -4,10 +4,11 @@ import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-deb
 
 interface MathBlockProps {
   content: string;
+  fontSize?: number;
   isContentReady?: boolean;
 }
 
-export function MathBlock({ content, isContentReady }: MathBlockProps): ReactElement {
+export function MathBlock({ content, fontSize = 12, isContentReady }: MathBlockProps): ReactElement {
   const [containerWidth, setContainerWidth] = useState(0);
   const [contentWidth, setContentWidth] = useState(0);
   const { debouncedQuery: debouncedContent, setQuery } = useDebouncedQuery();
@@ -33,7 +34,7 @@ export function MathBlock({ content, isContentReady }: MathBlockProps): ReactEle
             onLayout={(event) => {
               setContentWidth(event.nativeEvent.layout.width);
             }}
-            fontSize={12}>
+            fontSize={fontSize}>
             {renderedContent}
           </MathSvg>
         ) : (

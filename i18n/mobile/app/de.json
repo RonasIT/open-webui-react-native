@@ -1,0 +1,95 @@
+{
+  "APP": {
+    "CHAT_LIST_SCREEN": {
+      "TEXT_CHATS": "Chats"
+    },
+    "SETTINGS_SCREEN": {
+      "TEXT_SETTINGS": "Profil und Einstellungen",
+      "TEXT_SECTION_GENERAL": "Allgemein",
+      "TEXT_SECTION_PROFILE": "Profil",
+      "TEXT_SECTION_FEEDBACK": "Feedback",
+      "TEXT_SECTION_CHATS": "Chats",
+      "TEXT_DEFAULT_MODEL": "Standardmodell",
+      "TEXT_DEFAULT_SYSTEM_PROMPT": "Standard-System-Prompt",
+      "TEXT_LANGUAGE": "Sprache",
+      "TEXT_NOT_SET": "Nicht festgelegt",
+      "TEXT_LOAD_ERROR": "Laden fehlgeschlagen",
+      "TEXT_PROFILE_NAME": "Profilname",
+      "TEXT_AVATAR": "Avatar",
+      "TEXT_CHANGE_PASSWORD": "Passwort ändern",
+      "TEXT_LOGOUT": "Abmelden",
+      "TEXT_REPORT_A_BUG": "Fehler melden",
+      "TEXT_RATE_APP": "App bewerten",
+      "TEXT_ARCHIVED_CHATS": "Archivierte Chats",
+      "TEXT_EXPORT_ALL_CHATS": "Alle Chats exportieren",
+      "TEXT_ARCHIVE_ALL": "Alle archivieren",
+      "TEXT_ARCHIVE_ALL_CHATS_TITLE": "Alle Chats archivieren",
+      "TEXT_ARCHIVE_ALL_CHATS_MESSAGE": "Möchten Sie wirklich alle Chats archivieren? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "TEXT_DELETE_ALL": "Alle löschen",
+      "TEXT_DELETE_ALL_CHATS_TITLE": "Alle Chats löschen",
+      "TEXT_DELETE_ALL_CHATS_MESSAGE": "Möchten Sie wirklich alle Chats löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "TEXT_ALWAYS_ON_WEB_SEARCH": "Websuche immer aktiv",
+      "TEXT_HAPTIC_FEEDBACK": "Haptisches Feedback",
+      "TEXT_ENABLE_MESSAGE_QUEUE": "Nachrichtenwarteschlange aktivieren",
+      "TEXT_CHAT_BUBBLE_UI": "Chatblasen-Oberfläche",
+      "TEXT_TEMPORARY_CHAT_BY_DEFAULT": "Temporärer Chat als Standard",
+      "TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE": "Markdown in Benutzernachrichten darstellen",
+      "TEXT_MARKDOWN_RENDERER": "Markdown-Renderer",
+      "TEXT_MARKDOWN_RENDERER_DEFAULT": "Standard",
+      "TEXT_MARKDOWN_RENDERER_NITRO": "Experimentell",
+      "PROFILE_AVATAR_SHEET": {
+        "TEXT_TITLE": "Profilbild",
+        "BUTTON_UPLOAD_PROFILE_IMAGE": "Profilbild hochladen",
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "Standard-Avatar wiederherstellen",
+        "TEXT_IMAGE_TOO_LARGE": "Dieses Bild ist zu groß. Bitte wählen Sie ein kleineres",
+        "TEXT_UPLOAD_FAILED": "Das Bild konnte nicht verarbeitet werden. Bitte versuchen Sie ein anderes"
+      },
+      "PROFILE_NAME_SHEET": {
+        "TEXT_TITLE": "Profilname",
+        "TEXT_PROFILE_NAME": "Profilname"
+      },
+      "CHANGE_PASSWORD_SHEET": {
+        "TEXT_TITLE": "Passwort ändern",
+        "TEXT_CURRENT_PASSWORD": "Aktuelles Passwort",
+        "TEXT_ENTER_CURRENT_PASSWORD": "Geben Sie Ihr aktuelles Passwort ein",
+        "TEXT_NEW_PASSWORD": "Neues Passwort",
+        "TEXT_ENTER_NEW_PASSWORD": "Geben Sie Ihr neues Passwort ein",
+        "TEXT_CONFIRM_NEW_PASSWORD": "Neues Passwort bestätigen",
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Wiederholen Sie Ihr neues Passwort",
+        "TEXT_PASSWORD_CHANGED": "Ihr Passwort wurde geändert"
+      },
+      "DEFAULT_MODEL_SHEET": {
+        "TEXT_TITLE": "Standardmodell",
+        "TEXT_SEARCH_MODEL": "Modell suchen",
+        "TEXT_NO_MODELS": "Es gibt keine Modelle."
+      },
+      "DEFAULT_SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "Standard-System-Prompt",
+        "TEXT_LABEL": "Standard-System-Prompt"
+      },
+      "CONTACT_SUPPORT_SHEET": {
+        "TEXT_REPORT_BUG": "Fehler melden",
+        "TEXT_YOUR_MESSAGE": "Ihre Nachricht",
+        "TEXT_MESSAGE_SENT": "Vielen Dank für Ihr Feedback! Ihre Nachricht wurde erfolgreich gesendet",
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Screenshots oder Video anhängen",
+        "TEXT_ATTACHMENTS_LIMIT_REACHED": "Sie können maximal {{count}} Dateien anhängen"
+      },
+      "LANGUAGE_SHEET": {
+        "TEXT_TITLE": "Sprache"
+      },
+      "MARKDOWN_RENDERER_SHEET": {
+        "TEXT_TITLE": "Markdown-Renderer"
+      },
+      "TEXT_DELETE_ACCOUNT": "Konto löschen",
+      "TEXT_DELETE_ACCOUNT_TITLE": "Möchten Sie Ihr Konto wirklich löschen?",
+      "TEXT_DELETE_ACCOUNT_MESSAGE": "Diese Aktion führt zu einem dauerhaften Datenverlust, wenn wir in den nächsten 30 Tagen nichts von Ihnen hören.",
+      "BUTTON_DELETE_ACCOUNT": "Ja, mein Konto löschen",
+      "BUTTON_DONT_DELETE": "Nicht löschen",
+      "TEXT_ACCOUNT_DELETION_REQUEST": "Ihre Anfrage zur Kontolöschung wurde übermittelt.",
+      "TEXT_LOGOUT_TITLE": "Abmelden?",
+      "TEXT_LOGOUT_MESSAGE": "Möchten Sie sich wirklich abmelden?",
+      "BUTTON_LOGOUT": "Abmelden",
+      "BUTTON_CANCEL": "Abbrechen"
+    }
+  }
+}

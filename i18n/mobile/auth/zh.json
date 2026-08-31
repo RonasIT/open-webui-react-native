@@ -1,0 +1,25 @@
+{
+  "AUTH": {
+    "SIGN_IN": {
+      "TEXT_TITLE_EXTERNAL": "登录",
+      "TEXT_YOU_LOGGED_IN": "您已成功登录。",
+      "EMAIL_FORM": {
+        "TEXT_EMAIL_ADDRESS": "电子邮箱",
+        "TEXT_PASSWORD": "密码",
+        "TEXT_API_URL": "API 地址",
+        "TEXT_ENTER_YOUR_PASSWORD": "请输入密码",
+        "BUTTON_SIGN_IN": "登录"
+      },
+      "GOOGLE_FORM": {
+        "BUTTON_CONTINUE_WITH_GOOGLE": "使用 Google 继续"
+      },
+      "OIDC_FORM": {
+        "BUTTON_CONTINUE_WITH": "使用 {{provider}} 继续"
+      },
+      "OAUTH_WEB_VIEW_MODAL": {
+        "BUTTON_CLOSE": "关闭",
+        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "此登录方式不可用。请使用其他方式继续。"
+      }
+    }
+  }
+}

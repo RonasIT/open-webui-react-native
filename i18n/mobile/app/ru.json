@@ -1,0 +1,95 @@
+{
+  "APP": {
+    "CHAT_LIST_SCREEN": {
+      "TEXT_CHATS": "Чаты"
+    },
+    "SETTINGS_SCREEN": {
+      "TEXT_SETTINGS": "Профиль и настройки",
+      "TEXT_SECTION_GENERAL": "Общие",
+      "TEXT_SECTION_PROFILE": "Профиль",
+      "TEXT_SECTION_FEEDBACK": "Обратная связь",
+      "TEXT_SECTION_CHATS": "Чаты",
+      "TEXT_DEFAULT_MODEL": "Модель по умолчанию",
+      "TEXT_DEFAULT_SYSTEM_PROMPT": "Системный промпт по умолчанию",
+      "TEXT_LANGUAGE": "Язык",
+      "TEXT_NOT_SET": "Не задано",
+      "TEXT_LOAD_ERROR": "Не удалось загрузить",
+      "TEXT_PROFILE_NAME": "Имя профиля",
+      "TEXT_AVATAR": "Аватар",
+      "TEXT_CHANGE_PASSWORD": "Изменить пароль",
+      "TEXT_LOGOUT": "Выйти",
+      "TEXT_REPORT_A_BUG": "Сообщить об ошибке",
+      "TEXT_RATE_APP": "Оценить приложение",
+      "TEXT_ARCHIVED_CHATS": "Архивные чаты",
+      "TEXT_EXPORT_ALL_CHATS": "Экспортировать все чаты",
+      "TEXT_ARCHIVE_ALL": "Архивировать все",
+      "TEXT_ARCHIVE_ALL_CHATS_TITLE": "Архивировать все чаты",
+      "TEXT_ARCHIVE_ALL_CHATS_MESSAGE": "Вы уверены, что хотите архивировать все чаты? Это действие нельзя отменить.",
+      "TEXT_DELETE_ALL": "Удалить все",
+      "TEXT_DELETE_ALL_CHATS_TITLE": "Удалить все чаты",
+      "TEXT_DELETE_ALL_CHATS_MESSAGE": "Вы уверены, что хотите удалить все чаты? Это действие нельзя отменить.",
+      "TEXT_ALWAYS_ON_WEB_SEARCH": "Всегда искать в интернете",
+      "TEXT_HAPTIC_FEEDBACK": "Тактильная отдача",
+      "TEXT_ENABLE_MESSAGE_QUEUE": "Включить очередь сообщений",
+      "TEXT_CHAT_BUBBLE_UI": "Сообщения в виде облачков",
+      "TEXT_TEMPORARY_CHAT_BY_DEFAULT": "Временный чат по умолчанию",
+      "TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE": "Разметка Markdown в сообщениях пользователя",
+      "TEXT_MARKDOWN_RENDERER": "Обработчик Markdown",
+      "TEXT_MARKDOWN_RENDERER_DEFAULT": "По умолчанию",
+      "TEXT_MARKDOWN_RENDERER_NITRO": "Экспериментальный",
+      "PROFILE_AVATAR_SHEET": {
+        "TEXT_TITLE": "Аватар профиля",
+        "BUTTON_UPLOAD_PROFILE_IMAGE": "Загрузить изображение профиля",
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "Вернуть аватар по умолчанию",
+        "TEXT_IMAGE_TOO_LARGE": "Изображение слишком большое. Выберите файл меньшего размера",
+        "TEXT_UPLOAD_FAILED": "Не удалось обработать изображение. Попробуйте выбрать другое"
+      },
+      "PROFILE_NAME_SHEET": {
+        "TEXT_TITLE": "Имя профиля",
+        "TEXT_PROFILE_NAME": "Имя профиля"
+      },
+      "CHANGE_PASSWORD_SHEET": {
+        "TEXT_TITLE": "Изменить пароль",
+        "TEXT_CURRENT_PASSWORD": "Текущий пароль",
+        "TEXT_ENTER_CURRENT_PASSWORD": "Введите текущий пароль",
+        "TEXT_NEW_PASSWORD": "Новый пароль",
+        "TEXT_ENTER_NEW_PASSWORD": "Введите новый пароль",
+        "TEXT_CONFIRM_NEW_PASSWORD": "Подтвердите новый пароль",
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Повторите новый пароль",
+        "TEXT_PASSWORD_CHANGED": "Пароль успешно изменён"
+      },
+      "DEFAULT_MODEL_SHEET": {
+        "TEXT_TITLE": "Модель по умолчанию",
+        "TEXT_SEARCH_MODEL": "Поиск модели",
+        "TEXT_NO_MODELS": "Моделей нет."
+      },
+      "DEFAULT_SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "Системный промпт по умолчанию",
+        "TEXT_LABEL": "Системный промпт по умолчанию"
+      },
+      "CONTACT_SUPPORT_SHEET": {
+        "TEXT_REPORT_BUG": "Сообщить об ошибке",
+        "TEXT_YOUR_MESSAGE": "Введите сообщение",
+        "TEXT_MESSAGE_SENT": "Спасибо за отзыв! Ваше сообщение успешно отправлено",
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Прикрепить скриншот или видео",
+        "TEXT_ATTACHMENTS_LIMIT_REACHED": "Можно прикрепить не более {{count}} вложений"
+      },
+      "LANGUAGE_SHEET": {
+        "TEXT_TITLE": "Язык"
+      },
+      "MARKDOWN_RENDERER_SHEET": {
+        "TEXT_TITLE": "Обработчик Markdown"
+      },
+      "TEXT_DELETE_ACCOUNT": "Удалить аккаунт",
+      "TEXT_DELETE_ACCOUNT_TITLE": "Вы уверены, что хотите удалить аккаунт?",
+      "TEXT_DELETE_ACCOUNT_MESSAGE": "Это действие приведёт к безвозвратной потере данных, если мы не получим от вас ответа в течение следующих 30 дней.",
+      "BUTTON_DELETE_ACCOUNT": "Да, удалить мой аккаунт",
+      "BUTTON_DONT_DELETE": "Не удалять",
+      "TEXT_ACCOUNT_DELETION_REQUEST": "Запрос на удаление аккаунта отправлен.",
+      "TEXT_LOGOUT_TITLE": "Выйти?",
+      "TEXT_LOGOUT_MESSAGE": "Вы уверены, что хотите выйти?",
+      "BUTTON_LOGOUT": "Выйти",
+      "BUTTON_CANCEL": "Отмена"
+    }
+  }
+}

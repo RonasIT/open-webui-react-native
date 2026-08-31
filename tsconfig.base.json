@@ -24,6 +24,7 @@
     "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
+      "@expo/ui": ["node_modules/@expo/ui/build/universal/index.d.ts"],
       "@open-webui-react-native/mobile/auth/features/email-sign-in-form": [
         "libs/mobile/auth/features/email-sign-in-form/src/index.ts"
       ],
@@ -151,6 +152,13 @@
       "@open-webui-react-native/mobile/profile/features/menu-sheet": [
         "libs/mobile/profile/features/menu-sheet/src/index.ts"
       ],
+      "@open-webui-react-native/mobile/settings/features/contact-support-sheet": [
+        "libs/mobile/settings/features/contact-support-sheet/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/settings/features/settings": [
+        "libs/mobile/settings/features/settings/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/settings/ui/section": ["libs/mobile/settings/ui/section/src/index.ts"],
       "@open-webui-react-native/mobile/shared/data-access/base-entity": [
         "libs/mobile/shared/data-access/base-entity/src/index.ts"
       ],
@@ -186,9 +194,6 @@
       ],
       "@open-webui-react-native/mobile/shared/features/markdown-view": [
         "libs/mobile/shared/features/markdown-view/src/index.ts"
-      ],
-      "@open-webui-react-native/mobile/shared/features/profile-menu-sheet": [
-        "libs/mobile/shared/features/profile-menu-sheet/src/index.ts"
       ],
       "@open-webui-react-native/mobile/shared/features/sidebar-menu": [
         "libs/mobile/shared/features/sidebar-menu/src/index.ts"
@@ -258,17 +263,25 @@
         "libs/shared/features/use-init-requests/src/index.ts"
       ],
       "@open-webui-react-native/shared/utils/alert-service": ["libs/shared/utils/alert-service/src/index.ts"],
+      "@open-webui-react-native/shared/utils/analytics-service": ["libs/shared/utils/analytics-service/src/index.ts"],
       "@open-webui-react-native/shared/utils/app-env": ["libs/shared/utils/app-env/src/index.ts"],
       "@open-webui-react-native/shared/utils/config": ["libs/shared/utils/config/src/index.ts"],
       "@open-webui-react-native/shared/utils/date": ["libs/shared/utils/date/src/index.ts"],
       "@open-webui-react-native/shared/utils/deep-memo": ["libs/shared/utils/deep-memo/src/index.ts"],
       "@open-webui-react-native/shared/utils/feature-flag": ["libs/shared/utils/feature-flag/src/index.ts"],
       "@open-webui-react-native/shared/utils/files": ["libs/shared/utils/files/src/index.ts"],
+      "@open-webui-react-native/shared/utils/haptic-feedback-service": [
+        "libs/shared/utils/haptic-feedback-service/src/index.ts"
+      ],
       "@open-webui-react-native/shared/utils/navigation": ["libs/shared/utils/navigation/src/index.ts"],
       "@open-webui-react-native/shared/utils/objects": ["libs/shared/utils/objects/src/index.ts"],
       "@open-webui-react-native/shared/utils/permission-alert": ["libs/shared/utils/permission-alert/src/index.ts"],
       "@open-webui-react-native/shared/utils/reactotron": ["libs/shared/utils/reactotron/src/index.ts"],
+      "@open-webui-react-native/shared/utils/store-review-service": [
+        "libs/shared/utils/store-review-service/src/index.ts"
+      ],
       "@open-webui-react-native/shared/utils/strings": ["libs/shared/utils/strings/src/index.ts"],
+      "@open-webui-react-native/shared/utils/supabase-service": ["libs/shared/utils/supabase-service/src/index.ts"],
       "@open-webui-react-native/shared/utils/toast-service": ["libs/shared/utils/toast-service/src/index.ts"],
       "@open-webui-react-native/shared/utils/use-app-state-change": [
         "libs/shared/utils/use-app-state-change/src/index.ts"

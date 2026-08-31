@@ -5,6 +5,7 @@ import { chatQueriesKeys } from '../chat-queries-keys';
 import { Chat, ChatResponse, History, Message } from '../models';
 import { chatService } from '../service';
 import { prepareCompletedChatPayload } from './prepare-completed-chat-payload';
+import { isTemporaryChatId } from './temporary-chat-id';
 
 export const handleCompletedChat = async (
   message: string,
@@ -13,6 +14,12 @@ export const handleCompletedChat = async (
   sources?: Array<MessageSource>,
   output?: Message['output'],
 ): Promise<void> => {
+  // NOTE: Temporary chats are never persisted — the completed message is already reflected in the
+  // cache by patchCompletedMessage (see handleChatCompletionEvent), so there's nothing left to do.
+  if (isTemporaryChatId(chatId)) {
+    return;
+  }
+
   const chatData = queryClient.getQueryData<ChatResponse>(chatQueriesKeys.get(chatId).queryKey);
 
   if (!chatData) {

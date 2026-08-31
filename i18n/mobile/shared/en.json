@@ -5,7 +5,14 @@
       "TEXT_REQUIRED_EMAIL": "Please enter your email",
       "TEXT_REQUIRED_PASSWORD": "Please enter your password",
       "TEXT_INVALID_URL": "Please enter a valid server URL, e.g. https://your.domain or http://192.168.1.10:3000",
-      "TEXT_REQUIRED_FOLDER_NAME": "Please enter a folder name"
+      "TEXT_REQUIRED_FOLDER_NAME": "Please enter a folder name",
+      "TEXT_REQUIRED_MESSAGE": "Please enter a message",
+      "TEXT_REQUIRED_PROFILE_NAME": "Please enter a profile name",
+      "TEXT_REQUIRED_CURRENT_PASSWORD": "Please enter your current password",
+      "TEXT_REQUIRED_NEW_PASSWORD": "Please enter a new password",
+      "TEXT_REQUIRED_CONFIRM_PASSWORD": "Please confirm your new password",
+      "TEXT_PASSWORDS_DO_NOT_MATCH": "Passwords do not match",
+      "TEXT_PASSWORD_TOO_SHORT": "Password must be at least 8 characters long"
     },
     "COMMON": {
       "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "Feature is not implemented yet.",

@@ -1,4 +1,4 @@
 export const voiceModeModalConfig = {
-  meteringSilenceThreshold: 0.3,
-  meteringSilenceDuration: 2500,
+  meteringSilenceThreshold: 0.5,
+  meteringSilenceDuration: 1500,
 };

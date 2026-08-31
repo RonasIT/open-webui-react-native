@@ -1,0 +1,115 @@
+{
+  "SHARED": {
+    "VALIDATION": {
+      "TEXT_INVALID_EMAIL": "有効なメールアドレスを入力してください",
+      "TEXT_REQUIRED_EMAIL": "メールアドレスを入力してください",
+      "TEXT_REQUIRED_PASSWORD": "パスワードを入力してください",
+      "TEXT_INVALID_URL": "有効なサーバー URL を入力してください（例: https://your.domain または http://192.168.1.10:3000）",
+      "TEXT_REQUIRED_FOLDER_NAME": "フォルダ名を入力してください",
+      "TEXT_REQUIRED_MESSAGE": "メッセージを入力してください",
+      "TEXT_REQUIRED_PROFILE_NAME": "プロフィール名を入力してください",
+      "TEXT_REQUIRED_CURRENT_PASSWORD": "現在のパスワードを入力してください",
+      "TEXT_REQUIRED_NEW_PASSWORD": "新しいパスワードを入力してください",
+      "TEXT_REQUIRED_CONFIRM_PASSWORD": "新しいパスワードを確認してください",
+      "TEXT_PASSWORDS_DO_NOT_MATCH": "パスワードが一致しません",
+      "TEXT_PASSWORD_TOO_SHORT": "パスワードは8文字以上で入力してください"
+    },
+    "COMMON": {
+      "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "この機能はまだ実装されていません。",
+      "TEXT_NEW_CHAT": "新しいチャット",
+      "BUTTON_CANCEL": "キャンセル",
+      "BUTTON_CONFIRM": "確認",
+      "BUTTON_OPEN_SETTINGS": "設定を開く",
+      "TEXT_UNABLE_TO_OPEN_SETTINGS": "設定を開けません",
+      "TEXT_SETTINGS": "設定",
+      "TEXT_DISABLED_IN_OFFLINE_MODE": "オフラインモードでは機能が無効です",
+      "ACTIONS_BOTTOM_SHEET": {
+        "BUTTON_CANCEL": "キャンセル"
+      },
+      "TEXT_COPIED_TO_CLIPBOARD": "クリップボードにコピーしました"
+    },
+    "API_ERRORS": {
+      "TEXT_SOMETHING_WENT_WRONG": "問題が発生しました",
+      "TEXT_YOUR_SESSION_HAS_EXPIRED": "セッションの有効期限が切れました。再度サインインしてください",
+      "TEXT_FORBIDDEN_ERROR": "この操作へのアクセス権がありません",
+      "TEXT_INTERNAL_SERVER_ERROR": "データの読み込みエラー",
+      "TEXT_NOT_FOUND_ERROR": "データが見つかりません"
+    },
+    "DATES": {
+      "TEXT_TODAY": "今日",
+      "TEXT_YESTERDAY": "昨日",
+      "TEXT_LAST_DAYS": "過去 {{days}} 日",
+      "TEXT_AT_TIME": "{{time}}",
+      "TEXT_TODAY_TIME": "今日 {{time}}",
+      "TEXT_YESTERDAY_TIME": "昨日 {{time}}"
+    },
+    "CODE_BLOCK": {
+      "TEXT_COPIED_TO_CLIPBOARD": "クリップボードにコピーしました",
+      "TEXT_COPY": "コピー"
+    },
+    "SOCKET_SERVICE": {
+      "TEXT_CONNECTION_ERROR": "接続エラー"
+    },
+    "IMAGE_PICKER_SERVICE": {
+      "TEXT_ACCESS_DENIED": "アクセスが拒否されました"
+    },
+    "ACTION_BUTTONS_MODAL": {
+      "BUTTON_CONFIRM": "確認",
+      "BUTTON_CANCEL": "キャンセル",
+      "TEXT_TITLE_CAN_NOT_BE_EMPTY": "タイトルは空にできません"
+    },
+    "MEDIA_LIBRARY_SERVICE": {
+      "TEXT_SUCCESSFULLY_SAVED": "画像を保存しました",
+      "TEXT_ERROR_DURING_SAVING": "画像の保存中にエラーが発生しました",
+      "TEXT_SETTINGS": "設定",
+      "TEXT_SETTINGS_MESSAGE": "設定からカメラへのアクセスを許可してください。Settings > Open Web UI > Photos > All Photos"
+    },
+    "FILE_SYSTEM_SERVICE": {
+      "TEXT_SHARE": "{{fileName}} を共有",
+      "TEXT_SHARING_IS_NOT_AVAILABLE": "このデバイスでは共有できません"
+    },
+    "USE_AUDIO_RECORDER": {
+      "TEXT_NO_ACCESS": "アクセスなし",
+      "TEXT_APP_NEEDS_ACCESS": "アプリはデバイスのマイクへのアクセスが必要です"
+    },
+    "NO_CONNECTION_BANNER": {
+      "TEXT_YOU_ARE_OFFLINE": "オフラインです！"
+    },
+    "PRESSABLE_SEARCH_INPUT": {
+      "TEXT_SEARCH_CHATS": "チャットを検索"
+    },
+    "CHAT_ACTIONS_MENU_SHEET": {
+      "TEXT_PIN": "ピン留め",
+      "TEXT_UNPIN": "ピン留め解除",
+      "TEXT_RENAME": "名前を変更",
+      "TEXT_CLONE": "複製",
+      "TEXT_ARCHIVE": "アーカイブ",
+      "TEXT_RESTORE": "復元",
+      "TEXT_SHARE": "共有",
+      "TEXT_DOWNLOAD": "ダウンロード",
+      "TEXT_DELETE": "削除",
+      "TEXT_KEEP": "保持",
+      "TEXT_RENAME_CHAT": "チャット名を変更",
+      "TEXT_DELETE_CHAT": "チャットを削除しますか？",
+      "TEXT_THIS_WILL_DELETE": "{{name}} が削除されます",
+      "TEXT_CLONE_OF": "{{title}} の複製",
+      "TEXT_CHAT_ACTIONS": "チャット操作",
+      "TEXT_MOVE_TO_FOLDER": "フォルダに移動",
+      "DOWNLOAD_CHAT_OPTIONS_SHEET": {
+        "TEXT_EXPORT_CHAT_JSON": "チャットをエクスポート (.json)",
+        "TEXT_PLAIN_TEXT": "プレーンテキスト (.txt)",
+        "TEXT_PDF_DOCUMENT": "PDF ドキュメント (.pdf)"
+      },
+      "MOVE_CHAT_TO_FOLDER_MODAL": {
+        "TEXT_SEARCH_FOLDER": "フォルダを検索",
+        "TEXT_NO_FOLDERS": "フォルダがありません",
+        "TEXT_CREATE_NEW_FOLDER": "フォルダを作成",
+        "TEXT_NO_FOLDER": "フォルダなし"
+      }
+    },
+    "SEARCH_INPUT": {
+      "BUTTON_CANCEL": "キャンセル",
+      "TEXT_SEARCH_CHATS": "チャットを検索"
+    }
+  }
+}

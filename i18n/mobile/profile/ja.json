@@ -1,0 +1,15 @@
+{
+  "PROFILE": {
+    "PROFILE_MENU_SHEET": {
+      "TEXT_LOGOUT": "ログアウト",
+      "TEXT_ARCHIVED_CHATS": "アーカイブ済みチャット",
+      "TEXT_SETTINGS": "設定",
+      "TEXT_DELETE_ACCOUNT": "アカウントを削除",
+      "TEXT_DELETE_ACCOUNT_TITLE": "アカウントを削除してもよろしいですか？",
+      "TEXT_DELETE_ACCOUNT_MESSAGE": "今後30日以内にご連絡がない場合、この操作によりデータが永久に失われます。",
+      "BUTTON_DELETE_ACCOUNT": "はい、アカウントを削除します",
+      "BUTTON_DONT_DELETE": "削除しない",
+      "TEXT_ACCOUNT_DELETION_REQUEST": "アカウント削除のリクエストが送信されました。"
+    }
+  }
+}

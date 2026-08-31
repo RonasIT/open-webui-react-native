@@ -1,8 +1,12 @@
 import { uniqBy } from 'lodash-es';
 import { AttachedFile, FileType, Role } from '@open-webui-react-native/shared/data-access/common';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
+import { usersApiConfig } from '../../users/config';
+import { UserSettings } from '../../users/models';
+import { chatQueriesKeys } from '../chat-queries-keys';
 import { backgroundTasksConfig } from '../configs';
 import { ChatGenerationOption } from '../enums';
-import { ChatMessage, ChatMessageContent, CompleteChatRequest, Features, Message } from '../models';
+import { ChatMessage, ChatMessageContent, ChatResponse, CompleteChatRequest, Features, Message } from '../models';
 
 export interface PrepareCompleteChatPayloadArgs {
   chatId: string;
@@ -28,8 +32,26 @@ export function prepareCompleteChatPayload({
   userMessage,
   assistantMessageId,
 }: PrepareCompleteChatPayloadArgs): CompleteChatRequest {
+  const userSettings = queryClient.getQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey);
+
   const prepareChatMessages = (): Array<ChatMessage> => {
-    return messages.map((message) => {
+    const chatResponse = queryClient.getQueryData<ChatResponse>(chatQueriesKeys.get(chatId).queryKey);
+    const chatSystemPrompt = (chatResponse?.chat.params?.system as string | undefined)?.trim();
+    const globalSystemPrompt = userSettings?.ui.system?.trim();
+    // The user's default system prompt (Settings > General). Prepended to every completion
+    // request rather than persisted into chat history, since the full history is resent each call.
+    // Chat system prompt overrides the global system prompt.
+    const systemPrompt = chatSystemPrompt || globalSystemPrompt;
+    const systemMessage = systemPrompt
+      ? [
+          new ChatMessage({
+            role: Role.SYSTEM,
+            content: [new ChatMessageContent({ type: 'text', text: systemPrompt })],
+          }),
+        ]
+      : [];
+
+    const historyMessages = messages.map((message) => {
       const content: Array<ChatMessageContent> = [];
 
       if (message.content) {
@@ -59,6 +81,8 @@ export function prepareCompleteChatPayload({
         content,
       });
     });
+
+    return [...systemMessage, ...historyMessages];
   };
 
   // Only files should be included in `files` field
@@ -72,7 +96,7 @@ export function prepareCompleteChatPayload({
     features: new Features({
       codeInterpreter: generationOptions?.includes(ChatGenerationOption.CODE_INTERPRETER),
       imageGeneration: generationOptions?.includes(ChatGenerationOption.IMAGE_GENERATION),
-      webSearch: generationOptions?.includes(ChatGenerationOption.WEB_SEARCH),
+      webSearch: (userSettings?.ui.webSearch ?? false) || generationOptions?.includes(ChatGenerationOption.WEB_SEARCH),
     }),
     stream: true,
     model,

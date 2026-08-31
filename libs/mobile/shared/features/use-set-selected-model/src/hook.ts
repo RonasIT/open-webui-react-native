@@ -1,5 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
-import { appConfigurationApi, chatApi, modelsApi, usersApi } from '@open-webui-react-native/shared/data-access/api';
+import {
+  appConfigurationApi,
+  chatApi,
+  isModelSelectable,
+  isTemporaryChatId,
+  modelsApi,
+  usersApi,
+} from '@open-webui-react-native/shared/data-access/api';
 
 export interface UseSetSelectedModelResult {
   isLoading: boolean;
@@ -18,13 +25,17 @@ export const useSetSelectedModel = (chatId?: string): UseSetSelectedModelResult 
     isLoading: isConfigLoading,
   } = appConfigurationApi.useGetAppConfiguration();
   const { data: models, isSuccess: isModelsSuccess, isLoading: isModelsLoading } = modelsApi.useGetModels();
+  const isTemporaryChat = isTemporaryChatId(chatId);
   const {
     data: chat,
     isSuccess: isChatSuccess,
     isLoading: isChatLoading,
-  } = chatApi.useGet(chatId as string, { enabled: !!chatId });
+  } = chatApi.useGet(chatId as string, { enabled: !!chatId && !isTemporaryChat });
 
-  const isDataReceived = isSettingsSuccess && isConfigSuccess && isModelsSuccess && (!chatId || isChatSuccess);
+  // NOTE: Temporary chats are never persisted, so their useGet query is disabled above (it can't
+  // succeed) — the seeded cache value it still returns is enough, don't wait on isChatSuccess for it.
+  const isDataReceived =
+    isSettingsSuccess && isConfigSuccess && isModelsSuccess && (!chatId || isTemporaryChat || isChatSuccess);
 
   const isLoading = isSettingsLoading || isConfigLoading || isModelsLoading || isChatLoading;
 
@@ -37,7 +48,9 @@ export const useSetSelectedModel = (chatId?: string): UseSetSelectedModelResult 
       chatId && chat?.chat.models?.[0],
       settings?.ui.models?.[0],
       ...(config?.defaultModels?.split(',') ?? []),
-      models[0].id,
+      //NOTE Explicit candidates above are honoured even when hidden, but the implicit fallback
+      //NOTE should not start a chat on a model the picker does not offer
+      (models.find(isModelSelectable) ?? models[0]).id,
     ].filter(Boolean);
 
     for (const candidateId of modelCandidatesIds) {

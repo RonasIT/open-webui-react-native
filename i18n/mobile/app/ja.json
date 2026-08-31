@@ -1,0 +1,95 @@
+{
+  "APP": {
+    "CHAT_LIST_SCREEN": {
+      "TEXT_CHATS": "チャット"
+    },
+    "SETTINGS_SCREEN": {
+      "TEXT_SETTINGS": "プロフィールと設定",
+      "TEXT_SECTION_GENERAL": "一般",
+      "TEXT_SECTION_PROFILE": "プロフィール",
+      "TEXT_SECTION_FEEDBACK": "フィードバック",
+      "TEXT_SECTION_CHATS": "チャット",
+      "TEXT_DEFAULT_MODEL": "デフォルトモデル",
+      "TEXT_DEFAULT_SYSTEM_PROMPT": "デフォルトのシステムプロンプト",
+      "TEXT_LANGUAGE": "言語",
+      "TEXT_NOT_SET": "未設定",
+      "TEXT_LOAD_ERROR": "読み込みに失敗しました",
+      "TEXT_PROFILE_NAME": "プロフィール名",
+      "TEXT_AVATAR": "アバター",
+      "TEXT_CHANGE_PASSWORD": "パスワードを変更",
+      "TEXT_LOGOUT": "ログアウト",
+      "TEXT_REPORT_A_BUG": "不具合を報告",
+      "TEXT_RATE_APP": "アプリを評価",
+      "TEXT_ARCHIVED_CHATS": "アーカイブ済みチャット",
+      "TEXT_EXPORT_ALL_CHATS": "すべてのチャットをエクスポート",
+      "TEXT_ARCHIVE_ALL": "すべてアーカイブ",
+      "TEXT_ARCHIVE_ALL_CHATS_TITLE": "すべてのチャットをアーカイブ",
+      "TEXT_ARCHIVE_ALL_CHATS_MESSAGE": "すべてのチャットをアーカイブしてもよろしいですか？この操作は元に戻せません。",
+      "TEXT_DELETE_ALL": "すべて削除",
+      "TEXT_DELETE_ALL_CHATS_TITLE": "すべてのチャットを削除",
+      "TEXT_DELETE_ALL_CHATS_MESSAGE": "すべてのチャットを削除してもよろしいですか？この操作は元に戻せません。",
+      "TEXT_ALWAYS_ON_WEB_SEARCH": "ウェブ検索を常に有効にする",
+      "TEXT_HAPTIC_FEEDBACK": "触覚フィードバック",
+      "TEXT_ENABLE_MESSAGE_QUEUE": "メッセージキューを有効にする",
+      "TEXT_CHAT_BUBBLE_UI": "吹き出し表示",
+      "TEXT_TEMPORARY_CHAT_BY_DEFAULT": "デフォルトで一時チャットを使用",
+      "TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE": "ユーザーメッセージで Markdown を表示",
+      "TEXT_MARKDOWN_RENDERER": "Markdown レンダラー",
+      "TEXT_MARKDOWN_RENDERER_DEFAULT": "デフォルト",
+      "TEXT_MARKDOWN_RENDERER_NITRO": "実験的",
+      "PROFILE_AVATAR_SHEET": {
+        "TEXT_TITLE": "プロフィール画像",
+        "BUTTON_UPLOAD_PROFILE_IMAGE": "プロフィール画像をアップロード",
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "デフォルトのアバターに戻す",
+        "TEXT_IMAGE_TOO_LARGE": "この画像は大きすぎます。より小さい画像を選択してください",
+        "TEXT_UPLOAD_FAILED": "画像の処理に失敗しました。別の画像をお試しください"
+      },
+      "PROFILE_NAME_SHEET": {
+        "TEXT_TITLE": "プロフィール名",
+        "TEXT_PROFILE_NAME": "プロフィール名"
+      },
+      "CHANGE_PASSWORD_SHEET": {
+        "TEXT_TITLE": "パスワードを変更",
+        "TEXT_CURRENT_PASSWORD": "現在のパスワード",
+        "TEXT_ENTER_CURRENT_PASSWORD": "現在のパスワードを入力してください",
+        "TEXT_NEW_PASSWORD": "新しいパスワード",
+        "TEXT_ENTER_NEW_PASSWORD": "新しいパスワードを入力してください",
+        "TEXT_CONFIRM_NEW_PASSWORD": "新しいパスワードの確認",
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "新しいパスワードをもう一度入力してください",
+        "TEXT_PASSWORD_CHANGED": "パスワードが変更されました"
+      },
+      "DEFAULT_MODEL_SHEET": {
+        "TEXT_TITLE": "デフォルトモデル",
+        "TEXT_SEARCH_MODEL": "モデルを検索",
+        "TEXT_NO_MODELS": "モデルがありません。"
+      },
+      "DEFAULT_SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "デフォルトのシステムプロンプト",
+        "TEXT_LABEL": "デフォルトのシステムプロンプト"
+      },
+      "CONTACT_SUPPORT_SHEET": {
+        "TEXT_REPORT_BUG": "不具合を報告",
+        "TEXT_YOUR_MESSAGE": "メッセージ",
+        "TEXT_MESSAGE_SENT": "フィードバックをありがとうございます！メッセージが正常に送信されました",
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "スクリーンショットまたは動画を添付",
+        "TEXT_ATTACHMENTS_LIMIT_REACHED": "添付できるファイルは最大{{count}}件までです"
+      },
+      "LANGUAGE_SHEET": {
+        "TEXT_TITLE": "言語"
+      },
+      "MARKDOWN_RENDERER_SHEET": {
+        "TEXT_TITLE": "Markdown レンダラー"
+      },
+      "TEXT_DELETE_ACCOUNT": "アカウントを削除",
+      "TEXT_DELETE_ACCOUNT_TITLE": "アカウントを削除してもよろしいですか？",
+      "TEXT_DELETE_ACCOUNT_MESSAGE": "今後30日以内にご連絡がない場合、この操作によりデータが永久に失われます。",
+      "BUTTON_DELETE_ACCOUNT": "はい、アカウントを削除します",
+      "BUTTON_DONT_DELETE": "削除しない",
+      "TEXT_ACCOUNT_DELETION_REQUEST": "アカウント削除のリクエストが送信されました。",
+      "TEXT_LOGOUT_TITLE": "ログアウトしますか？",
+      "TEXT_LOGOUT_MESSAGE": "本当にログアウトしますか？",
+      "BUTTON_LOGOUT": "ログアウト",
+      "BUTTON_CANCEL": "キャンセル"
+    }
+  }
+}

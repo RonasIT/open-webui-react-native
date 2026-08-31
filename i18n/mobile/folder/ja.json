@@ -1,0 +1,36 @@
+{
+  "FOLDER": {
+    "CHATS_LIST": {
+      "TEXT_NO_CHATS": "このフォルダにはチャットがありません。"
+    },
+    "FOLDER_ACTIONS_SHEET": {
+      "TEXT_EDIT": "編集",
+      "TEXT_EXPORT": "エクスポート",
+      "TEXT_DELETE": "削除",
+      "TEXT_KEEP": "保持",
+      "TEXT_DELETE_FOLDER": "フォルダを削除しますか？",
+      "TEXT_THIS_WILL_DELETE": "{{name}} が削除されます"
+    },
+    "UPSERT_FOLDER_SHEET": {
+      "TEXT_NEW_FOLDER": "新しいフォルダ",
+      "TEXT_EDIT_FOLDER": "フォルダを編集",
+      "TEXT_FOLDER_NAME": "フォルダ名",
+      "TEXT_DOCUMENT": "ドキュメント",
+      "TEXT_FILE": "ファイル",
+      "TEXT_COLLECTION": "コレクション",
+      "TEXT_FOLDER_NAME_PLACEHOLDER": "例：マイフォルダ",
+      "TEXT_SYSTEM_PROMPT": "システムプロンプト",
+      "TEXT_KNOWLEDGE": "ナレッジ",
+      "BUTTON_SELECT_KNOWLEDGE": "ナレッジを選択",
+      "BUTTON_UPLOAD_FILES": "ファイルをアップロード",
+      "TEXT_CREATE": "作成",
+      "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "空のファイルはアップロードできません。",
+      "TEXT_UNSUPPORTED_TYPE": "サポートされていない種類です。"
+    },
+    "SELECT_KNOWLEDGE_SHEET": {
+      "TEXT_SEARCH_KNOWLEDGE": "ナレッジを検索",
+      "TEXT_SELECT_KNOWLEDGE": "ナレッジを選択",
+      "TEXT_NO_KNOWLEDGE": "ナレッジがありません。"
+    }
+  }
+}

@@ -4,6 +4,8 @@ import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 import {
   chatApi,
   ChatResponse,
+  isTemporaryChatId,
+  patchChatQueryData,
   prepareCompleteChatPayload,
   prepareUpdateMessageToSendPayload,
   prepareEditAssistantMessagePayload,
@@ -63,7 +65,14 @@ export const useEditMessage = ({ chat, modelId }: UseEditMessageProps): typeof r
       ? prepareCopyEditedMessagePayload(chat, editingMessageId, message)
       : prepareUpdateMessageInChatPayload(chat, editingMessageId, message);
 
-    await updateChat(preparedChat);
+    // NOTE: Temporary chats are never persisted — apply the same cache patch onSuccess would have
+    // done, skipping the PATCH /chats/{id} call that would otherwise fail against a synthetic id.
+    if (isTemporaryChatId(chat.id)) {
+      patchChatQueryData(chat.id, preparedChat);
+    } else {
+      await updateChat(preparedChat);
+    }
+
     cancelEditing();
   };
 
@@ -78,21 +87,28 @@ export const useEditMessage = ({ chat, modelId }: UseEditMessageProps): typeof r
       ? prepareEditAssistantMessagePayload(chat, editingMessageId, message)
       : prepareUpdateMessageToSendPayload(chat, message, modelId, editedMessage.parentId);
 
-    await updateChat(preparedChat, {
-      onSuccess: (data) => {
-        if (editedMessage.role === Role.ASSISTANT) return;
+    const triggerCompletion = (data: ChatResponse): void => {
+      if (editedMessage.role === Role.ASSISTANT) return;
 
-        const completePayload = prepareCompleteChatPayload({
-          chatId: data.id,
-          messageId: data.chat!.history.currentId,
-          messages: data.chat!.messages,
-          sessionId: socketSessionId,
-          model: modelId,
-        });
+      const completePayload = prepareCompleteChatPayload({
+        chatId: data.id,
+        messageId: data.chat!.history.currentId,
+        messages: data.chat!.messages,
+        sessionId: socketSessionId,
+        model: modelId,
+      });
 
-        completeChat(completePayload);
-      },
-    });
+      completeChat(completePayload);
+    };
+
+    // NOTE: Temporary chats are never persisted — apply the same cache patch onSuccess would have
+    // done, skipping the PATCH /chats/{id} call that would otherwise fail against a synthetic id.
+    if (isTemporaryChatId(chat.id)) {
+      patchChatQueryData(chat.id, preparedChat);
+      triggerCompletion(preparedChat);
+    } else {
+      await updateChat(preparedChat, { onSuccess: triggerCompletion });
+    }
 
     cancelEditing();
   };

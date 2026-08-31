@@ -1,0 +1,25 @@
+{
+  "AUTH": {
+    "SIGN_IN": {
+      "TEXT_TITLE_EXTERNAL": "Iniciar sesión",
+      "TEXT_YOU_LOGGED_IN": "Has iniciado sesión.",
+      "EMAIL_FORM": {
+        "TEXT_EMAIL_ADDRESS": "Correo electrónico",
+        "TEXT_PASSWORD": "Contraseña",
+        "TEXT_API_URL": "URL de la API",
+        "TEXT_ENTER_YOUR_PASSWORD": "Introduce tu contraseña",
+        "BUTTON_SIGN_IN": "Iniciar sesión"
+      },
+      "GOOGLE_FORM": {
+        "BUTTON_CONTINUE_WITH_GOOGLE": "Continuar con Google"
+      },
+      "OIDC_FORM": {
+        "BUTTON_CONTINUE_WITH": "Continuar con {{provider}}"
+      },
+      "OAUTH_WEB_VIEW_MODAL": {
+        "BUTTON_CLOSE": "Cerrar",
+        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Este método de inicio de sesión no está disponible. Usa otra opción para continuar."
+      }
+    }
+  }
+}

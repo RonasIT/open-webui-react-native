@@ -15,6 +15,14 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     sentry: {
       dsn: process.env.SENTRY_DSN,
     },
+    amplitude: {
+      apiKeyDev: process.env.AMPLITUDE_API_KEY_DEV,
+      apiKeyProd: process.env.AMPLITUDE_API_KEY_PROD,
+    },
+    supabase: {
+      url: process.env.SUPABASE_URL,
+      publishableKey: process.env.SUPABASE_PUBLISHABLE_KEY,
+    },
     env: appEnv.current,
     googleIosClientId: appEnv.select({
       default: process.env.GOOGLE_IOS_CLIENT_ID_DEV,
@@ -30,11 +38,13 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     slug: process.env.EXPO_PUBLIC_APP_SLUG as string,
     scheme: process.env.EXPO_PUBLIC_APP_SCHEME as string,
     owner: process.env.EXPO_PUBLIC_APP_OWNER as string,
-    version: '1.8.2',
+    version: '1.9.1',
     userInterfaceStyle: 'automatic',
     orientation: 'portrait',
     icon: './assets/icon.png',
-    runtimeVersion: '1.8.2',
+    runtimeVersion: {
+      policy: 'appVersion',
+    },
     experiments: {
       reactCompiler: true,
     },
@@ -43,10 +53,11 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     },
     ios: {
       bundleIdentifier: appId,
+      appStoreUrl: `https://apps.apple.com/app/id${process.env.EXPO_PUBLIC_IOS_APP_STORE_ID}`,
       supportsTablet: false,
       buildNumber: appEnv.select({
         default: '18',
-        production: '36',
+        production: '39',
       }),
       config: {
         usesNonExemptEncryption: false,
@@ -62,9 +73,10 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     },
     android: {
       package: appId,
+      playStoreUrl: `https://play.google.com/store/apps/details?id=${appId}`,
       versionCode: appEnv.select({
         default: 15,
-        production: 36,
+        production: 39,
       }),
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
@@ -97,6 +109,14 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
             'Open MobileUI uses your photo library to let you select and share images in chat conversations and set your profile picture.',
           cameraPermission:
             'Open MobileUI uses your camera to let you take photos and share them directly in chat conversations.',
+        },
+      ],
+      [
+        'expo-camera',
+        {
+          cameraPermission:
+            'Open MobileUI uses your camera to let you share live visuals during voice mode conversations.',
+          recordAudioAndroid: false,
         },
       ],
       [

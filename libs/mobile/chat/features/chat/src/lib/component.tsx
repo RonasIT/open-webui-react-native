@@ -2,7 +2,7 @@ import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import dayjs from 'dayjs';
 import { delay } from 'lodash-es';
-import React, { Fragment, ReactElement, useEffect, useMemo, useState } from 'react';
+import React, { Fragment, ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { InteractionManager } from 'react-native';
 import { EditMessageInput } from '@open-webui-react-native/mobile/chat/features/edit-message-input';
@@ -20,14 +20,17 @@ import {
   ChatGenerationOption,
   chatQueriesKeys,
   createMessagesList,
+  isTemporaryChatId,
+  usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
-import { Role } from '@open-webui-react-native/shared/data-access/common';
+import { FileData, ImageData, Role } from '@open-webui-react-native/shared/data-access/common';
 import { useSubscribeToQueryCache } from '@open-webui-react-native/shared/data-access/query-client';
 import { webSocketConfig, webSocketState$ } from '@open-webui-react-native/shared/data-access/websocket';
+import { AnalyticsEvent, analyticsService } from '@open-webui-react-native/shared/utils/analytics-service';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { useAppStateChange } from '@open-webui-react-native/shared/utils/use-app-state-change';
 import { ActiveInputMode } from './enums';
-import { patchNewChat } from './utils';
+import { patchNewChat, requestStoreReview } from './utils';
 
 const LazyChatMessagesList = React.lazy(() => import('./components/messages-list/component'));
 
@@ -45,11 +48,19 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   const [isInputFocusing, setIsInputFocusing] = useState(false); //NOTE: Needs to avoid ChatBottomButton jumping when auto-scrolling after focus
 
   const isSocketConnected = useSelector(webSocketState$.isSocketConnected);
+  const { data: userSettings } = usersApi.useGetUserSettings();
+  const isMessageQueueEnabled = userSettings?.ui.enableMessageQueue ?? true;
 
   const [isMessagesListLoaded, setIsMessagesListLoaded] = useState(false);
   const [isChatVisible, setIsChatVisible] = useState(false);
   const [activeInputMode, setActiveInputMode] = useState<ActiveInputMode | null>(null);
   const [inputRerenderKey, setInputRerenderKey] = useState(0);
+  const [queuedMessage, setQueuedMessage] = useState<{
+    inputValue: string;
+    options: Array<ChatGenerationOption>;
+    attachedFiles: Array<FileData>;
+    attachedImages: Array<ImageData>;
+  } | null>(null);
 
   const {
     attachedFiles,
@@ -61,7 +72,15 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
     resetAttachments,
   } = useAttachedFiles();
 
-  const { data: chat, refetch, isLoading, isRefetching, isSuccess } = chatApi.useGet(chatId);
+  const isTemporaryChat = isTemporaryChatId(chatId);
+  // NOTE: Temporary chats are never persisted, so there's nothing to fetch — read the client-seeded cache only.
+  const {
+    data: chat,
+    refetch,
+    isLoading,
+    isRefetching,
+    isSuccess,
+  } = chatApi.useGet(chatId, { enabled: !isTemporaryChat });
   const { sendMessage, isLoading: isSending } = useSendMessage({ chatData: chat });
   const {
     editingMessageId,
@@ -84,7 +103,15 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   const history = chat?.chat.history;
   // NOTE: chat.messages is a legacy snapshot the backend no longer maintains, so the current branch is derived from history
   const messages = useMemo(() => (history ? createMessagesList(history, history.currentId) : []), [history]);
-  const isResponseGenerating = !history?.messages[history.currentId].done;
+  const currentMessage = history?.messages[history.currentId];
+  const isResponseGenerating = !currentMessage?.done;
+  const isAssistantMessage = currentMessage?.role === Role.ASSISTANT;
+  // NOTE: With message queueing enabled, a generating response no longer force-disables the text input —
+  // the user can keep typing and submit the next message immediately (queued via `queuedMessage`). The
+  // Stop button (isResponseGenerating prop below) still renders regardless, alongside the send button.
+  const isComposerBlockedByGeneration = isResponseGenerating && !isMessageQueueEnabled;
+
+  const firstMessageGeneratedRef = useRef(false);
 
   const shouldHideContent = isLoading || isRefetching || !isMessagesListLoaded || !selectedModelId;
 
@@ -97,6 +124,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   useAppStateChange({
     onChange: (lastStatusChangeTimeStamp) => {
       if (
+        !isTemporaryChat &&
         lastStatusChangeTimeStamp &&
         dayjs().diff(lastStatusChangeTimeStamp, 'seconds') > webSocketConfig.pingTimeout
       ) {
@@ -169,7 +197,25 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
         return ToastService.showError(translate('TEXT_MODEL_NOT_SELECTED'));
       }
 
-      sendMessage(inputValue, selectedModelId, options, attachedFiles.get(), attachedImages.get());
+      if (options.includes(ChatGenerationOption.IMAGE_GENERATION)) {
+        analyticsService.trackEvent(AnalyticsEvent.GENERATE_IMAGE_USED);
+      }
+
+      if (isResponseGenerating && isMessageQueueEnabled) {
+        // NOTE: Snapshot attachments now — they're cleared by resetAttachments() below and must not
+        // be re-read live when this queued message is flushed later.
+        setQueuedMessage({
+          inputValue,
+          options,
+          attachedFiles: attachedFiles.get(),
+          attachedImages: attachedImages.get(),
+        });
+        ToastService.show(translate('TEXT_MESSAGE_QUEUED'));
+      } else {
+        sendMessage(inputValue, selectedModelId, options, attachedFiles.get(), attachedImages.get());
+      }
+
+      analyticsService.trackEvent(AnalyticsEvent.MESSAGE_SENT, { modelId: selectedModelId });
       reset();
       resetAttachments();
       // NOTE: Forces input rerender to reset it to its initial height after submit
@@ -201,6 +247,26 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
       patchNewChat(chatId);
     }
   }, [isNewChat, isSuccess, chatId]);
+
+  useEffect(() => {
+    if (!isResponseGenerating && queuedMessage && selectedModelId) {
+      sendMessage(
+        queuedMessage.inputValue,
+        selectedModelId,
+        queuedMessage.options,
+        queuedMessage.attachedFiles,
+        queuedMessage.attachedImages,
+      );
+      setQueuedMessage(null);
+    }
+  }, [isResponseGenerating, queuedMessage, selectedModelId, sendMessage]);
+
+  useEffect(() => {
+    if (isNewChat && !firstMessageGeneratedRef.current && isAssistantMessage && currentMessage.done) {
+      firstMessageGeneratedRef.current = true;
+      requestStoreReview(chatId);
+    }
+  }, [isNewChat, chatId, currentMessage?.done, isAssistantMessage]);
 
   return (
     <Fragment>
@@ -258,7 +324,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
               onFocus={handleInputFocus}
               name='inputValue'
               onSubmit={onSubmit}
-              isLoading={isSending || !isSocketConnected || isResponseGenerating}
+              isLoading={isSending || !isSocketConnected || isComposerBlockedByGeneration}
               attachedFiles={attachedFiles}
               onFileUploaded={handleFileUploaded}
               onDeleteFilePress={handleDeleteFile}
@@ -267,6 +333,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
               onDeleteImagePress={handleDeleteImage}
               modelId={selectedModelId}
               isResponseGenerating={isResponseGenerating}
+              isMessageQueueEnabled={isMessageQueueEnabled}
               inputRerenderKey={inputRerenderKey}
               chat={chat}
             />

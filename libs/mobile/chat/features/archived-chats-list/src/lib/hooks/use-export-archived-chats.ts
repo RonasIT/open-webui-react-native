@@ -1,4 +1,3 @@
-import * as FileSystem from 'expo-file-system/legacy';
 import { useState } from 'react';
 import {
   fileSystemService,
@@ -21,10 +20,7 @@ export const useExportArchivedChats = (): UseExportArchivedChatsResult => {
     setIsExporting(true);
 
     try {
-      const fileUri = `${FileSystem.documentDirectory}${downloadFileName}`;
-      const downloadedFile = await fileSystemService.downloadFile(exportAllChatsApiURL, fileUri);
-
-      await fileSystemService.shareAsync(downloadedFile.uri, downloadFileName, MimeType.JSON, UtiType.JSON);
+      await fileSystemService.downloadAndShareFile(exportAllChatsApiURL, downloadFileName, MimeType.JSON, UtiType.JSON);
     } catch {
       ToastService.showError();
     } finally {
