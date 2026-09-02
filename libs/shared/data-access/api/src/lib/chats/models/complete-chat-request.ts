@@ -2,6 +2,7 @@ import { Expose, Type } from 'class-transformer';
 import { AttachedFile } from '@open-webui-react-native/shared/data-access/common';
 import { BackgroundTasks } from './background-tasks';
 import { ChatMessage } from './chat-message';
+import { CompleteChatParams } from './complete-chat-params';
 import { Features } from './features';
 import { Message } from './message';
 
@@ -23,6 +24,10 @@ export class CompleteChatRequest {
   @Expose()
   @Type(() => Features)
   public features: Features;
+
+  @Expose()
+  @Type(() => CompleteChatParams)
+  public params?: CompleteChatParams;
 
   @Expose()
   @Type(() => AttachedFile)

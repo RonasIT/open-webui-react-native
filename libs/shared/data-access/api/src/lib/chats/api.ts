@@ -34,6 +34,7 @@ import {
   CreateNewChatRequest,
   GetArchivedChatListRequest,
   MoveChatToFolderRequest,
+  ResolveToolCallRequest,
   ShareChatResponse,
 } from './models';
 import { chatService } from './service';
@@ -43,6 +44,7 @@ import {
   invalidateArchivedChatListQuery,
   invalidateSearchChatsQuery,
   patchChatQueryData,
+  resetChatStreamBuffer,
 } from './utils';
 
 function useGetChatList(): UseInfiniteQueryResult<Array<ChatListItem>, AxiosError<ApiErrorData>> {
@@ -540,7 +542,13 @@ function useCompleteChat(
   options?: UseMutationOptions<CompleteChatResponse, AxiosError, CompleteChatRequest>,
 ): UseMutationResult<CompleteChatResponse, AxiosError, CompleteChatRequest> {
   return useMutation({
-    mutationFn: (params) => chatService.completeChat(params),
+    // NOTE: Drop any streaming state left over from a previous (possibly interrupted) response
+    // before a new one starts, otherwise its trailing text would prefix the next answer.
+    mutationFn: (params) => {
+      resetChatStreamBuffer(params.chatId);
+
+      return chatService.completeChat(params);
+    },
     ...options,
   });
 }
@@ -780,6 +788,25 @@ export function useDeleteAllChats(
   });
 }
 
+// NOTE: The endpoint restarts generation on the backend, so there is nothing to patch here — the
+// continued answer and the updated `output` arrive over the socket into the same assistant message.
+export function useResolveToolCall(
+  options?: UseMutationOptions<
+    void,
+    AxiosError<ApiErrorData>,
+    { chatId: string; messageId: string; request: ResolveToolCallRequest }
+  >,
+): UseMutationResult<
+  void,
+  AxiosError<ApiErrorData>,
+  { chatId: string; messageId: string; request: ResolveToolCallRequest }
+> {
+  return useMutation({
+    mutationFn: ({ chatId, messageId, request }) => chatService.resolveToolCall(chatId, messageId, request),
+    ...options,
+  });
+}
+
 export const chatApi = {
   useGet,
   useUpdate,
@@ -801,4 +828,5 @@ export const chatApi = {
   useUpdateChatFolder,
   useArchiveAllChats,
   useDeleteAllChats,
+  useResolveToolCall,
 };

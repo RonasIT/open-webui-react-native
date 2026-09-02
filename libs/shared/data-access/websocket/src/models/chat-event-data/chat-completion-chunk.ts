@@ -28,6 +28,17 @@ export class ChatCompletionOutputItem {
   @Expose()
   public status?: string;
 
+  // NOTE: Set on `function_call` items only. `callId` is what identifies the call to the
+  // `.../resolve` endpoint, `name`/`toolArguments` are what the approval UI shows the user.
+  @Expose({ name: 'call_id' })
+  public callId?: string;
+
+  @Expose()
+  public name?: string;
+
+  @Expose({ name: 'arguments' })
+  public toolArguments?: string;
+
   @Expose()
   @Type(() => ChatCompletionOutputContentPart)
   public content?: Array<ChatCompletionOutputContentPart>;

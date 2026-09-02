@@ -28,6 +28,10 @@
         "TEXT_CHOOSE_FROM_GALLERY": "Choisir dans la galerie",
         "TEXT_UPLOAD_FILES": "Téléverser des fichiers",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Vous ne pouvez pas téléverser un fichier vide."
+      },
+      "TOOL_PERMISSIONS_POPUP": {
+        "TEXT_FULL_ACCESS": "Accès complet",
+        "TEXT_ASK_FOR_APPROVAL": "Demander l'autorisation"
       }
     },
     "SHARE_CHAT_MODAL": {
@@ -164,6 +168,18 @@
         "TEXT_VIEW_RESULT_PREFIX": "Voir le résultat de",
         "TEXT_INPUT": "Entrée",
         "TEXT_OUTPUT": "Sortie"
+      },
+      "TOOL_APPROVAL_CARD": {
+        "TEXT_ALLOW_PREFIX": "Autoriser",
+        "BUTTON_ALLOW": "Autoriser",
+        "BUTTON_DENY": "Refuser"
+      },
+      "ASK_USER_CARD": {
+        "TEXT_OTHER": "Autre",
+        "TEXT_OTHER_PLACEHOLDER": "Saisissez votre réponse",
+        "BUTTON_NEXT": "Suivant",
+        "BUTTON_SUBMIT": "Envoyer",
+        "BUTTON_DENY": "Ignorer"
       }
     }
   }

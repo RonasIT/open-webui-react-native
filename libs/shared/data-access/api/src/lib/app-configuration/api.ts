@@ -1,6 +1,7 @@
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
+import { refetchOnMountWithStaleCheck } from '@open-webui-react-native/shared/data-access/persist-query-helpers';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { appConfigurationApiConfig } from './config';
 import { Configuration } from './models';
@@ -29,6 +30,11 @@ export function useGetAppConfiguration(
     queryFn: () => appConfigurationService.get(),
     queryKey: appConfigurationApiConfig.getConfigQueryKey,
     staleTime: 5 * 60 * 1000,
+    // NOTE: The cache is persisted to MMKV, so without this a launch within `staleTime` of the last
+    // fetch would run entirely on the restored config — an admin flipping a feature flag would not
+    // reach the app for up to five minutes. `refetchedQueries` lives in memory only, so this
+    // guarantees exactly one refetch per launch and leaves `staleTime` in charge afterwards.
+    refetchOnMount: (query) => refetchOnMountWithStaleCheck(query),
     ...options,
   });
 

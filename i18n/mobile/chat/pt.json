@@ -28,6 +28,10 @@
         "TEXT_CHOOSE_FROM_GALLERY": "Escolher da galeria",
         "TEXT_UPLOAD_FILES": "Enviar arquivos",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Não é possível enviar um arquivo vazio."
+      },
+      "TOOL_PERMISSIONS_POPUP": {
+        "TEXT_FULL_ACCESS": "Acesso total",
+        "TEXT_ASK_FOR_APPROVAL": "Pedir aprovação"
       }
     },
     "SHARE_CHAT_MODAL": {
@@ -164,6 +168,18 @@
         "TEXT_VIEW_RESULT_PREFIX": "Ver resultado de",
         "TEXT_INPUT": "Entrada",
         "TEXT_OUTPUT": "Saída"
+      },
+      "TOOL_APPROVAL_CARD": {
+        "TEXT_ALLOW_PREFIX": "Permitir",
+        "BUTTON_ALLOW": "Permitir",
+        "BUTTON_DENY": "Negar"
+      },
+      "ASK_USER_CARD": {
+        "TEXT_OTHER": "Outra",
+        "TEXT_OTHER_PLACEHOLDER": "Digite sua resposta",
+        "BUTTON_NEXT": "Próximo",
+        "BUTTON_SUBMIT": "Enviar",
+        "BUTTON_DENY": "Ignorar"
       }
     }
   }

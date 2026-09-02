@@ -64,3 +64,11 @@ eas.json
 .env.local
 .eslintcache
 .env.local
+
+# Claude Code — local rules and settings
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+claude.md
+claude.local.md
+.claude.md

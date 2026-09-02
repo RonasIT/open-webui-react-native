@@ -231,6 +231,7 @@ export default function ChatMessagesList({
           isLast={isLast}>
           <ChatAiMessage
             message={message}
+            chatId={chatId}
             onEditPress={() => handleEditPress(index, message.id, message.content)}
             isEditing={editingMessageId === item.id}
             onPreviousSibling={showPreviousSibling}
@@ -254,6 +255,7 @@ export default function ChatMessagesList({
       );
     },
     [
+      chatId,
       history,
       onEditPress,
       editingMessageId,
