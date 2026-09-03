@@ -1,3 +1,4 @@
+export * from './app-version-footer';
 export * from './change-password-sheet';
 export * from './default-model-sheet';
 export * from './default-system-prompt-sheet';

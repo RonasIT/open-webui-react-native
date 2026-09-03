@@ -48,6 +48,8 @@ import play from './play.svg';
 import plusInCircle from './plus-in-circle.svg';
 import plus from './plus.svg';
 import refresh from './refresh.svg';
+import ronasLogoDark from './ronas-logo-dark.svg';
+import ronasLogoLight from './ronas-logo-light.svg';
 import search from './search.svg';
 import star from './star.svg';
 import stop from './stop.svg';
@@ -102,6 +104,8 @@ export const Icons = {
   unpin,
   logoSmallLight,
   logoSmallDark,
+  ronasLogoLight,
+  ronasLogoDark,
   chevronLeft,
   plusInCircle,
   folderPlus,
