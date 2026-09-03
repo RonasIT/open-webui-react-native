@@ -1,6 +1,6 @@
 import { BaseEntity } from '@ronas-it/rtkq-entity-api';
 import { Expose, Type } from 'class-transformer';
-import { Role } from '@open-webui-react-native/shared/data-access/common';
+import { UserRole } from '@open-webui-react-native/shared/data-access/common';
 import { Permissions } from './permissions';
 
 export class Profile extends BaseEntity<string> {
@@ -11,7 +11,7 @@ export class Profile extends BaseEntity<string> {
   public name: string;
 
   @Expose()
-  public role: Role;
+  public role: UserRole;
 
   @Expose({ name: 'profile_image_url' })
   public profileImageUrl: string;

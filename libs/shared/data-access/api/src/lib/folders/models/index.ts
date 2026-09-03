@@ -1,3 +1,4 @@
+export * from './access-grant';
 export * from './create-folder-request';
 export * from './folder-data';
 export * from './folder-list-item';
@@ -5,4 +6,5 @@ export * from './get-folder-chat-list-request';
 export * from './folder-response';
 export * from './shared-folder-chats-response';
 export * from './folder-meta';
+export * from './update-folder-access-request';
 export * from './update-folder-request';

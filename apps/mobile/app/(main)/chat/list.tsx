@@ -4,6 +4,10 @@ import {
   FolderActionsSheetMethods,
 } from '@open-webui-react-native/mobile/folder/features/folder-actions-sheet';
 import {
+  ShareFolderSheet,
+  ShareFolderSheetMethods,
+} from '@open-webui-react-native/mobile/folder/features/share-folder-sheet';
+import {
   UpsertFolderSheet,
   UpsertFolderSheetMethods,
 } from '@open-webui-react-native/mobile/folder/features/upsert-folder-sheet';
@@ -23,6 +27,7 @@ export default function ChatListScreen(): ReactElement {
   const translate = useTranslation('APP.CHAT_LIST_SCREEN');
   const folderActionsSheetRef = useRef<FolderActionsSheetMethods>(null);
   const upsertFolderSheetRef = useRef<UpsertFolderSheetMethods>(null);
+  const shareFolderSheetRef = useRef<ShareFolderSheetMethods>(null);
   const { data: profile } = authApi.useGetProfile();
 
   const handleChatPress = (id: string): void => navigateOnce(navigationConfig.main.chat.view({ id }));
@@ -41,6 +46,8 @@ export default function ChatListScreen(): ReactElement {
   const openFolderActions = (folder: FolderListItem): void => folderActionsSheetRef.current?.present(folder);
 
   const openEditFolderModal = (id: string): void => upsertFolderSheetRef.current?.present(id);
+
+  const openShareFolderModal = (folder: FolderListItem): void => shareFolderSheetRef.current?.present(folder);
 
   const handleSearchPress = (): void =>
     navigateOnce(`${navigationConfig.main.chat.index}/${navigationConfig.main.chat.search}`);
@@ -84,8 +91,13 @@ export default function ChatListScreen(): ReactElement {
           onFolderPress={handleFolderPress}
           onFolderLongPress={openFolderActions}
         />
-        <FolderActionsSheet ref={folderActionsSheetRef} onEditPress={openEditFolderModal} />
+        <FolderActionsSheet
+          ref={folderActionsSheetRef}
+          onEditPress={openEditFolderModal}
+          onSharePress={openShareFolderModal}
+        />
         <UpsertFolderSheet ref={upsertFolderSheetRef} />
+        <ShareFolderSheet ref={shareFolderSheetRef} />
       </View>
     </ScreenWrapper>
   );
