@@ -5,11 +5,30 @@
     },
     "FOLDER_ACTIONS_SHEET": {
       "TEXT_EDIT": "编辑",
+      "TEXT_SHARE": "分享",
       "TEXT_EXPORT": "导出",
       "TEXT_DELETE": "删除",
       "TEXT_KEEP": "保留",
       "TEXT_DELETE_FOLDER": "删除文件夹？",
       "TEXT_THIS_WILL_DELETE": "这将删除 {{name}}"
+    },
+    "SHARE_FOLDER_SHEET": {
+      "TEXT_SHARE_FOLDER": "共享文件夹",
+      "TEXT_PRIVATE": "私有",
+      "TEXT_PRIVATE_DESCRIPTION": "仅具有权限的选定用户和群组可以访问",
+      "TEXT_ACCESS_LIST": "有访问权限的群组和用户",
+      "TEXT_READ": "只读",
+      "TEXT_WRITE": "可编辑",
+      "BUTTON_ADD": "添加"
+    },
+    "SHARE_WITH_SHEET": {
+      "TEXT_SHARE_WITH": "共享给…",
+      "TEXT_SEARCH": "搜索",
+      "TEXT_GROUPS": "群组",
+      "TEXT_USERS": "用户",
+      "TEXT_NOBODY_TO_SHARE_WITH": "没有其他可共享此文件夹的对象。",
+      "TEXT_SELECTED_COUNT": "{{groupsCount}} 个群组，{{usersCount}} 位用户",
+      "BUTTON_ADD_SELECTED": "添加所选"
     },
     "UPSERT_FOLDER_SHEET": {
       "TEXT_NEW_FOLDER": "新建文件夹",

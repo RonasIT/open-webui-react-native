@@ -9,6 +9,8 @@ import {
   FolderListItem,
   FolderResponse,
   GetFolderChatListRequest,
+  SharedFolderChatsResponse,
+  UpdateFolderAccessRequest,
   UpdateFolderRequest,
 } from './models';
 
@@ -41,27 +43,36 @@ class FoldersService extends EntityPromiseService<FolderResponse> {
     return plainToInstance(FolderResponse, response);
   }
 
+  public async updateFolderAccess(params: UpdateFolderAccessRequest): Promise<FolderResponse> {
+    // Backend forbids extra fields in the body (`id` is passed via URL only)
+    const { id, ...request } = instanceToPlain<UpdateFolderAccessRequest>(new UpdateFolderAccessRequest(params));
+
+    const response = await getApiService().post<FolderResponse>(
+      `${foldersApiConfig.route}/${params.id}/access/update`,
+      request,
+    );
+
+    return plainToInstance(FolderResponse, response);
+  }
+
   public async getFolders(): Promise<Array<FolderListItem>> {
     const response = await getApiService().get<Array<FolderListItem>>(`${foldersApiConfig.route}/`);
 
     return response.map((item) => plainToInstance(FolderListItem, item));
   }
 
-  public async getFolderChatList(params: GetFolderChatListRequest): Promise<Array<ChatListItem>> {
-    const request = instanceToPlain<GetFolderChatListRequest>(params);
-    const response = await getApiService().get<Array<ChatListItem>>(
-      `${foldersApiConfig.chatsRoute}/folder/${params.folderId}/list`,
-      request,
+  public async getFolderChatList({ folderId, page }: GetFolderChatListRequest): Promise<Array<ChatListItem>> {
+    const response = await getApiService().get<SharedFolderChatsResponse>(
+      `${foldersApiConfig.route}/${folderId}/shared/chats`,
+      { page },
     );
 
-    const data = response.map((item) =>
-      plainToInstance(ChatListItem, item, {
+    return (
+      plainToInstance(SharedFolderChatsResponse, response, {
         excludeExtraneousValues: true,
         enableImplicitConversion: true,
-      }),
+      }).chats ?? []
     );
-
-    return data;
   }
 
   public async getFolderChats(id: string): Promise<Array<ChatResponse>> {

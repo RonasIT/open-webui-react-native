@@ -6,6 +6,7 @@ export * from './app-configuration';
 export * from './files';
 export * from './audio';
 export * from './folders';
+export * from './groups';
 export * from './knowledge';
 export * from './tasks';
 export * from './supabase';
