@@ -13,9 +13,6 @@ export default function FolderScreen(): ReactElement {
 
   const { data: sharedFolders, isPending: isSharedFoldersPending } = foldersApi.useGetSharedFolders();
 
-  // NOTE: A chat may only be created in a folder the user has a write grant on — the backend answers
-  // 404 otherwise. Folders missing from the shared list are the user's own, so they always allow it;
-  // until the list is there the access level is unknown, so the action stays hidden.
   const sharedFolder = sharedFolders?.find((folder) => folder.id === id);
   const canCreateChat =
     !isSharedFoldersPending && (!sharedFolder || sharedFolder.permission === AccessPermission.WRITE);
