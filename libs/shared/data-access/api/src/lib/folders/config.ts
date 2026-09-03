@@ -13,5 +13,7 @@ export const foldersApiConfig = {
   getFolderChatsQueryKeyPrefix: folderChatsQueryKeyPrefix,
   getFolderChatsQueryKey: (folderId: string): Array<string> => [...folderChatsQueryKeyPrefix, folderId],
   getFolderQueryKey: (folderId: string): Array<string> => ['folders', 'folder', folderId],
-  chatsPerPage: 60,
+  // NOTE: 'v1/folders/{id}/shared/chats' is capped at 10 items per page by the backend; a larger
+  // value makes the infinite query stop after the first page.
+  chatsPerPage: 10,
 };

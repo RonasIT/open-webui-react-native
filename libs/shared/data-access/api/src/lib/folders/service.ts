@@ -9,6 +9,7 @@ import {
   FolderListItem,
   FolderResponse,
   GetFolderChatListRequest,
+  SharedFolderChatsResponse,
   UpdateFolderRequest,
 } from './models';
 
@@ -47,21 +48,21 @@ class FoldersService extends EntityPromiseService<FolderResponse> {
     return response.map((item) => plainToInstance(FolderListItem, item));
   }
 
-  public async getFolderChatList(params: GetFolderChatListRequest): Promise<Array<ChatListItem>> {
-    const request = instanceToPlain<GetFolderChatListRequest>(params);
-    const response = await getApiService().get<Array<ChatListItem>>(
-      `${foldersApiConfig.chatsRoute}/folder/${params.folderId}/list`,
-      request,
+  // NOTE: Mirrors the web client, which reads a folder through the shared-folder endpoint:
+  // '/chats/folder/{id}/list' returns only the chats owned by the current user, so a folder shared
+  // with a team looks empty. This one returns every member's chats and is capped at 10 per page.
+  public async getFolderChatList({ folderId, page }: GetFolderChatListRequest): Promise<Array<ChatListItem>> {
+    const response = await getApiService().get<SharedFolderChatsResponse>(
+      `${foldersApiConfig.route}/${folderId}/shared/chats`,
+      { page },
     );
 
-    const data = response.map((item) =>
-      plainToInstance(ChatListItem, item, {
+    return (
+      plainToInstance(SharedFolderChatsResponse, response, {
         excludeExtraneousValues: true,
         enableImplicitConversion: true,
-      }),
+      }).chats ?? []
     );
-
-    return data;
   }
 
   public async getFolderChats(id: string): Promise<Array<ChatResponse>> {
