@@ -39,11 +39,15 @@ export function FolderActionsSheet({ onEditPress, onSharePress, ref }: FolderAct
   const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
 
   const { data: profile } = authApi.useGetProfile();
+  const { data: sharedFolders } = foldersApi.useGetSharedFolders();
   const { mutateAsync: deleteFolder, isPending: isDeleting } = foldersApi.useDeleteFolder();
 
-  // NOTE: Same gate as the web client: an admin always may share, everyone else needs the
-  // `sharing.folders` permission, which is off by default.
-  const canShareFolders = profile?.role === UserRole.ADMIN || Boolean(profile?.permissions?.sharing?.folders);
+  // NOTE: The shared list holds exactly the folders owned by somebody else, so a folder missing from
+  // it belongs to the current user. Sharing and deleting are reserved for the folder's creator.
+  const isOwner = !sharedFolders?.some((sharedFolder) => sharedFolder.id === folder?.id);
+  // NOTE: On top of ownership an admin always may share, everyone else needs the `sharing.folders`
+  // permission, which is off by default — same gate as the web client.
+  const canShare = isOwner && (profile?.role === UserRole.ADMIN || Boolean(profile?.permissions?.sharing?.folders));
 
   const getFolderChats = async (id: string): Promise<Array<ChatResponse>> =>
     await queryClient.fetchQuery<Array<ChatResponse>>({
@@ -114,6 +118,14 @@ export function FolderActionsSheet({ onEditPress, onSharePress, ref }: FolderAct
     }
   };
 
+  const deleteAction: ActionSheetItemProps = {
+    title: translate('TEXT_DELETE'),
+    iconName: 'trashCan',
+    onPress: openDeleteAlert,
+    isLoading: isDeleting,
+    isDanger: true,
+  };
+
   const shareAction: ActionSheetItemProps = {
     title: translate('TEXT_SHARE'),
     iconName: 'users',
@@ -126,20 +138,14 @@ export function FolderActionsSheet({ onEditPress, onSharePress, ref }: FolderAct
       iconName: 'editPencil',
       onPress: onEditPressHandler,
     },
-    ...(canShareFolders ? [shareAction] : []),
+    ...(canShare ? [shareAction] : []),
     {
       title: translate('TEXT_EXPORT'),
       iconName: 'exportIcon',
       onPress: onChatsExport,
       isLoading: isExportLoading,
     },
-    {
-      title: translate('TEXT_DELETE'),
-      iconName: 'trashCan',
-      onPress: openDeleteAlert,
-      isLoading: isDeleting,
-      isDanger: true,
-    },
+    ...(isOwner ? [deleteAction] : []),
   ];
 
   return <ActionsBottomSheet actions={actions} ref={actionsSheetRef} />;

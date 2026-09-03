@@ -7,6 +7,7 @@
     },
     "CHAT": {
       "TEXT_INPUT_PLACEHOLDER": "Send a message",
+      "TEXT_READ_ONLY": "Read only",
       "TEXT_MODEL_NOT_SELECTED": "Model not selected",
       "TEXT_MESSAGE_QUEUED": "Message queued"
     },
@@ -14,6 +15,8 @@
       "PINNED_CHAT_LIST": {
         "TEXT_PINNED": "Pinned"
       },
+      "TEXT_SHARED_WITH_ME": "Shared with me",
+      "TEXT_MY_FOLDERS": "My folders",
       "TEXT_NEW_CHAT": "New chat",
       "TEXT_SEARCH": "Search",
       "TEXT_THERE_ARE_NO_CHATS": "There are no chats"

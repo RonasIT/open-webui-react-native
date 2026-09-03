@@ -7,6 +7,7 @@
     },
     "CHAT": {
       "TEXT_INPUT_PLACEHOLDER": "Отправить сообщение",
+      "TEXT_READ_ONLY": "Только чтение",
       "TEXT_MODEL_NOT_SELECTED": "Модель не выбрана",
       "TEXT_MESSAGE_QUEUED": "Сообщение добавлено в очередь"
     },
@@ -14,6 +15,8 @@
       "PINNED_CHAT_LIST": {
         "TEXT_PINNED": "Закреплённые"
       },
+      "TEXT_SHARED_WITH_ME": "Доступные мне",
+      "TEXT_MY_FOLDERS": "Мои папки",
       "TEXT_NEW_CHAT": "Новый чат",
       "TEXT_SEARCH": "Поиск",
       "TEXT_THERE_ARE_NO_CHATS": "Чатов нет"

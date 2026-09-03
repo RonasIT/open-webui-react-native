@@ -7,6 +7,7 @@
     },
     "CHAT": {
       "TEXT_INPUT_PLACEHOLDER": "Nachricht senden",
+      "TEXT_READ_ONLY": "Nur lesen",
       "TEXT_MODEL_NOT_SELECTED": "Kein Modell ausgewählt",
       "TEXT_MESSAGE_QUEUED": "Nachricht in Warteschlange"
     },
@@ -14,6 +15,8 @@
       "PINNED_CHAT_LIST": {
         "TEXT_PINNED": "Angepinnt"
       },
+      "TEXT_SHARED_WITH_ME": "Für mich freigegeben",
+      "TEXT_MY_FOLDERS": "Meine Ordner",
       "TEXT_NEW_CHAT": "Neuer Chat",
       "TEXT_SEARCH": "Suchen",
       "TEXT_THERE_ARE_NO_CHATS": "Es gibt keine Chats"

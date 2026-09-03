@@ -1,7 +1,6 @@
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
 import { EntityPromiseService } from '@open-webui-react-native/shared/data-access/base-entity';
-import { ChatListItem } from '../chats/models/chat-list-item';
 import { ChatResponse } from '../chats/models/chat-response';
 import { foldersApiConfig } from './config';
 import {
@@ -9,7 +8,9 @@ import {
   FolderListItem,
   FolderResponse,
   GetFolderChatListRequest,
+  SharedFolderChatListItem,
   SharedFolderChatsResponse,
+  SharedFolderListItem,
   UpdateFolderAccessRequest,
   UpdateFolderRequest,
 } from './models';
@@ -61,7 +62,18 @@ class FoldersService extends EntityPromiseService<FolderResponse> {
     return response.map((item) => plainToInstance(FolderListItem, item));
   }
 
-  public async getFolderChatList({ folderId, page }: GetFolderChatListRequest): Promise<Array<ChatListItem>> {
+  // NOTE: Folders shared with the current user do not come from `GET /folders/`, which only lists
+  // the ones they own.
+  public async getSharedFolders(): Promise<Array<SharedFolderListItem>> {
+    const response = await getApiService().get<Array<SharedFolderListItem>>(`${foldersApiConfig.route}/shared`);
+
+    return response.map((item) => plainToInstance(SharedFolderListItem, item));
+  }
+
+  public async getFolderChatList({
+    folderId,
+    page,
+  }: GetFolderChatListRequest): Promise<Array<SharedFolderChatListItem>> {
     const response = await getApiService().get<SharedFolderChatsResponse>(
       `${foldersApiConfig.route}/${folderId}/shared/chats`,
       { page },
