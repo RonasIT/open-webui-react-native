@@ -6,6 +6,7 @@ export const foldersApiConfig = {
   chatsRoute: 'v1/chats',
   createFolderQueryKey: ['folders', 'create'],
   updateFolderQueryKey: ['folders', 'update'],
+  updateFolderAccessQueryKey: ['folders', 'update-access'],
   deleteFolderQueryKey: ['folders', 'delete'],
   getFoldersQueryKey: ['folders', 'get'],
   getFolderChatListQueryKeyPrefix: folderChatListQueryKeyPrefix,

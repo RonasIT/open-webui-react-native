@@ -1,0 +1,9 @@
+{
+  "name": "mobile/folder/ui/access-row",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mobile/folder/ui/access-row/src",
+  "projectType": "library",
+  "tags": ["app:mobile", "scope:folder", "type:ui"],
+  "// targets": "to see all targets run: nx show project mobile/folder/ui/access-row --web",
+  "targets": {}
+}

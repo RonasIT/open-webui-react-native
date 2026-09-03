@@ -16,7 +16,13 @@ import { queryClient } from '@open-webui-react-native/shared/data-access/query-c
 import { ChatListItem } from '../chats/models/chat-list-item';
 import { ChatResponse } from '../chats/models/chat-response';
 import { foldersApiConfig } from './config';
-import { CreateFolderRequest, FolderListItem, FolderResponse, UpdateFolderRequest } from './models';
+import {
+  CreateFolderRequest,
+  FolderListItem,
+  FolderResponse,
+  UpdateFolderAccessRequest,
+  UpdateFolderRequest,
+} from './models';
 import { foldersService } from './service';
 
 function useGetFolder(
@@ -73,6 +79,25 @@ function useUpdateFolder(
       });
     },
     ...props,
+  });
+}
+
+function useUpdateFolderAccess(
+  props?: UseMutationOptions<FolderResponse, AxiosError<ApiErrorData>, UpdateFolderAccessRequest>,
+): UseMutationResult<FolderResponse, AxiosError<ApiErrorData>, UpdateFolderAccessRequest> {
+  return useMutation<FolderResponse, AxiosError<ApiErrorData>, UpdateFolderAccessRequest>({
+    mutationFn: foldersService.updateFolderAccess,
+    mutationKey: foldersApiConfig.updateFolderAccessQueryKey,
+    ...props,
+    // NOTE: The endpoint answers with the whole folder, so the cache is replaced rather than merged —
+    // merging would keep the grants that have just been revoked. Declared after the spread so that a
+    // caller passing its own `onSuccess` cannot drop the cache update.
+    onSuccess: (...args) => {
+      const [response] = args;
+
+      queryClient.setQueryData<FolderResponse>(foldersApiConfig.getFolderQueryKey(response.id), response);
+      props?.onSuccess?.(...args);
+    },
   });
 }
 
@@ -134,6 +159,7 @@ export const foldersApi = {
   useGetFolder,
   useCreateFolder,
   useUpdateFolder,
+  useUpdateFolderAccess,
   useDeleteFolder,
   useGetFolders,
   useGetFolderChatList,

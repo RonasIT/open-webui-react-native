@@ -10,6 +10,7 @@ import {
   FolderResponse,
   GetFolderChatListRequest,
   SharedFolderChatsResponse,
+  UpdateFolderAccessRequest,
   UpdateFolderRequest,
 } from './models';
 
@@ -36,6 +37,18 @@ class FoldersService extends EntityPromiseService<FolderResponse> {
 
     const response = await getApiService().post<FolderResponse>(
       `${foldersApiConfig.route}/${params.id}/update`,
+      request,
+    );
+
+    return plainToInstance(FolderResponse, response);
+  }
+
+  public async updateFolderAccess(params: UpdateFolderAccessRequest): Promise<FolderResponse> {
+    // Backend forbids extra fields in the body (`id` is passed via URL only)
+    const { id, ...request } = instanceToPlain<UpdateFolderAccessRequest>(new UpdateFolderAccessRequest(params));
+
+    const response = await getApiService().post<FolderResponse>(
+      `${foldersApiConfig.route}/${params.id}/access/update`,
       request,
     );
 
