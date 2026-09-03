@@ -1,6 +1,10 @@
 import { Expose } from 'class-transformer';
 
 export class SharingPermissions {
+  // NOTE: `USER_PERMISSIONS_FOLDERS_ALLOW_SHARING` on the backend, off unless an admin turns it on.
+  @Expose()
+  public folders: boolean;
+
   @Expose({ name: 'public_models' })
   public publicModels: boolean;
 

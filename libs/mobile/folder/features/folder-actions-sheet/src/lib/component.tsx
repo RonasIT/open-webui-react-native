@@ -41,7 +41,9 @@ export function FolderActionsSheet({ onEditPress, onSharePress, ref }: FolderAct
   const { data: profile } = authApi.useGetProfile();
   const { mutateAsync: deleteFolder, isPending: isDeleting } = foldersApi.useDeleteFolder();
 
-  const isAdmin = profile?.role === UserRole.ADMIN;
+  // NOTE: Same gate as the web client: an admin always may share, everyone else needs the
+  // `sharing.folders` permission, which is off by default.
+  const canShareFolders = profile?.role === UserRole.ADMIN || Boolean(profile?.permissions?.sharing?.folders);
 
   const getFolderChats = async (id: string): Promise<Array<ChatResponse>> =>
     await queryClient.fetchQuery<Array<ChatResponse>>({
@@ -124,7 +126,7 @@ export function FolderActionsSheet({ onEditPress, onSharePress, ref }: FolderAct
       iconName: 'editPencil',
       onPress: onEditPressHandler,
     },
-    ...(isAdmin ? [shareAction] : []),
+    ...(canShareFolders ? [shareAction] : []),
     {
       title: translate('TEXT_EXPORT'),
       iconName: 'exportIcon',
