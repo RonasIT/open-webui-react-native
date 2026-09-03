@@ -20,6 +20,7 @@ import {
 import {
   AccessGrant,
   authApi,
+  getUserAvatarSource,
   groupsApi,
   PrincipalType,
   usersApi,
@@ -129,6 +130,7 @@ export function ShareWithSheet({ onAdd, ref, ...props }: ShareWithSheetProps): R
       <AccessRow
         name={item.name}
         isGroup={isGroup}
+        avatarSource={isGroup ? undefined : getUserAvatarSource(item.id)}
         hasCheckbox
         isSelected={selectedIds.includes(item.id)}
         onPress={() => setSelectedIds((prev) => xor(prev, [item.id]))}

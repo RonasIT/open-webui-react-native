@@ -12,9 +12,6 @@ export class UserInfo extends BaseEntity<string> {
   @Expose()
   public role: UserRole;
 
-  @Expose({ name: 'profile_image_url' })
-  public profileImageUrl?: string;
-
   @Expose({ name: 'is_active' })
   public isActive?: boolean;
 

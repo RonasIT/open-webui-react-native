@@ -29,6 +29,7 @@ import {
   foldersApi,
   foldersApiConfig,
   groupsApi,
+  getUserAvatarSource,
   PrincipalType,
   usersApiConfig,
   usersService,
@@ -192,6 +193,9 @@ export function ShareFolderSheet({ ref, ...props }: ShareFolderSheetProps): Reac
                         key={`${item.principalType}-${item.id}`}
                         name={item.name}
                         isGroup={item.principalType === PrincipalType.GROUP}
+                        avatarSource={
+                          item.principalType === PrincipalType.USER ? getUserAvatarSource(item.id) : undefined
+                        }
                         permissionLabel={
                           item.permission === AccessPermission.WRITE ? translate('TEXT_WRITE') : translate('TEXT_READ')
                         }

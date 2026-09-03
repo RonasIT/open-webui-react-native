@@ -1,3 +1,4 @@
+import { ImageProps } from 'expo-image';
 import { ReactElement, Fragment } from 'react';
 import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import {
@@ -12,6 +13,7 @@ import {
 export interface AccessRowProps {
   name: string;
   isGroup?: boolean;
+  avatarSource?: ImageProps['source'];
   permissionLabel?: string;
   hasCheckbox?: boolean;
   isSelected?: boolean;
@@ -23,6 +25,7 @@ export interface AccessRowProps {
 export function AccessRow({
   name,
   isGroup,
+  avatarSource,
   permissionLabel,
   hasCheckbox,
   isSelected,
@@ -39,8 +42,10 @@ export function AccessRow({
       ) : (
         <Avatar
           name={name}
+          source={avatarSource}
           className='bg-brand-primary-transparent'
-          textClassName='text-brand-primary' />
+          textClassName='text-brand-primary'
+        />
       )}
       <AppText className='flex-1' numberOfLines={1}>
         {name}
