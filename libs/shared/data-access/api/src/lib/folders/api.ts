@@ -13,13 +13,14 @@ import { merge } from 'lodash-es';
 import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
 import { getNextPageParam } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
-import { ChatListItem } from '../chats/models/chat-list-item';
 import { ChatResponse } from '../chats/models/chat-response';
 import { foldersApiConfig } from './config';
 import {
   CreateFolderRequest,
   FolderListItem,
   FolderResponse,
+  SharedFolderChatListItem,
+  SharedFolderListItem,
   UpdateFolderAccessRequest,
   UpdateFolderRequest,
 } from './models';
@@ -130,7 +131,19 @@ function useGetFolders(
   });
 }
 
-function useGetFolderChatList(folderId: string): UseInfiniteQueryResult<Array<ChatListItem>, AxiosError<ApiErrorData>> {
+function useGetSharedFolders(
+  props?: Omit<UseQueryOptions<Array<SharedFolderListItem>, AxiosError<ApiErrorData>>, 'queryKey' | 'queryFn'>,
+): UseQueryResult<Array<SharedFolderListItem>, AxiosError<ApiErrorData>> {
+  return useQuery<Array<SharedFolderListItem>, AxiosError<ApiErrorData>>({
+    queryFn: foldersService.getSharedFolders,
+    queryKey: foldersApiConfig.getSharedFoldersQueryKey,
+    ...props,
+  });
+}
+
+function useGetFolderChatList(
+  folderId: string,
+): UseInfiniteQueryResult<Array<SharedFolderChatListItem>, AxiosError<ApiErrorData>> {
   return useInfiniteQuery({
     queryFn: ({ pageParam }) => foldersService.getFolderChatList({ folderId, page: pageParam }),
     queryKey: foldersApiConfig.getFolderChatListQueryKey(folderId),
@@ -162,6 +175,7 @@ export const foldersApi = {
   useUpdateFolderAccess,
   useDeleteFolder,
   useGetFolders,
+  useGetSharedFolders,
   useGetFolderChatList,
   useGetFolderChats,
 };

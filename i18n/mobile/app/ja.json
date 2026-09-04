@@ -37,6 +37,8 @@
       "TEXT_MARKDOWN_RENDERER": "Markdown レンダラー",
       "TEXT_MARKDOWN_RENDERER_DEFAULT": "デフォルト",
       "TEXT_MARKDOWN_RENDERER_NITRO": "実験的",
+      "TEXT_APP_VERSION": "Open MobileUI バージョン {{version}}",
+      "TEXT_APP_AUTHOR": "Ronas IT 提供",
       "PROFILE_AVATAR_SHEET": {
         "TEXT_TITLE": "プロフィール画像",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "プロフィール画像をアップロード",

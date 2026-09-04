@@ -13,9 +13,10 @@ import { useSendMessage } from '@open-webui-react-native/mobile/chat/features/us
 import { useSuggestChange } from '@open-webui-react-native/mobile/chat/features/use-suggest-change';
 import { useAttachedFiles } from '@open-webui-react-native/mobile/shared/features/use-attached-files';
 import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
-import { AppKeyboardStickyView, AppSpinner, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { AppKeyboardStickyView, AppSpinner, AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 import {
+  authApi,
   chatApi,
   ChatGenerationOption,
   chatQueriesKeys,
@@ -82,7 +83,13 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
     isRefetching,
     isSuccess,
   } = chatApi.useGet(chatId, { enabled: !isTemporaryChat });
+  const { data: profile } = authApi.useGetProfile();
   const { sendMessage, isLoading: isSending } = useSendMessage({ chatData: chat });
+
+  // NOTE: Only the owner may post into a chat: the backend rejects a completion in somebody else's
+  // chat with a 404 no matter what the shared folder grants, so a chat opened from a folder shared
+  // with the user is read-only for them — the web client replaces its composer the same way.
+  const isReadonly = Boolean(chat?.userId && profile && chat.userId !== profile.id);
   const {
     editingMessageId,
     startEditing,
@@ -308,7 +315,13 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
       )}
       <AppKeyboardStickyView className='bg-background-primary-transparent'>
         <View className={cn('pt-8 px-16', shouldHideContent && 'opacity-0')}>
-          {activeInputMode === ActiveInputMode.EDIT && editingMessageId ? (
+          {isReadonly ? (
+            <View className='pb-16 pt-8'>
+              <AppText className='text-sm-sm sm:text-sm text-text-secondary text-center'>
+                {translate('TEXT_READ_ONLY')}
+              </AppText>
+            </View>
+          ) : activeInputMode === ActiveInputMode.EDIT && editingMessageId ? (
             <EditMessageInput
               control={editMessageControl}
               name='editMessageInputValue'

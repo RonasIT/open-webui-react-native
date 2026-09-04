@@ -9,6 +9,7 @@ export const foldersApiConfig = {
   updateFolderAccessQueryKey: ['folders', 'update-access'],
   deleteFolderQueryKey: ['folders', 'delete'],
   getFoldersQueryKey: ['folders', 'get'],
+  getSharedFoldersQueryKey: ['folders', 'shared'],
   getFolderChatListQueryKeyPrefix: folderChatListQueryKeyPrefix,
   getFolderChatListQueryKey: (folderId: string): Array<string> => [...folderChatListQueryKeyPrefix, folderId],
   getFolderChatsQueryKeyPrefix: folderChatsQueryKeyPrefix,

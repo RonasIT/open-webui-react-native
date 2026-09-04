@@ -1,6 +1,6 @@
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { useIsFocused } from 'expo-router';
-import { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
+import { Fragment, ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import {
   ChatActionsMenuSheet,
   ChatActionsMenuSheetMethods,
@@ -64,12 +64,19 @@ export function ChatMenuList({
     isRefetching: isFoldersRefetching,
     refetch: refetchFolders,
   } = foldersApi.useGetFolders();
+  const {
+    data: sharedFolders,
+    isLoading: isSharedFoldersLoading,
+    isRefetching: isSharedFoldersRefetching,
+    refetch: refetchSharedFolders,
+  } = foldersApi.useGetSharedFolders();
 
-  const isLoading = isChatsLoading || isPinnedChatsLoading || isFoldersLoading || isFirstLoading;
-  const isRefetching = isChatsRefetching || isPinnedChatsRefetching || isFoldersRefetching;
+  const isLoading =
+    isChatsLoading || isPinnedChatsLoading || isFoldersLoading || isSharedFoldersLoading || isFirstLoading;
+  const isRefetching = isChatsRefetching || isPinnedChatsRefetching || isFoldersRefetching || isSharedFoldersRefetching;
 
   const refetch = (): void => {
-    Promise.all([refetchChats(), refetchPinnedChats(), refetchFolders()]);
+    Promise.all([refetchChats(), refetchPinnedChats(), refetchFolders(), refetchSharedFolders()]);
   };
 
   useEffect(() => {
@@ -107,11 +114,21 @@ export function ChatMenuList({
           ListHeaderComponent={
             <View>
               {isFeatureEnabled(FeatureID.CHAT_FOLDERS) && (
-                <FoldersList
-                  folders={folders || []}
-                  onFolderPress={onFolderPress}
-                  onFolderLongPress={onFolderLongPress}
-                />
+                <Fragment>
+                  {/* NOTE: A folder owned by somebody else cannot be renamed or deleted by the
+                      recipient, so its row offers no actions on long press. */}
+                  <FoldersList
+                    folders={sharedFolders || []}
+                    title={translate('TEXT_SHARED_WITH_ME')}
+                    onFolderPress={onFolderPress}
+                  />
+                  <FoldersList
+                    folders={folders || []}
+                    title={translate('TEXT_MY_FOLDERS')}
+                    onFolderPress={onFolderPress}
+                    onFolderLongPress={onFolderLongPress}
+                  />
+                </Fragment>
               )}
               <PinnedChatList chats={pinnedChats || []} onChatPress={onChatPress} />
             </View>

@@ -6,9 +6,9 @@ import { Keyboard } from 'react-native';
 import { AccessRow } from '@open-webui-react-native/mobile/folder/ui/access-row';
 import {
   AppBottomSheet,
+  AppBottomSheetFlashList,
   AppBottomSheetPropsType,
   AppButton,
-  AppFlashList,
   AppSafeAreaView,
   AppSpinner,
   AppText,
@@ -161,7 +161,7 @@ export function ShareWithSheet({ onAdd, ref, ...props }: ShareWithSheetProps): R
               <AppSpinner isFullScreen />
             </View>
           ) : (
-            <AppFlashList
+            <AppBottomSheetFlashList
               data={items}
               renderItem={renderItem}
               showsVerticalScrollIndicator={false}

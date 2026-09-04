@@ -37,6 +37,8 @@
       "TEXT_MARKDOWN_RENDERER": "Markdown renderer",
       "TEXT_MARKDOWN_RENDERER_DEFAULT": "Default",
       "TEXT_MARKDOWN_RENDERER_NITRO": "Experimental",
+      "TEXT_APP_VERSION": "Open MobileUI version {{version}}",
+      "TEXT_APP_AUTHOR": "by Ronas IT",
       "PROFILE_AVATAR_SHEET": {
         "TEXT_TITLE": "Profile avatar",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "Upload profile image",

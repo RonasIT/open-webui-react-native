@@ -1,10 +1,10 @@
 import { Expose, Type } from 'class-transformer';
-import { ChatListItem } from '../../chats/models/chat-list-item';
+import { SharedFolderChatListItem } from './shared-folder-chat-list-item';
 
 export class SharedFolderChatsResponse {
   @Expose()
-  @Type(() => ChatListItem)
-  public chats: Array<ChatListItem>;
+  @Type(() => SharedFolderChatListItem)
+  public chats: Array<SharedFolderChatListItem>;
 
   @Expose({ name: 'folder_permission' })
   public folderPermission: 'read' | 'write';

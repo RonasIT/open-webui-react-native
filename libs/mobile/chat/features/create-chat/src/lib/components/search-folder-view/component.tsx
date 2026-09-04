@@ -13,10 +13,12 @@ import {
   Icon,
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { FolderListItem, foldersApi } from '@open-webui-react-native/shared/data-access/api';
+import { AccessPermission, FolderListItem, foldersApi } from '@open-webui-react-native/shared/data-access/api';
 
-interface SearchFolderViewProps
-  extends Omit<FullScreenSearchModalProps<FolderListItem>, 'searchPlaceholder' | 'data' | 'renderTrigger'> {
+interface SearchFolderViewProps extends Omit<
+  FullScreenSearchModalProps<FolderListItem>,
+  'searchPlaceholder' | 'data' | 'renderTrigger'
+> {
   onCreateFolderPress: () => void;
   disabled?: boolean;
 }
@@ -37,10 +39,19 @@ export function SearchFolderView({
   });
 
   const { data: folders } = foldersApi.useGetFolders();
+  const { data: sharedFolders } = foldersApi.useGetSharedFolders();
 
-  const selectedFolderName = folders?.find((folder) => folder.id === selectedItemId)?.name;
+  // NOTE: A chat can be created in a folder shared by somebody else only with a write grant, so
+  // read-only ones are left out. Without them the folder opened from its own screen resolved to no
+  // name at all and the trigger read "No folder".
+  const availableFolders = [
+    ...(folders ?? []),
+    ...(sharedFolders ?? []).filter((folder) => folder.permission === AccessPermission.WRITE),
+  ];
 
-  const foldersWithIcon = folders?.map((folder) => ({ ...folder, iconName: 'folder' }));
+  const selectedFolderName = availableFolders.find((folder) => folder.id === selectedItemId)?.name;
+
+  const foldersWithIcon = availableFolders.map((folder) => ({ ...folder, iconName: 'folder' }));
 
   const renderTrigger = ({ onPress }: { onPress: () => void }): ReactElement => (
     <AppPressable

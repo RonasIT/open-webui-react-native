@@ -37,6 +37,8 @@
       "TEXT_MARKDOWN_RENDERER": "Markdown 渲染器",
       "TEXT_MARKDOWN_RENDERER_DEFAULT": "默认",
       "TEXT_MARKDOWN_RENDERER_NITRO": "实验性",
+      "TEXT_APP_VERSION": "Open MobileUI 版本 {{version}}",
+      "TEXT_APP_AUTHOR": "由 Ronas IT 出品",
       "PROFILE_AVATAR_SHEET": {
         "TEXT_TITLE": "个人资料头像",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "上传头像",

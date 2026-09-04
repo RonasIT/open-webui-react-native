@@ -7,6 +7,7 @@
     },
     "CHAT": {
       "TEXT_INPUT_PLACEHOLDER": "メッセージを送信",
+      "TEXT_READ_ONLY": "閲覧のみ",
       "TEXT_MODEL_NOT_SELECTED": "モデルが選択されていません",
       "TEXT_MESSAGE_QUEUED": "メッセージをキューに追加しました"
     },
@@ -14,6 +15,8 @@
       "PINNED_CHAT_LIST": {
         "TEXT_PINNED": "ピン留め"
       },
+      "TEXT_SHARED_WITH_ME": "共有されているもの",
+      "TEXT_MY_FOLDERS": "マイフォルダ",
       "TEXT_NEW_CHAT": "新しいチャット",
       "TEXT_SEARCH": "検索",
       "TEXT_THERE_ARE_NO_CHATS": "チャットはありません"
