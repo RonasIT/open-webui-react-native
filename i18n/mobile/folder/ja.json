@@ -17,6 +17,7 @@
       "TEXT_PRIVATE": "非公開",
       "TEXT_PRIVATE_DESCRIPTION": "権限を持つ選択されたユーザーとグループのみアクセスできます",
       "TEXT_ACCESS_LIST": "アクセス権を持つグループとユーザー",
+      "TEXT_UNKNOWN_MEMBER": "不明なメンバー",
       "TEXT_READ": "閲覧",
       "TEXT_WRITE": "編集",
       "BUTTON_ADD": "追加"

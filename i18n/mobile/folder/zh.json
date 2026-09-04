@@ -17,6 +17,7 @@
       "TEXT_PRIVATE": "私有",
       "TEXT_PRIVATE_DESCRIPTION": "仅具有权限的选定用户和群组可以访问",
       "TEXT_ACCESS_LIST": "有访问权限的群组和用户",
+      "TEXT_UNKNOWN_MEMBER": "未知成员",
       "TEXT_READ": "只读",
       "TEXT_WRITE": "可编辑",
       "BUTTON_ADD": "添加"

@@ -23,6 +23,7 @@ import {
   useInitialNavigation,
 } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import {
+  authApi,
   chatApi,
   getSelectableModels,
   isTemporaryChatId,
@@ -50,7 +51,12 @@ export default function ChatScreen(): ReactElement {
   const { data: models, isLoading: isModelsLoading } = modelsApi.useGetModels();
   // NOTE: Temporary chats are never persisted, so there's nothing to fetch — read the client-seeded cache only.
   const { data: chat, isLoading: isChatLoading } = chatApi.useGet(id, { enabled: !isTemporaryChat });
+  const { data: profile } = authApi.useGetProfile();
   const { modelId, modelName, onSelectModel } = useSetSelectedModel(id);
+
+  // NOTE: Every action of the menu but downloading is owner-only on the backend, so a chat somebody
+  // else created — visible through a shared folder — offers the trimmed menu.
+  const isReadonly = Boolean(chat?.userId && profile && chat.userId !== profile.id);
 
   const selectableModels = useMemo(() => getSelectableModels(models), [models]);
 
@@ -128,7 +134,9 @@ export default function ChatScreen(): ReactElement {
       <ChatActionsMenuSheet
         ref={chatActionsSheetRef}
         goToChat={navigateToClonedChat}
-        isInChat />
+        isReadonly={isReadonly}
+        isInChat
+      />
     </AppScreen>
   );
 }

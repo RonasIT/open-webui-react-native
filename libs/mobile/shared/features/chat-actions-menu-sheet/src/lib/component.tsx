@@ -44,9 +44,16 @@ export interface ChatActionsMenuSheetProps extends Pick<ActionsBottomSheetProps,
   isPinned?: boolean;
   ref?: ChatActionsMenuSheetRef;
   isInChat?: boolean;
+  isReadonly?: boolean;
 }
 
-export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: ChatActionsMenuSheetProps): ReactElement {
+export function ChatActionsMenuSheet({
+  goToChat,
+  isPinned,
+  ref,
+  isInChat,
+  isReadonly,
+}: ChatActionsMenuSheetProps): ReactElement {
   const translate = useTranslation('SHARED.CHAT_ACTIONS_MENU_SHEET');
 
   const actionsSheetRef = useRef<BottomSheetModal>(null);
@@ -235,34 +242,42 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: Chat
     fullScreenSearchModalRef.current?.close();
   };
 
+  // NOTE: Every action here but downloading is owner-only on the backend — moving, pinning, renaming,
+  // cloning, archiving, sharing and deleting all resolve the chat by owner and reject anybody else.
+  // Downloading only reads the chat, which a shared folder already allows.
   const actions: Array<ActionSheetItemProps> = compact([
-    {
+    !isReadonly && {
       title: translate('TEXT_MOVE_TO_FOLDER'),
       iconName: 'folderPlus',
       onPress: () => handleAction(ChatAction.MOVE_TO_FOLDER),
     },
-    {
+    !isReadonly && {
       title: isPinned ? translate('TEXT_UNPIN') : translate('TEXT_PIN'),
       iconName: isPinned ? 'unpin' : 'pin',
       isLoading: isPinning,
       onPress: () => handleAction(ChatAction.PIN),
     },
-    { title: translate('TEXT_RENAME'), iconName: 'editPencil', onPress: () => handleAction(ChatAction.RENAME) },
-    {
+    !isReadonly && {
+      title: translate('TEXT_RENAME'),
+      iconName: 'editPencil',
+      onPress: () => handleAction(ChatAction.RENAME),
+    },
+    !isReadonly && {
       title: translate('TEXT_CLONE'),
       iconName: 'copy',
       isLoading: isCloning,
       onPress: () => handleAction(ChatAction.CLONE),
     },
-    isFeatureEnabled(FeatureID.ARCHIVE_CHAT) && {
-      title: isArchived ? translate('TEXT_RESTORE') : translate('TEXT_ARCHIVE'),
-      iconName: isArchived ? 'unarchive' : 'archive',
-      isLoading: isArchived ? isUnarchiving : isArchiving,
-      onPress: () => handleAction(isArchived ? ChatAction.RESTORE : ChatAction.ARCHIVE),
-    },
-    { title: translate('TEXT_SHARE'), iconName: 'exportIcon', onPress: openShareChatModal },
+    !isReadonly &&
+      isFeatureEnabled(FeatureID.ARCHIVE_CHAT) && {
+        title: isArchived ? translate('TEXT_RESTORE') : translate('TEXT_ARCHIVE'),
+        iconName: isArchived ? 'unarchive' : 'archive',
+        isLoading: isArchived ? isUnarchiving : isArchiving,
+        onPress: () => handleAction(isArchived ? ChatAction.RESTORE : ChatAction.ARCHIVE),
+      },
+    !isReadonly && { title: translate('TEXT_SHARE'), iconName: 'exportIcon', onPress: openShareChatModal },
     { title: translate('TEXT_DOWNLOAD'), iconName: 'download', onPress: openDownloadOptionsModal },
-    {
+    !isReadonly && {
       title: translate('TEXT_DELETE'),
       iconName: 'trashCan',
       isLoading: isDeleting,

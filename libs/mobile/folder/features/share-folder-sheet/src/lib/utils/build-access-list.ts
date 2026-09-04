@@ -11,23 +11,28 @@ interface BuildAccessListArgs {
   grants: Array<AccessGrant>;
   groups: Array<Group>;
   users: Array<UserInfo>;
+  unknownName: string;
 }
 
+// NOTE: A principal can stay unresolved when it has been deleted while the grant outlived it — the
+// backend cleans up neither. Its row is kept so that the access list does not hide anybody who still
+// has access and so that the grant can be revoked from here, but a raw uuid is no name to show.
 const getPrincipalName = (
   { principalType, principalId }: AccessGrant,
-  groups: Array<Group>,
-  users: Array<UserInfo>,
+  { groups, users, unknownName }: Omit<BuildAccessListArgs, 'grants'>,
 ): string => {
   const principals = principalType === PrincipalType.GROUP ? groups : users;
 
-  return principals.find((principal) => principal.id === principalId)?.name ?? principalId;
+  return principals.find((principal) => principal.id === principalId)?.name ?? unknownName;
 };
 
-export const buildAccessList = ({ grants, groups, users }: BuildAccessListArgs): Array<AccessListItem> => {
+export const buildAccessList = ({ grants, ...principals }: BuildAccessListArgs): Array<AccessListItem> => {
   const items: Array<AccessListItem> = [];
 
   grants.forEach((grant) => {
-    if (grant.principalType === PrincipalType.ANYONE) {
+    // NOTE: `anyone:*` and `user:*` are visibility grants rather than participants — the web client
+    // renders them as the folder's visibility and keeps them out of the access list as well.
+    if (grant.principalType === PrincipalType.ANYONE || grant.principalId === '*') {
       return;
     }
 
@@ -43,7 +48,7 @@ export const buildAccessList = ({ grants, groups, users }: BuildAccessListArgs):
 
     items.push({
       id: grant.principalId,
-      name: getPrincipalName(grant, groups, users),
+      name: getPrincipalName(grant, principals),
       principalType: grant.principalType,
       permission: grant.permission,
     });

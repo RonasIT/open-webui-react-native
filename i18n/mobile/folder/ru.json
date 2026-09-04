@@ -17,6 +17,7 @@
       "TEXT_PRIVATE": "Приватная",
       "TEXT_PRIVATE_DESCRIPTION": "Доступ есть только у выбранных пользователей и групп",
       "TEXT_ACCESS_LIST": "Группы и пользователи с доступом",
+      "TEXT_UNKNOWN_MEMBER": "Неизвестный участник",
       "TEXT_READ": "Чтение",
       "TEXT_WRITE": "Запись",
       "BUTTON_ADD": "Добавить"

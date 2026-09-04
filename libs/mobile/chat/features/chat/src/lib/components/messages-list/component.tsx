@@ -38,6 +38,7 @@ interface ChatMessagesListProps {
   onMoreConcise: (messageId: string) => void;
   onFollowUpPress: (text: string) => void;
   isResponseGenerating: boolean;
+  isReadonly?: boolean;
   history?: ChatHistory;
   messages?: Array<Message>;
   editingMessageId?: string;
@@ -58,6 +59,7 @@ export default function ChatMessagesList({
   editingMessageId,
   onFollowUpPress,
   isResponseGenerating,
+  isReadonly,
 }: ChatMessagesListProps): ReactElement {
   const listRef = useRef<React.ComponentRef<typeof FlashList<Message>>>(null);
   const isScrollToBottomAvailable = useRef(false);
@@ -221,6 +223,7 @@ export default function ChatMessagesList({
       return item.role === Role.ASSISTANT ? (
         <AiMessageActions
           message={message}
+          isReadonly={isReadonly}
           onEditPress={onEditPress}
           onSuggestPress={onSuggestPress}
           onContinueResponsePress={handleContinueResponsePress}
@@ -232,6 +235,7 @@ export default function ChatMessagesList({
           <ChatAiMessage
             message={message}
             chatId={chatId}
+            isReadonly={isReadonly}
             onEditPress={() => handleEditPress(index, message.id, message.content)}
             isEditing={editingMessageId === item.id}
             onPreviousSibling={showPreviousSibling}
@@ -243,7 +247,10 @@ export default function ChatMessagesList({
           />
         </AiMessageActions>
       ) : (
-        <UserMessageActions message={message} onEditPress={() => handleEditPress(index, message.id, message.content)}>
+        <UserMessageActions
+          message={message}
+          isReadonly={isReadonly}
+          onEditPress={() => handleEditPress(index, message.id, message.content)}>
           <ChatUserMessage
             message={message}
             isEditing={editingMessageId === item.id}
@@ -267,6 +274,7 @@ export default function ChatMessagesList({
       onTryAgain,
       onAddDetails,
       onMoreConcise,
+      isReadonly,
     ],
   );
 

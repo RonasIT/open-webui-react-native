@@ -29,6 +29,8 @@ import {
   foldersApi,
   foldersApiConfig,
   groupsApi,
+  groupsApiConfig,
+  groupsService,
   getUserAvatarSource,
   PrincipalType,
   usersApiConfig,
@@ -61,7 +63,11 @@ export function ShareFolderSheet({ ref, ...props }: ShareFolderSheetProps): Reac
   const closeModal = (): void => sheetRef.current?.close();
 
   const folderId = folder?.id ?? '';
-  const { data: groups } = groupsApi.useGetGroups();
+  // NOTE: The sheet is mounted with the screen while only its content is rendered lazily, so without
+  // the guard every launch would request the groups for a user who may never open sharing at all.
+  const { data: groups, isPending: areGroupsPending } = groupsApi.useGetGroups(true, {
+    enabled: Boolean(folderId),
+  });
   const { data: folderDetail, isLoading: isFolderLoading } = foldersApi.useGetFolder(folderId, {
     enabled: !!folderId,
   });
@@ -83,8 +89,37 @@ export function ShareFolderSheet({ ref, ...props }: ShareFolderSheetProps): Reac
     })),
   });
 
+  // NOTE: `GET /groups/` lists only the groups a non-admin belongs to, so the ones granted access
+  // beyond them are resolved by id — otherwise their rows would show a raw uuid instead of a name.
+  const unknownGroupIds = areGroupsPending
+    ? []
+    : uniq(
+        grants
+          .filter(
+            (grant) =>
+              grant.principalType === PrincipalType.GROUP && !groups?.some((group) => group.id === grant.principalId),
+          )
+          .map((grant) => grant.principalId),
+      );
+  const groupQueries = useQueries({
+    queries: unknownGroupIds.map((id) => ({
+      queryKey: groupsApiConfig.getGroupInfoQueryKey(id),
+      queryFn: () => groupsService.getGroupInfo(id),
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      // NOTE: A grant may outlive its group — the backend keeps no cleanup — and then the lookup
+      // fails for good, so there is nothing to retry.
+      retry: false,
+    })),
+  });
+
   const users = userQueries.flatMap(({ data }) => (data ? [data] : []));
-  const accessList = buildAccessList({ grants, groups: groups ?? [], users: users ?? [] });
+  const resolvedGroups = [...(groups ?? []), ...groupQueries.flatMap(({ data }) => (data ? [data] : []))];
+  const accessList = buildAccessList({
+    grants,
+    groups: resolvedGroups,
+    users,
+    unknownName: translate('TEXT_UNKNOWN_MEMBER'),
+  });
 
   const present = (folder: FolderListItem): void => {
     setFolder(folder);

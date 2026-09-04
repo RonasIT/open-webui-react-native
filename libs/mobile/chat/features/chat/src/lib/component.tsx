@@ -310,6 +310,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
             editingMessageId={editingMessageId}
             onFollowUpPress={handleFollowUpPress}
             isResponseGenerating={isResponseGenerating}
+            isReadonly={isReadonly}
           />
         </React.Suspense>
       )}

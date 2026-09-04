@@ -46,7 +46,8 @@ export function FolderActionsSheet({ onEditPress, onSharePress, ref }: FolderAct
   // it belongs to the current user. Sharing and deleting are reserved for the folder's creator.
   const isOwner = !sharedFolders?.some((sharedFolder) => sharedFolder.id === folder?.id);
   // NOTE: On top of ownership an admin always may share, everyone else needs the `sharing.folders`
-  // permission, which is off by default — same gate as the web client.
+  // permission, which is off by default — same gate as the web client. Deliberately free of any
+  // server-capability flag: one that fails to arrive would hide sharing on a server that supports it.
   const canShare = isOwner && (profile?.role === UserRole.ADMIN || Boolean(profile?.permissions?.sharing?.folders));
 
   const getFolderChats = async (id: string): Promise<Array<ChatResponse>> =>

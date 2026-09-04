@@ -12,11 +12,13 @@ import { ToastService } from '@open-webui-react-native/shared/utils/toast-servic
 interface UserMessageActionsProps {
   message: Message;
   onEditPress: (messageId: string, content: string) => void;
+  isReadonly?: boolean;
 }
 
 export function UserMessageActions({
   message,
   onEditPress,
+  isReadonly,
   children,
 }: PropsWithChildren<UserMessageActionsProps>): ReactElement {
   const translate = useTranslation('CHAT.USER_MESSAGE_ACTIONS');
@@ -34,12 +36,15 @@ export function UserMessageActions({
     actionsSheetRef.current?.dismiss();
   };
 
+  // NOTE: Nobody may change a chat they do not own — every action but copying would be rejected by
+  // the backend, so a message of somebody else's chat offers copying alone.
   const actions: Array<ActionSheetItemProps> = compact([
-    isFeatureEnabled(FeatureID.USER_EDIT_MESSAGE) && {
-      title: translate('TEXT_EDIT'),
-      iconName: 'editPencil',
-      onPress: handleEditPress,
-    },
+    !isReadonly &&
+      isFeatureEnabled(FeatureID.USER_EDIT_MESSAGE) && {
+        title: translate('TEXT_EDIT'),
+        iconName: 'editPencil',
+        onPress: handleEditPress,
+      },
     {
       title: translate('TEXT_COPY'),
       iconName: 'copy',

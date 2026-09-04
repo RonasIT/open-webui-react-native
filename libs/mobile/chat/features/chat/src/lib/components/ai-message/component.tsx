@@ -38,6 +38,7 @@ interface ChatAiMessageProps {
   onEditPress: () => void;
   isLast: boolean;
   isResponseGenerating: boolean;
+  isReadonly?: boolean;
   onFollowUpPress: (text: string) => void;
   isEditing?: boolean;
   onPreviousSibling?: UseSiblingMessagesReturn['showPreviousSibling'];
@@ -48,6 +49,7 @@ interface ChatAiMessageProps {
 export function ChatAiMessage({
   message,
   chatId,
+  isReadonly,
   isEditing,
   onNextSibling,
   onPreviousSibling,
@@ -216,7 +218,8 @@ export function ChatAiMessage({
         // generating", which is exactly what neither state is.
         !pendingToolCall && !messageError?.content && <SkeletonMessage />
       )}
-      {!isResponseGenerating && isLast && hasFollowUps && (
+      {/* NOTE: A follow-up sends a new message, which the author of the chat alone may do. */}
+      {!isResponseGenerating && isLast && hasFollowUps && !isReadonly && (
         <FollowUpsList
           followUps={followUps}
           onPress={onFollowUpPress}

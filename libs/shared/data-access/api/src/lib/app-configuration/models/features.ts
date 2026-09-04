@@ -67,6 +67,11 @@ export class Features {
   @Expose({ name: 'enable_onedrive_integration' })
   public enableOnedriveIntegration: boolean;
 
+  // NOTE: Whether folders are enabled for the instance at all (`folders.enable`, Open WebUI 0.7.0+).
+  // It says nothing about folder sharing, which arrived in 0.10.0 — see `sharingMinVersion`.
+  @Expose({ name: 'enable_folders' })
+  public enableFolders: boolean;
+
   // NOTE: Open WebUI 0.11.1+. Off unless the server sets ENABLE_TOOL_PERMISSIONS — with it off the
   // backend forces `tool_approval_mode: 'full'`, so the approval UI has nothing to show.
   @Expose({ name: 'enable_tool_permissions' })

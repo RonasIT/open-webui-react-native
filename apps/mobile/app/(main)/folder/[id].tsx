@@ -11,11 +11,11 @@ export default function FolderScreen(): ReactElement {
   const { id, title }: FolderScreenParams = useLocalSearchParams();
   const router = useRouter();
 
-  const { data: sharedFolders, isPending: isSharedFoldersPending } = foldersApi.useGetSharedFolders();
+  const { data: sharedFolders, isLoading: areSharedFoldersLoading } = foldersApi.useGetSharedFolders();
 
   const sharedFolder = sharedFolders?.find((folder) => folder.id === id);
   const canCreateChat =
-    !isSharedFoldersPending && (!sharedFolder || sharedFolder.permission === AccessPermission.WRITE);
+    !areSharedFoldersLoading && (!sharedFolder || sharedFolder.permission === AccessPermission.WRITE);
 
   const handleNewChatPress = (): void =>
     navigateOnce({

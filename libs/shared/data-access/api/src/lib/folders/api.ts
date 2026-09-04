@@ -13,6 +13,8 @@ import { merge } from 'lodash-es';
 import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
 import { getNextPageParam } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
+import { useGetAppConfiguration } from '../app-configuration/api';
+import { isVersionAtLeast } from '../app-configuration/utils';
 import { ChatResponse } from '../chats/models/chat-response';
 import { foldersApiConfig } from './config';
 import {
@@ -131,12 +133,30 @@ function useGetFolders(
   });
 }
 
+// NOTE: Folder sharing arrived in Open WebUI 0.10.0. The check exists only to keep the launch-time
+// request off older backends, so it errs towards trying: a version that cannot be read counts as new
+// enough, and the request below stays silent if it turns out not to be. Nothing here may gate the
+// sharing UI — a config flag that fails to arrive must never hide a feature the server supports.
+function useIsLegacyBackend(): boolean {
+  const { data: configuration } = useGetAppConfiguration();
+
+  return (
+    Boolean(configuration?.version) && !isVersionAtLeast(configuration?.version, foldersApiConfig.sharingMinVersion)
+  );
+}
+
 function useGetSharedFolders(
   props?: Omit<UseQueryOptions<Array<SharedFolderListItem>, AxiosError<ApiErrorData>>, 'queryKey' | 'queryFn'>,
 ): UseQueryResult<Array<SharedFolderListItem>, AxiosError<ApiErrorData>> {
+  const isLegacyBackend = useIsLegacyBackend();
+
   return useQuery<Array<SharedFolderListItem>, AxiosError<ApiErrorData>>({
     queryFn: foldersService.getSharedFolders,
     queryKey: foldersApiConfig.getSharedFoldersQueryKey,
+    enabled: !isLegacyBackend,
+    // NOTE: A backend without the endpoint answers 404 once and keeps answering it, and the user has
+    // nothing to do about it — no retries, no toast, just no shared folders.
+    retry: false,
     ...props,
   });
 }

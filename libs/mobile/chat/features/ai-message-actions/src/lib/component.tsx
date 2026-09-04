@@ -20,11 +20,13 @@ interface AiMessageActionsProps {
   onMoreConcise: (messageId: string) => void;
   isLast: boolean;
   isResponseGenerating: boolean;
+  isReadonly?: boolean;
 }
 
 //TODO Extend with more actions - https://www.figma.com/design/YPCZjyVlD86psDwUxvMVBc/OpenWebUI-Redesign-React-Native?node-id=27540-25291&t=kg2yUIDp3UQDStLf-0
 export function AiMessageActions({
   message,
+  isReadonly,
   onEditPress,
   onSuggestPress,
   onContinueResponsePress,
@@ -87,28 +89,33 @@ export function AiMessageActions({
     runRegenerateAction(onMoreConcise);
   };
 
+  // NOTE: Editing, continuing and regenerating all write to the chat, and only its author may do
+  // that — in somebody else's chat the backend answers 404, so copying is the only action left.
   const actions: Array<ActionSheetItemProps> = compact([
-    isFeatureEnabled(FeatureID.AI_EDIT_MESSAGE) && {
-      title: translate('TEXT_EDIT'),
-      iconName: 'editPencil',
-      onPress: handleEditPress,
-    },
+    !isReadonly &&
+      isFeatureEnabled(FeatureID.AI_EDIT_MESSAGE) && {
+        title: translate('TEXT_EDIT'),
+        iconName: 'editPencil',
+        onPress: handleEditPress,
+      },
     {
       title: translate('TEXT_COPY'),
       iconName: 'copy',
       onPress: copyToClipboard,
     },
-    isLast && {
-      title: translate('TEXT_CONTINUE_RESPONSE'),
-      iconName: 'play',
-      onPress: handleContinueResponsePress,
-    },
-    isFeatureEnabled(FeatureID.AI_REGENERATE_MESSAGE) && {
-      title: translate('TEXT_REGENERATE'),
-      iconName: 'refresh',
-      onPress: openRegenerateActions,
-      hasSubActions: true,
-    },
+    !isReadonly &&
+      isLast && {
+        title: translate('TEXT_CONTINUE_RESPONSE'),
+        iconName: 'play',
+        onPress: handleContinueResponsePress,
+      },
+    !isReadonly &&
+      isFeatureEnabled(FeatureID.AI_REGENERATE_MESSAGE) && {
+        title: translate('TEXT_REGENERATE'),
+        iconName: 'refresh',
+        onPress: openRegenerateActions,
+        hasSubActions: true,
+      },
   ]);
 
   const regenerateActions: Array<ActionSheetItemProps> = compact([

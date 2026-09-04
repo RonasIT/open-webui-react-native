@@ -17,6 +17,7 @@
       "TEXT_PRIVATE": "Privada",
       "TEXT_PRIVATE_DESCRIPTION": "Somente usuários e grupos selecionados com permissão podem acessar",
       "TEXT_ACCESS_LIST": "Grupos e usuários com acesso",
+      "TEXT_UNKNOWN_MEMBER": "Membro desconhecido",
       "TEXT_READ": "Leitura",
       "TEXT_WRITE": "Escrita",
       "BUTTON_ADD": "Adicionar"

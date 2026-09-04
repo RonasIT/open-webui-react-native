@@ -16,6 +16,9 @@ export class FeaturesPermissions {
   @Expose()
   public notes: boolean;
 
+  @Expose()
+  public folders: boolean;
+
   constructor(model: Partial<FeaturesPermissions>) {
     Object.assign(this, model);
   }

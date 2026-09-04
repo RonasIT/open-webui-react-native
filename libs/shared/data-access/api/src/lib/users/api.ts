@@ -30,12 +30,12 @@ function useSearchUsers(query: string): UseInfiniteQueryResult<Array<UserInfo>, 
     initialPageParam: 1,
     getNextPageParam: (lastPage, result, lastPageParam) =>
       getNextPageParam({
-        lastPage: lastPage.users,
-        result: result.map((page) => page.users),
+        lastPage: lastPage.users ?? [],
+        result: result.map((page) => page.users ?? []),
         lastPageParam,
         itemsPerPage: usersApiConfig.usersPerPage,
       }),
-    select: (data) => data.pages.flatMap((page) => page.users),
+    select: (data) => data.pages.flatMap((page) => page.users ?? []),
   });
 }
 

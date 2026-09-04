@@ -1,3 +1,4 @@
+import { AxiosError, HttpStatusCode } from 'axios';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
 import { EntityPromiseService } from '@open-webui-react-native/shared/data-access/base-entity';
@@ -65,26 +66,50 @@ class FoldersService extends EntityPromiseService<FolderResponse> {
   // NOTE: Folders shared with the current user do not come from `GET /folders/`, which only lists
   // the ones they own.
   public async getSharedFolders(): Promise<Array<SharedFolderListItem>> {
-    const response = await getApiService().get<Array<SharedFolderListItem>>(`${foldersApiConfig.route}/shared`);
+    const response = await getApiService().get<Array<SharedFolderListItem>>(`${foldersApiConfig.route}/shared`, {
+      skipToast: true,
+    });
 
     return response.map((item) => plainToInstance(SharedFolderListItem, item));
   }
 
+  // NOTE: The shared endpoint answers with the chats of every folder member and exists since Open
+  // WebUI 0.10.0. Before that it is a 404 and the per-user list takes over: there a folder holds
+  // nothing but the caller's own chats, so no chat comes back readonly. Both are capped at 10 items
+  // per page. The probe carries `skipToast` — an older backend must not greet the user with an error.
   public async getFolderChatList({
     folderId,
     page,
   }: GetFolderChatListRequest): Promise<Array<SharedFolderChatListItem>> {
-    const response = await getApiService().get<SharedFolderChatsResponse>(
-      `${foldersApiConfig.route}/${folderId}/shared/chats`,
-      { page },
-    );
+    try {
+      const response = await getApiService().get<SharedFolderChatsResponse>(
+        `${foldersApiConfig.route}/${folderId}/shared/chats`,
+        { page, skipToast: true },
+      );
 
-    return (
-      plainToInstance(SharedFolderChatsResponse, response, {
-        excludeExtraneousValues: true,
-        enableImplicitConversion: true,
-      }).chats ?? []
-    );
+      return (
+        plainToInstance(SharedFolderChatsResponse, response, {
+          excludeExtraneousValues: true,
+          enableImplicitConversion: true,
+        }).chats ?? []
+      );
+    } catch (error) {
+      if ((error as AxiosError)?.response?.status !== HttpStatusCode.NotFound) {
+        throw error;
+      }
+
+      const response = await getApiService().get<Array<unknown>>(
+        `${foldersApiConfig.chatsRoute}/folder/${folderId}/list`,
+        { page },
+      );
+
+      return response.map((item) =>
+        plainToInstance(SharedFolderChatListItem, item, {
+          excludeExtraneousValues: true,
+          enableImplicitConversion: true,
+        }),
+      );
+    }
   }
 
   public async getFolderChats(id: string): Promise<Array<ChatResponse>> {

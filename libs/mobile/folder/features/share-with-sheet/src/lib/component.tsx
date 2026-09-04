@@ -64,9 +64,12 @@ export function ShareWithSheet({ onAdd, ref, ...props }: ShareWithSheetProps): R
   const hasGrant = (principalType: PrincipalType, principalId: string): boolean =>
     grants.some((grant) => grant.principalType === principalType && grant.principalId === principalId);
 
-  // NOTE: Groups come unpaginated, so they are filtered by the query locally; users are searched by the backend.
+  // NOTE: Groups come unpaginated, so they are filtered by the query locally; users are searched by
+  // the backend. The query is matched as plain text — building a RegExp out of it would throw on an
+  // unbalanced bracket the user is still typing.
+  const searchedName = query.trim().toLowerCase();
   const availableGroups = (groups ?? []).filter(
-    (group) => !hasGrant(PrincipalType.GROUP, group.id) && new RegExp(query, 'i').test(group.name),
+    (group) => !hasGrant(PrincipalType.GROUP, group.id) && group.name.toLowerCase().includes(searchedName),
   );
   const availableUsers = (users ?? []).filter(
     (user) => !hasGrant(PrincipalType.USER, user.id) && user.id !== profile?.id,
