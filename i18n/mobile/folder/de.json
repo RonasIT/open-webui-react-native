@@ -5,11 +5,30 @@
     },
     "FOLDER_ACTIONS_SHEET": {
       "TEXT_EDIT": "Bearbeiten",
+      "TEXT_SHARE": "Teilen",
       "TEXT_EXPORT": "Exportieren",
       "TEXT_DELETE": "Löschen",
       "TEXT_KEEP": "Behalten",
       "TEXT_DELETE_FOLDER": "Ordner löschen?",
       "TEXT_THIS_WILL_DELETE": "Dadurch wird {{name}} gelöscht"
+    },
+    "SHARE_FOLDER_SHEET": {
+      "TEXT_SHARE_FOLDER": "Ordner teilen",
+      "TEXT_PRIVATE": "Privat",
+      "TEXT_PRIVATE_DESCRIPTION": "Nur ausgewählte Benutzer und Gruppen mit Berechtigung haben Zugriff",
+      "TEXT_ACCESS_LIST": "Gruppen und Benutzer mit Zugriff",
+      "TEXT_READ": "Lesen",
+      "TEXT_WRITE": "Schreiben",
+      "BUTTON_ADD": "Hinzufügen"
+    },
+    "SHARE_WITH_SHEET": {
+      "TEXT_SHARE_WITH": "Teilen mit ...",
+      "TEXT_SEARCH": "Suchen",
+      "TEXT_GROUPS": "Gruppen",
+      "TEXT_USERS": "Benutzer",
+      "TEXT_NOBODY_TO_SHARE_WITH": "Es gibt niemanden mehr, mit dem dieser Ordner geteilt werden kann.",
+      "TEXT_SELECTED_COUNT": "{{groupsCount}} Gruppen, {{usersCount}} Benutzer",
+      "BUTTON_ADD_SELECTED": "Ausgewählte hinzufügen"
     },
     "UPSERT_FOLDER_SHEET": {
       "TEXT_NEW_FOLDER": "Neuer Ordner",

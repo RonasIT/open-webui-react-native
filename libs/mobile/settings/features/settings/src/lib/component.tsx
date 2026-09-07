@@ -35,6 +35,7 @@ import { useNavigateOnce } from '@open-webui-react-native/shared/utils/navigatio
 import { storeReviewService } from '@open-webui-react-native/shared/utils/store-review-service';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import {
+  AppVersionFooter,
   ChangePasswordSheet,
   ChangePasswordSheetMethods,
   DefaultModelSheet,
@@ -369,6 +370,7 @@ export function Settings(): ReactElement {
       <SettingsSection title={translate('TEXT_SECTION_FEEDBACK')} options={feedbackOptions} />
       <SettingsSection title={translate('TEXT_SECTION_CHATS')} options={chatsOptions} />
       <SettingsSection options={preferenceOptions} />
+      <AppVersionFooter />
       <ProfileAvatarSheet
         ref={profileAvatarSheetRef}
         name={profile?.name}

@@ -5,11 +5,30 @@
     },
     "FOLDER_ACTIONS_SHEET": {
       "TEXT_EDIT": "編集",
+      "TEXT_SHARE": "共有",
       "TEXT_EXPORT": "エクスポート",
       "TEXT_DELETE": "削除",
       "TEXT_KEEP": "保持",
       "TEXT_DELETE_FOLDER": "フォルダを削除しますか？",
       "TEXT_THIS_WILL_DELETE": "{{name}} が削除されます"
+    },
+    "SHARE_FOLDER_SHEET": {
+      "TEXT_SHARE_FOLDER": "フォルダを共有",
+      "TEXT_PRIVATE": "非公開",
+      "TEXT_PRIVATE_DESCRIPTION": "権限を持つ選択されたユーザーとグループのみアクセスできます",
+      "TEXT_ACCESS_LIST": "アクセス権を持つグループとユーザー",
+      "TEXT_READ": "閲覧",
+      "TEXT_WRITE": "編集",
+      "BUTTON_ADD": "追加"
+    },
+    "SHARE_WITH_SHEET": {
+      "TEXT_SHARE_WITH": "共有先...",
+      "TEXT_SEARCH": "検索",
+      "TEXT_GROUPS": "グループ",
+      "TEXT_USERS": "ユーザー",
+      "TEXT_NOBODY_TO_SHARE_WITH": "このフォルダを共有できる相手がいません。",
+      "TEXT_SELECTED_COUNT": "グループ {{groupsCount}}、ユーザー {{usersCount}}",
+      "BUTTON_ADD_SELECTED": "選択した相手を追加"
     },
     "UPSERT_FOLDER_SHEET": {
       "TEXT_NEW_FOLDER": "新しいフォルダ",

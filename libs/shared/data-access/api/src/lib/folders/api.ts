@@ -13,10 +13,17 @@ import { merge } from 'lodash-es';
 import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
 import { getNextPageParam } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
-import { ChatListItem } from '../chats/models/chat-list-item';
 import { ChatResponse } from '../chats/models/chat-response';
 import { foldersApiConfig } from './config';
-import { CreateFolderRequest, FolderListItem, FolderResponse, UpdateFolderRequest } from './models';
+import {
+  CreateFolderRequest,
+  FolderListItem,
+  FolderResponse,
+  SharedFolderChatListItem,
+  SharedFolderListItem,
+  UpdateFolderAccessRequest,
+  UpdateFolderRequest,
+} from './models';
 import { foldersService } from './service';
 
 function useGetFolder(
@@ -76,6 +83,25 @@ function useUpdateFolder(
   });
 }
 
+function useUpdateFolderAccess(
+  props?: UseMutationOptions<FolderResponse, AxiosError<ApiErrorData>, UpdateFolderAccessRequest>,
+): UseMutationResult<FolderResponse, AxiosError<ApiErrorData>, UpdateFolderAccessRequest> {
+  return useMutation<FolderResponse, AxiosError<ApiErrorData>, UpdateFolderAccessRequest>({
+    mutationFn: foldersService.updateFolderAccess,
+    mutationKey: foldersApiConfig.updateFolderAccessQueryKey,
+    ...props,
+    // NOTE: The endpoint answers with the whole folder, so the cache is replaced rather than merged —
+    // merging would keep the grants that have just been revoked. Declared after the spread so that a
+    // caller passing its own `onSuccess` cannot drop the cache update.
+    onSuccess: (...args) => {
+      const [response] = args;
+
+      queryClient.setQueryData<FolderResponse>(foldersApiConfig.getFolderQueryKey(response.id), response);
+      props?.onSuccess?.(...args);
+    },
+  });
+}
+
 function useDeleteFolder(
   props?: UseMutationOptions<void, AxiosError<ApiErrorData>, string>,
 ): UseMutationResult<void, AxiosError<ApiErrorData>, string> {
@@ -105,7 +131,19 @@ function useGetFolders(
   });
 }
 
-function useGetFolderChatList(folderId: string): UseInfiniteQueryResult<Array<ChatListItem>, AxiosError<ApiErrorData>> {
+function useGetSharedFolders(
+  props?: Omit<UseQueryOptions<Array<SharedFolderListItem>, AxiosError<ApiErrorData>>, 'queryKey' | 'queryFn'>,
+): UseQueryResult<Array<SharedFolderListItem>, AxiosError<ApiErrorData>> {
+  return useQuery<Array<SharedFolderListItem>, AxiosError<ApiErrorData>>({
+    queryFn: foldersService.getSharedFolders,
+    queryKey: foldersApiConfig.getSharedFoldersQueryKey,
+    ...props,
+  });
+}
+
+function useGetFolderChatList(
+  folderId: string,
+): UseInfiniteQueryResult<Array<SharedFolderChatListItem>, AxiosError<ApiErrorData>> {
   return useInfiniteQuery({
     queryFn: ({ pageParam }) => foldersService.getFolderChatList({ folderId, page: pageParam }),
     queryKey: foldersApiConfig.getFolderChatListQueryKey(folderId),
@@ -134,8 +172,10 @@ export const foldersApi = {
   useGetFolder,
   useCreateFolder,
   useUpdateFolder,
+  useUpdateFolderAccess,
   useDeleteFolder,
   useGetFolders,
+  useGetSharedFolders,
   useGetFolderChatList,
   useGetFolderChats,
 };

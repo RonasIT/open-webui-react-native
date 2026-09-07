@@ -14,7 +14,7 @@ import {
   ListEmptyComponent,
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { ChatListItem, foldersApi } from '@open-webui-react-native/shared/data-access/api';
+import { foldersApi, SharedFolderChatListItem } from '@open-webui-react-native/shared/data-access/api';
 
 interface FolderChatsListProps {
   folderId: string;
@@ -38,11 +38,13 @@ export function ChatsList({ folderId, onChatPress }: FolderChatsListProps): Reac
   const isLoading = isChatsLoading || (!isFetchingNextPage && isChatsFetching && !isChatsRefetching);
 
   const renderItem = useCallback(
-    ({ item }: { item: ChatListItem }) => (
+    ({ item }: { item: SharedFolderChatListItem }) => (
       <ChatListRow
         title={item.title}
         onPress={onChatPress}
-        onLongPress={() => chatActionsSheetRef.current?.present(item, folderId)}
+        // NOTE: A chat of a shared folder created by another member is readonly — renaming, deleting
+        // or sharing it would be rejected, so it offers no actions at all, same as the web client.
+        onLongPress={item.isReadonly ? undefined : () => chatActionsSheetRef.current?.present(item, folderId)}
         chatId={item.id}
       />
     ),

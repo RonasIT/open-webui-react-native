@@ -37,6 +37,8 @@
       "TEXT_MARKDOWN_RENDERER": "Обработчик Markdown",
       "TEXT_MARKDOWN_RENDERER_DEFAULT": "По умолчанию",
       "TEXT_MARKDOWN_RENDERER_NITRO": "Экспериментальный",
+      "TEXT_APP_VERSION": "Open MobileUI версия {{version}}",
+      "TEXT_APP_AUTHOR": "от Ronas IT",
       "PROFILE_AVATAR_SHEET": {
         "TEXT_TITLE": "Аватар профиля",
         "BUTTON_UPLOAD_PROFILE_IMAGE": "Загрузить изображение профиля",

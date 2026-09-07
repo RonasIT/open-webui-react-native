@@ -1,10 +1,20 @@
-import { useMutation, UseMutationOptions, UseMutationResult, useQuery, UseQueryResult } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  UseInfiniteQueryResult,
+  useMutation,
+  UseMutationOptions,
+  UseMutationResult,
+  useQuery,
+  UseQueryOptions,
+  UseQueryResult,
+} from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
 import { createEntityApi } from '@open-webui-react-native/shared/data-access/base-entity';
+import { getNextPageParam } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { usersApiConfig } from './config';
-import { UserSettings } from './models';
+import { UserInfo, UserSettings } from './models';
 import { usersService } from './service';
 import { userQueriesKeys } from './user-queries-keys';
 
@@ -12,6 +22,34 @@ const baseApi = createEntityApi({
   queriesKeys: userQueriesKeys,
   entityService: usersService,
 });
+
+function useSearchUsers(query: string): UseInfiniteQueryResult<Array<UserInfo>, AxiosError<ApiErrorData>> {
+  return useInfiniteQuery({
+    queryFn: ({ pageParam }) => usersService.searchUsers({ query, page: pageParam }),
+    queryKey: usersApiConfig.searchUsersQueryKey(query),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, result, lastPageParam) =>
+      getNextPageParam({
+        lastPage: lastPage.users,
+        result: result.map((page) => page.users),
+        lastPageParam,
+        itemsPerPage: usersApiConfig.usersPerPage,
+      }),
+    select: (data) => data.pages.flatMap((page) => page.users),
+  });
+}
+
+function useGetUserInfo(
+  id: string,
+  props?: Omit<UseQueryOptions<UserInfo, AxiosError<ApiErrorData>>, 'queryKey' | 'queryFn'>,
+): UseQueryResult<UserInfo, AxiosError<ApiErrorData>> {
+  return useQuery<UserInfo, AxiosError<ApiErrorData>>({
+    queryFn: () => usersService.getUserInfo(id),
+    queryKey: usersApiConfig.getUserInfoQueryKey(id),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    ...props,
+  });
+}
 
 function useGetUserSettings(): UseQueryResult<UserSettings, AxiosError<ApiErrorData>> {
   return useQuery<UserSettings, AxiosError<ApiErrorData>>({
@@ -53,6 +91,8 @@ function useUpdateUserSettings(
 
 export const usersApi = {
   ...baseApi,
+  useSearchUsers,
+  useGetUserInfo,
   useGetUserSettings,
   useUpdateUserSettings,
 };

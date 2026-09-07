@@ -1,6 +1,9 @@
 import { Expose } from 'class-transformer';
 
 export class SharingPermissions {
+  @Expose()
+  public folders: boolean;
+
   @Expose({ name: 'public_models' })
   public publicModels: boolean;
 

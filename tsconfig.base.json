@@ -146,6 +146,13 @@
       "@open-webui-react-native/mobile/folder/features/select-knowledge-sheet": [
         "libs/mobile/folder/features/select-knowledge-sheet/src/index.ts"
       ],
+      "@open-webui-react-native/mobile/folder/features/share-folder-sheet": [
+        "libs/mobile/folder/features/share-folder-sheet/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/folder/features/share-with-sheet": [
+        "libs/mobile/folder/features/share-with-sheet/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/folder/ui/access-row": ["libs/mobile/folder/ui/access-row/src/index.ts"],
       "@open-webui-react-native/mobile/folder/features/upsert-folder-sheet": [
         "libs/mobile/folder/features/upsert-folder-sheet/src/index.ts"
       ],

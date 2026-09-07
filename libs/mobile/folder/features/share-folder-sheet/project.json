@@ -1,0 +1,9 @@
+{
+  "name": "mobile/folder/features/share-folder-sheet",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mobile/folder/features/share-folder-sheet/src",
+  "projectType": "library",
+  "tags": ["app:mobile", "scope:folder", "type:features"],
+  "// targets": "to see all targets run: nx show project mobile/folder/features/share-folder-sheet --web",
+  "targets": {}
+}

@@ -4,7 +4,7 @@ import { AppPressable, AppText, Icon } from '@open-webui-react-native/mobile/sha
 interface FolderRowProps {
   name: string;
   onPress: () => void;
-  onLongPress: () => void;
+  onLongPress?: () => void;
 }
 
 export function FolderRow({ name, onPress, onLongPress }: FolderRowProps): ReactElement {
@@ -12,8 +12,11 @@ export function FolderRow({ name, onPress, onLongPress }: FolderRowProps): React
     <AppPressable
       onPress={onPress}
       onLongPress={onLongPress}
-      className='px-16 py-14 flex-1 flex-row gap-8 justify-between items-center'>
-      <AppText className='text-text-secondary max-w-[90%]'>{name}</AppText>
+      className='px-16 py-14 flex-1 flex-row gap-8 items-center'>
+      <Icon name='folder' />
+      <AppText className='flex-1' numberOfLines={1}>
+        {name}
+      </AppText>
       <Icon name='chevronRight' className='color-text-secondary' />
     </AppPressable>
   );

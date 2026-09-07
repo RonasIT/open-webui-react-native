@@ -8,12 +8,14 @@ import {
   ActionSheetItemProps,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import {
+  authApi,
   ChatResponse,
   FolderListItem,
   foldersApi,
   foldersApiConfig,
   foldersService,
 } from '@open-webui-react-native/shared/data-access/api';
+import { UserRole } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
 
@@ -25,17 +27,27 @@ export type FolderActionsSheetRef = ForwardedRef<FolderActionsSheetMethods>;
 
 export interface FolderActionsSheetProps extends Pick<ActionsBottomSheetProps, 'onClose'> {
   onEditPress: (id: string) => void;
+  onSharePress: (folder: FolderListItem) => void;
   ref?: FolderActionsSheetRef;
 }
 
-export function FolderActionsSheet({ onEditPress, ref }: FolderActionsSheetProps): ReactElement {
+export function FolderActionsSheet({ onEditPress, onSharePress, ref }: FolderActionsSheetProps): ReactElement {
   const translate = useTranslation('FOLDER.FOLDER_ACTIONS_SHEET');
   const actionsSheetRef = useRef<BottomSheetModal>(null);
 
   const [folder, setFolder] = useState<FolderListItem | undefined>();
   const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
 
+  const { data: profile } = authApi.useGetProfile();
+  const { data: sharedFolders } = foldersApi.useGetSharedFolders();
   const { mutateAsync: deleteFolder, isPending: isDeleting } = foldersApi.useDeleteFolder();
+
+  // NOTE: The shared list holds exactly the folders owned by somebody else, so a folder missing from
+  // it belongs to the current user. Sharing and deleting are reserved for the folder's creator.
+  const isOwner = !sharedFolders?.some((sharedFolder) => sharedFolder.id === folder?.id);
+  // NOTE: On top of ownership an admin always may share, everyone else needs the `sharing.folders`
+  // permission, which is off by default — same gate as the web client.
+  const canShare = isOwner && (profile?.role === UserRole.ADMIN || Boolean(profile?.permissions?.sharing?.folders));
 
   const getFolderChats = async (id: string): Promise<Array<ChatResponse>> =>
     await queryClient.fetchQuery<Array<ChatResponse>>({
@@ -98,25 +110,42 @@ export function FolderActionsSheet({ onEditPress, ref }: FolderActionsSheetProps
     }
   };
 
+  const onSharePressHandler = async (): Promise<void> => {
+    await closeActionsModal();
+
+    if (folder) {
+      onSharePress(folder);
+    }
+  };
+
+  const deleteAction: ActionSheetItemProps = {
+    title: translate('TEXT_DELETE'),
+    iconName: 'trashCan',
+    onPress: openDeleteAlert,
+    isLoading: isDeleting,
+    isDanger: true,
+  };
+
+  const shareAction: ActionSheetItemProps = {
+    title: translate('TEXT_SHARE'),
+    iconName: 'users',
+    onPress: onSharePressHandler,
+  };
+
   const actions: Array<ActionSheetItemProps> = [
     {
       title: translate('TEXT_EDIT'),
       iconName: 'editPencil',
       onPress: onEditPressHandler,
     },
+    ...(canShare ? [shareAction] : []),
     {
       title: translate('TEXT_EXPORT'),
       iconName: 'exportIcon',
       onPress: onChatsExport,
       isLoading: isExportLoading,
     },
-    {
-      title: translate('TEXT_DELETE'),
-      iconName: 'trashCan',
-      onPress: openDeleteAlert,
-      isLoading: isDeleting,
-      isDanger: true,
-    },
+    ...(isOwner ? [deleteAction] : []),
   ];
 
   return <ActionsBottomSheet actions={actions} ref={actionsSheetRef} />;

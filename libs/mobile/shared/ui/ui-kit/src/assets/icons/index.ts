@@ -32,6 +32,7 @@ import key from './key.svg';
 import keyboard from './keyboard.svg';
 import lessText from './less-text.svg';
 import link from './link.svg';
+import lock from './lock.svg';
 import logoDark from './logo-dark.svg';
 import logoLight from './logo-light.svg';
 import logoSmallDark from './logo-small-dark.svg';
@@ -47,6 +48,8 @@ import play from './play.svg';
 import plusInCircle from './plus-in-circle.svg';
 import plus from './plus.svg';
 import refresh from './refresh.svg';
+import ronasLogoDark from './ronas-logo-dark.svg';
+import ronasLogoLight from './ronas-logo-light.svg';
 import search from './search.svg';
 import star from './star.svg';
 import stop from './stop.svg';
@@ -56,6 +59,7 @@ import trashCan from './trash-can.svg';
 import unarchive from './unarchive.svg';
 import unpin from './unpin.svg';
 import uploadFile from './upload-file.svg';
+import users from './users.svg';
 import web from './web.svg';
 
 export const Icons = {
@@ -96,9 +100,12 @@ export const Icons = {
   generatedImage,
   editPencil,
   uploadFile,
+  users,
   unpin,
   logoSmallLight,
   logoSmallDark,
+  ronasLogoLight,
+  ronasLogoDark,
   chevronLeft,
   plusInCircle,
   folderPlus,
@@ -118,4 +125,5 @@ export const Icons = {
   moreText,
   web,
   key,
+  lock,
 };

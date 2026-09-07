@@ -5,11 +5,30 @@
     },
     "FOLDER_ACTIONS_SHEET": {
       "TEXT_EDIT": "Изменить",
+      "TEXT_SHARE": "Поделиться",
       "TEXT_EXPORT": "Экспорт",
       "TEXT_DELETE": "Удалить",
       "TEXT_KEEP": "Оставить",
       "TEXT_DELETE_FOLDER": "Удалить папку?",
       "TEXT_THIS_WILL_DELETE": "Будет удалено: {{name}}"
+    },
+    "SHARE_FOLDER_SHEET": {
+      "TEXT_SHARE_FOLDER": "Поделиться папкой",
+      "TEXT_PRIVATE": "Приватная",
+      "TEXT_PRIVATE_DESCRIPTION": "Доступ есть только у выбранных пользователей и групп",
+      "TEXT_ACCESS_LIST": "Группы и пользователи с доступом",
+      "TEXT_READ": "Чтение",
+      "TEXT_WRITE": "Запись",
+      "BUTTON_ADD": "Добавить"
+    },
+    "SHARE_WITH_SHEET": {
+      "TEXT_SHARE_WITH": "Поделиться с...",
+      "TEXT_SEARCH": "Поиск",
+      "TEXT_GROUPS": "Группы",
+      "TEXT_USERS": "Пользователи",
+      "TEXT_NOBODY_TO_SHARE_WITH": "Больше некому дать доступ к этой папке.",
+      "TEXT_SELECTED_COUNT": "Групп: {{groupsCount}}, пользователей: {{usersCount}}",
+      "BUTTON_ADD_SELECTED": "Добавить выбранные"
     },
     "UPSERT_FOLDER_SHEET": {
       "TEXT_NEW_FOLDER": "Новая папка",
