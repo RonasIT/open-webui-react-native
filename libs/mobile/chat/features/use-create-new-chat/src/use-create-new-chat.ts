@@ -39,9 +39,9 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
     const payload = prepareCreateChatPayload({ prompt, model, attachedFiles, attachedImages, folderId });
 
     // NOTE: Temporary chats are never persisted (no POST /chats/new, no chat-list entry) — they only
-    // exist client-side for this session, matching the Open WebUI web app's "Temporary Chat" behavior.
+    // exist client-side for this session
     if (userSettings?.ui.temporaryChatByDefault) {
-      const id = createTemporaryChatId();
+      const id = createTemporaryChatId(socketSessionId);
       const chatResponse = new ChatResponse({
         id,
         title: payload.chat.title,

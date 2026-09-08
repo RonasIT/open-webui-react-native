@@ -5,19 +5,20 @@ import { Chat, patchChatQueryData } from '../chats';
 import { StopTaskResponse } from './models';
 import { tasksService } from './service';
 
-type StopTaskArgs = {
-  taskId: string;
+type StopChatTasksArgs = {
   chatId: string;
   lastMessageId: string;
 };
 
-function useStopTask(
-  props?: UseMutationOptions<StopTaskResponse, AxiosError<ApiErrorData>, StopTaskArgs>,
-): UseMutationResult<StopTaskResponse, AxiosError<ApiErrorData>, StopTaskArgs> {
+function useStopChatTasks(
+  props?: UseMutationOptions<StopTaskResponse, AxiosError<ApiErrorData>, StopChatTasksArgs>,
+): UseMutationResult<StopTaskResponse, AxiosError<ApiErrorData>, StopChatTasksArgs> {
   return useMutation({
-    mutationFn: ({ taskId }) => tasksService.stopTask(taskId),
+    mutationFn: ({ chatId }) => tasksService.stopChatTasks(chatId),
 
-    onSuccess: (_, { chatId, lastMessageId }) => {
+    // NOTE: Generation must stop in the UI even when the request fails, otherwise the loader
+    // hangs with no way out. The web app does the same in `stopResponse()`.
+    onSettled: (_data, _error, { chatId, lastMessageId }) => {
       patchChatQueryData(chatId, {
         chat: {
           history: {
@@ -36,5 +37,5 @@ function useStopTask(
 }
 
 export const tasksApi = {
-  useStopTask,
+  useStopChatTasks,
 };
