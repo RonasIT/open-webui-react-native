@@ -14,6 +14,9 @@ export class UiSettings {
   public webSearch?: boolean;
 
   @Expose()
+  public tools?: Array<string>;
+
+  @Expose()
   public enableMessageQueue?: boolean;
 
   @Expose()

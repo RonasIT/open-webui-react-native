@@ -1,8 +1,12 @@
 import { uniqBy } from 'lodash-es';
 import { AttachedFile, FileType, Role } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
+import { modelsApiConfig } from '../../ai-models/config';
+import { AIModel } from '../../ai-models/models';
 import { appConfigurationApiConfig } from '../../app-configuration/config';
 import { Configuration } from '../../app-configuration/models';
+import { toolsApiConfig } from '../../tools/config';
+import { Tool } from '../../tools/models';
 import { usersApiConfig } from '../../users/config';
 import { UserSettings } from '../../users/models';
 import { chatQueriesKeys } from '../chat-queries-keys';
@@ -17,7 +21,8 @@ import {
   Features,
   Message,
 } from '../models';
-import { toolApprovalState$ } from '../state';
+import { toolApprovalState$, toolsSelectionState$ } from '../state';
+import { resolveDefaultToolIds } from './resolve-default-tool-ids';
 
 export interface PrepareCompleteChatPayloadArgs {
   chatId: string;
@@ -68,6 +73,23 @@ export function prepareCompleteChatPayload({
     isToolApprovalSupported && toolApprovalMode === ToolApprovalMode.ASK
       ? new CompleteChatParams({ toolApprovalMode })
       : undefined;
+
+  // The backend resolves tools only from `tool_ids` — it applies neither the model's nor the user's
+  // defaults — so the client has to send them, exactly as the web interface does. Read from the
+  // shared selection rather than threaded through every completion entry point, so that a
+  // follow-up, a regenerate and a queued message all use the tools the chat is actually set up
+  // with. An empty array would be sent as `tool_ids: []`, so it collapses to `undefined` instead.
+  const toolsSelection = toolsSelectionState$[chatId].peek();
+  const resolvedToolIds =
+    toolsSelection?.modelId === model
+      ? toolsSelection.toolIds
+      : resolveDefaultToolIds({
+          model: queryClient
+            .getQueryData<Array<AIModel>>(modelsApiConfig.getModelsQueryKey)
+            ?.find(({ id }) => id === model),
+          tools: queryClient.getQueryData<Array<Tool>>(toolsApiConfig.getToolsQueryKey),
+          uiSettings: userSettings?.ui,
+        });
 
   const prepareChatMessages = (): Array<ChatMessage> => {
     const chatSystemPrompt = (chatResponse?.chat.params?.system as string | undefined)?.trim();
@@ -140,6 +162,7 @@ export function prepareCompleteChatPayload({
       webSearch: (userSettings?.ui.webSearch ?? false) || generationOptions?.includes(ChatGenerationOption.WEB_SEARCH),
     }),
     params,
+    toolIds: resolvedToolIds.length > 0 ? resolvedToolIds : undefined,
     stream: true,
     model,
     messages: prepareChatMessages(),

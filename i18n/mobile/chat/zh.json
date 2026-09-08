@@ -35,6 +35,10 @@
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "完全访问",
         "TEXT_ASK_FOR_APPROVAL": "每次询问"
+      },
+      "TOOLS_POPUP": {
+        "TEXT_TITLE": "工具",
+        "TEXT_NO_TOOLS_AVAILABLE": "没有可用的工具"
       }
     },
     "SHARE_CHAT_MODAL": {

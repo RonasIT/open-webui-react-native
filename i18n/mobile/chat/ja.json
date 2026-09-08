@@ -35,6 +35,10 @@
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "フルアクセス",
         "TEXT_ASK_FOR_APPROVAL": "毎回確認する"
+      },
+      "TOOLS_POPUP": {
+        "TEXT_TITLE": "ツール",
+        "TEXT_NO_TOOLS_AVAILABLE": "利用できるツールがありません"
       }
     },
     "SHARE_CHAT_MODAL": {
