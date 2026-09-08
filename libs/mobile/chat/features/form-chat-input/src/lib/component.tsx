@@ -18,7 +18,6 @@ import {
   ChatGenerationOption,
   ChatResponse,
   tasksApi,
-  tasksService,
 } from '@open-webui-react-native/shared/data-access/api';
 import { AttachedImage, FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
@@ -75,7 +74,7 @@ export function FormChatInput<T extends FieldValues>({
   const translate = useTranslation('CHAT.FORM_CHAT_INPUT');
 
   const { data: config } = appConfigurationApi.useGetAppConfiguration();
-  const stopTaskMutation = tasksApi.useStopTask();
+  const stopChatTasksMutation = tasksApi.useStopChatTasks();
 
   const { field } = useController({ control, name });
 
@@ -131,18 +130,10 @@ export function FormChatInput<T extends FieldValues>({
     analyticsService.trackEvent(AnalyticsEvent.DICTATION_MODE_USED);
   };
 
-  const onStopGenerationPress = async (): Promise<void> => {
+  const onStopGenerationPress = (): void => {
     if (!chat) return;
 
-    const chatId = chat.id;
-    const lastMessageId = chat.chat.history.currentId;
-
-    const tasksData = await tasksService.getChatTasks(chatId);
-    const taskId = tasksData?.tasksIds[0];
-
-    if (taskId) {
-      stopTaskMutation.mutate({ taskId, chatId, lastMessageId });
-    }
+    stopChatTasksMutation.mutate({ chatId: chat.id, lastMessageId: chat.chat.history.currentId });
   };
 
   return (
