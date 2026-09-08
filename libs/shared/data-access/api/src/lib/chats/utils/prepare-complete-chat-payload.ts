@@ -6,9 +6,9 @@ import { Configuration } from '../../app-configuration/models';
 import { usersApiConfig } from '../../users/config';
 import { UserSettings } from '../../users/models';
 import { chatQueriesKeys } from '../chat-queries-keys';
-import { backgroundTasksConfig } from '../configs';
 import { ChatGenerationOption, ToolApprovalMode } from '../enums';
 import {
+  BackgroundTasks,
   ChatMessage,
   ChatMessageContent,
   ChatResponse,
@@ -125,8 +125,15 @@ export function prepareCompleteChatPayload({
     'id',
   );
 
+  const historyMessagesCount = Object.keys(chatResponse?.chat.history.messages ?? {}).length;
+  const isFirstExchange = historyMessagesCount > 0 && historyMessagesCount <= 2;
+
   const request = new CompleteChatRequest({
-    backgroundTasks: backgroundTasksConfig,
+    backgroundTasks: new BackgroundTasks({
+      followUpGeneration: true,
+      titleGeneration: isFirstExchange,
+      tagsGeneration: isFirstExchange,
+    }),
     features: new Features({
       codeInterpreter: generationOptions?.includes(ChatGenerationOption.CODE_INTERPRETER),
       imageGeneration: generationOptions?.includes(ChatGenerationOption.IMAGE_GENERATION),
