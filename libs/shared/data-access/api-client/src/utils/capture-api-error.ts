@@ -41,9 +41,7 @@ const truncateValue = (value: unknown, depth = 0): unknown => {
   }
 
   if (typeof value === 'string') {
-    return value.length > MAX_STRING_LENGTH
-      ? `${value.slice(0, MAX_STRING_LENGTH)}…(${value.length} chars)`
-      : value;
+    return value.length > MAX_STRING_LENGTH ? `${value.slice(0, MAX_STRING_LENGTH)}…(${value.length} chars)` : value;
   }
 
   if (Array.isArray(value)) {
@@ -66,6 +64,9 @@ const truncateValue = (value: unknown, depth = 0): unknown => {
 };
 
 const sanitizeForSentry = (value: unknown): unknown => truncateValue(redactSensitiveData(value));
+
+const sanitizeContextForSentry = (context: Record<string, unknown>): Record<string, unknown> =>
+  sanitizeForSentry(context) as Record<string, unknown>;
 
 const parseRequestBody = (data: unknown): unknown => {
   if (typeof data !== 'string') {
@@ -134,7 +135,7 @@ export const captureApiError = (error: unknown, { operation, context = {} }: Cap
         requestBody: sanitizeForSentry(parseRequestBody(config?.data)),
       });
 
-      scope.setContext('api_request', sanitizeForSentry(context));
+      scope.setContext('api_request', sanitizeContextForSentry(context));
 
       scope.setFingerprint(['api-error', operation, String(status ?? 'unknown')]);
 
@@ -148,7 +149,7 @@ export const captureApiError = (error: unknown, { operation, context = {} }: Cap
     scope.setTag('api.operation', operation);
     scope.setTag('api.version', apiVersion ?? 'unknown');
     scope.setContext('api', { apiUrl, apiVersion });
-    scope.setContext('api_request', sanitizeForSentry(context));
+    scope.setContext('api_request', sanitizeContextForSentry(context));
     Sentry.captureException(error);
   });
 };
