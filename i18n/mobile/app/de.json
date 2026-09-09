@@ -71,6 +71,7 @@
       },
       "CONTACT_SUPPORT_SHEET": {
         "TEXT_REPORT_BUG": "Fehler melden",
+        "TEXT_EMAIL": "Ihre E-Mail",
         "TEXT_YOUR_MESSAGE": "Ihre Nachricht",
         "TEXT_MESSAGE_SENT": "Vielen Dank für Ihr Feedback! Ihre Nachricht wurde erfolgreich gesendet",
         "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Screenshots oder Video anhängen",

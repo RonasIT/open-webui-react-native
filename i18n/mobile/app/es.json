@@ -71,6 +71,7 @@
       },
       "CONTACT_SUPPORT_SHEET": {
         "TEXT_REPORT_BUG": "Informar un error",
+        "TEXT_EMAIL": "Tu correo electrónico",
         "TEXT_YOUR_MESSAGE": "Tu mensaje",
         "TEXT_MESSAGE_SENT": "¡Gracias por tus comentarios! Tu mensaje se ha enviado correctamente",
         "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Adjuntar capturas de pantalla o video",

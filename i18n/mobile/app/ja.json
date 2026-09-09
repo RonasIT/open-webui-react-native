@@ -71,6 +71,7 @@
       },
       "CONTACT_SUPPORT_SHEET": {
         "TEXT_REPORT_BUG": "不具合を報告",
+        "TEXT_EMAIL": "メールアドレス",
         "TEXT_YOUR_MESSAGE": "メッセージ",
         "TEXT_MESSAGE_SENT": "フィードバックをありがとうございます！メッセージが正常に送信されました",
         "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "スクリーンショットまたは動画を添付",

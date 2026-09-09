@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import Constants from 'expo-constants';
-import { ForwardedRef, ReactElement, useImperativeHandle, useRef } from 'react';
+import { ForwardedRef, ReactElement, useEffect, useImperativeHandle, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { Platform, TextInput } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -53,14 +53,14 @@ export function ContactSupportSheet({ ref, ...props }: ContactSupportSheetProps)
 
   const images = useSelector(attachedImages).flatMap((image) => (image ? [image] : []));
 
-  const { control, handleSubmit, reset } = useForm({
-    defaultValues: new ContactSupportFormSchema(),
+  const { control, handleSubmit, reset, setValue } = useForm({
+    defaultValues: new ContactSupportFormSchema({ email: profile?.email }),
     resolver: yupResolver(ContactSupportFormSchema.validationSchema),
   });
 
   const closeModal = (): void => {
     sheetRef.current?.close();
-    reset(new ContactSupportFormSchema());
+    reset(new ContactSupportFormSchema({ email: profile?.email }));
     resetAttachments();
   };
 
@@ -92,9 +92,10 @@ export function ContactSupportSheet({ ref, ...props }: ContactSupportSheetProps)
     });
   };
 
-  const onSubmit = async ({ message }: ContactSupportFormSchema): Promise<void> => {
+  const onSubmit = async ({ email, message }: ContactSupportFormSchema): Promise<void> => {
     try {
       await submitFeedback({
+        email,
         message,
         platform: Platform.OS,
         appVersion: Constants.expoConfig?.version,
@@ -115,6 +116,12 @@ export function ContactSupportSheet({ ref, ...props }: ContactSupportSheetProps)
       present: openModal,
     };
   }, []);
+
+  useEffect(() => {
+    if (profile?.email) {
+      setValue('email', profile.email);
+    }
+  }, [profile?.email]);
 
   const renderAttachment = (image: ImageData, index: number): ReactElement => (
     <AttachmentRow
@@ -141,6 +148,16 @@ export function ContactSupportSheet({ ref, ...props }: ContactSupportSheetProps)
           />
           <AppBottomSheetKeyboardAwareScrollView>
             <View className='pt-8 gap-16 flex-1 bg-background-primary' style={{ paddingBottom: bottom + 24 }}>
+              <FormFloatedLabelInput
+                control={control}
+                name='email'
+                autoCapitalize='none'
+                autoCorrect={false}
+                keyboardType='email-address'
+                returnKeyType='next'
+                label={translate('TEXT_EMAIL')}
+                onSubmitEditing={() => inputRef.current?.focus()}
+              />
               <FormFloatedLabelInput
                 control={control}
                 name='message'
