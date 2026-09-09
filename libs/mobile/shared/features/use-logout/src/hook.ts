@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { authApi } from '@open-webui-react-native/shared/data-access/api';
+import { authApi, resetChatSessionState } from '@open-webui-react-native/shared/data-access/api';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { cookieService } from '@open-webui-react-native/shared/data-access/cookie';
 import { queryPersister } from '@open-webui-react-native/shared/data-access/persist-query-storage';
@@ -17,6 +17,7 @@ export const useLogout = (): { logout: () => Promise<void>; isLoading: boolean }
     }
     authState$.logout();
     queryClient.removeQueries();
+    resetChatSessionState();
     cookieService.clearAll();
     analyticsService.resetUser();
     await queryPersister.removeClient();

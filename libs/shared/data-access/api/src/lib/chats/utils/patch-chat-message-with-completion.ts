@@ -9,7 +9,7 @@ export function patchChatMessagesWithCompletion(
 ): ChatResponse | undefined {
   if (
     !oldData ||
-    oldData.chat.messages.length === 0 ||
+    !oldData.chat.messages?.length ||
     oldData.chat.messages[oldData.chat.messages.length - 1].role !== Role.ASSISTANT
   ) {
     return oldData;

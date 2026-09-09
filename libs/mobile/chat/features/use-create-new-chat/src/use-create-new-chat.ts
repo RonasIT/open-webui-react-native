@@ -6,9 +6,11 @@ import {
   chatQueriesKeys,
   ChatResponse,
   createTemporaryChatId,
+  NEW_CHAT_TOOLS_SELECTION_KEY,
   patchChatList,
   prepareCompleteChatPayload,
   prepareCreateChatPayload,
+  toolsSelectionState$,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import { FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
@@ -38,6 +40,18 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
   ): void => {
     const payload = prepareCreateChatPayload({ prompt, model, attachedFiles, attachedImages, folderId });
 
+    // NOTE: The tools were picked on the create-chat screen, before a chat id existed, so the
+    // selection is parked under a placeholder key. Move it onto the real id — otherwise the chat
+    // screen shows no tools selected and every later message in the chat silently drops them.
+    const adoptToolsSelection = (chatId: string): void => {
+      const pendingSelection = toolsSelectionState$[NEW_CHAT_TOOLS_SELECTION_KEY].peek();
+
+      if (pendingSelection) {
+        toolsSelectionState$[chatId].set(pendingSelection);
+        toolsSelectionState$[NEW_CHAT_TOOLS_SELECTION_KEY].delete();
+      }
+    };
+
     // NOTE: Temporary chats are never persisted (no POST /chats/new, no chat-list entry) — they only
     // exist client-side for this session
     if (userSettings?.ui.temporaryChatByDefault) {
@@ -54,6 +68,7 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
       });
 
       queryClient.setQueryData<ChatResponse>(chatQueriesKeys.get(id).queryKey, chatResponse);
+      adoptToolsSelection(id);
       onSuccess?.(id);
 
       completeChat(
@@ -81,6 +96,7 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
 
         queryClient.setQueryData<ChatResponse>(chatQueriesKeys.get(data.id).queryKey, data);
 
+        adoptToolsSelection(data.id);
         onSuccess?.(data.id);
         patchChatList({
           id: data.id,

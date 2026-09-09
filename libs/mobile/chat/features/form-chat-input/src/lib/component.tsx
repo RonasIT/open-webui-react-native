@@ -2,7 +2,7 @@ import { Observable } from '@legendapp/state';
 import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { xor } from 'lodash-es';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useMemo, useState } from 'react';
 import { Control, FieldValues, Path, useController } from 'react-hook-form';
 import { AttachedFilesList } from '@open-webui-react-native/mobile/chat/features/attached-files-list';
 import { SoundWaveRecorder } from '@open-webui-react-native/mobile/chat/features/sound-wave-recorder';
@@ -17,7 +17,13 @@ import {
   appConfigurationApi,
   ChatGenerationOption,
   ChatResponse,
+  modelsApi,
+  NEW_CHAT_TOOLS_SELECTION_KEY,
+  resolveDefaultToolIds,
   tasksApi,
+  toolsApi,
+  toolsSelectionState$,
+  usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import { AttachedImage, FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
@@ -25,7 +31,13 @@ import { AnalyticsEvent, analyticsService } from '@open-webui-react-native/share
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { toDataUrl } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
-import { AttachmentsMenuSheet, ChatInputBottomRow, SelectOptionIcon, ToolPermissionsMenuSheet } from './components';
+import {
+  AttachmentsMenuSheet,
+  ChatInputBottomRow,
+  SelectOptionIcon,
+  ToolPermissionsMenuSheet,
+  ToolsMenuSheet,
+} from './components';
 
 interface FormChatInputProps<T extends FieldValues> extends AppInputProps {
   name: Path<T>;
@@ -74,6 +86,9 @@ export function FormChatInput<T extends FieldValues>({
   const translate = useTranslation('CHAT.FORM_CHAT_INPUT');
 
   const { data: config } = appConfigurationApi.useGetAppConfiguration();
+  const { data: tools } = toolsApi.useGetTools();
+  const { data: models } = modelsApi.useGetModels();
+  const { data: userSettings } = usersApi.useGetUserSettings();
   const stopChatTasksMutation = tasksApi.useStopChatTasks();
 
   const { field } = useController({ control, name });
@@ -85,6 +100,24 @@ export function FormChatInput<T extends FieldValues>({
   const [isDictateMode, setIsDictateMode] = useState<boolean>(false);
 
   const [options, setOptions] = useState<Array<ChatGenerationOption>>([]);
+
+  // NOTE: The chat being composed has no id yet, so its selection is parked under a placeholder
+  // key that `useCreateNewChat` moves onto the real id once the chat exists.
+  const toolsSelectionKey = chat?.id ?? NEW_CHAT_TOOLS_SELECTION_KEY;
+  const toolsSelection = useSelector(toolsSelectionState$[toolsSelectionKey]);
+
+  const defaultToolIds = useMemo(
+    () =>
+      resolveDefaultToolIds({
+        model: models?.find(({ id }) => id === modelId),
+        tools,
+        uiSettings: userSettings?.ui,
+      }),
+    [models, modelId, tools, userSettings],
+  );
+
+  const selectedToolIds =
+    toolsSelection && toolsSelection.modelId === modelId ? toolsSelection.toolIds : defaultToolIds;
 
   const { handleImagePress, selectedImageIndex, isPreviewVisible, handleCloseImagePress } = useImagePreview();
   const { present: openVoiceModeModal } = useVoiceModeModal();
@@ -116,6 +149,10 @@ export function FormChatInput<T extends FieldValues>({
   };
 
   const onGenerationOptionPress = (option: ChatGenerationOption): void => setOptions((state) => xor(state, [option]));
+
+  const onToolPress = (toolId: string): void => {
+    toolsSelectionState$[toolsSelectionKey].set({ modelId, toolIds: xor(selectedToolIds, [toolId]) });
+  };
 
   const handleDictateModePress = withOfflineGuard(() => setIsDictateMode(true));
 
@@ -196,6 +233,14 @@ export function FormChatInput<T extends FieldValues>({
                       iconName='web'
                       onPress={() => onGenerationOptionPress(ChatGenerationOption.WEB_SEARCH)}
                       isSelected={options.includes(ChatGenerationOption.WEB_SEARCH)}
+                    />
+                  )}
+                  {!!tools?.length && (
+                    <ToolsMenuSheet
+                      disabled={isLoading}
+                      tools={tools}
+                      selectedToolIds={selectedToolIds}
+                      onToolPress={onToolPress}
                     />
                   )}
                   {config?.features.enableToolPermissions && <ToolPermissionsMenuSheet disabled={isLoading} />}

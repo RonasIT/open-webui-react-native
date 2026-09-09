@@ -10,3 +10,4 @@ export * from './groups';
 export * from './knowledge';
 export * from './tasks';
 export * from './supabase';
+export * from './tools';

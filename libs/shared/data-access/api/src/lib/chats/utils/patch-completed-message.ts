@@ -4,7 +4,7 @@ import { ChatResponse, Message } from '../models';
 export function patchCompletedMessage(oldData: ChatResponse | undefined): ChatResponse | undefined {
   if (
     !oldData ||
-    oldData.chat.messages.length === 0 ||
+    !oldData.chat.messages?.length ||
     oldData.chat.messages[oldData.chat.messages.length - 1].role !== Role.ASSISTANT
   ) {
     return oldData;

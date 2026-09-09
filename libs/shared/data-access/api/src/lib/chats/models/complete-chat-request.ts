@@ -33,6 +33,13 @@ export class CompleteChatRequest {
   @Type(() => AttachedFile)
   public files?: Array<AttachedFile>;
 
+  // NOTE: The only channel through which tools reach a completion. The backend resolves every kind
+  // of tool from this array and never falls back to the model's or the user's defaults, so an
+  // omitted field means the model is offered no tools at all. Left `undefined` when nothing is
+  // selected, matching the web interface.
+  @Expose({ name: 'tool_ids' })
+  public toolIds?: Array<string>;
+
   // General chat ID
   @Expose({ name: 'chat_id' })
   public chatId: string;
