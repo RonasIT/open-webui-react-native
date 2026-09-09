@@ -71,7 +71,7 @@
       },
       "CONTACT_SUPPORT_SHEET": {
         "TEXT_REPORT_BUG": "Сообщить об ошибке",
-        "TEXT_EMAIL": "Введите email",
+        "TEXT_YOUR_EMAIL": "Введите email",
         "TEXT_YOUR_MESSAGE": "Введите сообщение",
         "TEXT_MESSAGE_SENT": "Спасибо за отзыв! Ваше сообщение успешно отправлено",
         "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Прикрепить скриншот или видео",

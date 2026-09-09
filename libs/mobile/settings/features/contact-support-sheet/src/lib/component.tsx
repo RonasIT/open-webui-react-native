@@ -155,7 +155,7 @@ export function ContactSupportSheet({ ref, ...props }: ContactSupportSheetProps)
                 autoCorrect={false}
                 keyboardType='email-address'
                 returnKeyType='next'
-                label={translate('TEXT_EMAIL')}
+                label={translate('TEXT_YOUR_EMAIL')}
                 onSubmitEditing={() => inputRef.current?.focus()}
               />
               <FormFloatedLabelInput
