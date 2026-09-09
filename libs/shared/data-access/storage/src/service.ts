@@ -15,7 +15,8 @@ class AppStorageService {
   public markdownRenderer = new StorageItem('markdownRenderer', storage);
   public hapticFeedback = new StorageItem('hapticFeedback', storage);
   public createdChatsIds = new StorageItem('createdChatsIds', storage);
-  public isRateAppReviewed = new StorageItem('isRateAppReviewed', storage);
+  public storeReviewFirstTriggeredAt = new StorageItem('storeReviewFirstTriggeredAt', storage);
+  public storeReviewNextAttemptAt = new StorageItem('storeReviewNextAttemptAt', storage);
 }
 
 export const appStorageService = new AppStorageService();
