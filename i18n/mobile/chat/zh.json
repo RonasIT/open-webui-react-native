@@ -38,7 +38,8 @@
       },
       "TOOLS_POPUP": {
         "TEXT_TITLE": "工具",
-        "TEXT_NO_TOOLS_AVAILABLE": "没有可用的工具"
+        "TEXT_NO_TOOLS_AVAILABLE": "没有可用的工具",
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — 请在网页版中登录"
       }
     },
     "SHARE_CHAT_MODAL": {

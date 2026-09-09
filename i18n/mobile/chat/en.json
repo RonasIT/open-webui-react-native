@@ -38,7 +38,8 @@
       },
       "TOOLS_POPUP": {
         "TEXT_TITLE": "Tools",
-        "TEXT_NO_TOOLS_AVAILABLE": "No tools available"
+        "TEXT_NO_TOOLS_AVAILABLE": "No tools available",
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — sign in on the web"
       }
     },
     "SHARE_CHAT_MODAL": {

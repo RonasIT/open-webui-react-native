@@ -38,7 +38,8 @@
       },
       "TOOLS_POPUP": {
         "TEXT_TITLE": "ツール",
-        "TEXT_NO_TOOLS_AVAILABLE": "利用できるツールがありません"
+        "TEXT_NO_TOOLS_AVAILABLE": "利用できるツールがありません",
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — ウェブ版でログインしてください"
       }
     },
     "SHARE_CHAT_MODAL": {

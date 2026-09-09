@@ -38,7 +38,8 @@
       },
       "TOOLS_POPUP": {
         "TEXT_TITLE": "Инструменты",
-        "TEXT_NO_TOOLS_AVAILABLE": "Инструменты недоступны"
+        "TEXT_NO_TOOLS_AVAILABLE": "Инструменты недоступны",
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — войдите в веб-версии"
       }
     },
     "SHARE_CHAT_MODAL": {

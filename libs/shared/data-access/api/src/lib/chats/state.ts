@@ -29,3 +29,11 @@ export const NEW_CHAT_TOOLS_SELECTION_KEY = 'new';
 export const toolsSelectionState$: Observable<Record<string, ToolsSelection>> = observable<
   Record<string, ToolsSelection>
 >({});
+
+// Both observables above hold choices of the signed-in user, keyed by chats only that user can
+// open, so they must not outlive the session — the next account would inherit tool selections for
+// chat ids it has no access to. Called from `useLogout`, which also covers the forced 401 logout.
+export function resetChatSessionState(): void {
+  toolApprovalState$.mode.set(ToolApprovalMode.FULL);
+  toolsSelectionState$.set({});
+}

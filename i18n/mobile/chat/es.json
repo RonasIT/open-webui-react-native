@@ -38,7 +38,8 @@
       },
       "TOOLS_POPUP": {
         "TEXT_TITLE": "Herramientas",
-        "TEXT_NO_TOOLS_AVAILABLE": "No hay herramientas disponibles"
+        "TEXT_NO_TOOLS_AVAILABLE": "No hay herramientas disponibles",
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — inicia sesión en la versión web"
       }
     },
     "SHARE_CHAT_MODAL": {

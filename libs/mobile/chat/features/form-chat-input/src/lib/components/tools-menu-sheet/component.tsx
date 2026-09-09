@@ -17,15 +17,20 @@ export function ToolsMenuSheet({ tools, selectedToolIds, onToolPress, disabled }
   const modalRef = useRef<BottomSheetModal>(null);
 
   // The sheet stays open after a tap so several tools can be toggled in one go.
-  const actions: Array<ActionSheetItemProps> = tools.map((tool) => ({
-    title: tool.name,
-    iconName: 'tick',
-    isIconShown: selectedToolIds.includes(tool.id),
+  const actions: Array<ActionSheetItemProps> = tools.map((tool) => {
     // Signing into an OAuth-protected server happens in the web interface, so the app can only
-    // show that the tool is unusable until then.
-    disabled: tool.authenticated === false,
-    onPress: () => onToolPress(tool.id),
-  }));
+    // show that the tool is unusable until then. The reason goes into the title because a greyed
+    // out row on its own reads as a bug rather than as a step the user still has to take.
+    const isSignInRequired = tool.authenticated === false;
+
+    return {
+      title: isSignInRequired ? translate('TEXT_SIGN_IN_REQUIRED', { name: tool.name }) : tool.name,
+      iconName: 'tick',
+      isIconShown: selectedToolIds.includes(tool.id),
+      disabled: isSignInRequired,
+      onPress: () => onToolPress(tool.id),
+    };
+  });
 
   const renderTrigger = ({ onPress }: { onPress: () => void }): ReactElement => (
     <SelectOptionIcon
