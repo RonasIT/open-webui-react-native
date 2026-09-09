@@ -1,4 +1,5 @@
 import { merge, uniqBy } from 'lodash-es';
+import { captureApiError } from '@open-webui-react-native/shared/data-access/api-client';
 import { AttachedFile, FileType, MessageSource } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { chatQueriesKeys } from '../chat-queries-keys';
@@ -63,6 +64,17 @@ export const handleCompletedChat = async (
     files,
   });
 
-  const data = await chatService.handleCompletedChat(completedChatPayload);
-  chatService.update({ id: data.chatId, chat: updateChatPayload });
+  const sentryContext = { chatId, sessionId };
+
+  try {
+    const data = await chatService.handleCompletedChat(completedChatPayload);
+
+    try {
+      await chatService.update({ id: data.chatId, chat: updateChatPayload });
+    } catch (error) {
+      captureApiError(error, { operation: 'chat.update', context: sentryContext });
+    }
+  } catch (error) {
+    captureApiError(error, { operation: 'chat.completed', context: sentryContext });
+  }
 };
