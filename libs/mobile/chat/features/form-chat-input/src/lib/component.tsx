@@ -116,9 +116,6 @@ export function FormChatInput<T extends FieldValues>({
     [models, modelId, tools, userSettings],
   );
 
-  // A selection made for another model is ignored rather than carried over: switching the model
-  // falls back to that model's own default tools. The `toolsSelection &&` guard is load-bearing —
-  // an unset selection and an unresolved model both read as `undefined` and would compare equal.
   const selectedToolIds =
     toolsSelection && toolsSelection.modelId === modelId ? toolsSelection.toolIds : defaultToolIds;
 
