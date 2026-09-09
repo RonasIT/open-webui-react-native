@@ -5,6 +5,7 @@ export interface SubmitFeedbackAttachment {
 }
 
 export interface SubmitFeedbackRequest {
+  email: string;
   message: string;
   platform: string;
   appVersion?: string;

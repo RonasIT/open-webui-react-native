@@ -71,6 +71,7 @@
       },
       "CONTACT_SUPPORT_SHEET": {
         "TEXT_REPORT_BUG": "报告错误",
+        "TEXT_YOUR_EMAIL": "您的电子邮箱",
         "TEXT_YOUR_MESSAGE": "您的消息",
         "TEXT_MESSAGE_SENT": "感谢您的反馈！您的消息已成功发送",
         "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "添加截图或视频",
