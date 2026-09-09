@@ -66,7 +66,7 @@ export const handleChatCompletionEvent = async (socketResponse: ChatEventBase): 
     queryClient.setQueryData(chatQueriesKeys.get(chatId).queryKey, (oldData: ChatResponse) =>
       patchCompletedMessage(oldData),
     );
-    handleCompletedChat(buffer.content, chatId, sessionId, buffer.sources, buffer.output);
+    await handleCompletedChat(buffer.content, chatId, sessionId, buffer.sources, buffer.output);
     resetChatStreamBuffer(chatId);
     await hapticFeedbackService.trigger();
   }
