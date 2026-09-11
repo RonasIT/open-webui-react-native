@@ -14,6 +14,10 @@ export const handleChatFilesEvent = async (socketResponse: ChatEventBase): Promi
   queryClient.setQueryData(queryKey, (draft: ChatResponse) => {
     if (!draft) return;
 
+    if (!draft.chat.messages) {
+      return draft;
+    }
+
     const messageIndex = draft.chat.messages.findIndex((message) => message.id === messageId);
 
     return {

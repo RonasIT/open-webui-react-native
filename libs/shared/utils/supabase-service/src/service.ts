@@ -25,6 +25,7 @@ class SupabaseService {
       : [];
 
     const { error } = await this.client.from(SupabaseTable.FEEDBACK).insert({
+      email: request.email,
       message: request.message,
       platform: request.platform,
       app_version: request.appVersion,

@@ -35,6 +35,11 @@
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "Полный доступ",
         "TEXT_ASK_FOR_APPROVAL": "Спрашивать разрешение"
+      },
+      "TOOLS_POPUP": {
+        "TEXT_TITLE": "Инструменты",
+        "TEXT_NO_TOOLS_AVAILABLE": "Инструменты недоступны",
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — войдите в веб-версии"
       }
     },
     "SHARE_CHAT_MODAL": {

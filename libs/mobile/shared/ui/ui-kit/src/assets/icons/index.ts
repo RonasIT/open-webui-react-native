@@ -55,6 +55,7 @@ import star from './star.svg';
 import stop from './stop.svg';
 import strokeLeft from './stroke-left.svg';
 import tick from './tick.svg';
+import tools from './tools.svg';
 import trashCan from './trash-can.svg';
 import unarchive from './unarchive.svg';
 import unpin from './unpin.svg';
@@ -116,6 +117,7 @@ export const Icons = {
   closeSM,
   strokeLeft,
   tick,
+  tools,
   star,
   stop,
   play,

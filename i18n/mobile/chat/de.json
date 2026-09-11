@@ -35,6 +35,11 @@
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "Vollzugriff",
         "TEXT_ASK_FOR_APPROVAL": "Um Erlaubnis fragen"
+      },
+      "TOOLS_POPUP": {
+        "TEXT_TITLE": "Werkzeuge",
+        "TEXT_NO_TOOLS_AVAILABLE": "Keine Tools verfügbar",
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — im Web anmelden"
       }
     },
     "SHARE_CHAT_MODAL": {

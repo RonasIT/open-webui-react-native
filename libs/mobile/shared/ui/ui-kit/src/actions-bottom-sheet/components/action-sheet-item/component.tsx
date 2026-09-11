@@ -32,7 +32,7 @@ export function ActionSheetItem({
   return (
     <AppPressable
       className={cn(
-        `bg-background-primary px-24 py-20 gap-12 flex-row items-center active:opacity-100 active:bg-background-secondary`,
+        `bg-background-primary px-24 py-20 gap-12 flex-row items-center active:opacity-100 active:bg-background-secondary disabled:opacity-40`,
         isCentered ? 'justify-center' : 'justify-start',
         className,
       )}
