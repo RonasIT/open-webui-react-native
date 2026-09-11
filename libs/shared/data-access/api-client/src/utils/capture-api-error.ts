@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/react-native';
 import { AxiosError, isAxiosError } from 'axios';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
+import { stripOrigin } from '@open-webui-react-native/shared/utils/strings';
 import { ApiErrorData } from '../types';
 
 const MAX_STRING_LENGTH = 500;
@@ -76,16 +77,6 @@ const parseRequestBody = (data: unknown): unknown => {
     return JSON.parse(data);
   } catch {
     return data;
-  }
-};
-
-const stripOrigin = (absoluteUrl: string): string => {
-  try {
-    const { pathname, search } = new URL(absoluteUrl);
-
-    return `${pathname}${search}`;
-  } catch {
-    return absoluteUrl;
   }
 };
 

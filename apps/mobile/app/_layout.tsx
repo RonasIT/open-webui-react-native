@@ -5,6 +5,7 @@ import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-l
 import { fonts } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { StatusBar, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
+import { beforeBreadcrumb } from '@open-webui-react-native/shared/data-access/api-client';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import {
@@ -44,6 +45,7 @@ Sentry.init({
   debug: false,
   integrations: [reactNavigationIntegration],
   enabled: !__DEV__,
+  beforeBreadcrumb,
 });
 
 const translations = {
