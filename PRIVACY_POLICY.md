@@ -28,6 +28,14 @@ The App may request the following optional permissions, only when you choose to 
 
 You can deny these permissions and still use the App’s core functionality.
 
+## Crash and Error Reporting (Sentry)
+
+The App uses Sentry to track crashes and application errors so we can diagnose and fix problems.
+
+When an error occurs, Sentry receives the error/crash message and stack trace, along with diagnostic details about failed requests to your Open WebUI server: the HTTP status and method, the request path (the server’s domain/host is stripped and never sent), and the request/response body. Body content is length-truncated, and any fields that may contain conversation text (such as content, message, text, or prompt) are redacted before being sent.
+
+We do not send your chat content, AI prompts or responses, or your Open WebUI server’s address/domain to Sentry.
+
 ## Google Sign-In (Optional)
 
 If your Open WebUI instance is configured to support Google Sign-In, the App may initiate a Google sign-in flow. We do not receive or store your Google password. Google may process authentication-related data under Google’s policies.
@@ -38,7 +46,6 @@ We do not collect, store, or have access to (on our servers):
 
 - Your conversations, chat messages, attachments, or AI prompts/responses
 - Usage analytics or telemetry
-- Crash reports
 - Location data
 - Contacts or address book data
 - Advertising identifiers

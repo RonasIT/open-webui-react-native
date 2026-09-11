@@ -79,18 +79,28 @@ const parseRequestBody = (data: unknown): unknown => {
   }
 };
 
+const stripOrigin = (absoluteUrl: string): string => {
+  try {
+    const { pathname, search } = new URL(absoluteUrl);
+
+    return `${pathname}${search}`;
+  } catch {
+    return absoluteUrl;
+  }
+};
+
 const getRequestUrl = (error: AxiosError): string | undefined => {
   const { baseURL, url } = error.config ?? {};
 
   if (!url) {
-    return baseURL;
+    return baseURL ? stripOrigin(baseURL) : undefined;
   }
 
   if (url.startsWith('http')) {
-    return url;
+    return stripOrigin(url);
   }
 
-  return `${baseURL ?? ''}${url}`;
+  return url;
 };
 
 const getApiInstanceMeta = (): { apiVersion?: string } => {
