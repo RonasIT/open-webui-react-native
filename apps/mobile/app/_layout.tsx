@@ -5,6 +5,7 @@ import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-l
 import { fonts } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { StatusBar, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
+import { beforeBreadcrumb } from '@open-webui-react-native/shared/data-access/api-client';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import {
@@ -14,7 +15,6 @@ import {
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { useSocket } from '@open-webui-react-native/shared/data-access/websocket';
 import { useNetworkConnection } from '@open-webui-react-native/shared/features/network';
-import { analyticsService } from '@open-webui-react-native/shared/utils/analytics-service';
 import { constants, LanguageCode } from '@open-webui-react-native/shared/utils/config';
 import { setupReactotron } from '@open-webui-react-native/shared/utils/reactotron';
 import { supabaseService } from '@open-webui-react-native/shared/utils/supabase-service';
@@ -45,6 +45,7 @@ Sentry.init({
   debug: false,
   integrations: [reactNavigationIntegration],
   enabled: !__DEV__,
+  beforeBreadcrumb,
 });
 
 const translations = {
@@ -121,7 +122,6 @@ Object.entries({ en, ru, es, pt, fr, de, zh, ja }).forEach(([locale, pluralizer]
 const useLanguage = setLanguage(translations, constants.defaultLocale);
 
 setupReactotron('open-web-ui');
-analyticsService.init();
 supabaseService.init();
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.

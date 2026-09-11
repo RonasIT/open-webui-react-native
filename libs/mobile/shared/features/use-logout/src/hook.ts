@@ -3,7 +3,6 @@ import { authApi, resetChatSessionState } from '@open-webui-react-native/shared/
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { cookieService } from '@open-webui-react-native/shared/data-access/cookie';
 import { queryPersister } from '@open-webui-react-native/shared/data-access/persist-query-storage';
-import { analyticsService } from '@open-webui-react-native/shared/utils/analytics-service';
 
 export const useLogout = (): { logout: () => Promise<void>; isLoading: boolean } => {
   const queryClient = useQueryClient();
@@ -19,7 +18,6 @@ export const useLogout = (): { logout: () => Promise<void>; isLoading: boolean }
     queryClient.removeQueries();
     resetChatSessionState();
     cookieService.clearAll();
-    analyticsService.resetUser();
     await queryPersister.removeClient();
   };
 

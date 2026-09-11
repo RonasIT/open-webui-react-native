@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/react-native';
 import { AxiosError, isAxiosError } from 'axios';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
-import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
+import { stripOrigin } from '@open-webui-react-native/shared/utils/strings';
 import { ApiErrorData } from '../types';
 
 const MAX_STRING_LENGTH = 500;
@@ -84,21 +84,20 @@ const getRequestUrl = (error: AxiosError): string | undefined => {
   const { baseURL, url } = error.config ?? {};
 
   if (!url) {
-    return baseURL;
+    return baseURL ? stripOrigin(baseURL) : undefined;
   }
 
   if (url.startsWith('http')) {
-    return url;
+    return stripOrigin(url);
   }
 
-  return `${baseURL ?? ''}${url}`;
+  return url;
 };
 
-const getApiInstanceMeta = (): { apiUrl: string; apiVersion?: string } => {
+const getApiInstanceMeta = (): { apiVersion?: string } => {
   const configuration = queryClient.getQueryData<{ version?: string }>(['config']);
 
   return {
-    apiUrl: getApiUrl(),
     apiVersion: configuration?.version,
   };
 };
@@ -109,7 +108,7 @@ export type CaptureApiErrorParams = {
 };
 
 export const captureApiError = (error: unknown, { operation, context = {} }: CaptureApiErrorParams): void => {
-  const { apiUrl, apiVersion } = getApiInstanceMeta();
+  const { apiVersion } = getApiInstanceMeta();
 
   if (isAxiosError(error)) {
     const axiosError = error as AxiosError<ApiErrorData>;
@@ -124,7 +123,6 @@ export const captureApiError = (error: unknown, { operation, context = {} }: Cap
       scope.setLevel('error');
 
       scope.setContext('api', {
-        apiUrl,
         apiVersion,
         url: getRequestUrl(axiosError),
         method: config?.method,
@@ -148,7 +146,7 @@ export const captureApiError = (error: unknown, { operation, context = {} }: Cap
   Sentry.withScope((scope) => {
     scope.setTag('api.operation', operation);
     scope.setTag('api.version', apiVersion ?? 'unknown');
-    scope.setContext('api', { apiUrl, apiVersion });
+    scope.setContext('api', { apiVersion });
     scope.setContext('api_request', sanitizeContextForSentry(context));
     Sentry.captureException(error);
   });
