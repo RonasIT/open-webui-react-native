@@ -14,7 +14,6 @@ import {
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { useSocket } from '@open-webui-react-native/shared/data-access/websocket';
 import { useNetworkConnection } from '@open-webui-react-native/shared/features/network';
-import { analyticsService } from '@open-webui-react-native/shared/utils/analytics-service';
 import { constants, LanguageCode } from '@open-webui-react-native/shared/utils/config';
 import { setupReactotron } from '@open-webui-react-native/shared/utils/reactotron';
 import { supabaseService } from '@open-webui-react-native/shared/utils/supabase-service';
@@ -121,7 +120,6 @@ Object.entries({ en, ru, es, pt, fr, de, zh, ja }).forEach(([locale, pluralizer]
 const useLanguage = setLanguage(translations, constants.defaultLocale);
 
 setupReactotron('open-web-ui');
-analyticsService.init();
 supabaseService.init();
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
