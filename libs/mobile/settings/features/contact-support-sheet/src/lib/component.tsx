@@ -100,7 +100,6 @@ export function ContactSupportSheet({ ref, ...props }: ContactSupportSheetProps)
         platform: Platform.OS,
         appVersion: Constants.expoConfig?.version,
         apiVersion: configuration?.version,
-        userId: profile?.id,
         attachments: images,
       });
 
