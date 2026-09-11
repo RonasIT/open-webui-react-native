@@ -1,6 +1,6 @@
 # Privacy Policy for Open MobileUI
 
-Last Updated: 17 Dec 2025
+Last Updated: 11 Sep 2026
 
 ## Introduction
 
