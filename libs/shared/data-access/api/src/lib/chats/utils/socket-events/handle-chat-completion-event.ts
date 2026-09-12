@@ -5,7 +5,6 @@ import {
   ChatCompletionChunk,
   getOutputText,
   seedResponseStreamState,
-  socketService,
 } from '@open-webui-react-native/shared/data-access/websocket';
 import { hapticFeedbackService } from '@open-webui-react-native/shared/utils/haptic-feedback-service';
 import { chatQueriesKeys } from '../../chat-queries-keys';
@@ -25,7 +24,6 @@ import {
 // event is left carrying the tool-call boundaries and the terminal `done`. Both remain authoritative,
 // which is why a snapshot also re-seeds the delta accumulator.
 export const handleChatCompletionEvent = async (socketResponse: ChatEventBase): Promise<void> => {
-  const sessionId = socketService.socketSessionId;
   const chatId = socketResponse.chatId;
 
   const chatCompletionData = plainToInstance(ChatCompletionChunk, socketResponse.data.data);
@@ -66,7 +64,7 @@ export const handleChatCompletionEvent = async (socketResponse: ChatEventBase): 
     queryClient.setQueryData(chatQueriesKeys.get(chatId).queryKey, (oldData: ChatResponse) =>
       patchCompletedMessage(oldData),
     );
-    await handleCompletedChat(buffer.content, chatId, sessionId, buffer.sources, buffer.output);
+    await handleCompletedChat(buffer.content, chatId, buffer.sources, buffer.output);
     resetChatStreamBuffer(chatId);
     await hapticFeedbackService.trigger();
   }

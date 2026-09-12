@@ -1,17 +1,20 @@
 import { merge, uniqBy } from 'lodash-es';
-import { captureApiError } from '@open-webui-react-native/shared/data-access/api-client';
 import { AttachedFile, FileType, MessageSource } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { chatQueriesKeys } from '../chat-queries-keys';
 import { Chat, ChatResponse, History, Message } from '../models';
 import { chatService } from '../service';
-import { prepareCompletedChatPayload } from './prepare-completed-chat-payload';
 import { isTemporaryChatId } from './temporary-chat-id';
 
+// NOTE: Deliberately does not call `POST /chat/completed`. The app supports Open WebUI 0.10 and
+// newer, and since 0.9.0 the backend runs outlet filters inline during the completion and persists
+// the assistant message itself — the web client dropped the call in that same release, leaving it
+// for external integrations only. Calling it re-ran the filters on a payload this client discards,
+// and the endpoint turns every internal error into a 400 (a missing `model`, a stale `session_id`,
+// a throwing filter), which used to abort the chat update below.
 export const handleCompletedChat = async (
   message: string,
   chatId: string,
-  sessionId: string,
   sources?: Array<MessageSource>,
   output?: Message['output'],
 ): Promise<void> => {
@@ -43,15 +46,6 @@ export const handleCompletedChat = async (
     currentId: chat.history.currentId,
   });
 
-  const completedChatPayload = prepareCompletedChatPayload(
-    chatId,
-    updatedHistory.currentId,
-    updatedMessages,
-    chat.models?.[0],
-    sessionId,
-    message,
-  );
-
   // Only files should be included in `files` field
   const files = uniqBy(
     chat.messages.flatMap((msg) => msg.files ?? []).filter((file): file is AttachedFile => file.type === FileType.FILE),
@@ -64,17 +58,9 @@ export const handleCompletedChat = async (
     files,
   });
 
-  const sentryContext = { chatId, sessionId };
-
   try {
-    const data = await chatService.handleCompletedChat(completedChatPayload);
-
-    try {
-      await chatService.update({ id: data.chatId, chat: updateChatPayload });
-    } catch (error) {
-      captureApiError(error, { operation: 'chat.update', context: sentryContext });
-    }
-  } catch (error) {
-    captureApiError(error, { operation: 'chat.completed', context: sentryContext });
+    await chatService.update({ id: chatId, chat: updateChatPayload });
+  } catch {
+    // The completed message is already in the cache, so a failed save costs the server copy only.
   }
 };
