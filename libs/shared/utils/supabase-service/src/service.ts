@@ -30,7 +30,6 @@ class SupabaseService {
       platform: request.platform,
       app_version: request.appVersion,
       api_version: request.apiVersion,
-      app_user_id: request.userId,
       attachment_paths: attachmentPaths,
     });
 

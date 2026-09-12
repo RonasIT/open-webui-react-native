@@ -27,7 +27,6 @@ import {
 } from '@open-webui-react-native/shared/data-access/api';
 import { AttachedImage, FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
-import { AnalyticsEvent, analyticsService } from '@open-webui-react-native/shared/utils/analytics-service';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { toDataUrl } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
@@ -164,7 +163,6 @@ export function FormChatInput<T extends FieldValues>({
   const onCompleteRecording = (text: string): void => {
     setIsDictateMode(false);
     field.onChange(text);
-    analyticsService.trackEvent(AnalyticsEvent.DICTATION_MODE_USED);
   };
 
   const onStopGenerationPress = (): void => {
