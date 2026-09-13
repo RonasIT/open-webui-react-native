@@ -11,7 +11,7 @@
 
 **Professional mobile client for Open WebUI** – Access your self-hosted AI assistant anywhere, anytime
 
-[Features](#-features) • [Installation](#-installation) • [Development](#️-development) • [Support](#-support) • [Donate](#-donate) • [Privacy Policy](PRIVACY_POLICY.md)
+[Features](#-features) • [Installation](#-installation) • [Development](#️-development) • [Support](#-support) • [Donate](#️-donate) • [Privacy Policy](PRIVACY_POLICY.md)
 
 <br>
 
