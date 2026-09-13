@@ -11,7 +11,7 @@
 
 **Professional mobile client for Open WebUI** – Access your self-hosted AI assistant anywhere, anytime
 
-[Features](#-features) • [Installation](#-installation) • [Development](#️-development) • [Support](#-support) • [Privacy Policy](PRIVACY_POLICY.md)
+[Features](#-features) • [Installation](#-installation) • [Development](#️-development) • [Support](#-support) • [Donate](#-donate) • [Privacy Policy](PRIVACY_POLICY.md)
 
 <br>
 
@@ -156,6 +156,12 @@ A: Yes, this app connects to your self-hosted Open WebUI deployment. See [Open W
 
 **Q: How do I report a security vulnerability?**
 A: Please email security concerns directly to our team through [Ronas IT](https://ronasit.com?utm_source=github&utm_medium=referral&utm_campaign=open_webui_react_native) rather than opening a public issue.
+
+---
+
+## ❤️ Donate
+
+If Open MobileUI has been useful to you, consider supporting its development with a donation via [Airwallex](https://pay.airwallex.com/nlhlwwo2h4ad). Any amount is appreciated and helps keep the project maintained.
 
 ---
 
