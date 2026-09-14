@@ -22,12 +22,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       publishableKey: process.env.SUPABASE_PUBLISHABLE_KEY,
     },
     env: appEnv.current,
-    googleIosClientId: appEnv.select({
-      default: process.env.GOOGLE_IOS_CLIENT_ID_DEV,
-      production: process.env.GOOGLE_IOS_CLIENT_ID_PROD,
-    }),
     isInternalRelease: process.env.EXPO_PUBLIC_IS_INTERNAL_RELEASE,
-    googleSignInRoute: process.env.GOOGLE_SIGN_IN_ROUTE,
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
