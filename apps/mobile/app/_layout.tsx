@@ -25,7 +25,7 @@ import Constants from 'expo-constants';
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack, useNavigationContainerRef } from 'expo-router';
 import { useMakePlural } from 'i18n-js';
-import { de, en, es, fr, ja, pt, ru, zh } from 'make-plural';
+import { de, en, es, fr, ja, pt, ro, ru, zh } from 'make-plural';
 import { ReactElement, useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
@@ -113,9 +113,17 @@ const translations = {
     ...require('i18n/mobile/profile/ja.json'),
     ...require('i18n/mobile/folder/ja.json'),
   },
+  [LanguageCode.ROMANIAN]: {
+    ...require('i18n/mobile/app/ro.json'),
+    ...require('i18n/mobile/shared/ro.json'),
+    ...require('i18n/mobile/auth/ro.json'),
+    ...require('i18n/mobile/chat/ro.json'),
+    ...require('i18n/mobile/profile/ro.json'),
+    ...require('i18n/mobile/folder/ro.json'),
+  },
 };
 
-Object.entries({ en, ru, es, pt, fr, de, zh, ja }).forEach(([locale, pluralizer]) => {
+Object.entries({ en, ru, es, pt, fr, de, zh, ja, ro }).forEach(([locale, pluralizer]) => {
   i18n.pluralization.register(locale, useMakePlural({ pluralizer }));
 });
 

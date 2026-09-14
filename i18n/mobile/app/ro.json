@@ -1,0 +1,98 @@
+{
+  "APP": {
+    "CHAT_LIST_SCREEN": {
+      "TEXT_CHATS": "Conversații"
+    },
+    "SETTINGS_SCREEN": {
+      "TEXT_SETTINGS": "Profil și setări",
+      "TEXT_SECTION_GENERAL": "General",
+      "TEXT_SECTION_PROFILE": "Profil",
+      "TEXT_SECTION_FEEDBACK": "Feedback",
+      "TEXT_SECTION_CHATS": "Conversații",
+      "TEXT_DEFAULT_MODEL": "Model implicit",
+      "TEXT_DEFAULT_SYSTEM_PROMPT": "Prompt de sistem implicit",
+      "TEXT_LANGUAGE": "Limbă",
+      "TEXT_NOT_SET": "Nesetat",
+      "TEXT_LOAD_ERROR": "Încărcare eșuată",
+      "TEXT_PROFILE_NAME": "Nume profil",
+      "TEXT_AVATAR": "Avatar",
+      "TEXT_CHANGE_PASSWORD": "Schimbă parola",
+      "TEXT_LOGOUT": "Deconectare",
+      "TEXT_REPORT_A_BUG": "Raportează o eroare",
+      "TEXT_RATE_APP": "Evaluează aplicația",
+      "TEXT_ARCHIVED_CHATS": "Conversații arhivate",
+      "TEXT_EXPORT_ALL_CHATS": "Exportă toate conversațiile",
+      "TEXT_ARCHIVE_ALL": "Arhivează tot",
+      "TEXT_ARCHIVE_ALL_CHATS_TITLE": "Arhivează toate conversațiile",
+      "TEXT_ARCHIVE_ALL_CHATS_MESSAGE": "Sigur dorești să arhivezi toate conversațiile? Această acțiune nu poate fi anulată.",
+      "TEXT_DELETE_ALL": "Șterge tot",
+      "TEXT_DELETE_ALL_CHATS_TITLE": "Șterge toate conversațiile",
+      "TEXT_DELETE_ALL_CHATS_MESSAGE": "Sigur dorești să ștergi toate conversațiile? Această acțiune nu poate fi anulată.",
+      "TEXT_ALWAYS_ON_WEB_SEARCH": "Căutare web permanentă",
+      "TEXT_HAPTIC_FEEDBACK": "Feedback haptic",
+      "TEXT_ENABLE_MESSAGE_QUEUE": "Activează coada de mesaje",
+      "TEXT_CHAT_BUBBLE_UI": "Mesaje sub formă de baloane",
+      "TEXT_TEMPORARY_CHAT_BY_DEFAULT": "Conversație temporară implicit",
+      "TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE": "Afișează Markdown în mesajele utilizatorului",
+      "TEXT_MARKDOWN_RENDERER": "Motor de randare Markdown",
+      "TEXT_MARKDOWN_RENDERER_DEFAULT": "Implicit",
+      "TEXT_MARKDOWN_RENDERER_NITRO": "Experimental",
+      "TEXT_APP_VERSION": "Open MobileUI versiunea {{version}}",
+      "TEXT_APP_AUTHOR": "de Ronas IT",
+      "PROFILE_AVATAR_SHEET": {
+        "TEXT_TITLE": "Avatar profil",
+        "BUTTON_UPLOAD_PROFILE_IMAGE": "Încarcă imagine de profil",
+        "BUTTON_RESTORE_DEFAULT_AVATAR": "Restabilește avatarul implicit",
+        "TEXT_IMAGE_TOO_LARGE": "Această imagine este prea mare. Te rugăm să alegi una mai mică",
+        "TEXT_UPLOAD_FAILED": "Nu s-a putut procesa imaginea. Te rugăm să încerci alta"
+      },
+      "PROFILE_NAME_SHEET": {
+        "TEXT_TITLE": "Nume profil",
+        "TEXT_PROFILE_NAME": "Nume profil"
+      },
+      "CHANGE_PASSWORD_SHEET": {
+        "TEXT_TITLE": "Schimbă parola",
+        "TEXT_CURRENT_PASSWORD": "Parola actuală",
+        "TEXT_ENTER_CURRENT_PASSWORD": "Introdu parola actuală",
+        "TEXT_NEW_PASSWORD": "Parolă nouă",
+        "TEXT_ENTER_NEW_PASSWORD": "Introdu parola nouă",
+        "TEXT_CONFIRM_NEW_PASSWORD": "Confirmă parola nouă",
+        "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Repetă parola nouă",
+        "TEXT_PASSWORD_CHANGED": "Parola a fost schimbată"
+      },
+      "DEFAULT_MODEL_SHEET": {
+        "TEXT_TITLE": "Model implicit",
+        "TEXT_SEARCH_MODEL": "Caută model",
+        "TEXT_NO_MODELS": "Nu există modele."
+      },
+      "DEFAULT_SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "Prompt de sistem implicit",
+        "TEXT_LABEL": "Prompt de sistem implicit"
+      },
+      "CONTACT_SUPPORT_SHEET": {
+        "TEXT_REPORT_BUG": "Raportează o eroare",
+        "TEXT_YOUR_EMAIL": "Adresa ta de email",
+        "TEXT_YOUR_MESSAGE": "Mesajul tău",
+        "TEXT_MESSAGE_SENT": "Îți mulțumim pentru feedback! Mesajul tău a fost trimis cu succes",
+        "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Atașează capturi de ecran sau un videoclip",
+        "TEXT_ATTACHMENTS_LIMIT_REACHED": "Poți atașa până la {{count}} fișiere"
+      },
+      "LANGUAGE_SHEET": {
+        "TEXT_TITLE": "Limbă"
+      },
+      "MARKDOWN_RENDERER_SHEET": {
+        "TEXT_TITLE": "Motor de randare Markdown"
+      },
+      "TEXT_DELETE_ACCOUNT": "Șterge contul",
+      "TEXT_DELETE_ACCOUNT_TITLE": "Sigur dorești să îți ștergi contul?",
+      "TEXT_DELETE_ACCOUNT_MESSAGE": "Această acțiune va duce la pierderea definitivă a datelor dacă nu ne contactezi în următoarele 30 de zile.",
+      "BUTTON_DELETE_ACCOUNT": "Da, șterge contul meu",
+      "BUTTON_DONT_DELETE": "Nu șterge",
+      "TEXT_ACCOUNT_DELETION_REQUEST": "Cererea ta de ștergere a contului a fost trimisă.",
+      "TEXT_LOGOUT_TITLE": "Te deconectezi?",
+      "TEXT_LOGOUT_MESSAGE": "Sigur dorești să te deconectezi?",
+      "BUTTON_LOGOUT": "Deconectare",
+      "BUTTON_CANCEL": "Anulează"
+    }
+  }
+}
