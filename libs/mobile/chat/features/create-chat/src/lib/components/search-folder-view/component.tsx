@@ -4,6 +4,7 @@ import {
   FolderSearchItem,
   useFolderSearchList,
 } from '@open-webui-react-native/mobile/chat/utils/use-folder-search-list';
+import { useCanUseFolders } from '@open-webui-react-native/mobile/shared/features/use-can-use-folders';
 import { useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
 import {
   AppPressable,
@@ -32,14 +33,16 @@ export function SearchFolderView({
   const translate = useTranslation('CHAT.CREATE_CHAT.SEARCH_FOLDER_VIEW');
   const { isDarkColorScheme } = useColorScheme();
 
+  const { canUseFolders } = useCanUseFolders();
   const { emptyFolders } = useFolderSearchList({
     noFolderText: translate('TEXT_NO_FOLDER'),
     createFolderText: translate('TEXT_CREATE_NEW_FOLDER'),
     onCreateFolderPress,
+    canCreateFolder: canUseFolders,
   });
 
-  const { data: folders } = foldersApi.useGetFolders();
-  const { data: sharedFolders } = foldersApi.useGetSharedFolders();
+  const { data: folders } = foldersApi.useGetFolders({ enabled: canUseFolders });
+  const { data: sharedFolders } = foldersApi.useGetSharedFolders({ enabled: canUseFolders });
 
   // NOTE: A chat can be created in a folder shared by somebody else only with a write grant, so
   // read-only ones are left out. Without them the folder opened from its own screen resolved to no
@@ -81,14 +84,16 @@ export function SearchFolderView({
           width={60}
           height={60} />
       )}
-      <FullScreenSearchModal
-        data={foldersWithIcon || []}
-        unfilteredData={emptyFolders as Array<FolderSearchItem>}
-        selectedItemId={selectedItemId}
-        renderTrigger={renderTrigger}
-        searchPlaceholder={translate('TEXT_SEARCH_FOLDER')}
-        {...props}
-      />
+      {canUseFolders && (
+        <FullScreenSearchModal
+          data={foldersWithIcon || []}
+          unfilteredData={emptyFolders as Array<FolderSearchItem>}
+          selectedItemId={selectedItemId}
+          renderTrigger={renderTrigger}
+          searchPlaceholder={translate('TEXT_SEARCH_FOLDER')}
+          {...props}
+        />
+      )}
     </View>
   );
 }

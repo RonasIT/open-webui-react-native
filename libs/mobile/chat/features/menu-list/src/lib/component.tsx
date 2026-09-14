@@ -5,6 +5,7 @@ import {
   ChatActionsMenuSheet,
   ChatActionsMenuSheetMethods,
 } from '@open-webui-react-native/mobile/shared/features/chat-actions-menu-sheet';
+import { useCanUseFolders } from '@open-webui-react-native/mobile/shared/features/use-can-use-folders';
 import { ChatListRow } from '@open-webui-react-native/mobile/shared/ui/chat-list-row';
 import { DateSectionList } from '@open-webui-react-native/mobile/shared/ui/date-section-list';
 import {
@@ -44,6 +45,8 @@ export function ChatMenuList({
 
   const [isFirstLoading, setIsFirstLoading] = useState<boolean>(true);
 
+  const { canUseFolders } = useCanUseFolders();
+
   const {
     data: chats,
     isFetchingNextPage,
@@ -63,20 +66,26 @@ export function ChatMenuList({
     isLoading: isFoldersLoading,
     isRefetching: isFoldersRefetching,
     refetch: refetchFolders,
-  } = foldersApi.useGetFolders();
+  } = foldersApi.useGetFolders({ enabled: canUseFolders });
   const {
     data: sharedFolders,
     isLoading: isSharedFoldersLoading,
     isRefetching: isSharedFoldersRefetching,
     refetch: refetchSharedFolders,
-  } = foldersApi.useGetSharedFolders();
+  } = foldersApi.useGetSharedFolders({ enabled: canUseFolders });
 
   const isLoading =
     isChatsLoading || isPinnedChatsLoading || isFoldersLoading || isSharedFoldersLoading || isFirstLoading;
   const isRefetching = isChatsRefetching || isPinnedChatsRefetching || isFoldersRefetching || isSharedFoldersRefetching;
 
   const refetch = (): void => {
-    Promise.all([refetchChats(), refetchPinnedChats(), refetchFolders(), refetchSharedFolders()]);
+    // NOTE: react-query's refetch() runs even for a disabled query, so the folders feature gate has
+    // to be re-checked here too, or a pull-to-refresh would still hit the forbidden endpoint.
+    Promise.all([
+      refetchChats(),
+      refetchPinnedChats(),
+      ...(canUseFolders ? [refetchFolders(), refetchSharedFolders()] : []),
+    ]);
   };
 
   useEffect(() => {
@@ -113,7 +122,7 @@ export function ChatMenuList({
           refreshControl={<AppRefreshControl onRefresh={refetch} refreshing={isFocused && isRefetching} />}
           ListHeaderComponent={
             <View>
-              {isFeatureEnabled(FeatureID.CHAT_FOLDERS) && (
+              {isFeatureEnabled(FeatureID.CHAT_FOLDERS) && canUseFolders && (
                 <Fragment>
                   {/* NOTE: A folder owned by somebody else cannot be renamed or deleted by the
                       recipient, so its row offers no actions on long press. */}

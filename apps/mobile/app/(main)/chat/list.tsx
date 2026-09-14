@@ -11,6 +11,7 @@ import {
   UpsertFolderSheet,
   UpsertFolderSheetMethods,
 } from '@open-webui-react-native/mobile/folder/features/upsert-folder-sheet';
+import { useCanUseFolders } from '@open-webui-react-native/mobile/shared/features/use-can-use-folders';
 import { ScreenWrapper } from '@open-webui-react-native/mobile/shared/ui/screen-wrapper';
 import { AppHeader, AppPressable, Avatar, IconButton, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
@@ -29,6 +30,7 @@ export default function ChatListScreen(): ReactElement {
   const upsertFolderSheetRef = useRef<UpsertFolderSheetMethods>(null);
   const shareFolderSheetRef = useRef<ShareFolderSheetMethods>(null);
   const { data: profile } = authApi.useGetProfile();
+  const { canUseFolders } = useCanUseFolders();
 
   const handleChatPress = (id: string): void => navigateOnce(navigationConfig.main.chat.view({ id }));
 
@@ -68,7 +70,7 @@ export default function ChatListScreen(): ReactElement {
           }
           accessoryRight={
             <View className='flex-row gap-12'>
-              {isFeatureEnabled(FeatureID.CHAT_FOLDERS) && (
+              {isFeatureEnabled(FeatureID.CHAT_FOLDERS) && canUseFolders && (
                 <UpsertFolderSheet
                   renderTrigger={({ onPress }) => (
                     <IconButton

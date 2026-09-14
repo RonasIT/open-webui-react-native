@@ -122,7 +122,7 @@ function useDeleteFolder(
 }
 
 function useGetFolders(
-  props?: UseQueryOptions<Array<FolderListItem>, AxiosError<ApiErrorData>>,
+  props?: Omit<UseQueryOptions<Array<FolderListItem>, AxiosError<ApiErrorData>>, 'queryKey' | 'queryFn'>,
 ): UseQueryResult<Array<FolderListItem>, AxiosError<ApiErrorData>> {
   return useQuery<Array<FolderListItem>, AxiosError<ApiErrorData>>({
     queryFn: foldersService.getFolders,

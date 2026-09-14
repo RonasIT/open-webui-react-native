@@ -25,6 +25,9 @@ export class Features {
   @Expose({ name: 'enable_direct_connections' })
   public enableDirectConnections: boolean;
 
+  @Expose({ name: 'enable_folders' })
+  public enableFolders: boolean;
+
   @Expose({ name: 'enable_channels' })
   public enableChannels: boolean;
 
