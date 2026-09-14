@@ -8,7 +8,6 @@ export * from './complete-chat-response';
 export * from './background-tasks';
 export * from './get-chat-list-request';
 export * from './chat-list-item';
-export * from './completed-chat';
 export * from './search-chat-list-request';
 export * from './share-chat-response';
 export * from './chat-message';
