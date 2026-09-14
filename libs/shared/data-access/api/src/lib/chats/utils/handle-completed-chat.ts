@@ -58,9 +58,5 @@ export const handleCompletedChat = async (
     files,
   });
 
-  try {
-    await chatService.update({ id: chatId, chat: updateChatPayload });
-  } catch {
-    // The completed message is already in the cache, so a failed save costs the server copy only.
-  }
+  await chatService.update({ id: chatId, chat: updateChatPayload });
 };
