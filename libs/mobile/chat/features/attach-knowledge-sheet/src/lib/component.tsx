@@ -36,7 +36,13 @@ export function AttachKnowledgeSheet({
   const { query, setQuery } = useDebouncedQuery();
 
   const { data: knowledgeList, isLoading: isKnowledgeLoading } = knowledgeApi.useGetKnowledge();
-  const { data: knowledgeFiles, isLoading: isFilesLoading } = knowledgeApi.useGetKnowledgeFiles(openedKnowledge?.id, 1);
+  const {
+    data: knowledgeFiles,
+    isLoading: isFilesLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = knowledgeApi.useGetKnowledgeFiles(openedKnowledge?.id);
 
   const closeModal = (): void => {
     sheetRef.current?.close();
@@ -75,7 +81,7 @@ export function AttachKnowledgeSheet({
   };
 
   if (openedKnowledge) {
-    const files = (knowledgeFiles?.items ?? []).filter((file) => new RegExp(query, 'i').test(file.meta.name));
+    const files = (knowledgeFiles ?? []).filter((file) => new RegExp(query, 'i').test(file.meta.name));
 
     return (
       <SearchableListBottomSheet
@@ -89,6 +95,8 @@ export function AttachKnowledgeSheet({
         emptyDescription={translate('TEXT_NO_FILES')}
         data={files}
         keyExtractor={(item) => item.id}
+        onEndReached={() => hasNextPage && fetchNextPage()}
+        isFetchingNextPage={isFetchingNextPage}
         renderItem={({ item }) => (
           <KnowledgeFileRow
             item={item}

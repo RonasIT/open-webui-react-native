@@ -29,6 +29,8 @@ export type SearchableListBottomSheetProps<TItem> = Partial<Omit<AppBottomSheetP
   data: Array<TItem>;
   renderItem: AppFlashListProps<TItem>['renderItem'];
   keyExtractor?: AppFlashListProps<TItem>['keyExtractor'];
+  onEndReached?: () => void;
+  isFetchingNextPage?: boolean;
 };
 
 export function SearchableListBottomSheet<TItem>({
@@ -47,6 +49,8 @@ export function SearchableListBottomSheet<TItem>({
   data,
   renderItem,
   keyExtractor,
+  onEndReached,
+  isFetchingNextPage,
   ...restProps
 }: SearchableListBottomSheetProps<TItem>): ReactElement {
   const handleCancelSearch = (): void => {
@@ -92,7 +96,16 @@ export function SearchableListBottomSheet<TItem>({
                   renderItem={renderItem}
                   keyExtractor={keyExtractor}
                   className='pb-16'
+                  onEndReached={onEndReached}
+                  onEndReachedThreshold={0.5}
                   ListEmptyComponent={<ListEmptyComponent containerClassName='mt-16' description={emptyDescription} />}
+                  ListFooterComponent={
+                    isFetchingNextPage ? (
+                      <View className='py-16'>
+                        <AppSpinner />
+                      </View>
+                    ) : null
+                  }
                 />
               </AppSafeAreaView>
             </AppBottomSheetKeyboardAwareScrollView>

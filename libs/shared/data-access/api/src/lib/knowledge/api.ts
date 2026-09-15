@@ -1,8 +1,15 @@
-import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  UseInfiniteQueryResult,
+  useQuery,
+  UseQueryOptions,
+  UseQueryResult,
+} from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
+import { FileData, getNextPageParam } from '@open-webui-react-native/shared/data-access/common';
 import { knowledgeApiConfig } from './config';
-import { Knowledge, KnowledgeFileListResponse } from './models';
+import { Knowledge } from './models';
 import { knowledgeService } from './service';
 
 function useGetKnowledge(
@@ -15,16 +22,15 @@ function useGetKnowledge(
   });
 }
 
-function useGetKnowledgeFiles(
-  id?: string,
-  page = 1,
-  props?: UseQueryOptions<KnowledgeFileListResponse, AxiosError<ApiErrorData>>,
-): UseQueryResult<KnowledgeFileListResponse, AxiosError<ApiErrorData>> {
-  return useQuery<KnowledgeFileListResponse, AxiosError<ApiErrorData>>({
-    queryFn: () => knowledgeService.getKnowledgeFiles(id!, page),
-    queryKey: knowledgeApiConfig.getKnowledgeFilesQueryKey(id!, page),
+function useGetKnowledgeFiles(id?: string): UseInfiniteQueryResult<Array<FileData>, AxiosError<ApiErrorData>> {
+  return useInfiniteQuery({
+    queryFn: ({ pageParam }) => knowledgeService.getKnowledgeFiles(id!, pageParam).then((response) => response.items),
+    queryKey: knowledgeApiConfig.getKnowledgeFilesQueryKey(id!),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, result, lastPageParam) =>
+      getNextPageParam({ lastPage, result, lastPageParam, itemsPerPage: knowledgeApiConfig.filesPerPage }),
+    select: (data) => data.pages.flat(),
     enabled: !!id,
-    ...props,
   });
 }
 
