@@ -1,0 +1,15 @@
+{
+  "PROFILE": {
+    "PROFILE_MENU_SHEET": {
+      "TEXT_LOGOUT": "Deconectare",
+      "TEXT_ARCHIVED_CHATS": "Conversații arhivate",
+      "TEXT_SETTINGS": "Setări",
+      "TEXT_DELETE_ACCOUNT": "Șterge contul",
+      "TEXT_DELETE_ACCOUNT_TITLE": "Sigur dorești să îți ștergi contul?",
+      "TEXT_DELETE_ACCOUNT_MESSAGE": "Această acțiune va duce la pierderea definitivă a datelor dacă nu ne contactezi în următoarele 30 de zile.",
+      "BUTTON_DELETE_ACCOUNT": "Da, șterge contul meu",
+      "BUTTON_DONT_DELETE": "Nu șterge",
+      "TEXT_ACCOUNT_DELETION_REQUEST": "Cererea ta de ștergere a contului a fost trimisă."
+    }
+  }
+}

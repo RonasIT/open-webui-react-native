@@ -7,4 +7,5 @@ export enum LanguageCode {
   GERMAN = 'de',
   CHINESE = 'zh',
   JAPANESE = 'ja',
+  ROMANIAN = 'ro',
 }

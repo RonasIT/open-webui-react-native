@@ -1,0 +1,55 @@
+{
+  "FOLDER": {
+    "CHATS_LIST": {
+      "TEXT_NO_CHATS": "Nu există conversații în acest folder."
+    },
+    "FOLDER_ACTIONS_SHEET": {
+      "TEXT_EDIT": "Editează",
+      "TEXT_SHARE": "Partajează",
+      "TEXT_EXPORT": "Exportă",
+      "TEXT_DELETE": "Șterge",
+      "TEXT_KEEP": "Păstrează",
+      "TEXT_DELETE_FOLDER": "Ștergi folderul?",
+      "TEXT_THIS_WILL_DELETE": "Aceasta va șterge {{name}}"
+    },
+    "SHARE_FOLDER_SHEET": {
+      "TEXT_SHARE_FOLDER": "Partajează folderul",
+      "TEXT_PRIVATE": "Privat",
+      "TEXT_PRIVATE_DESCRIPTION": "Doar utilizatorii și grupurile selectate cu permisiune pot avea acces",
+      "TEXT_ACCESS_LIST": "Grupuri și utilizatori cu acces",
+      "TEXT_READ": "Citire",
+      "TEXT_WRITE": "Scriere",
+      "BUTTON_ADD": "Adaugă"
+    },
+    "SHARE_WITH_SHEET": {
+      "TEXT_SHARE_WITH": "Partajează cu...",
+      "TEXT_SEARCH": "Căutare",
+      "TEXT_GROUPS": "Grupuri",
+      "TEXT_USERS": "Utilizatori",
+      "TEXT_NOBODY_TO_SHARE_WITH": "Nu mai există nimeni cu care să partajezi acest folder.",
+      "TEXT_SELECTED_COUNT": "{{groupsCount}} grupuri, {{usersCount}} utilizatori",
+      "BUTTON_ADD_SELECTED": "Adaugă selecția"
+    },
+    "UPSERT_FOLDER_SHEET": {
+      "TEXT_NEW_FOLDER": "Folder nou",
+      "TEXT_EDIT_FOLDER": "Editează folderul",
+      "TEXT_FOLDER_NAME": "Nume folder",
+      "TEXT_DOCUMENT": "Document",
+      "TEXT_FILE": "Fișier",
+      "TEXT_COLLECTION": "Colecție",
+      "TEXT_FOLDER_NAME_PLACEHOLDER": "ex. Folderul meu",
+      "TEXT_SYSTEM_PROMPT": "Prompt de sistem",
+      "TEXT_KNOWLEDGE": "Bază de cunoștințe",
+      "BUTTON_SELECT_KNOWLEDGE": "Selectează baza de cunoștințe",
+      "BUTTON_UPLOAD_FILES": "Încarcă fișiere",
+      "TEXT_CREATE": "Creează",
+      "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Nu poți încărca un fișier gol.",
+      "TEXT_UNSUPPORTED_TYPE": "Tip neacceptat."
+    },
+    "SELECT_KNOWLEDGE_SHEET": {
+      "TEXT_SEARCH_KNOWLEDGE": "Caută în baza de cunoștințe",
+      "TEXT_SELECT_KNOWLEDGE": "Selectează baza de cunoștințe",
+      "TEXT_NO_KNOWLEDGE": "Baza de cunoștințe este goală."
+    }
+  }
+}

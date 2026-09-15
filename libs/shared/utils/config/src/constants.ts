@@ -14,6 +14,7 @@ export const availableLanguages = [
   { code: LanguageCode.GERMAN, label: 'Deutsch' },
   { code: LanguageCode.CHINESE, label: '中文' },
   { code: LanguageCode.JAPANESE, label: '日本語' },
+  { code: LanguageCode.ROMANIAN, label: 'Română' },
 ] as const;
 
 export const availableMarkdownRenderers = [
