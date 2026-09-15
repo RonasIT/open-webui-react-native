@@ -3,11 +3,7 @@ import NitroCookies from 'react-native-nitro-cookies';
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 
 class CookieService {
-  public async setToken(token?: string | null): Promise<void> {
-    if (!token) {
-      return;
-    }
-
+  public async setToken(token: string): Promise<void> {
     const apiUrl = `${getApiUrl()}/api/`;
 
     try {
