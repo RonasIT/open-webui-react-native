@@ -4,7 +4,7 @@ import {
   FolderSearchItem,
   useFolderSearchList,
 } from '@open-webui-react-native/mobile/chat/utils/use-folder-search-list';
-import { useCanUseFolders } from '@open-webui-react-native/mobile/shared/features/use-can-use-folders';
+import { useFoldersEnabled } from '@open-webui-react-native/mobile/shared/features/use-folders-enabled';
 import { useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
 import {
   AppPressable,
@@ -33,7 +33,7 @@ export function SearchFolderView({
   const translate = useTranslation('CHAT.CREATE_CHAT.SEARCH_FOLDER_VIEW');
   const { isDarkColorScheme } = useColorScheme();
 
-  const { canUseFolders } = useCanUseFolders();
+  const canUseFolders = useFoldersEnabled();
   const { emptyFolders } = useFolderSearchList({
     noFolderText: translate('TEXT_NO_FOLDER'),
     createFolderText: translate('TEXT_CREATE_NEW_FOLDER'),

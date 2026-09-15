@@ -2,7 +2,7 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } from 'react';
 import { fileSystemService } from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
-import { useCanUseFolders } from '@open-webui-react-native/mobile/shared/features/use-can-use-folders';
+import { useFoldersEnabled } from '@open-webui-react-native/mobile/shared/features/use-folders-enabled';
 import {
   ActionsBottomSheet,
   ActionsBottomSheetProps,
@@ -40,7 +40,7 @@ export function FolderActionsSheet({ onEditPress, onSharePress, ref }: FolderAct
   const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
 
   const { data: profile } = authApi.useGetProfile();
-  const { canUseFolders } = useCanUseFolders();
+  const canUseFolders = useFoldersEnabled();
   const { data: sharedFolders } = foldersApi.useGetSharedFolders({ enabled: canUseFolders });
   const { mutateAsync: deleteFolder, isPending: isDeleting } = foldersApi.useDeleteFolder();
 

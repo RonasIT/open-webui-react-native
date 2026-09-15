@@ -11,7 +11,7 @@ import {
   UpsertFolderSheet,
   UpsertFolderSheetMethods,
 } from '@open-webui-react-native/mobile/folder/features/upsert-folder-sheet';
-import { useCanUseFolders } from '@open-webui-react-native/mobile/shared/features/use-can-use-folders';
+import { useFoldersEnabled } from '@open-webui-react-native/mobile/shared/features/use-folders-enabled';
 import { ScreenWrapper } from '@open-webui-react-native/mobile/shared/ui/screen-wrapper';
 import { AppHeader, AppPressable, Avatar, IconButton, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
@@ -30,15 +30,12 @@ export default function ChatListScreen(): ReactElement {
   const upsertFolderSheetRef = useRef<UpsertFolderSheetMethods>(null);
   const shareFolderSheetRef = useRef<ShareFolderSheetMethods>(null);
   const { data: profile } = authApi.useGetProfile();
-  const { canUseFolders } = useCanUseFolders();
+  const canUseFolders = useFoldersEnabled();
 
   const handleChatPress = (id: string): void => navigateOnce(navigationConfig.main.chat.view({ id }));
 
   const handleNewChatPress = (): void =>
     navigateOnce(`${navigationConfig.main.chat.index}/${navigationConfig.main.chat.create}`);
-
-  const handleArchivedChatsPress = (): void =>
-    navigateOnce(`${navigationConfig.main.chat.index}/${navigationConfig.main.chat.archivedChats}`);
 
   const handleSettingsPress = (): void => navigateOnce(navigationConfig.main.settings);
 

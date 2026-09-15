@@ -12,7 +12,7 @@ import {
   UpsertFolderSheetMethods,
 } from '@open-webui-react-native/mobile/folder/features/upsert-folder-sheet';
 import { DownloadChatOptionsSheet } from '@open-webui-react-native/mobile/shared/features/download-chat-options-sheet';
-import { useCanUseFolders } from '@open-webui-react-native/mobile/shared/features/use-can-use-folders';
+import { useFoldersEnabled } from '@open-webui-react-native/mobile/shared/features/use-folders-enabled';
 import {
   ActionButtonsModal,
   ActionButtonsModalMethods,
@@ -65,7 +65,7 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: Chat
   const { mutateAsync: cloneChat, isPending: isCloning } = chatApi.useCloneChat();
   const { mutateAsync: archiveChat, isPending: isArchiving } = chatApi.useArchiveChat();
   const { mutateAsync: unarchiveChat, isPending: isUnarchiving } = chatApi.useUnarchiveChat();
-  const { canUseFolders } = useCanUseFolders();
+  const canUseFolders = useFoldersEnabled();
   const { data: folders } = foldersApi.useGetFolders({ enabled: canUseFolders });
 
   const [activeChat, setActiveChat] = useState<ChatListItem | null>(null);

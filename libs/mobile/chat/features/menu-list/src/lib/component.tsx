@@ -5,7 +5,7 @@ import {
   ChatActionsMenuSheet,
   ChatActionsMenuSheetMethods,
 } from '@open-webui-react-native/mobile/shared/features/chat-actions-menu-sheet';
-import { useCanUseFolders } from '@open-webui-react-native/mobile/shared/features/use-can-use-folders';
+import { useFoldersEnabled } from '@open-webui-react-native/mobile/shared/features/use-folders-enabled';
 import { ChatListRow } from '@open-webui-react-native/mobile/shared/ui/chat-list-row';
 import { DateSectionList } from '@open-webui-react-native/mobile/shared/ui/date-section-list';
 import {
@@ -45,7 +45,7 @@ export function ChatMenuList({
 
   const [isFirstLoading, setIsFirstLoading] = useState<boolean>(true);
 
-  const { canUseFolders } = useCanUseFolders();
+  const canUseFolders = useFoldersEnabled();
 
   const {
     data: chats,
