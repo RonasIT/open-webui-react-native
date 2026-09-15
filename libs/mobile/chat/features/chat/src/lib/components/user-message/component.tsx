@@ -1,6 +1,6 @@
 import { ReactElement, useMemo } from 'react';
 import { LayoutChangeEvent } from 'react-native';
-import { AttachedFileItem } from '@open-webui-react-native/mobile/chat/features/attached-file-item';
+import { AttachedFileItem, formatFileSize } from '@open-webui-react-native/mobile/chat/features/attached-file-item';
 import { MessageVersionControls } from '@open-webui-react-native/mobile/chat/features/message-version-controls';
 import { UseSiblingMessagesReturn } from '@open-webui-react-native/mobile/chat/features/use-manage-messages-siblings';
 import {
@@ -86,7 +86,9 @@ function ChatUserMessageComponent({
           <AttachedFileItem
             key={index}
             file={file.file}
-            className='max-w-[70%] self-end' />
+            subtitle={formatFileSize(file.file.meta.size)}
+            className='max-w-[70%] self-end'
+          />
         ))}
         <ChatImagesGroup
           images={attachedImages}

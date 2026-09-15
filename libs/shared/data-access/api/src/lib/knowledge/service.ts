@@ -2,7 +2,7 @@ import { plainToInstance } from 'class-transformer';
 import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
 import { EntityPromiseService } from '@open-webui-react-native/shared/data-access/base-entity';
 import { knowledgeApiConfig } from './config';
-import { Knowledge, KnowledgeResponse } from './models';
+import { Knowledge, KnowledgeFileListResponse, KnowledgeResponse } from './models';
 
 class KnowledgeService extends EntityPromiseService<Knowledge> {
   constructor() {
@@ -25,6 +25,16 @@ class KnowledgeService extends EntityPromiseService<Knowledge> {
         excludeExtraneousValues: true,
       }),
     );
+  }
+
+  public async getKnowledgeFiles(id: string, page: number): Promise<KnowledgeFileListResponse> {
+    const response = await getApiService().get<KnowledgeFileListResponse>(`${knowledgeApiConfig.route}/${id}/files`, {
+      page,
+    });
+
+    return plainToInstance(KnowledgeFileListResponse, response, {
+      excludeExtraneousValues: true,
+    });
   }
 }
 

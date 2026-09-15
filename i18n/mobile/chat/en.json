@@ -30,7 +30,8 @@
         "TEXT_CAPTURE": "Capture",
         "TEXT_CHOOSE_FROM_GALLERY": "Choose from gallery",
         "TEXT_UPLOAD_FILES": "Upload files",
-        "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "You cannot upload an empty file."
+        "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "You cannot upload an empty file.",
+        "TEXT_ATTACH_KNOWLEDGE": "Attach Knowledge"
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "Full access",
@@ -91,9 +92,6 @@
       }
     },
     "ATTACHED_FILE_ITEM": {
-      "TEXT_FILE": "File",
-      "TEXT_DOCUMENT": "Document",
-      "TEXT_COLLECTION": "Collection",
       "FILE_INFO_MODAL": {
         "TEXT_FORMATTING_DISCLAIMER": "Formatting may be inconsistent from source.",
         "TEXT_NO_PREVIEW_AVAILABLE": "No preview available",
@@ -189,6 +187,17 @@
         "BUTTON_SUBMIT": "Send",
         "BUTTON_DENY": "Skip"
       }
+    },
+    "ATTACH_KNOWLEDGE_SHEET": {
+      "TEXT_TITLE": "Knowledge",
+      "TEXT_SEARCH_KNOWLEDGE": "Search knowledge",
+      "TEXT_NO_KNOWLEDGE": "There is no knowledge.",
+      "TEXT_SEARCH_FILES": "Search files",
+      "TEXT_NO_FILES": "No files in this knowledge base."
+    },
+    "ATTACHED_CHAT_ITEMS": {
+      "TEXT_COLLECTION": "Collection",
+      "TEXT_FILE": "File"
     }
   }
 }

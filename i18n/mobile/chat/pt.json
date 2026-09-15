@@ -30,7 +30,8 @@
         "TEXT_CAPTURE": "Capturar",
         "TEXT_CHOOSE_FROM_GALLERY": "Escolher da galeria",
         "TEXT_UPLOAD_FILES": "Enviar arquivos",
-        "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Não é possível enviar um arquivo vazio."
+        "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Não é possível enviar um arquivo vazio.",
+        "TEXT_ATTACH_KNOWLEDGE": "Anexar conhecimento"
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "Acesso total",
@@ -91,9 +92,6 @@
       }
     },
     "ATTACHED_FILE_ITEM": {
-      "TEXT_FILE": "Arquivo",
-      "TEXT_DOCUMENT": "Documento",
-      "TEXT_COLLECTION": "Coleção",
       "FILE_INFO_MODAL": {
         "TEXT_FORMATTING_DISCLAIMER": "A formatação pode ser inconsistente em relação à origem.",
         "TEXT_NO_PREVIEW_AVAILABLE": "Pré-visualização indisponível",
@@ -189,6 +187,17 @@
         "BUTTON_SUBMIT": "Enviar",
         "BUTTON_DENY": "Ignorar"
       }
+    },
+    "ATTACH_KNOWLEDGE_SHEET": {
+      "TEXT_TITLE": "Conhecimento",
+      "TEXT_SEARCH_KNOWLEDGE": "Pesquisar conhecimento",
+      "TEXT_NO_KNOWLEDGE": "Não há conhecimento.",
+      "TEXT_SEARCH_FILES": "Pesquisar arquivos",
+      "TEXT_NO_FILES": "Não há arquivos nesta base de conhecimento."
+    },
+    "ATTACHED_CHAT_ITEMS": {
+      "TEXT_COLLECTION": "Coleção",
+      "TEXT_FILE": "Arquivo"
     }
   }
 }

@@ -4,7 +4,7 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { xor } from 'lodash-es';
 import { ReactElement, useMemo, useState } from 'react';
 import { Control, FieldValues, Path, useController } from 'react-hook-form';
-import { AttachedFilesList } from '@open-webui-react-native/mobile/chat/features/attached-files-list';
+import { AttachedChatItems } from '@open-webui-react-native/mobile/chat/features/attached-chat-items';
 import { SoundWaveRecorder } from '@open-webui-react-native/mobile/chat/features/sound-wave-recorder';
 import { SuggestionsList } from '@open-webui-react-native/mobile/chat/features/suggestions-list';
 import { useVoiceModeModal } from '@open-webui-react-native/mobile/chat/features/voice-mode-modal';
@@ -25,7 +25,13 @@ import {
   toolsSelectionState$,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
-import { AttachedImage, FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
+import {
+  AttachedImage,
+  AttachedKnowledgeCollection,
+  AttachedListItem,
+  FileData,
+  ImageData,
+} from '@open-webui-react-native/shared/data-access/common';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { toDataUrl } from '@open-webui-react-native/shared/utils/files';
@@ -42,12 +48,14 @@ interface FormChatInputProps<T extends FieldValues> extends AppInputProps {
   name: Path<T>;
   control: Control<T>;
   onSubmit: (options: Array<ChatGenerationOption>) => void;
-  attachedFiles: Observable<Array<FileData>>;
+  attachedItems: Observable<Array<AttachedListItem>>;
   onFileUploaded: (file: FileData) => void;
-  onDeleteFilePress: (id: string) => void;
+  onDeleteItemPress: (id: string) => void;
   attachedImages: Observable<Array<ImageData>>;
   onImageUploaded: (image: ImageData) => void;
   onDeleteImagePress: (fileName: string) => void;
+  onKnowledgeCollectionSelected: (collection: AttachedKnowledgeCollection) => void;
+  onKnowledgeFileSelected: (file: FileData) => void;
   chat?: ChatResponse;
   modelId?: string;
   onChatCreated?: (id: string) => void;
@@ -66,12 +74,14 @@ export function FormChatInput<T extends FieldValues>({
   name,
   control,
   onSubmit,
-  attachedFiles,
+  attachedItems,
   onFileUploaded,
-  onDeleteFilePress,
+  onDeleteItemPress,
   attachedImages,
   onImageUploaded,
   onDeleteImagePress,
+  onKnowledgeCollectionSelected,
+  onKnowledgeFileSelected,
   chat,
   modelId,
   onChatCreated,
@@ -92,7 +102,7 @@ export function FormChatInput<T extends FieldValues>({
 
   const { field } = useController({ control, name });
 
-  const files = useSelector(attachedFiles);
+  const items = useSelector(attachedItems);
   const images = useSelector(attachedImages);
 
   const [isMicrophonePreparing, setIsMicrophonePreparing] = useState<boolean>(false);
@@ -121,7 +131,13 @@ export function FormChatInput<T extends FieldValues>({
   const { handleImagePress, selectedImageIndex, isPreviewVisible, handleCloseImagePress } = useImagePreview();
   const { present: openVoiceModeModal } = useVoiceModeModal();
 
-  const isInputEmpty = !field.value?.trim() && files.length === 0 && images.length === 0;
+  const isInputEmpty = !field.value?.trim() && items.length === 0 && images.length === 0;
+
+  const isKnowledgeCollectionAttached = (id: string): boolean =>
+    items.some((item) => item?.kind === 'collection' && item.collection.id === id);
+
+  const isKnowledgeFileAttached = (id: string): boolean =>
+    items.some((item) => item?.kind === 'file' && item.isFromKnowledge && item.file.id === id);
 
   const imagesForPreview = images.flatMap((image, index) =>
     image
@@ -192,9 +208,9 @@ export function FormChatInput<T extends FieldValues>({
           scrollEnabled
           textClassName='text-md-sm sm:text-md'
           accessoryTop={
-            <AttachedFilesList
-              onDeleteFilePress={onDeleteFilePress}
-              attachedFiles={attachedFiles}
+            <AttachedChatItems
+              onDeleteItemPress={onDeleteItemPress}
+              attachedItems={attachedItems}
               attachedImages={attachedImages}
               onDeleteImagePress={onDeleteImagePress}
               onImagePress={handleImagePress}
@@ -216,6 +232,10 @@ export function FormChatInput<T extends FieldValues>({
                     onFileUploaded={onFileUploaded}
                     disabled={isLoading}
                     onImageUploaded={onImageUploaded}
+                    isKnowledgeCollectionAttached={isKnowledgeCollectionAttached}
+                    isKnowledgeFileAttached={isKnowledgeFileAttached}
+                    onKnowledgeCollectionSelected={onKnowledgeCollectionSelected}
+                    onKnowledgeFileSelected={onKnowledgeFileSelected}
                   />
                   {config?.features.enableImageGeneration && (
                     <SelectOptionIcon

@@ -22,6 +22,7 @@ import {
   AppBottomSheetPropsType,
   AppBottomSheetKeyboardAwareScrollView,
   AppSpinner,
+  AttachedItem,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 import {
@@ -34,7 +35,6 @@ import { AttachedFile, FileData, FileType } from '@open-webui-react-native/share
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { getDocumentFormData } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
-import { AttachedKnowledge } from './components';
 import { UpsertFolderFormSchema } from './forms';
 
 export type UpsertFolderSheetMethods = {
@@ -68,7 +68,7 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
   const { data: folder, isLoading: isFolderLoading } = foldersApi.useGetFolder(folderId as string, {
     enabled: !!folderId,
   });
-  const { attachedFiles, handleFileUploaded, handleDeleteFile, resetAttachments } = useAttachedFiles();
+  const { attachedItems, handleFileUploaded, handleDeleteItem, resetAttachments } = useAttachedFiles();
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: new UpsertFolderFormSchema(),
@@ -90,7 +90,7 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
     }
   }, [folder]);
 
-  const files = useSelector(attachedFiles).flatMap((file) => (file ? [file] : []));
+  const files = useSelector(attachedItems).flatMap((item) => (item?.kind === 'file' ? [item.file] : []));
 
   const closeModal = (): void => sheetRef.current?.close();
 
@@ -181,8 +181,7 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
         : translate('TEXT_COLLECTION');
 
     return (
-      <AttachedKnowledge
-        index={index}
+      <AttachedItem
         disabled
         title={title}
         key={`${title}-${index}`}
@@ -190,7 +189,7 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
         iconName={isFile || item.isDocument ? 'file' : 'database'}
         onDeletePress={() =>
           isFile
-            ? handleDeleteFile(item.id)
+            ? handleDeleteItem(item.id)
             : setSelectedKnowledge((prev) => prev.filter((knowledge) => knowledge.id !== item.id))
         }
       />

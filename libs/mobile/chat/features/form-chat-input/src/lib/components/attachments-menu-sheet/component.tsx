@@ -1,14 +1,23 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
-import { ReactElement, useEffect, useRef } from 'react';
+import { Fragment, ReactElement, useEffect, useRef } from 'react';
+import {
+  AttachKnowledgeSheet,
+  AttachKnowledgeSheetMethods,
+} from '@open-webui-react-native/mobile/chat/features/attach-knowledge-sheet';
 import { fileSystemService } from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
 import {
   imagePickerService,
   ImagePickerSource,
 } from '@open-webui-react-native/mobile/shared/data-access/image-picker-service';
 import { ActionsBottomSheet, ActionSheetItemProps, IconButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { filesApi } from '@open-webui-react-native/shared/data-access/api';
-import { FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
+import { filesApi, Knowledge } from '@open-webui-react-native/shared/data-access/api';
+import {
+  AttachedKnowledgeCollection,
+  FileData,
+  FileType,
+  ImageData,
+} from '@open-webui-react-native/shared/data-access/common';
 import { getDocumentFormData } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
@@ -16,15 +25,24 @@ export interface AttachmentsMenuSheetProps {
   disabled?: boolean;
   onFileUploaded?: (file: FileData) => void;
   onImageUploaded?: (image: ImageData) => void;
+  isKnowledgeCollectionAttached: (id: string) => boolean;
+  isKnowledgeFileAttached: (id: string) => boolean;
+  onKnowledgeCollectionSelected: (collection: AttachedKnowledgeCollection) => void;
+  onKnowledgeFileSelected: (file: FileData) => void;
 }
 
 export function AttachmentsMenuSheet({
   disabled,
   onFileUploaded,
   onImageUploaded,
+  isKnowledgeCollectionAttached,
+  isKnowledgeFileAttached,
+  onKnowledgeCollectionSelected,
+  onKnowledgeFileSelected,
 }: AttachmentsMenuSheetProps): ReactElement {
   const translate = useTranslation('CHAT.FORM_CHAT_INPUT.ATTACHMENTS_ACTIONS_POPUP');
   const modalRef = useRef<BottomSheetModal>(null);
+  const attachKnowledgeSheetRef = useRef<AttachKnowledgeSheetMethods>(null);
   const {
     mutate: uploadFile,
     isPending: isFileUploading,
@@ -73,6 +91,29 @@ export function AttachmentsMenuSheet({
     uploadFile(getDocumentFormData(file));
   };
 
+  const handleAttachKnowledgePress = (): void => {
+    closeModal();
+    attachKnowledgeSheetRef.current?.present();
+  };
+
+  const handleSelectKnowledgeCollection = (knowledge: Knowledge): void => {
+    onKnowledgeCollectionSelected(
+      new AttachedKnowledgeCollection({
+        id: knowledge.id,
+        type: FileType.COLLECTION,
+        name: knowledge.name,
+        description: knowledge.description,
+        status: 'processed',
+      }),
+    );
+  };
+
+  // NOTE: the file already carries everything needed (id, meta, collectionName) straight from
+  // GET /knowledge/{id}/files — no need to reconstruct it, unlike the collection case below.
+  const handleSelectKnowledgeFile = (_knowledge: Knowledge, file: FileData): void => {
+    onKnowledgeFileSelected(file);
+  };
+
   const actions: Array<ActionSheetItemProps> = [
     {
       title: translate('TEXT_CAPTURE'),
@@ -89,6 +130,11 @@ export function AttachmentsMenuSheet({
       iconName: 'uploadFile',
       onPress: handlePickFile,
       isLoading: isFileUploading,
+    },
+    {
+      title: translate('TEXT_ATTACH_KNOWLEDGE'),
+      iconName: 'database',
+      onPress: handleAttachKnowledgePress,
     },
   ];
 
@@ -107,8 +153,19 @@ export function AttachmentsMenuSheet({
     }
   }, [isFileUploaded]);
 
-  return <ActionsBottomSheet
-    ref={modalRef}
-    renderTrigger={renderTrigger}
-    actions={actions} />;
+  return (
+    <Fragment>
+      <ActionsBottomSheet
+        ref={modalRef}
+        renderTrigger={renderTrigger}
+        actions={actions} />
+      <AttachKnowledgeSheet
+        ref={attachKnowledgeSheetRef}
+        isCollectionAttached={isKnowledgeCollectionAttached}
+        isFileAttached={isKnowledgeFileAttached}
+        onSelectCollection={handleSelectKnowledgeCollection}
+        onSelectFile={handleSelectKnowledgeFile}
+      />
+    </Fragment>
+  );
 }
