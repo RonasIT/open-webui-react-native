@@ -79,20 +79,20 @@ function ChatUserMessageComponent({
         {formatDateTime(timestamp, 'chat-relative-time')}
       </AppText>
       <View className='gap-6'>
-        {(files ?? []).flatMap((file, index) => {
+        {(files ?? []).map((file, index) => {
           if (file.type === FileType.FILE) {
-            return [
+            return (
               <AttachedFileItem
                 key={index}
                 file={file.file}
                 subtitle={formatFileSize(file.file.meta.size)}
                 className='max-w-[70%] self-end'
-              />,
-            ];
+              />
+            );
           }
 
           if (file.type === FileType.COLLECTION) {
-            return [
+            return (
               <AttachedItem
                 key={index}
                 disabled
@@ -100,11 +100,11 @@ function ChatUserMessageComponent({
                 subTitle={translateAttachedChatItems('TEXT_COLLECTION')}
                 iconName='database'
                 className='max-w-[70%] self-end'
-              />,
-            ];
+              />
+            );
           }
 
-          return [];
+          return null;
         })}
         <ChatImagesGroup
           images={attachedImages}

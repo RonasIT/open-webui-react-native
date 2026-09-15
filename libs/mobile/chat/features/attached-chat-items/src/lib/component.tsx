@@ -32,45 +32,39 @@ export function AttachedChatItems({
 
   return (
     <View className='gap-8 mb-[8]'>
-      {items.flatMap((item) => {
+      {items.map((item) => {
         if (!item) {
-          return [];
+          return null;
         }
 
-        if (item.kind === 'collection') {
-          return [
-            <AttachedItem
-              key={item.collection.id}
-              disabled
-              title={item.collection.name}
-              subTitle={translate('TEXT_COLLECTION')}
-              iconName='database'
-              onDeletePress={() => onDeleteItemPress(item.collection.id)}
-            />,
-          ];
-        }
-
-        return [
+        return item.kind === 'collection' ? (
+          <AttachedItem
+            key={item.collection.id}
+            disabled
+            title={item.collection.name}
+            subTitle={translate('TEXT_COLLECTION')}
+            iconName='database'
+            onDeletePress={() => onDeleteItemPress(item.collection.id)}
+          />
+        ) : (
           <AttachedFileItem
             key={item.file.id}
             file={item.file}
             subtitle={item.isFromKnowledge ? translate('TEXT_FILE') : formatFileSize(item.file.meta.size)}
             onDeleteFilePress={onDeleteItemPress}
-          />,
-        ];
+          />
+        );
       })}
       <View className='gap-8 flex-row flex-wrap'>
-        {images.flatMap((image, index) =>
-          image
-            ? [
-                <AttachedImageItem
-                  key={image.uri}
-                  onImagePress={() => onImagePress(index)}
-                  onDeleteImagePress={onDeleteImagePress}
-                  image={image}
-                />,
-              ]
-            : [],
+        {images.map((image, index) =>
+          image ? (
+            <AttachedImageItem
+              key={image.uri}
+              onImagePress={() => onImagePress(index)}
+              onDeleteImagePress={onDeleteImagePress}
+              image={image}
+            />
+          ) : null,
         )}
       </View>
     </View>
