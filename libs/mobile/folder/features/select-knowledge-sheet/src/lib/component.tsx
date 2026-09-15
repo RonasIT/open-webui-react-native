@@ -3,7 +3,6 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } from 'react';
 import { SearchableListBottomSheet } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { Knowledge, knowledgeApi } from '@open-webui-react-native/shared/data-access/api';
-import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
 import { KnowledgeRow } from './components';
 
 export type SelectKnowledgeSheetMethods = {
@@ -17,17 +16,18 @@ export type SelectKnowledgeSheetProps = {
   ref?: SelectKnowledgeSheetRef;
 };
 
+const matchesKnowledgeQuery = (knowledge: Knowledge, query: string): boolean =>
+  new RegExp(query, 'i').test(knowledge.name);
+
+const extractKnowledgeId = (knowledge: Knowledge): string => knowledge.id;
+
 export function SelectKnowledgeSheet({ onConfirm, ref }: SelectKnowledgeSheetProps): ReactElement {
   const translate = useTranslation('FOLDER.SELECT_KNOWLEDGE_SHEET');
   const sheetRef = useRef<BottomSheetModal>(null);
 
   const [selectedKnowledge, setSelectedKnowledge] = useState<Array<Knowledge>>([]);
 
-  const { query, setQuery } = useDebouncedQuery();
-
   const { data: knowledge, isLoading } = knowledgeApi.useGetKnowledge();
-
-  const filteredData = (knowledge ?? []).filter((item) => new RegExp(query, 'i').test(item.name));
 
   const closeModal = (): void => sheetRef.current?.close();
 
@@ -38,27 +38,29 @@ export function SelectKnowledgeSheet({ onConfirm, ref }: SelectKnowledgeSheetPro
     closeModal();
   };
 
-  useImperativeHandle(ref, () => {
-    return {
-      present: (selectedKnowledge: Array<Knowledge>) => {
-        setSelectedKnowledge(selectedKnowledge);
-        openModal();
-      },
-    };
-  }, []);
+  const handlePresent = (initialSelectedKnowledge: Array<Knowledge>): void => {
+    setSelectedKnowledge(initialSelectedKnowledge);
+    openModal();
+  };
+
+  useImperativeHandle(ref, () => ({ present: handlePresent }), []);
+
+  const toggleKnowledgeSelection = (item: Knowledge): void => {
+    setSelectedKnowledge((prev) =>
+      prev.some((knowledge) => knowledge.id === item.id)
+        ? prev.filter((knowledge) => knowledge.id !== item.id)
+        : [...prev, item],
+    );
+  };
 
   const renderItem = ({ item }: { item: Knowledge }): ReactElement => {
     const isSelected = selectedKnowledge.some((knowledge) => knowledge.id === item.id);
+    const handlePress = (): void => toggleKnowledgeSelection(item);
 
-    return (
-      <KnowledgeRow
-        item={item}
-        onPress={() =>
-          setSelectedKnowledge((prev) => (isSelected ? [...prev.filter((i) => i.id !== item.id)] : [...prev, item]))
-        }
-        isSelected={isSelected}
-      />
-    );
+    return <KnowledgeRow
+      item={item}
+      onPress={handlePress}
+      isSelected={isSelected} />;
   };
 
   return (
@@ -66,15 +68,14 @@ export function SelectKnowledgeSheet({ onConfirm, ref }: SelectKnowledgeSheetPro
       ref={sheetRef}
       title={translate('TEXT_SELECT_KNOWLEDGE')}
       onGoBack={closeModal}
-      onConfirmPress={handleConfirm}
-      searchQuery={query}
-      onSearchQueryChange={setQuery}
+      headerProps={{ onConfirmPress: handleConfirm }}
       searchPlaceholder={translate('TEXT_SEARCH_KNOWLEDGE')}
       isLoading={isLoading}
       emptyDescription={translate('TEXT_NO_KNOWLEDGE')}
-      data={filteredData}
+      data={knowledge ?? []}
+      searchPredicate={matchesKnowledgeQuery}
       renderItem={renderItem}
-      keyExtractor={(item) => item.id}
+      keyExtractor={extractKnowledgeId}
     />
   );
 }

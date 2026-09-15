@@ -4,7 +4,6 @@ import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } fro
 import { SearchableListBottomSheet } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { Knowledge, knowledgeApi } from '@open-webui-react-native/shared/data-access/api';
 import { FileData } from '@open-webui-react-native/shared/data-access/common';
-import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
 import { KnowledgeBaseRow, KnowledgeFileRow } from './components';
 
 export type AttachKnowledgeSheetMethods = {
@@ -21,6 +20,13 @@ export interface AttachKnowledgeSheetProps {
   onSelectFile: (knowledge: Knowledge, file: FileData) => void;
 }
 
+const matchesKnowledgeQuery = (knowledge: Knowledge, query: string): boolean =>
+  new RegExp(query, 'i').test(knowledge.name);
+
+const matchesFileQuery = (file: FileData, query: string): boolean => new RegExp(query, 'i').test(file.meta.name);
+
+const extractId = (item: { id: string }): string => item.id;
+
 export function AttachKnowledgeSheet({
   ref,
   isCollectionAttached,
@@ -32,8 +38,6 @@ export function AttachKnowledgeSheet({
   const sheetRef = useRef<BottomSheetModal>(null);
 
   const [openedKnowledge, setOpenedKnowledge] = useState<Knowledge | null>(null);
-
-  const { query, setQuery } = useDebouncedQuery();
 
   const { data: knowledgeList, isLoading: isKnowledgeLoading } = knowledgeApi.useGetKnowledge();
   const {
@@ -47,7 +51,6 @@ export function AttachKnowledgeSheet({
   const closeModal = (): void => {
     sheetRef.current?.close();
     setOpenedKnowledge(null);
-    setQuery('');
   };
 
   const openModal = (): void => sheetRef.current?.present();
@@ -57,7 +60,6 @@ export function AttachKnowledgeSheet({
   const handleGoBack = (): void => {
     if (openedKnowledge) {
       setOpenedKnowledge(null);
-      setQuery('');
 
       return;
     }
@@ -65,10 +67,7 @@ export function AttachKnowledgeSheet({
     closeModal();
   };
 
-  const handleShowFilesPress = (knowledge: Knowledge): void => {
-    setQuery('');
-    setOpenedKnowledge(knowledge);
-  };
+  const handleShowFiles = (knowledge: Knowledge): void => setOpenedKnowledge(knowledge);
 
   const handleSelectCollection = (knowledge: Knowledge): void => {
     onSelectCollection(knowledge);
@@ -80,56 +79,67 @@ export function AttachKnowledgeSheet({
     closeModal();
   };
 
+  const handleFetchNextPage = (): void => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
   if (openedKnowledge) {
-    const files = (knowledgeFiles ?? []).filter((file) => new RegExp(query, 'i').test(file.meta.name));
+    const renderFileItem = ({ item }: { item: FileData }): ReactElement => {
+      const handlePress = (): void => handleSelectFile(openedKnowledge, item);
+
+      return <KnowledgeFileRow
+        item={item}
+        isSelected={isFileAttached(item.id)}
+        onPress={handlePress} />;
+    };
 
     return (
       <SearchableListBottomSheet
         ref={sheetRef}
         title={openedKnowledge.name}
         onGoBack={handleGoBack}
-        searchQuery={query}
-        onSearchQueryChange={setQuery}
         searchPlaceholder={translate('TEXT_SEARCH_FILES')}
+        searchResetKey={openedKnowledge.id}
         isLoading={isFilesLoading}
         emptyDescription={translate('TEXT_NO_FILES')}
-        data={files}
-        keyExtractor={(item) => item.id}
-        onEndReached={() => hasNextPage && fetchNextPage()}
-        isFetchingNextPage={isFetchingNextPage}
-        renderItem={({ item }) => (
-          <KnowledgeFileRow
-            item={item}
-            isSelected={isFileAttached(item.id)}
-            onPress={() => handleSelectFile(openedKnowledge, item)}
-          />
-        )}
+        data={knowledgeFiles ?? []}
+        searchPredicate={matchesFileQuery}
+        keyExtractor={extractId}
+        pagination={{ onEndReached: handleFetchNextPage, isFetchingNextPage }}
+        renderItem={renderFileItem}
       />
     );
   }
 
-  const filteredKnowledge = (knowledgeList ?? []).filter((item) => new RegExp(query, 'i').test(item.name));
+  const renderKnowledgeItem = ({ item }: { item: Knowledge }): ReactElement => {
+    const handlePress = (): void => handleSelectCollection(item);
+    const handleShowFilesPress = (): void => handleShowFiles(item);
+
+    return (
+      <KnowledgeBaseRow
+        item={item}
+        isSelected={isCollectionAttached(item.id)}
+        onPress={handlePress}
+        onShowFilesPress={handleShowFilesPress}
+      />
+    );
+  };
 
   return (
     <SearchableListBottomSheet
       ref={sheetRef}
       title={translate('TEXT_TITLE')}
       onGoBack={closeModal}
-      searchQuery={query}
-      onSearchQueryChange={setQuery}
       searchPlaceholder={translate('TEXT_SEARCH_KNOWLEDGE')}
+      searchResetKey='root'
       isLoading={isKnowledgeLoading}
       emptyDescription={translate('TEXT_NO_KNOWLEDGE')}
-      data={filteredKnowledge}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
-        <KnowledgeBaseRow
-          item={item}
-          isSelected={isCollectionAttached(item.id)}
-          onPress={() => handleSelectCollection(item)}
-          onShowFilesPress={() => handleShowFilesPress(item)}
-        />
-      )}
+      data={knowledgeList ?? []}
+      searchPredicate={matchesKnowledgeQuery}
+      keyExtractor={extractId}
+      renderItem={renderKnowledgeItem}
     />
   );
 }
