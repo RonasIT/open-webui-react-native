@@ -30,7 +30,6 @@ import {
   ChatResponse,
   CompleteChatRequest,
   CompleteChatResponse,
-  CompletedChat,
   CreateNewChatRequest,
   GetArchivedChatListRequest,
   MoveChatToFolderRequest,
@@ -553,15 +552,6 @@ function useCompleteChat(
   });
 }
 
-function useCompletedChat(
-  options?: UseMutationOptions<CompletedChat, AxiosError, CompletedChat>,
-): UseMutationResult<CompletedChat, AxiosError, CompletedChat> {
-  return useMutation({
-    mutationFn: (params) => chatService.handleCompletedChat(params),
-    ...options,
-  });
-}
-
 function useShareChat({
   onSuccess,
   ...options
@@ -818,7 +808,6 @@ export const chatApi = {
   useSearchInfinite,
   useCreateNewChat,
   useCompleteChat,
-  useCompletedChat,
   useShareChat,
   useDeleteShareChatLink,
   useArchiveChat,

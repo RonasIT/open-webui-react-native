@@ -141,8 +141,6 @@ export function prepareCompleteChatPayload({
     return [...systemMessage, ...historyMessages];
   };
 
-  // Images go in message content as image_url parts — RAG only wants uploaded files and
-  // knowledge collections (the backend looks up type:collection by id).
   const files = getCompletionFiles(messages);
 
   const historyMessagesCount = Object.keys(chatResponse?.chat.history.messages ?? {}).length;

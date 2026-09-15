@@ -1,0 +1,115 @@
+{
+  "SHARED": {
+    "VALIDATION": {
+      "TEXT_INVALID_EMAIL": "Te rugăm să introduci o adresă de email validă",
+      "TEXT_REQUIRED_EMAIL": "Te rugăm să introduci adresa de email",
+      "TEXT_REQUIRED_PASSWORD": "Te rugăm să introduci parola",
+      "TEXT_INVALID_URL": "Te rugăm să introduci un URL de server valid, ex. https://your.domain sau http://192.168.1.10:3000",
+      "TEXT_REQUIRED_FOLDER_NAME": "Te rugăm să introduci un nume de folder",
+      "TEXT_REQUIRED_MESSAGE": "Te rugăm să introduci un mesaj",
+      "TEXT_REQUIRED_PROFILE_NAME": "Te rugăm să introduci un nume de profil",
+      "TEXT_REQUIRED_CURRENT_PASSWORD": "Te rugăm să introduci parola actuală",
+      "TEXT_REQUIRED_NEW_PASSWORD": "Te rugăm să introduci o parolă nouă",
+      "TEXT_REQUIRED_CONFIRM_PASSWORD": "Te rugăm să confirmi parola nouă",
+      "TEXT_PASSWORDS_DO_NOT_MATCH": "Parolele nu coincid",
+      "TEXT_PASSWORD_TOO_SHORT": "Parola trebuie să aibă cel puțin 8 caractere"
+    },
+    "COMMON": {
+      "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "Funcția nu este încă implementată.",
+      "TEXT_NEW_CHAT": "Conversație nouă",
+      "BUTTON_CANCEL": "Anulează",
+      "BUTTON_CONFIRM": "Confirmă",
+      "BUTTON_OPEN_SETTINGS": "Deschide setările",
+      "TEXT_UNABLE_TO_OPEN_SETTINGS": "Nu s-au putut deschide setările",
+      "TEXT_SETTINGS": "Setări",
+      "TEXT_DISABLED_IN_OFFLINE_MODE": "Funcțiile sunt dezactivate în modul offline",
+      "ACTIONS_BOTTOM_SHEET": {
+        "BUTTON_CANCEL": "Anulează"
+      },
+      "TEXT_COPIED_TO_CLIPBOARD": "Copiat în clipboard"
+    },
+    "API_ERRORS": {
+      "TEXT_SOMETHING_WENT_WRONG": "Ceva nu a mers bine",
+      "TEXT_YOUR_SESSION_HAS_EXPIRED": "Sesiunea ta a expirat. Te rugăm să te conectezi din nou",
+      "TEXT_FORBIDDEN_ERROR": "Nu ai acces la această acțiune",
+      "TEXT_INTERNAL_SERVER_ERROR": "Eroare la încărcarea datelor",
+      "TEXT_NOT_FOUND_ERROR": "Datele nu au fost găsite"
+    },
+    "DATES": {
+      "TEXT_TODAY": "Astăzi",
+      "TEXT_YESTERDAY": "Ieri",
+      "TEXT_LAST_DAYS": "Ultimele {{days}} zile",
+      "TEXT_AT_TIME": "la {{time}}",
+      "TEXT_TODAY_TIME": "Astăzi {{time}}",
+      "TEXT_YESTERDAY_TIME": "Ieri {{time}}"
+    },
+    "CODE_BLOCK": {
+      "TEXT_COPIED_TO_CLIPBOARD": "Copiat în clipboard",
+      "TEXT_COPY": "Copiază"
+    },
+    "SOCKET_SERVICE": {
+      "TEXT_CONNECTION_ERROR": "Eroare de conexiune"
+    },
+    "IMAGE_PICKER_SERVICE": {
+      "TEXT_ACCESS_DENIED": "Acces refuzat"
+    },
+    "ACTION_BUTTONS_MODAL": {
+      "BUTTON_CONFIRM": "Confirmă",
+      "BUTTON_CANCEL": "Anulează",
+      "TEXT_TITLE_CAN_NOT_BE_EMPTY": "Titlul nu poate fi gol"
+    },
+    "MEDIA_LIBRARY_SERVICE": {
+      "TEXT_SUCCESSFULLY_SAVED": "Imaginea a fost salvată cu succes",
+      "TEXT_ERROR_DURING_SAVING": "A apărut o eroare la salvarea imaginii",
+      "TEXT_SETTINGS": "Setări",
+      "TEXT_SETTINGS_MESSAGE": "Permite accesul la cameră din setări. Settings > Open Web UI > Photos > All Photos"
+    },
+    "FILE_SYSTEM_SERVICE": {
+      "TEXT_SHARE": "Partajează {{fileName}}",
+      "TEXT_SHARING_IS_NOT_AVAILABLE": "Partajarea nu este disponibilă pe acest dispozitiv"
+    },
+    "USE_AUDIO_RECORDER": {
+      "TEXT_NO_ACCESS": "Fără acces",
+      "TEXT_APP_NEEDS_ACCESS": "Aplicația are nevoie de acces la microfonul dispozitivului"
+    },
+    "NO_CONNECTION_BANNER": {
+      "TEXT_YOU_ARE_OFFLINE": "Ești offline!"
+    },
+    "PRESSABLE_SEARCH_INPUT": {
+      "TEXT_SEARCH_CHATS": "Caută conversații"
+    },
+    "CHAT_ACTIONS_MENU_SHEET": {
+      "TEXT_PIN": "Fixează",
+      "TEXT_UNPIN": "Anulează fixarea",
+      "TEXT_RENAME": "Redenumește",
+      "TEXT_CLONE": "Clonează",
+      "TEXT_ARCHIVE": "Arhivează",
+      "TEXT_RESTORE": "Restaurează",
+      "TEXT_SHARE": "Partajează",
+      "TEXT_DOWNLOAD": "Descarcă",
+      "TEXT_DELETE": "Șterge",
+      "TEXT_KEEP": "Păstrează",
+      "TEXT_RENAME_CHAT": "Redenumește conversația",
+      "TEXT_DELETE_CHAT": "Ștergi conversația?",
+      "TEXT_THIS_WILL_DELETE": "Aceasta va șterge {{name}}",
+      "TEXT_CLONE_OF": "Copie a {{title}}",
+      "TEXT_CHAT_ACTIONS": "Acțiuni conversație",
+      "TEXT_MOVE_TO_FOLDER": "Mută în folder",
+      "DOWNLOAD_CHAT_OPTIONS_SHEET": {
+        "TEXT_EXPORT_CHAT_JSON": "Exportă conversația (.json)",
+        "TEXT_PLAIN_TEXT": "Text simplu (.txt)",
+        "TEXT_PDF_DOCUMENT": "Document PDF (.pdf)"
+      },
+      "MOVE_CHAT_TO_FOLDER_MODAL": {
+        "TEXT_SEARCH_FOLDER": "Caută folder",
+        "TEXT_NO_FOLDERS": "Nu există foldere",
+        "TEXT_CREATE_NEW_FOLDER": "Creează folder",
+        "TEXT_NO_FOLDER": "Fără folder"
+      }
+    },
+    "SEARCH_INPUT": {
+      "BUTTON_CANCEL": "Anulează",
+      "TEXT_SEARCH_CHATS": "Caută conversații"
+    }
+  }
+}

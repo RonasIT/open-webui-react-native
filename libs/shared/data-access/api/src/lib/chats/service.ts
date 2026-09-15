@@ -8,7 +8,6 @@ import {
   ChatResponse,
   CompleteChatRequest,
   CompleteChatResponse,
-  CompletedChat,
   CreateNewChatRequest,
   GetArchivedChatListRequest,
   GetChatListRequest,
@@ -127,14 +126,6 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
       `${chatServiceConfig.versionedRoute}/${chatId}/messages/${messageId}/resolve`,
       request,
     );
-  }
-
-  public async handleCompletedChat(params: CompletedChat): Promise<CompletedChat> {
-    const request = instanceToPlain<CompletedChat>(params);
-
-    const response = await getApiService().post<CompletedChat>(`${chatServiceConfig.route}/completed`, request);
-
-    return plainToInstance(CompletedChat, response);
   }
 
   public async shareChat(chatId: string): Promise<ShareChatResponse> {

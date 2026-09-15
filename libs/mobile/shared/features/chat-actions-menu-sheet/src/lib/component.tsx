@@ -12,6 +12,7 @@ import {
   UpsertFolderSheetMethods,
 } from '@open-webui-react-native/mobile/folder/features/upsert-folder-sheet';
 import { DownloadChatOptionsSheet } from '@open-webui-react-native/mobile/shared/features/download-chat-options-sheet';
+import { useFoldersEnabled } from '@open-webui-react-native/mobile/shared/features/use-folders-enabled';
 import {
   ActionButtonsModal,
   ActionButtonsModalMethods,
@@ -64,7 +65,8 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: Chat
   const { mutateAsync: cloneChat, isPending: isCloning } = chatApi.useCloneChat();
   const { mutateAsync: archiveChat, isPending: isArchiving } = chatApi.useArchiveChat();
   const { mutateAsync: unarchiveChat, isPending: isUnarchiving } = chatApi.useUnarchiveChat();
-  const { data: folders } = foldersApi.useGetFolders();
+  const canUseFolders = useFoldersEnabled();
+  const { data: folders } = foldersApi.useGetFolders({ enabled: canUseFolders });
 
   const [activeChat, setActiveChat] = useState<ChatListItem | null>(null);
   const [folderId, setFolderId] = useState<string | undefined>(undefined);
@@ -105,6 +107,7 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: Chat
     noFolderText: translate('MOVE_CHAT_TO_FOLDER_MODAL.TEXT_NO_FOLDER'),
     createFolderText: translate('MOVE_CHAT_TO_FOLDER_MODAL.TEXT_CREATE_NEW_FOLDER'),
     onCreateFolderPress: openCreateFolderModal,
+    canCreateFolder: canUseFolders,
   });
 
   const handleAction = useMemo(
@@ -236,7 +239,7 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: Chat
   };
 
   const actions: Array<ActionSheetItemProps> = compact([
-    {
+    canUseFolders && {
       title: translate('TEXT_MOVE_TO_FOLDER'),
       iconName: 'folderPlus',
       onPress: () => handleAction(ChatAction.MOVE_TO_FOLDER),
