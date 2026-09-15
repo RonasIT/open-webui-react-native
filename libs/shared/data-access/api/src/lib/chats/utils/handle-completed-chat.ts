@@ -1,10 +1,11 @@
-import { merge, uniqBy } from 'lodash-es';
+import { merge } from 'lodash-es';
 import { captureApiError } from '@open-webui-react-native/shared/data-access/api-client';
-import { AttachedFile, FileType, MessageSource } from '@open-webui-react-native/shared/data-access/common';
+import { MessageSource } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { chatQueriesKeys } from '../chat-queries-keys';
 import { Chat, ChatResponse, History, Message } from '../models';
 import { chatService } from '../service';
+import { getCompletionFiles } from './get-completion-files';
 import { prepareCompletedChatPayload } from './prepare-completed-chat-payload';
 import { isTemporaryChatId } from './temporary-chat-id';
 
@@ -52,11 +53,7 @@ export const handleCompletedChat = async (
     message,
   );
 
-  // Only files should be included in `files` field
-  const files = uniqBy(
-    chat.messages.flatMap((msg) => msg.files ?? []).filter((file): file is AttachedFile => file.type === FileType.FILE),
-    'id',
-  );
+  const files = getCompletionFiles(chat.messages);
 
   const updateChatPayload = new Chat({
     messages: updatedMessages,

@@ -1,12 +1,10 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { ReactElement, useEffect } from 'react';
+import { ReactElement } from 'react';
 import { Keyboard } from 'react-native';
-import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
 import { AppBottomSheet, AppBottomSheetPropsType } from '../bottom-sheet';
-import { AppFlashList, AppFlashListProps } from '../flash-list';
-import { AppBottomSheetKeyboardAwareScrollView } from '../keyboard-aware-scroll-view';
+import { AppBottomSheetFlashList } from '../bottom-sheet-flat-list';
+import { AppFlashListProps } from '../flash-list';
 import { ListEmptyComponent } from '../list-empty-component';
-import { AppSafeAreaView } from '../safe-area-view';
 import { SearchInput } from '../search-input';
 import { SheetHeader, SheetHeaderProps } from '../sheet-header';
 import { AppSpinner } from '../spinner';
@@ -20,19 +18,17 @@ export interface SearchableListBottomSheetPagination {
 }
 
 export type SearchableListBottomSheetProps<TItem> = Partial<Omit<AppBottomSheetPropsType, 'ref' | 'content'>> &
-  Pick<AppFlashListProps<TItem>, 'data' | 'renderItem' | 'keyExtractor'> & {
+  Pick<AppFlashListProps<TItem>, 'data' | 'renderItem' | 'keyExtractor' | 'extraData'> & {
     ref?: SearchableListBottomSheetRef;
     title: SheetHeaderProps['title'];
     onGoBack: () => void;
     headerProps?: Pick<SheetHeaderProps, 'accessoryLeft' | 'accessoryRight' | 'onConfirmPress' | 'confirmButtonProps'>;
+    query: string;
+    onQueryChange: (query: string) => void;
     searchPlaceholder?: string;
     isLoading?: boolean;
     emptyDescription: string;
-    searchPredicate: (item: TItem, query: string) => boolean;
     pagination?: SearchableListBottomSheetPagination;
-    // NOTE: clears the search field whenever this value changes, without remounting the sheet
-    // itself (a `key` would also tear down and recreate the underlying BottomSheetModal, closing it).
-    searchResetKey?: string | number;
   };
 
 export function SearchableListBottomSheet<TItem>({
@@ -40,30 +36,22 @@ export function SearchableListBottomSheet<TItem>({
   title,
   onGoBack,
   headerProps,
+  query,
+  onQueryChange,
   searchPlaceholder,
   isLoading,
   emptyDescription,
   data,
-  searchPredicate,
   renderItem,
   keyExtractor,
+  extraData,
   pagination,
-  searchResetKey,
   ...restProps
 }: SearchableListBottomSheetProps<TItem>): ReactElement {
-  const { query, setQuery } = useDebouncedQuery();
-
-  useEffect(() => {
-    setQuery('');
-     
-  }, [searchResetKey]);
-
   const handleCancelSearch = (): void => {
-    setQuery('');
+    onQueryChange('');
     Keyboard.dismiss();
   };
-
-  const filteredData = (data ?? []).filter((item) => searchPredicate(item, query));
 
   return (
     <AppBottomSheet
@@ -82,7 +70,7 @@ export function SearchableListBottomSheet<TItem>({
             {...headerProps} />
           <SearchInput
             value={query}
-            onChangeText={setQuery}
+            onChangeText={onQueryChange}
             isInBottomSheet
             onCancel={handleCancelSearch}
             placeholder={searchPlaceholder}
@@ -92,26 +80,23 @@ export function SearchableListBottomSheet<TItem>({
               <AppSpinner isFullScreen />
             </View>
           ) : (
-            <AppBottomSheetKeyboardAwareScrollView>
-              <AppSafeAreaView edges={['bottom']}>
-                <AppFlashList
-                  data={filteredData}
-                  renderItem={renderItem}
-                  keyExtractor={keyExtractor}
-                  className='pb-16'
-                  onEndReached={pagination?.onEndReached}
-                  onEndReachedThreshold={0.5}
-                  ListEmptyComponent={<ListEmptyComponent containerClassName='mt-16' description={emptyDescription} />}
-                  ListFooterComponent={
-                    pagination?.isFetchingNextPage ? (
-                      <View className='py-16'>
-                        <AppSpinner />
-                      </View>
-                    ) : null
-                  }
-                />
-              </AppSafeAreaView>
-            </AppBottomSheetKeyboardAwareScrollView>
+            <AppBottomSheetFlashList
+              data={data}
+              extraData={extraData}
+              renderItem={renderItem}
+              keyExtractor={keyExtractor}
+              className='flex-1'
+              onEndReached={pagination?.onEndReached}
+              onEndReachedThreshold={0.5}
+              ListEmptyComponent={<ListEmptyComponent containerClassName='mt-16' description={emptyDescription} />}
+              ListFooterComponent={
+                pagination?.isFetchingNextPage ? (
+                  <View className='py-16'>
+                    <AppSpinner />
+                  </View>
+                ) : null
+              }
+            />
           )}
         </View>
       }

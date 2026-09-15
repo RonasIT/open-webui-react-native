@@ -4,6 +4,7 @@ import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } fro
 import { SearchableListBottomSheet } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { Knowledge, knowledgeApi } from '@open-webui-react-native/shared/data-access/api';
 import { FileData } from '@open-webui-react-native/shared/data-access/common';
+import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
 import { KnowledgeBaseRow, KnowledgeFileRow } from './components';
 
 export type AttachKnowledgeSheetMethods = {
@@ -20,11 +21,6 @@ export interface AttachKnowledgeSheetProps {
   onSelectFile: (knowledge: Knowledge, file: FileData) => void;
 }
 
-const matchesKnowledgeQuery = (knowledge: Knowledge, query: string): boolean =>
-  new RegExp(query, 'i').test(knowledge.name);
-
-const matchesFileQuery = (file: FileData, query: string): boolean => new RegExp(query, 'i').test(file.meta.name);
-
 const extractId = (item: { id: string }): string => item.id;
 
 export function AttachKnowledgeSheet({
@@ -36,30 +32,42 @@ export function AttachKnowledgeSheet({
 }: AttachKnowledgeSheetProps): ReactElement {
   const translate = useTranslation('CHAT.ATTACH_KNOWLEDGE_SHEET');
   const sheetRef = useRef<BottomSheetModal>(null);
+  const { query, setQuery, debouncedQuery } = useDebouncedQuery({ delay: 300 });
 
   const [openedKnowledge, setOpenedKnowledge] = useState<Knowledge | null>(null);
 
-  const { data: knowledgeList, isLoading: isKnowledgeLoading } = knowledgeApi.useGetKnowledge();
+  const {
+    data: knowledgeList,
+    isLoading: isKnowledgeLoading,
+    fetchNextPage: fetchNextKnowledgePage,
+    hasNextPage: hasNextKnowledgePage,
+    isFetchingNextPage: isFetchingNextKnowledgePage,
+  } = knowledgeApi.useSearchKnowledge(debouncedQuery);
   const {
     data: knowledgeFiles,
     isLoading: isFilesLoading,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = knowledgeApi.useGetKnowledgeFiles(openedKnowledge?.id);
+    fetchNextPage: fetchNextFilesPage,
+    hasNextPage: hasNextFilesPage,
+    isFetchingNextPage: isFetchingNextFilesPage,
+  } = knowledgeApi.useGetKnowledgeFiles(openedKnowledge?.id, debouncedQuery);
 
   const closeModal = (): void => {
     sheetRef.current?.close();
     setOpenedKnowledge(null);
+    setQuery('');
   };
 
-  const openModal = (): void => sheetRef.current?.present();
+  const openModal = (): void => {
+    setQuery('');
+    sheetRef.current?.present();
+  };
 
   useImperativeHandle(ref, () => ({ present: openModal }), []);
 
   const handleGoBack = (): void => {
     if (openedKnowledge) {
       setOpenedKnowledge(null);
+      setQuery('');
 
       return;
     }
@@ -67,7 +75,10 @@ export function AttachKnowledgeSheet({
     closeModal();
   };
 
-  const handleShowFiles = (knowledge: Knowledge): void => setOpenedKnowledge(knowledge);
+  const handleShowFiles = (knowledge: Knowledge): void => {
+    setQuery('');
+    setOpenedKnowledge(knowledge);
+  };
 
   const handleSelectCollection = (knowledge: Knowledge): void => {
     onSelectCollection(knowledge);
@@ -79,9 +90,15 @@ export function AttachKnowledgeSheet({
     closeModal();
   };
 
-  const handleFetchNextPage = (): void => {
-    if (hasNextPage) {
-      fetchNextPage();
+  const handleFetchNextKnowledgePage = (): void => {
+    if (hasNextKnowledgePage) {
+      fetchNextKnowledgePage();
+    }
+  };
+
+  const handleFetchNextFilesPage = (): void => {
+    if (hasNextFilesPage) {
+      fetchNextFilesPage();
     }
   };
 
@@ -100,14 +117,14 @@ export function AttachKnowledgeSheet({
         ref={sheetRef}
         title={openedKnowledge.name}
         onGoBack={handleGoBack}
+        query={query}
+        onQueryChange={setQuery}
         searchPlaceholder={translate('TEXT_SEARCH_FILES')}
-        searchResetKey={openedKnowledge.id}
         isLoading={isFilesLoading}
         emptyDescription={translate('TEXT_NO_FILES')}
         data={knowledgeFiles ?? []}
-        searchPredicate={matchesFileQuery}
         keyExtractor={extractId}
-        pagination={{ onEndReached: handleFetchNextPage, isFetchingNextPage }}
+        pagination={{ onEndReached: handleFetchNextFilesPage, isFetchingNextPage: isFetchingNextFilesPage }}
         renderItem={renderFileItem}
       />
     );
@@ -132,13 +149,14 @@ export function AttachKnowledgeSheet({
       ref={sheetRef}
       title={translate('TEXT_TITLE')}
       onGoBack={closeModal}
+      query={query}
+      onQueryChange={setQuery}
       searchPlaceholder={translate('TEXT_SEARCH_KNOWLEDGE')}
-      searchResetKey='root'
       isLoading={isKnowledgeLoading}
       emptyDescription={translate('TEXT_NO_KNOWLEDGE')}
       data={knowledgeList ?? []}
-      searchPredicate={matchesKnowledgeQuery}
       keyExtractor={extractId}
+      pagination={{ onEndReached: handleFetchNextKnowledgePage, isFetchingNextPage: isFetchingNextKnowledgePage }}
       renderItem={renderKnowledgeItem}
     />
   );

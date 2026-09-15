@@ -13,23 +13,21 @@ class KnowledgeService extends EntityPromiseService<Knowledge> {
     });
   }
 
-  public async getKnowledge(): Promise<Array<Knowledge>> {
-    const response = await getApiService().get<KnowledgeResponse>(`${knowledgeApiConfig.route}/`);
-
-    const transformed = plainToInstance(KnowledgeResponse, response, {
-      excludeExtraneousValues: true,
+  public async searchKnowledge(page: number, query?: string): Promise<KnowledgeResponse> {
+    const response = await getApiService().get<KnowledgeResponse>(`${knowledgeApiConfig.route}/search`, {
+      page,
+      ...(query ? { query } : {}),
     });
 
-    return transformed.items.map((item) =>
-      plainToInstance(Knowledge, item, {
-        excludeExtraneousValues: true,
-      }),
-    );
+    return plainToInstance(KnowledgeResponse, response, {
+      excludeExtraneousValues: true,
+    });
   }
 
-  public async getKnowledgeFiles(id: string, page: number): Promise<KnowledgeFileListResponse> {
+  public async getKnowledgeFiles(id: string, page: number, query?: string): Promise<KnowledgeFileListResponse> {
     const response = await getApiService().get<KnowledgeFileListResponse>(`${knowledgeApiConfig.route}/${id}/files`, {
       page,
+      ...(query ? { query } : {}),
     });
 
     return plainToInstance(KnowledgeFileListResponse, response, {

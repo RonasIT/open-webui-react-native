@@ -1,5 +1,4 @@
-import { uniqBy } from 'lodash-es';
-import { AttachedFile, FileType, Role } from '@open-webui-react-native/shared/data-access/common';
+import { FileType, Role } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { modelsApiConfig } from '../../ai-models/config';
 import { AIModel } from '../../ai-models/models';
@@ -22,6 +21,7 @@ import {
   Message,
 } from '../models';
 import { toolApprovalState$, toolsSelectionState$ } from '../state';
+import { getCompletionFiles } from './get-completion-files';
 import { resolveDefaultToolIds } from './resolve-default-tool-ids';
 
 export interface PrepareCompleteChatPayloadArgs {
@@ -141,11 +141,9 @@ export function prepareCompleteChatPayload({
     return [...systemMessage, ...historyMessages];
   };
 
-  // Only files should be included in `files` field
-  const files = uniqBy(
-    messages.flatMap((msg) => msg.files ?? []).filter((file): file is AttachedFile => file.type === FileType.FILE),
-    'id',
-  );
+  // Images go in message content as image_url parts — RAG only wants uploaded files and
+  // knowledge collections (the backend looks up type:collection by id).
+  const files = getCompletionFiles(messages);
 
   const historyMessagesCount = Object.keys(chatResponse?.chat.history.messages ?? {}).length;
   const isFirstExchange = historyMessagesCount > 0 && historyMessagesCount <= 2;
