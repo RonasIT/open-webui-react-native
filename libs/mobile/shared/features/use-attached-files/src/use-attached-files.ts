@@ -6,6 +6,7 @@ import {
   AttachedKnowledgeCollection,
   AttachedListItem,
   FileData,
+  FileType,
   getAttachedListItemId,
   ImageData,
 } from '@open-webui-react-native/shared/data-access/common';
@@ -21,15 +22,15 @@ export function useAttachedFiles(): typeof result {
   };
 
   const handleFileUploaded = (file: FileData): void => {
-    pushItem({ kind: 'file', file, isFromKnowledge: false });
+    pushItem({ kind: FileType.FILE, file, isFromKnowledge: false });
   };
 
   const handleKnowledgeFileAttached = (file: FileData): void => {
-    pushItem({ kind: 'file', file, isFromKnowledge: true });
+    pushItem({ kind: FileType.FILE, file, isFromKnowledge: true });
   };
 
   const handleKnowledgeCollectionAttached = (collection: AttachedKnowledgeCollection): void => {
-    pushItem({ kind: 'collection', collection });
+    pushItem({ kind: FileType.COLLECTION, collection });
   };
 
   const handleDeleteItem = (id: string): void => {

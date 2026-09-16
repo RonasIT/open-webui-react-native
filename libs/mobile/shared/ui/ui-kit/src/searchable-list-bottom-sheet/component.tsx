@@ -22,6 +22,7 @@ export type SearchableListBottomSheetProps<TItem> = Partial<Omit<AppBottomSheetP
     ref?: SearchableListBottomSheetRef;
     title: SheetHeaderProps['title'];
     onGoBack: () => void;
+    onDismiss?: () => void;
     headerProps?: Pick<SheetHeaderProps, 'accessoryLeft' | 'accessoryRight' | 'onConfirmPress' | 'confirmButtonProps'>;
     query: string;
     onQueryChange: (query: string) => void;
@@ -35,6 +36,7 @@ export function SearchableListBottomSheet<TItem>({
   ref,
   title,
   onGoBack,
+  onDismiss,
   headerProps,
   query,
   onQueryChange,
@@ -62,6 +64,7 @@ export function SearchableListBottomSheet<TItem>({
       snapPoints={['100%']}
       stackBehavior='push'
       className='px-0'
+      onDismiss={onDismiss}
       content={
         <View className='flex-1 bg-background-primary'>
           <SheetHeader

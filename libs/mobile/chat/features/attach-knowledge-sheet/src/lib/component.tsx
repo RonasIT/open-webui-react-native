@@ -53,8 +53,6 @@ export function AttachKnowledgeSheet({
 
   const closeModal = (): void => {
     sheetRef.current?.close();
-    setOpenedKnowledge(null);
-    setQuery('');
   };
 
   const openModal = (): void => {
@@ -63,6 +61,11 @@ export function AttachKnowledgeSheet({
   };
 
   useImperativeHandle(ref, () => ({ present: openModal }), []);
+
+  const handleDismiss = (): void => {
+    setOpenedKnowledge(null);
+    setQuery('');
+  };
 
   const handleGoBack = (): void => {
     if (openedKnowledge) {
@@ -117,6 +120,7 @@ export function AttachKnowledgeSheet({
         ref={sheetRef}
         title={openedKnowledge.name}
         onGoBack={handleGoBack}
+        onDismiss={handleDismiss}
         query={query}
         onQueryChange={setQuery}
         searchPlaceholder={translate('TEXT_SEARCH_FILES')}
@@ -149,6 +153,7 @@ export function AttachKnowledgeSheet({
       ref={sheetRef}
       title={translate('TEXT_TITLE')}
       onGoBack={closeModal}
+      onDismiss={handleDismiss}
       query={query}
       onQueryChange={setQuery}
       searchPlaceholder={translate('TEXT_SEARCH_KNOWLEDGE')}

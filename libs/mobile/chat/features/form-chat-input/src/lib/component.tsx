@@ -30,6 +30,7 @@ import {
   AttachedKnowledgeCollection,
   AttachedListItem,
   FileData,
+  FileType,
   ImageData,
 } from '@open-webui-react-native/shared/data-access/common';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
@@ -134,10 +135,10 @@ export function FormChatInput<T extends FieldValues>({
   const isInputEmpty = !field.value?.trim() && items.length === 0 && images.length === 0;
 
   const isKnowledgeCollectionAttached = (id: string): boolean =>
-    items.some((item) => item?.kind === 'collection' && item.collection.id === id);
+    items.some((item) => item?.kind === FileType.COLLECTION && item.collection.id === id);
 
   const isKnowledgeFileAttached = (id: string): boolean =>
-    items.some((item) => item?.kind === 'file' && item.isFromKnowledge && item.file.id === id);
+    items.some((item) => item?.kind === FileType.FILE && item.isFromKnowledge && item.file.id === id);
 
   const imagesForPreview = images.flatMap((image, index) =>
     image

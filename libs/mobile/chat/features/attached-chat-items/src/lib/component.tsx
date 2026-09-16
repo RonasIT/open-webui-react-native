@@ -5,7 +5,7 @@ import { ReactElement } from 'react';
 import { AttachedFileItem, formatFileSize } from '@open-webui-react-native/mobile/chat/features/attached-file-item';
 import { AttachedImageItem } from '@open-webui-react-native/mobile/chat/features/attached-image-item';
 import { AttachedItem, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { AttachedListItem, ImageData } from '@open-webui-react-native/shared/data-access/common';
+import { AttachedListItem, FileType, ImageData } from '@open-webui-react-native/shared/data-access/common';
 
 interface AttachedChatItemsProps {
   onDeleteItemPress: (id: string) => void;
@@ -37,7 +37,7 @@ export function AttachedChatItems({
           return null;
         }
 
-        return item.kind === 'collection' ? (
+        return item.kind === FileType.COLLECTION ? (
           <AttachedItem
             key={item.collection.id}
             disabled

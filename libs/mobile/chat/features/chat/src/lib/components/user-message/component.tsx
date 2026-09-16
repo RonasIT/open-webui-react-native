@@ -40,7 +40,7 @@ function ChatUserMessageComponent({
 }: ChatUserMessageProps): ReactElement {
   const { files, content: text, timestamp } = message;
 
-  const translateAttachedChatItems = useTranslation('CHAT.ATTACHED_CHAT_ITEMS');
+  const translate = useTranslation('CHAT.ATTACHED_CHAT_ITEMS');
   const { data: userSettings } = usersApi.useGetUserSettings();
   const isChatBubbleUIEnabled = userSettings?.ui.chatBubble ?? true;
   const isUserMessageMarkdownEnabled = userSettings?.ui.renderMarkdownInUserMessages ?? true;
@@ -97,7 +97,7 @@ function ChatUserMessageComponent({
                 key={index}
                 disabled
                 title={file.name}
-                subTitle={translateAttachedChatItems('TEXT_COLLECTION')}
+                subTitle={translate('TEXT_COLLECTION')}
                 iconName='database'
                 className='max-w-[70%] self-end'
               />

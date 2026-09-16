@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import uuid from 'react-native-uuid';
-import { AttachedListItem, ImageData, Role } from '@open-webui-react-native/shared/data-access/common';
+import { AttachedListItem, FileType, ImageData, Role } from '@open-webui-react-native/shared/data-access/common';
 import { prepareAttachedFiles, prepareAttachedImages } from '../../files';
 import { Message } from '../models';
 
@@ -25,9 +25,9 @@ export function createMessagePair({
   const timestampSec = Math.floor(now.unix());
   const timestampMs = now.valueOf();
 
-  const attachedFiles = (attachedItems ?? []).flatMap((item) => (item.kind === 'file' ? [item.file] : []));
+  const attachedFiles = (attachedItems ?? []).flatMap((item) => (item.kind === FileType.FILE ? [item.file] : []));
   const attachedCollections = (attachedItems ?? []).flatMap((item) =>
-    item.kind === 'collection' ? [item.collection] : [],
+    item.kind === FileType.COLLECTION ? [item.collection] : [],
   );
 
   const files = [
