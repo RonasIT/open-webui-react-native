@@ -44,3 +44,5 @@ export * from './keyboard-sticky-view';
 export * from './pressable-search-input';
 export * from './full-screen-search-modal';
 export * from './gesture-pressable-icon-button';
+export * from './attached-item';
+export * from './searchable-list-bottom-sheet';

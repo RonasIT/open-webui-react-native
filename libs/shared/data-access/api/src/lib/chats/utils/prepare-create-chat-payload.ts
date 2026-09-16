@@ -1,5 +1,5 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
-import { FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
+import { AttachedListItem, ImageData } from '@open-webui-react-native/shared/data-access/common';
 import { Chat, CreateNewChatRequest } from '../models';
 import { buildMessagesHistory } from './build-messages-history';
 import { createMessagePair } from './create-message-pair';
@@ -7,7 +7,7 @@ import { createMessagePair } from './create-message-pair';
 export interface PrepareCreateChatPayloadArgs {
   prompt: string;
   model: string;
-  attachedFiles?: Array<FileData>;
+  attachedItems?: Array<AttachedListItem>;
   attachedImages?: Array<ImageData>;
   folderId?: string;
 }
@@ -15,14 +15,14 @@ export interface PrepareCreateChatPayloadArgs {
 export function prepareCreateChatPayload({
   prompt,
   model,
-  attachedFiles,
+  attachedItems,
   attachedImages,
   folderId,
 }: PrepareCreateChatPayloadArgs): CreateNewChatRequest {
   const { userMessage, assistantMessage, assistantMessageId, timestampMs } = createMessagePair({
     prompt,
     model,
-    attachedFiles,
+    attachedItems,
     attachedImages,
   });
 

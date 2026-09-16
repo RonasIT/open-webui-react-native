@@ -1,6 +1,7 @@
+import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useMemo } from 'react';
 import { LayoutChangeEvent } from 'react-native';
-import { AttachedFileItem } from '@open-webui-react-native/mobile/chat/features/attached-file-item';
+import { AttachedFileItem, formatFileSize } from '@open-webui-react-native/mobile/chat/features/attached-file-item';
 import { MessageVersionControls } from '@open-webui-react-native/mobile/chat/features/message-version-controls';
 import { UseSiblingMessagesReturn } from '@open-webui-react-native/mobile/chat/features/use-manage-messages-siblings';
 import {
@@ -9,9 +10,9 @@ import {
 } from '@open-webui-react-native/mobile/shared/features/image-preview-modal';
 import { AppMarkdownView } from '@open-webui-react-native/mobile/shared/features/markdown-view';
 import { cn, colors, screenWidth, spacings } from '@open-webui-react-native/mobile/shared/ui/styles';
-import { AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { AppText, AttachedItem, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { Message, usersApi } from '@open-webui-react-native/shared/data-access/api';
-import { AttachedFile, FileType } from '@open-webui-react-native/shared/data-access/common';
+import { FileType } from '@open-webui-react-native/shared/data-access/common';
 import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
 import { deepMemo } from '@open-webui-react-native/shared/utils/deep-memo';
 import { ChatImagesGroup } from '../images';
@@ -39,14 +40,10 @@ function ChatUserMessageComponent({
 }: ChatUserMessageProps): ReactElement {
   const { files, content: text, timestamp } = message;
 
+  const translateAttachedChatItems = useTranslation('CHAT.ATTACHED_CHAT_ITEMS');
   const { data: userSettings } = usersApi.useGetUserSettings();
   const isChatBubbleUIEnabled = userSettings?.ui.chatBubble ?? true;
   const isUserMessageMarkdownEnabled = userSettings?.ui.renderMarkdownInUserMessages ?? true;
-
-  const attachedFiles = useMemo(
-    () => (files?.filter((file) => file.type === FileType.FILE) as Array<AttachedFile>) ?? [],
-    [files],
-  );
 
   const attachedImages = useMemo(
     () => (files ?? []).filter((file) => file.type === FileType.IMAGE).map((file, index) => ({ ...file, index })),
@@ -82,12 +79,33 @@ function ChatUserMessageComponent({
         {formatDateTime(timestamp, 'chat-relative-time')}
       </AppText>
       <View className='gap-6'>
-        {attachedFiles.map((file, index) => (
-          <AttachedFileItem
-            key={index}
-            file={file.file}
-            className='max-w-[70%] self-end' />
-        ))}
+        {(files ?? []).map((file, index) => {
+          if (file.type === FileType.FILE) {
+            return (
+              <AttachedFileItem
+                key={index}
+                file={file.file}
+                subtitle={formatFileSize(file.file.meta.size)}
+                className='max-w-[70%] self-end'
+              />
+            );
+          }
+
+          if (file.type === FileType.COLLECTION) {
+            return (
+              <AttachedItem
+                key={index}
+                disabled
+                title={file.name}
+                subTitle={translateAttachedChatItems('TEXT_COLLECTION')}
+                iconName='database'
+                className='max-w-[70%] self-end'
+              />
+            );
+          }
+
+          return null;
+        })}
         <ChatImagesGroup
           images={attachedImages}
           shouldHideSkeleton

@@ -34,12 +34,14 @@ export function CreateChat({
   const isTemporaryChat = userSettings?.ui.temporaryChatByDefault ?? false;
 
   const {
-    attachedFiles,
+    attachedItems,
     attachedImages,
     handleFileUploaded,
-    handleDeleteFile,
     handleDeleteImage,
     handleImageUploaded,
+    handleKnowledgeCollectionAttached,
+    handleKnowledgeFileAttached,
+    handleDeleteItem,
     resetAttachments,
   } = useAttachedFiles();
 
@@ -66,7 +68,7 @@ export function CreateChat({
         return ToastService.showError(translate('TEXT_MODEL_NOT_SELECTED'));
       }
 
-      startChatCreation(inputValue, modelId, options, attachedFiles.get(), attachedImages.get(), folderId);
+      startChatCreation(inputValue, modelId, options, attachedItems.get(), attachedImages.get(), folderId);
     })();
 
   useEffect(() => {
@@ -100,12 +102,14 @@ export function CreateChat({
         onSubmit={onSubmit}
         isLoading={isCreating || !isSocketConnected}
         isSuggestionShown={true}
-        attachedFiles={attachedFiles}
+        attachedItems={attachedItems}
         onFileUploaded={handleFileUploaded}
-        onDeleteFilePress={handleDeleteFile}
+        onDeleteItemPress={handleDeleteItem}
         attachedImages={attachedImages}
         onImageUploaded={handleImageUploaded}
         onDeleteImagePress={handleDeleteImage}
+        onKnowledgeCollectionSelected={handleKnowledgeCollectionAttached}
+        onKnowledgeFileSelected={handleKnowledgeFileAttached}
         onChatCreated={onChatCreated}
         modelId={modelId}
       />

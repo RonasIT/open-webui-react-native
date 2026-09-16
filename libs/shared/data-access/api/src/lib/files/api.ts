@@ -1,7 +1,14 @@
-import { useMutation, UseMutationOptions, UseMutationResult } from '@tanstack/react-query';
+import {
+  useMutation,
+  UseMutationOptions,
+  UseMutationResult,
+  useQuery,
+  UseQueryOptions,
+  UseQueryResult,
+} from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
-import { FileData } from '@open-webui-react-native/shared/data-access/common';
+import { FileData, FileDataContent } from '@open-webui-react-native/shared/data-access/common';
 import { filesApiConfig } from './config';
 import { filesService } from './service';
 
@@ -15,6 +22,19 @@ function useUploadFile(
   });
 }
 
+function useGetFileContent(
+  id?: string,
+  props?: UseQueryOptions<FileDataContent, AxiosError<ApiErrorData>>,
+): UseQueryResult<FileDataContent, AxiosError<ApiErrorData>> {
+  return useQuery<FileDataContent, AxiosError<ApiErrorData>>({
+    queryFn: () => filesService.getFileContent(id!),
+    queryKey: filesApiConfig.getFileContentQueryKey(id!),
+    enabled: !!id,
+    ...props,
+  });
+}
+
 export const filesApi = {
   useUploadFile,
+  useGetFileContent,
 };

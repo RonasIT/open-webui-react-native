@@ -1,5 +1,9 @@
 import { Expose, Type } from 'class-transformer';
-import { AttachedFile } from '@open-webui-react-native/shared/data-access/common';
+import {
+  AttachedFile,
+  AttachedKnowledgeCollection,
+  FileType,
+} from '@open-webui-react-native/shared/data-access/common';
 import { BackgroundTasks } from './background-tasks';
 import { ChatMessage } from './chat-message';
 import { CompleteChatParams } from './complete-chat-params';
@@ -30,8 +34,17 @@ export class CompleteChatRequest {
   public params?: CompleteChatParams;
 
   @Expose()
-  @Type(() => AttachedFile)
-  public files?: Array<AttachedFile>;
+  @Type(() => AttachedFile, {
+    discriminator: {
+      property: 'type',
+      subTypes: [
+        { value: AttachedFile, name: FileType.FILE },
+        { value: AttachedKnowledgeCollection, name: FileType.COLLECTION },
+      ],
+    },
+    keepDiscriminatorProperty: true,
+  })
+  public files?: Array<AttachedFile | AttachedKnowledgeCollection>;
 
   // NOTE: The only channel through which tools reach a completion. The backend resolves every kind
   // of tool from this array and never falls back to the model's or the user's defaults, so an

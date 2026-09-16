@@ -3,6 +3,7 @@ import { Expose, Type } from 'class-transformer';
 import {
   AttachedFile,
   AttachedImage,
+  AttachedKnowledgeCollection,
   FileType,
   MessageSource,
   Role,
@@ -64,11 +65,12 @@ export class Message extends BaseEntity<string> {
       subTypes: [
         { value: AttachedFile, name: FileType.FILE },
         { value: AttachedImage, name: FileType.IMAGE },
+        { value: AttachedKnowledgeCollection, name: FileType.COLLECTION },
       ],
     },
     keepDiscriminatorProperty: true,
   })
-  public files?: Array<AttachedFile | AttachedImage>;
+  public files?: Array<AttachedFile | AttachedImage | AttachedKnowledgeCollection>;
 
   @Expose()
   @Type(() => MessageSource)

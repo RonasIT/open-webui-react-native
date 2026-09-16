@@ -30,7 +30,8 @@
         "TEXT_CAPTURE": "Aufnehmen",
         "TEXT_CHOOSE_FROM_GALLERY": "Aus Galerie wählen",
         "TEXT_UPLOAD_FILES": "Dateien hochladen",
-        "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Sie können keine leere Datei hochladen."
+        "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Sie können keine leere Datei hochladen.",
+        "TEXT_ATTACH_KNOWLEDGE": "Wissen anhängen"
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "Vollzugriff",
@@ -91,9 +92,6 @@
       }
     },
     "ATTACHED_FILE_ITEM": {
-      "TEXT_FILE": "Datei",
-      "TEXT_DOCUMENT": "Dokument",
-      "TEXT_COLLECTION": "Sammlung",
       "FILE_INFO_MODAL": {
         "TEXT_FORMATTING_DISCLAIMER": "Die Formatierung kann von der Quelle abweichen.",
         "TEXT_NO_PREVIEW_AVAILABLE": "Keine Vorschau verfügbar",
@@ -189,6 +187,17 @@
         "BUTTON_SUBMIT": "Senden",
         "BUTTON_DENY": "Überspringen"
       }
+    },
+    "ATTACH_KNOWLEDGE_SHEET": {
+      "TEXT_TITLE": "Wissen",
+      "TEXT_SEARCH_KNOWLEDGE": "Wissen suchen",
+      "TEXT_NO_KNOWLEDGE": "Es ist kein Wissen vorhanden.",
+      "TEXT_SEARCH_FILES": "Dateien durchsuchen",
+      "TEXT_NO_FILES": "Keine Dateien in dieser Wissensdatenbank."
+    },
+    "ATTACHED_CHAT_ITEMS": {
+      "TEXT_COLLECTION": "Sammlung",
+      "TEXT_FILE": "Datei"
     }
   }
 }
