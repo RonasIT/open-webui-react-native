@@ -1,6 +1,5 @@
 import * as Sentry from '@sentry/react-native';
 import { AxiosError, isAxiosError } from 'axios';
-import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { stripOrigin } from '@open-webui-react-native/shared/utils/strings';
 import { ApiErrorData } from '../types';
 
@@ -94,22 +93,12 @@ const getRequestUrl = (error: AxiosError): string | undefined => {
   return url;
 };
 
-const getApiInstanceMeta = (): { apiVersion?: string } => {
-  const configuration = queryClient.getQueryData<{ version?: string }>(['config']);
-
-  return {
-    apiVersion: configuration?.version,
-  };
-};
-
 export type CaptureApiErrorParams = {
   operation: string;
   context?: Record<string, unknown>;
 };
 
 export const captureApiError = (error: unknown, { operation, context = {} }: CaptureApiErrorParams): void => {
-  const { apiVersion } = getApiInstanceMeta();
-
   if (isAxiosError(error)) {
     const axiosError = error as AxiosError<ApiErrorData>;
     const { config, response } = axiosError;
@@ -119,11 +108,9 @@ export const captureApiError = (error: unknown, { operation, context = {} }: Cap
       scope.setTag('api.operation', operation);
       scope.setTag('http.status_code', String(status ?? 'unknown'));
       scope.setTag('http.method', config?.method ?? 'unknown');
-      scope.setTag('api.version', apiVersion ?? 'unknown');
       scope.setLevel('error');
 
       scope.setContext('api', {
-        apiVersion,
         url: getRequestUrl(axiosError),
         method: config?.method,
         status,
@@ -145,8 +132,6 @@ export const captureApiError = (error: unknown, { operation, context = {} }: Cap
 
   Sentry.withScope((scope) => {
     scope.setTag('api.operation', operation);
-    scope.setTag('api.version', apiVersion ?? 'unknown');
-    scope.setContext('api', { apiVersion });
     scope.setContext('api_request', sanitizeContextForSentry(context));
     Sentry.captureException(error);
   });
