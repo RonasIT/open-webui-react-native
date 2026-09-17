@@ -3,6 +3,9 @@
     "SIGN_IN": {
       "TEXT_TITLE_EXTERNAL": "登录",
       "TEXT_YOU_LOGGED_IN": "您已成功登录。",
+      "TEXT_NEED_HELP_OR_FEEDBACK": "需要帮助或想提供反馈？",
+      "TEXT_EMAIL_RONAS_IT": "发邮件给 Ronas IT",
+      "TEXT_NO_EMAIL_APP_FOUND": "未找到邮件应用。请写信至 {{email}}。",
       "EMAIL_FORM": {
         "TEXT_EMAIL_ADDRESS": "电子邮箱",
         "TEXT_PASSWORD": "密码",

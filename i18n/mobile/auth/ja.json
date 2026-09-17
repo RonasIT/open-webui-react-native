@@ -3,6 +3,9 @@
     "SIGN_IN": {
       "TEXT_TITLE_EXTERNAL": "サインイン",
       "TEXT_YOU_LOGGED_IN": "ログインしました。",
+      "TEXT_NEED_HELP_OR_FEEDBACK": "ヘルプやフィードバックが必要ですか？",
+      "TEXT_EMAIL_RONAS_IT": "Ronas IT にメールする",
+      "TEXT_NO_EMAIL_APP_FOUND": "メールアプリが見つかりません。{{email}} 宛にご連絡ください。",
       "EMAIL_FORM": {
         "TEXT_EMAIL_ADDRESS": "メールアドレス",
         "TEXT_PASSWORD": "パスワード",

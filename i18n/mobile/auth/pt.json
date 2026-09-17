@@ -3,6 +3,9 @@
     "SIGN_IN": {
       "TEXT_TITLE_EXTERNAL": "Entrar",
       "TEXT_YOU_LOGGED_IN": "Você entrou na sua conta.",
+      "TEXT_NEED_HELP_OR_FEEDBACK": "Precisa de ajuda ou quer enviar feedback?",
+      "TEXT_EMAIL_RONAS_IT": "Escrever para a Ronas IT",
+      "TEXT_NO_EMAIL_APP_FOUND": "Nenhum aplicativo de e-mail encontrado. Escreva para {{email}}.",
       "EMAIL_FORM": {
         "TEXT_EMAIL_ADDRESS": "Endereço de e-mail",
         "TEXT_PASSWORD": "Senha",

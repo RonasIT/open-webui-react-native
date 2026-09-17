@@ -3,6 +3,9 @@
     "SIGN_IN": {
       "TEXT_TITLE_EXTERNAL": "Вход",
       "TEXT_YOU_LOGGED_IN": "Вы вошли в систему.",
+      "TEXT_NEED_HELP_OR_FEEDBACK": "Нужна помощь или есть отзыв?",
+      "TEXT_EMAIL_RONAS_IT": "Написать в Ronas IT",
+      "TEXT_NO_EMAIL_APP_FOUND": "Почтовое приложение не найдено. Напишите нам на {{email}}.",
       "EMAIL_FORM": {
         "TEXT_EMAIL_ADDRESS": "Адрес электронной почты",
         "TEXT_PASSWORD": "Пароль",

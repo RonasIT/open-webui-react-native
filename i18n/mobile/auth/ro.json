@@ -3,6 +3,9 @@
     "SIGN_IN": {
       "TEXT_TITLE_EXTERNAL": "Conectare",
       "TEXT_YOU_LOGGED_IN": "Ești conectat acum.",
+      "TEXT_NEED_HELP_OR_FEEDBACK": "Ai nevoie de ajutor sau vrei să trimiți feedback?",
+      "TEXT_EMAIL_RONAS_IT": "Trimite e-mail către Ronas IT",
+      "TEXT_NO_EMAIL_APP_FOUND": "Nu a fost găsită nicio aplicație de e-mail. Scrie-ne la {{email}}.",
       "EMAIL_FORM": {
         "TEXT_EMAIL_ADDRESS": "Adresă de email",
         "TEXT_PASSWORD": "Parolă",

@@ -3,6 +3,9 @@
     "SIGN_IN": {
       "TEXT_TITLE_EXTERNAL": "Connexion",
       "TEXT_YOU_LOGGED_IN": "Vous êtes maintenant connecté.",
+      "TEXT_NEED_HELP_OR_FEEDBACK": "Besoin d’aide ou un commentaire ?",
+      "TEXT_EMAIL_RONAS_IT": "Écrire à Ronas IT",
+      "TEXT_NO_EMAIL_APP_FOUND": "Aucune application de messagerie n’a été trouvée. Veuillez nous écrire à {{email}}.",
       "EMAIL_FORM": {
         "TEXT_EMAIL_ADDRESS": "Adresse e-mail",
         "TEXT_PASSWORD": "Mot de passe",
