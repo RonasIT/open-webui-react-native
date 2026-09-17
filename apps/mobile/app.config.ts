@@ -128,6 +128,14 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
         },
       ],
       [
+        '@sentry/react-native/expo',
+        {
+          url: 'https://sentry.io/',
+          organization: 'open-mobileui',
+          project: 'react-native',
+        },
+      ],
+      [
         'expo-build-properties',
         {
           android: {
