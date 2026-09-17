@@ -30,7 +30,8 @@
         "TEXT_CAPTURE": "拍摄",
         "TEXT_CHOOSE_FROM_GALLERY": "从相册选择",
         "TEXT_UPLOAD_FILES": "上传文件",
-        "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "无法上传空文件。"
+        "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "无法上传空文件。",
+        "TEXT_ATTACH_KNOWLEDGE": "附加知识库"
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "完全访问",
@@ -91,9 +92,6 @@
       }
     },
     "ATTACHED_FILE_ITEM": {
-      "TEXT_FILE": "文件",
-      "TEXT_DOCUMENT": "文档",
-      "TEXT_COLLECTION": "集合",
       "FILE_INFO_MODAL": {
         "TEXT_FORMATTING_DISCLAIMER": "格式可能与源文件不一致。",
         "TEXT_NO_PREVIEW_AVAILABLE": "暂无预览",
@@ -188,6 +186,17 @@
         "BUTTON_SUBMIT": "发送",
         "BUTTON_DENY": "跳过"
       }
+    },
+    "ATTACH_KNOWLEDGE_SHEET": {
+      "TEXT_TITLE": "知识库",
+      "TEXT_SEARCH_KNOWLEDGE": "搜索知识库",
+      "TEXT_NO_KNOWLEDGE": "暂无知识库。",
+      "TEXT_SEARCH_FILES": "搜索文件",
+      "TEXT_NO_FILES": "此知识库中没有文件。"
+    },
+    "ATTACHED_CHAT_ITEMS": {
+      "TEXT_COLLECTION": "集合",
+      "TEXT_FILE": "文件"
     }
   }
 }

@@ -1,32 +1,26 @@
 import { ReactElement } from 'react';
 import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
-import {
-  AppPressable,
-  AppPressableProps,
-  AppText,
-  Icon,
-  IconButton,
-  IconName,
-  View,
-} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { Icon, IconName } from '../icon';
+import { IconButton } from '../icon-button';
+import { AppPressable, AppPressableProps } from '../pressable';
+import { AppText } from '../text';
+import { View } from '../view';
 
-interface AttachedKnowledgeProps extends AppPressableProps {
-  index: number;
+interface AttachedItemProps extends AppPressableProps {
   title: string;
   subTitle: string;
   iconName: IconName;
-  onDeletePress?: (id: number) => void;
+  onDeletePress?: () => void;
 }
 
-export function AttachedKnowledge({
-  index,
+export function AttachedItem({
   title,
   subTitle,
   iconName,
   className,
   onDeletePress,
   ...restProps
-}: AttachedKnowledgeProps): ReactElement {
+}: AttachedItemProps): ReactElement {
   return (
     <AppPressable
       className={cn('rounded-lg flex-row bg-background-secondary items-center py-6 px-12', className)}
@@ -40,7 +34,7 @@ export function AttachedKnowledge({
         <IconButton
           iconName='closeSM'
           hitSlop={8}
-          onPress={() => onDeletePress(index)}
+          onPress={onDeletePress}
           className='rounded-full bg-background-primary w-24 h-24 p-0 items-center justify-center'
           iconProps={{ className: 'color-text-primary', width: 8 }}
         />

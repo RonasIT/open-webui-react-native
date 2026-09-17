@@ -2,18 +2,39 @@ import { useObservable } from '@legendapp/state/react';
 import { fileSystemService } from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
 import { ImageMimeType } from '@open-webui-react-native/mobile/shared/data-access/image-picker-service';
 import { compressImage } from '@open-webui-react-native/mobile/shared/utils/compressor';
-import { FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
+import {
+  AttachedKnowledgeCollection,
+  AttachedListItem,
+  FileData,
+  FileType,
+  getAttachedListItemId,
+  ImageData,
+} from '@open-webui-react-native/shared/data-access/common';
 
 export function useAttachedFiles(): typeof result {
-  const attachedFiles = useObservable<Array<FileData>>([]);
+  const attachedItems = useObservable<Array<AttachedListItem>>([]);
   const attachedImages = useObservable<Array<ImageData>>([]);
 
-  const handleFileUploaded = (file: FileData): void => {
-    attachedFiles.set((prev) => [...prev, file]);
+  const pushItem = (item: AttachedListItem): void => {
+    attachedItems.set((prev) =>
+      prev.some((attached) => getAttachedListItemId(attached) === getAttachedListItemId(item)) ? prev : [...prev, item],
+    );
   };
 
-  const handleDeleteFile = (id: string): void => {
-    attachedFiles.set((prev) => prev.filter((file) => file.id !== id));
+  const handleFileUploaded = (file: FileData): void => {
+    pushItem({ kind: FileType.FILE, file, isFromKnowledge: false });
+  };
+
+  const handleKnowledgeFileAttached = (file: FileData): void => {
+    pushItem({ kind: FileType.FILE, file, isFromKnowledge: true });
+  };
+
+  const handleKnowledgeCollectionAttached = (collection: AttachedKnowledgeCollection): void => {
+    pushItem({ kind: FileType.COLLECTION, collection });
+  };
+
+  const handleDeleteItem = (id: string): void => {
+    attachedItems.set((prev) => prev.filter((item) => getAttachedListItemId(item) !== id));
   };
 
   const handleImageUploaded = async (image: ImageData): Promise<void> => {
@@ -43,14 +64,16 @@ export function useAttachedFiles(): typeof result {
   };
 
   const resetAttachments = (): void => {
-    attachedFiles.set([]);
+    attachedItems.set([]);
     attachedImages.set([]);
   };
 
   const result = {
-    attachedFiles,
+    attachedItems,
     handleFileUploaded,
-    handleDeleteFile,
+    handleKnowledgeFileAttached,
+    handleKnowledgeCollectionAttached,
+    handleDeleteItem,
     attachedImages,
     handleImageUploaded,
     handleDeleteImage,

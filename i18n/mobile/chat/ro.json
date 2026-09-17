@@ -30,7 +30,8 @@
         "TEXT_CAPTURE": "Fotografiază",
         "TEXT_CHOOSE_FROM_GALLERY": "Alege din galerie",
         "TEXT_UPLOAD_FILES": "Încarcă fișiere",
-        "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Nu poți încărca un fișier gol."
+        "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Nu poți încărca un fișier gol.",
+        "TEXT_ATTACH_KNOWLEDGE": "Atașează bază de cunoștințe"
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "Acces complet",
@@ -91,9 +92,6 @@
       }
     },
     "ATTACHED_FILE_ITEM": {
-      "TEXT_FILE": "Fișier",
-      "TEXT_DOCUMENT": "Document",
-      "TEXT_COLLECTION": "Colecție",
       "FILE_INFO_MODAL": {
         "TEXT_FORMATTING_DISCLAIMER": "Formatarea poate diferi față de sursa originală.",
         "TEXT_NO_PREVIEW_AVAILABLE": "Previzualizare indisponibilă",
@@ -190,6 +188,17 @@
         "BUTTON_SUBMIT": "Trimite",
         "BUTTON_DENY": "Omite"
       }
+    },
+    "ATTACH_KNOWLEDGE_SHEET": {
+      "TEXT_TITLE": "Bază de cunoștințe",
+      "TEXT_SEARCH_KNOWLEDGE": "Caută în baza de cunoștințe",
+      "TEXT_NO_KNOWLEDGE": "Nu există nicio bază de cunoștințe.",
+      "TEXT_SEARCH_FILES": "Caută fișiere",
+      "TEXT_NO_FILES": "Nu există fișiere în această bază de cunoștințe."
+    },
+    "ATTACHED_CHAT_ITEMS": {
+      "TEXT_COLLECTION": "Colecție",
+      "TEXT_FILE": "Fișier"
     }
   }
 }

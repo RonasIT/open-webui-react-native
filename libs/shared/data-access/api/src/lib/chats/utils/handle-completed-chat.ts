@@ -1,9 +1,10 @@
-import { merge, uniqBy } from 'lodash-es';
-import { AttachedFile, FileType, MessageSource } from '@open-webui-react-native/shared/data-access/common';
+import { merge } from 'lodash-es';
+import { MessageSource } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { chatQueriesKeys } from '../chat-queries-keys';
 import { Chat, ChatResponse, History, Message } from '../models';
 import { chatService } from '../service';
+import { getCompletionFiles } from './get-completion-files';
 import { isTemporaryChatId } from './temporary-chat-id';
 
 // NOTE: Deliberately does not call `POST /chat/completed`. The app supports Open WebUI 0.10 and
@@ -46,11 +47,7 @@ export const handleCompletedChat = async (
     currentId: chat.history.currentId,
   });
 
-  // Only files should be included in `files` field
-  const files = uniqBy(
-    chat.messages.flatMap((msg) => msg.files ?? []).filter((file): file is AttachedFile => file.type === FileType.FILE),
-    'id',
-  );
+  const files = getCompletionFiles(chat.messages);
 
   const updateChatPayload = new Chat({
     messages: updatedMessages,

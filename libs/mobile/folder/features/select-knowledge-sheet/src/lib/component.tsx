@@ -1,19 +1,7 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } from 'react';
-import { Keyboard } from 'react-native';
-import {
-  AppBottomSheet,
-  AppBottomSheetKeyboardAwareScrollView,
-  AppBottomSheetPropsType,
-  AppFlashList,
-  AppSafeAreaView,
-  AppSpinner,
-  ListEmptyComponent,
-  SearchInput,
-  SheetHeader,
-  View,
-} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { SearchableListBottomSheet } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { Knowledge, knowledgeApi } from '@open-webui-react-native/shared/data-access/api';
 import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
 import { KnowledgeRow } from './components';
@@ -24,22 +12,27 @@ export type SelectKnowledgeSheetMethods = {
 
 export type SelectKnowledgeSheetRef = ForwardedRef<SelectKnowledgeSheetMethods>;
 
-export type SelectKnowledgeSheetProps = Partial<Omit<AppBottomSheetPropsType, 'ref'>> & {
+export type SelectKnowledgeSheetProps = {
   onConfirm: (selectedKnowledge: Array<Knowledge>) => void;
   ref?: SelectKnowledgeSheetRef;
 };
 
-export function SelectKnowledgeSheet({ onConfirm, ref, ...props }: SelectKnowledgeSheetProps): ReactElement {
+const extractKnowledgeId = (knowledge: Knowledge): string => knowledge.id;
+
+export function SelectKnowledgeSheet({ onConfirm, ref }: SelectKnowledgeSheetProps): ReactElement {
   const translate = useTranslation('FOLDER.SELECT_KNOWLEDGE_SHEET');
   const sheetRef = useRef<BottomSheetModal>(null);
+  const { query, setQuery, debouncedQuery } = useDebouncedQuery({ delay: 300 });
 
   const [selectedKnowledge, setSelectedKnowledge] = useState<Array<Knowledge>>([]);
 
-  const { query, setQuery } = useDebouncedQuery();
-
-  const { data: knowledge, isLoading } = knowledgeApi.useGetKnowledge();
-
-  const filteredData = (knowledge ?? []).filter((item) => new RegExp(query, 'i').test(item.name));
+  const {
+    data: knowledge,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = knowledgeApi.useSearchKnowledge(debouncedQuery);
 
   const closeModal = (): void => sheetRef.current?.close();
 
@@ -50,77 +43,54 @@ export function SelectKnowledgeSheet({ onConfirm, ref, ...props }: SelectKnowled
     closeModal();
   };
 
-  useImperativeHandle(ref, () => {
-    return {
-      present: (selectedKnowledge: Array<Knowledge>) => {
-        setSelectedKnowledge(selectedKnowledge);
-        openModal();
-      },
-    };
-  }, []);
-
-  const onCancelPress = (): void => {
+  const handlePresent = (initialSelectedKnowledge: Array<Knowledge>): void => {
+    setSelectedKnowledge(initialSelectedKnowledge);
     setQuery('');
-    Keyboard.dismiss();
+    openModal();
+  };
+
+  const handleFetchNextPage = (): void => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  useImperativeHandle(ref, () => ({ present: handlePresent }), []);
+
+  const toggleKnowledgeSelection = (item: Knowledge): void => {
+    setSelectedKnowledge((prev) =>
+      prev.some((knowledge) => knowledge.id === item.id)
+        ? prev.filter((knowledge) => knowledge.id !== item.id)
+        : [...prev, item],
+    );
   };
 
   const renderItem = ({ item }: { item: Knowledge }): ReactElement => {
     const isSelected = selectedKnowledge.some((knowledge) => knowledge.id === item.id);
+    const handlePress = (): void => toggleKnowledgeSelection(item);
 
-    return (
-      <KnowledgeRow
-        item={item}
-        onPress={() =>
-          setSelectedKnowledge((prev) => (isSelected ? [...prev.filter((i) => i.id !== item.id)] : [...prev, item]))
-        }
-        isSelected={isSelected}
-      />
-    );
+    return <KnowledgeRow
+      item={item}
+      onPress={handlePress}
+      isSelected={isSelected} />;
   };
 
   return (
-    <AppBottomSheet
-      {...props}
-      isModal={true}
+    <SearchableListBottomSheet
       ref={sheetRef}
-      isScrollable
-      snapPoints={['100%']}
-      stackBehavior='push'
-      className='px-0'
-      content={
-        <View className='flex-1 bg-background-primary'>
-          <SheetHeader
-            title={translate('TEXT_SELECT_KNOWLEDGE')}
-            onGoBack={closeModal}
-            onConfirmPress={handleConfirm}
-          />
-          <SearchInput
-            value={query}
-            onChangeText={setQuery}
-            isInBottomSheet
-            onCancel={onCancelPress}
-            placeholder={translate('TEXT_SEARCH_KNOWLEDGE')}
-          />
-          {isLoading ? (
-            <View className='flex-1'>
-              <AppSpinner isFullScreen />
-            </View>
-          ) : (
-            <AppBottomSheetKeyboardAwareScrollView>
-              <AppSafeAreaView edges={['bottom']}>
-                <AppFlashList
-                  data={filteredData}
-                  renderItem={renderItem}
-                  className='pb-16'
-                  ListEmptyComponent={
-                    <ListEmptyComponent containerClassName='mt-16' description={translate('TEXT_NO_KNOWLEDGE')} />
-                  }
-                />
-              </AppSafeAreaView>
-            </AppBottomSheetKeyboardAwareScrollView>
-          )}
-        </View>
-      }
+      title={translate('TEXT_SELECT_KNOWLEDGE')}
+      onGoBack={closeModal}
+      headerProps={{ onConfirmPress: handleConfirm }}
+      query={query}
+      onQueryChange={setQuery}
+      searchPlaceholder={translate('TEXT_SEARCH_KNOWLEDGE')}
+      isLoading={isLoading}
+      emptyDescription={translate('TEXT_NO_KNOWLEDGE')}
+      data={knowledge ?? []}
+      extraData={selectedKnowledge}
+      renderItem={renderItem}
+      keyExtractor={extractKnowledgeId}
+      pagination={{ onEndReached: handleFetchNextPage, isFetchingNextPage }}
     />
   );
 }

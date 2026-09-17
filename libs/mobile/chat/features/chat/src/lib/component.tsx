@@ -25,7 +25,7 @@ import {
   isTemporaryChatId,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
-import { FileData, ImageData, Role } from '@open-webui-react-native/shared/data-access/common';
+import { AttachedListItem, ImageData, Role } from '@open-webui-react-native/shared/data-access/common';
 import { useSubscribeToQueryCache } from '@open-webui-react-native/shared/data-access/query-client';
 import { webSocketConfig, webSocketState$ } from '@open-webui-react-native/shared/data-access/websocket';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
@@ -59,17 +59,19 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   const [queuedMessage, setQueuedMessage] = useState<{
     inputValue: string;
     options: Array<ChatGenerationOption>;
-    attachedFiles: Array<FileData>;
+    attachedItems: Array<AttachedListItem>;
     attachedImages: Array<ImageData>;
   } | null>(null);
 
   const {
-    attachedFiles,
+    attachedItems,
     attachedImages,
     handleImageUploaded,
     handleDeleteImage,
     handleFileUploaded,
-    handleDeleteFile,
+    handleKnowledgeCollectionAttached,
+    handleKnowledgeFileAttached,
+    handleDeleteItem,
     resetAttachments,
   } = useAttachedFiles();
 
@@ -218,12 +220,12 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
         setQueuedMessage({
           inputValue,
           options,
-          attachedFiles: attachedFiles.get(),
+          attachedItems: attachedItems.get(),
           attachedImages: attachedImages.get(),
         });
         ToastService.show(translate('TEXT_MESSAGE_QUEUED'));
       } else {
-        sendMessage(inputValue, selectedModelId, options, attachedFiles.get(), attachedImages.get());
+        sendMessage(inputValue, selectedModelId, options, attachedItems.get(), attachedImages.get());
       }
 
       reset();
@@ -264,7 +266,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
         queuedMessage.inputValue,
         selectedModelId,
         queuedMessage.options,
-        queuedMessage.attachedFiles,
+        queuedMessage.attachedItems,
         queuedMessage.attachedImages,
       );
       setQueuedMessage(null);
@@ -341,12 +343,14 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
               name='inputValue'
               onSubmit={onSubmit}
               isLoading={isSending || !isSocketConnected || isComposerBlockedByGeneration}
-              attachedFiles={attachedFiles}
+              attachedItems={attachedItems}
               onFileUploaded={handleFileUploaded}
-              onDeleteFilePress={handleDeleteFile}
+              onDeleteItemPress={handleDeleteItem}
               attachedImages={attachedImages}
               onImageUploaded={handleImageUploaded}
               onDeleteImagePress={handleDeleteImage}
+              onKnowledgeCollectionSelected={handleKnowledgeCollectionAttached}
+              onKnowledgeFileSelected={handleKnowledgeFileAttached}
               modelId={selectedModelId}
               isResponseGenerating={isResponseGenerating}
               isMessageQueueEnabled={isMessageQueueEnabled}

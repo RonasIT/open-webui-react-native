@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import uuid from 'react-native-uuid';
-import { FileData, ImageData, Role } from '@open-webui-react-native/shared/data-access/common';
+import { AttachedListItem, FileType, ImageData, Role } from '@open-webui-react-native/shared/data-access/common';
 import { prepareAttachedFiles, prepareAttachedImages } from '../../files';
 import { Message } from '../models';
 
@@ -8,7 +8,7 @@ export interface CreateMessagePairArgs {
   prompt: string;
   model: string;
   currentMessageId?: string;
-  attachedFiles?: Array<FileData>;
+  attachedItems?: Array<AttachedListItem>;
   attachedImages?: Array<ImageData>;
 }
 
@@ -16,7 +16,7 @@ export function createMessagePair({
   prompt,
   model,
   currentMessageId,
-  attachedFiles,
+  attachedItems,
   attachedImages,
 }: CreateMessagePairArgs): typeof result {
   const userMessageId = uuid.v4();
@@ -25,9 +25,15 @@ export function createMessagePair({
   const timestampSec = Math.floor(now.unix());
   const timestampMs = now.valueOf();
 
+  const attachedFiles = (attachedItems ?? []).flatMap((item) => (item.kind === FileType.FILE ? [item.file] : []));
+  const attachedCollections = (attachedItems ?? []).flatMap((item) =>
+    item.kind === FileType.COLLECTION ? [item.collection] : [],
+  );
+
   const files = [
-    ...(attachedFiles ? prepareAttachedFiles(attachedFiles) : []),
+    ...prepareAttachedFiles(attachedFiles),
     ...(attachedImages ? prepareAttachedImages(attachedImages) : []),
+    ...attachedCollections,
   ];
 
   const userMessage = new Message({

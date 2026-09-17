@@ -13,7 +13,7 @@ import {
   toolsSelectionState$,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
-import { FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
+import { AttachedListItem, ImageData } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { socketService } from '@open-webui-react-native/shared/data-access/websocket';
 
@@ -34,11 +34,17 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
     prompt: string,
     model: string,
     generationOptions?: Array<ChatGenerationOption>,
-    attachedFiles?: Array<FileData>,
+    attachedItems?: Array<AttachedListItem>,
     attachedImages?: Array<ImageData>,
     folderId?: string,
   ): void => {
-    const payload = prepareCreateChatPayload({ prompt, model, attachedFiles, attachedImages, folderId });
+    const payload = prepareCreateChatPayload({
+      prompt,
+      model,
+      attachedItems,
+      attachedImages,
+      folderId,
+    });
 
     // NOTE: The tools were picked on the create-chat screen, before a chat id existed, so the
     // selection is parked under a placeholder key. Move it onto the real id — otherwise the chat
