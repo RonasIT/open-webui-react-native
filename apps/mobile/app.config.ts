@@ -22,7 +22,6 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       publishableKey: process.env.SUPABASE_PUBLISHABLE_KEY,
     },
     env: appEnv.current,
-    isInternalRelease: process.env.EXPO_PUBLIC_IS_INTERNAL_RELEASE,
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
