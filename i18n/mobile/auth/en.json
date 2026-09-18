@@ -3,6 +3,9 @@
     "SIGN_IN": {
       "TEXT_TITLE_EXTERNAL": "Sign In",
       "TEXT_YOU_LOGGED_IN": "You`re now logged in.",
+      "TEXT_NEED_HELP_OR_FEEDBACK": "Need help or have feedback?",
+      "TEXT_EMAIL_RONAS_IT": "Email Ronas IT",
+      "TEXT_NO_EMAIL_APP_FOUND": "No email app found. Please write to {{email}}.",
       "EMAIL_FORM": {
         "TEXT_EMAIL_ADDRESS": "Email Address",
         "TEXT_PASSWORD": "Password",

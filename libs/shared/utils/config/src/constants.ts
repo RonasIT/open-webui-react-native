@@ -3,6 +3,7 @@ import { LanguageCode, MarkdownRenderer } from './enums';
 export const constants = {
   defaultLocale: LanguageCode.ENGLISH,
   defaultMarkdownRenderer: MarkdownRenderer.DEFAULT,
+  supportEmail: 'openmobileui@ronasit.com',
 };
 
 export const availableLanguages = [
