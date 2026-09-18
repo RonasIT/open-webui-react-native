@@ -22,7 +22,6 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       publishableKey: process.env.SUPABASE_PUBLISHABLE_KEY,
     },
     env: appEnv.current,
-    isInternalRelease: process.env.EXPO_PUBLIC_IS_INTERNAL_RELEASE,
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -31,7 +30,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     slug: process.env.EXPO_PUBLIC_APP_SLUG as string,
     scheme: process.env.EXPO_PUBLIC_APP_SCHEME as string,
     owner: process.env.EXPO_PUBLIC_APP_OWNER as string,
-    version: '1.12.1',
+    version: '1.13.1',
     userInterfaceStyle: 'automatic',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -50,7 +49,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       supportsTablet: false,
       buildNumber: appEnv.select({
         default: '18',
-        production: '44',
+        production: '46',
       }),
       config: {
         usesNonExemptEncryption: false,
@@ -69,7 +68,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       playStoreUrl: `https://play.google.com/store/apps/details?id=${playStoreAppId}`,
       versionCode: appEnv.select({
         default: 15,
-        production: 44,
+        production: 46,
       }),
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
@@ -126,6 +125,14 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
             'Open MobileUI uses your microphone to let you record and send voice messages in chat conversations.',
           enableBackgroundPlayback: false,
           enableBackgroundRecording: false,
+        },
+      ],
+      [
+        '@sentry/react-native/expo',
+        {
+          url: 'https://sentry.io/',
+          organization: 'open-mobileui',
+          project: 'react-native',
         },
       ],
       [
