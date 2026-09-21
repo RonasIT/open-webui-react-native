@@ -30,6 +30,12 @@ export class ChatCompletionOutputItem {
   @Expose({ name: 'arguments' })
   public toolArguments?: string;
 
+  // NOTE: Set by the backend when the user allowed the call. Modelled so it survives the chat being
+  // saved back — the client posts the whole history, and what the models drop is dropped on the
+  // server too.
+  @Expose()
+  public approved?: boolean;
+
   @Expose()
   @Type(() => ChatCompletionOutputContentPart)
   public content?: Array<ChatCompletionOutputContentPart>;
