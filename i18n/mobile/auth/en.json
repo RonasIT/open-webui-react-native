@@ -11,7 +11,8 @@
         "TEXT_PASSWORD": "Password",
         "TEXT_API_URL": "API URL",
         "TEXT_ENTER_YOUR_PASSWORD": "Enter Your Password",
-        "BUTTON_SIGN_IN": "Sign In"
+        "BUTTON_SIGN_IN": "Sign In",
+        "TEXT_SSO_MISCONFIGURED": "Sign-in is not configured on this server. Please contact your administrator."
       },
       "GOOGLE_FORM": {
         "BUTTON_CONTINUE_WITH_GOOGLE": "Continue with Google"

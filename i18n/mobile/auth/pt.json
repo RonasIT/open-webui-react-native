@@ -11,7 +11,8 @@
         "TEXT_PASSWORD": "Senha",
         "TEXT_API_URL": "URL da API",
         "TEXT_ENTER_YOUR_PASSWORD": "Digite sua senha",
-        "BUTTON_SIGN_IN": "Entrar"
+        "BUTTON_SIGN_IN": "Entrar",
+        "TEXT_SSO_MISCONFIGURED": "O login não está configurado neste servidor. Entre em contato com o administrador."
       },
       "GOOGLE_FORM": {
         "BUTTON_CONTINUE_WITH_GOOGLE": "Continuar com o Google"

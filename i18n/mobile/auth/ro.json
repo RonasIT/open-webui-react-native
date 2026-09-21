@@ -11,7 +11,8 @@
         "TEXT_PASSWORD": "Parolă",
         "TEXT_API_URL": "URL API",
         "TEXT_ENTER_YOUR_PASSWORD": "Introdu parola",
-        "BUTTON_SIGN_IN": "Conectare"
+        "BUTTON_SIGN_IN": "Conectare",
+        "TEXT_SSO_MISCONFIGURED": "Conectarea nu este configurată pe acest server. Te rugăm să contactezi administratorul."
       },
       "GOOGLE_FORM": {
         "BUTTON_CONTINUE_WITH_GOOGLE": "Continuă cu Google"
