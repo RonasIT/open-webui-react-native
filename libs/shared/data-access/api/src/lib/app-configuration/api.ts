@@ -1,6 +1,7 @@
+import * as Sentry from '@sentry/react-native';
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { refetchOnMountWithStaleCheck } from '@open-webui-react-native/shared/data-access/persist-query-helpers';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { appConfigurationApiConfig } from './config';
@@ -55,6 +56,12 @@ export function useGetAppConfiguration(
       setCustomState({ isSuccess: false, isError: true, isLoading: false });
     }
   };
+
+  useEffect(() => {
+    if (result.isSuccess) {
+      Sentry.setTag('api.version', result.data?.version);
+    }
+  }, [result.isSuccess, result.data?.version]);
 
   return {
     ...result,

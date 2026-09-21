@@ -1,0 +1,28 @@
+{
+  "AUTH": {
+    "SIGN_IN": {
+      "TEXT_TITLE_EXTERNAL": "Conectare",
+      "TEXT_YOU_LOGGED_IN": "Ești conectat acum.",
+      "TEXT_NEED_HELP_OR_FEEDBACK": "Ai nevoie de ajutor sau vrei să trimiți feedback?",
+      "TEXT_EMAIL_RONAS_IT": "Trimite e-mail către Ronas IT",
+      "TEXT_NO_EMAIL_APP_FOUND": "Nu a fost găsită nicio aplicație de e-mail. Scrie-ne la {{email}}.",
+      "EMAIL_FORM": {
+        "TEXT_EMAIL_ADDRESS": "Adresă de email",
+        "TEXT_PASSWORD": "Parolă",
+        "TEXT_API_URL": "URL API",
+        "TEXT_ENTER_YOUR_PASSWORD": "Introdu parola",
+        "BUTTON_SIGN_IN": "Conectare"
+      },
+      "GOOGLE_FORM": {
+        "BUTTON_CONTINUE_WITH_GOOGLE": "Continuă cu Google"
+      },
+      "OIDC_FORM": {
+        "BUTTON_CONTINUE_WITH": "Continuă cu {{provider}}"
+      },
+      "OAUTH_WEB_VIEW_MODAL": {
+        "BUTTON_CLOSE": "Închide",
+        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Această metodă de conectare nu este disponibilă. Te rugăm să folosești o altă opțiune pentru a continua."
+      }
+    }
+  }
+}

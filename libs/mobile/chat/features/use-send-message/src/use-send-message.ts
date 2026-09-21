@@ -9,7 +9,7 @@ import {
   prepareCompleteChatPayload,
   prepareSendMessagePayload,
 } from '@open-webui-react-native/shared/data-access/api';
-import { FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
+import { AttachedListItem, ImageData } from '@open-webui-react-native/shared/data-access/common';
 import { socketService } from '@open-webui-react-native/shared/data-access/websocket';
 
 interface UseSendMessageArgs {
@@ -32,14 +32,20 @@ export function useSendMessage({ chatData }: UseSendMessageArgs): typeof result 
       prompt: string,
       model: string,
       generationOptions?: Array<ChatGenerationOption>,
-      attachedFiles?: Array<FileData>,
+      attachedItems?: Array<AttachedListItem>,
       attachedImages?: Array<ImageData>,
     ): void => {
       if (!chatData) {
         return;
       }
 
-      const payload = prepareSendMessagePayload({ prompt, chatData, model, attachedFiles, attachedImages });
+      const payload = prepareSendMessagePayload({
+        prompt,
+        chatData,
+        model,
+        attachedItems,
+        attachedImages,
+      });
 
       const triggerCompletion = (data: EntityPartial<ChatResponse>): void => {
         const completePayload = prepareCompleteChatPayload({

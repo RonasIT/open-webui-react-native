@@ -11,6 +11,7 @@ interface UseFolderSearchListParams {
   noFolderText: string;
   createFolderText: string;
   onCreateFolderPress: () => void;
+  canCreateFolder?: boolean;
 }
 
 interface UseFolderSearchListResult {
@@ -22,6 +23,7 @@ export function useFolderSearchList({
   noFolderText,
   createFolderText,
   onCreateFolderPress,
+  canCreateFolder = true,
 }: UseFolderSearchListParams): UseFolderSearchListResult {
   const { isDarkColorScheme } = useColorScheme();
 
@@ -32,17 +34,21 @@ export function useFolderSearchList({
         name: noFolderText,
         iconName: isDarkColorScheme ? ('logoSmallDark' as IconName) : ('logoSmallLight' as IconName),
       },
-      {
-        id: MockFolderItemIds.CREATE_FOLDER_ID,
-        name: createFolderText,
-        onPress: onCreateFolderPress,
-        iconName: 'folderPlus' as IconName,
-        containerClassName: 'mb-24',
-        textClassName: 'text-brand-primary',
-        iconClassName: 'color-brand-primary',
-      },
+      ...(canCreateFolder
+        ? [
+            {
+              id: MockFolderItemIds.CREATE_FOLDER_ID,
+              name: createFolderText,
+              onPress: onCreateFolderPress,
+              iconName: 'folderPlus' as IconName,
+              containerClassName: 'mb-24',
+              textClassName: 'text-brand-primary',
+              iconClassName: 'color-brand-primary',
+            },
+          ]
+        : []),
     ],
-    [isDarkColorScheme, noFolderText, createFolderText, onCreateFolderPress],
+    [isDarkColorScheme, canCreateFolder, noFolderText, createFolderText, onCreateFolderPress],
   );
 
   return { emptyFolders, createFolderId: MockFolderItemIds.CREATE_FOLDER_ID };

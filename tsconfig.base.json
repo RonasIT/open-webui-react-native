@@ -53,11 +53,14 @@
       "@open-webui-react-native/mobile/chat/features/archived-chats-list": [
         "libs/mobile/chat/features/archived-chats-list/src/index.ts"
       ],
+      "@open-webui-react-native/mobile/chat/features/attached-chat-items": [
+        "libs/mobile/chat/features/attached-chat-items/src/index.ts"
+      ],
       "@open-webui-react-native/mobile/chat/features/attached-file-item": [
         "libs/mobile/chat/features/attached-file-item/src/index.ts"
       ],
-      "@open-webui-react-native/mobile/chat/features/attached-files-list": [
-        "libs/mobile/chat/features/attached-files-list/src/index.ts"
+      "@open-webui-react-native/mobile/chat/features/attach-knowledge-sheet": [
+        "libs/mobile/chat/features/attach-knowledge-sheet/src/index.ts"
       ],
       "@open-webui-react-native/mobile/chat/features/attached-image-item": [
         "libs/mobile/chat/features/attached-image-item/src/index.ts"
@@ -211,6 +214,9 @@
       ],
       "@open-webui-react-native/mobile/shared/features/use-audio-recorder": [
         "libs/mobile/shared/features/use-audio-recorder/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/shared/features/use-folders-enabled": [
+        "libs/mobile/shared/features/use-folders-enabled/src/index.ts"
       ],
       "@open-webui-react-native/mobile/shared/features/use-dictate-mode": [
         "libs/mobile/shared/features/use-dictate-mode/src/index.ts"

@@ -1,0 +1,204 @@
+{
+  "CHAT": {
+    "CHAT_SCREEN": {
+      "TEXT_LOADING": "Se încarcă...",
+      "TEXT_SELECT_A_MODEL": "Selectează un model",
+      "TEXT_TEMPORARY_CHAT": "Conversație temporară"
+    },
+    "CHAT": {
+      "TEXT_INPUT_PLACEHOLDER": "Trimite un mesaj",
+      "TEXT_READ_ONLY": "Doar citire",
+      "TEXT_MODEL_NOT_SELECTED": "Niciun model selectat",
+      "TEXT_MESSAGE_QUEUED": "Mesaj adăugat în coadă"
+    },
+    "CHAT_MENU_LIST": {
+      "PINNED_CHAT_LIST": {
+        "TEXT_PINNED": "Fixate"
+      },
+      "TEXT_SHARED_WITH_ME": "Partajate cu mine",
+      "TEXT_MY_FOLDERS": "Folderele mele",
+      "TEXT_NEW_CHAT": "Conversație nouă",
+      "TEXT_SEARCH": "Căutare",
+      "TEXT_THERE_ARE_NO_CHATS": "Nu există conversații"
+    },
+    "SEARCH_CHATS_LIST": {
+      "TEXT_THERE_ARE_NO_CHATS": "Nu există conversații"
+    },
+    "FORM_CHAT_INPUT": {
+      "TEXT_MODEL_NOT_SELECTED": "Niciun model selectat",
+      "ATTACHMENTS_ACTIONS_POPUP": {
+        "TEXT_CAPTURE": "Fotografiază",
+        "TEXT_CHOOSE_FROM_GALLERY": "Alege din galerie",
+        "TEXT_UPLOAD_FILES": "Încarcă fișiere",
+        "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Nu poți încărca un fișier gol.",
+        "TEXT_ATTACH_KNOWLEDGE": "Atașează bază de cunoștințe"
+      },
+      "TOOL_PERMISSIONS_POPUP": {
+        "TEXT_FULL_ACCESS": "Acces complet",
+        "TEXT_ASK_FOR_APPROVAL": "Cere aprobare"
+      },
+      "TOOLS_POPUP": {
+        "TEXT_TITLE": "Instrumente",
+        "TEXT_NO_TOOLS_AVAILABLE": "Niciun instrument disponibil",
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — conectează-te pe web"
+      }
+    },
+    "SHARE_CHAT_MODAL": {
+      "TEXT_SHARE_CHAT": "Partajează conversația",
+      "TEXT_DESCRIPTION_NOT_SHARED": "Mesajele trimise după crearea linkului nu vor fi partajate. Utilizatorii cu acest URL vor putea vedea conversația partajată.",
+      "TEXT_DESCRIPTION_SHARED_1": "Ai partajat această conversație",
+      "TEXT_BEFORE_LINK": "acum",
+      "TEXT_DESCRIPTION_SHARED_2": "Apasă aici pentru a",
+      "TEXT_DELETE_LINK": "șterge acest link",
+      "TEXT_DESCRIPTION_SHARED_3": "și a crea un nou link partajat.",
+      "BUTTON_COPY_LINK": "Copiază linkul",
+      "BUTTON_UPDATE_AND_COPY_LINK": "Actualizează și copiază linkul",
+      "TEXT_LINK_COPIED": "Link copiat în clipboard"
+    },
+    "CREATE_CHAT": {
+      "TEXT_NEW_CHAT": "Conversație nouă",
+      "TEXT_PLACEHOLDER": "Cu ce te pot ajuta astăzi?",
+      "TEXT_MODEL_NOT_SELECTED": "Niciun model selectat",
+      "TEXT_SELECT_A_MODEL": "Selectează un model",
+      "SEARCH_MODEL_VIEW": {
+        "TEXT_SELECT_A_MODEL": "Selectează un model",
+        "TEXT_SEARCH_MODEL": "Caută model"
+      },
+      "SEARCH_FOLDER_VIEW": {
+        "TEXT_SEARCH_FOLDER": "Caută folder",
+        "TEXT_NO_FOLDER": "Fără folder",
+        "TEXT_CREATE_NEW_FOLDER": "Creează folder nou"
+      },
+      "SUGGESTIONS_LIST": {
+        "TEXT_SUGGESTED": "Sugestii",
+        "TEXT_SUGGESTION_TITLE_1": "Ajută-mă să învăț",
+        "TEXT_SUGGESTION_SUBTITLE_1": "vocabular pentru un examen de admitere la facultate",
+        "TEXT_SUGGESTION_CONTENT_1": "Ajută-mă să învăț vocabular: scrie-mi o propoziție cu spațiu liber, iar eu voi încerca să aleg varianta corectă.",
+        "TEXT_SUGGESTION_TITLE_2": "Dă-mi idei",
+        "TEXT_SUGGESTION_SUBTITLE_2": "despre ce pot face cu desenele copiilor mei",
+        "TEXT_SUGGESTION_CONTENT_2": "Care sunt 5 idei creative pentru ce aș putea face cu desenele copiilor mei? Nu vreau să le arunc, dar ocupă mult spațiu.",
+        "TEXT_SUGGESTION_TITLE_3": "Spune-mi un fapt interesant",
+        "TEXT_SUGGESTION_SUBTITLE_3": "despre Imperiul Roman",
+        "TEXT_SUGGESTION_CONTENT_3": "Spune-mi un fapt interesant, ales la întâmplare, despre Imperiul Roman",
+        "TEXT_SUGGESTION_TITLE_4": "Arată-mi un fragment de cod",
+        "TEXT_SUGGESTION_SUBTITLE_4": "pentru un antet lipicios (sticky header) al unui site",
+        "TEXT_SUGGESTION_CONTENT_4": "Arată-mi un fragment de cod pentru un antet lipicios al unui site, în CSS și JavaScript.",
+        "TEXT_SUGGESTION_TITLE_5": "Explică tranzacționarea cu opțiuni",
+        "TEXT_SUGGESTION_SUBTITLE_5": "dacă sunt familiarizat cu cumpărarea și vânzarea de acțiuni",
+        "TEXT_SUGGESTION_CONTENT_5": "Explică tranzacționarea cu opțiuni în termeni simpli, presupunând că sunt familiarizat cu cumpărarea și vânzarea de acțiuni.",
+        "TEXT_SUGGESTION_TITLE_6": "Depășește procrastinarea",
+        "TEXT_SUGGESTION_SUBTITLE_6": "dă-mi câteva sfaturi",
+        "TEXT_SUGGESTION_CONTENT_6": "Poți să mă întrebi mai întâi în ce situații procrastinez cel mai mult și apoi să îmi dai câteva sugestii pentru a depăși asta?"
+      }
+    },
+    "ATTACHED_FILE_ITEM": {
+      "FILE_INFO_MODAL": {
+        "TEXT_FORMATTING_DISCLAIMER": "Formatarea poate diferi față de sursa originală.",
+        "TEXT_NO_PREVIEW_AVAILABLE": "Previzualizare indisponibilă",
+        "TEXT_EXTRACTED_LINES": {
+          "one": "{{count}} linie extrasă",
+          "few": "{{count}} linii extrase",
+          "other": "{{count}} de linii extrase"
+        }
+      }
+    },
+    "SOURCE_CITATION_MODAL": {
+      "TEXT_CITATION": "Citat",
+      "TEXT_SOURCE": "Sursă",
+      "TEXT_RELEVANCE": "Relevanță",
+      "TEXT_CONTENT": "Conținut",
+      "TEXT_NO_PREVIEW_AVAILABLE": "Previzualizare indisponibilă"
+    },
+    "ARCHIVED_CHATS_LIST": {
+      "TEXT_ARCHIVED_CHATS": "Conversații arhivate",
+      "TEXT_NO_CHATS": "Nu există conversații arhivate.",
+      "CHAT_ITEM": {
+        "TEXT_DELETE_CHAT": "Ștergi conversația?",
+        "TEXT_THIS_WILL_DELETE": "Aceasta va șterge {{name}}",
+        "TEXT_RESTORE": "Restaurează",
+        "TEXT_EXPORT": "Exportă",
+        "TEXT_DELETE": "Șterge",
+        "TEXT_KEEP": "Păstrează"
+      },
+      "ARCHIVED_CHATS_ACTIONS_SHEET": {
+        "TEXT_UNARCHIVE_CHATS": "Dezarhivezi toate conversațiile?",
+        "TEXT_ARE_YOU_SURE": "Sigur dorești să dezarhivezi toate conversațiile arhivate?",
+        "BUTTON_RESTORE_ALL_CHATS": "Restaurează toate conversațiile",
+        "BUTTON_EXPORT_ALL_CHATS": "Exportă toate conversațiile"
+      }
+    },
+    "USER_MESSAGE_ACTIONS": {
+      "TEXT_EDIT": "Editează",
+      "TEXT_COPY": "Copiază"
+    },
+    "AI_MESSAGE_ACTIONS": {
+      "TEXT_EDIT": "Editează",
+      "TEXT_COPY": "Copiază",
+      "TEXT_CONTINUE_RESPONSE": "Continuă răspunsul",
+      "TEXT_REGENERATE": "Regenerează",
+      "REGENERATE_MESSAGE_ACTION_SHEET": {
+        "TEXT_SUGGEST_A_CHANGE": "Sugerează o modificare",
+        "TEXT_TRY_AGAIN": "Încearcă din nou",
+        "TEXT_ADD_DETAILS": "Adaugă detalii",
+        "TEXT_MORE_CONCISE": "Mai concis"
+      }
+    },
+    "EDIT_MESSAGE_INPUT": {
+      "TEXT_EDIT_MESSAGE": "Editează mesajul",
+      "BUTTON_SAVE": "Salvează",
+      "BUTTON_SAVE_AS_COPY": "Salvează ca o copie",
+      "BUTTON_SEND": "Trimite",
+      "BUTTON_CANCEL": "Anulează"
+    },
+    "SUGGEST_CHANGE_INPUT": {
+      "TEXT_SUGGEST_A_CHANGE": "Sugerează o modificare",
+      "BUTTON_CANCEL": "Anulează"
+    },
+    "ARCHIVED_CHATS_FILTERS_SHEET": {
+      "USE_SEARCH_FILTERS": {
+        "TEXT_MOST_RECENT": "Cele mai recente",
+        "TEXT_OLDEST": "Cele mai vechi",
+        "TEXT_A-Z": "A-Z",
+        "TEXT_Z-A": "Z-A"
+      }
+    },
+    "VOICE_MODE_MODAL": {
+      "TEXT_LISTENING": "Ascult...",
+      "TEXT_THINKING": "Mă gândesc...",
+      "TEXT_TALKING": "Vorbesc..."
+    },
+    "MESSAGE_FOLLOW_UPS": {
+      "TEXT_FOLLOW_UP": "Continuare"
+    },
+    "AI_MESSAGE": {
+      "TOOL_OUTPUT_SHEET": {
+        "TEXT_VIEW_RESULT_PREFIX": "Vezi rezultatul de la",
+        "TEXT_INPUT": "Intrare",
+        "TEXT_OUTPUT": "Ieșire"
+      },
+      "TOOL_APPROVAL_CARD": {
+        "TEXT_ALLOW_PREFIX": "Permite",
+        "BUTTON_ALLOW": "Permite",
+        "BUTTON_DENY": "Refuză"
+      },
+      "ASK_USER_CARD": {
+        "TEXT_OTHER": "Altul",
+        "TEXT_OTHER_PLACEHOLDER": "Scrie răspunsul tău",
+        "BUTTON_NEXT": "Următorul",
+        "BUTTON_SUBMIT": "Trimite",
+        "BUTTON_DENY": "Omite"
+      }
+    },
+    "ATTACH_KNOWLEDGE_SHEET": {
+      "TEXT_TITLE": "Bază de cunoștințe",
+      "TEXT_SEARCH_KNOWLEDGE": "Caută în baza de cunoștințe",
+      "TEXT_NO_KNOWLEDGE": "Nu există nicio bază de cunoștințe.",
+      "TEXT_SEARCH_FILES": "Caută fișiere",
+      "TEXT_NO_FILES": "Nu există fișiere în această bază de cunoștințe."
+    },
+    "ATTACHED_CHAT_ITEMS": {
+      "TEXT_COLLECTION": "Colecție",
+      "TEXT_FILE": "Fișier"
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import { EntityPartial } from '@ronas-it/rtkq-entity-api';
-import { FileData, ImageData } from '@open-webui-react-native/shared/data-access/common';
+import { AttachedListItem, ImageData } from '@open-webui-react-native/shared/data-access/common';
 import { Chat, ChatResponse } from '../models';
 import { buildMessagesHistory } from './build-messages-history';
 import { createMessagePair } from './create-message-pair';
@@ -9,7 +9,7 @@ export interface PrepareSendMessagePayloadArgs {
   prompt: string;
   chatData: ChatResponse;
   model: string;
-  attachedFiles?: Array<FileData>;
+  attachedItems?: Array<AttachedListItem>;
   attachedImages?: Array<ImageData>;
 }
 
@@ -17,14 +17,14 @@ export function prepareSendMessagePayload({
   prompt,
   chatData,
   model,
-  attachedFiles,
+  attachedItems,
   attachedImages,
 }: PrepareSendMessagePayloadArgs): EntityPartial<ChatResponse> {
   const { userMessage, assistantMessage, assistantMessageId } = createMessagePair({
     prompt,
     model,
     currentMessageId: chatData.chat.history.currentId,
-    attachedFiles,
+    attachedItems,
     attachedImages,
   });
 

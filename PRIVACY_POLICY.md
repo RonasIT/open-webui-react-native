@@ -34,6 +34,8 @@ The App uses Sentry to track crashes and application errors so we can diagnose a
 
 When an error occurs, Sentry receives the error/crash message and stack trace, along with diagnostic details about failed requests to your Open WebUI server: the HTTP status and method, the request path (the server’s domain/host is stripped and never sent), and the request/response body. Body content is length-truncated, and any fields that may contain conversation text (such as content, message, text, or prompt) are redacted before being sent.
 
+Every Sentry report includes the version number your Open WebUI server reports for itself. It is updated whenever the App loads the server configuration, including when you switch servers.
+
 We do not send your chat content, AI prompts or responses, or your Open WebUI server’s address/domain to Sentry.
 
 ## Google Sign-In (Optional)

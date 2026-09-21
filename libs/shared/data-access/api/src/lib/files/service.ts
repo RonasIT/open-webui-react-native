@@ -1,6 +1,6 @@
 import { plainToInstance } from 'class-transformer';
 import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
-import { FileData } from '@open-webui-react-native/shared/data-access/common';
+import { FileData, FileDataContent } from '@open-webui-react-native/shared/data-access/common';
 import { filesApiConfig } from './config';
 
 class FilesService {
@@ -8,6 +8,10 @@ class FilesService {
     const response = await getApiService().post<FileData>(filesApiConfig.route, formData);
 
     return plainToInstance(FileData, response);
+  }
+
+  public async getFileContent(id: string): Promise<FileDataContent> {
+    return getApiService().get<FileDataContent>(`${filesApiConfig.route}${id}/data/content`);
   }
 }
 

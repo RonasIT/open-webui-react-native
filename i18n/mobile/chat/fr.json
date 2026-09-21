@@ -30,7 +30,8 @@
         "TEXT_CAPTURE": "Capturer",
         "TEXT_CHOOSE_FROM_GALLERY": "Choisir dans la galerie",
         "TEXT_UPLOAD_FILES": "Téléverser des fichiers",
-        "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Vous ne pouvez pas téléverser un fichier vide."
+        "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Vous ne pouvez pas téléverser un fichier vide.",
+        "TEXT_ATTACH_KNOWLEDGE": "Joindre une base de connaissances"
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "Accès complet",
@@ -91,9 +92,6 @@
       }
     },
     "ATTACHED_FILE_ITEM": {
-      "TEXT_FILE": "Fichier",
-      "TEXT_DOCUMENT": "Document",
-      "TEXT_COLLECTION": "Collection",
       "FILE_INFO_MODAL": {
         "TEXT_FORMATTING_DISCLAIMER": "La mise en forme peut différer de la source.",
         "TEXT_NO_PREVIEW_AVAILABLE": "Aucun aperçu disponible",
@@ -189,6 +187,17 @@
         "BUTTON_SUBMIT": "Envoyer",
         "BUTTON_DENY": "Ignorer"
       }
+    },
+    "ATTACH_KNOWLEDGE_SHEET": {
+      "TEXT_TITLE": "Connaissances",
+      "TEXT_SEARCH_KNOWLEDGE": "Rechercher des connaissances",
+      "TEXT_NO_KNOWLEDGE": "Aucune connaissance.",
+      "TEXT_SEARCH_FILES": "Rechercher des fichiers",
+      "TEXT_NO_FILES": "Aucun fichier dans cette base de connaissances."
+    },
+    "ATTACHED_CHAT_ITEMS": {
+      "TEXT_COLLECTION": "Collection",
+      "TEXT_FILE": "Fichier"
     }
   }
 }
