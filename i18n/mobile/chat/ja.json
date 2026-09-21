@@ -170,9 +170,15 @@
     },
     "AI_MESSAGE": {
       "TOOL_OUTPUT_SHEET": {
-        "TEXT_VIEW_RESULT_PREFIX": "次の結果を表示",
         "TEXT_INPUT": "入力",
         "TEXT_OUTPUT": "出力"
+      },
+      "TOOL_CALL_CARD": {
+        "TEXT_PREPARING_PREFIX": "準備中",
+        "TEXT_EXECUTING_PREFIX": "実行中",
+        "TEXT_VIEW_RESULT_PREFIX": "次の結果を表示",
+        "TEXT_FAILED_PREFIX": "失敗",
+        "TEXT_REJECTED_PREFIX": "拒否"
       },
       "TOOL_APPROVAL_CARD": {
         "TEXT_ALLOW_PREFIX": "許可",

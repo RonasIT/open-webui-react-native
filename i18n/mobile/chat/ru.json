@@ -172,9 +172,15 @@
     },
     "AI_MESSAGE": {
       "TOOL_OUTPUT_SHEET": {
-        "TEXT_VIEW_RESULT_PREFIX": "Посмотреть результат от",
         "TEXT_INPUT": "Ввод",
         "TEXT_OUTPUT": "Вывод"
+      },
+      "TOOL_CALL_CARD": {
+        "TEXT_PREPARING_PREFIX": "Подготовка",
+        "TEXT_EXECUTING_PREFIX": "Выполняется",
+        "TEXT_VIEW_RESULT_PREFIX": "Посмотреть результат",
+        "TEXT_FAILED_PREFIX": "Ошибка",
+        "TEXT_REJECTED_PREFIX": "Отклонено"
       },
       "TOOL_APPROVAL_CARD": {
         "TEXT_ALLOW_PREFIX": "Разрешить",

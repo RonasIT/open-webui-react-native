@@ -1,10 +1,9 @@
-import { ChatCompletionOutputItem } from '@open-webui-react-native/shared/data-access/websocket';
-import { ToolCallStatus } from '../enums';
+import {
+  ChatCompletionOutputItem,
+  ChatCompletionOutputItemType,
+} from '@open-webui-react-native/shared/data-access/websocket';
+import { BuiltInToolName, ToolCallStatus } from '../enums';
 import { Message } from '../models';
-
-const FUNCTION_CALL_TYPE = 'function_call';
-const FUNCTION_CALL_OUTPUT_TYPE = 'function_call_output';
-const ASK_USER_TOOL_NAME = 'ask_user';
 
 const PENDING_TOOL_CALL_STATUSES = new Set<string>([ToolCallStatus.PENDING, ToolCallStatus.REQUIRES_APPROVAL]);
 
@@ -30,14 +29,16 @@ export const getPendingToolCall = (message?: Message): PendingToolCall | undefin
   }
 
   const resolvedCallIds = new Set(
-    output.flatMap((item) => (item.type === FUNCTION_CALL_OUTPUT_TYPE && item.callId ? [item.callId] : [])),
+    output.flatMap((item) =>
+      item.type === ChatCompletionOutputItemType.FUNCTION_CALL_OUTPUT && item.callId ? [item.callId] : [],
+    ),
   );
 
   const pendingCall = output.find((item) => {
     const callId = getFunctionCallId(item);
 
     return (
-      item.type === FUNCTION_CALL_TYPE &&
+      item.type === ChatCompletionOutputItemType.FUNCTION_CALL &&
       callId != null &&
       PENDING_TOOL_CALL_STATUSES.has(item.status ?? '') &&
       !resolvedCallIds.has(callId)
@@ -59,7 +60,7 @@ export const getPendingToolCall = (message?: Message): PendingToolCall | undefin
   return {
     callId,
     toolName,
-    isAskUser: toolName === ASK_USER_TOOL_NAME,
+    isAskUser: toolName === BuiltInToolName.ASK_USER,
     toolArguments: pendingCall.toolArguments,
   };
 };

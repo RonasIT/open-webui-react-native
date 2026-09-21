@@ -6,6 +6,8 @@ import * as Sharing from 'expo-sharing';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { FileExtension, MimeType, UtiType } from './enums';
 
+const DATA_URI_PREFIX = 'data:';
+
 export class FileSystemService {
   private _cacheDirectory = new Directory(Paths.cache);
 
@@ -42,7 +44,9 @@ export class FileSystemService {
     return await FileSystem.downloadAsync(uri, fileURI, options);
   }
 
-  public async shareAsync(fileUri: string, fileName: string, mimeType: MimeType, utiType: UtiType): Promise<void> {
+  // NOTE: `mimeType` / `utiType` are plain strings rather than the enums because files produced by
+  // a tool carry whatever type their source system reported, which the app cannot enumerate.
+  public async shareAsync(fileUri: string, fileName: string, mimeType?: string, utiType?: string): Promise<void> {
     const isAvailable = await Sharing.isAvailableAsync();
 
     if (isAvailable) {
@@ -76,6 +80,36 @@ export class FileSystemService {
     const downloadedFile = await this.downloadFile(uri, fileUri);
 
     await this.shareAsync(downloadedFile.uri, fileName, mimeType, utiType);
+  }
+
+  // NOTE: For a file the app did not create — a tool result fetched from the server, or one the
+  // tool inlined as a base64 data URI. Cached only for as long as the share sheet needs it.
+  public async shareExternalFile(
+    source: string,
+    fileName: string,
+    options?: { mimeType?: string; authorizationToken?: string },
+  ): Promise<void> {
+    const fileUri = `${FileSystem.cacheDirectory}${fileName}`;
+
+    if (source.startsWith(DATA_URI_PREFIX)) {
+      await FileSystem.writeAsStringAsync(fileUri, source.slice(source.indexOf(',') + 1), {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+    } else {
+      const { authorizationToken } = options ?? {};
+
+      await this.downloadFile(
+        source,
+        fileUri,
+        authorizationToken ? { headers: { Authorization: `Bearer ${authorizationToken}` } } : undefined,
+      );
+    }
+
+    try {
+      await this.shareAsync(fileUri, fileName, options?.mimeType);
+    } finally {
+      this.deleteFile(fileUri);
+    }
   }
 
   private createTemporaryFile(fileName: string, content: string, extension: FileExtension): string {

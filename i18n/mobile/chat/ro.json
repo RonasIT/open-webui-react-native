@@ -172,9 +172,15 @@
     },
     "AI_MESSAGE": {
       "TOOL_OUTPUT_SHEET": {
-        "TEXT_VIEW_RESULT_PREFIX": "Vezi rezultatul de la",
         "TEXT_INPUT": "Intrare",
         "TEXT_OUTPUT": "Ieșire"
+      },
+      "TOOL_CALL_CARD": {
+        "TEXT_PREPARING_PREFIX": "Se pregătește",
+        "TEXT_EXECUTING_PREFIX": "Se execută",
+        "TEXT_VIEW_RESULT_PREFIX": "Vezi rezultatul de la",
+        "TEXT_FAILED_PREFIX": "Eșuat",
+        "TEXT_REJECTED_PREFIX": "Respins"
       },
       "TOOL_APPROVAL_CARD": {
         "TEXT_ALLOW_PREFIX": "Permite",

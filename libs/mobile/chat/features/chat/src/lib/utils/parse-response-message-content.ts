@@ -1,14 +1,11 @@
-import { decode } from 'html-entities';
-import { parseObjectToString } from '@open-webui-react-native/shared/utils/strings';
-
-type PayloadContentType = 'json' | 'text';
-
+// NOTE: Raw as the attribute carried it — the payload is HTML-escaped and often JSON stringified
+// more than once, and untangling that is presentation, done once for both message shapes in
+// `buildToolCallViews`.
 export type ToolData = {
   id?: string;
   toolName: string;
-  input: string | undefined;
-  output: string;
-  outputContentType: PayloadContentType;
+  rawArguments: string;
+  rawOutput: string;
 };
 
 export type ParseResponseMessageContentResult = {
@@ -91,35 +88,6 @@ const indexAfterOpenDetailsTag = (s: string): number => {
   return -1;
 };
 
-const parseJsonRecursive = (str: string): string => {
-  let cur = str.trim();
-
-  for (let depth = 0; depth < 32; depth++) {
-    if (typeof cur !== 'string') {
-      return cur;
-    }
-
-    try {
-      cur = JSON.parse(cur);
-    } catch {
-      return cur;
-    }
-  }
-
-  return cur;
-};
-
-const classifyAndNormalizePayload = (raw: string): { contentType: PayloadContentType; normalized: string } => {
-  const decoded = decode(raw).trim();
-  const parsed = parseJsonRecursive(decoded);
-
-  if (typeof parsed === 'object' && parsed !== null) {
-    return { contentType: 'json', normalized: JSON.stringify(parsed, null, 2) };
-  }
-
-  return { contentType: 'text', normalized: String(parsed) };
-};
-
 const tryParseLeadingToolCallsDetails = (content: string): { tool: ToolData; rest: string } | null => {
   const leadingWs = content.match(/^\s*/)?.[0] ?? '';
   const fromDetails = content.slice(leadingWs.length);
@@ -149,11 +117,6 @@ const tryParseLeadingToolCallsDetails = (content: string): { tool: ToolData; res
 
   const id = attrs.id ?? undefined;
   const toolName = attrs.name ?? '';
-  const argsRaw = attrs.arguments ?? '';
-  const resultRaw = attrs.result ?? '';
-
-  const outputPayload = classifyAndNormalizePayload(resultRaw);
-  const input = parseObjectToString(parseJsonRecursive(decode(argsRaw).trim()));
   const blockEnd = leadingWs.length + openEnd + closeMatch.index + closeMatch[0].length;
   const rest = content.slice(blockEnd).trimStart();
 
@@ -161,9 +124,8 @@ const tryParseLeadingToolCallsDetails = (content: string): { tool: ToolData; res
     tool: {
       id,
       toolName,
-      input,
-      output: outputPayload.normalized,
-      outputContentType: outputPayload.contentType,
+      rawArguments: attrs.arguments ?? '',
+      rawOutput: attrs.result ?? '',
     },
     rest,
   };

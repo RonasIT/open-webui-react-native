@@ -1,3 +1,4 @@
+import { ChatCompletionOutputItemType } from '../enums/chat-completion-output-item-type';
 import { ChatCompletionOutputItem } from '../models/chat-event-data/chat-completion-chunk';
 
 // NOTE: Mirrors the backend `get_output_text` (open_webui/utils/misc.py). Concatenates the
@@ -11,7 +12,7 @@ export const getOutputText = (output?: Array<ChatCompletionOutputItem>): string 
   const texts: Array<string> = [];
 
   for (const item of output) {
-    if (item?.type !== 'message' || !Array.isArray(item.content)) {
+    if (item?.type !== ChatCompletionOutputItemType.MESSAGE || !Array.isArray(item.content)) {
       continue;
     }
 

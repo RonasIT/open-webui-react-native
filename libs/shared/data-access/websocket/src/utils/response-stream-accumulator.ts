@@ -1,7 +1,7 @@
+import { ChatCompletionOutputItemType } from '../enums/chat-completion-output-item-type';
 import { ChatCompletionOutputItem } from '../models/chat-event-data/chat-completion-chunk';
 import { ResponseStreamEvent } from '../models/chat-event-data/response-stream-event';
 
-const MESSAGE_ITEM_TYPE = 'message';
 // NOTE: Delta kinds that carry user-visible answer text. Reasoning (`reasoning_text`,
 // `reasoning_summary_text`) and tool arguments (`function_call_arguments`) are deliberately
 // ignored — the backend's `get_output_text` skips non-message items too, so folding them in
@@ -18,7 +18,7 @@ interface ResponseStreamEntry {
 export type ResponseStreamState = Map<number, ResponseStreamEntry>;
 
 const getItemText = (item?: ChatCompletionOutputItem): string => {
-  if (item?.type !== MESSAGE_ITEM_TYPE || !Array.isArray(item.content)) {
+  if (item?.type !== ChatCompletionOutputItemType.MESSAGE || !Array.isArray(item.content)) {
     return '';
   }
 
@@ -94,13 +94,13 @@ export const applyResponseStreamEvent = (state: ResponseStreamState, event: Resp
   const entry = state.get(index);
 
   if (!entry) {
-    state.set(index, { type: MESSAGE_ITEM_TYPE, text: event.delta });
+    state.set(index, { type: ChatCompletionOutputItemType.MESSAGE, text: event.delta });
 
     return true;
   }
 
   // NOTE: An answer-text delta targeting a reasoning item is skipped by the backend as well.
-  if (entry.type !== MESSAGE_ITEM_TYPE) {
+  if (entry.type !== ChatCompletionOutputItemType.MESSAGE) {
     return false;
   }
 
@@ -116,7 +116,7 @@ export const getResponseStreamText = (state: ResponseStreamState): string => {
   for (const index of Array.from(state.keys()).sort((a, b) => a - b)) {
     const entry = state.get(index);
 
-    if (entry?.type !== MESSAGE_ITEM_TYPE || !entry.text.trim()) {
+    if (entry?.type !== ChatCompletionOutputItemType.MESSAGE || !entry.text.trim()) {
       continue;
     }
 

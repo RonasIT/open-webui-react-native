@@ -23,3 +23,4 @@ export * from './get-pending-tool-call';
 export * from './parse-ask-user-prompt';
 export * from './build-ask-user-answers';
 export * from './resolve-default-tool-ids';
+export * from './get-tool-calls';
