@@ -53,12 +53,24 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
   const isUrlWithoutConfig = isFetchWithUrlSuccess && !(config?.name && config?.version);
 
   const isAuthEnabled = config?.features?.auth !== false;
+  const isLdapEnabled = !!config?.features?.enableLdap;
   const isLoginFormEnabled = config?.features?.enableLoginForm !== false;
   const isLoginFormRequired = isAuthEnabled && isLoginFormEnabled;
   const hasOauthProviders = Object.keys(config?.oauth?.providers || {}).length > 0;
+  // Only providers we actually render a button for (see sign-in/component.tsx) count as a usable sign-in option.
+  const hasSupportedOauthProviders = [Provider.GOOGLE, Provider.OIDC].some(
+    (provider) => provider in (config?.oauth?.providers || {}),
+  );
 
   const showSignInButton = !isAuthEnabled || isLoginFormEnabled;
-  const showMisconfigurationMessage = isUrlWithConfig && isAuthEnabled && !isLoginFormEnabled && !hasOauthProviders;
+  const showMisconfigurationMessage =
+    isUrlWithConfig && isAuthEnabled && !isLoginFormEnabled && !hasOauthProviders && !isLdapEnabled;
+  const showUnsupportedProviderMessage =
+    isUrlWithConfig &&
+    isAuthEnabled &&
+    !isLoginFormEnabled &&
+    !hasSupportedOauthProviders &&
+    (hasOauthProviders || isLdapEnabled);
 
   const isFormValid = isApiUrlFeatureEnabled
     ? (!isLoginFormRequired || isValid) && isUrlValid && isUrlWithConfig
@@ -156,6 +168,11 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
       {showMisconfigurationMessage && (
         <AppText className='text-sm-sm sm:text-sm text-status-danger text-center'>
           {translate('TEXT_SSO_MISCONFIGURED')}
+        </AppText>
+      )}
+      {showUnsupportedProviderMessage && (
+        <AppText className='text-sm-sm sm:text-sm text-status-danger text-center'>
+          {translate('TEXT_SSO_PROVIDER_NOT_SUPPORTED')}
         </AppText>
       )}
       {showSignInButton && (

@@ -12,7 +12,8 @@
         "TEXT_API_URL": "API URL",
         "TEXT_ENTER_YOUR_PASSWORD": "パスワードを入力",
         "BUTTON_SIGN_IN": "サインイン",
-        "TEXT_SSO_MISCONFIGURED": "このサーバーではサインインが設定されていません。管理者にお問い合わせください。"
+        "TEXT_SSO_MISCONFIGURED": "このサーバーではサインインが設定されていません。管理者にお問い合わせください。",
+        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "このサインイン方法はまだアプリでサポートされていません。別のサインイン方法をお試しください。"
       },
       "GOOGLE_FORM": {
         "BUTTON_CONTINUE_WITH_GOOGLE": "Google で続行"

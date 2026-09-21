@@ -12,7 +12,8 @@
         "TEXT_API_URL": "URL da API",
         "TEXT_ENTER_YOUR_PASSWORD": "Digite sua senha",
         "BUTTON_SIGN_IN": "Entrar",
-        "TEXT_SSO_MISCONFIGURED": "O login não está configurado neste servidor. Entre em contato com o administrador."
+        "TEXT_SSO_MISCONFIGURED": "O login não está configurado neste servidor. Entre em contato com o administrador.",
+        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Este método de login ainda não é suportado pelo aplicativo. Tente outra opção de login."
       },
       "GOOGLE_FORM": {
         "BUTTON_CONTINUE_WITH_GOOGLE": "Continuar com o Google"
