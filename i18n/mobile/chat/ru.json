@@ -178,7 +178,7 @@
       "TOOL_CALL_CARD": {
         "TEXT_PREPARING_PREFIX": "Подготовка",
         "TEXT_EXECUTING_PREFIX": "Выполняется",
-        "TEXT_VIEW_RESULT_PREFIX": "Посмотреть результат",
+        "TEXT_VIEW_RESULT_PREFIX": "Посмотреть результат от",
         "TEXT_FAILED_PREFIX": "Ошибка",
         "TEXT_REJECTED_PREFIX": "Отклонено"
       },

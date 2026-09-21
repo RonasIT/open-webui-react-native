@@ -1,13 +1,6 @@
 import { decode } from 'html-entities';
 import { parseObjectToString } from '@open-webui-react-native/shared/utils/strings';
 
-export type PayloadContentType = 'json' | 'text';
-
-export interface NormalizedToolOutput {
-  output: string;
-  outputContentType: PayloadContentType;
-}
-
 // Tools routinely answer with JSON that has been stringified more than once on its way here, so
 // unwrap until a non-string falls out rather than showing the user a wall of escaped quotes.
 const parseJsonRecursive = (value: string): unknown => {
@@ -28,14 +21,10 @@ const parseJsonRecursive = (value: string): unknown => {
   return current;
 };
 
-export const normalizeToolOutput = (raw: string): NormalizedToolOutput => {
+export const normalizeToolOutput = (raw: string): string => {
   const parsed = parseJsonRecursive(decode(raw));
 
-  if (typeof parsed === 'object' && parsed !== null) {
-    return { output: JSON.stringify(parsed, null, 2), outputContentType: 'json' };
-  }
-
-  return { output: String(parsed), outputContentType: 'text' };
+  return typeof parsed === 'object' && parsed !== null ? JSON.stringify(parsed, null, 2) : String(parsed);
 };
 
 export const normalizeToolInput = (raw?: string): string | undefined =>

@@ -3,7 +3,7 @@ import { getToolCalls, Message, ToolCallState } from '@open-webui-react-native/s
 import { FileType } from '@open-webui-react-native/shared/data-access/common';
 import { ChatCompletionOutputFile } from '@open-webui-react-native/shared/data-access/websocket';
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
-import { normalizeToolInput, normalizeToolOutput, PayloadContentType } from './normalize-tool-payload';
+import { normalizeToolInput, normalizeToolOutput } from './normalize-tool-payload';
 import { ToolData } from './parse-response-message-content';
 
 const IMAGE_FILE_TYPE = 'image';
@@ -24,7 +24,6 @@ export interface ToolCallView {
   state: ToolCallState;
   input?: string;
   output?: string;
-  outputContentType: PayloadContentType;
   images: Array<AttachedImageWithIndex>;
   files: Array<ToolCallFile>;
 }
@@ -136,8 +135,6 @@ export const buildToolCallViews = (message: Message, legacyToolsData: Array<Tool
     toolName,
     state,
     input: normalizeToolInput(rawArguments),
-    ...(rawOutput
-      ? normalizeToolOutput(rawOutput)
-      : { output: undefined, outputContentType: 'text' as PayloadContentType }),
+    output: rawOutput ? normalizeToolOutput(rawOutput) : undefined,
     ...getAttachments(attachments),
   }));
