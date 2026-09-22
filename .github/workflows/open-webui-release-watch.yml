@@ -1,0 +1,84 @@
+name: Open WebUI Release Watch
+
+on:
+  schedule:
+    - cron: "0 8 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  check-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Fetch latest open-webui release
+        id: latest_release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG_NAME=$(gh api repos/open-webui/open-webui/releases/latest --jq '.tag_name')
+          HTML_URL=$(gh api repos/open-webui/open-webui/releases/latest --jq '.html_url')
+
+          if [ -z "$TAG_NAME" ] || [ "$TAG_NAME" = "null" ]; then
+            echo "Could not resolve latest release tag_name" >&2
+            exit 1
+          fi
+
+          echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
+          echo "html_url=$HTML_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Compare with last seen release
+        id: compare
+        run: |
+          set -euo pipefail
+          STATE_FILE=".github/state/open-webui-last-release.txt"
+
+          if [ -f "$STATE_FILE" ]; then
+            LAST_SEEN=$(cat "$STATE_FILE")
+          else
+            LAST_SEEN=""
+          fi
+
+          echo "last_seen=$LAST_SEEN" >> "$GITHUB_OUTPUT"
+
+          if [ "$LAST_SEEN" = "${{ steps.latest_release.outputs.tag_name }}" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Update state file
+        if: steps.compare.outputs.changed == 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p .github/state
+          echo -n "${{ steps.latest_release.outputs.tag_name }}" > .github/state/open-webui-last-release.txt
+
+      - name: Commit and push state file
+        if: steps.compare.outputs.changed == 'true'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/state/open-webui-last-release.txt
+          git commit -m "chore: update open-webui last seen release to ${{ steps.latest_release.outputs.tag_name }}"
+          git push
+
+      - name: Notify Google Chat
+        if: steps.compare.outputs.changed == 'true'
+        env:
+          GOOGLE_CHAT_WEBHOOK_URL: ${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}
+        run: |
+          set -euo pipefail
+          TAG_NAME="${{ steps.latest_release.outputs.tag_name }}"
+          HTML_URL="${{ steps.latest_release.outputs.html_url }}"
+
+          curl -X POST -H "Content-Type: application/json" \
+            -d "{\"text\": \"New open-webui release: ${TAG_NAME}\n${HTML_URL}\"}" \
+            "$GOOGLE_CHAT_WEBHOOK_URL"
