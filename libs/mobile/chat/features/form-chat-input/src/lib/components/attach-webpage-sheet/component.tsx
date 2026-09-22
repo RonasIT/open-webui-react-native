@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { Keyboard } from 'react-native';
 import {
   AppBottomSheet,
   AppText,
@@ -106,9 +107,7 @@ export function AttachWebpageSheet({ ref, onItemAttached }: AttachWebpageSheetPr
       isModal
       ref={sheetRef}
       onOpen={handleOpen}
-      keyboardBehavior='interactive'
-      keyboardBlurBehavior='restore'
-      android_keyboardInputMode='adjustResize'
+      onDismiss={() => Keyboard.dismiss()}
       content={
         <View className='gap-16'>
           <SheetHeader
