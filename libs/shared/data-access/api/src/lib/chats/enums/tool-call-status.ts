@@ -7,4 +7,6 @@ export enum ToolCallStatus {
   QUEUED = 'queued',
   REJECTED = 'rejected',
   COMPLETED = 'completed',
+  FAILED = 'failed',
+  INCOMPLETE = 'incomplete',
 }
