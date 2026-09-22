@@ -179,7 +179,8 @@
         "TEXT_EXECUTING_PREFIX": "Executando",
         "TEXT_VIEW_RESULT_PREFIX": "Ver resultado de",
         "TEXT_FAILED_PREFIX": "Falhou",
-        "TEXT_REJECTED_PREFIX": "Negado"
+        "TEXT_REJECTED_PREFIX": "Negado",
+        "TEXT_SAVE_FAILED": "Não foi possível salvar o arquivo"
       },
       "TOOL_APPROVAL_CARD": {
         "TEXT_ALLOW_PREFIX": "Permitir",

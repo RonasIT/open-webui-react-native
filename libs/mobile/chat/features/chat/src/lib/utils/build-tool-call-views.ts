@@ -1,15 +1,16 @@
 import { AttachedImageWithIndex } from '@open-webui-react-native/mobile/shared/features/image-preview-modal';
 import { getToolCalls, Message, ToolCallState } from '@open-webui-react-native/shared/data-access/api';
 import { FileType } from '@open-webui-react-native/shared/data-access/common';
-import { ChatCompletionOutputFile } from '@open-webui-react-native/shared/data-access/websocket';
+import {
+  ChatCompletionOutputFile,
+  ChatCompletionOutputFileType,
+} from '@open-webui-react-native/shared/data-access/websocket';
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
+import { getDataUriMimeType, isDataUri } from '@open-webui-react-native/shared/utils/files';
 import { normalizeToolInput, normalizeToolOutput } from './normalize-tool-payload';
 import { ToolData } from './parse-response-message-content';
 
-const IMAGE_FILE_TYPE = 'image';
 const IMAGE_MIME_TYPE_PREFIX = 'image/';
-const DATA_URI_PREFIX = 'data:';
-const UNKNOWN_FILE_TYPE = 'file';
 
 export interface ToolCallFile {
   key: string;
@@ -37,7 +38,7 @@ const getSource = (file: ChatCompletionOutputFile): string | undefined => {
     return undefined;
   }
 
-  return source.startsWith(DATA_URI_PREFIX) || source.startsWith('http') ? source : `${getApiUrl()}${source}`;
+  return isDataUri(source) || source.startsWith('http') ? source : `${getApiUrl()}${source}`;
 };
 
 const getMimeType = (file: ChatCompletionOutputFile, source: string): string | undefined => {
@@ -45,13 +46,7 @@ const getMimeType = (file: ChatCompletionOutputFile, source: string): string | u
     return file.contentType;
   }
 
-  if (!source.startsWith(DATA_URI_PREFIX)) {
-    return undefined;
-  }
-
-  const mimeType = source.slice(DATA_URI_PREFIX.length).split(/[;,]/)[0];
-
-  return mimeType || undefined;
+  return isDataUri(source) ? getDataUriMimeType(source) : undefined;
 };
 
 // `image/svg+xml` → `svg`. Crude, but the alternative is a mime table for types the app has no
@@ -76,14 +71,14 @@ const getAttachments = (files: Array<ChatCompletionOutputFile>): ToolCallAttachm
 
       const mimeType = getMimeType(file, source);
 
-      if (file.type === IMAGE_FILE_TYPE || mimeType?.startsWith(IMAGE_MIME_TYPE_PREFIX)) {
+      if (file.type === ChatCompletionOutputFileType.IMAGE || mimeType?.startsWith(IMAGE_MIME_TYPE_PREFIX)) {
         attachments.images.push({ type: FileType.IMAGE, url: source, index: attachments.images.length });
 
         return attachments;
       }
 
       const extension = getExtension(mimeType);
-      const name = `${file.type ?? UNKNOWN_FILE_TYPE}-${index + 1}${extension ? `.${extension}` : ''}`;
+      const name = `${file.type ?? FileType.FILE}-${index + 1}${extension ? `.${extension}` : ''}`;
 
       attachments.files.push({ key: `${name}-${index}`, name, source, mimeType });
 

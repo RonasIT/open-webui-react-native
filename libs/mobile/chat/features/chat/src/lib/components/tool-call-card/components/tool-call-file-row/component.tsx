@@ -1,3 +1,4 @@
+import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useState } from 'react';
 import { fileSystemService } from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
 import { AppPressable, AppSpinner, AppText, Icon, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
@@ -10,6 +11,8 @@ interface ToolCallFileRowProps {
 }
 
 export function ToolCallFileRow({ file }: ToolCallFileRowProps): ReactElement {
+  const translate = useTranslation('CHAT.AI_MESSAGE.TOOL_CALL_CARD');
+
   const [isSharing, setIsSharing] = useState(false);
 
   const handlePress = async (): Promise<void> => {
@@ -21,7 +24,7 @@ export function ToolCallFileRow({ file }: ToolCallFileRowProps): ReactElement {
         authorizationToken: appStorageService.token.get(),
       });
     } catch {
-      ToastService.showError();
+      ToastService.showError(translate('TEXT_SAVE_FAILED'));
     } finally {
       setIsSharing(false);
     }

@@ -3,10 +3,9 @@ import * as DocumentPicker from 'expo-document-picker';
 import { Directory, File, Paths } from 'expo-file-system';
 import * as FileSystem from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
+import { isDataUri } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { FileExtension, MimeType, UtiType } from './enums';
-
-const DATA_URI_PREFIX = 'data:';
 
 export class FileSystemService {
   private _cacheDirectory = new Directory(Paths.cache);
@@ -91,7 +90,7 @@ export class FileSystemService {
   ): Promise<void> {
     const fileUri = `${FileSystem.cacheDirectory}${fileName}`;
 
-    if (source.startsWith(DATA_URI_PREFIX)) {
+    if (isDataUri(source)) {
       await FileSystem.writeAsStringAsync(fileUri, source.slice(source.indexOf(',') + 1), {
         encoding: FileSystem.EncodingType.Base64,
       });

@@ -178,7 +178,8 @@
         "TEXT_EXECUTING_PREFIX": "执行中",
         "TEXT_VIEW_RESULT_PREFIX": "查看来自以下工具的结果",
         "TEXT_FAILED_PREFIX": "失败",
-        "TEXT_REJECTED_PREFIX": "已拒绝"
+        "TEXT_REJECTED_PREFIX": "已拒绝",
+        "TEXT_SAVE_FAILED": "无法保存文件"
       },
       "TOOL_APPROVAL_CARD": {
         "TEXT_ALLOW_PREFIX": "允许",

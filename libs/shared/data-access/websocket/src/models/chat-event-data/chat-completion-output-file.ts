@@ -1,4 +1,5 @@
 import { Expose } from 'class-transformer';
+import { ChatCompletionOutputFileType } from '../../enums/chat-completion-output-file-type';
 
 // NOTE: Attached by the backend to a `function_call_output` item for everything a tool produced
 // that is meant for the user rather than for the model — MCP images and audio are uploaded and
@@ -6,7 +7,7 @@ import { Expose } from 'class-transformer';
 // as a data URI (see `process_tool_result` in open_webui/utils/middleware.py).
 export class ChatCompletionOutputFile {
   @Expose()
-  public type?: string;
+  public type?: ChatCompletionOutputFileType;
 
   @Expose()
   public url?: string;

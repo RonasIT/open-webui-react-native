@@ -178,7 +178,8 @@
         "TEXT_EXECUTING_PREFIX": "実行中",
         "TEXT_VIEW_RESULT_PREFIX": "次の結果を表示",
         "TEXT_FAILED_PREFIX": "失敗",
-        "TEXT_REJECTED_PREFIX": "拒否"
+        "TEXT_REJECTED_PREFIX": "拒否",
+        "TEXT_SAVE_FAILED": "ファイルを保存できませんでした"
       },
       "TOOL_APPROVAL_CARD": {
         "TEXT_ALLOW_PREFIX": "許可",
