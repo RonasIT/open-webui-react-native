@@ -3,9 +3,7 @@ import { fileSystemService } from '@open-webui-react-native/mobile/shared/data-a
 import { ImageMimeType } from '@open-webui-react-native/mobile/shared/data-access/image-picker-service';
 import { compressImage } from '@open-webui-react-native/mobile/shared/utils/compressor';
 import {
-  AttachedKnowledgeCollection,
   AttachedListItem,
-  FileData,
   FileType,
   getAttachedListItemId,
   ImageData,
@@ -21,16 +19,18 @@ export function useAttachedFiles(): typeof result {
     );
   };
 
-  const handleFileUploaded = (file: FileData): void => {
-    pushItem({ kind: FileType.FILE, file, isFromKnowledge: false });
-  };
-
-  const handleKnowledgeFileAttached = (file: FileData): void => {
-    pushItem({ kind: FileType.FILE, file, isFromKnowledge: true });
-  };
-
-  const handleKnowledgeCollectionAttached = (collection: AttachedKnowledgeCollection): void => {
-    pushItem({ kind: FileType.COLLECTION, collection });
+  const handleItemAttached = (item: AttachedListItem): void => {
+    switch (item.kind) {
+      case FileType.FILE:
+        pushItem({ kind: FileType.FILE, file: item.file, isFromKnowledge: item.isFromKnowledge });
+        break;
+      case FileType.COLLECTION:
+        pushItem({ kind: FileType.COLLECTION, collection: item.collection });
+        break;
+      case FileType.TEXT:
+        pushItem({ kind: FileType.TEXT, webpage: item.webpage });
+        break;
+    }
   };
 
   const handleDeleteItem = (id: string): void => {
@@ -70,9 +70,7 @@ export function useAttachedFiles(): typeof result {
 
   const result = {
     attachedItems,
-    handleFileUploaded,
-    handleKnowledgeFileAttached,
-    handleKnowledgeCollectionAttached,
+    handleItemAttached,
     handleDeleteItem,
     attachedImages,
     handleImageUploaded,

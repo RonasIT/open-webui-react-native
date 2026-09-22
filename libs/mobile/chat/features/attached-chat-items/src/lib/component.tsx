@@ -46,6 +46,15 @@ export function AttachedChatItems({
             iconName='database'
             onDeletePress={() => onDeleteItemPress(item.collection.id)}
           />
+        ) : item.kind === FileType.TEXT ? (
+          <AttachedItem
+            key={item.webpage.url}
+            disabled
+            title={item.webpage.name}
+            subTitle={translate('TEXT_WEBPAGE')}
+            iconName='link'
+            onDeletePress={() => onDeleteItemPress(item.webpage.url)}
+          />
         ) : (
           <AttachedFileItem
             key={item.file.id}

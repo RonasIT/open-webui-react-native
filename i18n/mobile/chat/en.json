@@ -31,7 +31,13 @@
         "TEXT_CHOOSE_FROM_GALLERY": "Choose from gallery",
         "TEXT_UPLOAD_FILES": "Upload files",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "You cannot upload an empty file.",
+        "TEXT_ATTACH_WEBPAGE": "Attach Webpage",
         "TEXT_ATTACH_KNOWLEDGE": "Attach Knowledge"
+      },
+      "ATTACH_WEBPAGE_SHEET": {
+        "TEXT_TITLE": "Attach Webpage",
+        "TEXT_WEBPAGE_URLS": "Webpage URLs",
+        "TEXT_INVALID_URL": "Please enter a valid URL."
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "Full access",
@@ -197,7 +203,8 @@
     },
     "ATTACHED_CHAT_ITEMS": {
       "TEXT_COLLECTION": "Collection",
-      "TEXT_FILE": "File"
+      "TEXT_FILE": "File",
+      "TEXT_WEBPAGE": "Webpage"
     }
   }
 }

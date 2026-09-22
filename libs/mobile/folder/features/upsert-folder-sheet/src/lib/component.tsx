@@ -68,7 +68,7 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
   const { data: folder, isLoading: isFolderLoading } = foldersApi.useGetFolder(folderId as string, {
     enabled: !!folderId,
   });
-  const { attachedItems, handleFileUploaded, handleDeleteItem, resetAttachments } = useAttachedFiles();
+  const { attachedItems, handleItemAttached, handleDeleteItem, resetAttachments } = useAttachedFiles();
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: new UpsertFolderFormSchema(),
@@ -82,7 +82,7 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
 
       folder.data.files?.forEach((file) => {
         if (file instanceof AttachedFile) {
-          handleFileUploaded(file.file);
+          handleItemAttached({ kind: FileType.FILE, file: file.file });
         } else {
           setSelectedKnowledge((prev) => [...prev, file]);
         }
@@ -166,8 +166,8 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
   };
 
   useEffect(() => {
-    if (isFileUploaded) {
-      handleFileUploaded?.(file);
+    if (isFileUploaded && file) {
+      handleItemAttached({ kind: FileType.FILE, file });
     }
   }, [isFileUploaded]);
 

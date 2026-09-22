@@ -1,14 +1,24 @@
 import { FileType } from '../../enums';
 import { AttachedKnowledgeCollection } from './attached-knowledge-collection';
+import { AttachedWebpage } from './attached-webpage';
 import { FileData } from './file-data';
 
 // NOTE: a single message can attach a mix of freshly-uploaded files, files picked from a
-// knowledge base, and whole knowledge-base collections — this discriminated union is the one
-// list all three live in, client-side, before being split apart into the outgoing wire shape.
+// knowledge base, whole knowledge-base collections, and scraped webpages — this discriminated
+// union is the one list they all live in, client-side, before being split apart into the
+// outgoing wire shape.
 export type AttachedListItem =
-  | { kind: FileType.FILE; file: FileData; isFromKnowledge: boolean }
-  | { kind: FileType.COLLECTION; collection: AttachedKnowledgeCollection };
+  | { kind: FileType.FILE; file: FileData; isFromKnowledge?: boolean }
+  | { kind: FileType.COLLECTION; collection: AttachedKnowledgeCollection }
+  | { kind: FileType.TEXT; webpage: AttachedWebpage };
 
 export function getAttachedListItemId(item: AttachedListItem): string {
-  return item.kind === FileType.FILE ? item.file.id : item.collection.id;
+  switch (item.kind) {
+    case FileType.FILE:
+      return item.file.id;
+    case FileType.COLLECTION:
+      return item.collection.id;
+    case FileType.TEXT:
+      return item.webpage.url;
+  }
 }

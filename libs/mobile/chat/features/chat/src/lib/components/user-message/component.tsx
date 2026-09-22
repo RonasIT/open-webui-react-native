@@ -104,6 +104,19 @@ function ChatUserMessageComponent({
             );
           }
 
+          if (file.type === FileType.TEXT) {
+            return (
+              <AttachedItem
+                key={index}
+                disabled
+                title={file.name}
+                subTitle={translate('TEXT_WEBPAGE')}
+                iconName='link'
+                className='max-w-[70%] self-end'
+              />
+            );
+          }
+
           return null;
         })}
         <ChatImagesGroup

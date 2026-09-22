@@ -29,11 +29,13 @@ export function createMessagePair({
   const attachedCollections = (attachedItems ?? []).flatMap((item) =>
     item.kind === FileType.COLLECTION ? [item.collection] : [],
   );
+  const attachedWebpages = (attachedItems ?? []).flatMap((item) => (item.kind === FileType.TEXT ? [item.webpage] : []));
 
   const files = [
     ...prepareAttachedFiles(attachedFiles),
     ...(attachedImages ? prepareAttachedImages(attachedImages) : []),
     ...attachedCollections,
+    ...attachedWebpages,
   ];
 
   const userMessage = new Message({

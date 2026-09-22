@@ -10,6 +10,9 @@ export class ChatPermissions {
   @Expose({ name: 'file_upload' })
   public fileUpload: boolean;
 
+  @Expose({ name: 'web_upload' })
+  public webUpload: boolean;
+
   @Expose()
   public delete: boolean;
 
