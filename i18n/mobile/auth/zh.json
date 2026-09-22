@@ -11,7 +11,9 @@
         "TEXT_PASSWORD": "密码",
         "TEXT_API_URL": "API 地址",
         "TEXT_ENTER_YOUR_PASSWORD": "请输入密码",
-        "BUTTON_SIGN_IN": "登录"
+        "BUTTON_SIGN_IN": "登录",
+        "TEXT_SSO_MISCONFIGURED": "此服务器未配置登录方式。请联系管理员。",
+        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "该登录方式暂不受应用支持，请尝试其他登录方式。"
       },
       "GOOGLE_FORM": {
         "BUTTON_CONTINUE_WITH_GOOGLE": "使用 Google 继续"
