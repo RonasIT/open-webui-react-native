@@ -15,7 +15,7 @@ export class AttachedKnowledgeCollection {
   public description: string;
 
   @Expose()
-  public status: string;
+  public status: 'processed';
 
   constructor(attachedKnowledgeCollection: Partial<AttachedKnowledgeCollection>) {
     Object.assign(this, attachedKnowledgeCollection);

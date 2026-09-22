@@ -31,7 +31,13 @@
         "TEXT_CHOOSE_FROM_GALLERY": "Alege din galerie",
         "TEXT_UPLOAD_FILES": "Încarcă fișiere",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Nu poți încărca un fișier gol.",
+        "TEXT_ATTACH_WEBPAGE": "Atașează pagină web",
         "TEXT_ATTACH_KNOWLEDGE": "Atașează bază de cunoștințe"
+      },
+      "ATTACH_WEBPAGE_SHEET": {
+        "TEXT_TITLE": "Atașează pagină web",
+        "TEXT_WEBPAGE_URLS": "URL-uri pagini web",
+        "TEXT_INVALID_URL": "Introdu un URL valid."
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "Acces complet",
@@ -198,7 +204,9 @@
     },
     "ATTACHED_CHAT_ITEMS": {
       "TEXT_COLLECTION": "Colecție",
-      "TEXT_FILE": "Fișier"
+      "TEXT_FILE": "Fișier",
+      "TEXT_WEBPAGE": "Pagină web",
+      "TEXT_WEBPAGE_ERROR": "Atașare eșuată"
     }
   }
 }

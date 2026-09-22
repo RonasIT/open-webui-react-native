@@ -68,9 +68,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
     attachedImages,
     handleImageUploaded,
     handleDeleteImage,
-    handleFileUploaded,
-    handleKnowledgeCollectionAttached,
-    handleKnowledgeFileAttached,
+    handleItemAttached,
     handleDeleteItem,
     resetAttachments,
   } = useAttachedFiles();
@@ -344,13 +342,11 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
               onSubmit={onSubmit}
               isLoading={isSending || !isSocketConnected || isComposerBlockedByGeneration}
               attachedItems={attachedItems}
-              onFileUploaded={handleFileUploaded}
+              onItemAttached={handleItemAttached}
               onDeleteItemPress={handleDeleteItem}
               attachedImages={attachedImages}
               onImageUploaded={handleImageUploaded}
               onDeleteImagePress={handleDeleteImage}
-              onKnowledgeCollectionSelected={handleKnowledgeCollectionAttached}
-              onKnowledgeFileSelected={handleKnowledgeFileAttached}
               modelId={selectedModelId}
               isResponseGenerating={isResponseGenerating}
               isMessageQueueEnabled={isMessageQueueEnabled}

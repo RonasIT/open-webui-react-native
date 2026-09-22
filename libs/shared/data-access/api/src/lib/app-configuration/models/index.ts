@@ -7,6 +7,5 @@ export * from './google-drive-config';
 export * from './image-compression';
 export * from './oauth';
 export * from './one-drive-config';
-export * from './permissions';
 export * from './prompt-suggestion';
 export * from './ui-config';

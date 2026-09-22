@@ -1,4 +1,5 @@
 import { Expose, Type } from 'class-transformer';
+import { Permissions } from '@open-webui-react-native/shared/data-access/common';
 import { AudioConfig } from './audio-config';
 import { CodeConfig } from './code-config';
 import { Features } from './features';
@@ -6,7 +7,6 @@ import { FileConfig } from './file-config';
 import { GoogleDriveConfig } from './google-drive-config';
 import { OAuth } from './oauth';
 import { OneDriveConfig } from './one-drive-config';
-import { Permissions } from './permissions';
 import { PromptSuggestion } from './prompt-suggestion';
 import { UIConfig } from './ui-config';
 

@@ -15,8 +15,8 @@ import {
   foldersApi,
   foldersApiConfig,
   foldersService,
+  isFeaturePermitted,
 } from '@open-webui-react-native/shared/data-access/api';
-import { UserRole } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
 
@@ -49,7 +49,7 @@ export function FolderActionsSheet({ onEditPress, onSharePress, ref }: FolderAct
   const isOwner = !sharedFolders?.some((sharedFolder) => sharedFolder.id === folder?.id);
   // NOTE: On top of ownership an admin always may share, everyone else needs the `sharing.folders`
   // permission, which is off by default — same gate as the web client.
-  const canShare = isOwner && (profile?.role === UserRole.ADMIN || Boolean(profile?.permissions?.sharing?.folders));
+  const canShare = isOwner && isFeaturePermitted(profile?.permissions?.sharing?.folders, false);
 
   const getFolderChats = async (id: string): Promise<Array<ChatResponse>> =>
     await queryClient.fetchQuery<Array<ChatResponse>>({
