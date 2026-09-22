@@ -11,14 +11,13 @@ import {
   ImagePickerSource,
 } from '@open-webui-react-native/mobile/shared/data-access/image-picker-service';
 import { ActionsBottomSheet, ActionSheetItemProps, IconButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { authApi, filesApi, Knowledge } from '@open-webui-react-native/shared/data-access/api';
+import { authApi, filesApi, isFeaturePermitted, Knowledge } from '@open-webui-react-native/shared/data-access/api';
 import {
   AttachedKnowledgeCollection,
   AttachedListItem,
   FileData,
   FileType,
   ImageData,
-  UserRole,
 } from '@open-webui-react-native/shared/data-access/common';
 import { getDocumentFormData } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
@@ -51,7 +50,7 @@ export function AttachmentsMenuSheet({
     data: file,
   } = filesApi.useUploadFile();
 
-  const isWebUploadEnabled = profile?.role === UserRole.ADMIN || (profile?.permissions?.chat?.webUpload ?? true);
+  const isWebUploadEnabled = isFeaturePermitted(profile?.permissions?.chat?.webUpload, true);
 
   const closeModal = (): void => modalRef.current?.close();
 

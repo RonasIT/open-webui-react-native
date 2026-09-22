@@ -24,7 +24,7 @@ export class AttachedFile {
   public collectionName: string;
 
   @Expose()
-  public status: string;
+  public status: 'uploaded';
 
   @Expose()
   public size: number;

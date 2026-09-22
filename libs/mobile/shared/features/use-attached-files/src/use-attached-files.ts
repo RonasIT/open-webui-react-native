@@ -2,35 +2,16 @@ import { useObservable } from '@legendapp/state/react';
 import { fileSystemService } from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
 import { ImageMimeType } from '@open-webui-react-native/mobile/shared/data-access/image-picker-service';
 import { compressImage } from '@open-webui-react-native/mobile/shared/utils/compressor';
-import {
-  AttachedListItem,
-  FileType,
-  getAttachedListItemId,
-  ImageData,
-} from '@open-webui-react-native/shared/data-access/common';
+import { AttachedListItem, getAttachedListItemId, ImageData } from '@open-webui-react-native/shared/data-access/common';
 
 export function useAttachedFiles(): typeof result {
   const attachedItems = useObservable<Array<AttachedListItem>>([]);
   const attachedImages = useObservable<Array<ImageData>>([]);
 
-  const pushItem = (item: AttachedListItem): void => {
+  const handleItemAttached = (item: AttachedListItem): void => {
     attachedItems.set((prev) =>
       prev.some((attached) => getAttachedListItemId(attached) === getAttachedListItemId(item)) ? prev : [...prev, item],
     );
-  };
-
-  const handleItemAttached = (item: AttachedListItem): void => {
-    switch (item.kind) {
-      case FileType.FILE:
-        pushItem({ kind: FileType.FILE, file: item.file, isFromKnowledge: item.isFromKnowledge });
-        break;
-      case FileType.COLLECTION:
-        pushItem({ kind: FileType.COLLECTION, collection: item.collection });
-        break;
-      case FileType.TEXT:
-        pushItem({ kind: FileType.TEXT, webpage: item.webpage });
-        break;
-    }
   };
 
   const handleDeleteItem = (id: string): void => {

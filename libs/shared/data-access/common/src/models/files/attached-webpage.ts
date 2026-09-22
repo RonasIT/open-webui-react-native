@@ -12,7 +12,7 @@ export class AttachedWebpage {
   public collectionName?: string;
 
   @Expose()
-  public status: string;
+  public status: 'uploaded';
 
   @Expose()
   public context: 'full';
