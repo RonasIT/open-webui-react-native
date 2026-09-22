@@ -177,9 +177,16 @@
     },
     "AI_MESSAGE": {
       "TOOL_OUTPUT_SHEET": {
-        "TEXT_VIEW_RESULT_PREFIX": "View result from",
         "TEXT_INPUT": "Input",
         "TEXT_OUTPUT": "Output"
+      },
+      "TOOL_CALL_CARD": {
+        "TEXT_PREPARING_PREFIX": "Preparing",
+        "TEXT_EXECUTING_PREFIX": "Running",
+        "TEXT_VIEW_RESULT_PREFIX": "View result from",
+        "TEXT_FAILED_PREFIX": "Failed",
+        "TEXT_REJECTED_PREFIX": "Denied",
+        "TEXT_SAVE_FAILED": "Couldn't save the file"
       },
       "TOOL_APPROVAL_CARD": {
         "TEXT_ALLOW_PREFIX": "Allow",

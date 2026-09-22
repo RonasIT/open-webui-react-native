@@ -1,10 +1,11 @@
-import { merge } from 'lodash-es';
+import { mapValues, merge } from 'lodash-es';
 import { MessageSource } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { chatQueriesKeys } from '../chat-queries-keys';
 import { Chat, ChatResponse, History, Message } from '../models';
 import { chatService } from '../service';
 import { getCompletionFiles } from './get-completion-files';
+import { prepareOutputForSave } from './prepare-output-for-save';
 import { isTemporaryChatId } from './temporary-chat-id';
 
 // NOTE: Deliberately does not call `POST /chat/completed`. The app supports Open WebUI 0.10 and
@@ -42,15 +43,20 @@ export const handleCompletedChat = async (
 
   const updatedMessageMap: Record<string, Message> = Object.fromEntries(updatedMessages.map((msg) => [msg.id, msg]));
 
+  // NOTE: Applied to every message, not just the one that finished: the whole history is posted, so
+  // an older message would be rewritten from its parsed instance and lose the field names the
+  // backend expects. Done last, after the merge, so nothing puts the parsed shape back.
+  const withSavableOutput = (msg: Message): Message => ({ ...msg, output: prepareOutputForSave(msg.output) });
+
   const updatedHistory = new History({
-    messages: merge(updatedMessageMap, chatData.chat.history.messages),
+    messages: mapValues(merge(updatedMessageMap, chatData.chat.history.messages), withSavableOutput),
     currentId: chat.history.currentId,
   });
 
   const files = getCompletionFiles(chat.messages);
 
   const updateChatPayload = new Chat({
-    messages: updatedMessages,
+    messages: updatedMessages.map(withSavableOutput),
     history: updatedHistory,
     files,
   });

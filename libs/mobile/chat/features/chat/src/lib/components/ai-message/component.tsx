@@ -26,10 +26,10 @@ import {
 import { FileType } from '@open-webui-react-native/shared/data-access/common';
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
-import { parseResponseMessageContent } from '../../utils';
+import { buildToolCallViews, parseResponseMessageContent } from '../../utils';
 import { ChatImagesGroup } from '../images';
 import { SkeletonMessage } from '../skeleton-message';
-import { ToolOutputBottomSheet } from '../tool-output-bottom-sheet';
+import { ToolCallCard } from '../tool-call-card';
 import { AskUserCard, ToolApprovalCard } from './components';
 
 interface ChatAiMessageProps {
@@ -90,6 +90,7 @@ export function ChatAiMessage({
   const { mutate: resolveToolCall, isPending: isResolvingToolCall } = chatApi.useResolveToolCall();
 
   const { toolsData, messageContent } = parseResponseMessageContent(text);
+  const toolCalls = buildToolCallViews(message, toolsData);
   const textWithCitations = prepareTextWithCitations(messageContent, citations);
   const hasFollowUps = Array.isArray(followUps) && followUps.length > 0;
   const pendingToolCall = getPendingToolCall(message);
@@ -154,20 +155,15 @@ export function ChatAiMessage({
           />
         </View>
       )}
+      {toolCalls.length > 0 && (
+        <View className='mt-8 gap-8'>
+          {toolCalls.map((toolCall) => (
+            <ToolCallCard key={toolCall.key} toolCall={toolCall} />
+          ))}
+        </View>
+      )}
       {text ? (
         <Fragment>
-          {toolsData.length > 0 && (
-            <View className='mt-8 gap-8'>
-              {toolsData.map((tool, index) => (
-                <ToolOutputBottomSheet
-                  key={tool.id ?? `${tool.toolName}-${index}`}
-                  toolName={tool.toolName}
-                  input={tool.input}
-                  output={tool.output}
-                />
-              ))}
-            </View>
-          )}
           <ChatImagesGroup
             images={attachedImages}
             onImagePress={handleImagePress}
@@ -211,10 +207,10 @@ export function ChatAiMessage({
           )}
         </Fragment>
       ) : (
-        // NOTE: A turn paused on tool approval, or one that failed before producing any text, has
-        // no body of its own — the card above is the body. A skeleton there reads as "still
-        // generating", which is exactly what neither state is.
-        !pendingToolCall && !messageError?.content && <SkeletonMessage />
+        // NOTE: A turn paused on tool approval, one running a tool, or one that failed before
+        // producing any text has no body of its own — the card above is the body. A skeleton there
+        // reads as "still generating", which is exactly what none of those states is.
+        !pendingToolCall && !toolCalls.length && !messageError?.content && <SkeletonMessage />
       )}
       {!isResponseGenerating && isLast && hasFollowUps && (
         <FollowUpsList

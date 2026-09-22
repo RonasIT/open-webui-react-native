@@ -1,16 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 import { MessageSource } from '@open-webui-react-native/shared/data-access/common';
-
-// NOTE: Since Open WebUI 0.11.0 the completion stream delivers assistant text inside an
-// `output` array (Responses API format) instead of a flat `content` string. Each `message`
-// item carries `content` parts of type `output_text`.
-export class ChatCompletionOutputContentPart {
-  @Expose()
-  public type?: string;
-
-  @Expose()
-  public text?: string;
-}
+import { ChatCompletionOutputContentPart } from './chat-completion-output-content-part';
+import { ChatCompletionOutputFile } from './chat-completion-output-file';
 
 export class ChatCompletionOutputItem {
   @Expose()
@@ -39,9 +30,26 @@ export class ChatCompletionOutputItem {
   @Expose({ name: 'arguments' })
   public toolArguments?: string;
 
+  // NOTE: Set by the backend when the user allowed the call. Modelled so it survives the chat being
+  // saved back — the client posts the whole history, and what the models drop is dropped on the
+  // server too.
+  @Expose()
+  public approved?: boolean;
+
   @Expose()
   @Type(() => ChatCompletionOutputContentPart)
   public content?: Array<ChatCompletionOutputContentPart>;
+
+  // NOTE: Set on `function_call_output` items only — the tool's own result, as parts of type
+  // `input_text` (plus `input_image` parts that exist for the model and carry no user-visible
+  // text). Unrelated to the `output` array these items live in.
+  @Expose()
+  @Type(() => ChatCompletionOutputContentPart)
+  public output?: Array<ChatCompletionOutputContentPart>;
+
+  @Expose()
+  @Type(() => ChatCompletionOutputFile)
+  public files?: Array<ChatCompletionOutputFile>;
 }
 
 export class ChatCompletionChunk {
