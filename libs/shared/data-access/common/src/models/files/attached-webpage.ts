@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { FileType } from '../../enums';
+import { AttachmentStatus, FileType } from '../../enums';
 
 export class AttachedWebpage {
   @Expose()
@@ -11,17 +11,19 @@ export class AttachedWebpage {
   @Expose({ name: 'collection_name' })
   public collectionName?: string;
 
+  // NOTE: ERROR never leaves the client — the item stays a client-only error chip
+  // (see attach-webpage-sheet) and createMessagePair drops it before sending.
   @Expose()
-  public status: 'uploaded';
+  public status: AttachmentStatus;
 
   @Expose()
-  public context: 'full';
+  public context?: 'full';
 
   @Expose()
   public url: string;
 
   @Expose()
-  public file: {
+  public file?: {
     data: { content: string };
     meta: { name: string; source: string };
   };

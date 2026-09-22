@@ -205,7 +205,8 @@
     "ATTACHED_CHAT_ITEMS": {
       "TEXT_COLLECTION": "Коллекция",
       "TEXT_FILE": "Файл",
-      "TEXT_WEBPAGE": "Веб-страница"
+      "TEXT_WEBPAGE": "Веб-страница",
+      "TEXT_WEBPAGE_ERROR": "Не удалось прикрепить"
     }
   }
 }

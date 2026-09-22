@@ -204,7 +204,8 @@
     "ATTACHED_CHAT_ITEMS": {
       "TEXT_COLLECTION": "Sammlung",
       "TEXT_FILE": "Datei",
-      "TEXT_WEBPAGE": "Webseite"
+      "TEXT_WEBPAGE": "Webseite",
+      "TEXT_WEBPAGE_ERROR": "Anhängen fehlgeschlagen"
     }
   }
 }

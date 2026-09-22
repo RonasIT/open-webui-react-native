@@ -204,7 +204,8 @@
     "ATTACHED_CHAT_ITEMS": {
       "TEXT_COLLECTION": "Collection",
       "TEXT_FILE": "Fichier",
-      "TEXT_WEBPAGE": "Page web"
+      "TEXT_WEBPAGE": "Page web",
+      "TEXT_WEBPAGE_ERROR": "Échec de l'ajout"
     }
   }
 }

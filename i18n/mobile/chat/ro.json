@@ -205,7 +205,8 @@
     "ATTACHED_CHAT_ITEMS": {
       "TEXT_COLLECTION": "Colecție",
       "TEXT_FILE": "Fișier",
-      "TEXT_WEBPAGE": "Pagină web"
+      "TEXT_WEBPAGE": "Pagină web",
+      "TEXT_WEBPAGE_ERROR": "Atașare eșuată"
     }
   }
 }

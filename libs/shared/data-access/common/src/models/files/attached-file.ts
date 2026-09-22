@@ -1,5 +1,5 @@
 import { Expose, Transform, Type } from 'class-transformer';
-import { FileType } from '../../enums';
+import { AttachmentStatus, FileType } from '../../enums';
 import { FileData } from './file-data';
 
 export class AttachedFile {
@@ -24,7 +24,7 @@ export class AttachedFile {
   public collectionName: string;
 
   @Expose()
-  public status: 'uploaded';
+  public status: AttachmentStatus.UPLOADED;
 
   @Expose()
   public size: number;

@@ -5,7 +5,12 @@ import { ReactElement } from 'react';
 import { AttachedFileItem, formatFileSize } from '@open-webui-react-native/mobile/chat/features/attached-file-item';
 import { AttachedImageItem } from '@open-webui-react-native/mobile/chat/features/attached-image-item';
 import { AttachedItem, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { AttachedListItem, FileType, ImageData } from '@open-webui-react-native/shared/data-access/common';
+import {
+  AttachedListItem,
+  AttachmentStatus,
+  FileType,
+  ImageData,
+} from '@open-webui-react-native/shared/data-access/common';
 
 interface AttachedChatItemsProps {
   onDeleteItemPress: (id: string) => void;
@@ -51,8 +56,9 @@ export function AttachedChatItems({
             key={item.webpage.url}
             disabled
             title={item.webpage.name}
-            subTitle={translate('TEXT_WEBPAGE')}
+            subTitle={translate(item.webpage.status === AttachmentStatus.ERROR ? 'TEXT_WEBPAGE_ERROR' : 'TEXT_WEBPAGE')}
             iconName='link'
+            hasError={item.webpage.status === AttachmentStatus.ERROR}
             onDeletePress={() => onDeleteItemPress(item.webpage.url)}
           />
         ) : (

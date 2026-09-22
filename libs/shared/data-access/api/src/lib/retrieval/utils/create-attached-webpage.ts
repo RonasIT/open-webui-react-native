@@ -1,4 +1,4 @@
-import { AttachedWebpage, FileType } from '@open-webui-react-native/shared/data-access/common';
+import { AttachedWebpage, AttachmentStatus, FileType } from '@open-webui-react-native/shared/data-access/common';
 import { ProcessUrlResponse } from '../models';
 
 export function createAttachedWebpage(response: ProcessUrlResponse): AttachedWebpage {
@@ -8,7 +8,7 @@ export function createAttachedWebpage(response: ProcessUrlResponse): AttachedWeb
     type: FileType.TEXT,
     name,
     collectionName: response.collectionName,
-    status: 'uploaded',
+    status: AttachmentStatus.UPLOADED,
     context: 'full',
     url: response.url,
     file: {

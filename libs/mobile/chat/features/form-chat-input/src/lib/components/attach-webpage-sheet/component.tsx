@@ -14,6 +14,7 @@ import {
 import { uiState$ } from '@open-webui-react-native/mobile/shared/ui/ui-state';
 import {
   createAttachedWebpage,
+  createFailedAttachedWebpage,
   parseWebpageUrls,
   ProcessUrlRequest,
   ProcessUrlType,
@@ -79,12 +80,18 @@ export function AttachWebpageSheet({ ref, onItemAttached }: AttachWebpageSheetPr
 
     try {
       for (const webpageUrl of urls) {
-        const response = await processUrl(new ProcessUrlRequest({ url: webpageUrl }));
+        try {
+          const response = await processUrl(new ProcessUrlRequest({ url: webpageUrl }));
 
-        if ((response.type === ProcessUrlType.FILE || response.type === ProcessUrlType.IMAGE) && response.file) {
-          onItemAttached({ kind: FileType.FILE, file: response.file });
-        } else {
-          onItemAttached({ kind: FileType.TEXT, webpage: createAttachedWebpage(response) });
+          if ((response.type === ProcessUrlType.FILE || response.type === ProcessUrlType.IMAGE) && response.file) {
+            onItemAttached({ kind: FileType.FILE, file: response.file });
+          } else {
+            onItemAttached({ kind: FileType.TEXT, webpage: createAttachedWebpage(response) });
+          }
+        } catch {
+          // NOTE: one URL failing (404, timeout, …) shouldn't stop the rest of the batch —
+          // the failed one becomes a removable error chip instead (see AttachedChatItems).
+          onItemAttached({ kind: FileType.TEXT, webpage: createFailedAttachedWebpage(webpageUrl) });
         }
       }
 
