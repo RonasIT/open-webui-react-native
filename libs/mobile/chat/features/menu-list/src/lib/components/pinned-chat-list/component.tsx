@@ -37,10 +37,7 @@ export function PinnedChatList({ chats, selectedChatId, onChatPress }: PinnedCha
     <View>
       <AppText className='px-16 py-10 text-md-sm sm:text-sm text-text-secondary'>{translate('TEXT_PINNED')}</AppText>
       {chats.map(renderChatRow)}
-      <ChatActionsMenuSheet
-        ref={chatActionsSheetRef}
-        goToChat={onChatPress}
-        isPinned />
+      <ChatActionsMenuSheet ref={chatActionsSheetRef} goToChat={onChatPress} />
     </View>
   ) : (
     <View />

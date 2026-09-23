@@ -44,7 +44,7 @@
         "TEXT_ASK_FOR_APPROVAL": "Спрашивать разрешение"
       },
       "TOOLS_POPUP": {
-        "TEXT_TITLE": "Инструменты",
+        "BUTTON_APPLY": "Применить",
         "TEXT_NO_TOOLS_AVAILABLE": "Инструменты недоступны",
         "TEXT_SIGN_IN_REQUIRED": "{{name}} — войдите в веб-версии"
       }

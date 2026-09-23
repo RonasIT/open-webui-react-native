@@ -43,9 +43,9 @@ export function ToolsMenuSheet({ tools, selectedToolIds, onToolPress, disabled }
   return (
     <ActionsBottomSheet
       ref={modalRef}
-      title={translate('TEXT_TITLE')}
       renderTrigger={renderTrigger}
       actions={actions.length ? actions : [{ title: translate('TEXT_NO_TOOLS_AVAILABLE'), disabled: true }]}
+      closeButtonText={translate('BUTTON_APPLY')}
     />
   );
 }

@@ -44,7 +44,7 @@
         "TEXT_ASK_FOR_APPROVAL": "毎回確認する"
       },
       "TOOLS_POPUP": {
-        "TEXT_TITLE": "ツール",
+        "BUTTON_APPLY": "適用",
         "TEXT_NO_TOOLS_AVAILABLE": "利用できるツールがありません",
         "TEXT_SIGN_IN_REQUIRED": "{{name}} — ウェブ版でログインしてください"
       }
