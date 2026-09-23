@@ -35,7 +35,6 @@ interface ReferenceChatRowProps {
 function ReferenceChatRow({ item, isSelected, onPress }: ReferenceChatRowProps): ReactElement {
   return (
     <AppPressable onPress={onPress} className='py-12 gap-16 flex-row items-center'>
-      <Icon name='history' />
       <AppText numberOfLines={1} className='flex-1'>
         {item.title}
       </AppText>
@@ -109,6 +108,7 @@ export function ReferenceChatsSheet({
       emptyDescription={translate('TEXT_NO_CHATS')}
       data={chats}
       extraData={attachedChatIds}
+      showsVerticalScrollIndicator={false}
       keyExtractor={extractId}
       pagination={{ onEndReached: handleFetchNextPage, isFetchingNextPage }}
       renderItem={renderItem}

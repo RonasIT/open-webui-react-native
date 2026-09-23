@@ -18,7 +18,10 @@ export interface SearchableListBottomSheetPagination {
 }
 
 export type SearchableListBottomSheetProps<TItem> = Partial<Omit<AppBottomSheetPropsType, 'ref' | 'content'>> &
-  Pick<AppFlashListProps<TItem>, 'data' | 'renderItem' | 'keyExtractor' | 'extraData'> & {
+  Pick<
+    AppFlashListProps<TItem>,
+    'data' | 'renderItem' | 'keyExtractor' | 'extraData' | 'showsVerticalScrollIndicator'
+  > & {
     ref?: SearchableListBottomSheetRef;
     title: SheetHeaderProps['title'];
     onGoBack: () => void;
@@ -47,6 +50,7 @@ export function SearchableListBottomSheet<TItem>({
   renderItem,
   keyExtractor,
   extraData,
+  showsVerticalScrollIndicator,
   pagination,
   ...restProps
 }: SearchableListBottomSheetProps<TItem>): ReactElement {
@@ -86,6 +90,7 @@ export function SearchableListBottomSheet<TItem>({
             <AppBottomSheetFlashList
               data={data}
               extraData={extraData}
+              showsVerticalScrollIndicator={showsVerticalScrollIndicator}
               renderItem={renderItem}
               keyExtractor={keyExtractor}
               className='flex-1'
