@@ -1,6 +1,12 @@
 import dayjs from 'dayjs';
 import uuid from 'react-native-uuid';
-import { AttachedListItem, FileType, ImageData, Role } from '@open-webui-react-native/shared/data-access/common';
+import {
+  AttachedListItem,
+  AttachmentStatus,
+  FileType,
+  ImageData,
+  Role,
+} from '@open-webui-react-native/shared/data-access/common';
 import { prepareAttachedFiles, prepareAttachedImages } from '../../files';
 import { Message } from '../models';
 
@@ -30,12 +36,18 @@ export function createMessagePair({
     item.kind === FileType.COLLECTION ? [item.collection] : [],
   );
   const attachedChats = (attachedItems ?? []).flatMap((item) => (item.kind === FileType.CHAT ? [item.chat] : []));
+  // NOTE: an errored webpage is a client-only chip (see attach-webpage-sheet) — it never had a
+  // successful process-url response behind it, so it must not be sent as a message attachment.
+  const attachedWebpages = (attachedItems ?? []).flatMap((item) =>
+    item.kind === FileType.TEXT && item.webpage.status !== AttachmentStatus.ERROR ? [item.webpage] : [],
+  );
 
   const files = [
     ...prepareAttachedFiles(attachedFiles),
     ...(attachedImages ? prepareAttachedImages(attachedImages) : []),
     ...attachedCollections,
     ...attachedChats,
+    ...attachedWebpages,
   ];
 
   const userMessage = new Message({

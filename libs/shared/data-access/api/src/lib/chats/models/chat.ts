@@ -4,6 +4,7 @@ import {
   AttachedChat,
   AttachedFile,
   AttachedKnowledgeCollection,
+  AttachedWebpage,
   FileType,
 } from '@open-webui-react-native/shared/data-access/common';
 import { History } from './history';
@@ -38,11 +39,12 @@ export class Chat extends BaseEntity<string> {
         { value: AttachedFile, name: FileType.FILE },
         { value: AttachedKnowledgeCollection, name: FileType.COLLECTION },
         { value: AttachedChat, name: FileType.CHAT },
+        { value: AttachedWebpage, name: FileType.TEXT },
       ],
     },
     keepDiscriminatorProperty: true,
   })
-  public files?: Array<AttachedFile | AttachedKnowledgeCollection | AttachedChat>;
+  public files?: Array<AttachedFile | AttachedKnowledgeCollection | AttachedChat | AttachedWebpage>;
 
   @Expose()
   public tags?: Array<string>;

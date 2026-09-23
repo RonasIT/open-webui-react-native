@@ -3,4 +3,5 @@ export enum FileType {
   IMAGE = 'image',
   COLLECTION = 'collection',
   CHAT = 'chat',
+  TEXT = 'text',
 }

@@ -3,6 +3,7 @@ import {
   AttachedChat,
   AttachedFile,
   AttachedKnowledgeCollection,
+  AttachedWebpage,
   FileType,
 } from '@open-webui-react-native/shared/data-access/common';
 import { BackgroundTasks } from './background-tasks';
@@ -42,11 +43,12 @@ export class CompleteChatRequest {
         { value: AttachedFile, name: FileType.FILE },
         { value: AttachedKnowledgeCollection, name: FileType.COLLECTION },
         { value: AttachedChat, name: FileType.CHAT },
+        { value: AttachedWebpage, name: FileType.TEXT },
       ],
     },
     keepDiscriminatorProperty: true,
   })
-  public files?: Array<AttachedFile | AttachedKnowledgeCollection | AttachedChat>;
+  public files?: Array<AttachedFile | AttachedKnowledgeCollection | AttachedChat | AttachedWebpage>;
 
   // NOTE: The only channel through which tools reach a completion. The backend resolves every kind
   // of tool from this array and never falls back to the model's or the user's defaults, so an

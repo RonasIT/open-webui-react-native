@@ -11,7 +11,9 @@
         "TEXT_PASSWORD": "Mot de passe",
         "TEXT_API_URL": "URL de l’API",
         "TEXT_ENTER_YOUR_PASSWORD": "Entrez votre mot de passe",
-        "BUTTON_SIGN_IN": "Se connecter"
+        "BUTTON_SIGN_IN": "Se connecter",
+        "TEXT_SSO_MISCONFIGURED": "La connexion n’est pas configurée sur ce serveur. Veuillez contacter votre administrateur.",
+        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Cette méthode de connexion n’est pas encore prise en charge par l’application. Veuillez essayer une autre option de connexion."
       },
       "GOOGLE_FORM": {
         "BUTTON_CONTINUE_WITH_GOOGLE": "Continuer avec Google"

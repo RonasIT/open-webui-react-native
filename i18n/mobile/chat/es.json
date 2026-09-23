@@ -31,8 +31,14 @@
         "TEXT_CHOOSE_FROM_GALLERY": "Elegir de la galería",
         "TEXT_UPLOAD_FILES": "Subir archivos",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "No puedes subir un archivo vacío.",
+        "TEXT_ATTACH_WEBPAGE": "Adjuntar página web",
         "TEXT_ATTACH_KNOWLEDGE": "Adjuntar conocimiento",
         "TEXT_REFERENCE_CHATS": "Referenciar Chats"
+      },
+      "ATTACH_WEBPAGE_SHEET": {
+        "TEXT_TITLE": "Adjuntar página web",
+        "TEXT_WEBPAGE_URLS": "URLs de páginas web",
+        "TEXT_INVALID_URL": "Introduce una URL válida."
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "Acceso completo",
@@ -211,6 +217,8 @@
     "ATTACHED_CHAT_ITEMS": {
       "TEXT_COLLECTION": "Colección",
       "TEXT_FILE": "Archivo",
+      "TEXT_WEBPAGE": "Página web",
+      "TEXT_WEBPAGE_ERROR": "Error al adjuntar",
       "TEXT_CHAT": "Chat"
     }
   }

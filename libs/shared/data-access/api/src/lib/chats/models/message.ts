@@ -5,6 +5,7 @@ import {
   AttachedFile,
   AttachedImage,
   AttachedKnowledgeCollection,
+  AttachedWebpage,
   FileType,
   MessageSource,
   Role,
@@ -68,11 +69,12 @@ export class Message extends BaseEntity<string> {
         { value: AttachedImage, name: FileType.IMAGE },
         { value: AttachedKnowledgeCollection, name: FileType.COLLECTION },
         { value: AttachedChat, name: FileType.CHAT },
+        { value: AttachedWebpage, name: FileType.TEXT },
       ],
     },
     keepDiscriminatorProperty: true,
   })
-  public files?: Array<AttachedFile | AttachedImage | AttachedKnowledgeCollection | AttachedChat>;
+  public files?: Array<AttachedFile | AttachedImage | AttachedKnowledgeCollection | AttachedChat | AttachedWebpage>;
 
   @Expose()
   @Type(() => MessageSource)

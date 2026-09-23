@@ -36,12 +36,9 @@ export function CreateChat({
   const {
     attachedItems,
     attachedImages,
-    handleFileUploaded,
     handleDeleteImage,
     handleImageUploaded,
-    handleKnowledgeCollectionAttached,
-    handleKnowledgeFileAttached,
-    handleChatAttached,
+    handleItemAttached,
     handleDeleteItem,
     resetAttachments,
   } = useAttachedFiles();
@@ -104,14 +101,11 @@ export function CreateChat({
         isLoading={isCreating || !isSocketConnected}
         isSuggestionShown={true}
         attachedItems={attachedItems}
-        onFileUploaded={handleFileUploaded}
+        onItemAttached={handleItemAttached}
         onDeleteItemPress={handleDeleteItem}
         attachedImages={attachedImages}
         onImageUploaded={handleImageUploaded}
         onDeleteImagePress={handleDeleteImage}
-        onKnowledgeCollectionSelected={handleKnowledgeCollectionAttached}
-        onKnowledgeFileSelected={handleKnowledgeFileAttached}
-        onChatSelected={handleChatAttached}
         onChatCreated={onChatCreated}
         modelId={modelId}
       />
