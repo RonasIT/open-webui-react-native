@@ -18,6 +18,17 @@ export interface CreateMessagePairArgs {
   attachedImages?: Array<ImageData>;
 }
 
+// NOTE: AttachedListItem is a discriminated union keyed by `kind`, but each variant nests its
+// payload under a differently named field (file/collection/webpage/chat) — `pluck` is how the
+// caller tells us which one to read once `kind` has narrowed the item.
+function pickAttached<K extends AttachedListItem['kind'], V>(
+  items: Array<AttachedListItem>,
+  kind: K,
+  pluck: (item: Extract<AttachedListItem, { kind: K }>) => V,
+): Array<V> {
+  return items.flatMap((item) => (item.kind === kind ? [pluck(item as Extract<AttachedListItem, { kind: K }>)] : []));
+}
+
 export function createMessagePair({
   prompt,
   model,
@@ -31,15 +42,14 @@ export function createMessagePair({
   const timestampSec = Math.floor(now.unix());
   const timestampMs = now.valueOf();
 
-  const attachedFiles = (attachedItems ?? []).flatMap((item) => (item.kind === FileType.FILE ? [item.file] : []));
-  const attachedCollections = (attachedItems ?? []).flatMap((item) =>
-    item.kind === FileType.COLLECTION ? [item.collection] : [],
-  );
-  const attachedChats = (attachedItems ?? []).flatMap((item) => (item.kind === FileType.CHAT ? [item.chat] : []));
+  const items = attachedItems ?? [];
+  const attachedFiles = pickAttached(items, FileType.FILE, (item) => item.file);
+  const attachedCollections = pickAttached(items, FileType.COLLECTION, (item) => item.collection);
+  const attachedChats = pickAttached(items, FileType.CHAT, (item) => item.chat);
   // NOTE: an errored webpage is a client-only chip (see attach-webpage-sheet) — it never had a
   // successful process-url response behind it, so it must not be sent as a message attachment.
-  const attachedWebpages = (attachedItems ?? []).flatMap((item) =>
-    item.kind === FileType.TEXT && item.webpage.status !== AttachmentStatus.ERROR ? [item.webpage] : [],
+  const attachedWebpages = pickAttached(items, FileType.TEXT, (item) => item.webpage).filter(
+    (webpage) => webpage.status !== AttachmentStatus.ERROR,
   );
 
   const files = [
