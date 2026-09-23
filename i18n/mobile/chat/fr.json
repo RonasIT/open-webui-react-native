@@ -31,7 +31,13 @@
         "TEXT_CHOOSE_FROM_GALLERY": "Choisir dans la galerie",
         "TEXT_UPLOAD_FILES": "Téléverser des fichiers",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Vous ne pouvez pas téléverser un fichier vide.",
+        "TEXT_ATTACH_WEBPAGE": "Joindre une page web",
         "TEXT_ATTACH_KNOWLEDGE": "Joindre une base de connaissances"
+      },
+      "ATTACH_WEBPAGE_SHEET": {
+        "TEXT_TITLE": "Joindre une page web",
+        "TEXT_WEBPAGE_URLS": "URL de pages web",
+        "TEXT_INVALID_URL": "Veuillez saisir une URL valide."
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "Accès complet",
@@ -204,7 +210,9 @@
     },
     "ATTACHED_CHAT_ITEMS": {
       "TEXT_COLLECTION": "Collection",
-      "TEXT_FILE": "Fichier"
+      "TEXT_FILE": "Fichier",
+      "TEXT_WEBPAGE": "Page web",
+      "TEXT_WEBPAGE_ERROR": "Échec de l'ajout"
     }
   }
 }

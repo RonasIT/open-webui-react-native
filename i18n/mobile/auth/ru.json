@@ -11,7 +11,9 @@
         "TEXT_PASSWORD": "Пароль",
         "TEXT_API_URL": "API URL",
         "TEXT_ENTER_YOUR_PASSWORD": "Введите пароль",
-        "BUTTON_SIGN_IN": "Войти"
+        "BUTTON_SIGN_IN": "Войти",
+        "TEXT_SSO_MISCONFIGURED": "Вход не настроен на этом сервере. Пожалуйста, обратитесь к администратору.",
+        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Этот способ входа пока не поддерживается приложением. Попробуйте другой способ входа."
       },
       "GOOGLE_FORM": {
         "BUTTON_CONTINUE_WITH_GOOGLE": "Продолжить с Google"

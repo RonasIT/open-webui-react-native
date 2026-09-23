@@ -31,7 +31,13 @@
         "TEXT_CHOOSE_FROM_GALLERY": "从相册选择",
         "TEXT_UPLOAD_FILES": "上传文件",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "无法上传空文件。",
+        "TEXT_ATTACH_WEBPAGE": "附加网页",
         "TEXT_ATTACH_KNOWLEDGE": "附加知识库"
+      },
+      "ATTACH_WEBPAGE_SHEET": {
+        "TEXT_TITLE": "附加网页",
+        "TEXT_WEBPAGE_URLS": "网页链接",
+        "TEXT_INVALID_URL": "请输入有效的 URL。"
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "完全访问",
@@ -203,7 +209,9 @@
     },
     "ATTACHED_CHAT_ITEMS": {
       "TEXT_COLLECTION": "集合",
-      "TEXT_FILE": "文件"
+      "TEXT_FILE": "文件",
+      "TEXT_WEBPAGE": "网页",
+      "TEXT_WEBPAGE_ERROR": "附加失败"
     }
   }
 }

@@ -11,44 +11,46 @@ import {
   ImagePickerSource,
 } from '@open-webui-react-native/mobile/shared/data-access/image-picker-service';
 import { ActionsBottomSheet, ActionSheetItemProps, IconButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { filesApi, Knowledge } from '@open-webui-react-native/shared/data-access/api';
+import { authApi, filesApi, isFeaturePermitted, Knowledge } from '@open-webui-react-native/shared/data-access/api';
 import {
   AttachedKnowledgeCollection,
+  AttachedListItem,
   FileData,
   FileType,
   ImageData,
 } from '@open-webui-react-native/shared/data-access/common';
 import { getDocumentFormData } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
+import { AttachWebpageSheet, AttachWebpageSheetMethods } from '../attach-webpage-sheet';
 
 export interface AttachmentsMenuSheetProps {
   disabled?: boolean;
-  onFileUploaded?: (file: FileData) => void;
+  onItemAttached: (item: AttachedListItem) => void;
   onImageUploaded?: (image: ImageData) => void;
   isKnowledgeCollectionAttached: (id: string) => boolean;
   isKnowledgeFileAttached: (id: string) => boolean;
-  onKnowledgeCollectionSelected: (collection: AttachedKnowledgeCollection) => void;
-  onKnowledgeFileSelected: (file: FileData) => void;
 }
 
 export function AttachmentsMenuSheet({
   disabled,
-  onFileUploaded,
+  onItemAttached,
   onImageUploaded,
   isKnowledgeCollectionAttached,
   isKnowledgeFileAttached,
-  onKnowledgeCollectionSelected,
-  onKnowledgeFileSelected,
 }: AttachmentsMenuSheetProps): ReactElement {
   const translate = useTranslation('CHAT.FORM_CHAT_INPUT.ATTACHMENTS_ACTIONS_POPUP');
   const modalRef = useRef<BottomSheetModal>(null);
   const attachKnowledgeSheetRef = useRef<AttachKnowledgeSheetMethods>(null);
+  const attachWebpageSheetRef = useRef<AttachWebpageSheetMethods>(null);
+  const { data: profile } = authApi.useGetProfile();
   const {
     mutate: uploadFile,
     isPending: isFileUploading,
     isSuccess: isFileUploaded,
     data: file,
   } = filesApi.useUploadFile();
+
+  const isWebUploadEnabled = isFeaturePermitted(profile?.permissions?.chat?.webUpload, true);
 
   const closeModal = (): void => modalRef.current?.close();
 
@@ -96,22 +98,28 @@ export function AttachmentsMenuSheet({
     attachKnowledgeSheetRef.current?.present();
   };
 
+  const handleAttachWebpagePress = (): void => {
+    closeModal();
+    attachWebpageSheetRef.current?.present();
+  };
+
   const handleSelectKnowledgeCollection = (knowledge: Knowledge): void => {
-    onKnowledgeCollectionSelected(
-      new AttachedKnowledgeCollection({
+    onItemAttached({
+      kind: FileType.COLLECTION,
+      collection: new AttachedKnowledgeCollection({
         id: knowledge.id,
         type: FileType.COLLECTION,
         name: knowledge.name,
         description: knowledge.description,
         status: 'processed',
       }),
-    );
+    });
   };
 
   // NOTE: the file already carries everything needed (id, meta, collectionName) straight from
   // GET /knowledge/{id}/files — no need to reconstruct it, unlike the collection case below.
   const handleSelectKnowledgeFile = (_knowledge: Knowledge, file: FileData): void => {
-    onKnowledgeFileSelected(file);
+    onItemAttached({ kind: FileType.FILE, file, isFromKnowledge: true });
   };
 
   const actions: Array<ActionSheetItemProps> = [
@@ -131,6 +139,15 @@ export function AttachmentsMenuSheet({
       onPress: handlePickFile,
       isLoading: isFileUploading,
     },
+    ...(isWebUploadEnabled
+      ? [
+          {
+            title: translate('TEXT_ATTACH_WEBPAGE'),
+            iconName: 'link' as const,
+            onPress: handleAttachWebpagePress,
+          },
+        ]
+      : []),
     {
       title: translate('TEXT_ATTACH_KNOWLEDGE'),
       iconName: 'database',
@@ -147,9 +164,9 @@ export function AttachmentsMenuSheet({
   );
 
   useEffect(() => {
-    if (isFileUploaded) {
+    if (isFileUploaded && file) {
       closeModal();
-      onFileUploaded?.(file);
+      onItemAttached({ kind: FileType.FILE, file });
     }
   }, [isFileUploaded]);
 
@@ -166,6 +183,7 @@ export function AttachmentsMenuSheet({
         onSelectCollection={handleSelectKnowledgeCollection}
         onSelectFile={handleSelectKnowledgeFile}
       />
+      <AttachWebpageSheet ref={attachWebpageSheetRef} onItemAttached={onItemAttached} />
     </Fragment>
   );
 }

@@ -11,7 +11,9 @@
         "TEXT_PASSWORD": "Contraseña",
         "TEXT_API_URL": "URL de la API",
         "TEXT_ENTER_YOUR_PASSWORD": "Introduce tu contraseña",
-        "BUTTON_SIGN_IN": "Iniciar sesión"
+        "BUTTON_SIGN_IN": "Iniciar sesión",
+        "TEXT_SSO_MISCONFIGURED": "El inicio de sesión no está configurado en este servidor. Ponte en contacto con tu administrador.",
+        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Este método de inicio de sesión aún no es compatible con la aplicación. Prueba con otra opción de inicio de sesión."
       },
       "GOOGLE_FORM": {
         "BUTTON_CONTINUE_WITH_GOOGLE": "Continuar con Google"

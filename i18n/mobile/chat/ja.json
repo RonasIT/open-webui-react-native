@@ -31,7 +31,13 @@
         "TEXT_CHOOSE_FROM_GALLERY": "ギャラリーから選択",
         "TEXT_UPLOAD_FILES": "ファイルをアップロード",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "空のファイルはアップロードできません。",
+        "TEXT_ATTACH_WEBPAGE": "Webページを添付",
         "TEXT_ATTACH_KNOWLEDGE": "ナレッジを添付"
+      },
+      "ATTACH_WEBPAGE_SHEET": {
+        "TEXT_TITLE": "Webページを添付",
+        "TEXT_WEBPAGE_URLS": "WebページのURL",
+        "TEXT_INVALID_URL": "有効なURLを入力してください。"
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "フルアクセス",
@@ -203,7 +209,9 @@
     },
     "ATTACHED_CHAT_ITEMS": {
       "TEXT_COLLECTION": "コレクション",
-      "TEXT_FILE": "ファイル"
+      "TEXT_FILE": "ファイル",
+      "TEXT_WEBPAGE": "Webページ",
+      "TEXT_WEBPAGE_ERROR": "添付に失敗しました"
     }
   }
 }

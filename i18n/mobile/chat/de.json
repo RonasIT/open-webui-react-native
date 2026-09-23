@@ -31,7 +31,13 @@
         "TEXT_CHOOSE_FROM_GALLERY": "Aus Galerie wählen",
         "TEXT_UPLOAD_FILES": "Dateien hochladen",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Sie können keine leere Datei hochladen.",
+        "TEXT_ATTACH_WEBPAGE": "Webseite anhängen",
         "TEXT_ATTACH_KNOWLEDGE": "Wissen anhängen"
+      },
+      "ATTACH_WEBPAGE_SHEET": {
+        "TEXT_TITLE": "Webseite anhängen",
+        "TEXT_WEBPAGE_URLS": "Webseiten-URLs",
+        "TEXT_INVALID_URL": "Bitte geben Sie eine gültige URL ein."
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "Vollzugriff",
@@ -204,7 +210,9 @@
     },
     "ATTACHED_CHAT_ITEMS": {
       "TEXT_COLLECTION": "Sammlung",
-      "TEXT_FILE": "Datei"
+      "TEXT_FILE": "Datei",
+      "TEXT_WEBPAGE": "Webseite",
+      "TEXT_WEBPAGE_ERROR": "Anhängen fehlgeschlagen"
     }
   }
 }

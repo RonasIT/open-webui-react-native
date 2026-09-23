@@ -3,6 +3,7 @@ import { Expose, Type } from 'class-transformer';
 import {
   AttachedFile,
   AttachedKnowledgeCollection,
+  AttachedWebpage,
   FileType,
 } from '@open-webui-react-native/shared/data-access/common';
 import { History } from './history';
@@ -36,11 +37,12 @@ export class Chat extends BaseEntity<string> {
       subTypes: [
         { value: AttachedFile, name: FileType.FILE },
         { value: AttachedKnowledgeCollection, name: FileType.COLLECTION },
+        { value: AttachedWebpage, name: FileType.TEXT },
       ],
     },
     keepDiscriminatorProperty: true,
   })
-  public files?: Array<AttachedFile | AttachedKnowledgeCollection>;
+  public files?: Array<AttachedFile | AttachedKnowledgeCollection | AttachedWebpage>;
 
   @Expose()
   public tags?: Array<string>;

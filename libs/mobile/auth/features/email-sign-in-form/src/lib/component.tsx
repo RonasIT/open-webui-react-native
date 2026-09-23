@@ -1,9 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
-import { ReactElement, useEffect, useRef } from 'react';
+import { Fragment, ReactElement, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { TextInput } from 'react-native';
-import { AppButton, View, FormFloatedLabelInput } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { AppButton, AppText, View, FormFloatedLabelInput } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 import { appConfigurationApi, authApi, Provider } from '@open-webui-react-native/shared/data-access/api';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
@@ -52,10 +52,36 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
   const isUrlWithConfig = isFetchWithUrlSuccess && !!(config?.name && config?.version);
   const isUrlWithoutConfig = isFetchWithUrlSuccess && !(config?.name && config?.version);
 
-  const isFormValid = isApiUrlFeatureEnabled ? isValid && isUrlValid && isUrlWithConfig : isValid;
+  const isAuthEnabled = config?.features?.auth !== false;
+  const isLdapEnabled = !!config?.features?.enableLdap;
+  const isLoginFormEnabled = config?.features?.enableLoginForm !== false;
+  const isLoginFormRequired = isAuthEnabled && isLoginFormEnabled;
+  const hasOauthProviders = Object.keys(config?.oauth?.providers || {}).length > 0;
+  // Only providers we actually render a button for (see sign-in/component.tsx) count as a usable sign-in option.
+  const hasSupportedOauthProviders = [Provider.GOOGLE, Provider.OIDC].some(
+    (provider) => provider in (config?.oauth?.providers || {}),
+  );
+
+  const showSignInButton = !isAuthEnabled || isLoginFormEnabled;
+  const showMisconfigurationMessage =
+    isUrlWithConfig && isAuthEnabled && !isLoginFormEnabled && !hasOauthProviders && !isLdapEnabled;
+  const showUnsupportedProviderMessage =
+    isUrlWithConfig &&
+    isAuthEnabled &&
+    !isLoginFormEnabled &&
+    !hasSupportedOauthProviders &&
+    (hasOauthProviders || isLdapEnabled);
+
+  const isFormValid = isApiUrlFeatureEnabled
+    ? (!isLoginFormRequired || isValid) && isUrlValid && isUrlWithConfig
+    : !isLoginFormRequired || isValid;
 
   const onSubmit = (form: FormValues<EmailFormSchema>): void => {
     mutate({ email: form.email, password: form.password });
+  };
+
+  const signInWithoutAuth = (): void => {
+    mutate({ email: '', password: '' });
   };
 
   useEffect(() => {
@@ -110,38 +136,54 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
           }
         />
       )}
-      <FormFloatedLabelInput
-        inputRef={emailRef}
-        name='email'
-        control={control}
-        autoCapitalize='none'
-        autoCorrect={false}
-        secureTextEntry={false}
-        returnKeyType='next'
-        keyboardType='email-address'
-        placeholder={emailFormConfig.emailPlaceholder}
-        label={translate('TEXT_EMAIL_ADDRESS')}
-        onSubmitEditing={() => passwordRef.current?.focus()}
-        enablesReturnKeyAutomatically={true}
-      />
-      <FormFloatedLabelInput
-        name='password'
-        control={control}
-        inputRef={passwordRef}
-        autoCapitalize='none'
-        autoCorrect={false}
-        returnKeyType='done'
-        placeholder={translate('TEXT_ENTER_YOUR_PASSWORD')}
-        label={translate('TEXT_PASSWORD')}
-        isPassword
-      />
-      <AppButton
-        text={translate('BUTTON_SIGN_IN')}
-        disabled={!isFormValid}
-        isLoading={isPending}
-        className='mt-16'
-        onPress={handleSubmit(onSubmit)}
-      />
+      {isLoginFormRequired && (
+        <Fragment>
+          <FormFloatedLabelInput
+            inputRef={emailRef}
+            name='email'
+            control={control}
+            autoCapitalize='none'
+            autoCorrect={false}
+            secureTextEntry={false}
+            returnKeyType='next'
+            keyboardType='email-address'
+            placeholder={emailFormConfig.emailPlaceholder}
+            label={translate('TEXT_EMAIL_ADDRESS')}
+            onSubmitEditing={() => passwordRef.current?.focus()}
+            enablesReturnKeyAutomatically={true}
+          />
+          <FormFloatedLabelInput
+            name='password'
+            control={control}
+            inputRef={passwordRef}
+            autoCapitalize='none'
+            autoCorrect={false}
+            returnKeyType='done'
+            placeholder={translate('TEXT_ENTER_YOUR_PASSWORD')}
+            label={translate('TEXT_PASSWORD')}
+            isPassword
+          />
+        </Fragment>
+      )}
+      {showMisconfigurationMessage && (
+        <AppText className='text-sm-sm sm:text-sm text-status-danger text-center'>
+          {translate('TEXT_SSO_MISCONFIGURED')}
+        </AppText>
+      )}
+      {showUnsupportedProviderMessage && (
+        <AppText className='text-sm-sm sm:text-sm text-status-danger text-center'>
+          {translate('TEXT_SSO_PROVIDER_NOT_SUPPORTED')}
+        </AppText>
+      )}
+      {showSignInButton && (
+        <AppButton
+          text={translate('BUTTON_SIGN_IN')}
+          disabled={!isFormValid}
+          isLoading={isPending}
+          className='mt-16'
+          onPress={isLoginFormRequired ? handleSubmit(onSubmit) : signInWithoutAuth}
+        />
+      )}
     </View>
   );
 }

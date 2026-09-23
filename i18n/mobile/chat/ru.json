@@ -31,7 +31,13 @@
         "TEXT_CHOOSE_FROM_GALLERY": "Выбрать из галереи",
         "TEXT_UPLOAD_FILES": "Загрузить файлы",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Нельзя загрузить пустой файл.",
+        "TEXT_ATTACH_WEBPAGE": "Прикрепить веб-страницу",
         "TEXT_ATTACH_KNOWLEDGE": "Прикрепить базу знаний"
+      },
+      "ATTACH_WEBPAGE_SHEET": {
+        "TEXT_TITLE": "Прикрепить веб-страницу",
+        "TEXT_WEBPAGE_URLS": "URL веб-страниц",
+        "TEXT_INVALID_URL": "Введите корректный URL."
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "Полный доступ",
@@ -205,7 +211,9 @@
     },
     "ATTACHED_CHAT_ITEMS": {
       "TEXT_COLLECTION": "Коллекция",
-      "TEXT_FILE": "Файл"
+      "TEXT_FILE": "Файл",
+      "TEXT_WEBPAGE": "Веб-страница",
+      "TEXT_WEBPAGE_ERROR": "Не удалось прикрепить"
     }
   }
 }

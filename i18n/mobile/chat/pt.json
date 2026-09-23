@@ -31,7 +31,13 @@
         "TEXT_CHOOSE_FROM_GALLERY": "Escolher da galeria",
         "TEXT_UPLOAD_FILES": "Enviar arquivos",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Não é possível enviar um arquivo vazio.",
+        "TEXT_ATTACH_WEBPAGE": "Anexar página da web",
         "TEXT_ATTACH_KNOWLEDGE": "Anexar conhecimento"
+      },
+      "ATTACH_WEBPAGE_SHEET": {
+        "TEXT_TITLE": "Anexar página da web",
+        "TEXT_WEBPAGE_URLS": "URLs de páginas da web",
+        "TEXT_INVALID_URL": "Insira um URL válido."
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "Acesso total",
@@ -204,7 +210,9 @@
     },
     "ATTACHED_CHAT_ITEMS": {
       "TEXT_COLLECTION": "Coleção",
-      "TEXT_FILE": "Arquivo"
+      "TEXT_FILE": "Arquivo",
+      "TEXT_WEBPAGE": "Página da web",
+      "TEXT_WEBPAGE_ERROR": "Falha ao anexar"
     }
   }
 }
