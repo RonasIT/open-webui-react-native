@@ -1,6 +1,6 @@
-import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useMemo } from 'react';
 import { LayoutChangeEvent } from 'react-native';
+import { AttachedContextItem } from '@open-webui-react-native/mobile/chat/features/attached-chat-items';
 import { AttachedFileItem, formatFileSize } from '@open-webui-react-native/mobile/chat/features/attached-file-item';
 import { MessageVersionControls } from '@open-webui-react-native/mobile/chat/features/message-version-controls';
 import { UseSiblingMessagesReturn } from '@open-webui-react-native/mobile/chat/features/use-manage-messages-siblings';
@@ -10,7 +10,7 @@ import {
 } from '@open-webui-react-native/mobile/shared/features/image-preview-modal';
 import { AppMarkdownView } from '@open-webui-react-native/mobile/shared/features/markdown-view';
 import { cn, colors, screenWidth, spacings } from '@open-webui-react-native/mobile/shared/ui/styles';
-import { AppText, AttachedItem, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { Message, usersApi } from '@open-webui-react-native/shared/data-access/api';
 import { FileType } from '@open-webui-react-native/shared/data-access/common';
 import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
@@ -40,7 +40,6 @@ function ChatUserMessageComponent({
 }: ChatUserMessageProps): ReactElement {
   const { files, content: text, timestamp } = message;
 
-  const translate = useTranslation('CHAT.ATTACHED_CHAT_ITEMS');
   const { data: userSettings } = usersApi.useGetUserSettings();
   const isChatBubbleUIEnabled = userSettings?.ui.chatBubble ?? true;
   const isUserMessageMarkdownEnabled = userSettings?.ui.renderMarkdownInUserMessages ?? true;
@@ -93,12 +92,10 @@ function ChatUserMessageComponent({
 
           if (file.type === FileType.COLLECTION) {
             return (
-              <AttachedItem
+              <AttachedContextItem
                 key={index}
-                disabled
-                title={file.name}
-                subTitle={translate('TEXT_COLLECTION')}
-                iconName='database'
+                type={FileType.COLLECTION}
+                name={file.name}
                 className='max-w-[70%] self-end'
               />
             );
@@ -106,27 +103,21 @@ function ChatUserMessageComponent({
 
           if (file.type === FileType.CHAT) {
             return (
-              <AttachedItem
+              <AttachedContextItem
                 key={index}
-                disabled
-                title={file.name}
-                subTitle={translate('TEXT_CHAT')}
-                iconName='history'
-                className='max-w-[70%] self-end'
-              />
+                type={FileType.CHAT}
+                name={file.name}
+                className='max-w-[70%] self-end' />
             );
           }
 
           if (file.type === FileType.TEXT) {
             return (
-              <AttachedItem
+              <AttachedContextItem
                 key={index}
-                disabled
-                title={file.name}
-                subTitle={translate('TEXT_WEBPAGE')}
-                iconName='link'
-                className='max-w-[70%] self-end'
-              />
+                type={FileType.TEXT}
+                name={file.name}
+                className='max-w-[70%] self-end' />
             );
           }
 

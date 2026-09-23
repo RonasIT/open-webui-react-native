@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { FileType } from '../../enums';
+import { AttachmentStatus, FileType } from '../../enums';
 
 export class AttachedChat {
   @Expose()
@@ -12,7 +12,7 @@ export class AttachedChat {
   public name: string;
 
   @Expose()
-  public status: string;
+  public status: AttachmentStatus.PROCESSED;
 
   constructor(attachedChat: Partial<AttachedChat>) {
     Object.assign(this, attachedChat);

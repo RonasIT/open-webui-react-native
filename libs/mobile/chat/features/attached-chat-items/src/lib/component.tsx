@@ -4,13 +4,14 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement } from 'react';
 import { AttachedFileItem, formatFileSize } from '@open-webui-react-native/mobile/chat/features/attached-file-item';
 import { AttachedImageItem } from '@open-webui-react-native/mobile/chat/features/attached-image-item';
-import { AttachedItem, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import {
   AttachedListItem,
   AttachmentStatus,
   FileType,
   ImageData,
 } from '@open-webui-react-native/shared/data-access/common';
+import { AttachedContextItem } from './components/attached-context-item';
 
 interface AttachedChatItemsProps {
   onDeleteItemPress: (id: string) => void;
@@ -44,12 +45,10 @@ export function AttachedChatItems({
 
         if (item.kind === FileType.COLLECTION) {
           return (
-            <AttachedItem
+            <AttachedContextItem
               key={item.collection.id}
-              disabled
-              title={item.collection.name}
-              subTitle={translate('TEXT_COLLECTION')}
-              iconName='database'
+              type={FileType.COLLECTION}
+              name={item.collection.name}
               onDeletePress={() => onDeleteItemPress(item.collection.id)}
             />
           );
@@ -57,12 +56,10 @@ export function AttachedChatItems({
 
         if (item.kind === FileType.TEXT) {
           return (
-            <AttachedItem
+            <AttachedContextItem
               key={item.webpage.url}
-              disabled
-              title={item.webpage.name}
-              subTitle={translate(item.webpage.status === AttachmentStatus.ERROR ? 'TEXT_WEBPAGE_ERROR' : 'TEXT_WEBPAGE')}
-              iconName='link'
+              type={FileType.TEXT}
+              name={item.webpage.name}
               hasError={item.webpage.status === AttachmentStatus.ERROR}
               onDeletePress={() => onDeleteItemPress(item.webpage.url)}
             />
@@ -71,12 +68,10 @@ export function AttachedChatItems({
 
         if (item.kind === FileType.CHAT) {
           return (
-            <AttachedItem
+            <AttachedContextItem
               key={item.chat.id}
-              disabled
-              title={item.chat.name}
-              subTitle={translate('TEXT_CHAT')}
-              iconName='history'
+              type={FileType.CHAT}
+              name={item.chat.name}
               onDeletePress={() => onDeleteItemPress(item.chat.id)}
             />
           );

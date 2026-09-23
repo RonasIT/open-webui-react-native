@@ -22,6 +22,7 @@ import {
   AttachedChat,
   AttachedKnowledgeCollection,
   AttachedListItem,
+  AttachmentStatus,
   FileData,
   FileType,
   ImageData,
@@ -117,6 +118,8 @@ export function AttachmentsMenuSheet({
     referenceChatsSheetRef.current?.present();
   };
 
+  // NOTE: status is always PROCESSED here, mirroring the web client — a referenced chat has
+  // no server-side processing step to wait on, unlike an uploaded file.
   const handleSelectChat = (chat: ChatListItem): void => {
     onItemAttached({
       kind: FileType.CHAT,
@@ -124,7 +127,7 @@ export function AttachmentsMenuSheet({
         id: chat.id,
         type: FileType.CHAT,
         name: chat.title,
-        status: 'processed',
+        status: AttachmentStatus.PROCESSED,
       }),
     });
   };
@@ -142,7 +145,7 @@ export function AttachmentsMenuSheet({
         type: FileType.COLLECTION,
         name: knowledge.name,
         description: knowledge.description,
-        status: 'processed',
+        status: AttachmentStatus.PROCESSED,
       }),
     });
   };
