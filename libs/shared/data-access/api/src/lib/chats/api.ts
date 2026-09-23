@@ -391,6 +391,11 @@ export function usePinChat(
   return useMutation<ChatResponse, AxiosError<ApiErrorData>, { isPinned: boolean; id: string }>({
     mutationFn: ({ id }) => chatService.pinChat(id),
     onSuccess: (chat, { isPinned, id }) => {
+      // useGet query
+      queryClient.setQueryData<ChatResponse>(chatQueriesKeys.get(id).queryKey, (draft) => {
+        return draft ? { ...draft, pinned: isPinned } : undefined;
+      });
+
       // useGetChatList query
       queryClient.setQueryData<InfiniteData<Array<ChatListItem>, number>>(
         chatServiceConfig.getChatListQueryKey,
@@ -400,7 +405,7 @@ export function usePinChat(
           }
 
           return {
-            pages: isPinned
+            pages: !isPinned
               ? draft.pages.map((page, index) => (index === 0 ? [chat, ...page] : page))
               : draft.pages.map((page) => page.filter((item) => item.id !== id)),
             pageParams: draft.pageParams,
@@ -414,7 +419,7 @@ export function usePinChat(
           return undefined;
         }
 
-        return isPinned ? draft.filter((item) => item.id !== id) : [new ChatListItem(chat), ...draft];
+        return !isPinned ? draft.filter((item) => item.id !== id) : [new ChatListItem(chat), ...draft];
       });
 
       // useGetFolderChatList query
@@ -427,7 +432,7 @@ export function usePinChat(
             }
 
             return {
-              pages: isPinned
+              pages: !isPinned
                 ? draft.pages.map((page, index) => (index === 0 ? [chat, ...page] : page))
                 : draft.pages.map((page) => page.filter((item) => item.id !== id)),
               pageParams: draft.pageParams,
@@ -443,7 +448,7 @@ export function usePinChat(
               return undefined;
             }
 
-            return isPinned ? draft.filter((item) => item.id !== id) : [chat, ...draft];
+            return !isPinned ? draft.filter((item) => item.id !== id) : [chat, ...draft];
           },
         );
       }
