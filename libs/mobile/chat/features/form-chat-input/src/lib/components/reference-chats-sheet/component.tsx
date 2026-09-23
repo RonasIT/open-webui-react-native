@@ -24,8 +24,6 @@ export interface ReferenceChatsSheetProps {
   onSelectChat: (chat: ChatListItem) => void;
 }
 
-const extractId = (item: { id: string }): string => item.id;
-
 interface ReferenceChatRowProps {
   item: ChatListItem;
   isSelected: boolean;
@@ -92,7 +90,10 @@ export function ReferenceChatsSheet({
       closeModal();
     };
 
-    return <ReferenceChatRow item={item} isSelected={attachedChatIds.includes(item.id)} onPress={handlePress} />;
+    return <ReferenceChatRow
+      item={item}
+      isSelected={attachedChatIds.includes(item.id)}
+      onPress={handlePress} />;
   };
 
   return (
@@ -109,7 +110,6 @@ export function ReferenceChatsSheet({
       data={chats}
       extraData={attachedChatIds}
       showsVerticalScrollIndicator={false}
-      keyExtractor={extractId}
       pagination={{ onEndReached: handleFetchNextPage, isFetchingNextPage }}
       renderItem={renderItem}
     />

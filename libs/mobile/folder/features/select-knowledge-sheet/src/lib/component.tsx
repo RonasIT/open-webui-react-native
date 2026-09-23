@@ -17,8 +17,6 @@ export type SelectKnowledgeSheetProps = {
   ref?: SelectKnowledgeSheetRef;
 };
 
-const extractKnowledgeId = (knowledge: Knowledge): string => knowledge.id;
-
 export function SelectKnowledgeSheet({ onConfirm, ref }: SelectKnowledgeSheetProps): ReactElement {
   const translate = useTranslation('FOLDER.SELECT_KNOWLEDGE_SHEET');
   const sheetRef = useRef<BottomSheetModal>(null);
@@ -89,7 +87,6 @@ export function SelectKnowledgeSheet({ onConfirm, ref }: SelectKnowledgeSheetPro
       data={knowledge ?? []}
       extraData={selectedKnowledge}
       renderItem={renderItem}
-      keyExtractor={extractKnowledgeId}
       pagination={{ onEndReached: handleFetchNextPage, isFetchingNextPage }}
     />
   );

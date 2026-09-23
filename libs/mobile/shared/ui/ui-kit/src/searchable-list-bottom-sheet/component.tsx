@@ -35,7 +35,7 @@ export type SearchableListBottomSheetProps<TItem> = Partial<Omit<AppBottomSheetP
     pagination?: SearchableListBottomSheetPagination;
   };
 
-export function SearchableListBottomSheet<TItem>({
+export function SearchableListBottomSheet<TItem extends { id: string }>({
   ref,
   title,
   onGoBack,
@@ -48,7 +48,7 @@ export function SearchableListBottomSheet<TItem>({
   emptyDescription,
   data,
   renderItem,
-  keyExtractor,
+  keyExtractor = (item) => item.id,
   extraData,
   showsVerticalScrollIndicator,
   pagination,
