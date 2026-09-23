@@ -187,12 +187,15 @@ export function AttachmentsMenuSheet({
       iconName: 'database',
       onPress: handleAttachKnowledgePress,
     },
-    {
-      title: translate('TEXT_REFERENCE_CHATS'),
-      iconName: 'history',
-      onPress: handleReferenceChatsPress,
-      disabled: !isFileUploadEnabled,
-    },
+    ...(isFileUploadEnabled
+      ? [
+          {
+            title: translate('TEXT_REFERENCE_CHATS'),
+            iconName: 'history' as const,
+            onPress: handleReferenceChatsPress,
+          },
+        ]
+      : []),
   ];
 
   const renderTrigger = ({ onPress }: { onPress: () => void }): ReactElement => (
