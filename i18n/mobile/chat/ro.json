@@ -44,7 +44,7 @@
         "TEXT_ASK_FOR_APPROVAL": "Cere aprobare"
       },
       "TOOLS_POPUP": {
-        "TEXT_TITLE": "Instrumente",
+        "BUTTON_APPLY": "Aplică",
         "TEXT_NO_TOOLS_AVAILABLE": "Niciun instrument disponibil",
         "TEXT_SIGN_IN_REQUIRED": "{{name}} — conectează-te pe web"
       }
