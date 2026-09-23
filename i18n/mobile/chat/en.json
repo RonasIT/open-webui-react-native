@@ -31,7 +31,8 @@
         "TEXT_CHOOSE_FROM_GALLERY": "Choose from gallery",
         "TEXT_UPLOAD_FILES": "Upload files",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "You cannot upload an empty file.",
-        "TEXT_ATTACH_KNOWLEDGE": "Attach Knowledge"
+        "TEXT_ATTACH_KNOWLEDGE": "Attach Knowledge",
+        "TEXT_REFERENCE_CHATS": "Reference Chats"
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "Full access",
@@ -202,9 +203,15 @@
       "TEXT_SEARCH_FILES": "Search files",
       "TEXT_NO_FILES": "No files in this knowledge base."
     },
+    "REFERENCE_CHATS_SHEET": {
+      "TEXT_TITLE": "Chats",
+      "TEXT_SEARCH_CHATS": "Search Chats",
+      "TEXT_NO_CHATS": "No chats found"
+    },
     "ATTACHED_CHAT_ITEMS": {
       "TEXT_COLLECTION": "Collection",
-      "TEXT_FILE": "File"
+      "TEXT_FILE": "File",
+      "TEXT_CHAT": "Chat"
     }
   }
 }

@@ -1,6 +1,7 @@
 import { BaseEntity } from '@ronas-it/rtkq-entity-api';
 import { Expose, Type } from 'class-transformer';
 import {
+  AttachedChat,
   AttachedFile,
   AttachedImage,
   AttachedKnowledgeCollection,
@@ -66,11 +67,12 @@ export class Message extends BaseEntity<string> {
         { value: AttachedFile, name: FileType.FILE },
         { value: AttachedImage, name: FileType.IMAGE },
         { value: AttachedKnowledgeCollection, name: FileType.COLLECTION },
+        { value: AttachedChat, name: FileType.CHAT },
       ],
     },
     keepDiscriminatorProperty: true,
   })
-  public files?: Array<AttachedFile | AttachedImage | AttachedKnowledgeCollection>;
+  public files?: Array<AttachedFile | AttachedImage | AttachedKnowledgeCollection | AttachedChat>;
 
   @Expose()
   @Type(() => MessageSource)

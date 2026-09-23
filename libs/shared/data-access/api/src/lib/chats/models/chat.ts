@@ -1,6 +1,7 @@
 import { BaseEntity } from '@ronas-it/rtkq-entity-api';
 import { Expose, Type } from 'class-transformer';
 import {
+  AttachedChat,
   AttachedFile,
   AttachedKnowledgeCollection,
   FileType,
@@ -36,11 +37,12 @@ export class Chat extends BaseEntity<string> {
       subTypes: [
         { value: AttachedFile, name: FileType.FILE },
         { value: AttachedKnowledgeCollection, name: FileType.COLLECTION },
+        { value: AttachedChat, name: FileType.CHAT },
       ],
     },
     keepDiscriminatorProperty: true,
   })
-  public files?: Array<AttachedFile | AttachedKnowledgeCollection>;
+  public files?: Array<AttachedFile | AttachedKnowledgeCollection | AttachedChat>;
 
   @Expose()
   public tags?: Array<string>;

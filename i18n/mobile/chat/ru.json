@@ -31,7 +31,8 @@
         "TEXT_CHOOSE_FROM_GALLERY": "Выбрать из галереи",
         "TEXT_UPLOAD_FILES": "Загрузить файлы",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Нельзя загрузить пустой файл.",
-        "TEXT_ATTACH_KNOWLEDGE": "Прикрепить базу знаний"
+        "TEXT_ATTACH_KNOWLEDGE": "Прикрепить базу знаний",
+        "TEXT_REFERENCE_CHATS": "Чаты для контекста"
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "Полный доступ",
@@ -203,9 +204,15 @@
       "TEXT_SEARCH_FILES": "Поиск файлов",
       "TEXT_NO_FILES": "В этой базе знаний нет файлов."
     },
+    "REFERENCE_CHATS_SHEET": {
+      "TEXT_TITLE": "Чаты",
+      "TEXT_SEARCH_CHATS": "Поиск в чатах",
+      "TEXT_NO_CHATS": "Чаты не найдены"
+    },
     "ATTACHED_CHAT_ITEMS": {
       "TEXT_COLLECTION": "Коллекция",
-      "TEXT_FILE": "Файл"
+      "TEXT_FILE": "Файл",
+      "TEXT_CHAT": "Чат"
     }
   }
 }

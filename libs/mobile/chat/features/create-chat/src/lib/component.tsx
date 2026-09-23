@@ -41,6 +41,7 @@ export function CreateChat({
     handleImageUploaded,
     handleKnowledgeCollectionAttached,
     handleKnowledgeFileAttached,
+    handleChatAttached,
     handleDeleteItem,
     resetAttachments,
   } = useAttachedFiles();
@@ -110,6 +111,7 @@ export function CreateChat({
         onDeleteImagePress={handleDeleteImage}
         onKnowledgeCollectionSelected={handleKnowledgeCollectionAttached}
         onKnowledgeFileSelected={handleKnowledgeFileAttached}
+        onChatSelected={handleChatAttached}
         onChatCreated={onChatCreated}
         modelId={modelId}
       />

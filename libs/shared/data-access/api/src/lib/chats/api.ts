@@ -79,16 +79,23 @@ function useGetPinnedChatList(): UseQueryResult<Array<ChatListItem>, AxiosError<
   return result as UseQueryResult<Array<ChatListItem>, AxiosError<ApiErrorData>>;
 }
 
-function useSearchInfinite(text: string): UseInfiniteQueryResult<Array<ChatListItem>, AxiosError<ApiErrorData>> {
+function useSearchInfinite(
+  text: string,
+  options?: { includeFolders?: boolean; includePinned?: boolean },
+): UseInfiniteQueryResult<Array<ChatListItem>, AxiosError<ApiErrorData>> {
   const searchText = text.trim();
 
   return useInfiniteQuery({
     queryFn: ({ pageParam }) =>
       searchText
         ? chatService.searchChatList({ page: pageParam, text: searchText })
-        : chatService.getChatList({ page: pageParam }),
+        : chatService.getChatList({
+            page: pageParam,
+            includeFolders: options?.includeFolders,
+            includePinned: options?.includePinned,
+          }),
     // TODO: Temporary solution because useUpdate patches are broken; remove when omit endpoint logic is implemented
-    queryKey: getSearchChatsQueryKey(searchText),
+    queryKey: getSearchChatsQueryKey(searchText, options),
     initialPageParam: 1,
     getNextPageParam: (lastPage, result, lastPageParam) =>
       getNextPageParam({ lastPage, result, lastPageParam, itemsPerPage: chatServiceConfig.chatsPerPage }),

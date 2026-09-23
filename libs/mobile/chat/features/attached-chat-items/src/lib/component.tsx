@@ -37,16 +37,33 @@ export function AttachedChatItems({
           return null;
         }
 
-        return item.kind === FileType.COLLECTION ? (
-          <AttachedItem
-            key={item.collection.id}
-            disabled
-            title={item.collection.name}
-            subTitle={translate('TEXT_COLLECTION')}
-            iconName='database'
-            onDeletePress={() => onDeleteItemPress(item.collection.id)}
-          />
-        ) : (
+        if (item.kind === FileType.COLLECTION) {
+          return (
+            <AttachedItem
+              key={item.collection.id}
+              disabled
+              title={item.collection.name}
+              subTitle={translate('TEXT_COLLECTION')}
+              iconName='database'
+              onDeletePress={() => onDeleteItemPress(item.collection.id)}
+            />
+          );
+        }
+
+        if (item.kind === FileType.CHAT) {
+          return (
+            <AttachedItem
+              key={item.chat.id}
+              disabled
+              title={item.chat.name}
+              subTitle={translate('TEXT_CHAT')}
+              iconName='history'
+              onDeletePress={() => onDeleteItemPress(item.chat.id)}
+            />
+          );
+        }
+
+        return (
           <AttachedFileItem
             key={item.file.id}
             file={item.file}

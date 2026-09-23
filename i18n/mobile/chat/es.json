@@ -31,7 +31,8 @@
         "TEXT_CHOOSE_FROM_GALLERY": "Elegir de la galería",
         "TEXT_UPLOAD_FILES": "Subir archivos",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "No puedes subir un archivo vacío.",
-        "TEXT_ATTACH_KNOWLEDGE": "Adjuntar conocimiento"
+        "TEXT_ATTACH_KNOWLEDGE": "Adjuntar conocimiento",
+        "TEXT_REFERENCE_CHATS": "Referenciar Chats"
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "Acceso completo",
@@ -202,9 +203,15 @@
       "TEXT_SEARCH_FILES": "Buscar archivos",
       "TEXT_NO_FILES": "No hay archivos en esta base de conocimiento."
     },
+    "REFERENCE_CHATS_SHEET": {
+      "TEXT_TITLE": "Chats",
+      "TEXT_SEARCH_CHATS": "Buscar Chats",
+      "TEXT_NO_CHATS": "No se encontró ningún chat"
+    },
     "ATTACHED_CHAT_ITEMS": {
       "TEXT_COLLECTION": "Colección",
-      "TEXT_FILE": "Archivo"
+      "TEXT_FILE": "Archivo",
+      "TEXT_CHAT": "Chat"
     }
   }
 }

@@ -26,6 +26,7 @@ import {
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import {
+  AttachedChat,
   AttachedImage,
   AttachedKnowledgeCollection,
   AttachedListItem,
@@ -57,6 +58,7 @@ interface FormChatInputProps<T extends FieldValues> extends AppInputProps {
   onDeleteImagePress: (fileName: string) => void;
   onKnowledgeCollectionSelected: (collection: AttachedKnowledgeCollection) => void;
   onKnowledgeFileSelected: (file: FileData) => void;
+  onChatSelected: (chat: AttachedChat) => void;
   chat?: ChatResponse;
   modelId?: string;
   onChatCreated?: (id: string) => void;
@@ -83,6 +85,7 @@ export function FormChatInput<T extends FieldValues>({
   onDeleteImagePress,
   onKnowledgeCollectionSelected,
   onKnowledgeFileSelected,
+  onChatSelected,
   chat,
   modelId,
   onChatCreated,
@@ -139,6 +142,8 @@ export function FormChatInput<T extends FieldValues>({
 
   const isKnowledgeFileAttached = (id: string): boolean =>
     items.some((item) => item?.kind === FileType.FILE && item.isFromKnowledge && item.file.id === id);
+
+  const attachedChatIds = items.flatMap((item) => (item?.kind === FileType.CHAT ? [item.chat.id] : []));
 
   const imagesForPreview = images.flatMap((image, index) =>
     image
@@ -237,6 +242,9 @@ export function FormChatInput<T extends FieldValues>({
                     isKnowledgeFileAttached={isKnowledgeFileAttached}
                     onKnowledgeCollectionSelected={onKnowledgeCollectionSelected}
                     onKnowledgeFileSelected={onKnowledgeFileSelected}
+                    chatId={chat?.id}
+                    attachedChatIds={attachedChatIds}
+                    onChatSelected={onChatSelected}
                   />
                   {config?.features.enableImageGeneration && (
                     <SelectOptionIcon

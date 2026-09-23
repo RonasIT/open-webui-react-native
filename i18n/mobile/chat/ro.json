@@ -31,7 +31,8 @@
         "TEXT_CHOOSE_FROM_GALLERY": "Alege din galerie",
         "TEXT_UPLOAD_FILES": "Încarcă fișiere",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Nu poți încărca un fișier gol.",
-        "TEXT_ATTACH_KNOWLEDGE": "Atașează bază de cunoștințe"
+        "TEXT_ATTACH_KNOWLEDGE": "Atașează bază de cunoștințe",
+        "TEXT_REFERENCE_CHATS": "Conversații de referință"
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "Acces complet",
@@ -203,9 +204,15 @@
       "TEXT_SEARCH_FILES": "Caută fișiere",
       "TEXT_NO_FILES": "Nu există fișiere în această bază de cunoștințe."
     },
+    "REFERENCE_CHATS_SHEET": {
+      "TEXT_TITLE": "Conversații",
+      "TEXT_SEARCH_CHATS": "Caută în Conversații",
+      "TEXT_NO_CHATS": "Nu s-au găsit conversații"
+    },
     "ATTACHED_CHAT_ITEMS": {
       "TEXT_COLLECTION": "Colecție",
-      "TEXT_FILE": "Fișier"
+      "TEXT_FILE": "Fișier",
+      "TEXT_CHAT": "Conversație"
     }
   }
 }

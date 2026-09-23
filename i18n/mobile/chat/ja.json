@@ -31,7 +31,8 @@
         "TEXT_CHOOSE_FROM_GALLERY": "ギャラリーから選択",
         "TEXT_UPLOAD_FILES": "ファイルをアップロード",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "空のファイルはアップロードできません。",
-        "TEXT_ATTACH_KNOWLEDGE": "ナレッジを添付"
+        "TEXT_ATTACH_KNOWLEDGE": "ナレッジを添付",
+        "TEXT_REFERENCE_CHATS": "チャットを参照"
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "フルアクセス",
@@ -201,9 +202,15 @@
       "TEXT_SEARCH_FILES": "ファイルを検索",
       "TEXT_NO_FILES": "このナレッジベースにファイルはありません。"
     },
+    "REFERENCE_CHATS_SHEET": {
+      "TEXT_TITLE": "チャット",
+      "TEXT_SEARCH_CHATS": "チャットの検索",
+      "TEXT_NO_CHATS": "チャットが見つかりません。"
+    },
     "ATTACHED_CHAT_ITEMS": {
       "TEXT_COLLECTION": "コレクション",
-      "TEXT_FILE": "ファイル"
+      "TEXT_FILE": "ファイル",
+      "TEXT_CHAT": "チャット"
     }
   }
 }

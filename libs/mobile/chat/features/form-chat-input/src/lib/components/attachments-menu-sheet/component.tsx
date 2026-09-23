@@ -11,15 +11,18 @@ import {
   ImagePickerSource,
 } from '@open-webui-react-native/mobile/shared/data-access/image-picker-service';
 import { ActionsBottomSheet, ActionSheetItemProps, IconButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { filesApi, Knowledge } from '@open-webui-react-native/shared/data-access/api';
+import { authApi, ChatListItem, filesApi, Knowledge } from '@open-webui-react-native/shared/data-access/api';
 import {
+  AttachedChat,
   AttachedKnowledgeCollection,
   FileData,
   FileType,
   ImageData,
+  UserRole,
 } from '@open-webui-react-native/shared/data-access/common';
 import { getDocumentFormData } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
+import { ReferenceChatsSheet, ReferenceChatsSheetMethods } from '../reference-chats-sheet';
 
 export interface AttachmentsMenuSheetProps {
   disabled?: boolean;
@@ -29,6 +32,9 @@ export interface AttachmentsMenuSheetProps {
   isKnowledgeFileAttached: (id: string) => boolean;
   onKnowledgeCollectionSelected: (collection: AttachedKnowledgeCollection) => void;
   onKnowledgeFileSelected: (file: FileData) => void;
+  chatId?: string;
+  attachedChatIds: Array<string>;
+  onChatSelected: (chat: AttachedChat) => void;
 }
 
 export function AttachmentsMenuSheet({
@@ -39,10 +45,17 @@ export function AttachmentsMenuSheet({
   isKnowledgeFileAttached,
   onKnowledgeCollectionSelected,
   onKnowledgeFileSelected,
+  chatId,
+  attachedChatIds,
+  onChatSelected,
 }: AttachmentsMenuSheetProps): ReactElement {
   const translate = useTranslation('CHAT.FORM_CHAT_INPUT.ATTACHMENTS_ACTIONS_POPUP');
   const modalRef = useRef<BottomSheetModal>(null);
   const attachKnowledgeSheetRef = useRef<AttachKnowledgeSheetMethods>(null);
+  const referenceChatsSheetRef = useRef<ReferenceChatsSheetMethods>(null);
+  const { data: profile } = authApi.useGetProfile();
+  const isFileUploadEnabled =
+    !profile || profile.role === UserRole.ADMIN || Boolean(profile.permissions?.chat?.fileUpload);
   const {
     mutate: uploadFile,
     isPending: isFileUploading,
@@ -96,6 +109,22 @@ export function AttachmentsMenuSheet({
     attachKnowledgeSheetRef.current?.present();
   };
 
+  const handleReferenceChatsPress = (): void => {
+    closeModal();
+    referenceChatsSheetRef.current?.present();
+  };
+
+  const handleSelectChat = (chat: ChatListItem): void => {
+    onChatSelected(
+      new AttachedChat({
+        id: chat.id,
+        type: FileType.CHAT,
+        name: chat.title,
+        status: 'processed',
+      }),
+    );
+  };
+
   const handleSelectKnowledgeCollection = (knowledge: Knowledge): void => {
     onKnowledgeCollectionSelected(
       new AttachedKnowledgeCollection({
@@ -136,6 +165,12 @@ export function AttachmentsMenuSheet({
       iconName: 'database',
       onPress: handleAttachKnowledgePress,
     },
+    {
+      title: translate('TEXT_REFERENCE_CHATS'),
+      iconName: 'history',
+      onPress: handleReferenceChatsPress,
+      disabled: !isFileUploadEnabled,
+    },
   ];
 
   const renderTrigger = ({ onPress }: { onPress: () => void }): ReactElement => (
@@ -165,6 +200,12 @@ export function AttachmentsMenuSheet({
         isFileAttached={isKnowledgeFileAttached}
         onSelectCollection={handleSelectKnowledgeCollection}
         onSelectFile={handleSelectKnowledgeFile}
+      />
+      <ReferenceChatsSheet
+        ref={referenceChatsSheetRef}
+        chatId={chatId}
+        attachedChatIds={attachedChatIds}
+        onSelectChat={handleSelectChat}
       />
     </Fragment>
   );

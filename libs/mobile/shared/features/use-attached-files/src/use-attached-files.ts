@@ -3,6 +3,7 @@ import { fileSystemService } from '@open-webui-react-native/mobile/shared/data-a
 import { ImageMimeType } from '@open-webui-react-native/mobile/shared/data-access/image-picker-service';
 import { compressImage } from '@open-webui-react-native/mobile/shared/utils/compressor';
 import {
+  AttachedChat,
   AttachedKnowledgeCollection,
   AttachedListItem,
   FileData,
@@ -31,6 +32,10 @@ export function useAttachedFiles(): typeof result {
 
   const handleKnowledgeCollectionAttached = (collection: AttachedKnowledgeCollection): void => {
     pushItem({ kind: FileType.COLLECTION, collection });
+  };
+
+  const handleChatAttached = (chat: AttachedChat): void => {
+    pushItem({ kind: FileType.CHAT, chat });
   };
 
   const handleDeleteItem = (id: string): void => {
@@ -73,6 +78,7 @@ export function useAttachedFiles(): typeof result {
     handleFileUploaded,
     handleKnowledgeFileAttached,
     handleKnowledgeCollectionAttached,
+    handleChatAttached,
     handleDeleteItem,
     attachedImages,
     handleImageUploaded,
