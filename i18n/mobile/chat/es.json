@@ -45,7 +45,7 @@
         "TEXT_ASK_FOR_APPROVAL": "Pedir aprobación"
       },
       "TOOLS_POPUP": {
-        "TEXT_TITLE": "Herramientas",
+        "BUTTON_APPLY": "Aplicar",
         "TEXT_NO_TOOLS_AVAILABLE": "No hay herramientas disponibles",
         "TEXT_SIGN_IN_REQUIRED": "{{name}} — inicia sesión en la versión web"
       }

@@ -145,5 +145,8 @@ export const parseResponseMessageContent = (content: string): ParseResponseMessa
     rest = next.rest;
   }
 
-  return { toolsData, messageContent: rest };
+  // NOTE: A message with no `<details>` block never goes through `tryParseLeadingToolCallsDetails`,
+  // whose own trimming only fires after finding one — so a leading/trailing blank line from the
+  // model renders as an empty markdown paragraph, showing up as extra space above the text.
+  return { toolsData, messageContent: rest.trim() };
 };
