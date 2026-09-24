@@ -20,6 +20,8 @@ export type SelectKnowledgeSheetProps = {
 };
 
 type ListItem =
+  | { type: ListItemType.KNOWLEDGE_HEADER }
+  | { type: ListItemType.KNOWLEDGE_EMPTY }
   | { type: ListItemType.KNOWLEDGE; knowledge: Knowledge }
   | { type: ListItemType.FILES_HEADER }
   | { type: ListItemType.FILES_EMPTY }
@@ -94,7 +96,10 @@ export function SelectKnowledgeSheet({ onConfirm, ref }: SelectKnowledgeSheetPro
     !knowledge?.length && !files?.length
       ? []
       : [
-          ...(knowledge || []).map((item): ListItem => ({ type: ListItemType.KNOWLEDGE, knowledge: item })),
+          { type: ListItemType.KNOWLEDGE_HEADER },
+          ...(knowledge?.length
+            ? knowledge.map((item): ListItem => ({ type: ListItemType.KNOWLEDGE, knowledge: item }))
+            : [{ type: ListItemType.KNOWLEDGE_EMPTY } as ListItem]),
           { type: ListItemType.FILES_HEADER },
           ...(files?.length
             ? files.map((item): ListItem => ({ type: ListItemType.FILE, file: item }))
@@ -103,6 +108,19 @@ export function SelectKnowledgeSheet({ onConfirm, ref }: SelectKnowledgeSheetPro
 
   const renderItem = ({ item }: { item: ListItem }): ReactElement => {
     switch (item.type) {
+      case ListItemType.KNOWLEDGE_HEADER:
+        return (
+          <View className='pt-16 pb-4'>
+            <AppText className='text-sm-sm sm:text-sm text-text-tertiary'>{translate('TEXT_COLLECTIONS')}</AppText>
+          </View>
+        );
+      case ListItemType.KNOWLEDGE_EMPTY:
+        return (
+          <View className='py-12'>
+            <AppText className='text-sm-sm sm:text-sm'>{translate('TEXT_NO_KNOWLEDGE')}</AppText>
+          </View>
+        );
+
       case ListItemType.KNOWLEDGE: {
         const isSelected = selectedKnowledge.some((knowledge) => knowledge.id === item.knowledge.id);
         const handlePress = (): void => toggleKnowledgeSelection(item.knowledge);
@@ -115,13 +133,13 @@ export function SelectKnowledgeSheet({ onConfirm, ref }: SelectKnowledgeSheetPro
       case ListItemType.FILES_HEADER:
         return (
           <View className='pt-16 pb-4'>
-            <AppText className='text-sm-sm sm:text-sm'>{translate('TEXT_FILES')}</AppText>
+            <AppText className='text-sm-sm sm:text-sm text-text-tertiary'>{translate('TEXT_FILES')}</AppText>
           </View>
         );
       case ListItemType.FILES_EMPTY:
         return (
           <View className='py-12'>
-            <AppText className='text-sm-sm sm:text-sm text-text-tertiary'>{translate('TEXT_NO_FILES')}</AppText>
+            <AppText className='text-sm-sm sm:text-sm'>{translate('TEXT_NO_FILES')}</AppText>
           </View>
         );
 

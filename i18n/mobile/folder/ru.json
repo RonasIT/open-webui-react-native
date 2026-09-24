@@ -50,6 +50,7 @@
       "TEXT_SEARCH_KNOWLEDGE": "Поиск по базе знаний",
       "TEXT_SELECT_KNOWLEDGE": "Выбрать базу знаний",
       "TEXT_NO_KNOWLEDGE": "База знаний пуста.",
+      "TEXT_COLLECTIONS": "Коллекции",
       "TEXT_FILES": "Файлы",
       "TEXT_NO_FILES": "Файлов нет."
     }

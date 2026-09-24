@@ -50,6 +50,7 @@
       "TEXT_SEARCH_KNOWLEDGE": "Buscar conocimiento",
       "TEXT_SELECT_KNOWLEDGE": "Seleccionar conocimiento",
       "TEXT_NO_KNOWLEDGE": "No hay conocimiento.",
+      "TEXT_COLLECTIONS": "Colecciones",
       "TEXT_FILES": "Archivos",
       "TEXT_NO_FILES": "No hay archivos."
     }

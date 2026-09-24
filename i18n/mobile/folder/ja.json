@@ -50,6 +50,7 @@
       "TEXT_SEARCH_KNOWLEDGE": "ナレッジを検索",
       "TEXT_SELECT_KNOWLEDGE": "ナレッジを選択",
       "TEXT_NO_KNOWLEDGE": "ナレッジがありません。",
+      "TEXT_COLLECTIONS": "コレクション",
       "TEXT_FILES": "ファイル",
       "TEXT_NO_FILES": "ファイルがありません。"
     }
