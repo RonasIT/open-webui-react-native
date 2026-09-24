@@ -116,7 +116,30 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
     };
   }, []);
 
-  const handleSelectKnowledgePress = (): void => selectKnowledgeSheetRef.current?.present(selectedKnowledge);
+  const handleSelectKnowledgePress = (): void =>
+    selectKnowledgeSheetRef.current?.present({ knowledge: selectedKnowledge, files });
+
+  const onSelectKnowledgeConfirm = ({
+    knowledge,
+    files: selectedFiles,
+  }: {
+    knowledge: Array<Knowledge>;
+    files: Array<FileData>;
+  }): void => {
+    setSelectedKnowledge(knowledge);
+
+    files.forEach((file) => {
+      if (!selectedFiles.some((selectedFile) => selectedFile.id === file.id)) {
+        handleDeleteItem(file.id);
+      }
+    });
+
+    selectedFiles.forEach((file) => {
+      if (!files.some((existingFile) => existingFile.id === file.id)) {
+        handleItemAttached({ kind: FileType.FILE, file });
+      }
+    });
+  };
 
   const onSubmit = async (form: FormValues<UpsertFolderFormSchema>): Promise<void> => {
     const payload = prepareCreateFolderPayload({
@@ -258,7 +281,7 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
               </View>
             </AppBottomSheetKeyboardAwareScrollView>
           )}
-          <SelectKnowledgeSheet ref={selectKnowledgeSheetRef} onConfirm={setSelectedKnowledge} />
+          <SelectKnowledgeSheet ref={selectKnowledgeSheetRef} onConfirm={onSelectKnowledgeConfirm} />
         </View>
       }
     />

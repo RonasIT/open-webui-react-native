@@ -15,6 +15,7 @@ export function AppBottomSheetFlashList<TItem>({
       {...restProps}
       renderScrollComponent={renderScrollComponent}
       contentContainerClassName={cn('pb-safe', contentContainerClassName)}
+      showsVerticalScrollIndicator={false}
     />
   );
 }
