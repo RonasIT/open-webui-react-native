@@ -34,6 +34,17 @@ class KnowledgeService extends EntityPromiseService<Knowledge> {
       excludeExtraneousValues: true,
     });
   }
+
+  public async searchKnowledgeFiles(page: number, query?: string): Promise<KnowledgeFileListResponse> {
+    const response = await getApiService().get<KnowledgeFileListResponse>(`${knowledgeApiConfig.route}/search/files`, {
+      page,
+      ...(query ? { query } : {}),
+    });
+
+    return plainToInstance(KnowledgeFileListResponse, response, {
+      excludeExtraneousValues: true,
+    });
+  }
 }
 
 export const knowledgeService = new KnowledgeService();
