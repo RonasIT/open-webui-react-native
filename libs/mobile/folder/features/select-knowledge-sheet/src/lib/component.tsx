@@ -69,9 +69,7 @@ export function SelectKnowledgeSheet({ onConfirm, ref }: SelectKnowledgeSheetPro
   const handleFetchNextPage = (): void => {
     if (hasNextKnowledgePage) {
       fetchNextKnowledgePage();
-    }
-
-    if (hasNextFilesPage) {
+    } else if (hasNextFilesPage) {
       fetchNextFilesPage();
     }
   };

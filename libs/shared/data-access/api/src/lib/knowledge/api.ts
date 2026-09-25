@@ -1,5 +1,6 @@
 import { useInfiniteQuery, UseInfiniteQueryResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import { uniqBy } from 'lodash-es';
 import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
 import { FileData, getNextPageParam } from '@open-webui-react-native/shared/data-access/common';
 import { knowledgeApiConfig } from './config';
@@ -36,7 +37,7 @@ function useSearchKnowledgeFiles(query?: string): UseInfiniteQueryResult<Array<F
     initialPageParam: 1,
     getNextPageParam: (lastPage, result, lastPageParam) =>
       getNextPageParam({ lastPage, result, lastPageParam, itemsPerPage: knowledgeApiConfig.pageSize }),
-    select: (data) => data.pages.flat(),
+    select: (data) => uniqBy(data.pages.flat(), (file) => file.id),
   });
 }
 
