@@ -46,7 +46,14 @@
       "TOOLS_POPUP": {
         "BUTTON_APPLY": "Aplicar",
         "TEXT_NO_TOOLS_AVAILABLE": "No hay herramientas disponibles",
-        "TEXT_SIGN_IN_REQUIRED": "{{name}} — inicia sesión en la versión web"
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — inicia sesión en la versión web",
+        "TEXT_TOOLS_SECTION": "Herramientas",
+        "TEXT_SYSTEM_PROMPT_SECTION": "Aviso del sistema",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "No se ha establecido ningún aviso del sistema"
+      },
+      "SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "Aviso del sistema",
+        "TEXT_PLACEHOLDER": "Introduce un aviso del sistema para este chat"
       }
     },
     "SHARE_CHAT_MODAL": {

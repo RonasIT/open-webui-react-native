@@ -10,6 +10,7 @@ export interface PrepareCreateChatPayloadArgs {
   attachedItems?: Array<AttachedListItem>;
   attachedImages?: Array<ImageData>;
   folderId?: string;
+  systemPrompt?: string;
 }
 
 export function prepareCreateChatPayload({
@@ -18,6 +19,7 @@ export function prepareCreateChatPayload({
   attachedItems,
   attachedImages,
   folderId,
+  systemPrompt,
 }: PrepareCreateChatPayloadArgs): CreateNewChatRequest {
   const { userMessage, assistantMessage, assistantMessageId, timestampMs } = createMessagePair({
     prompt,
@@ -35,7 +37,7 @@ export function prepareCreateChatPayload({
       timestamp: timestampMs,
       title: i18n.t('SHARED.COMMON.TEXT_NEW_CHAT'),
       id: '',
-      params: {},
+      params: systemPrompt ? { system: systemPrompt } : {},
       tags: [],
       models: [model],
     }),

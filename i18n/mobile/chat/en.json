@@ -46,7 +46,14 @@
       "TOOLS_POPUP": {
         "BUTTON_APPLY": "Apply",
         "TEXT_NO_TOOLS_AVAILABLE": "No tools available",
-        "TEXT_SIGN_IN_REQUIRED": "{{name}} — sign in on the web"
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — sign in on the web",
+        "TEXT_TOOLS_SECTION": "Tools",
+        "TEXT_SYSTEM_PROMPT_SECTION": "System Prompt",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "No system prompt set"
+      },
+      "SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "System Prompt",
+        "TEXT_PLACEHOLDER": "Enter a system prompt for this chat"
       }
     },
     "SHARE_CHAT_MODAL": {

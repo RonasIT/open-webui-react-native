@@ -30,10 +30,20 @@ export const toolsSelectionState$: Observable<Record<string, ToolsSelection>> = 
   Record<string, ToolsSelection>
 >({});
 
+// Key holding the system prompt of a chat that does not exist yet, set on the create-chat screen.
+// `useCreateNewChat` reads it into the creation payload as soon as the backend assigns a real id.
+export const NEW_CHAT_SYSTEM_PROMPT_KEY = 'new';
+
+// NOTE: A chat's own system prompt (chat.params.system) is normally read straight from the chat
+// entity returned by the backend — this state only stages the value chosen before a chat/message
+// exists yet.
+export const chatSystemPromptState$: Observable<Record<string, string>> = observable<Record<string, string>>({});
+
 // Both observables above hold choices of the signed-in user, keyed by chats only that user can
 // open, so they must not outlive the session — the next account would inherit tool selections for
 // chat ids it has no access to. Called from `useLogout`, which also covers the forced 401 logout.
 export function resetChatSessionState(): void {
   toolApprovalState$.mode.set(ToolApprovalMode.FULL);
   toolsSelectionState$.set({});
+  chatSystemPromptState$.set({});
 }

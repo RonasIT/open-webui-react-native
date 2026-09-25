@@ -46,7 +46,14 @@
       "TOOLS_POPUP": {
         "BUTTON_APPLY": "Aplicar",
         "TEXT_NO_TOOLS_AVAILABLE": "Nenhuma ferramenta disponível",
-        "TEXT_SIGN_IN_REQUIRED": "{{name}} — faça login na versão web"
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — faça login na versão web",
+        "TEXT_TOOLS_SECTION": "Ferramentas",
+        "TEXT_SYSTEM_PROMPT_SECTION": "Prompt do sistema",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Nenhum prompt do sistema definido"
+      },
+      "SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "Prompt do sistema",
+        "TEXT_PLACEHOLDER": "Digite um prompt do sistema para esta conversa"
       }
     },
     "SHARE_CHAT_MODAL": {

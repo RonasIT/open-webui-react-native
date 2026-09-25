@@ -46,7 +46,14 @@
       "TOOLS_POPUP": {
         "BUTTON_APPLY": "Aplică",
         "TEXT_NO_TOOLS_AVAILABLE": "Niciun instrument disponibil",
-        "TEXT_SIGN_IN_REQUIRED": "{{name}} — conectează-te pe web"
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — conectează-te pe web",
+        "TEXT_TOOLS_SECTION": "Instrumente",
+        "TEXT_SYSTEM_PROMPT_SECTION": "Prompt de sistem",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Niciun prompt de sistem setat"
+      },
+      "SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "Prompt de sistem",
+        "TEXT_PLACEHOLDER": "Introduceți un prompt de sistem pentru acest chat"
       }
     },
     "SHARE_CHAT_MODAL": {

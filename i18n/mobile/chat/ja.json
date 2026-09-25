@@ -46,7 +46,14 @@
       "TOOLS_POPUP": {
         "BUTTON_APPLY": "適用",
         "TEXT_NO_TOOLS_AVAILABLE": "利用できるツールがありません",
-        "TEXT_SIGN_IN_REQUIRED": "{{name}} — ウェブ版でログインしてください"
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — ウェブ版でログインしてください",
+        "TEXT_TOOLS_SECTION": "ツール",
+        "TEXT_SYSTEM_PROMPT_SECTION": "システムプロンプト",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "システムプロンプトが設定されていません"
+      },
+      "SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "システムプロンプト",
+        "TEXT_PLACEHOLDER": "このチャットのシステムプロンプトを入力してください"
       }
     },
     "SHARE_CHAT_MODAL": {

@@ -246,14 +246,13 @@ export function FormChatInput<T extends FieldValues>({
                       isSelected={options.includes(ChatGenerationOption.WEB_SEARCH)}
                     />
                   )}
-                  {!!tools?.length && (
-                    <ToolsMenuSheet
-                      disabled={isLoading}
-                      tools={tools}
-                      selectedToolIds={selectedToolIds}
-                      onToolPress={onToolPress}
-                    />
-                  )}
+                  <ToolsMenuSheet
+                    disabled={isLoading}
+                    tools={tools ?? []}
+                    selectedToolIds={selectedToolIds}
+                    onToolPress={onToolPress}
+                    chat={chat}
+                  />
                   {config?.features.enableToolPermissions && <ToolPermissionsMenuSheet disabled={isLoading} />}
                 </View>
                 <IconButton

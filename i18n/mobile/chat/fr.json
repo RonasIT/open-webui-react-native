@@ -46,7 +46,14 @@
       "TOOLS_POPUP": {
         "BUTTON_APPLY": "Appliquer",
         "TEXT_NO_TOOLS_AVAILABLE": "Aucun outil disponible",
-        "TEXT_SIGN_IN_REQUIRED": "{{name}} — connectez-vous sur la version web"
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — connectez-vous sur la version web",
+        "TEXT_TOOLS_SECTION": "Outils",
+        "TEXT_SYSTEM_PROMPT_SECTION": "Invite système",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Aucune invite système définie"
+      },
+      "SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "Invite système",
+        "TEXT_PLACEHOLDER": "Saisissez une invite système pour ce chat"
       }
     },
     "SHARE_CHAT_MODAL": {
