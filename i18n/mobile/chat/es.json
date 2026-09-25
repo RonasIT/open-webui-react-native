@@ -31,14 +31,20 @@
         "TEXT_CHOOSE_FROM_GALLERY": "Elegir de la galería",
         "TEXT_UPLOAD_FILES": "Subir archivos",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "No puedes subir un archivo vacío.",
+        "TEXT_ATTACH_WEBPAGE": "Adjuntar página web",
         "TEXT_ATTACH_KNOWLEDGE": "Adjuntar conocimiento"
+      },
+      "ATTACH_WEBPAGE_SHEET": {
+        "TEXT_TITLE": "Adjuntar página web",
+        "TEXT_WEBPAGE_URLS": "URLs de páginas web",
+        "TEXT_INVALID_URL": "Introduce una URL válida."
       },
       "TOOL_PERMISSIONS_POPUP": {
         "TEXT_FULL_ACCESS": "Acceso completo",
         "TEXT_ASK_FOR_APPROVAL": "Pedir aprobación"
       },
       "TOOLS_POPUP": {
-        "TEXT_TITLE": "Herramientas",
+        "BUTTON_APPLY": "Aplicar",
         "TEXT_NO_TOOLS_AVAILABLE": "No hay herramientas disponibles",
         "TEXT_SIGN_IN_REQUIRED": "{{name}} — inicia sesión en la versión web"
       }
@@ -204,7 +210,9 @@
     },
     "ATTACHED_CHAT_ITEMS": {
       "TEXT_COLLECTION": "Colección",
-      "TEXT_FILE": "Archivo"
+      "TEXT_FILE": "Archivo",
+      "TEXT_WEBPAGE": "Página web",
+      "TEXT_WEBPAGE_ERROR": "Error al adjuntar"
     }
   }
 }

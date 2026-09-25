@@ -1,7 +1,6 @@
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { InteractionManager } from 'react-native';
-import { FadeIn } from 'react-native-reanimated';
 import { ChatListRow } from '@open-webui-react-native/mobile/shared/ui/chat-list-row';
 import { AppKeyboardAvoidingView } from '@open-webui-react-native/mobile/shared/ui/keyboard-avoiding-view';
 import {
@@ -59,7 +58,7 @@ export function SearchChatsList({ onChatPress, onCancelPress }: SearchChatsListP
         onChangeText={setQuery}
         autoFocus />
       {isSearchFocused && (
-        <AnimatedView className='flex-1' entering={FadeIn.duration(50)}>
+        <AnimatedView className='flex-1'>
           <AppFlashList
             data={chats || []}
             renderItem={renderItem}

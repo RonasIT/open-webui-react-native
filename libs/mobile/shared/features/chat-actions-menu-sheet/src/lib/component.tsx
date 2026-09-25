@@ -42,12 +42,11 @@ export type ChatActionsMenuSheetMethods = {
 export type ChatActionsMenuSheetRef = ForwardedRef<ChatActionsMenuSheetMethods>;
 export interface ChatActionsMenuSheetProps extends Pick<ActionsBottomSheetProps, 'onClose'> {
   goToChat: (id: string) => void;
-  isPinned?: boolean;
   ref?: ChatActionsMenuSheetRef;
   isInChat?: boolean;
 }
 
-export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: ChatActionsMenuSheetProps): ReactElement {
+export function ChatActionsMenuSheet({ goToChat, ref, isInChat }: ChatActionsMenuSheetProps): ReactElement {
   const translate = useTranslation('SHARED.CHAT_ACTIONS_MENU_SHEET');
 
   const actionsSheetRef = useRef<BottomSheetModal>(null);
@@ -98,6 +97,7 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: Chat
   const { data: chatFullData } = chatApi.useGet(chatId, { enabled: !!chatId });
 
   const isArchived = chatFullData?.archived;
+  const isPinned = chatFullData?.pinned;
 
   const openCreateFolderModal = (): void => {
     upsertFolderSheetRef.current?.present();
@@ -147,7 +147,7 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: Chat
         1000,
         { leading: true, trailing: false },
       ),
-    [activeChat, folderId],
+    [activeChat, folderId, isPinned],
   );
 
   const closeActionsModal = (): Promise<void> =>
@@ -198,7 +198,7 @@ export function ChatActionsMenuSheet({ goToChat, isPinned, ref, isInChat }: Chat
   };
 
   const pinChatHandler = async (): Promise<void> => {
-    await pinChat({ id: chatId, isPinned: !!isPinned });
+    await pinChat({ id: chatId, isPinned: !isPinned });
     closeActionsModal();
   };
 

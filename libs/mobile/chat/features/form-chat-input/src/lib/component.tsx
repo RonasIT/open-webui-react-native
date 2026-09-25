@@ -27,9 +27,7 @@ import {
 } from '@open-webui-react-native/shared/data-access/api';
 import {
   AttachedImage,
-  AttachedKnowledgeCollection,
   AttachedListItem,
-  FileData,
   FileType,
   ImageData,
 } from '@open-webui-react-native/shared/data-access/common';
@@ -50,13 +48,11 @@ interface FormChatInputProps<T extends FieldValues> extends AppInputProps {
   control: Control<T>;
   onSubmit: (options: Array<ChatGenerationOption>) => void;
   attachedItems: Observable<Array<AttachedListItem>>;
-  onFileUploaded: (file: FileData) => void;
+  onItemAttached: (item: AttachedListItem) => void;
   onDeleteItemPress: (id: string) => void;
   attachedImages: Observable<Array<ImageData>>;
   onImageUploaded: (image: ImageData) => void;
   onDeleteImagePress: (fileName: string) => void;
-  onKnowledgeCollectionSelected: (collection: AttachedKnowledgeCollection) => void;
-  onKnowledgeFileSelected: (file: FileData) => void;
   chat?: ChatResponse;
   modelId?: string;
   onChatCreated?: (id: string) => void;
@@ -76,13 +72,11 @@ export function FormChatInput<T extends FieldValues>({
   control,
   onSubmit,
   attachedItems,
-  onFileUploaded,
+  onItemAttached,
   onDeleteItemPress,
   attachedImages,
   onImageUploaded,
   onDeleteImagePress,
-  onKnowledgeCollectionSelected,
-  onKnowledgeFileSelected,
   chat,
   modelId,
   onChatCreated,
@@ -230,13 +224,11 @@ export function FormChatInput<T extends FieldValues>({
               <View className='flex-row flex-1 justify-between'>
                 <View className='gap-16 flex-row '>
                   <AttachmentsMenuSheet
-                    onFileUploaded={onFileUploaded}
+                    onItemAttached={onItemAttached}
                     disabled={isLoading}
                     onImageUploaded={onImageUploaded}
                     isKnowledgeCollectionAttached={isKnowledgeCollectionAttached}
                     isKnowledgeFileAttached={isKnowledgeFileAttached}
-                    onKnowledgeCollectionSelected={onKnowledgeCollectionSelected}
-                    onKnowledgeFileSelected={onKnowledgeFileSelected}
                   />
                   {config?.features.enableImageGeneration && (
                     <SelectOptionIcon

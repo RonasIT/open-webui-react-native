@@ -19,6 +19,7 @@ import {
   chatApi,
   getPendingToolCall,
   Message,
+  modelsApi,
   parseAskUserPrompt,
   ResolveToolCallRequest,
   ToolCallResolveAction,
@@ -58,6 +59,7 @@ export function ChatAiMessage({
 }: ChatAiMessageProps): ReactElement {
   const {
     content: text,
+    model: modelId,
     modelName: aiModelName,
     files,
     sources,
@@ -69,6 +71,12 @@ export function ChatAiMessage({
   } = message;
 
   const apiUrl = getApiUrl();
+
+  // NOTE: Mirrors the web app — `modelName` is a client-only snapshot the backend never guarantees
+  // (older chats, imports, or continued responses can lack it entirely), so it's a fallback rather
+  // than the source of truth. The live models list, keyed by the (always-present) model id, is.
+  const { data: models } = modelsApi.useGetModels();
+  const displayModelName = models?.find((model) => model.id === modelId)?.name ?? aiModelName ?? modelId;
 
   const { citations, selectedCitation, sourceCitationModalRef, handleCitationPress, handleInlineCitationPress } =
     useCitations(sources);
@@ -117,12 +125,14 @@ export function ChatAiMessage({
   return (
     <View>
       <View className='flex-row justify-between'>
-        <AppText className='text-sm-sm sm:text-sm font-medium'>{aiModelName}</AppText>
+        <AppText className='text-sm-sm sm:text-sm font-medium'>{displayModelName}</AppText>
         <AppText className='text-sm-sm sm:text-sm text-text-secondary'>
           {formatDateTime(timestamp, 'chat-relative-time')}
         </AppText>
       </View>
-      {socketStatusData && <AppText className='mt-4 text-text-secondary'>{socketStatusData.description}</AppText>}
+      {!!socketStatusData?.description && (
+        <AppText className='mt-4 text-text-secondary'>{socketStatusData.description}</AppText>
+      )}
       {!!messageError?.content && (
         <View className='mt-8 flex-row items-center gap-8 rounded-xl bg-background-secondary px-12 py-10'>
           <Icon name='alert' className='size-20 shrink-0 color-status-danger' />

@@ -1,5 +1,5 @@
 import uuid from 'react-native-uuid';
-import { AttachedFile, FileData, FileType } from '@open-webui-react-native/shared/data-access/common';
+import { AttachedFile, AttachmentStatus, FileData, FileType } from '@open-webui-react-native/shared/data-access/common';
 import { filesApiConfig } from '../config';
 
 export function prepareAttachedFiles(attachedFiles?: Array<FileData>): Array<AttachedFile> {
@@ -11,7 +11,7 @@ export function prepareAttachedFiles(attachedFiles?: Array<FileData>): Array<Att
         type: FileType.FILE,
         name: file.meta.name,
         size: file.meta.size,
-        status: 'uploaded',
+        status: AttachmentStatus.UPLOADED,
         file: file,
         error: '',
         id: file.id,

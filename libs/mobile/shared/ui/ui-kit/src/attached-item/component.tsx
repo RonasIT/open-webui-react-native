@@ -11,6 +11,7 @@ interface AttachedItemProps extends AppPressableProps {
   subTitle: string;
   iconName: IconName;
   onDeletePress?: () => void;
+  hasError?: boolean;
 }
 
 export function AttachedItem({
@@ -19,16 +20,19 @@ export function AttachedItem({
   iconName,
   className,
   onDeletePress,
+  hasError,
   ...restProps
 }: AttachedItemProps): ReactElement {
   return (
     <AppPressable
       className={cn('rounded-lg flex-row bg-background-secondary items-center py-6 px-12', className)}
       {...restProps}>
-      <Icon name={iconName} className='color-text-primary mr-16' />
+      <Icon name={iconName} className={cn('mr-16', hasError ? 'color-status-danger' : 'color-text-primary')} />
       <View className='flex-1 flex-col justify-between'>
         <AppText className='text-md-sm sm:text-md'>{title}</AppText>
-        <AppText className='text-sm-sm sm:text-sm text-text-secondary'>{subTitle}</AppText>
+        <AppText className={cn('text-sm-sm sm:text-sm', hasError ? 'text-status-danger' : 'text-text-secondary')}>
+          {subTitle}
+        </AppText>
       </View>
       {onDeletePress && (
         <IconButton
