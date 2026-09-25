@@ -215,11 +215,13 @@
       "TEXT_NO_CHATS": "No se encontró ningún chat"
     },
     "ATTACHED_CHAT_ITEMS": {
-      "TEXT_COLLECTION": "Colección",
       "TEXT_FILE": "Archivo",
-      "TEXT_WEBPAGE": "Página web",
-      "TEXT_WEBPAGE_ERROR": "Error al adjuntar",
-      "TEXT_CHAT": "Chat"
+      "ATTACHED_CONTEXT_ITEM": {
+        "TEXT_COLLECTION": "Colección",
+        "TEXT_WEBPAGE": "Página web",
+        "TEXT_WEBPAGE_ERROR": "Error al adjuntar",
+        "TEXT_CHAT": "Chat"
+      }
     }
   }
 }

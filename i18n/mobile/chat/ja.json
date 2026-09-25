@@ -214,11 +214,13 @@
       "TEXT_NO_CHATS": "チャットが見つかりません。"
     },
     "ATTACHED_CHAT_ITEMS": {
-      "TEXT_COLLECTION": "コレクション",
       "TEXT_FILE": "ファイル",
-      "TEXT_WEBPAGE": "Webページ",
-      "TEXT_WEBPAGE_ERROR": "添付に失敗しました",
-      "TEXT_CHAT": "チャット"
+      "ATTACHED_CONTEXT_ITEM": {
+        "TEXT_COLLECTION": "コレクション",
+        "TEXT_WEBPAGE": "Webページ",
+        "TEXT_WEBPAGE_ERROR": "添付に失敗しました",
+        "TEXT_CHAT": "チャット"
+      }
     }
   }
 }

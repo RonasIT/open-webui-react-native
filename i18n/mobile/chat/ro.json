@@ -216,11 +216,13 @@
       "TEXT_NO_CHATS": "Nu s-au găsit conversații"
     },
     "ATTACHED_CHAT_ITEMS": {
-      "TEXT_COLLECTION": "Colecție",
       "TEXT_FILE": "Fișier",
-      "TEXT_WEBPAGE": "Pagină web",
-      "TEXT_WEBPAGE_ERROR": "Atașare eșuată",
-      "TEXT_CHAT": "Conversație"
+      "ATTACHED_CONTEXT_ITEM": {
+        "TEXT_COLLECTION": "Colecție",
+        "TEXT_WEBPAGE": "Pagină web",
+        "TEXT_WEBPAGE_ERROR": "Atașare eșuată",
+        "TEXT_CHAT": "Conversație"
+      }
     }
   }
 }

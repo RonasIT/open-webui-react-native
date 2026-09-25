@@ -214,11 +214,13 @@
       "TEXT_NO_CHATS": "未找到对话记录"
     },
     "ATTACHED_CHAT_ITEMS": {
-      "TEXT_COLLECTION": "集合",
       "TEXT_FILE": "文件",
-      "TEXT_WEBPAGE": "网页",
-      "TEXT_WEBPAGE_ERROR": "附加失败",
-      "TEXT_CHAT": "对话"
+      "ATTACHED_CONTEXT_ITEM": {
+        "TEXT_COLLECTION": "集合",
+        "TEXT_WEBPAGE": "网页",
+        "TEXT_WEBPAGE_ERROR": "附加失败",
+        "TEXT_CHAT": "对话"
+      }
     }
   }
 }

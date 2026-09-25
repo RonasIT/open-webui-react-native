@@ -215,11 +215,13 @@
       "TEXT_NO_CHATS": "Aucune discussion trouvée"
     },
     "ATTACHED_CHAT_ITEMS": {
-      "TEXT_COLLECTION": "Collection",
       "TEXT_FILE": "Fichier",
-      "TEXT_WEBPAGE": "Page web",
-      "TEXT_WEBPAGE_ERROR": "Échec de l'ajout",
-      "TEXT_CHAT": "Conversation"
+      "ATTACHED_CONTEXT_ITEM": {
+        "TEXT_COLLECTION": "Collection",
+        "TEXT_WEBPAGE": "Page web",
+        "TEXT_WEBPAGE_ERROR": "Échec de l'ajout",
+        "TEXT_CHAT": "Conversation"
+      }
     }
   }
 }

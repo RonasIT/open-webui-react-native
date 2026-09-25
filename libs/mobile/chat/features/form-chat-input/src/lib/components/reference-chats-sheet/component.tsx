@@ -1,15 +1,10 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef } from 'react';
-import {
-  AppPressable,
-  AppText,
-  Icon,
-  SearchableListBottomSheet,
-} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { SearchableListBottomSheet } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { chatApi, ChatListItem } from '@open-webui-react-native/shared/data-access/api';
-import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
 import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
+import { ReferenceChatRow } from './components';
 
 export type ReferenceChatsSheetMethods = {
   present: () => void;
@@ -22,26 +17,6 @@ export interface ReferenceChatsSheetProps {
   chatId?: string;
   attachedChatIds: Array<string>;
   onSelectChat: (chat: ChatListItem) => void;
-}
-
-interface ReferenceChatRowProps {
-  item: ChatListItem;
-  isSelected: boolean;
-  onPress: () => void;
-}
-
-function ReferenceChatRow({ item, isSelected, onPress }: ReferenceChatRowProps): ReactElement {
-  return (
-    <AppPressable onPress={onPress} className='py-12 gap-16 flex-row items-center'>
-      <AppText numberOfLines={1} className='flex-1'>
-        {item.title}
-      </AppText>
-      <AppText className='text-xs-sm sm:text-xs text-text-secondary'>
-        {formatDateTime(item.updatedAt, 'relative-time')}
-      </AppText>
-      {isSelected && <Icon name='tick' />}
-    </AppPressable>
-  );
 }
 
 export function ReferenceChatsSheet({

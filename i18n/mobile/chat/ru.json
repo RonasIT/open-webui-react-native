@@ -216,11 +216,13 @@
       "TEXT_NO_CHATS": "Чаты не найдены"
     },
     "ATTACHED_CHAT_ITEMS": {
-      "TEXT_COLLECTION": "Коллекция",
       "TEXT_FILE": "Файл",
-      "TEXT_WEBPAGE": "Веб-страница",
-      "TEXT_WEBPAGE_ERROR": "Не удалось прикрепить",
-      "TEXT_CHAT": "Чат"
+      "ATTACHED_CONTEXT_ITEM": {
+        "TEXT_COLLECTION": "Коллекция",
+        "TEXT_WEBPAGE": "Веб-страница",
+        "TEXT_WEBPAGE_ERROR": "Не удалось прикрепить",
+        "TEXT_CHAT": "Чат"
+      }
     }
   }
 }
