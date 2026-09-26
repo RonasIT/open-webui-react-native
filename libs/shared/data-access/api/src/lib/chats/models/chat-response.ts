@@ -1,5 +1,5 @@
 import { BaseEntity } from '@ronas-it/rtkq-entity-api';
-import { Expose, Type, Transform, Exclude } from 'class-transformer';
+import { Expose, Type, Transform } from 'class-transformer';
 import dayjs, { Dayjs } from 'dayjs';
 import { Chat } from './chat';
 

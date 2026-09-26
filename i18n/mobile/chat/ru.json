@@ -46,7 +46,14 @@
       "TOOLS_POPUP": {
         "BUTTON_APPLY": "Применить",
         "TEXT_NO_TOOLS_AVAILABLE": "Инструменты недоступны",
-        "TEXT_SIGN_IN_REQUIRED": "{{name}} — войдите в веб-версии"
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — войдите в веб-версии",
+        "TEXT_TOOLS_SECTION": "Инструменты",
+        "TEXT_SYSTEM_PROMPT_SECTION": "Системный промпт",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Системный промпт не задан"
+      },
+      "SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "Системный промпт",
+        "TEXT_PLACEHOLDER": "Введите системный промпт для этого чата"
       }
     },
     "SHARE_CHAT_MODAL": {

@@ -46,7 +46,14 @@
       "TOOLS_POPUP": {
         "BUTTON_APPLY": "应用",
         "TEXT_NO_TOOLS_AVAILABLE": "没有可用的工具",
-        "TEXT_SIGN_IN_REQUIRED": "{{name}} — 请在网页版中登录"
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — 请在网页版中登录",
+        "TEXT_TOOLS_SECTION": "工具",
+        "TEXT_SYSTEM_PROMPT_SECTION": "系统提示词",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "未设置系统提示词"
+      },
+      "SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "系统提示词",
+        "TEXT_PLACEHOLDER": "为此聊天输入系统提示词"
       }
     },
     "SHARE_CHAT_MODAL": {

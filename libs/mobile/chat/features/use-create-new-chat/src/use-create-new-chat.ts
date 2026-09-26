@@ -5,7 +5,9 @@ import {
   ChatGenerationOption,
   chatQueriesKeys,
   ChatResponse,
+  chatSystemPromptState$,
   createTemporaryChatId,
+  NEW_CHAT_SYSTEM_PROMPT_KEY,
   NEW_CHAT_TOOLS_SELECTION_KEY,
   patchChatList,
   prepareCompleteChatPayload,
@@ -44,6 +46,7 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
       attachedItems,
       attachedImages,
       folderId,
+      systemPrompt: chatSystemPromptState$[NEW_CHAT_SYSTEM_PROMPT_KEY].peek(),
     });
 
     // NOTE: The tools were picked on the create-chat screen, before a chat id existed, so the
@@ -55,6 +58,14 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
       if (pendingSelection) {
         toolsSelectionState$[chatId].set(pendingSelection);
         toolsSelectionState$[NEW_CHAT_TOOLS_SELECTION_KEY].delete();
+      }
+    };
+
+    // NOTE: The system prompt (if any) is already baked into `payload.chat.params.system` above —
+    // it only needs clearing here so a later chat created from this same screen doesn't inherit it.
+    const clearPendingSystemPrompt = (): void => {
+      if (chatSystemPromptState$[NEW_CHAT_SYSTEM_PROMPT_KEY].peek()) {
+        chatSystemPromptState$[NEW_CHAT_SYSTEM_PROMPT_KEY].delete();
       }
     };
 
@@ -75,6 +86,7 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
 
       queryClient.setQueryData<ChatResponse>(chatQueriesKeys.get(id).queryKey, chatResponse);
       adoptToolsSelection(id);
+      clearPendingSystemPrompt();
       onSuccess?.(id);
 
       completeChat(
@@ -103,6 +115,7 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
         queryClient.setQueryData<ChatResponse>(chatQueriesKeys.get(data.id).queryKey, data);
 
         adoptToolsSelection(data.id);
+        clearPendingSystemPrompt();
         onSuccess?.(data.id);
         patchChatList({
           id: data.id,

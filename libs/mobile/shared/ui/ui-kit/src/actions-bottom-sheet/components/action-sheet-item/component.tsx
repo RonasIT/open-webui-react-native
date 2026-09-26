@@ -15,6 +15,7 @@ export interface ActionSheetItemProps extends AppPressableProps {
   isLoading?: boolean;
   isDanger?: boolean;
   hasSubActions?: boolean;
+  numberOfLines?: number;
 }
 
 export function ActionSheetItem({
@@ -27,6 +28,7 @@ export function ActionSheetItem({
   isLoading,
   isDanger,
   hasSubActions = false,
+  numberOfLines,
   ...restProps
 }: ActionSheetItemProps): ReactElement {
   return (
@@ -51,7 +53,11 @@ export function ActionSheetItem({
           </View>
         )
       )}
-      <AppText className={cn(`text-md-sm sm:text-md`, isDanger && 'text-status-danger')}>{title}</AppText>
+      <AppText
+        numberOfLines={numberOfLines}
+        className={cn('text-md-sm sm:text-md', isDanger && 'text-status-danger', numberOfLines && 'flex-1')}>
+        {title}
+      </AppText>
       {hasSubActions && (
         <View className='ml-auto'>
           <Icon name='chevronRight' />
