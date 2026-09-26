@@ -49,7 +49,10 @@
     "SELECT_KNOWLEDGE_SHEET": {
       "TEXT_SEARCH_KNOWLEDGE": "Caută în baza de cunoștințe",
       "TEXT_SELECT_KNOWLEDGE": "Selectează baza de cunoștințe",
-      "TEXT_NO_KNOWLEDGE": "Baza de cunoștințe este goală."
+      "TEXT_NO_KNOWLEDGE": "Baza de cunoștințe este goală.",
+      "TEXT_COLLECTIONS": "Colecții",
+      "TEXT_FILES": "Fișiere",
+      "TEXT_NO_FILES": "Nu există fișiere."
     }
   }
 }
