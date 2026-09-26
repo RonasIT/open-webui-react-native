@@ -2,7 +2,7 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { useSelector } from '@legendapp/state/react';
 import { ToastProvider } from '@open-webui-react-native/mobile/shared/features/toast';
 import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-logout';
-import { fonts } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { colors, fonts, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { StatusBar, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import { beforeBreadcrumb } from '@open-webui-react-native/shared/data-access/api-client';
@@ -23,7 +23,7 @@ import * as Sentry from '@sentry/react-native';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import Constants from 'expo-constants';
 import { useFonts } from 'expo-font';
-import { SplashScreen, Stack, useNavigationContainerRef } from 'expo-router';
+import { DarkTheme, DefaultTheme, SplashScreen, Stack, ThemeProvider, useNavigationContainerRef } from 'expo-router';
 import { useMakePlural } from 'i18n-js';
 import { de, en, es, fr, ja, pt, ro, ru, zh } from 'make-plural';
 import { ReactElement, useEffect } from 'react';
@@ -143,9 +143,19 @@ export const unstable_settings = {
 function App(): ReactElement | null {
   const { logout } = useLogout();
   const { isOfflineMode } = useNetworkConnection();
+  const { isDarkColorScheme } = useColorScheme();
 
   const isAuthenticated = useSelector(authState$.isAuthenticated);
   const isUnauthorized = useSelector(authState$.isUnauthorized);
+
+  const baseTheme = isDarkColorScheme ? DarkTheme : DefaultTheme;
+  const navigationTheme = {
+    ...baseTheme,
+    colors: {
+      ...baseTheme.colors,
+      background: isDarkColorScheme ? colors.darkBackgroundPrimary : colors.backgroundPrimary,
+    },
+  };
 
   useSocket({ isAuthenticated, isOfflineMode });
 
@@ -160,16 +170,21 @@ function App(): ReactElement | null {
   }, [isUnauthorized, isOfflineMode]);
 
   return (
-    <View className='bg-background-primary flex-1'>
-      <StatusBar className='bg-background-primary' translucent />
-      <Stack>
-        <Stack.Screen name='index' options={{ headerShown: false, contentStyle: { backgroundColor: 'transparent' } }} />
-        <Stack.Screen name={navigationConfig.auth.root} options={{ headerShown: false }} />
-        <Stack.Protected guard={isAuthenticated}>
-          <Stack.Screen name={navigationConfig.main.root} options={{ headerShown: false }} />
-        </Stack.Protected>
-      </Stack>
-    </View>
+    <ThemeProvider value={navigationTheme}>
+      <View className='bg-background-primary flex-1'>
+        <StatusBar className='bg-background-primary' translucent />
+        <Stack>
+          <Stack.Screen
+            name='index'
+            options={{ headerShown: false, contentStyle: { backgroundColor: 'transparent' } }}
+          />
+          <Stack.Screen name={navigationConfig.auth.root} options={{ headerShown: false }} />
+          <Stack.Protected guard={isAuthenticated}>
+            <Stack.Screen name={navigationConfig.main.root} options={{ headerShown: false }} />
+          </Stack.Protected>
+        </Stack>
+      </View>
+    </ThemeProvider>
   );
 }
 
