@@ -32,7 +32,8 @@
         "TEXT_UPLOAD_FILES": "Dateien hochladen",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Sie können keine leere Datei hochladen.",
         "TEXT_ATTACH_WEBPAGE": "Webseite anhängen",
-        "TEXT_ATTACH_KNOWLEDGE": "Wissen anhängen"
+        "TEXT_ATTACH_KNOWLEDGE": "Wissen anhängen",
+        "TEXT_REFERENCE_CHATS": "Chats referenzieren"
       },
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Webseite anhängen",
@@ -208,11 +209,19 @@
       "TEXT_SEARCH_FILES": "Dateien durchsuchen",
       "TEXT_NO_FILES": "Keine Dateien in dieser Wissensdatenbank."
     },
+    "REFERENCE_CHATS_SHEET": {
+      "TEXT_TITLE": "Chats",
+      "TEXT_SEARCH_CHATS": "Chats durchsuchen...",
+      "TEXT_NO_CHATS": "Keine Chats gefunden"
+    },
     "ATTACHED_CHAT_ITEMS": {
-      "TEXT_COLLECTION": "Sammlung",
       "TEXT_FILE": "Datei",
-      "TEXT_WEBPAGE": "Webseite",
-      "TEXT_WEBPAGE_ERROR": "Anhängen fehlgeschlagen"
+      "ATTACHED_CONTEXT_ITEM": {
+        "TEXT_COLLECTION": "Sammlung",
+        "TEXT_WEBPAGE": "Webseite",
+        "TEXT_WEBPAGE_ERROR": "Anhängen fehlgeschlagen",
+        "TEXT_CHAT": "Chat"
+      }
     }
   }
 }

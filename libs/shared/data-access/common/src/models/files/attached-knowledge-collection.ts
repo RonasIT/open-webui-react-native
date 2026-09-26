@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { FileType } from '../../enums';
+import { AttachmentStatus, FileType } from '../../enums';
 
 export class AttachedKnowledgeCollection {
   @Expose()
@@ -15,7 +15,7 @@ export class AttachedKnowledgeCollection {
   public description: string;
 
   @Expose()
-  public status: 'processed';
+  public status: AttachmentStatus.PROCESSED;
 
   constructor(attachedKnowledgeCollection: Partial<AttachedKnowledgeCollection>) {
     Object.assign(this, attachedKnowledgeCollection);

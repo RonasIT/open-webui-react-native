@@ -32,7 +32,8 @@
         "TEXT_UPLOAD_FILES": "Téléverser des fichiers",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Vous ne pouvez pas téléverser un fichier vide.",
         "TEXT_ATTACH_WEBPAGE": "Joindre une page web",
-        "TEXT_ATTACH_KNOWLEDGE": "Joindre une base de connaissances"
+        "TEXT_ATTACH_KNOWLEDGE": "Joindre une base de connaissances",
+        "TEXT_REFERENCE_CHATS": "Discussions de référence"
       },
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Joindre une page web",
@@ -208,11 +209,19 @@
       "TEXT_SEARCH_FILES": "Rechercher des fichiers",
       "TEXT_NO_FILES": "Aucun fichier dans cette base de connaissances."
     },
+    "REFERENCE_CHATS_SHEET": {
+      "TEXT_TITLE": "Conversations",
+      "TEXT_SEARCH_CHATS": "Rechercher des conversations",
+      "TEXT_NO_CHATS": "Aucune discussion trouvée"
+    },
     "ATTACHED_CHAT_ITEMS": {
-      "TEXT_COLLECTION": "Collection",
       "TEXT_FILE": "Fichier",
-      "TEXT_WEBPAGE": "Page web",
-      "TEXT_WEBPAGE_ERROR": "Échec de l'ajout"
+      "ATTACHED_CONTEXT_ITEM": {
+        "TEXT_COLLECTION": "Collection",
+        "TEXT_WEBPAGE": "Page web",
+        "TEXT_WEBPAGE_ERROR": "Échec de l'ajout",
+        "TEXT_CHAT": "Conversation"
+      }
     }
   }
 }

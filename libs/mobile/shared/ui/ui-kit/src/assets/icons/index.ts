@@ -28,6 +28,7 @@ import gallery from './gallery.svg';
 import generatedImage from './generated-image.svg';
 import googleLogo from './google.svg';
 import headphones from './headphones.svg';
+import history from './history.svg';
 import key from './key.svg';
 import keyboard from './keyboard.svg';
 import lessText from './less-text.svg';
@@ -94,6 +95,7 @@ export const Icons = {
   file,
   close,
   headphones,
+  history,
   link,
   alert,
   exportIcon,

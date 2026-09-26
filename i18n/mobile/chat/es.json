@@ -32,7 +32,8 @@
         "TEXT_UPLOAD_FILES": "Subir archivos",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "No puedes subir un archivo vacío.",
         "TEXT_ATTACH_WEBPAGE": "Adjuntar página web",
-        "TEXT_ATTACH_KNOWLEDGE": "Adjuntar conocimiento"
+        "TEXT_ATTACH_KNOWLEDGE": "Adjuntar conocimiento",
+        "TEXT_REFERENCE_CHATS": "Referenciar Chats"
       },
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Adjuntar página web",
@@ -208,11 +209,19 @@
       "TEXT_SEARCH_FILES": "Buscar archivos",
       "TEXT_NO_FILES": "No hay archivos en esta base de conocimiento."
     },
+    "REFERENCE_CHATS_SHEET": {
+      "TEXT_TITLE": "Chats",
+      "TEXT_SEARCH_CHATS": "Buscar Chats",
+      "TEXT_NO_CHATS": "No se encontró ningún chat"
+    },
     "ATTACHED_CHAT_ITEMS": {
-      "TEXT_COLLECTION": "Colección",
       "TEXT_FILE": "Archivo",
-      "TEXT_WEBPAGE": "Página web",
-      "TEXT_WEBPAGE_ERROR": "Error al adjuntar"
+      "ATTACHED_CONTEXT_ITEM": {
+        "TEXT_COLLECTION": "Colección",
+        "TEXT_WEBPAGE": "Página web",
+        "TEXT_WEBPAGE_ERROR": "Error al adjuntar",
+        "TEXT_CHAT": "Chat"
+      }
     }
   }
 }

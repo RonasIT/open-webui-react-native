@@ -32,7 +32,8 @@
         "TEXT_UPLOAD_FILES": "上传文件",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "无法上传空文件。",
         "TEXT_ATTACH_WEBPAGE": "附加网页",
-        "TEXT_ATTACH_KNOWLEDGE": "附加知识库"
+        "TEXT_ATTACH_KNOWLEDGE": "附加知识库",
+        "TEXT_REFERENCE_CHATS": "引用其他对话"
       },
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "附加网页",
@@ -207,11 +208,19 @@
       "TEXT_SEARCH_FILES": "搜索文件",
       "TEXT_NO_FILES": "此知识库中没有文件。"
     },
+    "REFERENCE_CHATS_SHEET": {
+      "TEXT_TITLE": "对话",
+      "TEXT_SEARCH_CHATS": "搜索对话",
+      "TEXT_NO_CHATS": "未找到对话记录"
+    },
     "ATTACHED_CHAT_ITEMS": {
-      "TEXT_COLLECTION": "集合",
       "TEXT_FILE": "文件",
-      "TEXT_WEBPAGE": "网页",
-      "TEXT_WEBPAGE_ERROR": "附加失败"
+      "ATTACHED_CONTEXT_ITEM": {
+        "TEXT_COLLECTION": "集合",
+        "TEXT_WEBPAGE": "网页",
+        "TEXT_WEBPAGE_ERROR": "附加失败",
+        "TEXT_CHAT": "对话"
+      }
     }
   }
 }

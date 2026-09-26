@@ -32,7 +32,8 @@
         "TEXT_UPLOAD_FILES": "Загрузить файлы",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Нельзя загрузить пустой файл.",
         "TEXT_ATTACH_WEBPAGE": "Прикрепить веб-страницу",
-        "TEXT_ATTACH_KNOWLEDGE": "Прикрепить базу знаний"
+        "TEXT_ATTACH_KNOWLEDGE": "Прикрепить базу знаний",
+        "TEXT_REFERENCE_CHATS": "Чаты для контекста"
       },
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Прикрепить веб-страницу",
@@ -209,11 +210,19 @@
       "TEXT_SEARCH_FILES": "Поиск файлов",
       "TEXT_NO_FILES": "В этой базе знаний нет файлов."
     },
+    "REFERENCE_CHATS_SHEET": {
+      "TEXT_TITLE": "Чаты",
+      "TEXT_SEARCH_CHATS": "Поиск в чатах",
+      "TEXT_NO_CHATS": "Чаты не найдены"
+    },
     "ATTACHED_CHAT_ITEMS": {
-      "TEXT_COLLECTION": "Коллекция",
       "TEXT_FILE": "Файл",
-      "TEXT_WEBPAGE": "Веб-страница",
-      "TEXT_WEBPAGE_ERROR": "Не удалось прикрепить"
+      "ATTACHED_CONTEXT_ITEM": {
+        "TEXT_COLLECTION": "Коллекция",
+        "TEXT_WEBPAGE": "Веб-страница",
+        "TEXT_WEBPAGE_ERROR": "Не удалось прикрепить",
+        "TEXT_CHAT": "Чат"
+      }
     }
   }
 }

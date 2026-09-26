@@ -32,7 +32,8 @@
         "TEXT_UPLOAD_FILES": "Upload files",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "You cannot upload an empty file.",
         "TEXT_ATTACH_WEBPAGE": "Attach Webpage",
-        "TEXT_ATTACH_KNOWLEDGE": "Attach Knowledge"
+        "TEXT_ATTACH_KNOWLEDGE": "Attach Knowledge",
+        "TEXT_REFERENCE_CHATS": "Reference Chats"
       },
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Attach Webpage",
@@ -208,11 +209,19 @@
       "TEXT_SEARCH_FILES": "Search files",
       "TEXT_NO_FILES": "No files in this knowledge base."
     },
+    "REFERENCE_CHATS_SHEET": {
+      "TEXT_TITLE": "Chats",
+      "TEXT_SEARCH_CHATS": "Search Chats",
+      "TEXT_NO_CHATS": "No chats found"
+    },
     "ATTACHED_CHAT_ITEMS": {
-      "TEXT_COLLECTION": "Collection",
       "TEXT_FILE": "File",
-      "TEXT_WEBPAGE": "Webpage",
-      "TEXT_WEBPAGE_ERROR": "Failed to attach"
+      "ATTACHED_CONTEXT_ITEM": {
+        "TEXT_COLLECTION": "Collection",
+        "TEXT_WEBPAGE": "Webpage",
+        "TEXT_WEBPAGE_ERROR": "Failed to attach",
+        "TEXT_CHAT": "Chat"
+      }
     }
   }
 }

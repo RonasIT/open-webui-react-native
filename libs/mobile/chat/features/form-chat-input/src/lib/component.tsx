@@ -134,6 +134,8 @@ export function FormChatInput<T extends FieldValues>({
   const isKnowledgeFileAttached = (id: string): boolean =>
     items.some((item) => item?.kind === FileType.FILE && item.isFromKnowledge && item.file.id === id);
 
+  const attachedChatIds = items.flatMap((item) => (item?.kind === FileType.CHAT ? [item.chat.id] : []));
+
   const imagesForPreview = images.flatMap((image, index) =>
     image
       ? [
@@ -229,6 +231,8 @@ export function FormChatInput<T extends FieldValues>({
                     onImageUploaded={onImageUploaded}
                     isKnowledgeCollectionAttached={isKnowledgeCollectionAttached}
                     isKnowledgeFileAttached={isKnowledgeFileAttached}
+                    chatId={chat?.id}
+                    attachedChatIds={attachedChatIds}
                   />
                   {config?.features.enableImageGeneration && (
                     <SelectOptionIcon
