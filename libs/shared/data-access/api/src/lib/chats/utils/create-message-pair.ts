@@ -54,7 +54,8 @@ export function createMessagePair({
 
   const files = [
     ...prepareAttachedFiles(attachedFiles),
-    ...(attachedImages ? prepareAttachedImages(attachedImages) : []),
+    // NOTE: A failed upload stays in the composer only as an error chip, like a failed webpage.
+    ...prepareAttachedImages((attachedImages ?? []).filter((image) => image.status !== AttachmentStatus.ERROR)),
     ...attachedCollections,
     ...attachedChats,
     ...attachedWebpages,

@@ -1,10 +1,16 @@
 import { useObservable } from '@legendapp/state/react';
+import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { isAxiosError } from 'axios';
 import { fileSystemService } from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
-import { ImageMimeType } from '@open-webui-react-native/mobile/shared/data-access/image-picker-service';
 import { compressImage } from '@open-webui-react-native/mobile/shared/utils/compressor';
-import { authApi, filesApi, isFeaturePermitted } from '@open-webui-react-native/shared/data-access/api';
-import { AttachedListItem, getAttachedListItemId, ImageData } from '@open-webui-react-native/shared/data-access/common';
+import { filesApi, isFeaturePermitted } from '@open-webui-react-native/shared/data-access/api';
+import {
+  AttachedListItem,
+  AttachmentStatus,
+  getAttachedListItemId,
+  ImageData,
+} from '@open-webui-react-native/shared/data-access/common';
+import { ImageMimeType } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 interface UseAttachedFilesArgs {
@@ -16,13 +22,13 @@ interface UseAttachedFilesArgs {
 export function useAttachedFiles({ shouldUploadImages = false }: UseAttachedFilesArgs = {}): typeof result {
   const attachedItems = useObservable<Array<AttachedListItem>>([]);
   const attachedImages = useObservable<Array<ImageData>>([]);
+  const translate = useTranslation('SHARED.USE_ATTACHED_FILES');
 
   const { mutateAsync: uploadImage } = filesApi.useUploadImage();
 
   // NOTE: The backend does not check `chat.file_upload` on POST /files — the web client enforces it,
   // so without that permission images stay inline, as they were before uploading existed.
-  const { data: profile } = authApi.useGetProfile();
-  const isImageUploadEnabled = shouldUploadImages && isFeaturePermitted(profile?.permissions?.chat?.fileUpload, true);
+  const isImageUploadEnabled = shouldUploadImages && isFeaturePermitted('chat', 'fileUpload', true);
 
   const handleItemAttached = (item: AttachedListItem): void => {
     attachedItems.set((prev) =>
@@ -36,6 +42,10 @@ export function useAttachedFiles({ shouldUploadImages = false }: UseAttachedFile
 
   const handleDeleteImage = (uri: string): void => {
     attachedImages.set((prev) => prev.filter((image) => image.uri !== uri));
+  };
+
+  const updateImage = (uri: string, changes: Partial<ImageData>): void => {
+    attachedImages.set((prev) => prev.map((image) => (image.uri === uri ? { ...image, ...changes } : image)));
   };
 
   const handleImageUploaded = async (image: ImageData): Promise<void> => {
@@ -65,32 +75,24 @@ export function useAttachedFiles({ shouldUploadImages = false }: UseAttachedFile
 
     // NOTE: Uploaded right away, as the web app does, so a failure surfaces while the image is still
     // in the composer rather than after the message is gone.
-    attachedImages.set((prev) => [...prev, { ...processed, isUploading: true }]);
+    attachedImages.set((prev) => [...prev, { ...processed, status: AttachmentStatus.UPLOADING }]);
 
     try {
       const file = await uploadImage(processed);
 
-      attachedImages.set((prev) =>
-        prev.map((attached) =>
-          attached.uri === processed.uri
-            ? {
-                ...attached,
-                fileId: file.id,
-                contentType: file.meta?.contentType ?? processed.mimeType,
-                isUploading: false,
-              }
-            : attached,
-        ),
-      );
+      updateImage(processed.uri, {
+        fileId: file.id,
+        contentType: file.meta?.contentType ?? processed.mimeType,
+        status: AttachmentStatus.UPLOADED,
+      });
     } catch (error) {
       // NOTE: The api-client interceptor toasts every server error but stays silent on network
-      // failures, so only those need a toast here. Like the web app, the image is then dropped so
-      // the user can attach it again.
+      // failures, so only those need a toast here. The image stays as an error chip until removed.
       if (isAxiosError(error) && !error.response) {
-        ToastService.showError();
+        ToastService.showError(translate('TEXT_IMAGE_UPLOAD_FAILED'));
       }
 
-      handleDeleteImage(processed.uri);
+      updateImage(processed.uri, { status: AttachmentStatus.ERROR });
     }
   };
 

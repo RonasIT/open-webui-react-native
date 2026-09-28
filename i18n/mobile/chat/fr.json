@@ -229,6 +229,9 @@
         "TEXT_WEBPAGE_ERROR": "Échec de l'ajout",
         "TEXT_CHAT": "Conversation"
       }
+    },
+    "ATTACHED_IMAGE_ITEM": {
+      "TEXT_UPLOAD_FAILED": "Échec de l'envoi"
     }
   }
 }

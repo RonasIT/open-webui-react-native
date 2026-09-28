@@ -11,13 +11,7 @@ import {
   ImagePickerSource,
 } from '@open-webui-react-native/mobile/shared/data-access/image-picker-service';
 import { ActionsBottomSheet, ActionSheetItemProps, IconButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import {
-  authApi,
-  ChatListItem,
-  filesApi,
-  isFeaturePermitted,
-  Knowledge,
-} from '@open-webui-react-native/shared/data-access/api';
+import { ChatListItem, filesApi, isFeaturePermitted, Knowledge } from '@open-webui-react-native/shared/data-access/api';
 import {
   AttachedChat,
   AttachedKnowledgeCollection,
@@ -56,8 +50,7 @@ export function AttachmentsMenuSheet({
   const attachKnowledgeSheetRef = useRef<AttachKnowledgeSheetMethods>(null);
   const referenceChatsSheetRef = useRef<ReferenceChatsSheetMethods>(null);
   const attachWebpageSheetRef = useRef<AttachWebpageSheetMethods>(null);
-  const { data: profile } = authApi.useGetProfile();
-  const isFileUploadEnabled = isFeaturePermitted(profile?.permissions?.chat?.fileUpload, true);
+  const isFileUploadEnabled = isFeaturePermitted('chat', 'fileUpload', true);
   const {
     mutate: uploadFile,
     isPending: isFileUploading,
@@ -65,7 +58,7 @@ export function AttachmentsMenuSheet({
     data: file,
   } = filesApi.useUploadFile();
 
-  const isWebUploadEnabled = isFeaturePermitted(profile?.permissions?.chat?.webUpload, true);
+  const isWebUploadEnabled = isFeaturePermitted('chat', 'webUpload', true);
 
   const closeModal = (): void => modalRef.current?.close();
 

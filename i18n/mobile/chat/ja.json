@@ -228,6 +228,9 @@
         "TEXT_WEBPAGE_ERROR": "添付に失敗しました",
         "TEXT_CHAT": "チャット"
       }
+    },
+    "ATTACHED_IMAGE_ITEM": {
+      "TEXT_UPLOAD_FAILED": "アップロード失敗"
     }
   }
 }

@@ -1,3 +1,5 @@
+import type { AttachmentStatus } from '../enums';
+
 export type ImageData = {
   uri: string;
   base64: string;
@@ -7,5 +9,6 @@ export type ImageData = {
   // images kept inline (temporary chats, voice mode, support requests).
   fileId?: string;
   contentType?: string;
-  isUploading?: boolean;
+  // NOTE: Absent for images kept inline, which are never uploaded.
+  status?: AttachmentStatus.UPLOADING | AttachmentStatus.UPLOADED | AttachmentStatus.ERROR;
 };

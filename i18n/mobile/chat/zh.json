@@ -228,6 +228,9 @@
         "TEXT_WEBPAGE_ERROR": "附加失败",
         "TEXT_CHAT": "对话"
       }
+    },
+    "ATTACHED_IMAGE_ITEM": {
+      "TEXT_UPLOAD_FAILED": "上传失败"
     }
   }
 }

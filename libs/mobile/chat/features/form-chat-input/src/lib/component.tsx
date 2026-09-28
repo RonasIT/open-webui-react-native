@@ -28,6 +28,7 @@ import {
 import {
   AttachedImage,
   AttachedListItem,
+  AttachmentStatus,
   FileType,
   ImageData,
 } from '@open-webui-react-native/shared/data-access/common';
@@ -128,7 +129,7 @@ export function FormChatInput<T extends FieldValues>({
 
   const isInputEmpty = !field.value?.trim() && items.length === 0 && images.length === 0;
   // NOTE: The web app queues a message sent while its images upload; here sending simply waits.
-  const isImageUploading = images.some((image) => image?.isUploading);
+  const isImageUploading = images.some((image) => image?.status === AttachmentStatus.UPLOADING);
 
   const isKnowledgeCollectionAttached = (id: string): boolean =>
     items.some((item) => item?.kind === FileType.COLLECTION && item.collection.id === id);

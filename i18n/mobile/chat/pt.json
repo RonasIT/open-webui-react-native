@@ -229,6 +229,9 @@
         "TEXT_WEBPAGE_ERROR": "Falha ao anexar",
         "TEXT_CHAT": "Chat"
       }
+    },
+    "ATTACHED_IMAGE_ITEM": {
+      "TEXT_UPLOAD_FAILED": "Falha no envio"
     }
   }
 }

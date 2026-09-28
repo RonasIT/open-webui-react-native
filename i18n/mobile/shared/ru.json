@@ -110,6 +110,9 @@
     "SEARCH_INPUT": {
       "BUTTON_CANCEL": "Отмена",
       "TEXT_SEARCH_CHATS": "Поиск чатов"
+    },
+    "USE_ATTACHED_FILES": {
+      "TEXT_IMAGE_UPLOAD_FAILED": "Не удалось загрузить фото. Проверьте подключение и попробуйте ещё раз"
     }
   }
 }
