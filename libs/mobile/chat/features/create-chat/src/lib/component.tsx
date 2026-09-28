@@ -41,7 +41,7 @@ export function CreateChat({
     handleItemAttached,
     handleDeleteItem,
     resetAttachments,
-  } = useAttachedFiles();
+  } = useAttachedFiles({ shouldUploadImages: !isTemporaryChat });
 
   const handleChatCreated = (id: string): void => {
     reset();

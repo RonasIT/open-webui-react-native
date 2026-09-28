@@ -127,6 +127,8 @@ export function FormChatInput<T extends FieldValues>({
   const { present: openVoiceModeModal } = useVoiceModeModal();
 
   const isInputEmpty = !field.value?.trim() && items.length === 0 && images.length === 0;
+  // NOTE: The web app queues a message sent while its images upload; here sending simply waits.
+  const isImageUploading = images.some((image) => image?.isUploading);
 
   const isKnowledgeCollectionAttached = (id: string): boolean =>
     items.some((item) => item?.kind === FileType.COLLECTION && item.collection.id === id);
@@ -216,7 +218,7 @@ export function FormChatInput<T extends FieldValues>({
           accessoryBottom={
             <ChatInputBottomRow
               onSubmit={() => onSubmit(options)}
-              isSubmitDisabled={!isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty}
+              isSubmitDisabled={(!isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty) || isImageUploading}
               onVoiceModePress={onVoiceModePress}
               isVoiceModeAvailable={isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty}
               onStopGenerationPress={onStopGenerationPress}

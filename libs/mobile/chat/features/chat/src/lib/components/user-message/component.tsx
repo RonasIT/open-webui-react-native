@@ -15,6 +15,7 @@ import { Message, usersApi } from '@open-webui-react-native/shared/data-access/a
 import { FileType } from '@open-webui-react-native/shared/data-access/common';
 import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
 import { deepMemo } from '@open-webui-react-native/shared/utils/deep-memo';
+import { getAttachedImageUrl } from '../../utils';
 import { ChatImagesGroup } from '../images';
 
 interface ChatUserMessageProps {
@@ -45,7 +46,14 @@ function ChatUserMessageComponent({
   const isUserMessageMarkdownEnabled = userSettings?.ui.renderMarkdownInUserMessages ?? true;
 
   const attachedImages = useMemo(
-    () => (files ?? []).filter((file) => file.type === FileType.IMAGE).map((file, index) => ({ ...file, index })),
+    () =>
+      (files ?? [])
+        .filter((file) => file.type === FileType.IMAGE)
+        .map((file, index) => ({
+          ...file,
+          url: getAttachedImageUrl(file.url),
+          index,
+        })),
     [files],
   );
 

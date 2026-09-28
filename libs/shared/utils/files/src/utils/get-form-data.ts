@@ -23,6 +23,22 @@ export const getDocumentFormData = (
   return formData;
 };
 
+export const getImageFormData = (
+  image: { uri: string; mimeType?: string; fileName?: string },
+  fieldName = 'file',
+): FormData => {
+  const formData = new FormData();
+
+  const type = image.mimeType ?? 'image/jpeg';
+  // NOTE: Camera shots and HEIC conversions carry no file name, and the backend needs one to store
+  // the upload — the name is not shown anywhere, so the last URI segment is enough.
+  const name = image.fileName ?? image.uri.split('/').pop() ?? `image.${type.split('/')[1]}`;
+
+  formData.append(fieldName, { uri: image.uri, type, name } as any);
+
+  return formData;
+};
+
 export const getAudioFormData = (uri: string, name: string = 'file'): FormData => {
   const formData = new FormData();
 
