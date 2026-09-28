@@ -10,8 +10,14 @@ export class AttachedImage {
   @Expose()
   public type: FileType.IMAGE;
 
-  // NOTE: A bare file id for an uploaded image (the web app resolves it to `/api/v1/files/{id}/content`
-  // when `content_type` is set), or the picture itself as a `data:` URL for an inline one.
+  // NOTE: Despite the name, this is not always a link. What it holds depends on how the image was sent:
+  // - Uploaded to the server (regular chats): the id of the uploaded file, e.g. `a1b2c3…`. The web
+  //   app stores images the same way. The backend uses this id to load the picture for the model and
+  //   to let tools like `edit_image` work on it. To display the image, build the link
+  //   `/api/v1/files/{id}/content` from it (see `getAttachedImageUrl`).
+  // - Not uploaded (temporary chats, voice mode, no `chat.file_upload` permission, older messages):
+  //   the picture itself, encoded as a `data:image/...;base64,...` string. It can be displayed as is,
+  //   but tools cannot use it.
   @Expose()
   public url: string;
 
