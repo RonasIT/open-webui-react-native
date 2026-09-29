@@ -20,7 +20,8 @@
       },
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "Închide",
-        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Această metodă de conectare nu este disponibilă. Te rugăm să folosești o altă opțiune pentru a continua."
+        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Această metodă de conectare nu este disponibilă. Te rugăm să folosești o altă opțiune pentru a continua.",
+        "TEXT_SERVER_ADDRESS_MISMATCH": "Adresa serverului din aplicație nu corespunde cu cea configurată pe server. Conectează-te folosind adresa principală a serverului."
       }
     }
   }

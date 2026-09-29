@@ -61,10 +61,10 @@ export function OauthWebView({ isVisible, provider, onClose, onGetToken }: Oauth
     }
   };
 
-  const handleFailOauthFlow = (): void => {
+  const handleFailOauthFlow = (message = translate('TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE')): void => {
     clearCaptureTimeout();
     setIsProcessing(false);
-    ToastService.showError(translate('TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE'));
+    ToastService.showError(message);
     appStorageService.token.set(null);
     onClose();
   };
@@ -80,6 +80,17 @@ export function OauthWebView({ isVisible, provider, onClose, onGetToken }: Oauth
     }
 
     const path = getPath(state.url);
+
+    // Open WebUI always finishes the flow on `/auth` of `WEBUI_URL` (or of the callback
+    // host), never of the host the login started on. Landing there on another host means
+    // the server address in the app doesn't match the server's configured one: the
+    // `token` cookie can't be on this host, so without this check we'd hang on the web
+    // login page with no timeout.
+    if (path === '/auth' && host !== apiHost) {
+      handleFailOauthFlow(translate('TEXT_SERVER_ADDRESS_MISMATCH'));
+
+      return;
+    }
 
     // Open WebUI ends the OAuth flow by redirecting to its own `/oauth/<provider>/callback`
     // and then to `/auth`, setting a JS-readable `token` cookie along the way. We detect

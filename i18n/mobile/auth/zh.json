@@ -20,7 +20,8 @@
       },
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "关闭",
-        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "此登录方式不可用。请使用其他方式继续。"
+        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "此登录方式不可用。请使用其他方式继续。",
+        "TEXT_SERVER_ADDRESS_MISMATCH": "应用中的服务器地址与服务器上配置的地址不一致。请使用服务器的主地址登录。"
       }
     }
   }

@@ -20,7 +20,8 @@
       },
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "Schließen",
-        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Diese Anmeldemethode ist nicht verfügbar. Bitte wählen Sie eine andere Option."
+        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Diese Anmeldemethode ist nicht verfügbar. Bitte wählen Sie eine andere Option.",
+        "TEXT_SERVER_ADDRESS_MISMATCH": "Die Serveradresse in der App stimmt nicht mit der auf dem Server konfigurierten überein. Melden Sie sich über die Hauptadresse des Servers an."
       }
     }
   }
