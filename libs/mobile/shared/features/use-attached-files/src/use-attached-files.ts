@@ -9,6 +9,7 @@ import {
   AttachmentStatus,
   getAttachedListItemId,
   ImageData,
+  PickedImageData,
 } from '@open-webui-react-native/shared/data-access/common';
 import { ImageMimeType } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
@@ -48,8 +49,8 @@ export function useAttachedFiles({ shouldUploadImages = false }: UseAttachedFile
     attachedImages.set((prev) => prev.map((image) => (image.uri === uri ? { ...image, ...changes } : image)));
   };
 
-  const handleImageUploaded = async (image: ImageData): Promise<void> => {
-    let processed = image;
+  const handleImageUploaded = async (image: PickedImageData): Promise<void> => {
+    let processed: ImageData;
 
     if (image.mimeType === ImageMimeType.HEIC) {
       const compressed = await compressImage(image.uri, { output: 'jpg' });
@@ -59,11 +60,12 @@ export function useAttachedFiles({ shouldUploadImages = false }: UseAttachedFile
         base64: await fileSystemService.convertToBase64(compressed),
         fileName: image.fileName,
       };
-    } else if (!image.base64) {
-      // NOTE: expo-image-picker only base64-encodes images, not videos, so videos need to be read from disk
+    } else {
+      // NOTE: expo-image-picker only base64-encodes images, not videos, and the document picker never
+      // does, so anything without it is read from disk
       processed = {
         ...image,
-        base64: await fileSystemService.convertToBase64(image.uri),
+        base64: image.base64 || (await fileSystemService.convertToBase64(image.uri)),
       };
     }
 

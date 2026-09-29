@@ -31,6 +31,7 @@ import {
   AttachmentStatus,
   FileType,
   ImageData,
+  PickedImageData,
 } from '@open-webui-react-native/shared/data-access/common';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
@@ -52,7 +53,7 @@ interface FormChatInputProps<T extends FieldValues> extends AppInputProps {
   onItemAttached: (item: AttachedListItem) => void;
   onDeleteItemPress: (id: string) => void;
   attachedImages: Observable<Array<ImageData>>;
-  onImageUploaded: (image: ImageData) => void;
+  onImageUploaded: (image: PickedImageData) => void;
   onDeleteImagePress: (fileName: string) => void;
   chat?: ChatResponse;
   modelId?: string;

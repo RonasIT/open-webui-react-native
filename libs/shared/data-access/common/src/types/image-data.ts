@@ -12,3 +12,6 @@ export type ImageData = {
   // NOTE: Absent for images kept inline, which are never uploaded.
   status?: AttachmentStatus.UPLOADING | AttachmentStatus.UPLOADED | AttachmentStatus.ERROR;
 };
+
+// NOTE: An image as a picker hands it over — `base64` is filled in by useAttachedFiles when missing.
+export type PickedImageData = Omit<ImageData, 'base64'> & { base64?: string };
