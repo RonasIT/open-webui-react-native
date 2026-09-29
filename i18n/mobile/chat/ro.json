@@ -230,6 +230,9 @@
         "TEXT_WEBPAGE_ERROR": "Atașare eșuată",
         "TEXT_CHAT": "Conversație"
       }
+    },
+    "ATTACHED_IMAGE_ITEM": {
+      "TEXT_UPLOAD_FAILED": "Încărcare eșuată"
     }
   }
 }

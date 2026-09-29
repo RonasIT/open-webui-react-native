@@ -1,11 +1,22 @@
 import { plainToInstance } from 'class-transformer';
 import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
-import { FileData, FileDataContent } from '@open-webui-react-native/shared/data-access/common';
+import { FileData, FileDataContent, ImageData } from '@open-webui-react-native/shared/data-access/common';
+import { getImageFormData } from '@open-webui-react-native/shared/utils/files';
 import { filesApiConfig } from './config';
 
 class FilesService {
   public async uploadFile(formData: FormData): Promise<FileData> {
     const response = await getApiService().post<FileData>(filesApiConfig.route, formData);
+
+    return plainToInstance(FileData, response);
+  }
+
+  // NOTE: `process: false` skips text extraction and embedding — an image attached to a message is
+  // only looked at by the model, never searched, which is also how the web app uploads it.
+  public async uploadImage(image: ImageData): Promise<FileData> {
+    const response = await getApiService().post<FileData>(filesApiConfig.route, getImageFormData(image), {
+      params: { process: false },
+    });
 
     return plainToInstance(FileData, response);
   }

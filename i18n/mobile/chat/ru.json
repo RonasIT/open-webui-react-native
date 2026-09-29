@@ -230,6 +230,9 @@
         "TEXT_WEBPAGE_ERROR": "Не удалось прикрепить",
         "TEXT_CHAT": "Чат"
       }
+    },
+    "ATTACHED_IMAGE_ITEM": {
+      "TEXT_UPLOAD_FAILED": "Не загружено"
     }
   }
 }

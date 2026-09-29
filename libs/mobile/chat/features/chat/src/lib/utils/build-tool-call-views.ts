@@ -6,7 +6,7 @@ import {
   ChatCompletionOutputFileType,
 } from '@open-webui-react-native/shared/data-access/websocket';
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
-import { getDataUriMimeType, isDataUri } from '@open-webui-react-native/shared/utils/files';
+import { getDataUriMimeType, isAbsoluteUrl, isDataUri } from '@open-webui-react-native/shared/utils/files';
 import { normalizeToolInput, normalizeToolOutput } from './normalize-tool-payload';
 import { ToolData } from './parse-response-message-content';
 
@@ -38,7 +38,7 @@ const getSource = (file: ChatCompletionOutputFile): string | undefined => {
     return undefined;
   }
 
-  return isDataUri(source) || source.startsWith('http') ? source : `${getApiUrl()}${source}`;
+  return isAbsoluteUrl(source) ? source : `${getApiUrl()}${source}`;
 };
 
 const getMimeType = (file: ChatCompletionOutputFile, source: string): string | undefined => {

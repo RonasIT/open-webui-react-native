@@ -229,6 +229,9 @@
         "TEXT_WEBPAGE_ERROR": "Failed to attach",
         "TEXT_CHAT": "Chat"
       }
+    },
+    "ATTACHED_IMAGE_ITEM": {
+      "TEXT_UPLOAD_FAILED": "Upload failed"
     }
   }
 }

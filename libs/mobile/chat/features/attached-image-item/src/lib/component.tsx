@@ -1,6 +1,14 @@
+import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement } from 'react';
-import { AppImage, AppPressable, IconButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { ImageData } from '@open-webui-react-native/shared/data-access/common';
+import {
+  AppImage,
+  AppPressable,
+  AppSpinner,
+  AppText,
+  IconButton,
+  View,
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { AttachmentStatus, ImageData } from '@open-webui-react-native/shared/data-access/common';
 
 interface AttachedImageItemProps {
   image: ImageData;
@@ -9,9 +17,23 @@ interface AttachedImageItemProps {
 }
 
 export function AttachedImageItem({ image, onImagePress, onDeleteImagePress }: AttachedImageItemProps): ReactElement {
+  const translate = useTranslation('CHAT.ATTACHED_IMAGE_ITEM');
+
   return (
     <AppPressable onPress={onImagePress} className='rounded-2xl self-start border border-text-secondary p-4'>
       <AppImage className='w-48 h-48 rounded-xl' source={{ uri: image.uri }} />
+      {image.status === AttachmentStatus.UPLOADING && (
+        <View className='absolute inset-4 rounded-xl bg-background-primary/60 items-center justify-center'>
+          <AppSpinner size='small' />
+        </View>
+      )}
+      {image.status === AttachmentStatus.ERROR && (
+        <View className='absolute inset-4 rounded-xl bg-background-primary/80 items-center justify-center p-8'>
+          <AppText className='text-sm-sm sm:text-sm text-center text-status-danger'>
+            {translate('TEXT_UPLOAD_FAILED')}
+          </AppText>
+        </View>
+      )}
       <IconButton
         iconName='close'
         onPress={() => onDeleteImagePress(image.uri)}

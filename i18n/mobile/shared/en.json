@@ -110,6 +110,9 @@
     "SEARCH_INPUT": {
       "BUTTON_CANCEL": "Cancel",
       "TEXT_SEARCH_CHATS": "Search chats"
+    },
+    "USE_ATTACHED_FILES": {
+      "TEXT_IMAGE_UPLOAD_FAILED": "Couldn't upload the photo. Check your connection and try again"
     }
   }
 }

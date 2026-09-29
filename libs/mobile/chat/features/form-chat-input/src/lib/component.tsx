@@ -28,8 +28,10 @@ import {
 import {
   AttachedImage,
   AttachedListItem,
+  AttachmentStatus,
   FileType,
   ImageData,
+  PickedImageData,
 } from '@open-webui-react-native/shared/data-access/common';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
@@ -51,7 +53,7 @@ interface FormChatInputProps<T extends FieldValues> extends AppInputProps {
   onItemAttached: (item: AttachedListItem) => void;
   onDeleteItemPress: (id: string) => void;
   attachedImages: Observable<Array<ImageData>>;
-  onImageUploaded: (image: ImageData) => void;
+  onImageUploaded: (image: PickedImageData) => void;
   onDeleteImagePress: (fileName: string) => void;
   chat?: ChatResponse;
   modelId?: string;
@@ -127,6 +129,8 @@ export function FormChatInput<T extends FieldValues>({
   const { present: openVoiceModeModal } = useVoiceModeModal();
 
   const isInputEmpty = !field.value?.trim() && items.length === 0 && images.length === 0;
+  // NOTE: The web app queues a message sent while its images upload; here sending simply waits.
+  const isImageUploading = images.some((image) => image?.status === AttachmentStatus.UPLOADING);
 
   const isKnowledgeCollectionAttached = (id: string): boolean =>
     items.some((item) => item?.kind === FileType.COLLECTION && item.collection.id === id);
@@ -216,7 +220,7 @@ export function FormChatInput<T extends FieldValues>({
           accessoryBottom={
             <ChatInputBottomRow
               onSubmit={() => onSubmit(options)}
-              isSubmitDisabled={!isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty}
+              isSubmitDisabled={(!isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty) || isImageUploading}
               onVoiceModePress={onVoiceModePress}
               isVoiceModeAvailable={isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty}
               onStopGenerationPress={onStopGenerationPress}
