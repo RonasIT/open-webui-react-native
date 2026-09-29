@@ -2,19 +2,24 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { Fragment, ReactElement, useState } from 'react';
 import { OauthWebView } from '@open-webui-react-native/mobile/auth/features/oauth-web-view';
 import { AppButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { Provider } from '@open-webui-react-native/shared/data-access/api';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
+import { oauthSignInConfig, SupportedOauthProvider } from './config';
 
-interface GoogleSignInFormProps {
+interface OauthSignInProps {
+  provider: SupportedOauthProvider;
+  // Display name from /api/config `oauth.providers`, used only when the provider has `hasServerName`.
+  providerName?: string;
   onSuccess?: () => void;
 }
 
-export function GoogleSignInForm({ onSuccess }: GoogleSignInFormProps): ReactElement {
-  const translate = useTranslation('AUTH.SIGN_IN.GOOGLE_FORM');
+export function OauthSignIn({ provider, providerName, onSuccess }: OauthSignInProps): ReactElement {
+  const translate = useTranslation('AUTH.SIGN_IN.OAUTH_SIGN_IN');
+  const { name, iconName, hasServerName } = oauthSignInConfig[provider];
+  const displayName = (hasServerName && providerName) || name;
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const handleSignInWithGooglePress = async (): Promise<void> => setIsModalVisible(true);
+  const handleSignInPress = async (): Promise<void> => setIsModalVisible(true);
 
   const handleCloseModal = (): void => setIsModalVisible(false);
 
@@ -31,13 +36,13 @@ export function GoogleSignInForm({ onSuccess }: GoogleSignInFormProps): ReactEle
   return (
     <Fragment>
       <AppButton
-        text={translate('BUTTON_CONTINUE_WITH_GOOGLE')}
-        iconName='googleLogo'
-        onPress={handleSignInWithGooglePress}
+        text={translate('BUTTON_CONTINUE_WITH', { provider: displayName })}
+        iconName={iconName}
+        onPress={handleSignInPress}
       />
       <OauthWebView
         isVisible={isModalVisible}
-        provider={Provider.GOOGLE}
+        provider={provider}
         onClose={handleCloseModal}
         onGetToken={handleToken}
       />

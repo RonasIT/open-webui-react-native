@@ -40,6 +40,7 @@ import logoSmallLight from './logo-small-light.svg';
 import logout from './logout.svg';
 import message from './message.svg';
 import microphone from './microphone.svg';
+import microsoftLogo from './microsoft.svg';
 import moreDots from './more-dots.svg';
 import moreText from './more-text.svg';
 import noWifi from './no-wifi.svg';
@@ -67,6 +68,7 @@ export const Icons = {
   logoDark,
   logoLight,
   googleLogo,
+  microsoftLogo,
   jsonFile,
   txtFile,
   camera,

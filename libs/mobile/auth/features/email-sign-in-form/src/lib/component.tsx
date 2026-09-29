@@ -3,6 +3,7 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { Fragment, ReactElement, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { TextInput } from 'react-native';
+import { supportedOauthProviders } from '@open-webui-react-native/mobile/auth/features/oauth-sign-in';
 import { AppButton, AppText, View, FormFloatedLabelInput } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 import { appConfigurationApi, authApi, Provider } from '@open-webui-react-native/shared/data-access/api';
@@ -57,8 +58,8 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
   const isLoginFormEnabled = config?.features?.enableLoginForm !== false;
   const isLoginFormRequired = isAuthEnabled && isLoginFormEnabled;
   const hasOauthProviders = Object.keys(config?.oauth?.providers || {}).length > 0;
-  // Only providers we actually render a button for (see sign-in/component.tsx) count as a usable sign-in option.
-  const hasSupportedOauthProviders = [Provider.GOOGLE, Provider.OIDC].some(
+  // Only providers we actually render a button for count as a usable sign-in option.
+  const hasSupportedOauthProviders = supportedOauthProviders.some(
     (provider) => provider in (config?.oauth?.providers || {}),
   );
 

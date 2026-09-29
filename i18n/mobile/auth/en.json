@@ -15,10 +15,7 @@
         "TEXT_SSO_MISCONFIGURED": "Sign-in is not configured on this server. Please contact your administrator.",
         "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "This sign-in method isn't supported by the app yet. Please try a different sign-in option."
       },
-      "GOOGLE_FORM": {
-        "BUTTON_CONTINUE_WITH_GOOGLE": "Continue with Google"
-      },
-      "OIDC_FORM": {
+      "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Continue with {{provider}}"
       },
       "OAUTH_WEB_VIEW_MODAL": {
