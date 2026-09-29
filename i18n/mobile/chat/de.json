@@ -40,17 +40,19 @@
         "TEXT_WEBPAGE_URLS": "Webseiten-URLs",
         "TEXT_INVALID_URL": "Bitte geben Sie eine gültige URL ein."
       },
-      "TOOL_PERMISSIONS_POPUP": {
-        "TEXT_FULL_ACCESS": "Vollzugriff",
-        "TEXT_ASK_FOR_APPROVAL": "Um Erlaubnis fragen"
+      "CHAT_SETTINGS_SHEET": {
+        "TEXT_SYSTEM_PROMPT": "Systemprompt",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Nicht festgelegt",
+        "TEXT_TOOLS": "Tools",
+        "TEXT_FULL_ACCESS_FOR_TOOLS": "Vollzugriff",
+        "BUTTON_CLOSE": "Schließen"
       },
-      "TOOLS_POPUP": {
-        "BUTTON_APPLY": "Übernehmen",
+      "TOOLS_SHEET": {
+        "TEXT_TITLE": "Tools",
+        "TEXT_SEARCH_TOOLS": "Tools durchsuchen",
         "TEXT_NO_TOOLS_AVAILABLE": "Keine Tools verfügbar",
-        "TEXT_SIGN_IN_REQUIRED": "{{name}} — im Web anmelden",
-        "TEXT_TOOLS_SECTION": "Tools",
-        "TEXT_SYSTEM_PROMPT_SECTION": "Systemaufforderung",
-        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Kein Systemprompt festgelegt"
+        "TEXT_NOTHING_FOUND": "Nichts gefunden",
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — im Web anmelden"
       },
       "SYSTEM_PROMPT_SHEET": {
         "TEXT_TITLE": "Systemaufforderung",

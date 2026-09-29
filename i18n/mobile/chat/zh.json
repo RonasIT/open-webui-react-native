@@ -40,17 +40,19 @@
         "TEXT_WEBPAGE_URLS": "网页链接",
         "TEXT_INVALID_URL": "请输入有效的 URL。"
       },
-      "TOOL_PERMISSIONS_POPUP": {
-        "TEXT_FULL_ACCESS": "完全访问",
-        "TEXT_ASK_FOR_APPROVAL": "每次询问"
+      "CHAT_SETTINGS_SHEET": {
+        "TEXT_SYSTEM_PROMPT": "系统提示词",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "未设置",
+        "TEXT_TOOLS": "工具",
+        "TEXT_FULL_ACCESS_FOR_TOOLS": "完全访问",
+        "BUTTON_CLOSE": "关闭"
       },
-      "TOOLS_POPUP": {
-        "BUTTON_APPLY": "应用",
+      "TOOLS_SHEET": {
+        "TEXT_TITLE": "工具",
+        "TEXT_SEARCH_TOOLS": "搜索工具",
         "TEXT_NO_TOOLS_AVAILABLE": "没有可用的工具",
-        "TEXT_SIGN_IN_REQUIRED": "{{name}} — 请在网页版中登录",
-        "TEXT_TOOLS_SECTION": "工具",
-        "TEXT_SYSTEM_PROMPT_SECTION": "系统提示词",
-        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "未设置系统提示词"
+        "TEXT_NOTHING_FOUND": "未找到结果",
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — 请在网页版中登录"
       },
       "SYSTEM_PROMPT_SHEET": {
         "TEXT_TITLE": "系统提示词",

@@ -78,7 +78,6 @@ export function SystemPromptSheet({ ref, onSave, onClose }: SystemPromptSheetPro
             placeholder={translate('TEXT_PLACEHOLDER')}
             multiline
             numberOfLines={6}
-            textClassName='min-h-[144px]'
           />
         </View>
       }
