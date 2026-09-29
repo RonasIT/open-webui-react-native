@@ -85,8 +85,9 @@ export function OauthWebView({ isVisible, provider, onClose, onGetToken }: Oauth
     // host), never of the host the login started on. Landing there on another host means
     // the server address in the app doesn't match the server's configured one: the
     // `token` cookie can't be on this host, so without this check we'd hang on the web
-    // login page with no timeout.
-    if (path === '/auth' && host !== apiHost) {
+    // login page with no timeout. Some IdPs (e.g. Dex) serve their own `/auth` page, but
+    // that is an authorization request and always carries `client_id` (RFC 6749 §4.1.1).
+    if (path === '/auth' && host !== apiHost && !/[?&]client_id=/.test(state.url)) {
       handleFailOauthFlow(translate('TEXT_SERVER_ADDRESS_MISMATCH'));
 
       return;
