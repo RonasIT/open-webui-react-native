@@ -12,6 +12,7 @@ import chevronLeft from './chevron-left.svg';
 import chevronRight from './chevron-right.svg';
 import closeSM from './close-sm.svg';
 import close from './close.svg';
+import console from './console.svg';
 import copy from './copy.svg';
 import database from './database.svg';
 import download from './download.svg';
@@ -41,6 +42,7 @@ import logoSmallLight from './logo-small-light.svg';
 import logout from './logout.svg';
 import message from './message.svg';
 import microphone from './microphone.svg';
+import moreDotsInCircle from './more-dots-in-circle.svg';
 import moreDots from './more-dots.svg';
 import moreText from './more-text.svg';
 import noWifi from './no-wifi.svg';
@@ -52,6 +54,8 @@ import refresh from './refresh.svg';
 import ronasLogoDark from './ronas-logo-dark.svg';
 import ronasLogoLight from './ronas-logo-light.svg';
 import search from './search.svg';
+import settings from './settings.svg';
+import shieldTick from './shield-tick.svg';
 import star from './star.svg';
 import stop from './stop.svg';
 import strokeLeft from './stroke-left.svg';
@@ -94,6 +98,7 @@ export const Icons = {
   plus,
   file,
   close,
+  console,
   headphones,
   history,
   link,
@@ -115,11 +120,14 @@ export const Icons = {
   folder,
   message,
   microphone,
+  moreDotsInCircle,
   unarchive,
   closeSM,
   strokeLeft,
   tick,
   tools,
+  settings,
+  shieldTick,
   star,
   stop,
   play,
