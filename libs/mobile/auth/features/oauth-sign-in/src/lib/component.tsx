@@ -12,6 +12,7 @@ import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 const oauthProviderIcons: Partial<Record<SupportedOauthProvider, IconName>> = {
   [Provider.GOOGLE]: 'googleLogo',
   [Provider.MICROSOFT]: 'microsoftLogo',
+  [Provider.GITHUB]: 'githubLogo',
 };
 
 interface OauthSignInProps {
@@ -47,6 +48,7 @@ export function OauthSignIn({ provider, providerName, onSuccess }: OauthSignInPr
       <AppButton
         text={translate('BUTTON_CONTINUE_WITH', { provider: displayName })}
         iconName={oauthProviderIcons[provider]}
+        iconClassName={provider === Provider.GITHUB ? 'color-background-primary' : undefined}
         onPress={handleSignInPress}
       />
       <OauthWebView

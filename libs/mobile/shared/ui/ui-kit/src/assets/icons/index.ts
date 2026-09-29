@@ -26,6 +26,7 @@ import folderPlus from './folder-plus.svg';
 import folder from './folder.svg';
 import gallery from './gallery.svg';
 import generatedImage from './generated-image.svg';
+import githubLogo from './github.svg';
 import googleLogo from './google.svg';
 import headphones from './headphones.svg';
 import key from './key.svg';
@@ -69,6 +70,7 @@ export const Icons = {
   logoLight,
   googleLogo,
   microsoftLogo,
+  githubLogo,
   jsonFile,
   txtFile,
   camera,

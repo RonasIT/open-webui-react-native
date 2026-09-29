@@ -1,6 +1,6 @@
 import { Provider } from './enums';
 
-export type SupportedOauthProvider = Provider.GOOGLE | Provider.MICROSOFT | Provider.OIDC;
+export type SupportedOauthProvider = Provider.GOOGLE | Provider.MICROSOFT | Provider.GITHUB | Provider.OIDC;
 
 interface OauthProviderConfig {
   name: string;
@@ -14,6 +14,7 @@ interface OauthProviderConfig {
 export const oauthProvidersConfig: Record<SupportedOauthProvider, OauthProviderConfig> = {
   [Provider.GOOGLE]: { name: 'Google' },
   [Provider.MICROSOFT]: { name: 'Microsoft' },
+  [Provider.GITHUB]: { name: 'GitHub' },
   [Provider.OIDC]: { name: 'SSO', hasServerName: true },
 };
 
