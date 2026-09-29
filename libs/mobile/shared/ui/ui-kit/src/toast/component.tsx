@@ -9,9 +9,7 @@ export function AppToast(): ReactElement {
       return (
         <View className='w-full px-24' {...props}>
           <View className='w-full bg-background-secondary rounded-2xl py-16 px-24'>
-            <AppText className='text-md-sm sm:text-md' adjustsFontSizeToFit>
-              {text1}
-            </AppText>
+            <AppText className='text-md-sm sm:text-md'>{text1}</AppText>
           </View>
         </View>
       );
@@ -20,9 +18,7 @@ export function AppToast(): ReactElement {
       return (
         <View className='w-full px-24' {...props}>
           <View className='w-full bg-status-danger-light rounded-2xl py-16 px-24'>
-            <AppText className='text-md-sm sm:text-md text-status-error' adjustsFontSizeToFit>
-              {text1}
-            </AppText>
+            <AppText className='text-md-sm sm:text-md text-status-error'>{text1}</AppText>
           </View>
         </View>
       );
@@ -31,9 +27,7 @@ export function AppToast(): ReactElement {
       return (
         <View className='w-full px-24' {...props}>
           <View className='w-full bg-status-success-light rounded-2xl py-16 px-24'>
-            <AppText className='text-md-sm sm:text-md text-status-success' adjustsFontSizeToFit>
-              {text1}
-            </AppText>
+            <AppText className='text-md-sm sm:text-md text-status-success'>{text1}</AppText>
           </View>
         </View>
       );
