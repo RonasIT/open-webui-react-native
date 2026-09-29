@@ -81,12 +81,9 @@ export function OauthWebView({ isVisible, provider, onClose, onGetToken }: Oauth
 
     const path = getPath(state.url);
 
-    // Open WebUI always finishes the flow on `/auth` of `WEBUI_URL` (or of the callback
-    // host), never of the host the login started on. Landing there on another host means
-    // the server address in the app doesn't match the server's configured one: the
-    // `token` cookie can't be on this host, so without this check we'd hang on the web
-    // login page with no timeout. Some IdPs (e.g. Dex) serve their own `/auth` page, but
-    // that is an authorization request and always carries `client_id` (RFC 6749 §4.1.1).
+    // NOTE: Handle backend misconfiguration where WEBUI_URL / redirect URI points to a
+    // different domain than the app uses, so login can't complete. Show an appropriate error here.
+    // Skip IdP login pages that also live at `/auth` (e.g. Dex) — they have `client_id` in the URL.
     if (path === '/auth' && host !== apiHost && !/[?&]client_id=/.test(state.url)) {
       handleFailOauthFlow(translate('TEXT_SERVER_ADDRESS_MISMATCH'));
 
