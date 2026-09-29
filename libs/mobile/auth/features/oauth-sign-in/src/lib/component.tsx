@@ -1,22 +1,13 @@
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { Fragment, ReactElement, useState } from 'react';
 import { OauthWebView } from '@open-webui-react-native/mobile/auth/features/oauth-web-view';
-import { AppButton, IconName } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import {
-  oauthProvidersConfig,
-  Provider,
-  SupportedOauthProvider,
-} from '@open-webui-react-native/shared/data-access/api';
+import { AppButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { oauthProvidersConfig, SupportedOauthProvider } from '@open-webui-react-native/shared/data-access/api';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
-
-const oauthProviderIcons: Partial<Record<SupportedOauthProvider, IconName>> = {
-  [Provider.GOOGLE]: 'googleLogo',
-  [Provider.MICROSOFT]: 'microsoftLogo',
-};
+import { oauthProviderIcons } from './config';
 
 interface OauthSignInProps {
   provider: SupportedOauthProvider;
-  // Display name from /api/config `oauth.providers`, used only when the provider has `hasServerName`.
   providerName?: string;
   onSuccess?: () => void;
 }

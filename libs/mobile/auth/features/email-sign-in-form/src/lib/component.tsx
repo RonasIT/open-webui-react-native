@@ -62,7 +62,6 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
   const isLoginFormEnabled = config?.features?.enableLoginForm !== false;
   const isLoginFormRequired = isAuthEnabled && isLoginFormEnabled;
   const hasOauthProviders = Object.keys(config?.oauth?.providers || {}).length > 0;
-  // Only providers we actually render a button for count as a usable sign-in option.
   const hasSupportedOauthProviders = supportedOauthProviders.some(
     (provider) => provider in (config?.oauth?.providers || {}),
   );
