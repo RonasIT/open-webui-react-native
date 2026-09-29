@@ -40,17 +40,18 @@
         "TEXT_WEBPAGE_URLS": "URL веб-страниц",
         "TEXT_INVALID_URL": "Введите корректный URL."
       },
-      "TOOL_PERMISSIONS_POPUP": {
-        "TEXT_FULL_ACCESS": "Полный доступ",
-        "TEXT_ASK_FOR_APPROVAL": "Спрашивать разрешение"
+      "CHAT_SETTINGS_SHEET": {
+        "TEXT_SYSTEM_PROMPT": "Системный промпт",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Не задано",
+        "TEXT_TOOLS": "Инструменты",
+        "TEXT_FULL_ACCESS_FOR_TOOLS": "Полный доступ",
+        "BUTTON_CLOSE": "Закрыть"
       },
-      "TOOLS_POPUP": {
-        "BUTTON_APPLY": "Применить",
+      "TOOLS_SHEET": {
+        "TEXT_TITLE": "Инструменты",
+        "TEXT_SEARCH_TOOLS": "Поиск инструментов",
         "TEXT_NO_TOOLS_AVAILABLE": "Инструменты недоступны",
-        "TEXT_SIGN_IN_REQUIRED": "{{name}} — войдите в веб-версии",
-        "TEXT_TOOLS_SECTION": "Инструменты",
-        "TEXT_SYSTEM_PROMPT_SECTION": "Системный промпт",
-        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Системный промпт не задан"
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — войдите в веб-версии"
       },
       "SYSTEM_PROMPT_SHEET": {
         "TEXT_TITLE": "Системный промпт",

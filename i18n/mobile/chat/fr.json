@@ -40,17 +40,18 @@
         "TEXT_WEBPAGE_URLS": "URL de pages web",
         "TEXT_INVALID_URL": "Veuillez saisir une URL valide."
       },
-      "TOOL_PERMISSIONS_POPUP": {
-        "TEXT_FULL_ACCESS": "Accès complet",
-        "TEXT_ASK_FOR_APPROVAL": "Demander l'autorisation"
+      "CHAT_SETTINGS_SHEET": {
+        "TEXT_SYSTEM_PROMPT": "Invite système",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Non défini",
+        "TEXT_TOOLS": "Outils",
+        "TEXT_FULL_ACCESS_FOR_TOOLS": "Accès complet",
+        "BUTTON_CLOSE": "Fermer"
       },
-      "TOOLS_POPUP": {
-        "BUTTON_APPLY": "Appliquer",
+      "TOOLS_SHEET": {
+        "TEXT_TITLE": "Outils",
+        "TEXT_SEARCH_TOOLS": "Rechercher des outils",
         "TEXT_NO_TOOLS_AVAILABLE": "Aucun outil disponible",
-        "TEXT_SIGN_IN_REQUIRED": "{{name}} — connectez-vous sur la version web",
-        "TEXT_TOOLS_SECTION": "Outils",
-        "TEXT_SYSTEM_PROMPT_SECTION": "Invite système",
-        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Aucune invite système définie"
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — connectez-vous sur la version web"
       },
       "SYSTEM_PROMPT_SHEET": {
         "TEXT_TITLE": "Invite système",

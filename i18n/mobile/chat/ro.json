@@ -40,17 +40,18 @@
         "TEXT_WEBPAGE_URLS": "URL-uri pagini web",
         "TEXT_INVALID_URL": "Introdu un URL valid."
       },
-      "TOOL_PERMISSIONS_POPUP": {
-        "TEXT_FULL_ACCESS": "Acces complet",
-        "TEXT_ASK_FOR_APPROVAL": "Cere aprobare"
+      "CHAT_SETTINGS_SHEET": {
+        "TEXT_SYSTEM_PROMPT": "Prompt de sistem",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Nesetat",
+        "TEXT_TOOLS": "Instrumente",
+        "TEXT_FULL_ACCESS_FOR_TOOLS": "Acces complet",
+        "BUTTON_CLOSE": "Închide"
       },
-      "TOOLS_POPUP": {
-        "BUTTON_APPLY": "Aplică",
+      "TOOLS_SHEET": {
+        "TEXT_TITLE": "Instrumente",
+        "TEXT_SEARCH_TOOLS": "Caută instrumente",
         "TEXT_NO_TOOLS_AVAILABLE": "Niciun instrument disponibil",
-        "TEXT_SIGN_IN_REQUIRED": "{{name}} — conectează-te pe web",
-        "TEXT_TOOLS_SECTION": "Instrumente",
-        "TEXT_SYSTEM_PROMPT_SECTION": "Prompt de sistem",
-        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Niciun prompt de sistem setat"
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — conectează-te pe web"
       },
       "SYSTEM_PROMPT_SHEET": {
         "TEXT_TITLE": "Prompt de sistem",

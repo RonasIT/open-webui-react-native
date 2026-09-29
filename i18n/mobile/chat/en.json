@@ -40,17 +40,18 @@
         "TEXT_WEBPAGE_URLS": "Webpage URLs",
         "TEXT_INVALID_URL": "Please enter a valid URL."
       },
-      "TOOL_PERMISSIONS_POPUP": {
-        "TEXT_FULL_ACCESS": "Full access",
-        "TEXT_ASK_FOR_APPROVAL": "Ask for approval"
+      "CHAT_SETTINGS_SHEET": {
+        "TEXT_SYSTEM_PROMPT": "System prompt",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Not set",
+        "TEXT_TOOLS": "Tools",
+        "TEXT_FULL_ACCESS_FOR_TOOLS": "Full access for tools",
+        "BUTTON_CLOSE": "Close"
       },
-      "TOOLS_POPUP": {
-        "BUTTON_APPLY": "Apply",
+      "TOOLS_SHEET": {
+        "TEXT_TITLE": "Tools",
+        "TEXT_SEARCH_TOOLS": "Search tools",
         "TEXT_NO_TOOLS_AVAILABLE": "No tools available",
-        "TEXT_SIGN_IN_REQUIRED": "{{name}} — sign in on the web",
-        "TEXT_TOOLS_SECTION": "Tools",
-        "TEXT_SYSTEM_PROMPT_SECTION": "System Prompt",
-        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "No system prompt set"
+        "TEXT_SIGN_IN_REQUIRED": "{{name}} — sign in on the web"
       },
       "SYSTEM_PROMPT_SHEET": {
         "TEXT_TITLE": "System Prompt",
