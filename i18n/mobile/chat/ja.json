@@ -51,6 +51,7 @@
         "TEXT_TITLE": "ツール",
         "TEXT_SEARCH_TOOLS": "ツールを検索",
         "TEXT_NO_TOOLS_AVAILABLE": "利用できるツールがありません",
+        "TEXT_NOTHING_FOUND": "見つかりません。",
         "TEXT_SIGN_IN_REQUIRED": "{{name}} — ウェブ版でログインしてください"
       },
       "SYSTEM_PROMPT_SHEET": {

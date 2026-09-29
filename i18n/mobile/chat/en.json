@@ -51,6 +51,7 @@
         "TEXT_TITLE": "Tools",
         "TEXT_SEARCH_TOOLS": "Search tools",
         "TEXT_NO_TOOLS_AVAILABLE": "No tools available",
+        "TEXT_NOTHING_FOUND": "Nothing found",
         "TEXT_SIGN_IN_REQUIRED": "{{name}} — sign in on the web"
       },
       "SYSTEM_PROMPT_SHEET": {

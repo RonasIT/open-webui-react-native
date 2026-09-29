@@ -51,6 +51,7 @@
         "TEXT_TITLE": "工具",
         "TEXT_SEARCH_TOOLS": "搜索工具",
         "TEXT_NO_TOOLS_AVAILABLE": "没有可用的工具",
+        "TEXT_NOTHING_FOUND": "未找到结果",
         "TEXT_SIGN_IN_REQUIRED": "{{name}} — 请在网页版中登录"
       },
       "SYSTEM_PROMPT_SHEET": {

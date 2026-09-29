@@ -54,7 +54,7 @@ export function ToolsSheet({ ref, tools, selectedToolIds, onApplyToolIds, onDism
     closeModal();
   };
 
-  const filteredTools = tools.filter((tool) => new RegExp(query, 'i').test(tool.name));
+  const filteredTools = tools.filter((tool) => tool.name.toLowerCase().includes(query.toLowerCase()));
 
   const renderItem = ({ item }: { item: Tool }): ReactElement => {
     const isSignInRequired = item.authenticated === false;
@@ -86,7 +86,7 @@ export function ToolsSheet({ ref, tools, selectedToolIds, onApplyToolIds, onDism
       query={query}
       onQueryChange={setQuery}
       searchPlaceholder={translate('TEXT_SEARCH_TOOLS')}
-      emptyDescription={translate('TEXT_NO_TOOLS_AVAILABLE')}
+      emptyDescription={query ? translate('TEXT_NOTHING_FOUND') : translate('TEXT_NO_TOOLS_AVAILABLE')}
       data={filteredTools}
       extraData={draftToolIds}
       showsVerticalScrollIndicator={false}

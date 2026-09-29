@@ -51,6 +51,7 @@
         "TEXT_TITLE": "Инструменты",
         "TEXT_SEARCH_TOOLS": "Поиск инструментов",
         "TEXT_NO_TOOLS_AVAILABLE": "Инструменты недоступны",
+        "TEXT_NOTHING_FOUND": "Ничего не найдено",
         "TEXT_SIGN_IN_REQUIRED": "{{name}} — войдите в веб-версии"
       },
       "SYSTEM_PROMPT_SHEET": {

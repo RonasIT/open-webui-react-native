@@ -51,6 +51,7 @@
         "TEXT_TITLE": "Instrumente",
         "TEXT_SEARCH_TOOLS": "Caută instrumente",
         "TEXT_NO_TOOLS_AVAILABLE": "Niciun instrument disponibil",
+        "TEXT_NOTHING_FOUND": "Nu s-a găsit nimic",
         "TEXT_SIGN_IN_REQUIRED": "{{name}} — conectează-te pe web"
       },
       "SYSTEM_PROMPT_SHEET": {

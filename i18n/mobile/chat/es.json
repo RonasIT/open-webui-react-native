@@ -51,6 +51,7 @@
         "TEXT_TITLE": "Herramientas",
         "TEXT_SEARCH_TOOLS": "Buscar herramientas",
         "TEXT_NO_TOOLS_AVAILABLE": "No hay herramientas disponibles",
+        "TEXT_NOTHING_FOUND": "No se encontró nada",
         "TEXT_SIGN_IN_REQUIRED": "{{name}} — inicia sesión en la versión web"
       },
       "SYSTEM_PROMPT_SHEET": {

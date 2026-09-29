@@ -51,6 +51,7 @@
         "TEXT_TITLE": "Outils",
         "TEXT_SEARCH_TOOLS": "Rechercher des outils",
         "TEXT_NO_TOOLS_AVAILABLE": "Aucun outil disponible",
+        "TEXT_NOTHING_FOUND": "Aucun résultat trouvé",
         "TEXT_SIGN_IN_REQUIRED": "{{name}} — connectez-vous sur la version web"
       },
       "SYSTEM_PROMPT_SHEET": {
