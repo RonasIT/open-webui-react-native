@@ -37,13 +37,7 @@ import { withOfflineGuard } from '@open-webui-react-native/shared/features/netwo
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { toDataUrl } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
-import {
-  AttachmentsMenuSheet,
-  ChatInputBottomRow,
-  SelectOptionIcon,
-  ToolPermissionsMenuSheet,
-  ToolsMenuSheet,
-} from './components';
+import { AttachmentsMenuSheet, ChatInputBottomRow, ChatSettingsSheet, SelectOptionIcon } from './components';
 
 interface FormChatInputProps<T extends FieldValues> extends AppInputProps {
   name: Path<T>;
@@ -166,8 +160,8 @@ export function FormChatInput<T extends FieldValues>({
 
   const onGenerationOptionPress = (option: ChatGenerationOption): void => setOptions((state) => xor(state, [option]));
 
-  const onToolPress = (toolId: string): void => {
-    toolsSelectionState$[toolsSelectionKey].set({ modelId, toolIds: xor(selectedToolIds, [toolId]) });
+  const onApplyToolIds = (toolIds: Array<string>): void => {
+    toolsSelectionState$[toolsSelectionKey].set({ modelId, toolIds });
   };
 
   const handleDictateModePress = withOfflineGuard(() => setIsDictateMode(true));
@@ -254,14 +248,14 @@ export function FormChatInput<T extends FieldValues>({
                       isSelected={options.includes(ChatGenerationOption.WEB_SEARCH)}
                     />
                   )}
-                  <ToolsMenuSheet
+                  <ChatSettingsSheet
                     disabled={isLoading}
                     tools={tools ?? []}
                     selectedToolIds={selectedToolIds}
-                    onToolPress={onToolPress}
+                    onApplyToolIds={onApplyToolIds}
                     chat={chat}
+                    isToolPermissionsEnabled={config?.features.enableToolPermissions}
                   />
-                  {config?.features.enableToolPermissions && <ToolPermissionsMenuSheet disabled={isLoading} />}
                 </View>
                 <IconButton
                   disabled={isLoading}
