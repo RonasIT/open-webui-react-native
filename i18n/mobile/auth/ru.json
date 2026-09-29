@@ -15,10 +15,7 @@
         "TEXT_SSO_MISCONFIGURED": "Вход не настроен на этом сервере. Пожалуйста, обратитесь к администратору.",
         "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Этот способ входа пока не поддерживается приложением. Попробуйте другой способ входа."
       },
-      "GOOGLE_FORM": {
-        "BUTTON_CONTINUE_WITH_GOOGLE": "Продолжить с Google"
-      },
-      "OIDC_FORM": {
+      "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Продолжить с {{provider}}"
       },
       "OAUTH_WEB_VIEW_MODAL": {

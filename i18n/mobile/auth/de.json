@@ -15,10 +15,7 @@
         "TEXT_SSO_MISCONFIGURED": "Die Anmeldung ist auf diesem Server nicht konfiguriert. Bitte wenden Sie sich an Ihren Administrator.",
         "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Diese Anmeldemethode wird von der App noch nicht unterstützt. Bitte versuchen Sie eine andere Anmeldeoption."
       },
-      "GOOGLE_FORM": {
-        "BUTTON_CONTINUE_WITH_GOOGLE": "Mit Google fortfahren"
-      },
-      "OIDC_FORM": {
+      "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Mit {{provider}} fortfahren"
       },
       "OAUTH_WEB_VIEW_MODAL": {

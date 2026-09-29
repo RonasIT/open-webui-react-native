@@ -26,7 +26,6 @@ import folderPlus from './folder-plus.svg';
 import folder from './folder.svg';
 import gallery from './gallery.svg';
 import generatedImage from './generated-image.svg';
-import googleLogo from './google.svg';
 import headphones from './headphones.svg';
 import history from './history.svg';
 import key from './key.svg';
@@ -34,10 +33,14 @@ import keyboard from './keyboard.svg';
 import lessText from './less-text.svg';
 import link from './link.svg';
 import lock from './lock.svg';
-import logoDark from './logo-dark.svg';
-import logoLight from './logo-light.svg';
-import logoSmallDark from './logo-small-dark.svg';
-import logoSmallLight from './logo-small-light.svg';
+import googleLogo from './logos/google.svg';
+import logoDark from './logos/logo-dark.svg';
+import logoLight from './logos/logo-light.svg';
+import logoSmallDark from './logos/logo-small-dark.svg';
+import logoSmallLight from './logos/logo-small-light.svg';
+import microsoftLogo from './logos/microsoft.svg';
+import ronasLogoDark from './logos/ronas-logo-dark.svg';
+import ronasLogoLight from './logos/ronas-logo-light.svg';
 import logout from './logout.svg';
 import message from './message.svg';
 import microphone from './microphone.svg';
@@ -49,8 +52,6 @@ import play from './play.svg';
 import plusInCircle from './plus-in-circle.svg';
 import plus from './plus.svg';
 import refresh from './refresh.svg';
-import ronasLogoDark from './ronas-logo-dark.svg';
-import ronasLogoLight from './ronas-logo-light.svg';
 import search from './search.svg';
 import star from './star.svg';
 import stop from './stop.svg';
@@ -68,6 +69,7 @@ export const Icons = {
   logoDark,
   logoLight,
   googleLogo,
+  microsoftLogo,
   jsonFile,
   txtFile,
   camera,
