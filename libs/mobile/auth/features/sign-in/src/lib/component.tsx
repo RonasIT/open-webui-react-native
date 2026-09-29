@@ -2,9 +2,9 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useState } from 'react';
 import { Linking } from 'react-native';
 import { EmailSignInForm } from '@open-webui-react-native/mobile/auth/features/email-sign-in-form';
-import { OauthSignIn, supportedOauthProviders } from '@open-webui-react-native/mobile/auth/features/oauth-sign-in';
+import { OauthSignIn } from '@open-webui-react-native/mobile/auth/features/oauth-sign-in';
 import { AppPressable, AppSafeAreaView, AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { Provider } from '@open-webui-react-native/shared/data-access/api';
+import { Provider, supportedOauthProviders } from '@open-webui-react-native/shared/data-access/api';
 import { constants, isTestApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 

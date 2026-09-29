@@ -3,10 +3,14 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { Fragment, ReactElement, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { TextInput } from 'react-native';
-import { supportedOauthProviders } from '@open-webui-react-native/mobile/auth/features/oauth-sign-in';
 import { AppButton, AppText, View, FormFloatedLabelInput } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
-import { appConfigurationApi, authApi, Provider } from '@open-webui-react-native/shared/data-access/api';
+import {
+  appConfigurationApi,
+  authApi,
+  Provider,
+  supportedOauthProviders,
+} from '@open-webui-react-native/shared/data-access/api';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { resolveApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';

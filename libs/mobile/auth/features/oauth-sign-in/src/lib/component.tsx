@@ -1,9 +1,18 @@
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { Fragment, ReactElement, useState } from 'react';
 import { OauthWebView } from '@open-webui-react-native/mobile/auth/features/oauth-web-view';
-import { AppButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { AppButton, IconName } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import {
+  oauthProvidersConfig,
+  Provider,
+  SupportedOauthProvider,
+} from '@open-webui-react-native/shared/data-access/api';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
-import { oauthSignInConfig, SupportedOauthProvider } from './config';
+
+const oauthProviderIcons: Partial<Record<SupportedOauthProvider, IconName>> = {
+  [Provider.GOOGLE]: 'googleLogo',
+  [Provider.MICROSOFT]: 'microsoftLogo',
+};
 
 interface OauthSignInProps {
   provider: SupportedOauthProvider;
@@ -14,7 +23,7 @@ interface OauthSignInProps {
 
 export function OauthSignIn({ provider, providerName, onSuccess }: OauthSignInProps): ReactElement {
   const translate = useTranslation('AUTH.SIGN_IN.OAUTH_SIGN_IN');
-  const { name, iconName, hasServerName } = oauthSignInConfig[provider];
+  const { name, hasServerName } = oauthProvidersConfig[provider];
   const displayName = (hasServerName && providerName) || name;
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -37,7 +46,7 @@ export function OauthSignIn({ provider, providerName, onSuccess }: OauthSignInPr
     <Fragment>
       <AppButton
         text={translate('BUTTON_CONTINUE_WITH', { provider: displayName })}
-        iconName={iconName}
+        iconName={oauthProviderIcons[provider]}
         onPress={handleSignInPress}
       />
       <OauthWebView
