@@ -7,7 +7,7 @@ export type AppSwitchProps = Omit<SwitchProps, 'trackColor' | 'thumbColor' | 'io
 export function AppSwitch(props: AppSwitchProps): ReactElement {
   const { isDarkColorScheme } = useColorScheme();
 
-  const inactiveTrackColor = isDarkColorScheme ? colors.backgroundSecondary : colors.backgroundTertiary;
+  const inactiveTrackColor = isDarkColorScheme ? colors.gray700 : colors.backgroundTertiary;
 
   return (
     <Switch
