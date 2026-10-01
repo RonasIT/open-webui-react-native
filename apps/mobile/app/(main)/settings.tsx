@@ -11,6 +11,7 @@ export default function SettingsScreen(): ReactElement {
 
   return (
     <AppScreen
+      noOutsideSpacing
       header={<AppHeader
         title={translate('TEXT_SETTINGS')}
         onGoBack={router.back}
