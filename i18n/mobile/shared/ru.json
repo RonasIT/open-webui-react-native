@@ -95,6 +95,7 @@
       "TEXT_CLONE_OF": "Копия {{title}}",
       "TEXT_CHAT_ACTIONS": "Действия с чатом",
       "TEXT_MOVE_TO_FOLDER": "Переместить в папку",
+      "TEXT_CHAT_MOVED": "Чат успешно перемещён",
       "DOWNLOAD_CHAT_OPTIONS_SHEET": {
         "TEXT_EXPORT_CHAT_JSON": "Экспорт чата (.json)",
         "TEXT_PLAIN_TEXT": "Обычный текст (.txt)",

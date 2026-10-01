@@ -95,6 +95,7 @@
       "TEXT_CLONE_OF": "Copie a {{title}}",
       "TEXT_CHAT_ACTIONS": "Acțiuni conversație",
       "TEXT_MOVE_TO_FOLDER": "Mută în folder",
+      "TEXT_CHAT_MOVED": "Conversație mutată cu succes",
       "DOWNLOAD_CHAT_OPTIONS_SHEET": {
         "TEXT_EXPORT_CHAT_JSON": "Exportă conversația (.json)",
         "TEXT_PLAIN_TEXT": "Text simplu (.txt)",
