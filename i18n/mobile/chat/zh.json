@@ -38,7 +38,7 @@
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "附加网页",
         "TEXT_WEBPAGE_URLS": "网页链接",
-        "TEXT_INVALID_URL": "请输入有效的 URL。"
+        "TEXT_INVALID_URL": "请输入有效的 URL，例如 https://example.com"
       },
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "系统提示词",

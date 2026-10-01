@@ -38,7 +38,7 @@
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Atașează pagină web",
         "TEXT_WEBPAGE_URLS": "URL-uri pagini web",
-        "TEXT_INVALID_URL": "Introdu un URL valid."
+        "TEXT_INVALID_URL": "Te rugăm să introduci un URL valid, ex. https://example.com"
       },
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "Prompt de sistem",
