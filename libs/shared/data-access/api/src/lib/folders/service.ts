@@ -1,3 +1,4 @@
+import { HttpStatusCode } from 'axios';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
 import { EntityPromiseService } from '@open-webui-react-native/shared/data-access/base-entity';
@@ -65,9 +66,21 @@ class FoldersService extends EntityPromiseService<FolderResponse> {
   // NOTE: Folders shared with the current user do not come from `GET /folders/`, which only lists
   // the ones they own.
   public async getSharedFolders(): Promise<Array<SharedFolderListItem>> {
-    const response = await getApiService().get<Array<SharedFolderListItem>>(`${foldersApiConfig.route}/shared`);
+    const { status, data } = await getApiService().get<Array<SharedFolderListItem>>(
+      `${foldersApiConfig.route}/shared`,
+      undefined,
+      {
+        fullResponse: true,
+        // NOTE: The route exists since Open WebUI 0.10; older servers answer 404, which means "none".
+        validateStatus: (code) => (code >= 200 && code < 300) || code === HttpStatusCode.NotFound,
+      },
+    );
 
-    return response.map((item) => plainToInstance(SharedFolderListItem, item));
+    if (status === HttpStatusCode.NotFound) {
+      return [];
+    }
+
+    return data.map((item) => plainToInstance(SharedFolderListItem, item));
   }
 
   public async getFolderChatList({

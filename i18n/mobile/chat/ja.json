@@ -32,21 +32,31 @@
         "TEXT_UPLOAD_FILES": "ファイルをアップロード",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "空のファイルはアップロードできません。",
         "TEXT_ATTACH_WEBPAGE": "Webページを添付",
-        "TEXT_ATTACH_KNOWLEDGE": "ナレッジを添付"
+        "TEXT_ATTACH_KNOWLEDGE": "ナレッジを添付",
+        "TEXT_REFERENCE_CHATS": "チャットを参照"
       },
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Webページを添付",
         "TEXT_WEBPAGE_URLS": "WebページのURL",
         "TEXT_INVALID_URL": "有効なURLを入力してください。"
       },
-      "TOOL_PERMISSIONS_POPUP": {
-        "TEXT_FULL_ACCESS": "フルアクセス",
-        "TEXT_ASK_FOR_APPROVAL": "毎回確認する"
+      "CHAT_SETTINGS_SHEET": {
+        "TEXT_SYSTEM_PROMPT": "システムプロンプト",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "未設定",
+        "TEXT_TOOLS": "ツール",
+        "TEXT_FULL_ACCESS_FOR_TOOLS": "フルアクセス",
+        "BUTTON_CLOSE": "閉じる"
       },
-      "TOOLS_POPUP": {
-        "BUTTON_APPLY": "適用",
+      "TOOLS_SHEET": {
+        "TEXT_TITLE": "ツール",
+        "TEXT_SEARCH_TOOLS": "ツールを検索",
         "TEXT_NO_TOOLS_AVAILABLE": "利用できるツールがありません",
+        "TEXT_NOTHING_FOUND": "見つかりません。",
         "TEXT_SIGN_IN_REQUIRED": "{{name}} — ウェブ版でログインしてください"
+      },
+      "SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "システムプロンプト",
+        "TEXT_PLACEHOLDER": "このチャットのシステムプロンプトを入力してください"
       }
     },
     "SHARE_CHAT_MODAL": {
@@ -207,11 +217,22 @@
       "TEXT_SEARCH_FILES": "ファイルを検索",
       "TEXT_NO_FILES": "このナレッジベースにファイルはありません。"
     },
+    "REFERENCE_CHATS_SHEET": {
+      "TEXT_TITLE": "チャット",
+      "TEXT_SEARCH_CHATS": "チャットの検索",
+      "TEXT_NO_CHATS": "チャットが見つかりません。"
+    },
     "ATTACHED_CHAT_ITEMS": {
-      "TEXT_COLLECTION": "コレクション",
       "TEXT_FILE": "ファイル",
-      "TEXT_WEBPAGE": "Webページ",
-      "TEXT_WEBPAGE_ERROR": "添付に失敗しました"
+      "ATTACHED_CONTEXT_ITEM": {
+        "TEXT_COLLECTION": "コレクション",
+        "TEXT_WEBPAGE": "Webページ",
+        "TEXT_WEBPAGE_ERROR": "添付に失敗しました",
+        "TEXT_CHAT": "チャット"
+      }
+    },
+    "ATTACHED_IMAGE_ITEM": {
+      "TEXT_UPLOAD_FAILED": "アップロード失敗"
     }
   }
 }

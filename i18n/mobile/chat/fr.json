@@ -32,21 +32,31 @@
         "TEXT_UPLOAD_FILES": "Téléverser des fichiers",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Vous ne pouvez pas téléverser un fichier vide.",
         "TEXT_ATTACH_WEBPAGE": "Joindre une page web",
-        "TEXT_ATTACH_KNOWLEDGE": "Joindre une base de connaissances"
+        "TEXT_ATTACH_KNOWLEDGE": "Joindre une base de connaissances",
+        "TEXT_REFERENCE_CHATS": "Discussions de référence"
       },
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Joindre une page web",
         "TEXT_WEBPAGE_URLS": "URL de pages web",
         "TEXT_INVALID_URL": "Veuillez saisir une URL valide."
       },
-      "TOOL_PERMISSIONS_POPUP": {
-        "TEXT_FULL_ACCESS": "Accès complet",
-        "TEXT_ASK_FOR_APPROVAL": "Demander l'autorisation"
+      "CHAT_SETTINGS_SHEET": {
+        "TEXT_SYSTEM_PROMPT": "Invite système",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Non défini",
+        "TEXT_TOOLS": "Outils",
+        "TEXT_FULL_ACCESS_FOR_TOOLS": "Accès complet",
+        "BUTTON_CLOSE": "Fermer"
       },
-      "TOOLS_POPUP": {
-        "BUTTON_APPLY": "Appliquer",
+      "TOOLS_SHEET": {
+        "TEXT_TITLE": "Outils",
+        "TEXT_SEARCH_TOOLS": "Rechercher des outils",
         "TEXT_NO_TOOLS_AVAILABLE": "Aucun outil disponible",
+        "TEXT_NOTHING_FOUND": "Aucun résultat trouvé",
         "TEXT_SIGN_IN_REQUIRED": "{{name}} — connectez-vous sur la version web"
+      },
+      "SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "Invite système",
+        "TEXT_PLACEHOLDER": "Saisissez une invite système pour ce chat"
       }
     },
     "SHARE_CHAT_MODAL": {
@@ -208,11 +218,22 @@
       "TEXT_SEARCH_FILES": "Rechercher des fichiers",
       "TEXT_NO_FILES": "Aucun fichier dans cette base de connaissances."
     },
+    "REFERENCE_CHATS_SHEET": {
+      "TEXT_TITLE": "Conversations",
+      "TEXT_SEARCH_CHATS": "Rechercher des conversations",
+      "TEXT_NO_CHATS": "Aucune discussion trouvée"
+    },
     "ATTACHED_CHAT_ITEMS": {
-      "TEXT_COLLECTION": "Collection",
       "TEXT_FILE": "Fichier",
-      "TEXT_WEBPAGE": "Page web",
-      "TEXT_WEBPAGE_ERROR": "Échec de l'ajout"
+      "ATTACHED_CONTEXT_ITEM": {
+        "TEXT_COLLECTION": "Collection",
+        "TEXT_WEBPAGE": "Page web",
+        "TEXT_WEBPAGE_ERROR": "Échec de l'ajout",
+        "TEXT_CHAT": "Conversation"
+      }
+    },
+    "ATTACHED_IMAGE_ITEM": {
+      "TEXT_UPLOAD_FAILED": "Échec de l'envoi"
     }
   }
 }

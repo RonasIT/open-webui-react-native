@@ -110,6 +110,9 @@
     "SEARCH_INPUT": {
       "BUTTON_CANCEL": "取消",
       "TEXT_SEARCH_CHATS": "搜索聊天"
+    },
+    "USE_ATTACHED_FILES": {
+      "TEXT_IMAGE_UPLOAD_FAILED": "无法上传照片。请检查网络连接后重试"
     }
   }
 }

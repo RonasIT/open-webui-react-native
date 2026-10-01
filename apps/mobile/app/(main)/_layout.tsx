@@ -1,4 +1,3 @@
-import { colors, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { AppSpinner } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import { useInitRequests } from '@open-webui-react-native/shared/features/use-init-requests';
@@ -14,7 +13,6 @@ export const unstable_settings = {
 export default function MainLayout(): ReactElement {
   const { isLoading } = useInitRequests();
   const isRestoring = useIsRestoring();
-  const { isDarkColorScheme } = useColorScheme();
 
   //NOTE Needs to prefetch all necessary data before showing the main screen
   if (isLoading || isRestoring) {
@@ -25,7 +23,6 @@ export default function MainLayout(): ReactElement {
     <Stack
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: isDarkColorScheme ? colors.darkBackgroundPrimary : colors.backgroundPrimary },
       }}>
       <Stack.Screen name={navigationConfig.main.chat.index} />
       <Stack.Screen name={navigationConfig.main.folder.index} />

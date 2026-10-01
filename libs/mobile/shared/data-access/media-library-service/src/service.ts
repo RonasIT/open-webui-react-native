@@ -1,7 +1,8 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
 import { PermissionStatus } from 'expo';
 import * as FileSystem from 'expo-file-system/legacy';
-import * as MediaLibrary from 'expo-media-library';
+// NOTE: Since SDK 57 the root import only keeps stubs that throw — the old API lives under /legacy.
+import * as MediaLibrary from 'expo-media-library/legacy';
 import { permissionAlertService } from '@open-webui-react-native/shared/utils/permission-alert';
 
 export class MediaLibraryService {

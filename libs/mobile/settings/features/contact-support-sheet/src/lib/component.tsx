@@ -86,7 +86,7 @@ export function ContactSupportSheet({ ref, ...props }: ContactSupportSheetProps)
 
     handleImageUploaded({
       uri: asset.uri,
-      base64: asset.base64 ?? '',
+      base64: asset.base64 ?? undefined,
       mimeType: asset.mimeType,
       fileName: asset.fileName || undefined,
     });

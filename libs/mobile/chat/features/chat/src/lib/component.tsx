@@ -63,6 +63,8 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
     attachedImages: Array<ImageData>;
   } | null>(null);
 
+  const isTemporaryChat = isTemporaryChatId(chatId);
+
   const {
     attachedItems,
     attachedImages,
@@ -71,9 +73,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
     handleItemAttached,
     handleDeleteItem,
     resetAttachments,
-  } = useAttachedFiles();
-
-  const isTemporaryChat = isTemporaryChatId(chatId);
+  } = useAttachedFiles({ shouldUploadImages: !isTemporaryChat });
   // NOTE: Temporary chats are never persisted, so there's nothing to fetch — read the client-seeded cache only.
   const {
     data: chat,

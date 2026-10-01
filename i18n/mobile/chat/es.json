@@ -32,21 +32,31 @@
         "TEXT_UPLOAD_FILES": "Subir archivos",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "No puedes subir un archivo vacío.",
         "TEXT_ATTACH_WEBPAGE": "Adjuntar página web",
-        "TEXT_ATTACH_KNOWLEDGE": "Adjuntar conocimiento"
+        "TEXT_ATTACH_KNOWLEDGE": "Adjuntar conocimiento",
+        "TEXT_REFERENCE_CHATS": "Referenciar Chats"
       },
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Adjuntar página web",
         "TEXT_WEBPAGE_URLS": "URLs de páginas web",
         "TEXT_INVALID_URL": "Introduce una URL válida."
       },
-      "TOOL_PERMISSIONS_POPUP": {
-        "TEXT_FULL_ACCESS": "Acceso completo",
-        "TEXT_ASK_FOR_APPROVAL": "Pedir aprobación"
+      "CHAT_SETTINGS_SHEET": {
+        "TEXT_SYSTEM_PROMPT": "Prompt del sistema",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "No establecido",
+        "TEXT_TOOLS": "Herramientas",
+        "TEXT_FULL_ACCESS_FOR_TOOLS": "Acceso completo",
+        "BUTTON_CLOSE": "Cerrar"
       },
-      "TOOLS_POPUP": {
-        "BUTTON_APPLY": "Aplicar",
+      "TOOLS_SHEET": {
+        "TEXT_TITLE": "Herramientas",
+        "TEXT_SEARCH_TOOLS": "Buscar herramientas",
         "TEXT_NO_TOOLS_AVAILABLE": "No hay herramientas disponibles",
+        "TEXT_NOTHING_FOUND": "No se encontró nada",
         "TEXT_SIGN_IN_REQUIRED": "{{name}} — inicia sesión en la versión web"
+      },
+      "SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "Aviso del sistema",
+        "TEXT_PLACEHOLDER": "Introduce un aviso del sistema para este chat"
       }
     },
     "SHARE_CHAT_MODAL": {
@@ -208,11 +218,22 @@
       "TEXT_SEARCH_FILES": "Buscar archivos",
       "TEXT_NO_FILES": "No hay archivos en esta base de conocimiento."
     },
+    "REFERENCE_CHATS_SHEET": {
+      "TEXT_TITLE": "Chats",
+      "TEXT_SEARCH_CHATS": "Buscar Chats",
+      "TEXT_NO_CHATS": "No se encontró ningún chat"
+    },
     "ATTACHED_CHAT_ITEMS": {
-      "TEXT_COLLECTION": "Colección",
       "TEXT_FILE": "Archivo",
-      "TEXT_WEBPAGE": "Página web",
-      "TEXT_WEBPAGE_ERROR": "Error al adjuntar"
+      "ATTACHED_CONTEXT_ITEM": {
+        "TEXT_COLLECTION": "Colección",
+        "TEXT_WEBPAGE": "Página web",
+        "TEXT_WEBPAGE_ERROR": "Error al adjuntar",
+        "TEXT_CHAT": "Chat"
+      }
+    },
+    "ATTACHED_IMAGE_ITEM": {
+      "TEXT_UPLOAD_FAILED": "Error al subir"
     }
   }
 }

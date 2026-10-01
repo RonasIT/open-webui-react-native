@@ -9,7 +9,6 @@ import {
   ActionSheetItemProps,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import {
-  authApi,
   ChatResponse,
   FolderListItem,
   foldersApi,
@@ -39,7 +38,6 @@ export function FolderActionsSheet({ onEditPress, onSharePress, ref }: FolderAct
   const [folder, setFolder] = useState<FolderListItem | undefined>();
   const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
 
-  const { data: profile } = authApi.useGetProfile();
   const canUseFolders = useFoldersEnabled();
   const { data: sharedFolders } = foldersApi.useGetSharedFolders({ enabled: canUseFolders });
   const { mutateAsync: deleteFolder, isPending: isDeleting } = foldersApi.useDeleteFolder();
@@ -49,7 +47,7 @@ export function FolderActionsSheet({ onEditPress, onSharePress, ref }: FolderAct
   const isOwner = !sharedFolders?.some((sharedFolder) => sharedFolder.id === folder?.id);
   // NOTE: On top of ownership an admin always may share, everyone else needs the `sharing.folders`
   // permission, which is off by default — same gate as the web client.
-  const canShare = isOwner && isFeaturePermitted(profile?.permissions?.sharing?.folders, false);
+  const canShare = isOwner && isFeaturePermitted('sharing', 'folders', false);
 
   const getFolderChats = async (id: string): Promise<Array<ChatResponse>> =>
     await queryClient.fetchQuery<Array<ChatResponse>>({

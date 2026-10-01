@@ -18,7 +18,7 @@ export interface SearchableListBottomSheetPagination {
 }
 
 export type SearchableListBottomSheetProps<TItem> = Partial<Omit<AppBottomSheetPropsType, 'ref' | 'content'>> &
-  Pick<AppFlashListProps<TItem>, 'data' | 'renderItem' | 'keyExtractor' | 'extraData'> & {
+  Pick<AppFlashListProps<TItem>, 'data' | 'renderItem' | 'extraData' | 'showsVerticalScrollIndicator'> & {
     ref?: SearchableListBottomSheetRef;
     title: SheetHeaderProps['title'];
     onGoBack: () => void;
@@ -31,6 +31,18 @@ export type SearchableListBottomSheetProps<TItem> = Partial<Omit<AppBottomSheetP
     emptyDescription: string;
     pagination?: SearchableListBottomSheetPagination;
   };
+
+type KeyExtractor<TItem> = NonNullable<AppFlashListProps<TItem>['keyExtractor']>;
+
+// NOTE: keyExtractor defaults to item.id, but only when TItem actually has one — a list mixing
+// section headers/empty-states with real entities (see select-knowledge-sheet) has no shared id
+// field, so that shape must keep passing its own keyExtractor.
+export function SearchableListBottomSheet<TItem extends { id: string }>(
+  props: SearchableListBottomSheetProps<TItem> & { keyExtractor?: KeyExtractor<TItem> },
+): ReactElement;
+export function SearchableListBottomSheet<TItem>(
+  props: SearchableListBottomSheetProps<TItem> & { keyExtractor: KeyExtractor<TItem> },
+): ReactElement;
 
 export function SearchableListBottomSheet<TItem>({
   ref,
@@ -45,11 +57,12 @@ export function SearchableListBottomSheet<TItem>({
   emptyDescription,
   data,
   renderItem,
-  keyExtractor,
+  keyExtractor = (item) => (item as { id: string }).id,
   extraData,
+  showsVerticalScrollIndicator,
   pagination,
   ...restProps
-}: SearchableListBottomSheetProps<TItem>): ReactElement {
+}: SearchableListBottomSheetProps<TItem> & { keyExtractor?: KeyExtractor<TItem> }): ReactElement {
   const handleCancelSearch = (): void => {
     onQueryChange('');
     Keyboard.dismiss();
@@ -86,6 +99,7 @@ export function SearchableListBottomSheet<TItem>({
             <AppBottomSheetFlashList
               data={data}
               extraData={extraData}
+              showsVerticalScrollIndicator={showsVerticalScrollIndicator}
               renderItem={renderItem}
               keyExtractor={keyExtractor}
               className='flex-1'

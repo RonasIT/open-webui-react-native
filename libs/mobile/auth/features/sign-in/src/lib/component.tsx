@@ -2,10 +2,9 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useState } from 'react';
 import { Linking } from 'react-native';
 import { EmailSignInForm } from '@open-webui-react-native/mobile/auth/features/email-sign-in-form';
-import { GoogleSignInForm } from '@open-webui-react-native/mobile/auth/features/google-sign-in-form';
-import { OdicSignIn } from '@open-webui-react-native/mobile/auth/features/odic-sign-in';
+import { OauthSignIn } from '@open-webui-react-native/mobile/auth/features/oauth-sign-in';
 import { AppPressable, AppSafeAreaView, AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { Provider } from '@open-webui-react-native/shared/data-access/api';
+import { Provider, supportedOauthProviders } from '@open-webui-react-native/shared/data-access/api';
 import { constants, isTestApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
@@ -19,8 +18,9 @@ export function SignIn(props: SignInProps): ReactElement {
   const [apiUrlInput, setApiUrlInput] = useState<string>();
   const [providers, setProviders] = useState<Partial<Record<Provider, string>>>({});
 
-  const showGoogleSignIn = !isTestApiUrl(apiUrlInput) && Provider.GOOGLE in providers;
-  const showOidcSignIn = !isTestApiUrl(apiUrlInput) && Provider.OIDC in providers;
+  const oauthProviders = isTestApiUrl(apiUrlInput)
+    ? []
+    : supportedOauthProviders.filter((provider) => provider in providers);
 
   const handleSuccess = (): void => {
     onSuccess();
@@ -53,16 +53,14 @@ export function SignIn(props: SignInProps): ReactElement {
         onApiUrlChange={(url) => setApiUrlInput(url)}
         setOauthProviders={setProviders}
       />
-      {showGoogleSignIn && (
-        <View className='pt-40'>
-          <GoogleSignInForm onSuccess={handleSuccess} />
+      {oauthProviders.map((provider) => (
+        <View key={provider} className='pt-40'>
+          <OauthSignIn
+            provider={provider}
+            providerName={providers[provider]}
+            onSuccess={handleSuccess} />
         </View>
-      )}
-      {showOidcSignIn && (
-        <View className='pt-40'>
-          <OdicSignIn providerName={providers[Provider.OIDC] || 'SSO'} onSuccess={handleSuccess} />
-        </View>
-      )}
+      ))}
       <View className='mt-auto pt-40 pb-16 gap-4'>
         <AppText className='text-sm-sm sm:text-sm text-text-secondary text-center'>
           {translate('TEXT_NEED_HELP_OR_FEEDBACK')}

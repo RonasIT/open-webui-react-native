@@ -110,6 +110,9 @@
     "SEARCH_INPUT": {
       "BUTTON_CANCEL": "Annuler",
       "TEXT_SEARCH_CHATS": "Rechercher des discussions"
+    },
+    "USE_ATTACHED_FILES": {
+      "TEXT_IMAGE_UPLOAD_FAILED": "Impossible d'envoyer la photo. Vérifiez votre connexion et réessayez"
     }
   }
 }

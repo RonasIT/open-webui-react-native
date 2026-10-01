@@ -32,21 +32,31 @@
         "TEXT_UPLOAD_FILES": "Încarcă fișiere",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Nu poți încărca un fișier gol.",
         "TEXT_ATTACH_WEBPAGE": "Atașează pagină web",
-        "TEXT_ATTACH_KNOWLEDGE": "Atașează bază de cunoștințe"
+        "TEXT_ATTACH_KNOWLEDGE": "Atașează bază de cunoștințe",
+        "TEXT_REFERENCE_CHATS": "Conversații de referință"
       },
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Atașează pagină web",
         "TEXT_WEBPAGE_URLS": "URL-uri pagini web",
         "TEXT_INVALID_URL": "Introdu un URL valid."
       },
-      "TOOL_PERMISSIONS_POPUP": {
-        "TEXT_FULL_ACCESS": "Acces complet",
-        "TEXT_ASK_FOR_APPROVAL": "Cere aprobare"
+      "CHAT_SETTINGS_SHEET": {
+        "TEXT_SYSTEM_PROMPT": "Prompt de sistem",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Nesetat",
+        "TEXT_TOOLS": "Instrumente",
+        "TEXT_FULL_ACCESS_FOR_TOOLS": "Acces complet",
+        "BUTTON_CLOSE": "Închide"
       },
-      "TOOLS_POPUP": {
-        "BUTTON_APPLY": "Aplică",
+      "TOOLS_SHEET": {
+        "TEXT_TITLE": "Instrumente",
+        "TEXT_SEARCH_TOOLS": "Caută instrumente",
         "TEXT_NO_TOOLS_AVAILABLE": "Niciun instrument disponibil",
+        "TEXT_NOTHING_FOUND": "Nu s-a găsit nimic",
         "TEXT_SIGN_IN_REQUIRED": "{{name}} — conectează-te pe web"
+      },
+      "SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "Prompt de sistem",
+        "TEXT_PLACEHOLDER": "Introduceți un prompt de sistem pentru acest chat"
       }
     },
     "SHARE_CHAT_MODAL": {
@@ -209,11 +219,22 @@
       "TEXT_SEARCH_FILES": "Caută fișiere",
       "TEXT_NO_FILES": "Nu există fișiere în această bază de cunoștințe."
     },
+    "REFERENCE_CHATS_SHEET": {
+      "TEXT_TITLE": "Conversații",
+      "TEXT_SEARCH_CHATS": "Caută în Conversații",
+      "TEXT_NO_CHATS": "Nu s-au găsit conversații"
+    },
     "ATTACHED_CHAT_ITEMS": {
-      "TEXT_COLLECTION": "Colecție",
       "TEXT_FILE": "Fișier",
-      "TEXT_WEBPAGE": "Pagină web",
-      "TEXT_WEBPAGE_ERROR": "Atașare eșuată"
+      "ATTACHED_CONTEXT_ITEM": {
+        "TEXT_COLLECTION": "Colecție",
+        "TEXT_WEBPAGE": "Pagină web",
+        "TEXT_WEBPAGE_ERROR": "Atașare eșuată",
+        "TEXT_CHAT": "Conversație"
+      }
+    },
+    "ATTACHED_IMAGE_ITEM": {
+      "TEXT_UPLOAD_FAILED": "Încărcare eșuată"
     }
   }
 }
