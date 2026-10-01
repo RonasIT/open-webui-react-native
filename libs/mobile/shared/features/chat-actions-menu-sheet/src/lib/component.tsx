@@ -33,6 +33,7 @@ import {
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { ChatAction } from './enums';
 
 export type ChatActionsMenuSheetMethods = {
@@ -236,6 +237,7 @@ export function ChatActionsMenuSheet({ goToChat, ref, isInChat }: ChatActionsMen
       oldFolderId: chatFullData?.folderId,
     });
     fullScreenSearchModalRef.current?.close();
+    ToastService.showSuccess(translate('TEXT_CHAT_MOVED'));
   };
 
   const actions: Array<ActionSheetItemProps> = compact([
