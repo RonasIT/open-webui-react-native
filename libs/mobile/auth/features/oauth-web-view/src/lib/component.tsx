@@ -61,10 +61,10 @@ export function OauthWebView({ isVisible, provider, onClose, onGetToken }: Oauth
     }
   };
 
-  const handleFailOauthFlow = (): void => {
+  const handleFailOauthFlow = (message = translate('TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE')): void => {
     clearCaptureTimeout();
     setIsProcessing(false);
-    ToastService.showError(translate('TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE'));
+    ToastService.showError(message);
     appStorageService.token.set(null);
     onClose();
   };
@@ -80,6 +80,15 @@ export function OauthWebView({ isVisible, provider, onClose, onGetToken }: Oauth
     }
 
     const path = getPath(state.url);
+
+    // NOTE: Handle backend misconfiguration where WEBUI_URL / redirect URI points to a
+    // different domain than the app uses, so login can't complete. Show an appropriate error here.
+    // Skip IdP login pages that also live at `/auth` (e.g. Dex) — they have `client_id` in the URL.
+    if (path === '/auth' && host !== apiHost && !/[?&]client_id=/.test(state.url)) {
+      handleFailOauthFlow(translate('TEXT_SERVER_ADDRESS_MISMATCH'));
+
+      return;
+    }
 
     // Open WebUI ends the OAuth flow by redirecting to its own `/oauth/<provider>/callback`
     // and then to `/auth`, setting a JS-readable `token` cookie along the way. We detect

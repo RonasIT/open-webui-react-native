@@ -20,7 +20,8 @@
       },
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "Fechar",
-        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Este método de login não está disponível. Use outra opção para continuar."
+        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Este método de login não está disponível. Use outra opção para continuar.",
+        "TEXT_SERVER_ADDRESS_MISMATCH": "O endereço do servidor no app não corresponde ao configurado no servidor. Entre usando o endereço principal do servidor."
       }
     }
   }

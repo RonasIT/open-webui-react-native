@@ -20,7 +20,8 @@
       },
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "Cerrar",
-        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Este método de inicio de sesión no está disponible. Usa otra opción para continuar."
+        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Este método de inicio de sesión no está disponible. Usa otra opción para continuar.",
+        "TEXT_SERVER_ADDRESS_MISMATCH": "La dirección del servidor en la app no coincide con la configurada en el servidor. Inicia sesión con la dirección principal del servidor."
       }
     }
   }
