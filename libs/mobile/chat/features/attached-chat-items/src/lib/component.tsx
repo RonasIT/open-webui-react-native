@@ -4,13 +4,14 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement } from 'react';
 import { AttachedFileItem, formatFileSize } from '@open-webui-react-native/mobile/chat/features/attached-file-item';
 import { AttachedImageItem } from '@open-webui-react-native/mobile/chat/features/attached-image-item';
-import { AttachedItem, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import {
   AttachedListItem,
   AttachmentStatus,
   FileType,
   ImageData,
 } from '@open-webui-react-native/shared/data-access/common';
+import { AttachedContextItem } from './components/attached-context-item';
 
 interface AttachedChatItemsProps {
   onDeleteItemPress: (id: string) => void;
@@ -42,26 +43,41 @@ export function AttachedChatItems({
           return null;
         }
 
-        return item.kind === FileType.COLLECTION ? (
-          <AttachedItem
-            key={item.collection.id}
-            disabled
-            title={item.collection.name}
-            subTitle={translate('TEXT_COLLECTION')}
-            iconName='database'
-            onDeletePress={() => onDeleteItemPress(item.collection.id)}
-          />
-        ) : item.kind === FileType.TEXT ? (
-          <AttachedItem
-            key={item.webpage.url}
-            disabled
-            title={item.webpage.name}
-            subTitle={translate(item.webpage.status === AttachmentStatus.ERROR ? 'TEXT_WEBPAGE_ERROR' : 'TEXT_WEBPAGE')}
-            iconName='link'
-            hasError={item.webpage.status === AttachmentStatus.ERROR}
-            onDeletePress={() => onDeleteItemPress(item.webpage.url)}
-          />
-        ) : (
+        if (item.kind === FileType.COLLECTION) {
+          return (
+            <AttachedContextItem
+              key={item.collection.id}
+              type={FileType.COLLECTION}
+              name={item.collection.name}
+              onDeletePress={() => onDeleteItemPress(item.collection.id)}
+            />
+          );
+        }
+
+        if (item.kind === FileType.TEXT) {
+          return (
+            <AttachedContextItem
+              key={item.webpage.url}
+              type={FileType.TEXT}
+              name={item.webpage.name}
+              hasError={item.webpage.status === AttachmentStatus.ERROR}
+              onDeletePress={() => onDeleteItemPress(item.webpage.url)}
+            />
+          );
+        }
+
+        if (item.kind === FileType.CHAT) {
+          return (
+            <AttachedContextItem
+              key={item.chat.id}
+              type={FileType.CHAT}
+              name={item.chat.name}
+              onDeletePress={() => onDeleteItemPress(item.chat.id)}
+            />
+          );
+        }
+
+        return (
           <AttachedFileItem
             key={item.file.id}
             file={item.file}

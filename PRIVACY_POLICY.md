@@ -92,7 +92,7 @@ We may update this Privacy Policy from time to time. We will update the “Last 
 If you have questions about this Privacy Policy, contact Ronas IT:
 
 - Website: [https://ronasit.com](https://ronasit.com)
-- Email: [hello@ronasit.com](mailto:hello@ronasit.com)
+- Email: [openmobileui@ronasit.com](mailto:openmobileui@ronasit.com)
 
 ## Your Open WebUI Server
 

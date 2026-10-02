@@ -95,6 +95,7 @@
       "TEXT_CLONE_OF": "Clone of {{title}}",
       "TEXT_CHAT_ACTIONS": "Chat actions",
       "TEXT_MOVE_TO_FOLDER": "Move to folder",
+      "TEXT_CHAT_MOVED": "Chat moved successfully",
       "DOWNLOAD_CHAT_OPTIONS_SHEET": {
         "TEXT_EXPORT_CHAT_JSON": "Export chat (.json)",
         "TEXT_PLAIN_TEXT": "Plain text (.txt)",
@@ -110,6 +111,9 @@
     "SEARCH_INPUT": {
       "BUTTON_CANCEL": "Cancel",
       "TEXT_SEARCH_CHATS": "Search chats"
+    },
+    "USE_ATTACHED_FILES": {
+      "TEXT_IMAGE_UPLOAD_FAILED": "Couldn't upload the photo. Check your connection and try again"
     }
   }
 }

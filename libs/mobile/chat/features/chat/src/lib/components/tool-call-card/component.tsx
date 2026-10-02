@@ -23,12 +23,12 @@ interface StateAppearance {
 
 const stateAppearances: Record<ToolCallState, StateAppearance> = {
   [ToolCallState.PREPARING]: {
-    iconName: 'tools',
+    iconName: 'settings',
     iconClassName: 'color-text-secondary',
     labelKey: 'TEXT_PREPARING_PREFIX',
   },
   [ToolCallState.EXECUTING]: {
-    iconName: 'tools',
+    iconName: 'settings',
     iconClassName: 'color-text-secondary',
     labelKey: 'TEXT_EXECUTING_PREFIX',
   },

@@ -21,8 +21,6 @@ export interface AttachKnowledgeSheetProps {
   onSelectFile: (knowledge: Knowledge, file: FileData) => void;
 }
 
-const extractId = (item: { id: string }): string => item.id;
-
 export function AttachKnowledgeSheet({
   ref,
   isCollectionAttached,
@@ -125,7 +123,6 @@ export function AttachKnowledgeSheet({
         isLoading={isFilesLoading}
         emptyDescription={translate('TEXT_NO_FILES')}
         data={knowledgeFiles ?? []}
-        keyExtractor={extractId}
         pagination={{ onEndReached: handleFetchNextFilesPage, isFetchingNextPage: isFetchingNextFilesPage }}
         renderItem={renderFileItem}
       />
@@ -158,7 +155,6 @@ export function AttachKnowledgeSheet({
       isLoading={isKnowledgeLoading}
       emptyDescription={translate('TEXT_NO_KNOWLEDGE')}
       data={knowledgeList ?? []}
-      keyExtractor={extractId}
       pagination={{ onEndReached: handleFetchNextKnowledgePage, isFetchingNextPage: isFetchingNextKnowledgePage }}
       renderItem={renderKnowledgeItem}
     />

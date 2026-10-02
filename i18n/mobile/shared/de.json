@@ -95,6 +95,7 @@
       "TEXT_CLONE_OF": "Klon von {{title}}",
       "TEXT_CHAT_ACTIONS": "Chat-Aktionen",
       "TEXT_MOVE_TO_FOLDER": "In Ordner verschieben",
+      "TEXT_CHAT_MOVED": "Chat erfolgreich verschoben",
       "DOWNLOAD_CHAT_OPTIONS_SHEET": {
         "TEXT_EXPORT_CHAT_JSON": "Chat exportieren (.json)",
         "TEXT_PLAIN_TEXT": "Nur Text (.txt)",
@@ -110,6 +111,9 @@
     "SEARCH_INPUT": {
       "BUTTON_CANCEL": "Abbrechen",
       "TEXT_SEARCH_CHATS": "Chats suchen"
+    },
+    "USE_ATTACHED_FILES": {
+      "TEXT_IMAGE_UPLOAD_FAILED": "Foto konnte nicht hochgeladen werden. Prüfe die Verbindung und versuche es erneut"
     }
   }
 }

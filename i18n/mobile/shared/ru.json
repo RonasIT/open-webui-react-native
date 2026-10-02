@@ -95,6 +95,7 @@
       "TEXT_CLONE_OF": "Копия {{title}}",
       "TEXT_CHAT_ACTIONS": "Действия с чатом",
       "TEXT_MOVE_TO_FOLDER": "Переместить в папку",
+      "TEXT_CHAT_MOVED": "Чат успешно перемещён",
       "DOWNLOAD_CHAT_OPTIONS_SHEET": {
         "TEXT_EXPORT_CHAT_JSON": "Экспорт чата (.json)",
         "TEXT_PLAIN_TEXT": "Обычный текст (.txt)",
@@ -110,6 +111,9 @@
     "SEARCH_INPUT": {
       "BUTTON_CANCEL": "Отмена",
       "TEXT_SEARCH_CHATS": "Поиск чатов"
+    },
+    "USE_ATTACHED_FILES": {
+      "TEXT_IMAGE_UPLOAD_FAILED": "Не удалось загрузить фото. Проверьте подключение и попробуйте ещё раз"
     }
   }
 }

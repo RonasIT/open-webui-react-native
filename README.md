@@ -191,6 +191,6 @@ Open MobileUI is designed with privacy in mind. All your conversations and data 
 
 _Professional mobile development services • Open source contributors_
 
-[Website](https://ronasit.com?utm_source=github&utm_medium=referral&utm_campaign=open_webui_react_native) • [GitHub](https://github.com/RonasIT) • [Email](mailto:hello@ronasit.com)
+[Website](https://ronasit.com?utm_source=github&utm_medium=referral&utm_campaign=open_webui_react_native) • [GitHub](https://github.com/RonasIT) • [Email](mailto:openmobileui@ronasit.com)
 
 </div>

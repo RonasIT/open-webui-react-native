@@ -27,7 +27,7 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
   }
 
   public async getChatList(params: GetChatListRequest): Promise<Array<ChatListItem>> {
-    const request = instanceToPlain<GetChatListRequest>(params);
+    const request = instanceToPlain(new GetChatListRequest(params), { exposeUnsetFields: false });
     const response = await getApiService().get<Array<ChatListItem>>(`${chatServiceConfig.versionedRoute}/`, request);
 
     const data = response.map((item) =>

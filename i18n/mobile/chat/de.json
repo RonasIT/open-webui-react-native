@@ -32,21 +32,31 @@
         "TEXT_UPLOAD_FILES": "Dateien hochladen",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Sie können keine leere Datei hochladen.",
         "TEXT_ATTACH_WEBPAGE": "Webseite anhängen",
-        "TEXT_ATTACH_KNOWLEDGE": "Wissen anhängen"
+        "TEXT_ATTACH_KNOWLEDGE": "Wissen anhängen",
+        "TEXT_REFERENCE_CHATS": "Chats referenzieren"
       },
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Webseite anhängen",
         "TEXT_WEBPAGE_URLS": "Webseiten-URLs",
-        "TEXT_INVALID_URL": "Bitte geben Sie eine gültige URL ein."
+        "TEXT_INVALID_URL": "Bitte geben Sie eine gültige URL ein, z. B. https://example.com"
       },
-      "TOOL_PERMISSIONS_POPUP": {
-        "TEXT_FULL_ACCESS": "Vollzugriff",
-        "TEXT_ASK_FOR_APPROVAL": "Um Erlaubnis fragen"
+      "CHAT_SETTINGS_SHEET": {
+        "TEXT_SYSTEM_PROMPT": "Systemprompt",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Nicht festgelegt",
+        "TEXT_TOOLS": "Tools",
+        "TEXT_FULL_ACCESS_FOR_TOOLS": "Vollzugriff",
+        "BUTTON_CLOSE": "Schließen"
       },
-      "TOOLS_POPUP": {
-        "BUTTON_APPLY": "Übernehmen",
+      "TOOLS_SHEET": {
+        "TEXT_TITLE": "Tools",
+        "TEXT_SEARCH_TOOLS": "Tools durchsuchen",
         "TEXT_NO_TOOLS_AVAILABLE": "Keine Tools verfügbar",
+        "TEXT_NOTHING_FOUND": "Nichts gefunden",
         "TEXT_SIGN_IN_REQUIRED": "{{name}} — im Web anmelden"
+      },
+      "SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "Systemaufforderung",
+        "TEXT_PLACEHOLDER": "Systemprompt für diesen Chat eingeben"
       }
     },
     "SHARE_CHAT_MODAL": {
@@ -208,11 +218,22 @@
       "TEXT_SEARCH_FILES": "Dateien durchsuchen",
       "TEXT_NO_FILES": "Keine Dateien in dieser Wissensdatenbank."
     },
+    "REFERENCE_CHATS_SHEET": {
+      "TEXT_TITLE": "Chats",
+      "TEXT_SEARCH_CHATS": "Chats durchsuchen...",
+      "TEXT_NO_CHATS": "Keine Chats gefunden"
+    },
     "ATTACHED_CHAT_ITEMS": {
-      "TEXT_COLLECTION": "Sammlung",
       "TEXT_FILE": "Datei",
-      "TEXT_WEBPAGE": "Webseite",
-      "TEXT_WEBPAGE_ERROR": "Anhängen fehlgeschlagen"
+      "ATTACHED_CONTEXT_ITEM": {
+        "TEXT_COLLECTION": "Sammlung",
+        "TEXT_WEBPAGE": "Webseite",
+        "TEXT_WEBPAGE_ERROR": "Anhängen fehlgeschlagen",
+        "TEXT_CHAT": "Chat"
+      }
+    },
+    "ATTACHED_IMAGE_ITEM": {
+      "TEXT_UPLOAD_FAILED": "Upload fehlgeschlagen"
     }
   }
 }

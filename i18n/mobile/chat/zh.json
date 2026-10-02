@@ -32,21 +32,31 @@
         "TEXT_UPLOAD_FILES": "上传文件",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "无法上传空文件。",
         "TEXT_ATTACH_WEBPAGE": "附加网页",
-        "TEXT_ATTACH_KNOWLEDGE": "附加知识库"
+        "TEXT_ATTACH_KNOWLEDGE": "附加知识库",
+        "TEXT_REFERENCE_CHATS": "引用其他对话"
       },
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "附加网页",
         "TEXT_WEBPAGE_URLS": "网页链接",
-        "TEXT_INVALID_URL": "请输入有效的 URL。"
+        "TEXT_INVALID_URL": "请输入有效的 URL，例如 https://example.com"
       },
-      "TOOL_PERMISSIONS_POPUP": {
-        "TEXT_FULL_ACCESS": "完全访问",
-        "TEXT_ASK_FOR_APPROVAL": "每次询问"
+      "CHAT_SETTINGS_SHEET": {
+        "TEXT_SYSTEM_PROMPT": "系统提示词",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "未设置",
+        "TEXT_TOOLS": "工具",
+        "TEXT_FULL_ACCESS_FOR_TOOLS": "完全访问",
+        "BUTTON_CLOSE": "关闭"
       },
-      "TOOLS_POPUP": {
-        "BUTTON_APPLY": "应用",
+      "TOOLS_SHEET": {
+        "TEXT_TITLE": "工具",
+        "TEXT_SEARCH_TOOLS": "搜索工具",
         "TEXT_NO_TOOLS_AVAILABLE": "没有可用的工具",
+        "TEXT_NOTHING_FOUND": "未找到结果",
         "TEXT_SIGN_IN_REQUIRED": "{{name}} — 请在网页版中登录"
+      },
+      "SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "系统提示词",
+        "TEXT_PLACEHOLDER": "为此聊天输入系统提示词"
       }
     },
     "SHARE_CHAT_MODAL": {
@@ -207,11 +217,22 @@
       "TEXT_SEARCH_FILES": "搜索文件",
       "TEXT_NO_FILES": "此知识库中没有文件。"
     },
+    "REFERENCE_CHATS_SHEET": {
+      "TEXT_TITLE": "对话",
+      "TEXT_SEARCH_CHATS": "搜索对话",
+      "TEXT_NO_CHATS": "未找到对话记录"
+    },
     "ATTACHED_CHAT_ITEMS": {
-      "TEXT_COLLECTION": "集合",
       "TEXT_FILE": "文件",
-      "TEXT_WEBPAGE": "网页",
-      "TEXT_WEBPAGE_ERROR": "附加失败"
+      "ATTACHED_CONTEXT_ITEM": {
+        "TEXT_COLLECTION": "集合",
+        "TEXT_WEBPAGE": "网页",
+        "TEXT_WEBPAGE_ERROR": "附加失败",
+        "TEXT_CHAT": "对话"
+      }
+    },
+    "ATTACHED_IMAGE_ITEM": {
+      "TEXT_UPLOAD_FAILED": "上传失败"
     }
   }
 }

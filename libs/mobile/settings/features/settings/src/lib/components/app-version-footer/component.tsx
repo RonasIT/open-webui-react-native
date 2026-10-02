@@ -11,7 +11,7 @@ export function AppVersionFooter(): ReactElement {
   const version = Constants.expoConfig?.version;
 
   return (
-    <View className='items-center gap-16 pt-64 pb-16'>
+    <View className='px-content-offset items-center gap-16 pt-64 pb-16'>
       <View className='w-full gap-8'>
         {!!version && (
           <AppText className='text-sm-sm sm:text-sm text-text-secondary text-center'>

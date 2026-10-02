@@ -95,6 +95,7 @@
       "TEXT_CLONE_OF": "Clone de {{title}}",
       "TEXT_CHAT_ACTIONS": "Actions de la discussion",
       "TEXT_MOVE_TO_FOLDER": "Déplacer vers un dossier",
+      "TEXT_CHAT_MOVED": "Discussion déplacée avec succès",
       "DOWNLOAD_CHAT_OPTIONS_SHEET": {
         "TEXT_EXPORT_CHAT_JSON": "Exporter la discussion (.json)",
         "TEXT_PLAIN_TEXT": "Texte brut (.txt)",
@@ -110,6 +111,9 @@
     "SEARCH_INPUT": {
       "BUTTON_CANCEL": "Annuler",
       "TEXT_SEARCH_CHATS": "Rechercher des discussions"
+    },
+    "USE_ATTACHED_FILES": {
+      "TEXT_IMAGE_UPLOAD_FAILED": "Impossible d'envoyer la photo. Vérifiez votre connexion et réessayez"
     }
   }
 }

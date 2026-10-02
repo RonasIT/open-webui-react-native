@@ -28,20 +28,16 @@ import {
 import {
   AttachedImage,
   AttachedListItem,
+  AttachmentStatus,
   FileType,
   ImageData,
+  PickedImageData,
 } from '@open-webui-react-native/shared/data-access/common';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { toDataUrl } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
-import {
-  AttachmentsMenuSheet,
-  ChatInputBottomRow,
-  SelectOptionIcon,
-  ToolPermissionsMenuSheet,
-  ToolsMenuSheet,
-} from './components';
+import { AttachmentsMenuSheet, ChatInputBottomRow, ChatSettingsSheet, SelectOptionIcon } from './components';
 
 interface FormChatInputProps<T extends FieldValues> extends AppInputProps {
   name: Path<T>;
@@ -51,7 +47,7 @@ interface FormChatInputProps<T extends FieldValues> extends AppInputProps {
   onItemAttached: (item: AttachedListItem) => void;
   onDeleteItemPress: (id: string) => void;
   attachedImages: Observable<Array<ImageData>>;
-  onImageUploaded: (image: ImageData) => void;
+  onImageUploaded: (image: PickedImageData) => void;
   onDeleteImagePress: (fileName: string) => void;
   chat?: ChatResponse;
   modelId?: string;
@@ -127,12 +123,16 @@ export function FormChatInput<T extends FieldValues>({
   const { present: openVoiceModeModal } = useVoiceModeModal();
 
   const isInputEmpty = !field.value?.trim() && items.length === 0 && images.length === 0;
+  // NOTE: The web app queues a message sent while its images upload; here sending simply waits.
+  const isImageUploading = images.some((image) => image?.status === AttachmentStatus.UPLOADING);
 
   const isKnowledgeCollectionAttached = (id: string): boolean =>
     items.some((item) => item?.kind === FileType.COLLECTION && item.collection.id === id);
 
   const isKnowledgeFileAttached = (id: string): boolean =>
     items.some((item) => item?.kind === FileType.FILE && item.isFromKnowledge && item.file.id === id);
+
+  const attachedChatIds = items.flatMap((item) => (item?.kind === FileType.CHAT ? [item.chat.id] : []));
 
   const imagesForPreview = images.flatMap((image, index) =>
     image
@@ -160,8 +160,8 @@ export function FormChatInput<T extends FieldValues>({
 
   const onGenerationOptionPress = (option: ChatGenerationOption): void => setOptions((state) => xor(state, [option]));
 
-  const onToolPress = (toolId: string): void => {
-    toolsSelectionState$[toolsSelectionKey].set({ modelId, toolIds: xor(selectedToolIds, [toolId]) });
+  const onApplyToolIds = (toolIds: Array<string>): void => {
+    toolsSelectionState$[toolsSelectionKey].set({ modelId, toolIds });
   };
 
   const handleDictateModePress = withOfflineGuard(() => setIsDictateMode(true));
@@ -214,7 +214,7 @@ export function FormChatInput<T extends FieldValues>({
           accessoryBottom={
             <ChatInputBottomRow
               onSubmit={() => onSubmit(options)}
-              isSubmitDisabled={!isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty}
+              isSubmitDisabled={(!isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty) || isImageUploading}
               onVoiceModePress={onVoiceModePress}
               isVoiceModeAvailable={isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty}
               onStopGenerationPress={onStopGenerationPress}
@@ -229,6 +229,8 @@ export function FormChatInput<T extends FieldValues>({
                     onImageUploaded={onImageUploaded}
                     isKnowledgeCollectionAttached={isKnowledgeCollectionAttached}
                     isKnowledgeFileAttached={isKnowledgeFileAttached}
+                    chatId={chat?.id}
+                    attachedChatIds={attachedChatIds}
                   />
                   {config?.features.enableImageGeneration && (
                     <SelectOptionIcon
@@ -246,15 +248,14 @@ export function FormChatInput<T extends FieldValues>({
                       isSelected={options.includes(ChatGenerationOption.WEB_SEARCH)}
                     />
                   )}
-                  {!!tools?.length && (
-                    <ToolsMenuSheet
-                      disabled={isLoading}
-                      tools={tools}
-                      selectedToolIds={selectedToolIds}
-                      onToolPress={onToolPress}
-                    />
-                  )}
-                  {config?.features.enableToolPermissions && <ToolPermissionsMenuSheet disabled={isLoading} />}
+                  <ChatSettingsSheet
+                    disabled={isLoading}
+                    tools={tools ?? []}
+                    selectedToolIds={selectedToolIds}
+                    onApplyToolIds={onApplyToolIds}
+                    chat={chat}
+                    isToolPermissionsEnabled={config?.features.enableToolPermissions}
+                  />
                 </View>
                 <IconButton
                   disabled={isLoading}

@@ -32,21 +32,31 @@
         "TEXT_UPLOAD_FILES": "Загрузить файлы",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Нельзя загрузить пустой файл.",
         "TEXT_ATTACH_WEBPAGE": "Прикрепить веб-страницу",
-        "TEXT_ATTACH_KNOWLEDGE": "Прикрепить базу знаний"
+        "TEXT_ATTACH_KNOWLEDGE": "Прикрепить базу знаний",
+        "TEXT_REFERENCE_CHATS": "Чаты для контекста"
       },
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Прикрепить веб-страницу",
         "TEXT_WEBPAGE_URLS": "URL веб-страниц",
-        "TEXT_INVALID_URL": "Введите корректный URL."
+        "TEXT_INVALID_URL": "Введите корректный URL, напр. https://example.com"
       },
-      "TOOL_PERMISSIONS_POPUP": {
-        "TEXT_FULL_ACCESS": "Полный доступ",
-        "TEXT_ASK_FOR_APPROVAL": "Спрашивать разрешение"
+      "CHAT_SETTINGS_SHEET": {
+        "TEXT_SYSTEM_PROMPT": "Системный промпт",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Не задано",
+        "TEXT_TOOLS": "Инструменты",
+        "TEXT_FULL_ACCESS_FOR_TOOLS": "Полный доступ",
+        "BUTTON_CLOSE": "Закрыть"
       },
-      "TOOLS_POPUP": {
-        "BUTTON_APPLY": "Применить",
+      "TOOLS_SHEET": {
+        "TEXT_TITLE": "Инструменты",
+        "TEXT_SEARCH_TOOLS": "Поиск инструментов",
         "TEXT_NO_TOOLS_AVAILABLE": "Инструменты недоступны",
+        "TEXT_NOTHING_FOUND": "Ничего не найдено",
         "TEXT_SIGN_IN_REQUIRED": "{{name}} — войдите в веб-версии"
+      },
+      "SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "Системный промпт",
+        "TEXT_PLACEHOLDER": "Введите системный промпт для этого чата"
       }
     },
     "SHARE_CHAT_MODAL": {
@@ -209,11 +219,22 @@
       "TEXT_SEARCH_FILES": "Поиск файлов",
       "TEXT_NO_FILES": "В этой базе знаний нет файлов."
     },
+    "REFERENCE_CHATS_SHEET": {
+      "TEXT_TITLE": "Чаты",
+      "TEXT_SEARCH_CHATS": "Поиск в чатах",
+      "TEXT_NO_CHATS": "Чаты не найдены"
+    },
     "ATTACHED_CHAT_ITEMS": {
-      "TEXT_COLLECTION": "Коллекция",
       "TEXT_FILE": "Файл",
-      "TEXT_WEBPAGE": "Веб-страница",
-      "TEXT_WEBPAGE_ERROR": "Не удалось прикрепить"
+      "ATTACHED_CONTEXT_ITEM": {
+        "TEXT_COLLECTION": "Коллекция",
+        "TEXT_WEBPAGE": "Веб-страница",
+        "TEXT_WEBPAGE_ERROR": "Не удалось прикрепить",
+        "TEXT_CHAT": "Чат"
+      }
+    },
+    "ATTACHED_IMAGE_ITEM": {
+      "TEXT_UPLOAD_FAILED": "Не загружено"
     }
   }
 }

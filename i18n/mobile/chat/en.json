@@ -32,21 +32,31 @@
         "TEXT_UPLOAD_FILES": "Upload files",
         "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "You cannot upload an empty file.",
         "TEXT_ATTACH_WEBPAGE": "Attach Webpage",
-        "TEXT_ATTACH_KNOWLEDGE": "Attach Knowledge"
+        "TEXT_ATTACH_KNOWLEDGE": "Attach Knowledge",
+        "TEXT_REFERENCE_CHATS": "Reference Chats"
       },
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Attach Webpage",
         "TEXT_WEBPAGE_URLS": "Webpage URLs",
-        "TEXT_INVALID_URL": "Please enter a valid URL."
+        "TEXT_INVALID_URL": "Please enter a valid URL, e.g. https://example.com"
       },
-      "TOOL_PERMISSIONS_POPUP": {
-        "TEXT_FULL_ACCESS": "Full access",
-        "TEXT_ASK_FOR_APPROVAL": "Ask for approval"
+      "CHAT_SETTINGS_SHEET": {
+        "TEXT_SYSTEM_PROMPT": "System prompt",
+        "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Not set",
+        "TEXT_TOOLS": "Tools",
+        "TEXT_FULL_ACCESS_FOR_TOOLS": "Full access for tools",
+        "BUTTON_CLOSE": "Close"
       },
-      "TOOLS_POPUP": {
-        "BUTTON_APPLY": "Apply",
+      "TOOLS_SHEET": {
+        "TEXT_TITLE": "Tools",
+        "TEXT_SEARCH_TOOLS": "Search tools",
         "TEXT_NO_TOOLS_AVAILABLE": "No tools available",
+        "TEXT_NOTHING_FOUND": "Nothing found",
         "TEXT_SIGN_IN_REQUIRED": "{{name}} — sign in on the web"
+      },
+      "SYSTEM_PROMPT_SHEET": {
+        "TEXT_TITLE": "System Prompt",
+        "TEXT_PLACEHOLDER": "Enter a system prompt for this chat"
       }
     },
     "SHARE_CHAT_MODAL": {
@@ -208,11 +218,22 @@
       "TEXT_SEARCH_FILES": "Search files",
       "TEXT_NO_FILES": "No files in this knowledge base."
     },
+    "REFERENCE_CHATS_SHEET": {
+      "TEXT_TITLE": "Chats",
+      "TEXT_SEARCH_CHATS": "Search Chats",
+      "TEXT_NO_CHATS": "No chats found"
+    },
     "ATTACHED_CHAT_ITEMS": {
-      "TEXT_COLLECTION": "Collection",
       "TEXT_FILE": "File",
-      "TEXT_WEBPAGE": "Webpage",
-      "TEXT_WEBPAGE_ERROR": "Failed to attach"
+      "ATTACHED_CONTEXT_ITEM": {
+        "TEXT_COLLECTION": "Collection",
+        "TEXT_WEBPAGE": "Webpage",
+        "TEXT_WEBPAGE_ERROR": "Failed to attach",
+        "TEXT_CHAT": "Chat"
+      }
+    },
+    "ATTACHED_IMAGE_ITEM": {
+      "TEXT_UPLOAD_FAILED": "Upload failed"
     }
   }
 }

@@ -8,6 +8,7 @@ import { View } from '../../../view';
 
 export interface ActionSheetItemProps extends AppPressableProps {
   title: string;
+  value?: string;
   isCentered?: boolean;
   isIconShown?: boolean;
   iconName?: IconName;
@@ -15,10 +16,12 @@ export interface ActionSheetItemProps extends AppPressableProps {
   isLoading?: boolean;
   isDanger?: boolean;
   hasSubActions?: boolean;
+  numberOfLines?: number;
 }
 
 export function ActionSheetItem({
   title,
+  value,
   isCentered,
   className,
   isIconShown = true,
@@ -27,6 +30,7 @@ export function ActionSheetItem({
   isLoading,
   isDanger,
   hasSubActions = false,
+  numberOfLines,
   ...restProps
 }: ActionSheetItemProps): ReactElement {
   return (
@@ -51,10 +55,19 @@ export function ActionSheetItem({
           </View>
         )
       )}
-      <AppText className={cn(`text-md-sm sm:text-md`, isDanger && 'text-status-danger')}>{title}</AppText>
-      {hasSubActions && (
-        <View className='ml-auto'>
-          <Icon name='chevronRight' />
+      <AppText
+        numberOfLines={numberOfLines}
+        className={cn('text-md-sm sm:text-md', isDanger && 'text-status-danger', !value && numberOfLines && 'flex-1')}>
+        {title}
+      </AppText>
+      {(!!value || hasSubActions) && (
+        <View className='min-w-0 flex-1 flex-row items-center justify-end gap-8'>
+          {!!value && (
+            <AppText numberOfLines={1} className='shrink text-right text-sm-sm sm:text-sm text-text-secondary'>
+              {value}
+            </AppText>
+          )}
+          {hasSubActions && <Icon name='chevronRight' className='shrink-0' />}
         </View>
       )}
     </AppPressable>

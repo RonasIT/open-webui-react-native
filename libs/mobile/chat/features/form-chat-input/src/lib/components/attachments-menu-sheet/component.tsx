@@ -11,24 +11,29 @@ import {
   ImagePickerSource,
 } from '@open-webui-react-native/mobile/shared/data-access/image-picker-service';
 import { ActionsBottomSheet, ActionSheetItemProps, IconButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { authApi, filesApi, isFeaturePermitted, Knowledge } from '@open-webui-react-native/shared/data-access/api';
+import { ChatListItem, filesApi, isFeaturePermitted, Knowledge } from '@open-webui-react-native/shared/data-access/api';
 import {
+  AttachedChat,
   AttachedKnowledgeCollection,
   AttachedListItem,
+  AttachmentStatus,
   FileData,
   FileType,
-  ImageData,
+  PickedImageData,
 } from '@open-webui-react-native/shared/data-access/common';
 import { getDocumentFormData } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { AttachWebpageSheet, AttachWebpageSheetMethods } from '../attach-webpage-sheet';
+import { ReferenceChatsSheet, ReferenceChatsSheetMethods } from '../reference-chats-sheet';
 
 export interface AttachmentsMenuSheetProps {
   disabled?: boolean;
   onItemAttached: (item: AttachedListItem) => void;
-  onImageUploaded?: (image: ImageData) => void;
+  onImageUploaded?: (image: PickedImageData) => void;
   isKnowledgeCollectionAttached: (id: string) => boolean;
   isKnowledgeFileAttached: (id: string) => boolean;
+  chatId?: string;
+  attachedChatIds: Array<string>;
 }
 
 export function AttachmentsMenuSheet({
@@ -37,12 +42,15 @@ export function AttachmentsMenuSheet({
   onImageUploaded,
   isKnowledgeCollectionAttached,
   isKnowledgeFileAttached,
+  chatId,
+  attachedChatIds,
 }: AttachmentsMenuSheetProps): ReactElement {
   const translate = useTranslation('CHAT.FORM_CHAT_INPUT.ATTACHMENTS_ACTIONS_POPUP');
   const modalRef = useRef<BottomSheetModal>(null);
   const attachKnowledgeSheetRef = useRef<AttachKnowledgeSheetMethods>(null);
+  const referenceChatsSheetRef = useRef<ReferenceChatsSheetMethods>(null);
   const attachWebpageSheetRef = useRef<AttachWebpageSheetMethods>(null);
-  const { data: profile } = authApi.useGetProfile();
+  const isFileUploadEnabled = isFeaturePermitted('chat', 'fileUpload', true);
   const {
     mutate: uploadFile,
     isPending: isFileUploading,
@@ -50,7 +58,7 @@ export function AttachmentsMenuSheet({
     data: file,
   } = filesApi.useUploadFile();
 
-  const isWebUploadEnabled = isFeaturePermitted(profile?.permissions?.chat?.webUpload, true);
+  const isWebUploadEnabled = isFeaturePermitted('chat', 'webUpload', true);
 
   const closeModal = (): void => modalRef.current?.close();
 
@@ -83,11 +91,9 @@ export function AttachmentsMenuSheet({
     }
 
     if (file.mimeType && file.mimeType.startsWith('image/')) {
-      const imageBase64 = await fileSystemService.convertToBase64(file.uri);
-
       closeModal();
 
-      return onImageUploaded?.({ uri: file.uri, base64: imageBase64, mimeType: file.mimeType });
+      return onImageUploaded?.({ uri: file.uri, mimeType: file.mimeType, fileName: file.name });
     }
 
     uploadFile(getDocumentFormData(file));
@@ -96,6 +102,25 @@ export function AttachmentsMenuSheet({
   const handleAttachKnowledgePress = (): void => {
     closeModal();
     attachKnowledgeSheetRef.current?.present();
+  };
+
+  const handleReferenceChatsPress = (): void => {
+    closeModal();
+    referenceChatsSheetRef.current?.present();
+  };
+
+  // NOTE: status is always PROCESSED here, mirroring the web client — a referenced chat has
+  // no server-side processing step to wait on, unlike an uploaded file.
+  const handleSelectChat = (chat: ChatListItem): void => {
+    onItemAttached({
+      kind: FileType.CHAT,
+      chat: new AttachedChat({
+        id: chat.id,
+        type: FileType.CHAT,
+        name: chat.title,
+        status: AttachmentStatus.PROCESSED,
+      }),
+    });
   };
 
   const handleAttachWebpagePress = (): void => {
@@ -111,7 +136,7 @@ export function AttachmentsMenuSheet({
         type: FileType.COLLECTION,
         name: knowledge.name,
         description: knowledge.description,
-        status: 'processed',
+        status: AttachmentStatus.PROCESSED,
       }),
     });
   };
@@ -153,6 +178,15 @@ export function AttachmentsMenuSheet({
       iconName: 'database',
       onPress: handleAttachKnowledgePress,
     },
+    ...(isFileUploadEnabled
+      ? [
+          {
+            title: translate('TEXT_REFERENCE_CHATS'),
+            iconName: 'history' as const,
+            onPress: handleReferenceChatsPress,
+          },
+        ]
+      : []),
   ];
 
   const renderTrigger = ({ onPress }: { onPress: () => void }): ReactElement => (
@@ -182,6 +216,12 @@ export function AttachmentsMenuSheet({
         isFileAttached={isKnowledgeFileAttached}
         onSelectCollection={handleSelectKnowledgeCollection}
         onSelectFile={handleSelectKnowledgeFile}
+      />
+      <ReferenceChatsSheet
+        ref={referenceChatsSheetRef}
+        chatId={chatId}
+        attachedChatIds={attachedChatIds}
+        onSelectChat={handleSelectChat}
       />
       <AttachWebpageSheet ref={attachWebpageSheetRef} onItemAttached={onItemAttached} />
     </Fragment>

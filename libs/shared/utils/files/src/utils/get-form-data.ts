@@ -1,6 +1,7 @@
 import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker';
 import { Platform } from 'react-native';
+import { ImageMimeType } from '../enums';
 import { isDocumentAsset } from './is-document-asset';
 
 export const getDocumentFormData = (
@@ -19,6 +20,22 @@ export const getDocumentFormData = (
 
     formData.append(fieldName, { uri, type, name: match?.[1] } as any);
   }
+
+  return formData;
+};
+
+export const getImageFormData = (
+  image: { uri: string; mimeType?: string; fileName?: string },
+  fieldName = 'file',
+): FormData => {
+  const formData = new FormData();
+
+  const type = image.mimeType ?? ImageMimeType.JPEG;
+  // NOTE: Camera shots and HEIC conversions carry no file name, and the backend needs one to store
+  // the upload — the name is not shown anywhere, so the last URI segment is enough.
+  const name = image.fileName || image.uri.split('/').pop() || `image.${type.split('/')[1]}`;
+
+  formData.append(fieldName, { uri: image.uri, type, name } as any);
 
   return formData;
 };
