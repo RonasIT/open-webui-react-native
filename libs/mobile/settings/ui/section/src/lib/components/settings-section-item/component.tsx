@@ -19,7 +19,7 @@ export function SettingsSectionItem({ option }: SettingsSectionItemProps): React
 
   if (option.type === 'switch') {
     return (
-      <View className='flex-row items-center justify-between gap-12 py-10'>
+      <View className='flex-row items-center justify-between gap-12 px-content-offset py-10'>
         <View className='shrink flex-1 flex-row items-center gap-12'>{titleContent}</View>
         <AppSwitch value={option.isEnabled} onValueChange={option.onValueChange} />
       </View>
@@ -29,7 +29,7 @@ export function SettingsSectionItem({ option }: SettingsSectionItemProps): React
   return (
     <AppPressable
       onPress={option.onPress}
-      className='flex-row items-center justify-between gap-12 py-14 active:opacity-100 active:bg-background-secondary'>
+      className='flex-row items-center justify-between gap-12 px-content-offset py-14 active:opacity-100 active:bg-background-secondary'>
       <View className='shrink-0 flex-row items-center gap-12'>{titleContent}</View>
       {option.type !== 'action' && (
         <View className='min-w-0 flex-1 flex-row items-center justify-end gap-8'>

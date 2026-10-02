@@ -357,7 +357,7 @@ export function Settings(): ReactElement {
 
   return (
     <View className='pb-safe'>
-      <View className='py-16 items-center justify-center'>
+      <View className='px-content-offset py-16 items-center justify-center'>
         <Avatar
           source={avatarSource}
           name={profile?.name}
