@@ -38,7 +38,7 @@
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Joindre une page web",
         "TEXT_WEBPAGE_URLS": "URL de pages web",
-        "TEXT_INVALID_URL": "Veuillez saisir une URL valide."
+        "TEXT_INVALID_URL": "Veuillez saisir une URL valide, ex. https://example.com"
       },
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "Invite système",

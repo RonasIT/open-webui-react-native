@@ -38,7 +38,7 @@
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Adjuntar página web",
         "TEXT_WEBPAGE_URLS": "URLs de páginas web",
-        "TEXT_INVALID_URL": "Introduce una URL válida."
+        "TEXT_INVALID_URL": "Introduce una URL válida, p. ej. https://example.com"
       },
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "Prompt del sistema",

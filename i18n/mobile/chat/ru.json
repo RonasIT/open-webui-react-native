@@ -38,7 +38,7 @@
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Прикрепить веб-страницу",
         "TEXT_WEBPAGE_URLS": "URL веб-страниц",
-        "TEXT_INVALID_URL": "Введите корректный URL."
+        "TEXT_INVALID_URL": "Введите корректный URL, напр. https://example.com"
       },
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "Системный промпт",

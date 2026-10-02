@@ -38,7 +38,7 @@
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Webseite anhängen",
         "TEXT_WEBPAGE_URLS": "Webseiten-URLs",
-        "TEXT_INVALID_URL": "Bitte geben Sie eine gültige URL ein."
+        "TEXT_INVALID_URL": "Bitte geben Sie eine gültige URL ein, z. B. https://example.com"
       },
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "Systemprompt",
