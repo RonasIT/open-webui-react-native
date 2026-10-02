@@ -13,10 +13,16 @@ const getOperation = (error: unknown): string => {
   return error instanceof Error ? error.message : 'unknown';
 };
 
+const getSkipSentryReport = (error: unknown): boolean => {
+  return isAxiosError(error) && Boolean((error as AxiosError).config?.params?.skipSentryReport);
+};
+
 export const sentryErrorCatcherInterceptor =
   () =>
   (error: unknown): Promise<never> => {
-    captureApiError(error, { operation: getOperation(error) });
+    if (!getSkipSentryReport(error)) {
+      captureApiError(error, { operation: getOperation(error) });
+    }
 
     return Promise.reject(error);
   };
