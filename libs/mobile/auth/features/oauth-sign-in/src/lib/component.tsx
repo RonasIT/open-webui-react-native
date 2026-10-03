@@ -2,11 +2,7 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { Fragment, ReactElement, useState } from 'react';
 import { OauthWebView } from '@open-webui-react-native/mobile/auth/features/oauth-web-view';
 import { AppButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import {
-  oauthProvidersConfig,
-  Provider,
-  SupportedOauthProvider,
-} from '@open-webui-react-native/shared/data-access/api';
+import { oauthProvidersConfig, SupportedOauthProvider } from '@open-webui-react-native/shared/data-access/api';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { oauthProviderIcons } from './config';
 
@@ -41,8 +37,8 @@ export function OauthSignIn({ provider, providerName, onSuccess }: OauthSignInPr
     <Fragment>
       <AppButton
         text={translate('BUTTON_CONTINUE_WITH', { provider: displayName })}
-        iconName={oauthProviderIcons[provider]}
-        iconClassName={provider === Provider.GITHUB ? 'color-background-primary' : undefined}
+        iconName={oauthProviderIcons[provider]?.iconName}
+        iconClassName={oauthProviderIcons[provider]?.iconClassName}
         onPress={handleSignInPress}
       />
       <OauthWebView
