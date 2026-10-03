@@ -108,6 +108,7 @@ export const captureApiError = (error: unknown, { operation, context = {} }: Cap
       scope.setTag('api.operation', operation);
       scope.setTag('http.status_code', String(status ?? 'unknown'));
       scope.setTag('http.method', config?.method ?? 'unknown');
+      scope.setTag('error.category', 'network');
       scope.setLevel('error');
 
       scope.setContext('api', {
@@ -132,6 +133,7 @@ export const captureApiError = (error: unknown, { operation, context = {} }: Cap
 
   Sentry.withScope((scope) => {
     scope.setTag('api.operation', operation);
+    scope.setTag('error.category', 'network');
     scope.setContext('api_request', sanitizeContextForSentry(context));
     Sentry.captureException(error);
   });
