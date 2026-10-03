@@ -46,7 +46,7 @@ export function useGetAppConfiguration(
       setCustomState({ isSuccess: false, isError: false, isLoading: true });
       const config = await queryClient.fetchQuery({
         queryKey: appConfigurationApiConfig.getUrlConfigQueryKey,
-        queryFn: () => appConfigurationService.get(configUrl, true),
+        queryFn: () => appConfigurationService.get(configUrl, true, true),
       });
       setCustomState({ isSuccess: true, isError: false, isLoading: false });
       setFetchWithUrlResult(config);

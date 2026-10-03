@@ -4,10 +4,10 @@ import { appConfigurationApiConfig } from './config';
 import { Configuration } from './models';
 
 export class AppConfigurationService {
-  public async get(url?: string, skipToast?: boolean): Promise<Configuration> {
+  public async get(url?: string, skipToast?: boolean, skipSentryReport?: boolean): Promise<Configuration> {
     const data: Configuration = await getApiService(url).get(
       appConfigurationApiConfig.route,
-      { skipToast },
+      { skipToast, skipSentryReport },
       {
         withCredentials: true,
       },
