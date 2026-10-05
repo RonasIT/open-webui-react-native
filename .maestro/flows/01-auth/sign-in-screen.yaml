@@ -1,0 +1,11 @@
+appId: ${APP_ID}
+name: Sign-in screen is shown on first launch
+tags:
+  - smoke
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: sign-in-screen
+    timeout: 60000

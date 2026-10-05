@@ -1,0 +1,5 @@
+flows:
+  - "flows/**"
+excludeTags:
+  - wip
+  - flaky

@@ -1,0 +1,142 @@
+name: E2E
+
+on:
+  push:
+    # TODO: remove PRD-2973-e2e-ci-setup before merge, it is here only to run the workflow from this branch
+    branches: [main, PRD-2973-e2e-ci-setup]
+  workflow_dispatch:
+
+# NOTE: All runs share one test account, so they wait for each other
+concurrency:
+  group: e2e
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      EXPO_NO_TELEMETRY: "1"
+      SENTRY_DISABLE_AUTO_UPLOAD: "true"
+      EXPO_PUBLIC_APP_ENV: development
+      EXPO_PUBLIC_PROJECT_ID: ${{ vars.EXPO_PUBLIC_PROJECT_ID }}
+      EXPO_PUBLIC_APP_ID: ${{ vars.EXPO_PUBLIC_APP_ID }}
+      EXPO_PUBLIC_APP_NAME: ${{ vars.EXPO_PUBLIC_APP_NAME }}
+      EXPO_PUBLIC_APP_SLUG: ${{ vars.EXPO_PUBLIC_APP_SLUG }}
+      EXPO_PUBLIC_APP_SCHEME: ${{ vars.EXPO_PUBLIC_APP_SCHEME }}
+      EXPO_PUBLIC_APP_OWNER: ${{ vars.EXPO_PUBLIC_APP_OWNER }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Prebuild Android
+        working-directory: apps/mobile
+        run: npx expo prebuild --platform android --non-interactive
+
+      # NOTE: Only the emulator architecture, much faster than building all ABIs
+      - name: Build release APK
+        working-directory: apps/mobile/android
+        run: ./gradlew assembleRelease --no-daemon -PreactNativeArchitectures=x86_64
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-apk
+          path: apps/mobile/android/app/build/outputs/apk/release/app-release.apk
+          retention-days: 7
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      APP_ID: ${{ vars.EXPO_PUBLIC_APP_ID }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download APK
+        uses: actions/download-artifact@v4
+        with:
+          name: app-apk
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install Maestro
+        run: |
+          curl -Ls "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      # NOTE: Without KVM the emulator runs without hardware acceleration and is very slow
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Cache AVD
+        uses: actions/cache@v4
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-34-x86_64-google_apis
+
+      - name: Create AVD snapshot
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          force-avd-creation: false
+          disable-animations: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: echo "AVD snapshot created"
+
+      - name: Run Maestro tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          force-avd-creation: false
+          disable-animations: true
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: bash .maestro/run.sh
+
+      - name: Upload Maestro report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-report
+          path: maestro-output
+          if-no-files-found: ignore
