@@ -180,7 +180,11 @@
     "VOICE_MODE_MODAL": {
       "TEXT_LISTENING": "Écoute...",
       "TEXT_THINKING": "Réflexion...",
-      "TEXT_TALKING": "Parole..."
+      "TEXT_TALKING": "Parole...",
+      "IMAGE_SOURCE_SHEET": {
+        "TEXT_TAKE_PHOTO": "Capturer",
+        "TEXT_CHOOSE_FROM_GALLERY": "Choisir dans la galerie"
+      }
     },
     "MESSAGE_FOLLOW_UPS": {
       "TEXT_FOLLOW_UP": "Suite"

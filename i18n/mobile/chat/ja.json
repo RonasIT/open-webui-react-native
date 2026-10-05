@@ -179,7 +179,11 @@
     "VOICE_MODE_MODAL": {
       "TEXT_LISTENING": "聞いています...",
       "TEXT_THINKING": "考えています...",
-      "TEXT_TALKING": "話しています..."
+      "TEXT_TALKING": "話しています...",
+      "IMAGE_SOURCE_SHEET": {
+        "TEXT_TAKE_PHOTO": "撮影",
+        "TEXT_CHOOSE_FROM_GALLERY": "ギャラリーから選択"
+      }
     },
     "MESSAGE_FOLLOW_UPS": {
       "TEXT_FOLLOW_UP": "フォローアップ"

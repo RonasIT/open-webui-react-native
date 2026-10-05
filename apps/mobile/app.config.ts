@@ -104,14 +104,6 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
         },
       ],
       [
-        'expo-camera',
-        {
-          cameraPermission:
-            'Open MobileUI uses your camera to let you share live visuals during voice mode conversations.',
-          recordAudioAndroid: false,
-        },
-      ],
-      [
         'expo-media-library',
         {
           savePhotosPermission:
