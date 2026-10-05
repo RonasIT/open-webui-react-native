@@ -59,10 +59,15 @@ jobs:
         working-directory: apps/mobile
         run: npx expo prebuild --platform android --non-interactive
 
-      # NOTE: Only the emulator architecture, much faster than building all ABIs
+      # NOTE: Only the emulator architecture, much faster than building all ABIs.
+      # Lint is skipped: it runs out of Metaspace on CI and isn't needed for e2e
       - name: Build release APK
         working-directory: apps/mobile/android
-        run: ./gradlew assembleRelease --no-daemon -PreactNativeArchitectures=x86_64
+        run: >
+          ./gradlew assembleRelease --no-daemon
+          -PreactNativeArchitectures=x86_64
+          -x lintVitalRelease
+          "-Dorg.gradle.jvmargs=-Xmx6g -XX:MaxMetaspaceSize=1g"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
