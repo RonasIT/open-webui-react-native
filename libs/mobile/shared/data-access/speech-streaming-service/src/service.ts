@@ -18,7 +18,9 @@ class SpeechStreamingService {
   private queue: Array<SpeechQueueItem>;
   private isProcessingQueue: boolean;
   private listeners: Map<string, Array<(...args: Array<any>) => void>> = new Map();
+  // NOTE: Requested language code, e.g. 'de'
   private language: string;
+  // NOTE: Voice tag picked for the current reply, e.g. 'de-DE'
   private voiceLanguage?: string;
   private voices?: Array<Speech.Voice>;
 
