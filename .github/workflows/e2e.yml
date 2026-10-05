@@ -43,8 +43,11 @@ jobs:
           distribution: temurin
           java-version: "17"
 
+      # The default `tools` package no longer exists in the SDK repository
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
