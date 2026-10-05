@@ -1,7 +1,6 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Modal, { ModalProps } from 'react-native-modal';
 import { useCreateNewChat } from '@open-webui-react-native/mobile/chat/features/use-create-new-chat';
 import { useSendMessage } from '@open-webui-react-native/mobile/chat/features/use-send-message';
@@ -246,32 +245,29 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
       animationIn='fadeIn'
       style={{ overflow: 'hidden', margin: 0 }}
       {...props}>
-      <GestureHandlerRootView className='flex-1'>
-        <BottomSheetModalProvider>
-          <View className='flex-1 bg-background-primary'>
-            <AppSafeAreaView edges={['bottom']} className='flex-1'>
-              <View className='flex-1 items-center justify-center px-24'>
-                {isThinking || isAiSpeaking ? <Loader /> : <SpeechListener metering={metering} />}
-              </View>
-              <View className='flex-row justify-between items-center p-24'>
-                <ImageSourceSheet onSelectSource={handlePickImage} />
-                <AppText className='text-sm-sm sm:text-sm'>
-                  {isAiSpeaking
-                    ? translate('TEXT_TALKING')
-                    : isThinking
-                      ? translate('TEXT_THINKING')
-                      : translate('TEXT_LISTENING')}
-                </AppText>
-                <IconButton
-                  iconName='close'
-                  onPress={close}
-                  className='w-40 h-40 bg-background-secondary rounded-full'
-                />
-              </View>
-            </AppSafeAreaView>
-          </View>
-        </BottomSheetModalProvider>
-      </GestureHandlerRootView>
+      <BottomSheetModalProvider>
+        <View className='flex-1 bg-background-primary'>
+          <AppSafeAreaView edges={['bottom']} className='flex-1'>
+            <View className='flex-1 items-center justify-center px-24'>
+              {isThinking || isAiSpeaking ? <Loader /> : <SpeechListener metering={metering} />}
+            </View>
+            <View className='flex-row justify-between items-center p-24'>
+              <ImageSourceSheet onSelectSource={handlePickImage} />
+              <AppText className='text-sm-sm sm:text-sm'>
+                {isAiSpeaking
+                  ? translate('TEXT_TALKING')
+                  : isThinking
+                    ? translate('TEXT_THINKING')
+                    : translate('TEXT_LISTENING')}
+              </AppText>
+              <IconButton
+                iconName='close'
+                onPress={close}
+                className='w-40 h-40 bg-background-secondary rounded-full' />
+            </View>
+          </AppSafeAreaView>
+        </View>
+      </BottomSheetModalProvider>
       <AppToast />
     </Modal>
   );
