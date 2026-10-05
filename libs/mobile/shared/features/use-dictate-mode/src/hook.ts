@@ -1,11 +1,13 @@
+import { useSelector } from '@legendapp/state/react';
 import { useEffect, useState } from 'react';
 import { useAudioRecorder } from '@open-webui-react-native/mobile/shared/features/use-audio-recorder';
-import { audioApi } from '@open-webui-react-native/shared/data-access/api';
+import { audioApi, usersApi } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { getAudioFormData } from '@open-webui-react-native/shared/utils/files';
 import { normalizeMetering } from './normalize-metering';
 
 export interface UseDictateModeArgs {
-  onCompleteRecording?: (text: string) => void;
+  onCompleteRecording?: (text: string, language: string) => void;
   onStartRecording?: () => void;
   onStopRecording?: () => void;
   updateIntervalMillis?: number;
@@ -28,6 +30,11 @@ export const useDictateMode = ({
   updateIntervalMillis = 400,
 }: UseDictateModeArgs): UseDictateModeResult => {
   const { recorder, startRecording, isReady, stopRecording } = useAudioRecorder();
+  const locale = useSelector(appState$.locale);
+  const { data: userSettings } = usersApi.useGetUserSettings();
+
+  // NOTE: Without a language the server guesses it per phrase and may switch to wrong language
+  const speechLanguage = userSettings?.ui?.audio?.stt?.language || locale;
 
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [metering, setMetering] = useState<number | undefined>(undefined);
@@ -52,7 +59,7 @@ export const useDictateMode = ({
 
   const { mutate: transcribeAudio, isPending: isTranscribing } = audioApi.useTranscribeAudio({
     onSuccess: (response) => {
-      onCompleteRecording?.(response.text);
+      onCompleteRecording?.(response.text, speechLanguage);
     },
   });
 
@@ -76,6 +83,7 @@ export const useDictateMode = ({
       }
 
       const formData = getAudioFormData(uri);
+      formData.append('language', speechLanguage);
       transcribeAudio(formData);
     } catch {
       stopSpeechRecording();

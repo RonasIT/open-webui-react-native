@@ -12,7 +12,7 @@ import { speechStreamingService } from '@open-webui-react-native/mobile/shared/d
 import { useDictateMode } from '@open-webui-react-native/mobile/shared/features/use-dictate-mode';
 import { colors, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { AppSafeAreaView, AppText, AppToast, IconButton, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { chatApi, isTemporaryChatId } from '@open-webui-react-native/shared/data-access/api';
+import { ChatGenerationOption, chatApi, isTemporaryChatId } from '@open-webui-react-native/shared/data-access/api';
 import { ImageData as ChatImageData } from '@open-webui-react-native/shared/data-access/common';
 import { ImageSourceSheet, Loader, SpeechListener } from './components';
 import { voiceModeModalConfig } from './config';
@@ -76,18 +76,24 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
   const { isRecording, isTranscribing, startSpeechRecording, stopSpeechRecording, completeSpeechRecording, metering } =
     useDictateMode({
       updateIntervalMillis: 100,
-      onCompleteRecording: (text: string) => {
+      onCompleteRecording: (text: string, language: string) => {
         if (text.trim().length) {
           const attachedImages = pendingImageRef.current ? [pendingImageRef.current] : undefined;
           pendingImageRef.current = null;
 
           if (chatIdRef.current) {
-            sendMessageRef.current(text, modelIdRef.current, undefined, undefined, attachedImages);
+            sendMessageRef.current(text, modelIdRef.current, [ChatGenerationOption.VOICE], undefined, attachedImages);
           } else {
-            startChatCreationRef.current(text, modelIdRef.current, undefined, undefined, attachedImages);
+            startChatCreationRef.current(
+              text,
+              modelIdRef.current,
+              [ChatGenerationOption.VOICE],
+              undefined,
+              attachedImages,
+            );
           }
 
-          speechStreamingService.resumeContentSpeaking();
+          speechStreamingService.resumeContentSpeaking(language);
           setIsWaitingNewMessage(true);
         } else {
           startSpeechRecording();

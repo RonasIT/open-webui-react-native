@@ -156,6 +156,7 @@ export function prepareCompleteChatPayload({
       codeInterpreter: generationOptions?.includes(ChatGenerationOption.CODE_INTERPRETER),
       imageGeneration: generationOptions?.includes(ChatGenerationOption.IMAGE_GENERATION),
       webSearch: (userSettings?.ui.webSearch ?? false) || generationOptions?.includes(ChatGenerationOption.WEB_SEARCH),
+      voice: generationOptions?.includes(ChatGenerationOption.VOICE),
     }),
     params,
     toolIds: resolvedToolIds.length > 0 ? resolvedToolIds : undefined,
