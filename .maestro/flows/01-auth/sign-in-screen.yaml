@@ -1,3 +1,4 @@
+# TODO: Remove this flow once real e2e tests are written, it only checks that CI works
 appId: ${APP_ID}
 name: Sign-in screen is shown on first launch
 tags:
