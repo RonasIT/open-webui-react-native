@@ -148,3 +148,5 @@ jobs:
           name: maestro-report
           path: maestro-output
           if-no-files-found: ignore
+          # Maestro writes part of its output into dot-folders
+          include-hidden-files: true

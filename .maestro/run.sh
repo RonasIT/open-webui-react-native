@@ -7,6 +7,7 @@ mkdir -p maestro-output
 
 maestro test \
   -e APP_ID="$APP_ID" \
-  --format JUNIT --output maestro-output/report.xml \
-  --debug-output maestro-output \
+  --format html-detailed --output maestro-output/report.html \
+  --test-output-dir maestro-output/artifacts \
+  --debug-output maestro-output/debug \
   .maestro
