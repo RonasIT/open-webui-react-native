@@ -2,8 +2,7 @@ name: E2E
 
 on:
   push:
-    # TODO: remove PRD-2973-e2e-ci-setup before merge, it is here only to run the workflow from this branch
-    branches: [main, PRD-2973-e2e-ci-setup]
+    branches: [main]
   workflow_dispatch:
 
 # NOTE: All runs share one test account, so they wait for each other
