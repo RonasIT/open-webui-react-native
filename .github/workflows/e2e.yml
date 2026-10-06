@@ -2,7 +2,8 @@ name: E2E
 
 on:
   push:
-    branches: [staging]
+    # TODO: remove PRD-2973-e2e-ci-setup before merge, it is here only to check the review fixes
+    branches: [staging, PRD-2973-e2e-ci-setup]
   workflow_dispatch:
 
 # NOTE: All runs share one test account, so they wait for each other
@@ -48,8 +49,11 @@ jobs:
         with:
           packages: platform-tools
 
+      # NOTE: By default the cache is saved only on the default branch, and this workflow doesn't run there
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: false
 
       - name: Install dependencies
         run: npm ci
@@ -96,10 +100,16 @@ jobs:
           distribution: temurin
           java-version: "17"
 
+      # NOTE: Pinned, so a new Maestro release can't break the pipeline without a change here
       - name: Install Maestro
+        env:
+          MAESTRO_VERSION: 2.11.0
         run: |
           curl -Ls "https://get.maestro.mobile.dev" | bash
           echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Print Maestro version
+        run: maestro --version
 
       # NOTE: Without KVM the emulator runs without hardware acceleration and is very slow
       - name: Enable KVM
