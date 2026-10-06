@@ -181,7 +181,11 @@
     "VOICE_MODE_MODAL": {
       "TEXT_LISTENING": "Ascult...",
       "TEXT_THINKING": "Mă gândesc...",
-      "TEXT_TALKING": "Vorbesc..."
+      "TEXT_TALKING": "Vorbesc...",
+      "IMAGE_SOURCE_SHEET": {
+        "TEXT_TAKE_PHOTO": "Fotografiază",
+        "TEXT_CHOOSE_FROM_GALLERY": "Alege din galerie"
+      }
     },
     "MESSAGE_FOLLOW_UPS": {
       "TEXT_FOLLOW_UP": "Continuare"

@@ -181,7 +181,11 @@
     "VOICE_MODE_MODAL": {
       "TEXT_LISTENING": "Слушаю...",
       "TEXT_THINKING": "Думаю...",
-      "TEXT_TALKING": "Говорю..."
+      "TEXT_TALKING": "Говорю...",
+      "IMAGE_SOURCE_SHEET": {
+        "TEXT_TAKE_PHOTO": "Сделать снимок",
+        "TEXT_CHOOSE_FROM_GALLERY": "Выбрать из галереи"
+      }
     },
     "MESSAGE_FOLLOW_UPS": {
       "TEXT_FOLLOW_UP": "Уточнение"

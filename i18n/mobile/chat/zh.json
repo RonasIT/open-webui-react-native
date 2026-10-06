@@ -179,7 +179,11 @@
     "VOICE_MODE_MODAL": {
       "TEXT_LISTENING": "正在聆听...",
       "TEXT_THINKING": "正在思考...",
-      "TEXT_TALKING": "正在说话..."
+      "TEXT_TALKING": "正在说话...",
+      "IMAGE_SOURCE_SHEET": {
+        "TEXT_TAKE_PHOTO": "拍摄",
+        "TEXT_CHOOSE_FROM_GALLERY": "从相册选择"
+      }
     },
     "MESSAGE_FOLLOW_UPS": {
       "TEXT_FOLLOW_UP": "追问"

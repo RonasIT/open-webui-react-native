@@ -180,7 +180,11 @@
     "VOICE_MODE_MODAL": {
       "TEXT_LISTENING": "Escuchando...",
       "TEXT_THINKING": "Pensando...",
-      "TEXT_TALKING": "Hablando..."
+      "TEXT_TALKING": "Hablando...",
+      "IMAGE_SOURCE_SHEET": {
+        "TEXT_TAKE_PHOTO": "Capturar",
+        "TEXT_CHOOSE_FROM_GALLERY": "Elegir de la galería"
+      }
     },
     "MESSAGE_FOLLOW_UPS": {
       "TEXT_FOLLOW_UP": "Seguimiento"
