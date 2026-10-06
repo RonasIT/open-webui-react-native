@@ -19,7 +19,12 @@ import {
   IconButton,
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { ChatGenerationOption, chatApi, isTemporaryChatId } from '@open-webui-react-native/shared/data-access/api';
+import {
+  ChatGenerationOption,
+  chatApi,
+  isTemporaryChatId,
+  tasksApi,
+} from '@open-webui-react-native/shared/data-access/api';
 import { ImageData as ChatImageData } from '@open-webui-react-native/shared/data-access/common';
 import { ImageSourceSheet, Loader, SpeechListener } from './components';
 import { voiceModeModalConfig } from './config';
@@ -74,6 +79,7 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
   });
   const { sendMessage, isLoading: isSending } = useSendMessage({ chatData: chat });
   const { startChatCreation, isLoading: isCreating } = useCreateNewChat({ onSuccess: handleChatCreated });
+  const { mutate: stopChatTasks } = tasksApi.useStopChatTasks();
 
   const sendMessageRef = useRef(sendMessage);
   const startChatCreationRef = useRef(startChatCreation);
@@ -158,6 +164,11 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
   };
 
   const handleInterrupt = async (): Promise<void> => {
+    // NOTE: Stop the generation too, otherwise the old reply keeps streaming into the chat
+    if (chat && newMessage && !newMessage.done) {
+      stopChatTasks({ chatId: chat.id, lastMessageId: chat.chat.history.currentId });
+    }
+
     setIsAiSpeaking(false);
     setIsWaitingNewMessage(false);
     setIsReceivingNewMessage(false);
