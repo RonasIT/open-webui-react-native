@@ -11,7 +11,14 @@ import {
 import { speechStreamingService } from '@open-webui-react-native/mobile/shared/data-access/speech-streaming-service';
 import { useDictateMode } from '@open-webui-react-native/mobile/shared/features/use-dictate-mode';
 import { colors, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
-import { AppSafeAreaView, AppText, AppToast, IconButton, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import {
+  AppPressable,
+  AppSafeAreaView,
+  AppText,
+  AppToast,
+  IconButton,
+  View,
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { ChatGenerationOption, chatApi, isTemporaryChatId } from '@open-webui-react-native/shared/data-access/api';
 import { ImageData as ChatImageData } from '@open-webui-react-native/shared/data-access/common';
 import { ImageSourceSheet, Loader, SpeechListener } from './components';
@@ -150,6 +157,15 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     }
   };
 
+  const handleInterrupt = async (): Promise<void> => {
+    // NOTE: Drop the rest of the reply; onSpeakingEnd does not fire after a stop
+    setIsAiSpeaking(false);
+    setIsWaitingNewMessage(false);
+    setIsReceivingNewMessage(false);
+    await speechStreamingService.stopContentSpeaking();
+    await startSpeechRecording();
+  };
+
   const clearSilenceTimeout = (): void => {
     if (silenceTimeout.current) {
       clearTimeout(silenceTimeout.current);
@@ -245,18 +261,26 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
       <BottomSheetModalProvider>
         <View className='flex-1 bg-background-primary'>
           <AppSafeAreaView edges={['bottom']} className='flex-1'>
-            <View className='flex-1 items-center justify-center px-24'>
+            <AppPressable
+              onPress={handleInterrupt}
+              disabled={!isAiSpeaking}
+              className='flex-1 items-center justify-center px-24'>
               {isThinking || isAiSpeaking ? <Loader /> : <SpeechListener metering={metering} />}
-            </View>
+            </AppPressable>
             <View className='flex-row justify-between items-center p-24'>
               <ImageSourceSheet onSelectSource={handlePickImage} />
-              <AppText className='text-sm-sm sm:text-sm'>
-                {isAiSpeaking
-                  ? translate('TEXT_TALKING')
-                  : isThinking
-                    ? translate('TEXT_THINKING')
-                    : translate('TEXT_LISTENING')}
-              </AppText>
+              <AppPressable
+                onPress={handleInterrupt}
+                disabled={!isAiSpeaking}
+                hitSlop={8}>
+                <AppText className='text-sm-sm sm:text-sm'>
+                  {isAiSpeaking
+                    ? translate('TEXT_TAP_TO_INTERRUPT')
+                    : isThinking
+                      ? translate('TEXT_THINKING')
+                      : translate('TEXT_LISTENING')}
+                </AppText>
+              </AppPressable>
               <IconButton
                 iconName='close'
                 onPress={close}

@@ -181,7 +181,7 @@
     "VOICE_MODE_MODAL": {
       "TEXT_LISTENING": "Ascult...",
       "TEXT_THINKING": "Mă gândesc...",
-      "TEXT_TALKING": "Vorbesc...",
+      "TEXT_TAP_TO_INTERRUPT": "Atinge pentru a întrerupe",
       "IMAGE_SOURCE_SHEET": {
         "TEXT_TAKE_PHOTO": "Fotografiază",
         "TEXT_CHOOSE_FROM_GALLERY": "Alege din galerie"
