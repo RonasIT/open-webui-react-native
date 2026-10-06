@@ -19,7 +19,7 @@ export interface UseDictateModeResult {
   isRecording: boolean;
   isTranscribing: boolean;
   startSpeechRecording: () => Promise<void>;
-  completeSpeechRecording: () => Promise<void>;
+  completeSpeechRecording: (shouldKeepSpeech?: boolean) => Promise<void>;
   pauseSpeechRecording: (shouldKeepSpeech: boolean) => Promise<void>;
   stopSpeechRecording: () => Promise<void>;
   metering?: number;
@@ -62,12 +62,14 @@ export const useDictateMode = ({
     return () => clearInterval(interval);
   }, [isRecording, isReady]);
 
+  const finishRecording = async (text?: string): Promise<void> => {
+    const pausedText = await pausedSpeechRef.current;
+    pausedSpeechRef.current = null;
+    onCompleteRecording?.(joinString([pausedText, text]), speechLanguage);
+  };
+
   const { mutate: transcribeAudio, isPending: isTranscribing } = audioApi.useTranscribeAudio({
-    onSuccess: async (response) => {
-      const pausedText = await pausedSpeechRef.current;
-      pausedSpeechRef.current = null;
-      onCompleteRecording?.(joinString([pausedText, response.text]), speechLanguage);
-    },
+    onSuccess: (response) => finishRecording(response.text),
   });
   // NOTE: Separate mutation so background transcription of paused speech isn't reported as isTranscribing
   const { mutateAsync: transcribePausedAudio } = audioApi.useTranscribeAudio();
@@ -89,7 +91,7 @@ export const useDictateMode = ({
     onStartRecording?.();
   };
 
-  const completeSpeechRecording = async (): Promise<void> => {
+  const completeSpeechRecording = async (shouldKeepSpeech = true): Promise<void> => {
     if (!isRecording) {
       return;
     }
@@ -102,7 +104,11 @@ export const useDictateMode = ({
         return;
       }
 
-      transcribeAudio(getSpeechFormData(uri, speechLanguage));
+      if (shouldKeepSpeech) {
+        transcribeAudio(getSpeechFormData(uri, speechLanguage));
+      } else {
+        await finishRecording();
+      }
     } catch {
       stopSpeechRecording();
     }
