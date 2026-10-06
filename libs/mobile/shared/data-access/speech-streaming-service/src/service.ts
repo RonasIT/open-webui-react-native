@@ -192,13 +192,11 @@ class SpeechStreamingService {
       this.voices = await this.getAvailableVoices();
     }
 
-    const language = this.language.toLowerCase();
-
-    // NOTE: Some engines report no voices at all, then let the system pick a voice for the language
     if (!this.voices.length) {
       return this.language;
     }
 
+    const language = this.language.toLowerCase();
     const voice = this.voices.find(({ language: tag }) => {
       const normalizedTag = tag.replace('_', '-').toLowerCase();
 
