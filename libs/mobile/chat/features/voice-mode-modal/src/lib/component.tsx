@@ -81,17 +81,8 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
           const attachedImages = pendingImageRef.current ? [pendingImageRef.current] : undefined;
           pendingImageRef.current = null;
 
-          if (chatIdRef.current) {
-            sendMessageRef.current(text, modelIdRef.current, [ChatGenerationOption.VOICE], undefined, attachedImages);
-          } else {
-            startChatCreationRef.current(
-              text,
-              modelIdRef.current,
-              [ChatGenerationOption.VOICE],
-              undefined,
-              attachedImages,
-            );
-          }
+          const send = chatIdRef.current ? sendMessageRef.current : startChatCreationRef.current;
+          send(text, modelIdRef.current, [ChatGenerationOption.VOICE], undefined, attachedImages);
 
           speechStreamingService.resumeContentSpeaking(language);
           setIsWaitingNewMessage(true);
