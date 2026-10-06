@@ -80,24 +80,31 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
   sendMessageRef.current = sendMessage;
   startChatCreationRef.current = startChatCreation;
 
-  const { isRecording, isTranscribing, startSpeechRecording, stopSpeechRecording, completeSpeechRecording, metering } =
-    useDictateMode({
-      updateIntervalMillis: 100,
-      onCompleteRecording: (text: string, language: string) => {
-        if (text.trim().length) {
-          const attachedImages = pendingImageRef.current ? [pendingImageRef.current] : undefined;
-          pendingImageRef.current = null;
+  const {
+    isRecording,
+    isTranscribing,
+    startSpeechRecording,
+    pauseSpeechRecording,
+    stopSpeechRecording,
+    completeSpeechRecording,
+    metering,
+  } = useDictateMode({
+    updateIntervalMillis: 100,
+    onCompleteRecording: (text: string, language: string) => {
+      if (text.trim().length) {
+        const attachedImages = pendingImageRef.current ? [pendingImageRef.current] : undefined;
+        pendingImageRef.current = null;
 
-          const send = chatIdRef.current ? sendMessageRef.current : startChatCreationRef.current;
-          send(text, modelIdRef.current, [ChatGenerationOption.VOICE], undefined, attachedImages);
+        const send = chatIdRef.current ? sendMessageRef.current : startChatCreationRef.current;
+        send(text, modelIdRef.current, [ChatGenerationOption.VOICE], undefined, attachedImages);
 
-          speechStreamingService.resumeContentSpeaking(language);
-          setIsWaitingNewMessage(true);
-        } else {
-          startSpeechRecording();
-        }
-      },
-    });
+        speechStreamingService.resumeContentSpeaking(language);
+        setIsWaitingNewMessage(true);
+      } else {
+        startSpeechRecording();
+      }
+    },
+  });
 
   const newMessage = chat?.chat.history.messages[chat.chat.history.currentId];
   const isThinking =
@@ -140,7 +147,8 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     if (shouldResumeListening) {
       clearSilenceTimeout();
       setIsUserSpeaking(false);
-      await stopSpeechRecording();
+      // NOTE: Keep a started phrase for the next message, transcribing silence may produce phantom text
+      await pauseSpeechRecording(isUserSpeaking);
     }
 
     try {
