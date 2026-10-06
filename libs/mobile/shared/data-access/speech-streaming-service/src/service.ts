@@ -188,7 +188,7 @@ class SpeechStreamingService {
   };
 
   private getVoiceLanguage = async (): Promise<string> => {
-    if (!this.voices) {
+    if (!this.voices?.length) {
       this.voices = await this.getAvailableVoices();
     }
 
