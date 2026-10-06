@@ -93,17 +93,14 @@
       "TEXT_DELETE_CHAT": "チャットを削除しますか？",
       "TEXT_THIS_WILL_DELETE": "{{name}} が削除されます",
       "TEXT_CLONE_OF": "{{title}} の複製",
-      "TEXT_CHAT_ACTIONS": "チャット操作",
       "TEXT_MOVE_TO_FOLDER": "フォルダに移動",
       "TEXT_CHAT_MOVED": "チャットを移動しました",
       "DOWNLOAD_CHAT_OPTIONS_SHEET": {
         "TEXT_EXPORT_CHAT_JSON": "チャットをエクスポート (.json)",
-        "TEXT_PLAIN_TEXT": "プレーンテキスト (.txt)",
-        "TEXT_PDF_DOCUMENT": "PDF ドキュメント (.pdf)"
+        "TEXT_PLAIN_TEXT": "プレーンテキスト (.txt)"
       },
       "MOVE_CHAT_TO_FOLDER_MODAL": {
         "TEXT_SEARCH_FOLDER": "フォルダを検索",
-        "TEXT_NO_FOLDERS": "フォルダがありません",
         "TEXT_CREATE_NEW_FOLDER": "フォルダを作成",
         "TEXT_NO_FOLDER": "フォルダなし"
       }

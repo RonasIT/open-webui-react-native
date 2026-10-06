@@ -86,25 +86,7 @@
         "TEXT_CREATE_NEW_FOLDER": "创建新文件夹"
       },
       "SUGGESTIONS_LIST": {
-        "TEXT_SUGGESTED": "建议",
-        "TEXT_SUGGESTION_TITLE_1": "帮我学习",
-        "TEXT_SUGGESTION_SUBTITLE_1": "大学入学考试的词汇",
-        "TEXT_SUGGESTION_CONTENT_1": "帮我学习词汇：写一个填空句子，我来试着选择正确的选项。",
-        "TEXT_SUGGESTION_TITLE_2": "给我一些想法",
-        "TEXT_SUGGESTION_SUBTITLE_2": "如何处理孩子们的画作",
-        "TEXT_SUGGESTION_CONTENT_2": "对于孩子们的画作，我能做哪 5 件有创意的事？我不想扔掉它们，但它们也太占地方了。",
-        "TEXT_SUGGESTION_TITLE_3": "告诉我一个有趣的事实",
-        "TEXT_SUGGESTION_SUBTITLE_3": "关于罗马帝国",
-        "TEXT_SUGGESTION_CONTENT_3": "告诉我一个关于罗马帝国的随机有趣事实",
-        "TEXT_SUGGESTION_TITLE_4": "给我看一段代码",
-        "TEXT_SUGGESTION_SUBTITLE_4": "网站粘性页眉的",
-        "TEXT_SUGGESTION_CONTENT_4": "给我看一段网站粘性页眉的 CSS 和 JavaScript 代码片段。",
-        "TEXT_SUGGESTION_TITLE_5": "解释期权交易",
-        "TEXT_SUGGESTION_SUBTITLE_5": "如果我熟悉买卖股票",
-        "TEXT_SUGGESTION_CONTENT_5": "用简单的话解释期权交易，假设我已经熟悉买卖股票。",
-        "TEXT_SUGGESTION_TITLE_6": "克服拖延",
-        "TEXT_SUGGESTION_SUBTITLE_6": "给我一些建议",
-        "TEXT_SUGGESTION_CONTENT_6": "你能先问问我最容易拖延的情况，然后再给我一些克服拖延的建议吗？"
+        "TEXT_SUGGESTED": "建议"
       }
     },
     "ATTACHED_FILE_ITEM": {

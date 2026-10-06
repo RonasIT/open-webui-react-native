@@ -86,25 +86,7 @@
         "TEXT_CREATE_NEW_FOLDER": "Creează folder nou"
       },
       "SUGGESTIONS_LIST": {
-        "TEXT_SUGGESTED": "Sugestii",
-        "TEXT_SUGGESTION_TITLE_1": "Ajută-mă să învăț",
-        "TEXT_SUGGESTION_SUBTITLE_1": "vocabular pentru un examen de admitere la facultate",
-        "TEXT_SUGGESTION_CONTENT_1": "Ajută-mă să învăț vocabular: scrie-mi o propoziție cu spațiu liber, iar eu voi încerca să aleg varianta corectă.",
-        "TEXT_SUGGESTION_TITLE_2": "Dă-mi idei",
-        "TEXT_SUGGESTION_SUBTITLE_2": "despre ce pot face cu desenele copiilor mei",
-        "TEXT_SUGGESTION_CONTENT_2": "Care sunt 5 idei creative pentru ce aș putea face cu desenele copiilor mei? Nu vreau să le arunc, dar ocupă mult spațiu.",
-        "TEXT_SUGGESTION_TITLE_3": "Spune-mi un fapt interesant",
-        "TEXT_SUGGESTION_SUBTITLE_3": "despre Imperiul Roman",
-        "TEXT_SUGGESTION_CONTENT_3": "Spune-mi un fapt interesant, ales la întâmplare, despre Imperiul Roman",
-        "TEXT_SUGGESTION_TITLE_4": "Arată-mi un fragment de cod",
-        "TEXT_SUGGESTION_SUBTITLE_4": "pentru un antet lipicios (sticky header) al unui site",
-        "TEXT_SUGGESTION_CONTENT_4": "Arată-mi un fragment de cod pentru un antet lipicios al unui site, în CSS și JavaScript.",
-        "TEXT_SUGGESTION_TITLE_5": "Explică tranzacționarea cu opțiuni",
-        "TEXT_SUGGESTION_SUBTITLE_5": "dacă sunt familiarizat cu cumpărarea și vânzarea de acțiuni",
-        "TEXT_SUGGESTION_CONTENT_5": "Explică tranzacționarea cu opțiuni în termeni simpli, presupunând că sunt familiarizat cu cumpărarea și vânzarea de acțiuni.",
-        "TEXT_SUGGESTION_TITLE_6": "Depășește procrastinarea",
-        "TEXT_SUGGESTION_SUBTITLE_6": "dă-mi câteva sfaturi",
-        "TEXT_SUGGESTION_CONTENT_6": "Poți să mă întrebi mai întâi în ce situații procrastinez cel mai mult și apoi să îmi dai câteva sugestii pentru a depăși asta?"
+        "TEXT_SUGGESTED": "Sugestii"
       }
     },
     "ATTACHED_FILE_ITEM": {

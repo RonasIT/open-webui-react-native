@@ -86,25 +86,7 @@
         "TEXT_CREATE_NEW_FOLDER": "Criar nova pasta"
       },
       "SUGGESTIONS_LIST": {
-        "TEXT_SUGGESTED": "Sugestões",
-        "TEXT_SUGGESTION_TITLE_1": "Ajude-me a estudar",
-        "TEXT_SUGGESTION_SUBTITLE_1": "vocabulário para um vestibular",
-        "TEXT_SUGGESTION_CONTENT_1": "Ajude-me a estudar vocabulário: escreva uma frase com um espaço em branco para eu tentar escolher a opção correta.",
-        "TEXT_SUGGESTION_TITLE_2": "Me dê ideias",
-        "TEXT_SUGGESTION_SUBTITLE_2": "sobre o que fazer com a arte dos meus filhos",
-        "TEXT_SUGGESTION_CONTENT_2": "Quais são 5 coisas criativas que eu poderia fazer com a arte dos meus filhos? Não quero jogá-las fora, mas também ocupam muito espaço.",
-        "TEXT_SUGGESTION_TITLE_3": "Conte-me um fato divertido",
-        "TEXT_SUGGESTION_SUBTITLE_3": "sobre o Império Romano",
-        "TEXT_SUGGESTION_CONTENT_3": "Conte-me um fato divertido aleatório sobre o Império Romano",
-        "TEXT_SUGGESTION_TITLE_4": "Mostre-me um trecho de código",
-        "TEXT_SUGGESTION_SUBTITLE_4": "de um cabeçalho fixo de site",
-        "TEXT_SUGGESTION_CONTENT_4": "Mostre-me um trecho de código de um cabeçalho fixo de site em CSS e JavaScript.",
-        "TEXT_SUGGESTION_TITLE_5": "Explique o trading de opções",
-        "TEXT_SUGGESTION_SUBTITLE_5": "se eu já sei comprar e vender ações",
-        "TEXT_SUGGESTION_CONTENT_5": "Explique o trading de opções em termos simples se eu já estiver familiarizado com a compra e venda de ações.",
-        "TEXT_SUGGESTION_TITLE_6": "Superar a procrastinação",
-        "TEXT_SUGGESTION_SUBTITLE_6": "me dê dicas",
-        "TEXT_SUGGESTION_CONTENT_6": "Você poderia começar perguntando sobre as situações em que mais procrastino e depois me dar algumas sugestões para superar isso?"
+        "TEXT_SUGGESTED": "Sugestões"
       }
     },
     "ATTACHED_FILE_ITEM": {

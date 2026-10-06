@@ -79,9 +79,6 @@
       "@open-webui-react-native/mobile/chat/features/message-version-controls": [
         "libs/mobile/chat/features/message-version-controls/src/index.ts"
       ],
-      "@open-webui-react-native/mobile/chat/features/models-sheet": [
-        "libs/mobile/chat/features/models-sheet/src/index.ts"
-      ],
       "@open-webui-react-native/mobile/chat/features/search-archived-chats": [
         "libs/mobile/chat/features/search-archived-chats/src/index.ts"
       ],
@@ -156,9 +153,6 @@
       "@open-webui-react-native/mobile/folder/features/upsert-folder-sheet": [
         "libs/mobile/folder/features/upsert-folder-sheet/src/index.ts"
       ],
-      "@open-webui-react-native/mobile/profile/features/menu-sheet": [
-        "libs/mobile/profile/features/menu-sheet/src/index.ts"
-      ],
       "@open-webui-react-native/mobile/settings/features/contact-support-sheet": [
         "libs/mobile/settings/features/contact-support-sheet/src/index.ts"
       ],
@@ -166,12 +160,6 @@
         "libs/mobile/settings/features/settings/src/index.ts"
       ],
       "@open-webui-react-native/mobile/settings/ui/section": ["libs/mobile/settings/ui/section/src/index.ts"],
-      "@open-webui-react-native/mobile/shared/data-access/base-entity": [
-        "libs/mobile/shared/data-access/base-entity/src/index.ts"
-      ],
-      "@open-webui-react-native/mobile/shared/data-access/entity-service": [
-        "libs/mobile/shared/data-access/entity-service/src/index.ts"
-      ],
       "@open-webui-react-native/mobile/shared/data-access/file-system-service": [
         "libs/mobile/shared/data-access/file-system-service/src/index.ts"
       ],
@@ -183,9 +171,6 @@
       ],
       "@open-webui-react-native/mobile/shared/data-access/speech-streaming-service": [
         "libs/mobile/shared/data-access/speech-streaming-service/src/index.ts"
-      ],
-      "@open-webui-react-native/mobile/shared/data-access/storage": [
-        "libs/mobile/shared/data-access/storage/src/index.ts"
       ],
       "@open-webui-react-native/mobile/shared/features/chat-actions-menu-sheet": [
         "libs/mobile/shared/features/chat-actions-menu-sheet/src/index.ts"
@@ -201,9 +186,6 @@
       ],
       "@open-webui-react-native/mobile/shared/features/markdown-view": [
         "libs/mobile/shared/features/markdown-view/src/index.ts"
-      ],
-      "@open-webui-react-native/mobile/shared/features/sidebar-menu": [
-        "libs/mobile/shared/features/sidebar-menu/src/index.ts"
       ],
       "@open-webui-react-native/mobile/shared/features/toast": ["libs/mobile/shared/features/toast/src/index.ts"],
       "@open-webui-react-native/mobile/shared/features/use-attached-files": [
