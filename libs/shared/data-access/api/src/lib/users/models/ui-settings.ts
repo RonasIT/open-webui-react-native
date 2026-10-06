@@ -1,4 +1,5 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
+import { AudioSettings } from './audio-settings';
 
 export class UiSettings {
   @Expose()
@@ -27,6 +28,10 @@ export class UiSettings {
 
   @Expose()
   public renderMarkdownInUserMessages?: boolean;
+
+  @Expose()
+  @Type(() => AudioSettings)
+  public audio?: AudioSettings;
 
   constructor(response: Partial<UiSettings>) {
     Object.assign(this, response);
