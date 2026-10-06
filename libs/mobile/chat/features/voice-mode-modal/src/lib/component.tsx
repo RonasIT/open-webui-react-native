@@ -158,7 +158,6 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
   };
 
   const handleInterrupt = async (): Promise<void> => {
-    // NOTE: Drop the rest of the reply; onSpeakingEnd does not fire after a stop
     setIsAiSpeaking(false);
     setIsWaitingNewMessage(false);
     setIsReceivingNewMessage(false);
