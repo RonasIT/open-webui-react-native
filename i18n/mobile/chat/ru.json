@@ -181,7 +181,7 @@
     "VOICE_MODE_MODAL": {
       "TEXT_LISTENING": "Слушаю...",
       "TEXT_THINKING": "Думаю...",
-      "TEXT_TALKING": "Говорю...",
+      "TEXT_TAP_TO_INTERRUPT": "Нажмите, чтобы прервать",
       "IMAGE_SOURCE_SHEET": {
         "TEXT_TAKE_PHOTO": "Сделать снимок",
         "TEXT_CHOOSE_FROM_GALLERY": "Выбрать из галереи"

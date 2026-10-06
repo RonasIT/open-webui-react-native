@@ -180,7 +180,7 @@
     "VOICE_MODE_MODAL": {
       "TEXT_LISTENING": "Escuchando...",
       "TEXT_THINKING": "Pensando...",
-      "TEXT_TALKING": "Hablando...",
+      "TEXT_TAP_TO_INTERRUPT": "Toca para interrumpir",
       "IMAGE_SOURCE_SHEET": {
         "TEXT_TAKE_PHOTO": "Capturar",
         "TEXT_CHOOSE_FROM_GALLERY": "Elegir de la galería"
