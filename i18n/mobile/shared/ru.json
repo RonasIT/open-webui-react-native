@@ -93,17 +93,14 @@
       "TEXT_DELETE_CHAT": "Удалить чат?",
       "TEXT_THIS_WILL_DELETE": "Будет удалено: {{name}}",
       "TEXT_CLONE_OF": "Копия {{title}}",
-      "TEXT_CHAT_ACTIONS": "Действия с чатом",
       "TEXT_MOVE_TO_FOLDER": "Переместить в папку",
       "TEXT_CHAT_MOVED": "Чат успешно перемещён",
       "DOWNLOAD_CHAT_OPTIONS_SHEET": {
         "TEXT_EXPORT_CHAT_JSON": "Экспорт чата (.json)",
-        "TEXT_PLAIN_TEXT": "Обычный текст (.txt)",
-        "TEXT_PDF_DOCUMENT": "PDF-документ (.pdf)"
+        "TEXT_PLAIN_TEXT": "Обычный текст (.txt)"
       },
       "MOVE_CHAT_TO_FOLDER_MODAL": {
         "TEXT_SEARCH_FOLDER": "Поиск папки",
-        "TEXT_NO_FOLDERS": "Папок нет",
         "TEXT_CREATE_NEW_FOLDER": "Создать папку",
         "TEXT_NO_FOLDER": "Без папки"
       }

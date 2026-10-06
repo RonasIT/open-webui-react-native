@@ -13,7 +13,6 @@ import {
 } from '@open-webui-react-native/shared/data-access/api';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { resolveApiUrl } from '@open-webui-react-native/shared/utils/config';
-import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
 import { UrlInputLoader } from './components';
 import { emailFormConfig } from './config';
@@ -29,7 +28,6 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
   const translate = useTranslation('AUTH.SIGN_IN.EMAIL_FORM');
   const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
-  const isApiUrlFeatureEnabled = isFeatureEnabled(FeatureID.API_URL);
 
   const { query, setQuery, debouncedQuery } = useDebouncedQuery({ initialValue: appStorageService.apiUrl.get() });
 
@@ -76,9 +74,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
     !hasSupportedOauthProviders &&
     (hasOauthProviders || isLdapEnabled);
 
-  const isFormValid = isApiUrlFeatureEnabled
-    ? (!isLoginFormRequired || isValid) && isUrlValid && isUrlWithConfig
-    : !isLoginFormRequired || isValid;
+  const isFormValid = (!isLoginFormRequired || isValid) && isUrlValid && isUrlWithConfig;
 
   const onSubmit = (form: FormValues<EmailFormSchema>): void => {
     mutate({ email: form.email, password: form.password });
@@ -111,35 +107,33 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
 
   return (
     <View className='w-full gap-8'>
-      {isApiUrlFeatureEnabled && (
-        <FormFloatedLabelInput
-          name='url'
-          control={control}
-          value={query}
-          onChangeText={setQuery}
-          autoCapitalize='none'
-          autoCorrect={false}
-          secureTextEntry={false}
-          returnKeyType='next'
-          keyboardType='url'
-          placeholder={emailFormConfig.apiUrlPlaceholder}
-          label={translate('TEXT_API_URL')}
-          onSubmitEditing={() => emailRef.current?.focus()}
-          enablesReturnKeyAutomatically={true}
-          accessoryRight={
-            isUrlValid ? (
-              <UrlInputLoader
-                isLoading={isFetchWithUrlLoading}
-                isSuccess={isUrlWithConfig}
-                isError={isFetchWithUrlError || isUrlWithoutConfig}
-              />
-            ) : undefined
-          }
-          helperText={
-            isUrlValid && isUrlWithConfig && !isFetchWithUrlLoading ? `${config?.name} ${config?.version}` : undefined
-          }
-        />
-      )}
+      <FormFloatedLabelInput
+        name='url'
+        control={control}
+        value={query}
+        onChangeText={setQuery}
+        autoCapitalize='none'
+        autoCorrect={false}
+        secureTextEntry={false}
+        returnKeyType='next'
+        keyboardType='url'
+        placeholder={emailFormConfig.apiUrlPlaceholder}
+        label={translate('TEXT_API_URL')}
+        onSubmitEditing={() => emailRef.current?.focus()}
+        enablesReturnKeyAutomatically={true}
+        accessoryRight={
+          isUrlValid ? (
+            <UrlInputLoader
+              isLoading={isFetchWithUrlLoading}
+              isSuccess={isUrlWithConfig}
+              isError={isFetchWithUrlError || isUrlWithoutConfig}
+            />
+          ) : undefined
+        }
+        helperText={
+          isUrlValid && isUrlWithConfig && !isFetchWithUrlLoading ? `${config?.name} ${config?.version}` : undefined
+        }
+      />
       {isLoginFormRequired && (
         <Fragment>
           <FormFloatedLabelInput

@@ -86,25 +86,7 @@
         "TEXT_CREATE_NEW_FOLDER": "Neuen Ordner erstellen"
       },
       "SUGGESTIONS_LIST": {
-        "TEXT_SUGGESTED": "Vorschläge",
-        "TEXT_SUGGESTION_TITLE_1": "Hilf mir beim Lernen",
-        "TEXT_SUGGESTION_SUBTITLE_1": "Vokabeln für eine Aufnahmeprüfung",
-        "TEXT_SUGGESTION_CONTENT_1": "Hilf mir, Vokabeln zu lernen: Schreibe einen Satz mit einer Lücke, und ich versuche, die richtige Option zu wählen.",
-        "TEXT_SUGGESTION_TITLE_2": "Gib mir Ideen",
-        "TEXT_SUGGESTION_SUBTITLE_2": "was ich mit der Kunst meiner Kinder machen kann",
-        "TEXT_SUGGESTION_CONTENT_2": "Was sind 5 kreative Dinge, die ich mit der Kunst meiner Kinder machen könnte? Ich möchte sie nicht wegwerfen, aber sie nehmen auch so viel Platz ein.",
-        "TEXT_SUGGESTION_TITLE_3": "Erzähl mir eine Fun Fact",
-        "TEXT_SUGGESTION_SUBTITLE_3": "über das Römische Reich",
-        "TEXT_SUGGESTION_CONTENT_3": "Erzähl mir eine zufällige Fun Fact über das Römische Reich",
-        "TEXT_SUGGESTION_TITLE_4": "Zeig mir ein Code-Snippet",
-        "TEXT_SUGGESTION_SUBTITLE_4": "eines Sticky Headers einer Website",
-        "TEXT_SUGGESTION_CONTENT_4": "Zeig mir ein Code-Snippet eines Sticky Headers einer Website in CSS und JavaScript.",
-        "TEXT_SUGGESTION_TITLE_5": "Erkläre Optionshandel",
-        "TEXT_SUGGESTION_SUBTITLE_5": "wenn ich Aktienkauf und -verkauf kenne",
-        "TEXT_SUGGESTION_CONTENT_5": "Erkläre Optionshandel in einfachen Worten, wenn ich mit dem Kauf und Verkauf von Aktien vertraut bin.",
-        "TEXT_SUGGESTION_TITLE_6": "Prokrastination überwinden",
-        "TEXT_SUGGESTION_SUBTITLE_6": "gib mir Tipps",
-        "TEXT_SUGGESTION_CONTENT_6": "Könntest du zuerst nach Situationen fragen, in denen ich am meisten prokrastiniere, und mir dann einige Vorschläge geben, wie ich das überwinden kann?"
+        "TEXT_SUGGESTED": "Vorschläge"
       }
     },
     "ATTACHED_FILE_ITEM": {

@@ -93,17 +93,14 @@
       "TEXT_DELETE_CHAT": "¿Eliminar chat?",
       "TEXT_THIS_WILL_DELETE": "Se eliminará {{name}}",
       "TEXT_CLONE_OF": "Copia de {{title}}",
-      "TEXT_CHAT_ACTIONS": "Acciones del chat",
       "TEXT_MOVE_TO_FOLDER": "Mover a carpeta",
       "TEXT_CHAT_MOVED": "Chat movido correctamente",
       "DOWNLOAD_CHAT_OPTIONS_SHEET": {
         "TEXT_EXPORT_CHAT_JSON": "Exportar chat (.json)",
-        "TEXT_PLAIN_TEXT": "Texto plano (.txt)",
-        "TEXT_PDF_DOCUMENT": "Documento PDF (.pdf)"
+        "TEXT_PLAIN_TEXT": "Texto plano (.txt)"
       },
       "MOVE_CHAT_TO_FOLDER_MODAL": {
         "TEXT_SEARCH_FOLDER": "Buscar carpeta",
-        "TEXT_NO_FOLDERS": "No hay carpetas",
         "TEXT_CREATE_NEW_FOLDER": "Crear carpeta",
         "TEXT_NO_FOLDER": "Sin carpeta"
       }

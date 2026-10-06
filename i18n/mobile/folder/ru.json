@@ -42,7 +42,6 @@
       "TEXT_KNOWLEDGE": "База знаний",
       "BUTTON_SELECT_KNOWLEDGE": "Выбрать базу знаний",
       "BUTTON_UPLOAD_FILES": "Загрузить файлы",
-      "TEXT_CREATE": "Создать",
       "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Нельзя загрузить пустой файл.",
       "TEXT_UNSUPPORTED_TYPE": "Неподдерживаемый тип."
     },

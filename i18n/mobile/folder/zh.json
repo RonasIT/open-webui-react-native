@@ -42,7 +42,6 @@
       "TEXT_KNOWLEDGE": "知识库",
       "BUTTON_SELECT_KNOWLEDGE": "选择知识库",
       "BUTTON_UPLOAD_FILES": "上传文件",
-      "TEXT_CREATE": "创建",
       "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "无法上传空文件。",
       "TEXT_UNSUPPORTED_TYPE": "不支持的类型。"
     },

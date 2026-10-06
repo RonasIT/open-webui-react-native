@@ -54,7 +54,6 @@ const translations = {
     ...require('i18n/mobile/shared/en.json'),
     ...require('i18n/mobile/auth/en.json'),
     ...require('i18n/mobile/chat/en.json'),
-    ...require('i18n/mobile/profile/en.json'),
     ...require('i18n/mobile/folder/en.json'),
   },
   [LanguageCode.RUSSIAN]: {
@@ -62,7 +61,6 @@ const translations = {
     ...require('i18n/mobile/shared/ru.json'),
     ...require('i18n/mobile/auth/ru.json'),
     ...require('i18n/mobile/chat/ru.json'),
-    ...require('i18n/mobile/profile/ru.json'),
     ...require('i18n/mobile/folder/ru.json'),
   },
   [LanguageCode.SPANISH]: {
@@ -70,7 +68,6 @@ const translations = {
     ...require('i18n/mobile/shared/es.json'),
     ...require('i18n/mobile/auth/es.json'),
     ...require('i18n/mobile/chat/es.json'),
-    ...require('i18n/mobile/profile/es.json'),
     ...require('i18n/mobile/folder/es.json'),
   },
   [LanguageCode.PORTUGUESE]: {
@@ -78,7 +75,6 @@ const translations = {
     ...require('i18n/mobile/shared/pt.json'),
     ...require('i18n/mobile/auth/pt.json'),
     ...require('i18n/mobile/chat/pt.json'),
-    ...require('i18n/mobile/profile/pt.json'),
     ...require('i18n/mobile/folder/pt.json'),
   },
   [LanguageCode.FRENCH]: {
@@ -86,7 +82,6 @@ const translations = {
     ...require('i18n/mobile/shared/fr.json'),
     ...require('i18n/mobile/auth/fr.json'),
     ...require('i18n/mobile/chat/fr.json'),
-    ...require('i18n/mobile/profile/fr.json'),
     ...require('i18n/mobile/folder/fr.json'),
   },
   [LanguageCode.GERMAN]: {
@@ -94,7 +89,6 @@ const translations = {
     ...require('i18n/mobile/shared/de.json'),
     ...require('i18n/mobile/auth/de.json'),
     ...require('i18n/mobile/chat/de.json'),
-    ...require('i18n/mobile/profile/de.json'),
     ...require('i18n/mobile/folder/de.json'),
   },
   [LanguageCode.CHINESE]: {
@@ -102,7 +96,6 @@ const translations = {
     ...require('i18n/mobile/shared/zh.json'),
     ...require('i18n/mobile/auth/zh.json'),
     ...require('i18n/mobile/chat/zh.json'),
-    ...require('i18n/mobile/profile/zh.json'),
     ...require('i18n/mobile/folder/zh.json'),
   },
   [LanguageCode.JAPANESE]: {
@@ -110,7 +103,6 @@ const translations = {
     ...require('i18n/mobile/shared/ja.json'),
     ...require('i18n/mobile/auth/ja.json'),
     ...require('i18n/mobile/chat/ja.json'),
-    ...require('i18n/mobile/profile/ja.json'),
     ...require('i18n/mobile/folder/ja.json'),
   },
   [LanguageCode.ROMANIAN]: {
@@ -118,7 +110,6 @@ const translations = {
     ...require('i18n/mobile/shared/ro.json'),
     ...require('i18n/mobile/auth/ro.json'),
     ...require('i18n/mobile/chat/ro.json'),
-    ...require('i18n/mobile/profile/ro.json'),
     ...require('i18n/mobile/folder/ro.json'),
   },
 };
