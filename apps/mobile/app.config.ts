@@ -59,7 +59,6 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
         // only over plain HTTP (local network, Docker, Raspberry Pi, Tailscale).
         NSAppTransportSecurity: {
           NSAllowsArbitraryLoads: true,
-          NSAllowsLocalNetworking: true,
         },
       },
     },
