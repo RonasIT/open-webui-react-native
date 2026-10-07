@@ -152,10 +152,19 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     await pauseSpeechRecording();
   };
 
+  // NOTE: The camera can keep the audio session. A failed restart still sends the cut-off phrase with the photo
+  const resumeListening = async (): Promise<void> => {
+    try {
+      await startSpeechRecording();
+    } catch {
+      await completeSpeechRecording();
+    }
+  };
+
   const handleImageSheetDismiss = async (): Promise<void> => {
     if (shouldResumeListeningRef.current) {
       shouldResumeListeningRef.current = false;
-      await startSpeechRecording();
+      await resumeListening();
     }
   };
 
@@ -173,7 +182,7 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
       }
     } finally {
       if (shouldResumeListening) {
-        await startSpeechRecording();
+        await resumeListening();
       }
     }
   };

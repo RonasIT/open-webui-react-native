@@ -87,6 +87,13 @@ export const useDictateMode = ({
     onCompleteRecording?.(joinString([await pausedSpeech, text]), speechLanguage);
   };
 
+  // NOTE: The cut-off phrase is already transcribed, so a failed new take must still send it
+  const finishPausedSpeech = async (): Promise<void> => {
+    if (pausedSpeechRef.current) {
+      await finishRecording();
+    }
+  };
+
   const { mutate: transcribeAudio, isPending: isTranscribing } = audioApi.useTranscribeAudio({
     onSuccess: (response) => finishRecording(response.text),
   });
@@ -112,7 +119,10 @@ export const useDictateMode = ({
   };
 
   const completeSpeechRecording = async (): Promise<void> => {
+    // NOTE: Listening never resumed after the camera, but the cut-off phrase still has to go out
     if (!isRecording) {
+      await finishPausedSpeech();
+
       return;
     }
     setIsRecording(false);
@@ -121,6 +131,8 @@ export const useDictateMode = ({
       const uri = await stopRecording();
 
       if (!uri) {
+        await finishPausedSpeech();
+
         return;
       }
 
@@ -131,7 +143,11 @@ export const useDictateMode = ({
         await finishRecording();
       }
     } catch {
-      stopSpeechRecording();
+      if (pausedSpeechRef.current) {
+        await finishRecording();
+      } else {
+        await stopSpeechRecording();
+      }
     }
   };
 
