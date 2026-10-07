@@ -12,11 +12,13 @@ import {
 export interface ImageSourceSheetProps extends Partial<ActionsBottomSheetProps> {
   onSelectSource: (source: ImagePickerSource) => void;
   onTriggerPress?: () => void;
+  isTriggerDisabled?: boolean;
 }
 
 export function ImageSourceSheet({
   onSelectSource,
   onTriggerPress,
+  isTriggerDisabled,
   ...restProps
 }: ImageSourceSheetProps): ReactElement {
   const translate = useTranslation('CHAT.VOICE_MODE_MODAL.IMAGE_SOURCE_SHEET');
@@ -43,6 +45,7 @@ export function ImageSourceSheet({
   const renderTrigger = ({ onPress }: { onPress: () => void }): ReactElement => (
     <IconButton
       iconName='camera'
+      disabled={isTriggerDisabled}
       onPress={() => {
         onTriggerPress?.();
         onPress();

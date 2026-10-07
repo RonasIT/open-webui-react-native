@@ -147,20 +147,20 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     [],
   );
 
-  // NOTE: Pause on open, otherwise silence detection sends the phrase while the user picks a source
-  const handleImageSheetOpen = async (): Promise<void> => {
-    if (!isRecording) {
-      return;
-    }
-
+  const pauseListening = async (): Promise<void> => {
     const hasSpeech = hasSpeechRef.current;
-    shouldResumeListeningRef.current = true;
     hasSpeechRef.current = false;
     hasPausedSpeechRef.current = hasPausedSpeechRef.current || hasSpeech;
     clearSilenceTimeout();
     setIsUserSpeaking(false);
     // NOTE: Keep a started phrase for the next message, transcribing silence may produce phantom text
     await pauseSpeechRecording(hasSpeech);
+  };
+
+  // NOTE: Pause on open, otherwise silence detection sends the phrase while the user picks a source
+  const handleImageSheetOpen = async (): Promise<void> => {
+    shouldResumeListeningRef.current = true;
+    await pauseListening();
   };
 
   const resumeListening = async (): Promise<void> => {
@@ -317,6 +317,7 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
             </AppPressable>
             <View className='flex-row justify-between items-center p-24'>
               <ImageSourceSheet
+                isTriggerDisabled={!isRecording}
                 onTriggerPress={handleImageSheetOpen}
                 onSelectSource={handlePickImage}
                 onDismiss={handleImageSheetDismiss}
