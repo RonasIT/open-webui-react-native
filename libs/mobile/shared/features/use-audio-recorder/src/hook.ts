@@ -1,6 +1,6 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
 import { useAudioRecorder as useExpoAudioRecorder, AudioRecorder, AudioModule } from 'expo-audio';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { permissionAlertService } from '@open-webui-react-native/shared/utils/permission-alert';
 import { recordingOptions } from './config';
 
@@ -13,9 +13,17 @@ export interface UseAudioRecorderResult {
 
 export const useAudioRecorder = (): UseAudioRecorderResult => {
   const recorder = useExpoAudioRecorder(recordingOptions);
+  const stopPromiseRef = useRef<Promise<string | null | undefined> | null>(null);
   const [isReady, setIsReady] = useState(false);
 
   const startRecording = async (): Promise<void> => {
+    // NOTE: The recorder reports isRecording until stop finishes, so a start during it would be skipped
+    try {
+      await stopPromiseRef.current;
+    } catch {
+      // NOTE: The stop's caller handles its error
+    }
+
     if (recorder.isRecording) {
       return;
     }
@@ -43,7 +51,7 @@ export const useAudioRecorder = (): UseAudioRecorderResult => {
     }
   };
 
-  const stopRecording = async (): Promise<string | null | undefined> => {
+  const stopRecorder = async (): Promise<string | null | undefined> => {
     if (!recorder.isRecording) {
       return;
     }
@@ -56,6 +64,18 @@ export const useAudioRecorder = (): UseAudioRecorderResult => {
     setIsReady(false);
 
     return recorder.uri;
+  };
+
+  const stopRecording = async (): Promise<string | null | undefined> => {
+    if (!stopPromiseRef.current) {
+      stopPromiseRef.current = stopRecorder();
+    }
+
+    try {
+      return await stopPromiseRef.current;
+    } finally {
+      stopPromiseRef.current = null;
+    }
   };
 
   return {
