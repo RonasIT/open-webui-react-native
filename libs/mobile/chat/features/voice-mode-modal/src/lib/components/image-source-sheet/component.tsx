@@ -9,7 +9,7 @@ import {
   IconButton,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 
-export interface ImageSourceSheetProps extends Partial<ActionsBottomSheetProps> {
+export interface ImageSourceSheetProps extends Pick<ActionsBottomSheetProps, 'onDismiss'> {
   onSelectSource: (source: ImagePickerSource) => void;
   onTriggerPress?: () => void;
   isTriggerDisabled?: boolean;
@@ -19,7 +19,7 @@ export function ImageSourceSheet({
   onSelectSource,
   onTriggerPress,
   isTriggerDisabled,
-  ...restProps
+  onDismiss,
 }: ImageSourceSheetProps): ReactElement {
   const translate = useTranslation('CHAT.VOICE_MODE_MODAL.IMAGE_SOURCE_SHEET');
   const sheetRef = useRef<BottomSheetModal>(null);
@@ -58,5 +58,5 @@ export function ImageSourceSheet({
     ref={sheetRef}
     renderTrigger={renderTrigger}
     actions={actions}
-    {...restProps} />;
+    onDismiss={onDismiss} />;
 }
