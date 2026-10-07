@@ -37,7 +37,8 @@ export function OauthSignIn({ provider, providerName, onSuccess }: OauthSignInPr
     <Fragment>
       <AppButton
         text={translate('BUTTON_CONTINUE_WITH', { provider: displayName })}
-        iconName={oauthProviderIcons[provider]}
+        iconName={oauthProviderIcons[provider]?.iconName}
+        iconClassName={oauthProviderIcons[provider]?.iconClassName}
         onPress={handleSignInPress}
       />
       <OauthWebView

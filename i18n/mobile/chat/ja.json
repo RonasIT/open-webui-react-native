@@ -38,7 +38,7 @@
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Webページを添付",
         "TEXT_WEBPAGE_URLS": "WebページのURL",
-        "TEXT_INVALID_URL": "有効なURLを入力してください。"
+        "TEXT_INVALID_URL": "有効な URL を入力してください（例: https://example.com）"
       },
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "システムプロンプト",
@@ -86,25 +86,7 @@
         "TEXT_CREATE_NEW_FOLDER": "新しいフォルダを作成"
       },
       "SUGGESTIONS_LIST": {
-        "TEXT_SUGGESTED": "おすすめ",
-        "TEXT_SUGGESTION_TITLE_1": "勉強を手伝って",
-        "TEXT_SUGGESTION_SUBTITLE_1": "大学入試の語彙",
-        "TEXT_SUGGESTION_CONTENT_1": "語彙の学習を手伝って：穴埋めの文を書いて、正しい選択肢を選ばせてください。",
-        "TEXT_SUGGESTION_TITLE_2": "アイデアをください",
-        "TEXT_SUGGESTION_SUBTITLE_2": "子どもの作品の活用方法",
-        "TEXT_SUGGESTION_CONTENT_2": "子どもの作品でできるクリエイティブなことは5つ何ですか？捨てたくはないけれど、場所も取りすぎます。",
-        "TEXT_SUGGESTION_TITLE_3": "おもしろい豆知識を教えて",
-        "TEXT_SUGGESTION_SUBTITLE_3": "ローマ帝国について",
-        "TEXT_SUGGESTION_CONTENT_3": "ローマ帝国に関するランダムなおもしろい豆知識を教えて",
-        "TEXT_SUGGESTION_TITLE_4": "コードスニペットを見せて",
-        "TEXT_SUGGESTION_SUBTITLE_4": "ウェブサイトのスティッキーヘッダーの",
-        "TEXT_SUGGESTION_CONTENT_4": "ウェブサイトのスティッキーヘッダーのコードスニペットを CSS と JavaScript で見せてください。",
-        "TEXT_SUGGESTION_TITLE_5": "オプション取引を説明して",
-        "TEXT_SUGGESTION_SUBTITLE_5": "株式の売買に慣れている場合",
-        "TEXT_SUGGESTION_CONTENT_5": "株式の売買に慣れている前提で、オプション取引をわかりやすく説明してください。",
-        "TEXT_SUGGESTION_TITLE_6": "先延ばしを克服する",
-        "TEXT_SUGGESTION_SUBTITLE_6": "ヒントをください",
-        "TEXT_SUGGESTION_CONTENT_6": "まず、最も先延ばししがちな場面について聞いてから、克服のための提案をいくつかくれますか？"
+        "TEXT_SUGGESTED": "おすすめ"
       }
     },
     "ATTACHED_FILE_ITEM": {
@@ -179,7 +161,11 @@
     "VOICE_MODE_MODAL": {
       "TEXT_LISTENING": "聞いています...",
       "TEXT_THINKING": "考えています...",
-      "TEXT_TALKING": "話しています..."
+      "TEXT_TAP_TO_INTERRUPT": "タップして中断",
+      "IMAGE_SOURCE_SHEET": {
+        "TEXT_TAKE_PHOTO": "撮影",
+        "TEXT_CHOOSE_FROM_GALLERY": "ギャラリーから選択"
+      }
     },
     "MESSAGE_FOLLOW_UPS": {
       "TEXT_FOLLOW_UP": "フォローアップ"

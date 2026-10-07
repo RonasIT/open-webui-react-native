@@ -29,7 +29,6 @@ import {
   LanguageCode,
   MarkdownRenderer,
 } from '@open-webui-react-native/shared/utils/config';
-import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { hapticFeedbackService } from '@open-webui-react-native/shared/utils/haptic-feedback-service';
 import { useNavigateOnce } from '@open-webui-react-native/shared/utils/navigation';
 import { storeReviewService } from '@open-webui-react-native/shared/utils/store-review-service';
@@ -146,9 +145,7 @@ export function Settings(): ReactElement {
     };
 
   const handleArchivedChatsPress = (): void =>
-    isFeatureEnabled(FeatureID.ARCHIVE_CHAT)
-      ? navigateOnce(`${navigationConfig.main.chat.index}/${navigationConfig.main.chat.archivedChats}`)
-      : ToastService.showFeatureNotImplemented();
+    navigateOnce(`${navigationConfig.main.chat.index}/${navigationConfig.main.chat.archivedChats}`);
 
   const handleRequestDeleteAccountPress = (): void => {
     Alert.alert(
@@ -357,7 +354,7 @@ export function Settings(): ReactElement {
 
   return (
     <View className='pb-safe'>
-      <View className='py-16 items-center justify-center'>
+      <View className='px-content-offset py-16 items-center justify-center'>
         <Avatar
           source={avatarSource}
           name={profile?.name}

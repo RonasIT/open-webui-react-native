@@ -42,7 +42,6 @@
       "TEXT_KNOWLEDGE": "Wissen",
       "BUTTON_SELECT_KNOWLEDGE": "Wissen auswählen",
       "BUTTON_UPLOAD_FILES": "Dateien hochladen",
-      "TEXT_CREATE": "Erstellen",
       "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Sie können keine leere Datei hochladen.",
       "TEXT_UNSUPPORTED_TYPE": "Nicht unterstützter Typ."
     },

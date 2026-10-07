@@ -30,7 +30,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     slug: process.env.EXPO_PUBLIC_APP_SLUG as string,
     scheme: process.env.EXPO_PUBLIC_APP_SCHEME as string,
     owner: process.env.EXPO_PUBLIC_APP_OWNER as string,
-    version: '1.15.1',
+    version: '1.16.1',
     userInterfaceStyle: 'automatic',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -49,7 +49,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       supportsTablet: false,
       buildNumber: appEnv.select({
         default: '18',
-        production: '50',
+        production: '52',
       }),
       config: {
         usesNonExemptEncryption: false,
@@ -59,7 +59,6 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
         // only over plain HTTP (local network, Docker, Raspberry Pi, Tailscale).
         NSAppTransportSecurity: {
           NSAllowsArbitraryLoads: true,
-          NSAllowsLocalNetworking: true,
         },
       },
     },
@@ -68,7 +67,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       playStoreUrl: `https://play.google.com/store/apps/details?id=${playStoreAppId}`,
       versionCode: appEnv.select({
         default: 15,
-        production: 50,
+        production: 52,
       }),
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
@@ -101,14 +100,6 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
             'Open MobileUI uses your photo library to let you select and share images in chat conversations and set your profile picture.',
           cameraPermission:
             'Open MobileUI uses your camera to let you take photos and share them directly in chat conversations.',
-        },
-      ],
-      [
-        'expo-camera',
-        {
-          cameraPermission:
-            'Open MobileUI uses your camera to let you share live visuals during voice mode conversations.',
-          recordAudioAndroid: false,
         },
       ],
       [

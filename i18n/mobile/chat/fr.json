@@ -38,7 +38,7 @@
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Joindre une page web",
         "TEXT_WEBPAGE_URLS": "URL de pages web",
-        "TEXT_INVALID_URL": "Veuillez saisir une URL valide."
+        "TEXT_INVALID_URL": "Veuillez saisir une URL valide, ex. https://example.com"
       },
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "Invite système",
@@ -86,25 +86,7 @@
         "TEXT_CREATE_NEW_FOLDER": "Créer un nouveau dossier"
       },
       "SUGGESTIONS_LIST": {
-        "TEXT_SUGGESTED": "Suggestions",
-        "TEXT_SUGGESTION_TITLE_1": "Aide-moi à étudier",
-        "TEXT_SUGGESTION_SUBTITLE_1": "le vocabulaire pour un examen d'entrée à l'université",
-        "TEXT_SUGGESTION_CONTENT_1": "Aide-moi à apprendre du vocabulaire : écris une phrase avec un blanc à remplir, et j'essaierai de choisir la bonne option.",
-        "TEXT_SUGGESTION_TITLE_2": "Donne-moi des idées",
-        "TEXT_SUGGESTION_SUBTITLE_2": "sur ce que faire des dessins de mes enfants",
-        "TEXT_SUGGESTION_CONTENT_2": "Quelles sont 5 choses créatives que je pourrais faire avec les dessins de mes enfants ? Je ne veux pas les jeter, mais ils prennent aussi beaucoup de place.",
-        "TEXT_SUGGESTION_TITLE_3": "Raconte-moi un fait amusant",
-        "TEXT_SUGGESTION_SUBTITLE_3": "sur l'Empire romain",
-        "TEXT_SUGGESTION_CONTENT_3": "Raconte-moi un fait amusant au hasard sur l'Empire romain",
-        "TEXT_SUGGESTION_TITLE_4": "Montre-moi un extrait de code",
-        "TEXT_SUGGESTION_SUBTITLE_4": "d'un en-tête sticky de site web",
-        "TEXT_SUGGESTION_CONTENT_4": "Montre-moi un extrait de code d'un en-tête sticky de site web en CSS et JavaScript.",
-        "TEXT_SUGGESTION_TITLE_5": "Explique le trading d'options",
-        "TEXT_SUGGESTION_SUBTITLE_5": "si je connais déjà l'achat et la vente d'actions",
-        "TEXT_SUGGESTION_CONTENT_5": "Explique le trading d'options en termes simples si je suis déjà familiarisé avec l'achat et la vente d'actions.",
-        "TEXT_SUGGESTION_TITLE_6": "Surmonter la procrastination",
-        "TEXT_SUGGESTION_SUBTITLE_6": "donne-moi des conseils",
-        "TEXT_SUGGESTION_CONTENT_6": "Pourrais-tu commencer par me demander dans quelles situations je procrastine le plus, puis me donner quelques suggestions pour y remédier ?"
+        "TEXT_SUGGESTED": "Suggestions"
       }
     },
     "ATTACHED_FILE_ITEM": {
@@ -180,7 +162,11 @@
     "VOICE_MODE_MODAL": {
       "TEXT_LISTENING": "Écoute...",
       "TEXT_THINKING": "Réflexion...",
-      "TEXT_TALKING": "Parole..."
+      "TEXT_TAP_TO_INTERRUPT": "Touchez pour interrompre",
+      "IMAGE_SOURCE_SHEET": {
+        "TEXT_TAKE_PHOTO": "Capturer",
+        "TEXT_CHOOSE_FROM_GALLERY": "Choisir dans la galerie"
+      }
     },
     "MESSAGE_FOLLOW_UPS": {
       "TEXT_FOLLOW_UP": "Suite"

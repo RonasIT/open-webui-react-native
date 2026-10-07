@@ -93,16 +93,14 @@
       "TEXT_DELETE_CHAT": "删除聊天？",
       "TEXT_THIS_WILL_DELETE": "这将删除 {{name}}",
       "TEXT_CLONE_OF": "{{title}} 的副本",
-      "TEXT_CHAT_ACTIONS": "聊天操作",
       "TEXT_MOVE_TO_FOLDER": "移动到文件夹",
+      "TEXT_CHAT_MOVED": "聊天已成功移动",
       "DOWNLOAD_CHAT_OPTIONS_SHEET": {
         "TEXT_EXPORT_CHAT_JSON": "导出聊天 (.json)",
-        "TEXT_PLAIN_TEXT": "纯文本 (.txt)",
-        "TEXT_PDF_DOCUMENT": "PDF 文档 (.pdf)"
+        "TEXT_PLAIN_TEXT": "纯文本 (.txt)"
       },
       "MOVE_CHAT_TO_FOLDER_MODAL": {
         "TEXT_SEARCH_FOLDER": "搜索文件夹",
-        "TEXT_NO_FOLDERS": "没有文件夹",
         "TEXT_CREATE_NEW_FOLDER": "创建文件夹",
         "TEXT_NO_FOLDER": "无文件夹"
       }

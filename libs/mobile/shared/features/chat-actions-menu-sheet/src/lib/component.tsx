@@ -32,7 +32,7 @@ import {
 } from '@open-webui-react-native/shared/data-access/api';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
-import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { ChatAction } from './enums';
 
 export type ChatActionsMenuSheetMethods = {
@@ -236,6 +236,7 @@ export function ChatActionsMenuSheet({ goToChat, ref, isInChat }: ChatActionsMen
       oldFolderId: chatFullData?.folderId,
     });
     fullScreenSearchModalRef.current?.close();
+    ToastService.showSuccess(translate('TEXT_CHAT_MOVED'));
   };
 
   const actions: Array<ActionSheetItemProps> = compact([
@@ -257,7 +258,7 @@ export function ChatActionsMenuSheet({ goToChat, ref, isInChat }: ChatActionsMen
       isLoading: isCloning,
       onPress: () => handleAction(ChatAction.CLONE),
     },
-    isFeatureEnabled(FeatureID.ARCHIVE_CHAT) && {
+    {
       title: isArchived ? translate('TEXT_RESTORE') : translate('TEXT_ARCHIVE'),
       iconName: isArchived ? 'unarchive' : 'archive',
       isLoading: isArchived ? isUnarchiving : isArchiving,
