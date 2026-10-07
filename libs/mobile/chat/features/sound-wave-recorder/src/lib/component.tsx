@@ -112,7 +112,7 @@ export function SoundWaveRecorder({
           {dayjs(recordingDuration.current).format('mm:ss')}
         </AppText>
         <IconButton
-          onPress={() => completeSpeechRecording()}
+          onPress={completeSpeechRecording}
           isLoading={isTranscribing}
           iconName='checked'
           className='h-[28px] w-[28px] justify-center items-center rounded-full bg-brand-secondary'

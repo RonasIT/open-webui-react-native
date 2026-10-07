@@ -45,9 +45,6 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
   const silenceTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pendingImageRef = useRef<ChatImageData | null>(null);
   const shouldResumeListeningRef = useRef(false);
-  // NOTE: Whether the current recording has speech and whether a phrase was paused by the image picker
-  const hasSpeechRef = useRef(false);
-  const hasPausedSpeechRef = useRef(false);
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -91,9 +88,11 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     pauseSpeechRecording,
     stopSpeechRecording,
     completeSpeechRecording,
+    hasPausedSpeech,
     metering,
   } = useDictateMode({
     updateIntervalMillis: 100,
+    speechThreshold: meteringSilenceThreshold,
     onCompleteRecording: (text: string, language: string) => {
       if (text.trim().length) {
         const attachedImages = pendingImageRef.current ? [pendingImageRef.current] : undefined;
@@ -121,8 +120,6 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     clearSilenceTimeout();
     pendingImageRef.current = null;
     shouldResumeListeningRef.current = false;
-    hasSpeechRef.current = false;
-    hasPausedSpeechRef.current = false;
     setIsUserSpeaking(false);
     setIsAiSpeaking(false);
     setIsWaitingNewMessage(false);
@@ -147,35 +144,18 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     [],
   );
 
-  const pauseListening = async (): Promise<void> => {
-    const hasSpeech = hasSpeechRef.current;
-    hasSpeechRef.current = false;
-    hasPausedSpeechRef.current = hasPausedSpeechRef.current || hasSpeech;
-    clearSilenceTimeout();
-    setIsUserSpeaking(false);
-    // NOTE: Keep a started phrase for the next message, transcribing silence may produce phantom text
-    await pauseSpeechRecording(hasSpeech);
-  };
-
   // NOTE: Pause on open, otherwise silence detection sends the phrase while the user picks a source
   const handleImageSheetOpen = async (): Promise<void> => {
     shouldResumeListeningRef.current = true;
-    await pauseListening();
-  };
-
-  const resumeListening = async (): Promise<void> => {
-    await startSpeechRecording();
-
-    // NOTE: Treat a paused phrase as still going, so silence completes it without new speech
-    if (hasPausedSpeechRef.current) {
-      setIsUserSpeaking(true);
-    }
+    clearSilenceTimeout();
+    setIsUserSpeaking(false);
+    await pauseSpeechRecording();
   };
 
   const handleImageSheetDismiss = async (): Promise<void> => {
     if (shouldResumeListeningRef.current) {
       shouldResumeListeningRef.current = false;
-      await resumeListening();
+      await startSpeechRecording();
     }
   };
 
@@ -193,7 +173,7 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
       }
     } finally {
       if (shouldResumeListening) {
-        await resumeListening();
+        await startSpeechRecording();
       }
     }
   };
@@ -220,12 +200,8 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
 
     silenceTimeout.current = setTimeout(() => {
       void (async () => {
-        const hasSpeech = hasSpeechRef.current;
-        hasSpeechRef.current = false;
-        hasPausedSpeechRef.current = false;
         setIsUserSpeaking(false);
-        // NOTE: Silence after a paused phrase sends only the buffered text
-        await completeSpeechRecording(hasSpeech);
+        await completeSpeechRecording();
       })();
     }, meteringSilenceDuration);
   };
@@ -277,23 +253,15 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     }
 
     if (metering > meteringSilenceThreshold) {
-      hasSpeechRef.current = true;
-    }
-
-    if (metering > meteringSilenceThreshold && !isUserSpeaking) {
-      setIsUserSpeaking(true);
-      clearSilenceTimeout();
-    }
-
-    if (isUserSpeaking) {
-      if (metering < meteringSilenceThreshold) {
-        // NOTE: We need to wait for a silence duration before stopping the recording
-        startSilenceTimeout();
-      } else {
-        clearSilenceTimeout();
+      if (!isUserSpeaking) {
+        setIsUserSpeaking(true);
       }
+      clearSilenceTimeout();
+    } else if (metering < meteringSilenceThreshold && (isUserSpeaking || hasPausedSpeech)) {
+      // NOTE: A paused phrase counts as still going, so silence completes it without new speech
+      startSilenceTimeout();
     }
-  }, [isVisible, metering, isUserSpeaking]);
+  }, [isVisible, metering, isUserSpeaking, hasPausedSpeech]);
 
   return (
     <Modal

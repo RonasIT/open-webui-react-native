@@ -12,6 +12,8 @@ export interface UseDictateModeArgs {
   onStartRecording?: () => void;
   onStopRecording?: () => void;
   updateIntervalMillis?: number;
+  // NOTE: A recording that never gets louder isn't transcribed; omit to always transcribe
+  speechThreshold?: number;
 }
 
 export interface UseDictateModeResult {
@@ -19,9 +21,10 @@ export interface UseDictateModeResult {
   isRecording: boolean;
   isTranscribing: boolean;
   startSpeechRecording: () => Promise<void>;
-  completeSpeechRecording: (shouldKeepSpeech?: boolean) => Promise<void>;
-  pauseSpeechRecording: (shouldKeepSpeech: boolean) => Promise<void>;
+  completeSpeechRecording: () => Promise<void>;
+  pauseSpeechRecording: () => Promise<void>;
   stopSpeechRecording: () => Promise<void>;
+  hasPausedSpeech: boolean;
   metering?: number;
 }
 
@@ -30,6 +33,7 @@ export const useDictateMode = ({
   onStartRecording,
   onStopRecording,
   updateIntervalMillis = 400,
+  speechThreshold,
 }: UseDictateModeArgs): UseDictateModeResult => {
   const { recorder, startRecording, isReady, stopRecording } = useAudioRecorder();
   const locale = useSelector(appState$.locale);
@@ -40,8 +44,10 @@ export const useDictateMode = ({
 
   // NOTE: Speech cut off by pauseSpeechRecording, prepended to the next completed recording
   const pausedSpeechRef = useRef<Promise<string> | null>(null);
+  const hasSpeechRef = useRef(false);
 
   const [isRecording, setIsRecording] = useState<boolean>(false);
+  const [hasPausedSpeech, setHasPausedSpeech] = useState(false);
   const [metering, setMetering] = useState<number | undefined>(undefined);
   const [durationMillis, setDurationMillis] = useState<number>(0);
 
@@ -55,17 +61,30 @@ export const useDictateMode = ({
 
     const interval = setInterval(() => {
       const { durationMillis, metering } = recorder.getStatus();
+      const normalizedMetering = normalizeMetering(metering);
+
+      if (speechThreshold !== undefined && normalizedMetering > speechThreshold) {
+        hasSpeechRef.current = true;
+      }
+
       setDurationMillis(durationMillis);
-      setMetering(normalizeMetering(metering));
+      setMetering(normalizedMetering);
     }, updateIntervalMillis);
 
     return () => clearInterval(interval);
   }, [isRecording, isReady]);
 
-  const finishRecording = async (text?: string): Promise<void> => {
-    const pausedText = await pausedSpeechRef.current;
+  const hasSpeech = (): boolean => speechThreshold === undefined || hasSpeechRef.current;
+
+  const clearPausedSpeech = (): void => {
     pausedSpeechRef.current = null;
-    onCompleteRecording?.(joinString([pausedText, text]), speechLanguage);
+    setHasPausedSpeech(false);
+  };
+
+  const finishRecording = async (text?: string): Promise<void> => {
+    const pausedSpeech = pausedSpeechRef.current;
+    clearPausedSpeech();
+    onCompleteRecording?.(joinString([await pausedSpeech, text]), speechLanguage);
   };
 
   const { mutate: transcribeAudio, isPending: isTranscribing } = audioApi.useTranscribeAudio({
@@ -87,11 +106,12 @@ export const useDictateMode = ({
 
   const startSpeechRecording = async (): Promise<void> => {
     await startRecording();
+    hasSpeechRef.current = false;
     setIsRecording(true);
     onStartRecording?.();
   };
 
-  const completeSpeechRecording = async (shouldKeepSpeech = true): Promise<void> => {
+  const completeSpeechRecording = async (): Promise<void> => {
     if (!isRecording) {
       return;
     }
@@ -104,7 +124,8 @@ export const useDictateMode = ({
         return;
       }
 
-      if (shouldKeepSpeech) {
+      // NOTE: Skip transcribing silence, it may produce phantom text
+      if (hasSpeech()) {
         transcribeAudio(getSpeechFormData(uri, speechLanguage));
       } else {
         await finishRecording();
@@ -114,17 +135,18 @@ export const useDictateMode = ({
     }
   };
 
-  const pauseSpeechRecording = async (shouldKeepSpeech: boolean): Promise<void> => {
+  const pauseSpeechRecording = async (): Promise<void> => {
     setIsRecording(false);
     const uri = await stopRecording();
 
-    if (shouldKeepSpeech && uri) {
+    if (uri && hasSpeech()) {
       pausedSpeechRef.current = transcribePausedSpeech(uri, pausedSpeechRef.current);
+      setHasPausedSpeech(true);
     }
   };
 
   const stopSpeechRecording = async (): Promise<void> => {
-    pausedSpeechRef.current = null;
+    clearPausedSpeech();
     setIsRecording(false);
     await stopRecording();
     onStopRecording?.();
@@ -138,6 +160,7 @@ export const useDictateMode = ({
     completeSpeechRecording,
     pauseSpeechRecording,
     stopSpeechRecording,
-    metering,
+    hasPausedSpeech,
+    metering: isRecording ? metering : undefined,
   };
 };
