@@ -85,6 +85,12 @@ export class CompleteChatRequest {
   @Expose({ name: 'assistant_message_id' })
   public assistantMessageId?: string;
 
+  // Set only for guided regeneration ("Add details", "More concise", "Suggest a change"). For a
+  // saved chat the backend rebuilds history from the DB and drops client messages, so an instruction
+  // placed in `messages` never reaches the model — the backend appends this prompt itself instead.
+  @Expose({ name: 'regeneration_prompt' })
+  public regenerationPrompt?: string;
+
   constructor(request: Partial<CompleteChatRequest> = {}) {
     Object.assign(this, request);
   }

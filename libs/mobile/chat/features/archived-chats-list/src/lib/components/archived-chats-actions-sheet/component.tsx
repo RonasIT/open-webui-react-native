@@ -1,6 +1,5 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
-import { compact } from 'lodash-es';
 import { ReactElement, useRef } from 'react';
 import {
   ActionsBottomSheet,
@@ -9,7 +8,6 @@ import {
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
-import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { useExportArchivedChats, useUnarchiveChats } from '../../hooks';
 
 interface ArchivedChatsActionsSheetProps {
@@ -43,20 +41,20 @@ export function ArchivedChatsActionsSheet({ renderTrigger }: ArchivedChatsAction
     actionsSheetRef.current?.close();
   };
 
-  const actions: Array<ActionSheetItemProps> = compact([
+  const actions: Array<ActionSheetItemProps> = [
     {
       title: translate('BUTTON_RESTORE_ALL_CHATS'),
       iconName: 'unarchive',
       onPress: withOfflineGuard(showUnarchiveAllAlert),
       isLoading: isUnarchivingAllChats,
     },
-    isFeatureEnabled(FeatureID.EXPORT_ARCHIVED_CHAT) && {
+    {
       title: translate('BUTTON_EXPORT_ALL_CHATS'),
       iconName: 'exportIcon',
       onPress: withOfflineGuard(handleExportArchivedChats),
       isLoading: isExporting,
     },
-  ]);
+  ];
 
   return <ActionsBottomSheet
     actions={actions}

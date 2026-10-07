@@ -36,6 +36,8 @@ export interface PrepareCompleteChatPayloadArgs {
   userMessage?: Message;
   // Set only for "Continue Response": id of the existing assistant message to keep and extend.
   assistantMessageId?: string;
+  // Set only for guided regeneration: the instruction the backend appends as the last user turn.
+  regenerationPrompt?: string;
 }
 
 export function prepareCompleteChatPayload({
@@ -47,6 +49,7 @@ export function prepareCompleteChatPayload({
   generationOptions,
   userMessage,
   assistantMessageId,
+  regenerationPrompt,
 }: PrepareCompleteChatPayloadArgs): CompleteChatRequest {
   const userSettings = queryClient.getQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey);
   const chatResponse = queryClient.getQueryData<ChatResponse>(chatQueriesKeys.get(chatId).queryKey);
@@ -170,6 +173,7 @@ export function prepareCompleteChatPayload({
     userMessage: resolvedUserMessage,
     parentId: resolvedUserMessage?.parentId ?? null,
     assistantMessageId,
+    regenerationPrompt,
   });
 
   return request;

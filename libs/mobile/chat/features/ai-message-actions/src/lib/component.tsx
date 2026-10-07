@@ -7,7 +7,6 @@ import { View } from 'react-native';
 import { MessageActionsSheetWrapper } from '@open-webui-react-native/mobile/chat/ui/message-actions-wrapper';
 import { ActionsBottomSheet, ActionSheetItemProps } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { Message } from '@open-webui-react-native/shared/data-access/api';
-import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 interface AiMessageActionsProps {
@@ -57,12 +56,13 @@ export function AiMessageActions({
   };
 
   const openRegenerateActions = (): void => {
+    //NOTE: Dismiss the main sheet first, otherwise the default 'switch' stack behavior minimizes it
+    // and a later dismiss() leaves it stuck in DISMISSING, so it never opens again
+    actionsSheetRef.current?.dismiss();
     regenerateActionsSheetRef.current?.present();
   };
 
   const runRegenerateAction = (action?: (messageId: string) => void): void => {
-    actionsSheetRef.current?.dismiss();
-
     //NOTE: Small delay ensures sheet is fully closed before showing input
     setTimeout(() => {
       action?.(message.id);
@@ -88,7 +88,7 @@ export function AiMessageActions({
   };
 
   const actions: Array<ActionSheetItemProps> = compact([
-    isFeatureEnabled(FeatureID.AI_EDIT_MESSAGE) && {
+    {
       title: translate('TEXT_EDIT'),
       iconName: 'editPencil',
       onPress: handleEditPress,
@@ -103,7 +103,7 @@ export function AiMessageActions({
       iconName: 'play',
       onPress: handleContinueResponsePress,
     },
-    isFeatureEnabled(FeatureID.AI_REGENERATE_MESSAGE) && {
+    {
       title: translate('TEXT_REGENERATE'),
       iconName: 'refresh',
       onPress: openRegenerateActions,
@@ -111,7 +111,7 @@ export function AiMessageActions({
     },
   ]);
 
-  const regenerateActions: Array<ActionSheetItemProps> = compact([
+  const regenerateActions: Array<ActionSheetItemProps> = [
     {
       title: translate('REGENERATE_MESSAGE_ACTION_SHEET.TEXT_SUGGEST_A_CHANGE'),
       iconName: 'keyboard',
@@ -132,7 +132,7 @@ export function AiMessageActions({
       iconName: 'lessText',
       onPress: handleMoreConcisePress,
     },
-  ]);
+  ];
 
   return (
     <View>
