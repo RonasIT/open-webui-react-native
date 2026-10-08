@@ -45,6 +45,7 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
   const silenceTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pendingImageRef = useRef<ChatImageData | null>(null);
   const shouldResumeListeningRef = useRef(false);
+  const isVisibleRef = useRef(false);
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -103,8 +104,10 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
 
         speechStreamingService.resumeContentSpeaking(language);
         setIsWaitingNewMessage(true);
-      } else {
+      } else if (isVisibleRef.current) {
         startSpeechRecording();
+      } else {
+        pendingImageRef.current = null;
       }
     },
   });
@@ -114,6 +117,7 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     isCreating || isSending || isLoading || isTranscribing || isWaitingNewMessage || isReceivingNewMessage;
 
   const close = async (): Promise<void> => {
+    isVisibleRef.current = false;
     // NOTE: Stop TTS immediately; isStopped is set sync so late handleContent/speakText no-ops
     const stopSpeakingPromise = speechStreamingService.stopContentSpeaking();
     speechStreamingService.clearListeners();
@@ -137,6 +141,8 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     ref,
     () => ({
       present: async ({ chatId, modelId }: { chatId?: string; modelId: string }): Promise<void> => {
+        pendingImageRef.current = null;
+        isVisibleRef.current = true;
         // NOTE: If chat exists, we get its ID
         setChatId(chatId);
         setModelId(modelId);
