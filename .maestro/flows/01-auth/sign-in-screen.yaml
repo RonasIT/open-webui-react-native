@@ -1,0 +1,17 @@
+# TODO: Remove this flow once real e2e tests are written, it only checks that CI works
+appId: ${APP_ID}
+name: Sign-in screen is shown on first launch
+tags:
+  - smoke
+onFlowStart:
+  - startRecording: recording
+onFlowComplete:
+  - stopRecording
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: sign-in-screen
+    timeout: 60000
+- takeScreenshot: sign-in-screen

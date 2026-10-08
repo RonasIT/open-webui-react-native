@@ -43,8 +43,9 @@ export function SignIn(props: SignInProps): ReactElement {
     }
   };
 
+  // TODO: Remove `sign-in-screen` testID once real e2e tests are written, it is only for the CI smoke test
   return (
-    <AppSafeAreaView edges={['bottom']} className='flex-1 pt-32'>
+    <AppSafeAreaView testID='sign-in-screen' edges={['bottom']} className='flex-1 pt-32'>
       <View className='mb-12'>
         <AppText className='text-h2-sm sm:text-h2 font-medium mb-24'>{translate('TEXT_TITLE_EXTERNAL')}</AppText>
       </View>
@@ -55,20 +56,14 @@ export function SignIn(props: SignInProps): ReactElement {
       />
       {oauthProviders.map((provider) => (
         <View key={provider} className='pt-40'>
-          <OauthSignIn
-            provider={provider}
-            providerName={providers[provider]}
-            onSuccess={handleSuccess} />
+          <OauthSignIn provider={provider} providerName={providers[provider]} onSuccess={handleSuccess} />
         </View>
       ))}
       <View className='mt-auto pt-40 pb-16 gap-4'>
         <AppText className='text-sm-sm sm:text-sm text-text-secondary text-center'>
           {translate('TEXT_NEED_HELP_OR_FEEDBACK')}
         </AppText>
-        <AppPressable
-          className='self-center'
-          onPress={handleSupportPress}
-          hitSlop={12}>
+        <AppPressable className='self-center' onPress={handleSupportPress} hitSlop={12}>
           <AppText className='text-sm-sm sm:text-sm text-brand-primary text-center'>
             {translate('TEXT_EMAIL_RONAS_IT')}
           </AppText>
