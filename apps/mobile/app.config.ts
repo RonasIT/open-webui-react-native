@@ -79,7 +79,14 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     },
     plugins: compact([
       'expo-router',
-      'expo-localization',
+      [
+        'expo-localization',
+        {
+          supportedLocales: {
+            ios: ['en', 'de', 'es', 'fr', 'pt-BR', 'ru', 'zh-Hans', 'ja', 'ro'],
+          },
+        },
+      ],
       'expo-asset',
       [
         'expo-splash-screen',
