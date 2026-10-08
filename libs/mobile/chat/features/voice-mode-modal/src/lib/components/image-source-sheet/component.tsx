@@ -2,13 +2,25 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useRef } from 'react';
 import { ImagePickerSource } from '@open-webui-react-native/mobile/shared/data-access/image-picker-service';
-import { ActionsBottomSheet, ActionSheetItemProps, IconButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import {
+  ActionsBottomSheet,
+  ActionsBottomSheetProps,
+  ActionSheetItemProps,
+  IconButton,
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 
-export interface ImageSourceSheetProps {
+export interface ImageSourceSheetProps extends Pick<ActionsBottomSheetProps, 'onDismiss'> {
   onSelectSource: (source: ImagePickerSource) => void;
+  onTriggerPress?: () => void;
+  isTriggerDisabled?: boolean;
 }
 
-export function ImageSourceSheet({ onSelectSource }: ImageSourceSheetProps): ReactElement {
+export function ImageSourceSheet({
+  onSelectSource,
+  onTriggerPress,
+  isTriggerDisabled,
+  onDismiss,
+}: ImageSourceSheetProps): ReactElement {
   const translate = useTranslation('CHAT.VOICE_MODE_MODAL.IMAGE_SOURCE_SHEET');
   const sheetRef = useRef<BottomSheetModal>(null);
 
@@ -33,12 +45,18 @@ export function ImageSourceSheet({ onSelectSource }: ImageSourceSheetProps): Rea
   const renderTrigger = ({ onPress }: { onPress: () => void }): ReactElement => (
     <IconButton
       iconName='camera'
-      onPress={onPress}
-      className='w-40 h-40 bg-background-secondary rounded-full' />
+      disabled={isTriggerDisabled}
+      onPress={() => {
+        onTriggerPress?.();
+        onPress();
+      }}
+      className='w-40 h-40 bg-background-secondary rounded-full'
+    />
   );
 
   return <ActionsBottomSheet
     ref={sheetRef}
     renderTrigger={renderTrigger}
-    actions={actions} />;
+    actions={actions}
+    onDismiss={onDismiss} />;
 }

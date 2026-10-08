@@ -49,6 +49,8 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
 
   const silenceTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pendingImageRef = useRef<ChatImageData | null>(null);
+  const shouldResumeListeningRef = useRef(false);
+  const isVisibleRef = useRef(false);
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -86,35 +88,52 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
   sendMessageRef.current = sendMessage;
   startChatCreationRef.current = startChatCreation;
 
-  const { isRecording, isTranscribing, startSpeechRecording, stopSpeechRecording, completeSpeechRecording, metering } =
-    useDictateMode({
-      updateIntervalMillis: 100,
-      onCompleteRecording: (text: string, language: string) => {
-        if (text.trim().length) {
-          const attachedImages = pendingImageRef.current ? [pendingImageRef.current] : undefined;
-          pendingImageRef.current = null;
+  const {
+    isRecording,
+    isTranscribing,
+    startSpeechRecording,
+    pauseSpeechRecording,
+    stopSpeechRecording,
+    completeSpeechRecording,
+    hasPausedSpeech,
+    metering,
+  } = useDictateMode({
+    updateIntervalMillis: 100,
+    speechThreshold: meteringSilenceThreshold,
+    onCompleteRecording: (text: string, language: string) => {
+      if (text.trim().length) {
+        const attachedImages = pendingImageRef.current ? [pendingImageRef.current] : undefined;
+        pendingImageRef.current = null;
 
-          const send = chatIdRef.current ? sendMessageRef.current : startChatCreationRef.current;
-          send(text, modelIdRef.current, [ChatGenerationOption.VOICE], undefined, attachedImages);
+        const send = chatIdRef.current ? sendMessageRef.current : startChatCreationRef.current;
+        send(text, modelIdRef.current, [ChatGenerationOption.VOICE], undefined, attachedImages);
 
-          speechStreamingService.resumeContentSpeaking(language);
-          setIsWaitingNewMessage(true);
-        } else {
-          startSpeechRecording();
-        }
-      },
-    });
+        speechStreamingService.resumeContentSpeaking(language);
+        setIsWaitingNewMessage(true);
+      } else if (isVisibleRef.current) {
+        startSpeechRecording();
+      } else {
+        pendingImageRef.current = null;
+      }
+    },
+  });
 
   const newMessage = chat?.chat.history.messages[chat.chat.history.currentId];
   const isThinking =
     isCreating || isSending || isLoading || isTranscribing || isWaitingNewMessage || isReceivingNewMessage;
 
   const close = async (): Promise<void> => {
+    isVisibleRef.current = false;
     // NOTE: Stop TTS immediately; isStopped is set sync so late handleContent/speakText no-ops
     const stopSpeakingPromise = speechStreamingService.stopContentSpeaking();
     speechStreamingService.clearListeners();
     clearSilenceTimeout();
-    pendingImageRef.current = null;
+
+    // NOTE: Transcription in flight still sends; the photo has to leave with that text
+    if (!isTranscribing) {
+      pendingImageRef.current = null;
+    }
+    shouldResumeListeningRef.current = false;
     setIsUserSpeaking(false);
     setIsAiSpeaking(false);
     setIsWaitingNewMessage(false);
@@ -128,6 +147,8 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     ref,
     () => ({
       present: async ({ chatId, modelId }: { chatId?: string; modelId: string }): Promise<void> => {
+        pendingImageRef.current = null;
+        isVisibleRef.current = true;
         // NOTE: If chat exists, we get its ID
         setChatId(chatId);
         setModelId(modelId);
@@ -139,15 +160,34 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     [],
   );
 
-  const handlePickImage = async (source: ImagePickerSource): Promise<void> => {
-    // NOTE: Pause listening while the system picker is open, the camera can interrupt the audio session
-    const shouldResumeListening = isRecording;
+  // NOTE: Pause on open, otherwise silence detection sends the phrase while the user picks a source
+  const handleImageSheetOpen = async (): Promise<void> => {
+    shouldResumeListeningRef.current = true;
+    clearSilenceTimeout();
+    setIsUserSpeaking(false);
+    await pauseSpeechRecording();
+  };
 
-    if (shouldResumeListening) {
-      clearSilenceTimeout();
-      setIsUserSpeaking(false);
-      await stopSpeechRecording();
+  // NOTE: The camera can keep the audio session. A failed restart still sends the cut-off phrase with the photo
+  const resumeListening = async (): Promise<void> => {
+    try {
+      await startSpeechRecording();
+    } catch {
+      await completeSpeechRecording();
     }
+  };
+
+  const handleImageSheetDismiss = async (): Promise<void> => {
+    if (shouldResumeListeningRef.current) {
+      shouldResumeListeningRef.current = false;
+      await resumeListening();
+    }
+  };
+
+  const handlePickImage = async (source: ImagePickerSource): Promise<void> => {
+    // NOTE: Take the flag so the sheet's onDismiss doesn't resume listening while the picker is open
+    const shouldResumeListening = shouldResumeListeningRef.current;
+    shouldResumeListeningRef.current = false;
 
     try {
       const image = await imagePickerService.getImage(source);
@@ -158,7 +198,7 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
       }
     } finally {
       if (shouldResumeListening) {
-        await startSpeechRecording();
+        await resumeListening();
       }
     }
   };
@@ -242,20 +282,16 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
       return;
     }
 
-    if (metering > meteringSilenceThreshold && !isUserSpeaking) {
-      setIsUserSpeaking(true);
-      clearSilenceTimeout();
-    }
-
-    if (isUserSpeaking) {
-      if (metering < meteringSilenceThreshold) {
-        // NOTE: We need to wait for a silence duration before stopping the recording
-        startSilenceTimeout();
-      } else {
-        clearSilenceTimeout();
+    if (metering > meteringSilenceThreshold) {
+      if (!isUserSpeaking) {
+        setIsUserSpeaking(true);
       }
+      clearSilenceTimeout();
+    } else if (metering < meteringSilenceThreshold && (isUserSpeaking || hasPausedSpeech)) {
+      // NOTE: A paused phrase counts as still going, so silence completes it without new speech
+      startSilenceTimeout();
     }
-  }, [isVisible, metering, isUserSpeaking]);
+  }, [isVisible, metering, isUserSpeaking, hasPausedSpeech]);
 
   return (
     <Modal
@@ -278,7 +314,12 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
               {isThinking || isAiSpeaking ? <Loader /> : <SpeechListener metering={metering} />}
             </AppPressable>
             <View className='flex-row justify-between items-center p-24'>
-              <ImageSourceSheet onSelectSource={handlePickImage} />
+              <ImageSourceSheet
+                isTriggerDisabled={!isRecording}
+                onTriggerPress={handleImageSheetOpen}
+                onSelectSource={handlePickImage}
+                onDismiss={handleImageSheetDismiss}
+              />
               <AppPressable
                 onPress={handleInterrupt}
                 disabled={!isAiSpeaking}
