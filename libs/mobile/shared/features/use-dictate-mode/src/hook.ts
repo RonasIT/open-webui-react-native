@@ -48,6 +48,7 @@ export const useDictateMode = ({
 
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [hasPausedSpeech, setHasPausedSpeech] = useState(false);
+  const [isFinishingPausedSpeech, setIsFinishingPausedSpeech] = useState(false);
   const [metering, setMetering] = useState<number | undefined>(undefined);
   const [durationMillis, setDurationMillis] = useState<number>(0);
 
@@ -84,7 +85,19 @@ export const useDictateMode = ({
   const finishRecording = async (text?: string): Promise<void> => {
     const pausedSpeech = pausedSpeechRef.current;
     clearPausedSpeech();
-    onCompleteRecording?.(joinString([await pausedSpeech, text]), speechLanguage);
+
+    // NOTE: Otherwise the screen still says it's listening while this text is on the way
+    if (pausedSpeech) {
+      setIsFinishingPausedSpeech(true);
+    }
+
+    try {
+      onCompleteRecording?.(joinString([await pausedSpeech, text]), speechLanguage);
+    } finally {
+      if (pausedSpeech) {
+        setIsFinishingPausedSpeech(false);
+      }
+    }
   };
 
   // NOTE: The cut-off phrase is already transcribed, so a failed new take must still send it
@@ -171,7 +184,7 @@ export const useDictateMode = ({
   return {
     durationMillis,
     isRecording,
-    isTranscribing,
+    isTranscribing: isTranscribing || isFinishingPausedSpeech,
     startSpeechRecording,
     completeSpeechRecording,
     pauseSpeechRecording,

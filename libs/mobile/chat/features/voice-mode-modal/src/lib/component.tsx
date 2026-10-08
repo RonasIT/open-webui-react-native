@@ -118,7 +118,11 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     const stopSpeakingPromise = speechStreamingService.stopContentSpeaking();
     speechStreamingService.clearListeners();
     clearSilenceTimeout();
-    pendingImageRef.current = null;
+
+    // NOTE: Transcription in flight still sends; the photo has to leave with that text
+    if (!isTranscribing) {
+      pendingImageRef.current = null;
+    }
     shouldResumeListeningRef.current = false;
     setIsUserSpeaking(false);
     setIsAiSpeaking(false);
