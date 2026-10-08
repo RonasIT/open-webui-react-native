@@ -82,8 +82,7 @@ export const useDictateMode = ({
     setHasPausedSpeech(false);
   };
 
-  const finishRecording = async (text?: string): Promise<void> => {
-    const pausedSpeech = pausedSpeechRef.current;
+  const finishRecording = async (text?: string, pausedSpeech = pausedSpeechRef.current): Promise<void> => {
     clearPausedSpeech();
 
     // NOTE: Otherwise the screen still says it's listening while this text is on the way
@@ -107,9 +106,7 @@ export const useDictateMode = ({
     }
   };
 
-  const { mutate: transcribeAudio, isPending: isTranscribing } = audioApi.useTranscribeAudio({
-    onSuccess: (response) => finishRecording(response.text),
-  });
+  const { mutate: transcribeAudio, isPending: isTranscribing } = audioApi.useTranscribeAudio();
   // NOTE: Separate mutation so background transcription of paused speech isn't reported as isTranscribing
   const { mutateAsync: transcribePausedAudio } = audioApi.useTranscribeAudio();
 
@@ -151,7 +148,13 @@ export const useDictateMode = ({
 
       // NOTE: Skip transcribing silence, it may produce phantom text
       if (hasSpeech()) {
-        transcribeAudio(getSpeechFormData(uri, speechLanguage));
+        // NOTE: Take the cut-off phrase now. Closing the mode wipes the ref while this request is in flight
+        const pausedSpeech = pausedSpeechRef.current;
+        clearPausedSpeech();
+        transcribeAudio(getSpeechFormData(uri, speechLanguage), {
+          onSuccess: (response) => finishRecording(response.text, pausedSpeech),
+          onError: () => finishRecording(undefined, pausedSpeech),
+        });
       } else {
         await finishRecording();
       }
