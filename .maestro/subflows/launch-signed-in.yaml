@@ -1,0 +1,17 @@
+# Launches the app keeping its state and signs in only if there is no session
+appId: ${APP_ID}
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: sign-in-screen|chat-create
+    timeout: 60000
+- runFlow:
+    when:
+      visible:
+        id: sign-in-screen
+    file: sign-in.yaml
+- extendedWaitUntil:
+    visible:
+      id: chat-create
+    timeout: 60000

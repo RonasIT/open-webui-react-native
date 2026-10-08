@@ -1,0 +1,7 @@
+# Launches the app as after a fresh install: no session, no saved server URL
+appId: ${APP_ID}
+---
+- launchApp:
+    clearState: true
+    # NOTE: iOS keeps the Keychain after `clearState`
+    clearKeychain: true

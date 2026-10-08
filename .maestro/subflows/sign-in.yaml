@@ -1,0 +1,31 @@
+# Signs in from the sign-in screen. Env: EMAIL, PASSWORD, API_URL (optional)
+appId: ${APP_ID}
+---
+- extendedWaitUntil:
+    visible:
+      id: sign-in-screen
+    timeout: 60000
+- tapOn:
+    id: sign-in-api-url
+# NOTE: The input is prefilled with the last used URL
+- eraseText: 100
+- inputText: ${API_URL || 'https://ai.ronas.online'}
+- tapOn:
+    id: sign-in-email
+- inputText:
+    text: ${EMAIL}
+    label: Enter email
+- tapOn:
+    id: sign-in-password
+- inputText:
+    text: ${PASSWORD}
+    label: Enter password
+- hideKeyboard
+# NOTE: The button is enabled only after the server config is fetched for the debounced URL
+- extendedWaitUntil:
+    visible:
+      id: sign-in-submit
+      enabled: true
+    timeout: 30000
+- tapOn:
+    id: sign-in-submit
