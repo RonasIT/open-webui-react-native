@@ -85,6 +85,9 @@ export class CompleteChatRequest {
   @Expose({ name: 'assistant_message_id' })
   public assistantMessageId?: string;
 
+  @Expose({ name: 'regeneration_prompt' })
+  public regenerationPrompt?: string;
+
   constructor(request: Partial<CompleteChatRequest> = {}) {
     Object.assign(this, request);
   }

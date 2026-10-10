@@ -80,20 +80,18 @@ export const useSuggestChange = ({ chat, modelId }: UseSuggestChangeProps): UseS
     const newMessagesList = createMessagesList(history, newAssistantId);
     patchChatWithSelectedMessages(chat.id, newAssistantId, newMessagesList);
 
-    const regenerationMessages = [
-      ...createMessagesList(history, messageId),
-      new Message({
-        role: Role.USER,
-        content: message,
-      }),
-    ];
+    // NOTE: Mirrors the web client. With an instruction the branch includes the answer being replaced,
+    // and the instruction goes as `regeneration_prompt`, which the backend appends after it itself.
+    // Without one ("Try again") the branch ends at the parent user message and no prompt is sent.
+    const instruction = message.trim();
 
     const payload = prepareCompleteChatPayload({
       chatId: chat.id,
       messageId: newAssistantId,
-      messages: regenerationMessages,
+      messages: createMessagesList(history, instruction ? messageId : parentUserId),
       sessionId: socketService.socketSessionId,
       model: modelId,
+      regenerationPrompt: instruction || undefined,
     });
 
     completeChat(payload);

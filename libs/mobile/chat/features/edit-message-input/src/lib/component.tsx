@@ -32,6 +32,9 @@ export function EditMessageInput<T extends FieldValues>({
 
   const { field } = useController({ control, name });
 
+  // NOTE: An assistant reply cannot be saved empty; user-message editing keeps its current behavior.
+  const isAiSaveDisabled = isAiMessage && !field.value?.trim();
+
   return (
     <AppTextInput
       multiline
@@ -57,6 +60,7 @@ export function EditMessageInput<T extends FieldValues>({
             className='border-background-tertiary bg-background-primary'
             text={translate(isAiMessage ? 'BUTTON_SAVE_AS_COPY' : 'BUTTON_SAVE')}
             onPress={() => onSave(field.value)}
+            disabled={isAiSaveDisabled}
           />
           <View className='flex-row gap-12 justify-end flex-1'>
             <AppButton
@@ -70,6 +74,7 @@ export function EditMessageInput<T extends FieldValues>({
               size='xs'
               text={translate(isAiMessage ? 'BUTTON_SAVE' : 'BUTTON_SEND')}
               onPress={() => onSend(field.value)}
+              disabled={isAiSaveDisabled}
             />
           </View>
         </View>

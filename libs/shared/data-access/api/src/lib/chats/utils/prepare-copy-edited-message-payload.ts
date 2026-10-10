@@ -2,6 +2,7 @@ import uuid from 'react-native-uuid';
 import { Role } from '@open-webui-react-native/shared/data-access/common';
 import { ChatResponse, History, Message } from '../models';
 import { createMessagesList } from './create-messages-list';
+import { replaceOutputText } from './replace-output-text';
 
 export function prepareCopyEditedMessagePayload(
   oldData: ChatResponse,
@@ -24,6 +25,7 @@ export function prepareCopyEditedMessagePayload(
     parentId,
     childrenIds: [],
     content: newContent,
+    output: replaceOutputText(original.output, newContent),
     done: true,
   };
 

@@ -1,5 +1,6 @@
 import { Role } from '@open-webui-react-native/shared/data-access/common';
 import { ChatResponse } from '../models';
+import { replaceOutputText } from './replace-output-text';
 
 export function prepareEditAssistantMessagePayload(
   oldData: ChatResponse,
@@ -15,6 +16,7 @@ export function prepareEditAssistantMessagePayload(
   const updatedMessage = {
     ...target,
     content: newContent,
+    output: replaceOutputText(target.output, newContent),
     done: true,
   };
 
