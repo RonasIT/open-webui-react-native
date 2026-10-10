@@ -20,7 +20,8 @@
       },
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "閉じる",
-        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "このサインイン方法は利用できません。別の方法をお試しください。"
+        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "このサインイン方法は利用できません。別の方法をお試しください。",
+        "TEXT_SERVER_ADDRESS_MISMATCH": "アプリに入力したサーバーアドレスが、サーバーで設定されたアドレスと一致しません。サーバーのメインアドレスでサインインしてください。"
       }
     }
   }

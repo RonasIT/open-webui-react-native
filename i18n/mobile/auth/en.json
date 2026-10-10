@@ -20,7 +20,8 @@
       },
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "Close",
-        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "This sign-in method is unavailable. Please use another option to continue."
+        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "This sign-in method is unavailable. Please use another option to continue.",
+        "TEXT_SERVER_ADDRESS_MISMATCH": "The server address in the app doesn't match the one configured on the server. Sign in using the server's main address."
       }
     }
   }

@@ -20,7 +20,8 @@
       },
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "Fermer",
-        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Cette méthode de connexion est indisponible. Veuillez utiliser une autre option."
+        "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Cette méthode de connexion est indisponible. Veuillez utiliser une autre option.",
+        "TEXT_SERVER_ADDRESS_MISMATCH": "L'adresse du serveur dans l'application ne correspond pas à celle configurée sur le serveur. Connectez-vous avec l'adresse principale du serveur."
       }
     }
   }
