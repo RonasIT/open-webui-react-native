@@ -45,8 +45,6 @@ export const useEditMessage = ({ chat, modelId }: UseEditMessageProps): typeof r
     return editedMessage.role === Role.ASSISTANT;
   };
 
-  // NOTE: Wrap chat in Chat instance (as in server response) so lodash merge in patchChatQueryData
-  // replaces it as a whole instead of mutating history in place, which keeps memoized lists in sync.
   const patchTemporaryChat = (chatId: string, preparedChat: ChatResponse): void => {
     patchChatQueryData(chatId, { ...preparedChat, chat: new Chat(preparedChat.chat) });
   };

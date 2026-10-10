@@ -1,5 +1,6 @@
 import { createEntityInstance, EntityPartial } from '@ronas-it/rtkq-entity-api';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
+import { mapValues } from 'lodash-es';
 import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
 import { EntityPromiseService } from '@open-webui-react-native/shared/data-access/base-entity';
 import { chatServiceConfig } from './configs';
@@ -11,11 +12,39 @@ import {
   CreateNewChatRequest,
   GetArchivedChatListRequest,
   GetChatListRequest,
+  Message,
   MoveChatToFolderRequest,
   ResolveToolCallRequest,
   SearchChatListRequest,
   ShareChatResponse,
 } from './models';
+import { prepareOutputForSave } from './utils/prepare-output-for-save';
+
+// NOTE: Converts on a copy — the query cache must keep the parsed `output` shape.
+const prepareChatForSave = (entity: ChatResponse): Record<string, unknown> => {
+  const { chat } = entity;
+
+  if (!chat) {
+    return { ...entity };
+  }
+
+  const withSavableOutput = (message: Message): Message => ({
+    ...message,
+    output: prepareOutputForSave(message.output),
+  });
+
+  return {
+    ...entity,
+    chat: {
+      ...chat,
+      messages: chat.messages?.map(withSavableOutput),
+      history: chat.history && {
+        ...chat.history,
+        messages: chat.history.messages && mapValues(chat.history.messages, withSavableOutput),
+      },
+    },
+  };
+};
 
 export class ChatService extends EntityPromiseService<ChatResponse> {
   constructor() {
@@ -75,7 +104,10 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
       fromInstancePartial: true,
     });
 
-    const response = await getApiService().post<ChatResponse>(`${this.endpoint}/${updatedEntity.id}`, updatedEntity);
+    const response = await getApiService().post<ChatResponse>(
+      `${this.endpoint}/${updatedEntity.id}`,
+      prepareChatForSave(updatedEntity),
+    );
 
     return createEntityInstance<ChatResponse>(ChatResponse, response);
   }
