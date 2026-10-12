@@ -2,7 +2,7 @@ name: E2E
 
 on:
   push:
-    branches: [staging]
+    branches: [staging, PRD-2972-maestro-e2e-setup]
   workflow_dispatch:
 
 # NOTE: All runs share one test account, so they wait for each other
