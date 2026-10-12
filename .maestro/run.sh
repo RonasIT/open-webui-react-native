@@ -6,13 +6,13 @@ set -euo pipefail
 : "${ARTIFACT_PASSWORD:?E2E_ARTIFACT_PASSWORD secret is not set}"
 
 adb install -r app-release.apk
-# NOTE: Android briefly shows each typed password character, it would get into the screen recording
+# NOTE: Android briefly shows typed password characters in the screen recording
 adb shell settings put system show_password 0
 
 rm -rf maestro-output maestro-output.7z
 mkdir -p maestro-output
 
-# NOTE: The repository is public and the report contains the test account data, so only an encrypted archive is uploaded
+# NOTE: The repository is public, so only an encrypted report is uploaded
 pack_report() {
   local status=$?
 

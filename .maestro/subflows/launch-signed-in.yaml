@@ -1,4 +1,3 @@
-# Launches the app keeping its state and signs in only if there is no session
 appId: ${APP_ID}
 ---
 - launchApp

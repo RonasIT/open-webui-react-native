@@ -1,4 +1,3 @@
-# Launches the app as after a fresh install: no session, no saved server URL
 appId: ${APP_ID}
 ---
 - launchApp:

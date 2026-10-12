@@ -1,4 +1,3 @@
-# Signs in from the sign-in screen. Env: EMAIL, PASSWORD, API_URL (optional)
 appId: ${APP_ID}
 ---
 - extendedWaitUntil:
