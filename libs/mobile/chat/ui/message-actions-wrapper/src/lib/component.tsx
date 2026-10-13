@@ -35,7 +35,7 @@ export function MessageActionsSheetWrapper({
   };
 
   const longPressGesture = useMemo(
-    () => Gesture.LongPress().runOnJS(true).onStart(handleLongPress),
+    () => Gesture.LongPress().enabled(!isResponseGenerating).runOnJS(true).onStart(handleLongPress),
     [isResponseGenerating],
   );
 

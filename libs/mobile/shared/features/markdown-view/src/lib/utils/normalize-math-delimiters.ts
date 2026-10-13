@@ -3,31 +3,49 @@ const fencePattern = new RegExp(`${fencePrefix}(\`{3,}|~{3,})`);
 const indentedCodePattern = /^( {4}|\t)/;
 const listItemPattern = /^ {0,3}([-*+]|\d{1,9}[.)])(\s|$)/;
 
+// NOTE: Block math may span blank lines only when its opener is alone on the line, so an escaped `\[` in prose
+// does not swallow the following paragraphs up to a later formula.
 const inlinePattern =
-  /\\\\|(`+)(?:[^\n]|\n(?![ \t]*\n))*?\1|\\\[([\s\S]*?)\\\]|\\begin\{equation\}([\s\S]*?)\\end\{equation\}|\\\(((?:[^\n]|\n(?![ \t]*\n))*?)\\\)/g;
+  /\\\\|(`+)(?:[^\n]|\n(?![ \t]*\n))*?\1|^([ \t]*(?:>[ \t]*)*(?:(?:[-*+]|\d{1,9}[.)])[ \t]+)?)(?:\\\[([ \t]*\n[\s\S]*?)\\\]|\\begin\{equation\}([ \t]*\n[\s\S]*?)\\end\{equation\})|\\\[((?:[^\n]|\n(?![ \t]*\n))*?)\\\]|\\begin\{equation\}((?:[^\n]|\n(?![ \t]*\n))*?)\\end\{equation\}|\\\(((?:[^\n]|\n(?![ \t]*\n))*?)\\\)/gm;
 const boundaryPattern = /[\s!-#%-/:-@[\]-`{-~]/;
 
 const convertMath = (text: string): string =>
   text.replace(
     inlinePattern,
-    (match: string, code?: string, display?: string, equation?: string, inline?: string, offset = 0): string => {
+    (
+      match: string,
+      code?: string,
+      linePrefix?: string,
+      lineDisplay?: string,
+      lineEquation?: string,
+      display?: string,
+      equation?: string,
+      inline?: string,
+      offset = 0,
+    ): string => {
       if (code || match === '\\\\') {
         return match;
       }
 
+      const blockContent = lineDisplay ?? lineEquation;
       const isInline = inline !== undefined;
-      // NOTE: Blank lines are dropped, otherwise block math with a blank line inside is shown as raw text.
-      const content = isInline ? inline.trim() : (display ?? equation ?? '').trim().replace(/\n[ \t]*\n/g, '\n');
+      const content = isInline ? inline.trim() : (display ?? equation ?? blockContent ?? '').trim();
 
       if (!content) {
         return match;
       }
 
+      const after = text[offset + match.length];
+      const suffix = after && !boundaryPattern.test(after) ? ' ' : '';
+
+      if (blockContent !== undefined) {
+        // NOTE: Blank lines are dropped, otherwise block math with a blank line inside is shown as raw text.
+        return `${linePrefix}$$${blockContent.replace(/\n(?:[ \t]*\n)+/g, '\n')}$$${suffix}`;
+      }
+
       const delimiter = isInline ? '$' : '$$';
       const before = text[offset - 1];
-      const after = text[offset + match.length];
       const prefix = before && !boundaryPattern.test(before) ? ' ' : '';
-      const suffix = after && !boundaryPattern.test(after) ? ' ' : '';
 
       return `${prefix}${delimiter}${content}${delimiter}${suffix}`;
     },
