@@ -10,8 +10,7 @@ import { AppButton, FormFloatedLabelInput } from '@open-webui-react-native/mobil
 import { RecoverMfaRequest, mfaApi, mfaState$ } from '@open-webui-react-native/shared/data-access/api';
 
 export function MfaRecovery(): ReactElement {
-  const translate = useTranslation('AUTH.MFA.RECOVERY');
-  const translateCommon = useTranslation('AUTH.MFA.COMMON');
+  const translate = useTranslation('AUTH.MFA_RECOVERY');
   const { openStep, backToSignIn, handleError } = useMfaNavigation();
 
   const challengeToken = useSelector(mfaState$.challengeToken);
@@ -49,12 +48,12 @@ export function MfaRecovery(): ReactElement {
         onSubmitEditing={submit}
       />
       <AppButton
-        text={translateCommon('BUTTON_CONTINUE')}
+        text={translate('BUTTON_CONTINUE')}
         disabled={!isValid}
         isLoading={isPending}
         onPress={submit} />
       <AppButton
-        text={translateCommon('BUTTON_BACK_TO_SIGN_IN')}
+        text={translate('BUTTON_BACK_TO_SIGN_IN')}
         variant='ghost'
         onPress={backToSignIn} />
     </MfaLayout>

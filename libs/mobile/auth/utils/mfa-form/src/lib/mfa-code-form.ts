@@ -11,7 +11,7 @@ export class MfaCodeFormSchema {
 
   public static get validationSchema(): Yup.ObjectSchema<MfaCodeFormSchema> {
     return Yup.object().shape({
-      code: Yup.string().trim().required(i18n.t('AUTH.MFA.VALIDATION.TEXT_REQUIRED_CODE')),
+      code: Yup.string().trim().required(i18n.t('AUTH.MFA_FORM.VALIDATION.TEXT_REQUIRED_CODE')),
     });
   }
 }

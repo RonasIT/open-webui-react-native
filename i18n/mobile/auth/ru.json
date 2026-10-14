@@ -23,40 +23,44 @@
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Этот способ входа недоступен. Пожалуйста, выберите другой вариант."
       }
     },
-    "MFA": {
-      "COMMON": {
-        "BUTTON_CONTINUE": "Продолжить",
-        "BUTTON_BACK_TO_SIGN_IN": "Вернуться ко входу"
-      },
+    "MFA_VERIFICATION": {
+      "TEXT_TITLE": "Подтвердите вход",
+      "TEXT_DESCRIPTION": "Введите шестизначный код из приложения-аутентификатора.",
+      "TEXT_RECOVERY_CODE_DESCRIPTION": "Используйте один из сохранённых кодов восстановления.",
+      "TEXT_AUTHENTICATOR_CODE": "Код аутентификатора",
+      "TEXT_RECOVERY_CODE": "Код восстановления",
+      "BUTTON_USE_RECOVERY_CODE": "Использовать код восстановления",
+      "BUTTON_USE_AUTHENTICATOR_CODE": "Использовать код аутентификатора",
+      "BUTTON_CONTINUE": "Продолжить",
+      "BUTTON_BACK_TO_SIGN_IN": "Вернуться ко входу"
+    },
+    "MFA_AUTHENTICATOR_SETUP": {
+      "TEXT_TITLE": "Настройте аутентификатор",
+      "TEXT_DESCRIPTION": "Отсканируйте QR-код или введите ключ в приложении-аутентификаторе, затем введите шестизначный код.",
+      "TEXT_TAP_TO_COPY_KEY": "Нажмите, чтобы скопировать ключ",
+      "TEXT_AUTHENTICATOR_CODE": "Код аутентификатора",
+      "BUTTON_CONTINUE": "Продолжить",
+      "BUTTON_BACK_TO_SIGN_IN": "Вернуться ко входу"
+    },
+    "MFA_RECOVERY_CODES": {
+      "TEXT_TITLE": "Сохраните коды восстановления",
+      "TEXT_DESCRIPTION": "Сохраните коды восстановления в надёжном месте. Они больше не будут показаны.\nКаждый код работает один раз.",
+      "TEXT_RECOVERY_CODES": "Коды восстановления",
+      "TEXT_TAP_TO_COPY_CODES": "Нажмите, чтобы скопировать коды",
+      "TEXT_I_HAVE_SAVED_CODES": "Я сохранил коды восстановления",
+      "BUTTON_CONTINUE": "Продолжить",
+      "BUTTON_BACK_TO_SIGN_IN": "Вернуться ко входу"
+    },
+    "MFA_RECOVERY": {
+      "TEXT_TITLE": "Восстановите аутентификатор",
+      "TEXT_DESCRIPTION": "Введите токен восстановления, полученный от администратора.",
+      "TEXT_RECOVERY_TOKEN": "Токен восстановления",
+      "BUTTON_CONTINUE": "Продолжить",
+      "BUTTON_BACK_TO_SIGN_IN": "Вернуться ко входу"
+    },
+    "MFA_FORM": {
       "VALIDATION": {
         "TEXT_REQUIRED_CODE": "Введите код"
-      },
-      "VERIFICATION": {
-        "TEXT_TITLE": "Подтвердите вход",
-        "TEXT_DESCRIPTION": "Введите шестизначный код из приложения-аутентификатора.",
-        "TEXT_RECOVERY_CODE_DESCRIPTION": "Используйте один из сохранённых кодов восстановления.",
-        "TEXT_AUTHENTICATOR_CODE": "Код аутентификатора",
-        "TEXT_RECOVERY_CODE": "Код восстановления",
-        "BUTTON_USE_RECOVERY_CODE": "Использовать код восстановления",
-        "BUTTON_USE_AUTHENTICATOR_CODE": "Использовать код аутентификатора"
-      },
-      "AUTHENTICATOR_SETUP": {
-        "TEXT_TITLE": "Настройте аутентификатор",
-        "TEXT_DESCRIPTION": "Отсканируйте QR-код или введите ключ в приложении-аутентификаторе, затем введите шестизначный код.",
-        "TEXT_TAP_TO_COPY_KEY": "Нажмите, чтобы скопировать ключ",
-        "TEXT_AUTHENTICATOR_CODE": "Код аутентификатора"
-      },
-      "RECOVERY_CODES": {
-        "TEXT_TITLE": "Сохраните коды восстановления",
-        "TEXT_DESCRIPTION": "Сохраните коды восстановления в надёжном месте. Они больше не будут показаны.\nКаждый код работает один раз.",
-        "TEXT_RECOVERY_CODES": "Коды восстановления",
-        "TEXT_TAP_TO_COPY_CODES": "Нажмите, чтобы скопировать коды",
-        "TEXT_I_HAVE_SAVED_CODES": "Я сохранил коды восстановления"
-      },
-      "RECOVERY": {
-        "TEXT_TITLE": "Восстановите аутентификатор",
-        "TEXT_DESCRIPTION": "Введите токен восстановления, полученный от администратора.",
-        "TEXT_RECOVERY_TOKEN": "Токен восстановления"
       }
     }
   }

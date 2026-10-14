@@ -23,40 +23,44 @@
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Cette méthode de connexion est indisponible. Veuillez utiliser une autre option."
       }
     },
-    "MFA": {
-      "COMMON": {
-        "BUTTON_CONTINUE": "Continuer",
-        "BUTTON_BACK_TO_SIGN_IN": "Retour à la connexion"
-      },
+    "MFA_VERIFICATION": {
+      "TEXT_TITLE": "Vérifiez votre connexion",
+      "TEXT_DESCRIPTION": "Saisissez le code à six chiffres de votre application d'authentification.",
+      "TEXT_RECOVERY_CODE_DESCRIPTION": "Utilisez l'un de vos codes de récupération enregistrés.",
+      "TEXT_AUTHENTICATOR_CODE": "Code d'authentification",
+      "TEXT_RECOVERY_CODE": "Code de récupération",
+      "BUTTON_USE_RECOVERY_CODE": "Utiliser un code de récupération",
+      "BUTTON_USE_AUTHENTICATOR_CODE": "Utiliser un code d'authentification",
+      "BUTTON_CONTINUE": "Continuer",
+      "BUTTON_BACK_TO_SIGN_IN": "Retour à la connexion"
+    },
+    "MFA_AUTHENTICATOR_SETUP": {
+      "TEXT_TITLE": "Configurez votre authentificateur",
+      "TEXT_DESCRIPTION": "Scannez le QR code ou saisissez la clé dans votre application d'authentification, puis saisissez le code à six chiffres.",
+      "TEXT_TAP_TO_COPY_KEY": "Touchez pour copier la clé",
+      "TEXT_AUTHENTICATOR_CODE": "Code d'authentification",
+      "BUTTON_CONTINUE": "Continuer",
+      "BUTTON_BACK_TO_SIGN_IN": "Retour à la connexion"
+    },
+    "MFA_RECOVERY_CODES": {
+      "TEXT_TITLE": "Enregistrez vos codes de récupération",
+      "TEXT_DESCRIPTION": "Enregistrez les codes de récupération dans un endroit sûr. Ils ne seront plus affichés.\nChaque code ne fonctionne qu'une fois.",
+      "TEXT_RECOVERY_CODES": "Codes de récupération",
+      "TEXT_TAP_TO_COPY_CODES": "Touchez pour copier les codes",
+      "TEXT_I_HAVE_SAVED_CODES": "J'ai enregistré mes codes de récupération",
+      "BUTTON_CONTINUE": "Continuer",
+      "BUTTON_BACK_TO_SIGN_IN": "Retour à la connexion"
+    },
+    "MFA_RECOVERY": {
+      "TEXT_TITLE": "Récupérez votre authentificateur",
+      "TEXT_DESCRIPTION": "Saisissez le jeton de récupération fourni par votre administrateur.",
+      "TEXT_RECOVERY_TOKEN": "Jeton de récupération",
+      "BUTTON_CONTINUE": "Continuer",
+      "BUTTON_BACK_TO_SIGN_IN": "Retour à la connexion"
+    },
+    "MFA_FORM": {
       "VALIDATION": {
         "TEXT_REQUIRED_CODE": "Veuillez saisir le code"
-      },
-      "VERIFICATION": {
-        "TEXT_TITLE": "Vérifiez votre connexion",
-        "TEXT_DESCRIPTION": "Saisissez le code à six chiffres de votre application d'authentification.",
-        "TEXT_RECOVERY_CODE_DESCRIPTION": "Utilisez l'un de vos codes de récupération enregistrés.",
-        "TEXT_AUTHENTICATOR_CODE": "Code d'authentification",
-        "TEXT_RECOVERY_CODE": "Code de récupération",
-        "BUTTON_USE_RECOVERY_CODE": "Utiliser un code de récupération",
-        "BUTTON_USE_AUTHENTICATOR_CODE": "Utiliser un code d'authentification"
-      },
-      "AUTHENTICATOR_SETUP": {
-        "TEXT_TITLE": "Configurez votre authentificateur",
-        "TEXT_DESCRIPTION": "Scannez le QR code ou saisissez la clé dans votre application d'authentification, puis saisissez le code à six chiffres.",
-        "TEXT_TAP_TO_COPY_KEY": "Touchez pour copier la clé",
-        "TEXT_AUTHENTICATOR_CODE": "Code d'authentification"
-      },
-      "RECOVERY_CODES": {
-        "TEXT_TITLE": "Enregistrez vos codes de récupération",
-        "TEXT_DESCRIPTION": "Enregistrez les codes de récupération dans un endroit sûr. Ils ne seront plus affichés.\nChaque code ne fonctionne qu'une fois.",
-        "TEXT_RECOVERY_CODES": "Codes de récupération",
-        "TEXT_TAP_TO_COPY_CODES": "Touchez pour copier les codes",
-        "TEXT_I_HAVE_SAVED_CODES": "J'ai enregistré mes codes de récupération"
-      },
-      "RECOVERY": {
-        "TEXT_TITLE": "Récupérez votre authentificateur",
-        "TEXT_DESCRIPTION": "Saisissez le jeton de récupération fourni par votre administrateur.",
-        "TEXT_RECOVERY_TOKEN": "Jeton de récupération"
       }
     }
   }

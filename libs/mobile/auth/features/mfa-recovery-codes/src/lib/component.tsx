@@ -9,8 +9,7 @@ import { mfaState$ } from '@open-webui-react-native/shared/data-access/api';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 export function MfaRecoveryCodes(): ReactElement {
-  const translate = useTranslation('AUTH.MFA.RECOVERY_CODES');
-  const translateCommon = useTranslation('AUTH.MFA.COMMON');
+  const translate = useTranslation('AUTH.MFA_RECOVERY_CODES');
   const { completeSignIn, backToSignIn } = useMfaNavigation();
 
   const recoveryCodes = useSelector(mfaState$.recoveryCodes) ?? [];
@@ -45,11 +44,11 @@ export function MfaRecoveryCodes(): ReactElement {
         label={translate('TEXT_I_HAVE_SAVED_CODES')}
         onPress={() => setIsSaved(!isSaved)} />
       <AppButton
-        text={translateCommon('BUTTON_CONTINUE')}
+        text={translate('BUTTON_CONTINUE')}
         disabled={!isSaved}
         onPress={handleContinue} />
       <AppButton
-        text={translateCommon('BUTTON_BACK_TO_SIGN_IN')}
+        text={translate('BUTTON_BACK_TO_SIGN_IN')}
         variant='ghost'
         onPress={backToSignIn} />
     </MfaLayout>

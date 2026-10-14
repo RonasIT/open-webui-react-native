@@ -23,8 +23,7 @@ import { decodeQrCode } from './utils';
 const qrCodeSize = 248;
 
 export function MfaAuthenticatorSetup(): ReactElement {
-  const translate = useTranslation('AUTH.MFA.AUTHENTICATOR_SETUP');
-  const translateCommon = useTranslation('AUTH.MFA.COMMON');
+  const translate = useTranslation('AUTH.MFA_AUTHENTICATOR_SETUP');
   const { openRecoveryCodes, backToSignIn, handleError } = useMfaNavigation();
 
   const challengeToken = useSelector(mfaState$.challengeToken);
@@ -95,13 +94,13 @@ export function MfaAuthenticatorSetup(): ReactElement {
         onSubmitEditing={submit}
       />
       <AppButton
-        text={translateCommon('BUTTON_CONTINUE')}
+        text={translate('BUTTON_CONTINUE')}
         disabled={!isValid || !enrollment}
         isLoading={isPending}
         onPress={submit}
       />
       <AppButton
-        text={translateCommon('BUTTON_BACK_TO_SIGN_IN')}
+        text={translate('BUTTON_BACK_TO_SIGN_IN')}
         variant='ghost'
         onPress={backToSignIn} />
     </MfaLayout>
