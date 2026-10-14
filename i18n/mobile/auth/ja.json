@@ -13,7 +13,8 @@
         "TEXT_ENTER_YOUR_PASSWORD": "パスワードを入力",
         "BUTTON_SIGN_IN": "サインイン",
         "TEXT_SSO_MISCONFIGURED": "このサーバーではサインインが設定されていません。管理者にお問い合わせください。",
-        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "このサインイン方法はまだアプリでサポートされていません。別のサインイン方法をお試しください。"
+        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "このサインイン方法はまだアプリでサポートされていません。別のサインイン方法をお試しください。",
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "アカウントは管理者の承認待ちです。"
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "{{provider}} で続行"
@@ -38,6 +39,8 @@
       "TEXT_TITLE": "認証アプリを設定",
       "TEXT_DESCRIPTION": "認証アプリでQRコードをスキャンするかキーを入力し、6桁のコードを入力してください。",
       "TEXT_TAP_TO_COPY_KEY": "タップしてキーをコピー",
+      "TEXT_FAILED_TO_LOAD_KEY": "認証アプリのキーを読み込めませんでした。もう一度お試しください。",
+      "BUTTON_TRY_AGAIN": "再試行",
       "TEXT_AUTHENTICATOR_CODE": "認証コード",
       "BUTTON_CONTINUE": "続行",
       "BUTTON_BACK_TO_SIGN_IN": "サインインに戻る"

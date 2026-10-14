@@ -17,6 +17,7 @@ import {
 } from '@open-webui-react-native/shared/data-access/api';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { resolveApiUrl } from '@open-webui-react-native/shared/utils/config';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
 import { UrlInputLoader } from './components';
 import { emailFormConfig } from './config';
@@ -55,7 +56,13 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
   } = appConfigurationApi.useGetAppConfiguration({ enabled: false });
 
   const handleSignInSuccess = (response: SignInResponse): void => {
-    if (response.challengeToken && response.nextStep && response.nextStep !== MfaNextStep.PENDING) {
+    if (response.nextStep === MfaNextStep.PENDING) {
+      ToastService.showError(translate('TEXT_ACCOUNT_PENDING_APPROVAL'));
+
+      return;
+    }
+
+    if (response.challengeToken && response.nextStep) {
       openStep(
         new MfaChallenge({
           nextStep: response.nextStep,

@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useSelector } from '@legendapp/state/react';
 import { i18n, useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import * as Clipboard from 'expo-clipboard';
-import { ReactElement } from 'react';
+import { Fragment, ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import { SvgXml } from 'react-native-svg';
 import { useMfaNavigation } from '@open-webui-react-native/mobile/auth/features/use-mfa-navigation';
@@ -27,7 +27,12 @@ export function MfaAuthenticatorSetup(): ReactElement {
   const { openRecoveryCodes, backToSignIn, handleError } = useMfaNavigation();
 
   const challengeToken = useSelector(mfaState$.challengeToken);
-  const { data: enrollment } = mfaApi.useStartEnrollment(challengeToken);
+  const {
+    data: enrollment,
+    isError: isEnrollmentError,
+    isFetching: isEnrollmentFetching,
+    refetch: refetchEnrollment,
+  } = mfaApi.useStartEnrollment(challengeToken, handleError);
 
   const {
     control,
@@ -78,8 +83,20 @@ export function MfaAuthenticatorSetup(): ReactElement {
             </AppPressable>
           </View>
         ) : (
-          <View className='justify-center' style={{ height: qrCodeSize }}>
-            <AppSpinner />
+          <View className='justify-center gap-12 w-full' style={{ height: qrCodeSize }}>
+            {isEnrollmentError ? (
+              <Fragment>
+                <AppText className='text-md-sm sm:text-md text-center'>{translate('TEXT_FAILED_TO_LOAD_KEY')}</AppText>
+                <AppButton
+                  text={translate('BUTTON_TRY_AGAIN')}
+                  variant='outline'
+                  isLoading={isEnrollmentFetching}
+                  onPress={() => refetchEnrollment()}
+                />
+              </Fragment>
+            ) : (
+              <AppSpinner />
+            )}
           </View>
         )}
       </View>

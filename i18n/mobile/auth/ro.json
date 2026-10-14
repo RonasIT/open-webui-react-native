@@ -13,7 +13,8 @@
         "TEXT_ENTER_YOUR_PASSWORD": "Introdu parola",
         "BUTTON_SIGN_IN": "Conectare",
         "TEXT_SSO_MISCONFIGURED": "Conectarea nu este configurată pe acest server. Te rugăm să contactezi administratorul.",
-        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Această metodă de conectare nu este încă acceptată de aplicație. Te rugăm să încerci o altă opțiune de conectare."
+        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Această metodă de conectare nu este încă acceptată de aplicație. Te rugăm să încerci o altă opțiune de conectare.",
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "Contul dvs. așteaptă aprobarea administratorului."
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Continuă cu {{provider}}"
@@ -38,6 +39,8 @@
       "TEXT_TITLE": "Configurează autentificatorul",
       "TEXT_DESCRIPTION": "Scanează codul QR sau introdu cheia în aplicația de autentificare, apoi introdu codul de șase cifre.",
       "TEXT_TAP_TO_COPY_KEY": "Atinge pentru a copia cheia",
+      "TEXT_FAILED_TO_LOAD_KEY": "Cheia autentificatorului nu a putut fi încărcată. Vă rugăm să încercați din nou.",
+      "BUTTON_TRY_AGAIN": "Încercați din nou",
       "TEXT_AUTHENTICATOR_CODE": "Cod de autentificare",
       "BUTTON_CONTINUE": "Continuă",
       "BUTTON_BACK_TO_SIGN_IN": "Înapoi la autentificare"

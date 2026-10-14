@@ -13,9 +13,19 @@ import {
 import { mfaService } from './service';
 
 // Every call issues a new authenticator secret, so it is fetched once and never cached or persisted.
-function useStartEnrollment(challengeToken?: string): UseQueryResult<StartMfaEnrollmentResponse, AxiosError> {
+function useStartEnrollment(
+  challengeToken?: string,
+  onError?: (error: unknown) => void,
+): UseQueryResult<StartMfaEnrollmentResponse, AxiosError> {
   return useQuery<StartMfaEnrollmentResponse, AxiosError>({
-    queryFn: () => mfaService.startEnrollment(challengeToken ?? ''),
+    queryFn: async () => {
+      try {
+        return await mfaService.startEnrollment(challengeToken ?? '');
+      } catch (error) {
+        onError?.(error);
+        throw error;
+      }
+    },
     queryKey: mfaApiConfig.startEnrollmentQueryKey(challengeToken ?? ''),
     enabled: Boolean(challengeToken),
     staleTime: Infinity,

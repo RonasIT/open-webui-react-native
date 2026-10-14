@@ -13,7 +13,8 @@
         "TEXT_ENTER_YOUR_PASSWORD": "请输入密码",
         "BUTTON_SIGN_IN": "登录",
         "TEXT_SSO_MISCONFIGURED": "此服务器未配置登录方式。请联系管理员。",
-        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "该登录方式暂不受应用支持，请尝试其他登录方式。"
+        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "该登录方式暂不受应用支持，请尝试其他登录方式。",
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "您的账户正在等待管理员审批。"
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "使用 {{provider}} 继续"
@@ -38,6 +39,8 @@
       "TEXT_TITLE": "设置身份验证器",
       "TEXT_DESCRIPTION": "在身份验证器应用中扫描二维码或输入密钥，然后输入六位数验证码。",
       "TEXT_TAP_TO_COPY_KEY": "点击复制密钥",
+      "TEXT_FAILED_TO_LOAD_KEY": "无法加载验证器密钥，请重试。",
+      "BUTTON_TRY_AGAIN": "重试",
       "TEXT_AUTHENTICATOR_CODE": "身份验证器验证码",
       "BUTTON_CONTINUE": "继续",
       "BUTTON_BACK_TO_SIGN_IN": "返回登录"

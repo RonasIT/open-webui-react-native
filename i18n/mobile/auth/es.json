@@ -13,7 +13,8 @@
         "TEXT_ENTER_YOUR_PASSWORD": "Introduce tu contraseña",
         "BUTTON_SIGN_IN": "Iniciar sesión",
         "TEXT_SSO_MISCONFIGURED": "El inicio de sesión no está configurado en este servidor. Ponte en contacto con tu administrador.",
-        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Este método de inicio de sesión aún no es compatible con la aplicación. Prueba con otra opción de inicio de sesión."
+        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Este método de inicio de sesión aún no es compatible con la aplicación. Prueba con otra opción de inicio de sesión.",
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "Tu cuenta está pendiente de aprobación por un administrador."
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Continuar con {{provider}}"
@@ -38,6 +39,8 @@
       "TEXT_TITLE": "Configura tu autenticador",
       "TEXT_DESCRIPTION": "Escanea el código QR o introduce la clave en tu aplicación de autenticación y luego introduce el código de seis dígitos.",
       "TEXT_TAP_TO_COPY_KEY": "Toca para copiar la clave",
+      "TEXT_FAILED_TO_LOAD_KEY": "No se pudo cargar la clave del autenticador. Inténtalo de nuevo.",
+      "BUTTON_TRY_AGAIN": "Reintentar",
       "TEXT_AUTHENTICATOR_CODE": "Código de autenticación",
       "BUTTON_CONTINUE": "Continuar",
       "BUTTON_BACK_TO_SIGN_IN": "Volver al inicio de sesión"

@@ -13,7 +13,8 @@
         "TEXT_ENTER_YOUR_PASSWORD": "Passwort eingeben",
         "BUTTON_SIGN_IN": "Anmelden",
         "TEXT_SSO_MISCONFIGURED": "Die Anmeldung ist auf diesem Server nicht konfiguriert. Bitte wenden Sie sich an Ihren Administrator.",
-        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Diese Anmeldemethode wird von der App noch nicht unterstützt. Bitte versuchen Sie eine andere Anmeldeoption."
+        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Diese Anmeldemethode wird von der App noch nicht unterstützt. Bitte versuchen Sie eine andere Anmeldeoption.",
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "Ihr Konto wartet auf die Freigabe durch einen Administrator."
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Mit {{provider}} fortfahren"
@@ -38,6 +39,8 @@
       "TEXT_TITLE": "Authenticator einrichten",
       "TEXT_DESCRIPTION": "Scanne den QR-Code oder gib den Schlüssel in deiner Authenticator-App ein und gib dann den sechsstelligen Code ein.",
       "TEXT_TAP_TO_COPY_KEY": "Tippen, um den Schlüssel zu kopieren",
+      "TEXT_FAILED_TO_LOAD_KEY": "Der Authenticator-Schlüssel konnte nicht geladen werden. Bitte versuchen Sie es erneut.",
+      "BUTTON_TRY_AGAIN": "Erneut versuchen",
       "TEXT_AUTHENTICATOR_CODE": "Authenticator-Code",
       "BUTTON_CONTINUE": "Weiter",
       "BUTTON_BACK_TO_SIGN_IN": "Zurück zur Anmeldung"
