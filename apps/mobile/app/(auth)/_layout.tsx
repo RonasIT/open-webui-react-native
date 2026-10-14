@@ -11,6 +11,8 @@ export default function AuthLayout(): ReactElement {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name={navigationConfig.auth.signIn} />
+      {/* Recovery codes are shown once: leave only through the screen buttons. */}
+      <Stack.Screen name={navigationConfig.auth.mfa.recoveryCodes} options={{ gestureEnabled: false }} />
     </Stack>
   );
 }

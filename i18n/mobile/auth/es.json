@@ -22,6 +22,42 @@
         "BUTTON_CLOSE": "Cerrar",
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Este método de inicio de sesión no está disponible. Usa otra opción para continuar."
       }
+    },
+    "MFA": {
+      "COMMON": {
+        "BUTTON_CONTINUE": "Continuar",
+        "BUTTON_BACK_TO_SIGN_IN": "Volver al inicio de sesión"
+      },
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Introduce el código"
+      },
+      "VERIFICATION": {
+        "TEXT_TITLE": "Verifica tu inicio de sesión",
+        "TEXT_DESCRIPTION": "Introduce el código de seis dígitos de tu aplicación de autenticación.",
+        "TEXT_RECOVERY_CODE_DESCRIPTION": "Usa uno de tus códigos de recuperación guardados.",
+        "TEXT_AUTHENTICATOR_CODE": "Código de autenticación",
+        "TEXT_RECOVERY_CODE": "Código de recuperación",
+        "BUTTON_USE_RECOVERY_CODE": "Usar un código de recuperación",
+        "BUTTON_USE_AUTHENTICATOR_CODE": "Usar un código de autenticación"
+      },
+      "AUTHENTICATOR_SETUP": {
+        "TEXT_TITLE": "Configura tu autenticador",
+        "TEXT_DESCRIPTION": "Escanea el código QR o introduce la clave en tu aplicación de autenticación y luego introduce el código de seis dígitos.",
+        "TEXT_TAP_TO_COPY_KEY": "Toca para copiar la clave",
+        "TEXT_AUTHENTICATOR_CODE": "Código de autenticación"
+      },
+      "RECOVERY_CODES": {
+        "TEXT_TITLE": "Guarda tus códigos de recuperación",
+        "TEXT_DESCRIPTION": "Guarda los códigos de recuperación en un lugar seguro. No se volverán a mostrar.\nCada código funciona una sola vez.",
+        "TEXT_RECOVERY_CODES": "Códigos de recuperación",
+        "TEXT_TAP_TO_COPY_CODES": "Toca para copiar los códigos",
+        "TEXT_I_HAVE_SAVED_CODES": "He guardado mis códigos de recuperación"
+      },
+      "RECOVERY": {
+        "TEXT_TITLE": "Recupera tu autenticador",
+        "TEXT_DESCRIPTION": "Introduce el token de recuperación de tu administrador.",
+        "TEXT_RECOVERY_TOKEN": "Token de recuperación"
+      }
     }
   }
 }

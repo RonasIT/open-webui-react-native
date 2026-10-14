@@ -22,6 +22,42 @@
         "BUTTON_CLOSE": "Close",
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "This sign-in method is unavailable. Please use another option to continue."
       }
+    },
+    "MFA": {
+      "COMMON": {
+        "BUTTON_CONTINUE": "Continue",
+        "BUTTON_BACK_TO_SIGN_IN": "Back to sign in"
+      },
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Please enter the code"
+      },
+      "VERIFICATION": {
+        "TEXT_TITLE": "Verify your sign-in",
+        "TEXT_DESCRIPTION": "Enter the six-digit code from your authenticator app.",
+        "TEXT_RECOVERY_CODE_DESCRIPTION": "Use one of your saved recovery codes.",
+        "TEXT_AUTHENTICATOR_CODE": "Authenticator code",
+        "TEXT_RECOVERY_CODE": "Recovery code",
+        "BUTTON_USE_RECOVERY_CODE": "Use a recovery code",
+        "BUTTON_USE_AUTHENTICATOR_CODE": "Use an authenticator code"
+      },
+      "AUTHENTICATOR_SETUP": {
+        "TEXT_TITLE": "Set up your authenticator",
+        "TEXT_DESCRIPTION": "Scan QR or enter key in your authenticator app and then enter a six-digit code.",
+        "TEXT_TAP_TO_COPY_KEY": "Tap to copy key",
+        "TEXT_AUTHENTICATOR_CODE": "Authenticator code"
+      },
+      "RECOVERY_CODES": {
+        "TEXT_TITLE": "Save your recovery codes",
+        "TEXT_DESCRIPTION": "Save recovery codes in a safe storage. They will not be shown again.\nEach code works once.",
+        "TEXT_RECOVERY_CODES": "Recovery codes",
+        "TEXT_TAP_TO_COPY_CODES": "Tap to copy codes",
+        "TEXT_I_HAVE_SAVED_CODES": "I have saved my recovery codes"
+      },
+      "RECOVERY": {
+        "TEXT_TITLE": "Recover your authenticator",
+        "TEXT_DESCRIPTION": "Enter the recovery token from your administrator.",
+        "TEXT_RECOVERY_TOKEN": "Recovery token"
+      }
     }
   }
 }

@@ -3,12 +3,16 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { Fragment, ReactElement, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { TextInput } from 'react-native';
+import { useMfaNavigation } from '@open-webui-react-native/mobile/auth/features/use-mfa-navigation';
 import { AppButton, AppText, View, FormFloatedLabelInput } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 import {
   appConfigurationApi,
   authApi,
+  MfaChallenge,
+  MfaNextStep,
   Provider,
+  SignInResponse,
   supportedOauthProviders,
 } from '@open-webui-react-native/shared/data-access/api';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
@@ -26,6 +30,7 @@ interface EmailSignInFormProps {
 
 export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }: EmailSignInFormProps): ReactElement {
   const translate = useTranslation('AUTH.SIGN_IN.EMAIL_FORM');
+  const { openStep } = useMfaNavigation();
   const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
 
@@ -48,7 +53,26 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
     isFetchWithUrlSuccess,
     isFetchWithUrlError,
   } = appConfigurationApi.useGetAppConfiguration({ enabled: false });
-  const { mutate, isPending } = authApi.useSignInWithEmailPassword({ onSuccess });
+
+  const handleSignInSuccess = (response: SignInResponse): void => {
+    if (response.challengeToken && response.nextStep && response.nextStep !== MfaNextStep.PENDING) {
+      openStep(
+        new MfaChallenge({
+          nextStep: response.nextStep,
+          challengeToken: response.challengeToken,
+          expiresIn: response.expiresIn,
+        }),
+      );
+
+      return;
+    }
+
+    if (response.token) {
+      onSuccess();
+    }
+  };
+
+  const { mutate, isPending } = authApi.useSignInWithEmailPassword({ onSuccess: handleSignInSuccess });
 
   const isUrlValid = !errors.url && debouncedQuery.length !== 0 && query.length !== 0;
 
