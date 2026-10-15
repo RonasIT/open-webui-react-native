@@ -2,20 +2,10 @@ import { i18n } from '@ronas-it/react-native-common-modules/i18n';
 import { HttpStatusCode, isAxiosError } from 'axios';
 import { useRouter } from 'expo-router';
 import { navigationConfig, useInitialNavigation } from '@open-webui-react-native/mobile/shared/utils/navigation';
-import {
-  isExpiredMfaChallengeError,
-  MfaChallenge,
-  MfaNextStep,
-  mfaState$,
-} from '@open-webui-react-native/shared/data-access/api';
+import { isExpiredMfaChallengeError, MfaChallenge, mfaState$ } from '@open-webui-react-native/shared/data-access/api';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
-
-const stepRoutes: Record<Exclude<MfaNextStep, MfaNextStep.PENDING>, string> = {
-  [MfaNextStep.VERIFY]: navigationConfig.auth.mfa.verification,
-  [MfaNextStep.ENROLL]: navigationConfig.auth.mfa.authenticatorSetup,
-  [MfaNextStep.RECOVER]: navigationConfig.auth.mfa.recovery,
-};
+import { stepRoutes } from './config';
 
 interface UseMfaNavigationUsage {
   openStep: (challenge: MfaChallenge, shouldReplace?: boolean) => void;
@@ -30,7 +20,7 @@ export function useMfaNavigation(): UseMfaNavigationUsage {
   const { resetToCreateChatScreen } = useInitialNavigation();
 
   const openStep: UseMfaNavigationUsage['openStep'] = (challenge, shouldReplace) => {
-    mfaState$.set({ challengeToken: challenge.challengeToken, nextStep: challenge.nextStep });
+    mfaState$.set({ challengeToken: challenge.challengeToken });
     const route = `/${stepRoutes[challenge.nextStep as keyof typeof stepRoutes]}`;
 
     if (shouldReplace) {

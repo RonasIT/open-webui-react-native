@@ -67,7 +67,6 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
         new MfaChallenge({
           nextStep: response.nextStep,
           challengeToken: response.challengeToken,
-          expiresIn: response.expiresIn,
         }),
       );
 

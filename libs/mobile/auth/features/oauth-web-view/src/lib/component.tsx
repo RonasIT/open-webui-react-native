@@ -15,6 +15,7 @@ import { authService, MfaChallenge, Provider } from '@open-webui-react-native/sh
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { getApiUrl, getHost } from '@open-webui-react-native/shared/utils/config';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
+import { WebViewMessageType } from './enums';
 import { mfaChallengeCaptureScript, mobileUserAgent, tokenCaptureScript } from './script';
 
 // If the token cookie doesn't appear shortly after we land back on Open WebUI,
@@ -35,7 +36,7 @@ export type OauthWebViewProps = {
   provider: Provider;
   onClose: () => void;
   onGetToken: (token: string) => void;
-  onMfaChallenge?: (challenge: MfaChallenge) => void;
+  onMfaChallenge: (challenge: MfaChallenge) => void;
 };
 
 export function OauthWebView({
@@ -141,7 +142,7 @@ export function OauthWebView({
   const handleMessage = (event: WebViewMessageEvent): void => {
     const payload = JSON.parse(event.nativeEvent.data);
 
-    if (payload?.type === 'mfa' && onMfaChallenge && !isTokenCaptured.current) {
+    if (payload?.type === WebViewMessageType.MFA && !isTokenCaptured.current) {
       isTokenCaptured.current = true;
       clearCaptureTimeout();
       onMfaChallenge(plainToInstance(MfaChallenge, payload.challenge as object));
@@ -149,13 +150,13 @@ export function OauthWebView({
       return;
     }
 
-    if (payload?.type === 'mfa_error' && onMfaChallenge) {
+    if (payload?.type === WebViewMessageType.MFA_ERROR) {
       handleFailOauthFlow();
 
       return;
     }
 
-    if (payload?.type === 'token' && payload.token && !isTokenCaptured.current) {
+    if (payload?.type === WebViewMessageType.TOKEN && payload.token && !isTokenCaptured.current) {
       isTokenCaptured.current = true;
       clearCaptureTimeout();
       handleToken(payload.token);
@@ -187,7 +188,7 @@ export function OauthWebView({
             <WebView
               ref={webViewRef}
               source={{ uri: `${apiUrl}/oauth/${provider}/login` }}
-              injectedJavaScriptBeforeContentLoaded={onMfaChallenge ? mfaChallengeCaptureScript : undefined}
+              injectedJavaScriptBeforeContentLoaded={mfaChallengeCaptureScript}
               userAgent={mobileUserAgent}
               incognito
               thirdPartyCookiesEnabled

@@ -54,11 +54,9 @@ export function MfaAuthenticatorSetup(): ReactElement {
     }
   });
 
-  const handleCopyKey = async (): Promise<void> => {
-    if (enrollment) {
-      await Clipboard.setStringAsync(enrollment.manualKey);
-      ToastService.showSuccess(i18n.t('SHARED.COMMON.TEXT_COPIED_TO_CLIPBOARD'));
-    }
+  const handleCopyKey = async (manualKey: string): Promise<void> => {
+    await Clipboard.setStringAsync(manualKey);
+    ToastService.showSuccess(i18n.t('SHARED.COMMON.TEXT_COPIED_TO_CLIPBOARD'));
   };
 
   return (
@@ -74,7 +72,7 @@ export function MfaAuthenticatorSetup(): ReactElement {
             </View>
             <AppPressable
               className='w-full gap-4'
-              onPress={handleCopyKey}
+              onPress={() => handleCopyKey(enrollment.manualKey)}
               hitSlop={8}>
               <AppText className='text-md-sm sm:text-md text-center uppercase'>{enrollment.manualKey}</AppText>
               <AppText className='text-sm-sm sm:text-sm text-text-secondary text-center'>

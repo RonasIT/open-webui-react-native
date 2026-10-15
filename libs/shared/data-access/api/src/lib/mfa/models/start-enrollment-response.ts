@@ -4,7 +4,6 @@ export class StartMfaEnrollmentResponse {
   @Expose({ name: 'manual_key' })
   public manualKey: string;
 
-  // `data:image/svg+xml;base64,...`
   @Expose({ name: 'qr_code' })
   public qrCode: string;
 

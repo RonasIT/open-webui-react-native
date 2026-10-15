@@ -12,7 +12,6 @@ import {
 } from './models';
 import { mfaService } from './service';
 
-// Every call issues a new authenticator secret, so it is fetched once and never cached or persisted.
 function useStartEnrollment(
   challengeToken?: string,
   onError?: (error: unknown) => void,

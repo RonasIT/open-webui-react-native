@@ -1,3 +1,5 @@
+import { WebViewMessageType } from './enums';
+
 // A real mobile browser UA — OAuth providers reject WebViews that look automated.
 export const mobileUserAgent =
   'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1';
@@ -14,11 +16,11 @@ export const mfaChallengeCaptureScript = `(function() {
         .then(function(response) { return response.clone().json(); })
         .then(function(data) {
           window.ReactNativeWebView.postMessage(JSON.stringify(
-            data && data.challenge_token ? { type: 'mfa', challenge: data } : { type: 'mfa_error' }
+            data && data.challenge_token ? { type: '${WebViewMessageType.MFA}', challenge: data } : { type: '${WebViewMessageType.MFA_ERROR}' }
           ));
         })
         .catch(function() {
-          window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'mfa_error' }));
+          window.ReactNativeWebView.postMessage(JSON.stringify({ type: '${WebViewMessageType.MFA_ERROR}' }));
         });
     }
     return request;
@@ -51,7 +53,7 @@ export const tokenCaptureScript = `(function() {
     attempts++;
     var token = readToken();
     if (token) {
-      window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'token', token: token }));
+      window.ReactNativeWebView.postMessage(JSON.stringify({ type: '${WebViewMessageType.TOKEN}', token: token }));
     } else if (attempts < 6) {
       setTimeout(tryCapture, 500);
     }

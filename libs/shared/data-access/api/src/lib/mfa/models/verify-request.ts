@@ -7,7 +7,6 @@ export class VerifyMfaRequest {
   @Expose()
   public code: string;
 
-  // `code` is a saved recovery code instead of an authenticator code.
   @Expose()
   public recovery: boolean;
 
