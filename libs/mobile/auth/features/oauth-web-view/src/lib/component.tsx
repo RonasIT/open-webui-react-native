@@ -20,7 +20,7 @@ import { mfaChallengeCaptureScript, mobileUserAgent, tokenCaptureScript } from '
 
 // If the token cookie doesn't appear shortly after we land back on Open WebUI,
 // fail loudly instead of leaving the user on a stuck spinner.
-const TOKEN_CAPTURE_TIMEOUT = 6000;
+const TOKEN_CAPTURE_TIMEOUT = 10000;
 
 // Path portion of a URL, without query/hash. We match on PATH (not host) because
 // the IdP (e.g. Keycloak) may be reverse-proxied under the SAME origin as Open
