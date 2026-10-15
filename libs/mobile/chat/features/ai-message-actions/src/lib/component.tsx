@@ -19,6 +19,8 @@ interface AiMessageActionsProps {
   onMoreConcise: (messageId: string) => void;
   isLast: boolean;
   isResponseGenerating: boolean;
+  isBeingGenerated: boolean;
+  isSkeleton: boolean;
 }
 
 //TODO Extend with more actions - https://www.figma.com/design/YPCZjyVlD86psDwUxvMVBc/OpenWebUI-Redesign-React-Native?node-id=27540-25291&t=kg2yUIDp3UQDStLf-0
@@ -32,12 +34,17 @@ export function AiMessageActions({
   onMoreConcise,
   isLast,
   isResponseGenerating,
+  isBeingGenerated,
+  isSkeleton,
   children,
 }: PropsWithChildren<AiMessageActionsProps>): ReactElement {
   const translate = useTranslation('CHAT.AI_MESSAGE_ACTIONS');
 
   const actionsSheetRef = useRef<BottomSheetModal>(null);
   const regenerateActionsSheetRef = useRef<BottomSheetModal>(null);
+
+  const isOtherMessageBeingGenerated = isResponseGenerating && !isBeingGenerated;
+  const isChangeDisabled = isResponseGenerating || isSkeleton;
 
   const copyToClipboard = async (): Promise<void> => {
     await Clipboard.setStringAsync(message.content);
@@ -92,22 +99,26 @@ export function AiMessageActions({
       title: translate('TEXT_EDIT'),
       iconName: 'editPencil',
       onPress: handleEditPress,
+      disabled: isChangeDisabled,
     },
     {
       title: translate('TEXT_COPY'),
       iconName: 'copy',
       onPress: copyToClipboard,
+      disabled: isSkeleton,
     },
     isLast && {
       title: translate('TEXT_CONTINUE_RESPONSE'),
       iconName: 'play',
       onPress: handleContinueResponsePress,
+      disabled: isChangeDisabled,
     },
     {
       title: translate('TEXT_REGENERATE'),
       iconName: 'refresh',
       onPress: openRegenerateActions,
       hasSubActions: true,
+      disabled: isOtherMessageBeingGenerated,
     },
   ]);
 
@@ -116,30 +127,31 @@ export function AiMessageActions({
       title: translate('REGENERATE_MESSAGE_ACTION_SHEET.TEXT_SUGGEST_A_CHANGE'),
       iconName: 'keyboard',
       onPress: handleSuggestPress,
+      disabled: isChangeDisabled,
     },
     {
       title: translate('REGENERATE_MESSAGE_ACTION_SHEET.TEXT_TRY_AGAIN'),
       iconName: 'refresh',
       onPress: handleTryAgainPress,
+      disabled: isOtherMessageBeingGenerated,
     },
     {
       title: translate('REGENERATE_MESSAGE_ACTION_SHEET.TEXT_ADD_DETAILS'),
       iconName: 'moreText',
       onPress: handleAddDetailsPress,
+      disabled: isChangeDisabled,
     },
     {
       title: translate('REGENERATE_MESSAGE_ACTION_SHEET.TEXT_MORE_CONCISE'),
       iconName: 'lessText',
       onPress: handleMoreConcisePress,
+      disabled: isChangeDisabled,
     },
   ];
 
   return (
     <View>
-      <MessageActionsSheetWrapper
-        actions={actions}
-        sheetRef={actionsSheetRef}
-        isResponseGenerating={isResponseGenerating}>
+      <MessageActionsSheetWrapper actions={actions} sheetRef={actionsSheetRef}>
         {children}
       </MessageActionsSheetWrapper>
       <ActionsBottomSheet

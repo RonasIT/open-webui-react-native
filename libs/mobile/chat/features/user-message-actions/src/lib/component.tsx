@@ -10,11 +10,13 @@ import { ToastService } from '@open-webui-react-native/shared/utils/toast-servic
 interface UserMessageActionsProps {
   message: Message;
   onEditPress: (messageId: string, content: string) => void;
+  isResponseGenerating: boolean;
 }
 
 export function UserMessageActions({
   message,
   onEditPress,
+  isResponseGenerating,
   children,
 }: PropsWithChildren<UserMessageActionsProps>): ReactElement {
   const translate = useTranslation('CHAT.USER_MESSAGE_ACTIONS');
@@ -37,6 +39,7 @@ export function UserMessageActions({
       title: translate('TEXT_EDIT'),
       iconName: 'editPencil',
       onPress: handleEditPress,
+      disabled: isResponseGenerating,
     },
     {
       title: translate('TEXT_COPY'),

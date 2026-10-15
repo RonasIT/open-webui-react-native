@@ -39,6 +39,7 @@ interface ChatAiMessageProps {
   onEditPress: () => void;
   isLast: boolean;
   isResponseGenerating: boolean;
+  isSkeleton: boolean;
   onFollowUpPress: (text: string) => void;
   isEditing?: boolean;
   onPreviousSibling?: UseSiblingMessagesReturn['showPreviousSibling'];
@@ -55,6 +56,7 @@ export function ChatAiMessage({
   getSiblingsInfo,
   isLast,
   isResponseGenerating,
+  isSkeleton,
   onFollowUpPress,
 }: ChatAiMessageProps): ReactElement {
   const {
@@ -217,10 +219,7 @@ export function ChatAiMessage({
           )}
         </Fragment>
       ) : (
-        // NOTE: A turn paused on tool approval, one running a tool, or one that failed before
-        // producing any text has no body of its own — the card above is the body. A skeleton there
-        // reads as "still generating", which is exactly what none of those states is.
-        !pendingToolCall && !toolCalls.length && !messageError?.content && <SkeletonMessage />
+        isSkeleton && <SkeletonMessage />
       )}
       {!isResponseGenerating && isLast && hasFollowUps && (
         <FollowUpsList

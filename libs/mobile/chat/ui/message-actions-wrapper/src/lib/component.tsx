@@ -10,22 +10,18 @@ import { useAnimateMessage } from './hooks/use-animate-message';
 
 interface MessageActionsSheetWrapperProps {
   actions: Array<ActionSheetItemProps>;
-  isResponseGenerating?: boolean;
   sheetRef?: React.RefObject<BottomSheetModal | null>;
 }
 
 export function MessageActionsSheetWrapper({
   sheetRef,
   actions,
-  isResponseGenerating,
   children,
 }: PropsWithChildren<MessageActionsSheetWrapperProps>): ReactElement {
   const actionsSheetRef = useRef<BottomSheetModal>(null);
   const { animatedStyle, startAnimation, stopAnimation } = useAnimateMessage();
 
   const handleLongPress = (): void => {
-    if (isResponseGenerating) return;
-
     startAnimation();
     actionsSheetRef.current?.present();
   };
