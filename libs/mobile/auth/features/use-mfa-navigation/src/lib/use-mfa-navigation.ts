@@ -46,7 +46,6 @@ export function useMfaNavigation(): UseMfaNavigationUsage {
   };
 
   const backToSignIn = (): void => {
-    mfaState$.set({});
     router.dismissTo(`/${navigationConfig.auth.signIn}`);
   };
 
