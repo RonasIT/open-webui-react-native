@@ -1,6 +1,5 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
-import { compact } from 'lodash-es';
 import { Fragment, ReactElement, useRef } from 'react';
 import { DownloadChatOptionsSheet } from '@open-webui-react-native/mobile/shared/features/download-chat-options-sheet';
 import { ChatListRow, ChatListRowProps } from '@open-webui-react-native/mobile/shared/ui/chat-list-row';
@@ -8,7 +7,6 @@ import { ActionsBottomSheet, ActionSheetItemProps } from '@open-webui-react-nati
 import { chatApi, ChatListItem } from '@open-webui-react-native/shared/data-access/api';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
-import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 
 interface ArchivedChatItemProps extends Partial<ChatListRowProps> {
   onItemPress: (id: string) => void;
@@ -50,14 +48,14 @@ export function ArchivedChatItem({ item, onItemPress, ...restProps }: ArchivedCh
 
   const handleExportChatPress = (): void => downloadOptionsModalRef.current?.present();
 
-  const actions: Array<ActionSheetItemProps> = compact([
+  const actions: Array<ActionSheetItemProps> = [
     {
       title: translate('TEXT_RESTORE'),
       iconName: 'unarchive',
       onPress: withOfflineGuard(handleUnarchiveChatPress),
       isLoading: isUnarchiving,
     },
-    isFeatureEnabled(FeatureID.EXPORT_ARCHIVED_CHAT) && {
+    {
       title: translate('TEXT_EXPORT'),
       iconName: 'exportIcon',
       onPress: withOfflineGuard(handleExportChatPress),
@@ -69,7 +67,7 @@ export function ArchivedChatItem({ item, onItemPress, ...restProps }: ArchivedCh
       isDanger: true,
       isLoading: isDeleting,
     },
-  ]);
+  ];
 
   return (
     <Fragment>

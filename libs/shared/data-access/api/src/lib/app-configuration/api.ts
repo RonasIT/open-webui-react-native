@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/react-native';
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { refetchOnMountWithStaleCheck } from '@open-webui-react-native/shared/data-access/persist-query-helpers';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { appConfigurationApiConfig } from './config';
@@ -15,17 +15,24 @@ type UseGetAppConfigurationResult = UseQueryResult<Configuration, AxiosError> & 
   isFetchWithUrlSuccess: boolean;
   isFetchWithUrlError: boolean;
   isFetchWithUrlLoading: boolean;
+  fetchWithUrlError: AxiosError | undefined;
 };
 
 export function useGetAppConfiguration(
   options?: Omit<UseQueryOptions<Configuration, AxiosError>, 'queryKey' | 'queryFn'>,
 ): UseGetAppConfigurationResult {
   const [fetchWithUrlResult, setFetchWithUrlResult] = useState<Configuration | undefined>();
-  const [customState, setCustomState] = useState({
+  const [customState, setCustomState] = useState<{
+    isSuccess: boolean;
+    isError: boolean;
+    isLoading: boolean;
+    error?: AxiosError;
+  }>({
     isSuccess: false,
     isError: false,
     isLoading: false,
   });
+  const latestFetchUrlRef = useRef<string>(undefined);
 
   const result = useQuery<Configuration, AxiosError>({
     queryFn: () => appConfigurationService.get(),
@@ -40,20 +47,32 @@ export function useGetAppConfiguration(
   });
 
   const fetchWithUrl = async (url: string): Promise<Configuration | undefined> => {
-    try {
-      const configUrl = getConfigPath(url);
+    const configUrl = getConfigPath(url);
+    const isLatestFetch = (): boolean => latestFetchUrlRef.current === url;
 
-      setCustomState({ isSuccess: false, isError: false, isLoading: true });
+    latestFetchUrlRef.current = url;
+    setCustomState({ isSuccess: false, isError: false, isLoading: true });
+
+    try {
       const config = await queryClient.fetchQuery({
-        queryKey: appConfigurationApiConfig.getUrlConfigQueryKey,
-        queryFn: () => appConfigurationService.get(configUrl, true, true),
+        queryKey: appConfigurationApiConfig.getUrlConfigQueryKey(configUrl),
+        queryFn: () =>
+          appConfigurationService.get(configUrl, true, true, appConfigurationApiConfig.urlConfigRequestTimeout),
+        meta: { persist: false },
       });
+
+      if (!isLatestFetch()) {
+        return;
+      }
+
       setCustomState({ isSuccess: true, isError: false, isLoading: false });
       setFetchWithUrlResult(config);
 
       return config;
-    } catch {
-      setCustomState({ isSuccess: false, isError: true, isLoading: false });
+    } catch (error) {
+      if (isLatestFetch()) {
+        setCustomState({ isSuccess: false, isError: true, isLoading: false, error: error as AxiosError });
+      }
     }
   };
 
@@ -70,6 +89,7 @@ export function useGetAppConfiguration(
     isFetchWithUrlSuccess: customState.isSuccess,
     isFetchWithUrlError: customState.isError,
     isFetchWithUrlLoading: customState.isLoading,
+    fetchWithUrlError: customState.error,
   };
 }
 

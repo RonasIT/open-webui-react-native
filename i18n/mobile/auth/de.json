@@ -14,6 +14,9 @@
         "BUTTON_SIGN_IN": "Anmelden",
         "TEXT_SSO_MISCONFIGURED": "Die Anmeldung ist auf diesem Server nicht konfiguriert. Bitte wenden Sie sich an Ihren Administrator.",
         "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Diese Anmeldemethode wird von der App noch nicht unterstützt. Bitte versuchen Sie eine andere Anmeldeoption.",
+        "TEXT_SERVER_UNREACHABLE": "Der Server ist nicht erreichbar. Überprüfen Sie die Adresse und Ihre Verbindung. Beginnen Sie die Adresse eines lokalen HTTP-Servers mit http://.",
+        "TEXT_NOT_OPEN_WEBUI_SERVER": "Der Server hat geantwortet, ist aber kein Open WebUI-Server. Überprüfen Sie die Adresse.",
+        "BUTTON_RETRY_SERVER_CHECK": "Server erneut prüfen",
         "TEXT_ACCOUNT_PENDING_APPROVAL": "Ihr Konto wartet auf die Freigabe durch einen Administrator."
       },
       "OAUTH_SIGN_IN": {

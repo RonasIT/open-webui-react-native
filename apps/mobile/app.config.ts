@@ -30,7 +30,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     slug: process.env.EXPO_PUBLIC_APP_SLUG as string,
     scheme: process.env.EXPO_PUBLIC_APP_SCHEME as string,
     owner: process.env.EXPO_PUBLIC_APP_OWNER as string,
-    version: '1.16.1',
+    version: '1.17.1',
     userInterfaceStyle: 'automatic',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -49,7 +49,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       supportsTablet: false,
       buildNumber: appEnv.select({
         default: '18',
-        production: '52',
+        production: '54',
       }),
       config: {
         usesNonExemptEncryption: false,
@@ -67,7 +67,7 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
       playStoreUrl: `https://play.google.com/store/apps/details?id=${playStoreAppId}`,
       versionCode: appEnv.select({
         default: 15,
-        production: 52,
+        production: 54,
       }),
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
@@ -79,7 +79,14 @@ const createConfig = (): Omit<ExpoConfig, 'extra'> & { extra: { eas: EASConfig }
     },
     plugins: compact([
       'expo-router',
-      'expo-localization',
+      [
+        'expo-localization',
+        {
+          supportedLocales: {
+            ios: ['en', 'de', 'es', 'fr', 'pt-BR', 'ru', 'zh-Hans', 'ja', 'ro'],
+          },
+        },
+      ],
       'expo-asset',
       [
         'expo-splash-screen',

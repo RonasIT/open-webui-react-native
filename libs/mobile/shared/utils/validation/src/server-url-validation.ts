@@ -1,5 +1,6 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
 import * as Yup from 'yup';
+import { normalizeServerUrl } from '@open-webui-react-native/shared/utils/config';
 
 export const serverUrlValidator = (): Yup.StringSchema =>
   Yup.string()
@@ -10,19 +11,19 @@ export const serverUrlValidator = (): Yup.StringSchema =>
       }
 
       try {
-        const url = new URL(value.trim());
+        const normalizedUrl = normalizeServerUrl(value);
 
-        if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+        if (!/^https?:\/\//i.test(normalizedUrl)) {
           return false;
         }
+
+        const url = new URL(normalizedUrl);
 
         if (!url.hostname) {
           return false;
         }
 
-        const normalizedPath = url.pathname.replace(/\/+$/, '/');
-
-        return normalizedPath === '/' && !url.search && !url.hash;
+        return url.pathname === '/' && !url.search && !url.hash;
       } catch {
         return false;
       }

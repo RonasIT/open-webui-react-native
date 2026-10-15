@@ -43,8 +43,12 @@ export function SignIn(props: SignInProps): ReactElement {
     }
   };
 
+  // TODO: Remove `sign-in-screen` testID once real e2e tests are written, it is only for the CI smoke test
   return (
-    <AppSafeAreaView edges={['bottom']} className='flex-1 pt-32'>
+    <AppSafeAreaView
+      testID='sign-in-screen'
+      edges={['bottom']}
+      className='flex-1 pt-32'>
       <View className='mb-12'>
         <AppText className='text-h2-sm sm:text-h2 font-medium mb-24'>{translate('TEXT_TITLE_EXTERNAL')}</AppText>
       </View>
