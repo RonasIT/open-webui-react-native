@@ -125,19 +125,26 @@
     },
     "USER_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "編集",
-      "TEXT_COPY": "コピー"
+      "TEXT_COPY": "コピー",
+      "TEXT_DELETE": "削除"
     },
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "編集",
       "TEXT_COPY": "コピー",
       "TEXT_CONTINUE_RESPONSE": "回答を続ける",
       "TEXT_REGENERATE": "再生成",
+      "TEXT_DELETE": "削除",
       "REGENERATE_MESSAGE_ACTION_SHEET": {
         "TEXT_SUGGEST_A_CHANGE": "変更を提案",
         "TEXT_TRY_AGAIN": "もう一度試す",
         "TEXT_ADD_DETAILS": "詳細を追加",
         "TEXT_MORE_CONCISE": "より簡潔に"
       }
+    },
+    "USE_DELETE_MESSAGE": {
+      "TEXT_DELETE_MESSAGE": "メッセージを削除しますか？",
+      "TEXT_CANNOT_BE_UNDONE": "このアクションは取り消し不可です。続けますか？",
+      "BUTTON_DELETE": "削除"
     },
     "EDIT_MESSAGE_INPUT": {
       "TEXT_EDIT_MESSAGE": "メッセージを編集",

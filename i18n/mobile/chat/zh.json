@@ -125,19 +125,26 @@
     },
     "USER_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "编辑",
-      "TEXT_COPY": "复制"
+      "TEXT_COPY": "复制",
+      "TEXT_DELETE": "删除"
     },
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "编辑",
       "TEXT_COPY": "复制",
       "TEXT_CONTINUE_RESPONSE": "继续回复",
       "TEXT_REGENERATE": "重新生成",
+      "TEXT_DELETE": "删除",
       "REGENERATE_MESSAGE_ACTION_SHEET": {
         "TEXT_SUGGEST_A_CHANGE": "建议修改",
         "TEXT_TRY_AGAIN": "再试一次",
         "TEXT_ADD_DETAILS": "添加细节",
         "TEXT_MORE_CONCISE": "更简洁"
       }
+    },
+    "USE_DELETE_MESSAGE": {
+      "TEXT_DELETE_MESSAGE": "要删除此消息吗？",
+      "TEXT_CANNOT_BE_UNDONE": "此操作无法撤销。确定要继续吗？",
+      "BUTTON_DELETE": "删除"
     },
     "EDIT_MESSAGE_INPUT": {
       "TEXT_EDIT_MESSAGE": "编辑消息",
