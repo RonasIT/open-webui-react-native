@@ -13,7 +13,10 @@
         "TEXT_ENTER_YOUR_PASSWORD": "Digite sua senha",
         "BUTTON_SIGN_IN": "Entrar",
         "TEXT_SSO_MISCONFIGURED": "O login não está configurado neste servidor. Entre em contato com o administrador.",
-        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Este método de login ainda não é suportado pelo aplicativo. Tente outra opção de login."
+        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Este método de login ainda não é suportado pelo aplicativo. Tente outra opção de login.",
+        "TEXT_SERVER_UNREACHABLE": "Não foi possível acessar o servidor. Verifique o endereço e sua conexão. Para um servidor HTTP local, comece o endereço com http://.",
+        "TEXT_NOT_OPEN_WEBUI_SERVER": "O servidor respondeu, mas não é um servidor Open WebUI. Verifique o endereço.",
+        "BUTTON_RETRY_SERVER_CHECK": "Verificar o servidor novamente"
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Continuar com {{provider}}"

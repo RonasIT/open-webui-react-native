@@ -13,7 +13,10 @@
         "TEXT_ENTER_YOUR_PASSWORD": "パスワードを入力",
         "BUTTON_SIGN_IN": "サインイン",
         "TEXT_SSO_MISCONFIGURED": "このサーバーではサインインが設定されていません。管理者にお問い合わせください。",
-        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "このサインイン方法はまだアプリでサポートされていません。別のサインイン方法をお試しください。"
+        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "このサインイン方法はまだアプリでサポートされていません。別のサインイン方法をお試しください。",
+        "TEXT_SERVER_UNREACHABLE": "サーバーに接続できません。アドレスと接続を確認してください。ローカル HTTP サーバーの場合は、アドレスの先頭に http:// を付けてください。",
+        "TEXT_NOT_OPEN_WEBUI_SERVER": "サーバーは応答しましたが、Open WebUI サーバーではありません。アドレスを確認してください。",
+        "BUTTON_RETRY_SERVER_CHECK": "サーバーを再確認"
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "{{provider}} で続行"

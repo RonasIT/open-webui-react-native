@@ -13,7 +13,10 @@
         "TEXT_ENTER_YOUR_PASSWORD": "Enter Your Password",
         "BUTTON_SIGN_IN": "Sign In",
         "TEXT_SSO_MISCONFIGURED": "Sign-in is not configured on this server. Please contact your administrator.",
-        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "This sign-in method isn't supported by the app yet. Please try a different sign-in option."
+        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "This sign-in method isn't supported by the app yet. Please try a different sign-in option.",
+        "TEXT_SERVER_UNREACHABLE": "Can't reach the server. Check the address and your connection. For a local HTTP server, start the address with http://.",
+        "TEXT_NOT_OPEN_WEBUI_SERVER": "The server responded, but it is not an Open WebUI server. Check the address.",
+        "BUTTON_RETRY_SERVER_CHECK": "Check the server again"
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Continue with {{provider}}"

@@ -1,5 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
+import { HttpStatusCode } from 'axios';
 import { Fragment, ReactElement, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { TextInput } from 'react-native';
@@ -12,7 +13,7 @@ import {
   supportedOauthProviders,
 } from '@open-webui-react-native/shared/data-access/api';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
-import { resolveApiUrl } from '@open-webui-react-native/shared/utils/config';
+import { normalizeServerUrl, resolveApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
 import { UrlInputLoader } from './components';
 import { emailFormConfig } from './config';
@@ -30,6 +31,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
   const passwordRef = useRef<TextInput>(null);
 
   const { query, setQuery, debouncedQuery } = useDebouncedQuery({ initialValue: appStorageService.apiUrl.get() });
+  const queryRef = useRef(query);
 
   const {
     control,
@@ -47,10 +49,12 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
     isFetchWithUrlLoading,
     isFetchWithUrlSuccess,
     isFetchWithUrlError,
+    fetchWithUrlError,
   } = appConfigurationApi.useGetAppConfiguration({ enabled: false });
   const { mutate, isPending } = authApi.useSignInWithEmailPassword({ onSuccess });
 
-  const isUrlValid = !errors.url && debouncedQuery.length !== 0 && query.length !== 0;
+  const serverUrl = normalizeServerUrl(debouncedQuery);
+  const isUrlValid = !errors.url && !!serverUrl && normalizeServerUrl(query) === serverUrl;
 
   const isUrlWithConfig = isFetchWithUrlSuccess && !!(config?.name && config?.version);
   const isUrlWithoutConfig = isFetchWithUrlSuccess && !(config?.name && config?.version);
@@ -84,26 +88,53 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
     mutate({ email: '', password: '' });
   };
 
+  const checkServerUrl = async (): Promise<void> => {
+    if (!isUrlValid) {
+      return;
+    }
+
+    setOauthProviders({});
+
+    const checkedConfig = await fetchWithUrl(resolveApiUrl(serverUrl));
+    const isInputStillChecked = normalizeServerUrl(queryRef.current) === serverUrl;
+
+    if (!isInputStillChecked || !checkedConfig?.name || !checkedConfig?.version) {
+      return;
+    }
+
+    appStorageService.apiUrl.set(serverUrl);
+    setOauthProviders(checkedConfig.oauth?.providers ?? {});
+  };
+
+  const getUrlCheckErrorText = (): string | undefined => {
+    if (!isUrlValid || isFetchWithUrlLoading) {
+      return;
+    }
+
+    const responseStatus = fetchWithUrlError?.response?.status;
+
+    if (isFetchWithUrlError && (!responseStatus || responseStatus >= HttpStatusCode.InternalServerError)) {
+      return translate('TEXT_SERVER_UNREACHABLE');
+    }
+
+    if (isFetchWithUrlError || isUrlWithoutConfig) {
+      return translate('TEXT_NOT_OPEN_WEBUI_SERVER');
+    }
+  };
+
   useEffect(() => {
+    queryRef.current = query;
     setValue('url', query, { shouldValidate: true });
     onApiUrlChange?.(query);
-    setOauthProviders({});
+
+    if (normalizeServerUrl(query) !== serverUrl) {
+      setOauthProviders({});
+    }
   }, [query]);
 
   useEffect(() => {
-    const refetchConfig = async (): Promise<void> => {
-      if (isUrlValid) {
-        const res = await fetchWithUrl(resolveApiUrl(debouncedQuery));
-
-        if (res?.name && res?.version) {
-          appStorageService.apiUrl.set(debouncedQuery);
-          setOauthProviders(res.oauth.providers);
-        }
-      }
-    };
-
-    refetchConfig();
-  }, [debouncedQuery]);
+    checkServerUrl();
+  }, [serverUrl, isUrlValid]);
 
   return (
     <View className='w-full gap-8'>
@@ -128,9 +159,12 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
               isLoading={isFetchWithUrlLoading}
               isSuccess={isUrlWithConfig}
               isError={isFetchWithUrlError || isUrlWithoutConfig}
+              retryLabel={translate('BUTTON_RETRY_SERVER_CHECK')}
+              onRetry={checkServerUrl}
             />
           ) : undefined
         }
+        error={errors.url?.message ?? getUrlCheckErrorText()}
         helperText={
           isUrlValid && isUrlWithConfig && !isFetchWithUrlLoading ? `${config?.name} ${config?.version}` : undefined
         }

@@ -13,7 +13,10 @@
         "TEXT_ENTER_YOUR_PASSWORD": "Introduce tu contraseña",
         "BUTTON_SIGN_IN": "Iniciar sesión",
         "TEXT_SSO_MISCONFIGURED": "El inicio de sesión no está configurado en este servidor. Ponte en contacto con tu administrador.",
-        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Este método de inicio de sesión aún no es compatible con la aplicación. Prueba con otra opción de inicio de sesión."
+        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Este método de inicio de sesión aún no es compatible con la aplicación. Prueba con otra opción de inicio de sesión.",
+        "TEXT_SERVER_UNREACHABLE": "No se puede conectar con el servidor. Comprueba la dirección y tu conexión. Para un servidor HTTP local, escribe http:// al principio de la dirección.",
+        "TEXT_NOT_OPEN_WEBUI_SERVER": "El servidor respondió, pero no es un servidor de Open WebUI. Comprueba la dirección.",
+        "BUTTON_RETRY_SERVER_CHECK": "Volver a comprobar el servidor"
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Continuar con {{provider}}"

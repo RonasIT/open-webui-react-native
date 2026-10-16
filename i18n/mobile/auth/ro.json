@@ -13,7 +13,10 @@
         "TEXT_ENTER_YOUR_PASSWORD": "Introdu parola",
         "BUTTON_SIGN_IN": "Conectare",
         "TEXT_SSO_MISCONFIGURED": "Conectarea nu este configurată pe acest server. Te rugăm să contactezi administratorul.",
-        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Această metodă de conectare nu este încă acceptată de aplicație. Te rugăm să încerci o altă opțiune de conectare."
+        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Această metodă de conectare nu este încă acceptată de aplicație. Te rugăm să încerci o altă opțiune de conectare.",
+        "TEXT_SERVER_UNREACHABLE": "Serverul nu poate fi accesat. Verifică adresa și conexiunea. Pentru un server HTTP local, începe adresa cu http://.",
+        "TEXT_NOT_OPEN_WEBUI_SERVER": "Serverul a răspuns, dar nu este un server Open WebUI. Verifică adresa.",
+        "BUTTON_RETRY_SERVER_CHECK": "Verifică din nou serverul"
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Continuă cu {{provider}}"

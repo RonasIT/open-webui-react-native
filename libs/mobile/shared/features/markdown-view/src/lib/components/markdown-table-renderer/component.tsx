@@ -54,7 +54,7 @@ export const MarkdownTableRenderer = ({
         const cell = cells[c];
 
         columns[c].push(
-          <View key={`cell-${r}-${c}`} className='px-2 py-1'>
+          <View key={`cell-${r}-${c}`} className='px-8 py-6'>
             {cell}
           </View>,
         );
@@ -69,7 +69,7 @@ export const MarkdownTableRenderer = ({
     for (let c = 0; c < numCols; c++) {
       const header = headerCells[c];
       columns[c].unshift(
-        <View key={`header-${c}`} className='bg-neutral-300 px-2 py-1'>
+        <View key={`header-${c}`} className='bg-background-secondary px-8 py-6'>
           {header}
         </View>,
       );
@@ -106,19 +106,13 @@ const MarkdownTable = ({ columns }: { columns: Array<Array<ReactElement>> }): Re
   };
 
   return (
-    <View className='flex-row'>
+    <View className='flex-row overflow-hidden rounded-lg border border-background-tertiary'>
       {columns.map((col, cInd) => (
-        <View
-          key={`col-${cInd}`}
-          className={[
-            'flex-col border-y-2',
-            cInd === 0 ? 'border-l-2 rounded-l-md' : 'border-l border-l-neutral-400',
-            cInd === columns.length - 1 ? 'border-r-2 rounded-r-md' : '',
-          ].join(' ')}>
+        <View key={`col-${cInd}`} className={cInd > 0 ? 'border-l border-background-tertiary' : ''}>
           {col.map((cell, rInd) => (
             <View
               key={`cell-${cInd}-${rInd}`}
-              className={['border-b border-neutral-300', rInd === col.length - 1 ? 'border-b-0' : ''].join(' ')}
+              className={rInd < col.length - 1 ? 'border-b border-background-tertiary' : ''}
               onLayout={({ nativeEvent: { layout } }) => updateHeight(rInd, layout.height)}
               style={{
                 maxWidth: width * 0.66,
