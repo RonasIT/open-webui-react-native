@@ -5,8 +5,9 @@ const listItemPattern = /^ {0,3}([-*+]|\d{1,9}[.)])(\s|$)/;
 
 // NOTE: Block math may span blank lines only when its opener is alone on the line, so an escaped `\[` in prose
 // does not swallow the following paragraphs up to a later formula.
+// NOTE: `](…)` destinations are skipped like code spans, so `Mercury_\(planet\)` stays in the URL.
 const inlinePattern =
-  /\\\\|(`+)(?:[^\n]|\n(?![ \t]*\n))*?\1|^([ \t]*(?:>[ \t]*)*(?:(?:[-*+]|\d{1,9}[.)])[ \t]+)?)(?:\\\[([ \t]*\n[\s\S]*?)\\\]|\\begin\{equation\}([ \t]*\n[\s\S]*?)\\end\{equation\})|\\\[((?:[^\n]|\n(?![ \t]*\n))*?)\\\]|\\begin\{equation\}((?:[^\n]|\n(?![ \t]*\n))*?)\\end\{equation\}|\\\(((?:[^\n]|\n(?![ \t]*\n))*?)\\\)/gm;
+  /\\\\|(`+)(?:[^\n]|\n(?![ \t]*\n))*?\1|\]\([ \t]*(?:\\[^\n]|[^\s)])*[ \t]*\)|^([ \t]*(?:>[ \t]*)*(?:(?:[-*+]|\d{1,9}[.)])[ \t]+)?)(?:\\\[([ \t]*\n[\s\S]*?)\\\]|\\begin\{equation\}([ \t]*\n[\s\S]*?)\\end\{equation\})|\\\[((?:[^\n]|\n(?![ \t]*\n))*?)\\\]|\\begin\{equation\}((?:[^\n]|\n(?![ \t]*\n))*?)\\end\{equation\}|\\\(((?:[^\n]|\n(?![ \t]*\n))*?)\\\)/gm;
 const boundaryPattern = /[\s!-#%-/:-@[\]-`{-~]/;
 
 const convertMath = (text: string): string =>
@@ -23,7 +24,7 @@ const convertMath = (text: string): string =>
       inline?: string,
       offset = 0,
     ): string => {
-      if (code || match === '\\\\') {
+      if (code || match.startsWith('](') || match === '\\\\') {
         return match;
       }
 
@@ -53,8 +54,8 @@ const convertMath = (text: string): string =>
 
 /**
  * Converts `\(…\)`, `\[…\]` and `\begin{equation}…\end{equation}` to `$`/`$$` delimiters
- * understood by react-native-nitro-markdown. Code blocks and code spans are left untouched;
- * unclosed delimiters (e.g. while streaming) stay as is.
+ * understood by react-native-nitro-markdown. Code blocks, code spans, and link destinations
+ * are left untouched; unclosed delimiters (e.g. while streaming) stay as is.
  */
 export const normalizeMathDelimiters = (markdown: string): string => {
   if (!markdown.includes('\\(') && !markdown.includes('\\[') && !markdown.includes('\\begin{equation}')) {
