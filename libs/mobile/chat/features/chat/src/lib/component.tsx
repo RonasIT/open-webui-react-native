@@ -22,6 +22,7 @@ import {
   chatQueriesKeys,
   createMessagesList,
   getPendingToolCall,
+  isFeaturePermitted,
   isTemporaryChatId,
   tasksApi,
   usersApi,
@@ -92,6 +93,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   // chat with a 404 no matter what the shared folder grants, so a chat opened from a folder shared
   // with the user is read-only for them — the web client replaces its composer the same way.
   const isReadonly = Boolean(chat?.userId && profile && chat.userId !== profile.id);
+  const canDeleteMessages = !isReadonly && isFeaturePermitted('chat', 'deleteMessage', true);
   const {
     editingMessageId,
     startEditing,
@@ -121,8 +123,8 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   const isAwaitingToolApproval = Boolean(getPendingToolCall(currentMessage));
 
   const hasFailed = Boolean(currentMessage?.error?.content);
-  const isResponseGenerating = !currentMessage?.done && !isAwaitingToolApproval && !hasFailed;
   const isAssistantMessage = currentMessage?.role === Role.ASSISTANT;
+  const isResponseGenerating = isAssistantMessage && !currentMessage.done && !isAwaitingToolApproval && !hasFailed;
 
   // NOTE: With message queueing enabled, a generating response no longer force-disables the text input —
   // the user can keep typing and submit the next message immediately (queued via `queuedMessage`). The
@@ -325,6 +327,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
             editingMessageId={editingMessageId}
             onFollowUpPress={handleFollowUpPress}
             isResponseGenerating={isResponseGenerating}
+            canDeleteMessages={canDeleteMessages}
           />
         </React.Suspense>
       )}
