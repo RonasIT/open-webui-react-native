@@ -85,9 +85,6 @@ jobs:
     env:
       APP_ID: ${{ vars.EXPO_PUBLIC_APP_ID }}
       API_URL: ${{ vars.E2E_API_URL }}
-      EMAIL: ${{ secrets.E2E_EMAIL }}
-      PASSWORD: ${{ secrets.E2E_PASSWORD }}
-      ARTIFACT_PASSWORD: ${{ secrets.E2E_ARTIFACT_PASSWORD }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -144,6 +141,10 @@ jobs:
 
       - name: Run Maestro tests
         uses: reactivecircus/android-emulator-runner@v2
+        env:
+          EMAIL: ${{ secrets.E2E_EMAIL }}
+          PASSWORD: ${{ secrets.E2E_PASSWORD }}
+          ARTIFACT_PASSWORD: ${{ secrets.E2E_ARTIFACT_PASSWORD }}
         with:
           api-level: 34
           arch: x86_64
