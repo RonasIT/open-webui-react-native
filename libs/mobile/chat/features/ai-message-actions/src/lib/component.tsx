@@ -4,12 +4,15 @@ import * as Clipboard from 'expo-clipboard';
 import { compact } from 'lodash-es';
 import { PropsWithChildren, ReactElement, useRef } from 'react';
 import { View } from 'react-native';
+import { useDeleteMessage } from '@open-webui-react-native/mobile/chat/features/use-delete-message';
 import { MessageActionsSheetWrapper } from '@open-webui-react-native/mobile/chat/ui/message-actions-wrapper';
 import { ActionsBottomSheet, ActionSheetItemProps } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { Message } from '@open-webui-react-native/shared/data-access/api';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 interface AiMessageActionsProps {
+  chatId: string;
   message: Message;
   onEditPress: (messageId: string, content: string) => void;
   onSuggestPress: (messageId: string) => void;
@@ -21,10 +24,12 @@ interface AiMessageActionsProps {
   isResponseGenerating: boolean;
   isBeingGenerated: boolean;
   isSkeleton: boolean;
+  canDelete: boolean;
 }
 
 //TODO Extend with more actions - https://www.figma.com/design/YPCZjyVlD86psDwUxvMVBc/OpenWebUI-Redesign-React-Native?node-id=27540-25291&t=kg2yUIDp3UQDStLf-0
 export function AiMessageActions({
+  chatId,
   message,
   onEditPress,
   onSuggestPress,
@@ -36,6 +41,7 @@ export function AiMessageActions({
   isResponseGenerating,
   isBeingGenerated,
   isSkeleton,
+  canDelete,
   children,
 }: PropsWithChildren<AiMessageActionsProps>): ReactElement {
   const translate = useTranslation('CHAT.AI_MESSAGE_ACTIONS');
@@ -43,29 +49,36 @@ export function AiMessageActions({
   const actionsSheetRef = useRef<BottomSheetModal>(null);
   const regenerateActionsSheetRef = useRef<BottomSheetModal>(null);
 
+  const close = (): void => actionsSheetRef.current?.dismiss();
+
+  const { deleteMessage, isDeleting } = useDeleteMessage({
+    chatId,
+    onDeleted: close,
+  });
+
   const isOtherMessageBeingGenerated = isResponseGenerating && !isBeingGenerated;
   const isChangeDisabled = isResponseGenerating || isSkeleton;
 
   const copyToClipboard = async (): Promise<void> => {
     await Clipboard.setStringAsync(message.content);
     ToastService.showSuccess(i18n.t('SHARED.COMMON.TEXT_COPIED_TO_CLIPBOARD'));
-    actionsSheetRef.current?.dismiss();
+    close();
   };
 
   const handleEditPress = (): void => {
     onEditPress(message.id, message.content);
-    actionsSheetRef.current?.dismiss();
+    close();
   };
 
   const handleContinueResponsePress = (): void => {
     onContinueResponsePress(message.id, message.content);
-    actionsSheetRef.current?.dismiss();
+    close();
   };
 
   const openRegenerateActions = (): void => {
     //NOTE: Dismiss the main sheet first, otherwise the default 'switch' stack behavior minimizes it
     // and a later dismiss() leaves it stuck in DISMISSING, so it never opens again
-    actionsSheetRef.current?.dismiss();
+    close();
     regenerateActionsSheetRef.current?.present();
   };
 
@@ -119,6 +132,14 @@ export function AiMessageActions({
       onPress: openRegenerateActions,
       hasSubActions: true,
       disabled: isOtherMessageBeingGenerated,
+    },
+    canDelete && {
+      title: translate('TEXT_DELETE'),
+      iconName: 'trashCan',
+      onPress: withOfflineGuard(() => deleteMessage(message.id)),
+      isDanger: true,
+      isLoading: isDeleting,
+      disabled: isResponseGenerating,
     },
   ]);
 
