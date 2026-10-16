@@ -16,7 +16,8 @@
         "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "该登录方式暂不受应用支持，请尝试其他登录方式。",
         "TEXT_SERVER_UNREACHABLE": "无法连接到服务器。请检查地址和网络连接。如果是本地 HTTP 服务器，请在地址开头添加 http://。",
         "TEXT_NOT_OPEN_WEBUI_SERVER": "服务器已响应，但它不是 Open WebUI 服务器。请检查地址。",
-        "BUTTON_RETRY_SERVER_CHECK": "重新检查服务器"
+        "BUTTON_RETRY_SERVER_CHECK": "重新检查服务器",
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "您的账户正在等待管理员审批。"
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "使用 {{provider}} 继续"
@@ -24,6 +25,48 @@
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "关闭",
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "此登录方式不可用。请使用其他方式继续。"
+      }
+    },
+    "MFA_VERIFICATION": {
+      "TEXT_TITLE": "验证您的登录",
+      "TEXT_DESCRIPTION": "输入身份验证器应用中的六位数验证码。",
+      "TEXT_RECOVERY_CODE_DESCRIPTION": "使用您保存的恢复码之一。",
+      "TEXT_AUTHENTICATOR_CODE": "身份验证器验证码",
+      "TEXT_RECOVERY_CODE": "恢复码",
+      "BUTTON_USE_RECOVERY_CODE": "使用恢复码",
+      "BUTTON_USE_AUTHENTICATOR_CODE": "使用身份验证器验证码",
+      "BUTTON_CONTINUE": "继续",
+      "BUTTON_BACK_TO_SIGN_IN": "返回登录"
+    },
+    "MFA_AUTHENTICATOR_SETUP": {
+      "TEXT_TITLE": "设置身份验证器",
+      "TEXT_DESCRIPTION": "在身份验证器应用中扫描二维码或输入密钥，然后输入六位数验证码。",
+      "TEXT_TAP_TO_COPY_KEY": "点击复制密钥",
+      "TEXT_FAILED_TO_LOAD_KEY": "无法加载验证器密钥，请重试。",
+      "BUTTON_TRY_AGAIN": "重试",
+      "TEXT_AUTHENTICATOR_CODE": "身份验证器验证码",
+      "BUTTON_CONTINUE": "继续",
+      "BUTTON_BACK_TO_SIGN_IN": "返回登录"
+    },
+    "MFA_RECOVERY_CODES": {
+      "TEXT_TITLE": "保存您的恢复码",
+      "TEXT_DESCRIPTION": "请将恢复码保存在安全的地方。它们不会再次显示。\n每个恢复码只能使用一次。",
+      "TEXT_RECOVERY_CODES": "恢复码",
+      "TEXT_TAP_TO_COPY_CODES": "点击复制恢复码",
+      "TEXT_I_HAVE_SAVED_CODES": "我已保存恢复码",
+      "BUTTON_CONTINUE": "继续",
+      "BUTTON_BACK_TO_SIGN_IN": "返回登录"
+    },
+    "MFA_RECOVERY": {
+      "TEXT_TITLE": "恢复身份验证器",
+      "TEXT_DESCRIPTION": "输入管理员提供的恢复令牌。",
+      "TEXT_RECOVERY_TOKEN": "恢复令牌",
+      "BUTTON_CONTINUE": "继续",
+      "BUTTON_BACK_TO_SIGN_IN": "返回登录"
+    },
+    "MFA_FORM": {
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "请输入验证码"
       }
     }
   }

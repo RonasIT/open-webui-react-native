@@ -16,7 +16,8 @@
         "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Este método de login ainda não é suportado pelo aplicativo. Tente outra opção de login.",
         "TEXT_SERVER_UNREACHABLE": "Não foi possível acessar o servidor. Verifique o endereço e sua conexão. Para um servidor HTTP local, comece o endereço com http://.",
         "TEXT_NOT_OPEN_WEBUI_SERVER": "O servidor respondeu, mas não é um servidor Open WebUI. Verifique o endereço.",
-        "BUTTON_RETRY_SERVER_CHECK": "Verificar o servidor novamente"
+        "BUTTON_RETRY_SERVER_CHECK": "Verificar o servidor novamente",
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "Sua conta está aguardando aprovação do administrador."
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Continuar com {{provider}}"
@@ -24,6 +25,48 @@
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "Fechar",
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Este método de login não está disponível. Use outra opção para continuar."
+      }
+    },
+    "MFA_VERIFICATION": {
+      "TEXT_TITLE": "Verifique seu login",
+      "TEXT_DESCRIPTION": "Digite o código de seis dígitos do seu aplicativo autenticador.",
+      "TEXT_RECOVERY_CODE_DESCRIPTION": "Use um dos seus códigos de recuperação salvos.",
+      "TEXT_AUTHENTICATOR_CODE": "Código do autenticador",
+      "TEXT_RECOVERY_CODE": "Código de recuperação",
+      "BUTTON_USE_RECOVERY_CODE": "Usar um código de recuperação",
+      "BUTTON_USE_AUTHENTICATOR_CODE": "Usar um código do autenticador",
+      "BUTTON_CONTINUE": "Continuar",
+      "BUTTON_BACK_TO_SIGN_IN": "Voltar ao login"
+    },
+    "MFA_AUTHENTICATOR_SETUP": {
+      "TEXT_TITLE": "Configure seu autenticador",
+      "TEXT_DESCRIPTION": "Escaneie o QR code ou digite a chave no seu aplicativo autenticador e depois digite o código de seis dígitos.",
+      "TEXT_TAP_TO_COPY_KEY": "Toque para copiar a chave",
+      "TEXT_FAILED_TO_LOAD_KEY": "Não foi possível carregar a chave do autenticador. Tente novamente.",
+      "BUTTON_TRY_AGAIN": "Tentar novamente",
+      "TEXT_AUTHENTICATOR_CODE": "Código do autenticador",
+      "BUTTON_CONTINUE": "Continuar",
+      "BUTTON_BACK_TO_SIGN_IN": "Voltar ao login"
+    },
+    "MFA_RECOVERY_CODES": {
+      "TEXT_TITLE": "Salve seus códigos de recuperação",
+      "TEXT_DESCRIPTION": "Salve os códigos de recuperação em um local seguro. Eles não serão exibidos novamente.\nCada código funciona uma única vez.",
+      "TEXT_RECOVERY_CODES": "Códigos de recuperação",
+      "TEXT_TAP_TO_COPY_CODES": "Toque para copiar os códigos",
+      "TEXT_I_HAVE_SAVED_CODES": "Salvei meus códigos de recuperação",
+      "BUTTON_CONTINUE": "Continuar",
+      "BUTTON_BACK_TO_SIGN_IN": "Voltar ao login"
+    },
+    "MFA_RECOVERY": {
+      "TEXT_TITLE": "Recupere seu autenticador",
+      "TEXT_DESCRIPTION": "Digite o token de recuperação fornecido pelo administrador.",
+      "TEXT_RECOVERY_TOKEN": "Token de recuperação",
+      "BUTTON_CONTINUE": "Continuar",
+      "BUTTON_BACK_TO_SIGN_IN": "Voltar ao login"
+    },
+    "MFA_FORM": {
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Digite o código"
       }
     }
   }

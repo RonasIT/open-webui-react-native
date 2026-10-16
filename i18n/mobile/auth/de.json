@@ -16,7 +16,8 @@
         "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Diese Anmeldemethode wird von der App noch nicht unterstützt. Bitte versuchen Sie eine andere Anmeldeoption.",
         "TEXT_SERVER_UNREACHABLE": "Der Server ist nicht erreichbar. Überprüfen Sie die Adresse und Ihre Verbindung. Beginnen Sie die Adresse eines lokalen HTTP-Servers mit http://.",
         "TEXT_NOT_OPEN_WEBUI_SERVER": "Der Server hat geantwortet, ist aber kein Open WebUI-Server. Überprüfen Sie die Adresse.",
-        "BUTTON_RETRY_SERVER_CHECK": "Server erneut prüfen"
+        "BUTTON_RETRY_SERVER_CHECK": "Server erneut prüfen",
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "Ihr Konto wartet auf die Freigabe durch einen Administrator."
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Mit {{provider}} fortfahren"
@@ -24,6 +25,48 @@
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "Schließen",
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Diese Anmeldemethode ist nicht verfügbar. Bitte wählen Sie eine andere Option."
+      }
+    },
+    "MFA_VERIFICATION": {
+      "TEXT_TITLE": "Anmeldung bestätigen",
+      "TEXT_DESCRIPTION": "Gib den sechsstelligen Code aus deiner Authenticator-App ein.",
+      "TEXT_RECOVERY_CODE_DESCRIPTION": "Verwende einen deiner gespeicherten Wiederherstellungscodes.",
+      "TEXT_AUTHENTICATOR_CODE": "Authenticator-Code",
+      "TEXT_RECOVERY_CODE": "Wiederherstellungscode",
+      "BUTTON_USE_RECOVERY_CODE": "Wiederherstellungscode verwenden",
+      "BUTTON_USE_AUTHENTICATOR_CODE": "Authenticator-Code verwenden",
+      "BUTTON_CONTINUE": "Weiter",
+      "BUTTON_BACK_TO_SIGN_IN": "Zurück zur Anmeldung"
+    },
+    "MFA_AUTHENTICATOR_SETUP": {
+      "TEXT_TITLE": "Authenticator einrichten",
+      "TEXT_DESCRIPTION": "Scanne den QR-Code oder gib den Schlüssel in deiner Authenticator-App ein und gib dann den sechsstelligen Code ein.",
+      "TEXT_TAP_TO_COPY_KEY": "Tippen, um den Schlüssel zu kopieren",
+      "TEXT_FAILED_TO_LOAD_KEY": "Der Authenticator-Schlüssel konnte nicht geladen werden. Bitte versuchen Sie es erneut.",
+      "BUTTON_TRY_AGAIN": "Erneut versuchen",
+      "TEXT_AUTHENTICATOR_CODE": "Authenticator-Code",
+      "BUTTON_CONTINUE": "Weiter",
+      "BUTTON_BACK_TO_SIGN_IN": "Zurück zur Anmeldung"
+    },
+    "MFA_RECOVERY_CODES": {
+      "TEXT_TITLE": "Wiederherstellungscodes speichern",
+      "TEXT_DESCRIPTION": "Speichere die Wiederherstellungscodes an einem sicheren Ort. Sie werden nicht erneut angezeigt.\nJeder Code funktioniert nur einmal.",
+      "TEXT_RECOVERY_CODES": "Wiederherstellungscodes",
+      "TEXT_TAP_TO_COPY_CODES": "Tippen, um die Codes zu kopieren",
+      "TEXT_I_HAVE_SAVED_CODES": "Ich habe meine Wiederherstellungscodes gespeichert",
+      "BUTTON_CONTINUE": "Weiter",
+      "BUTTON_BACK_TO_SIGN_IN": "Zurück zur Anmeldung"
+    },
+    "MFA_RECOVERY": {
+      "TEXT_TITLE": "Authenticator wiederherstellen",
+      "TEXT_DESCRIPTION": "Gib das Wiederherstellungstoken von deinem Administrator ein.",
+      "TEXT_RECOVERY_TOKEN": "Wiederherstellungstoken",
+      "BUTTON_CONTINUE": "Weiter",
+      "BUTTON_BACK_TO_SIGN_IN": "Zurück zur Anmeldung"
+    },
+    "MFA_FORM": {
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Bitte gib den Code ein"
       }
     }
   }

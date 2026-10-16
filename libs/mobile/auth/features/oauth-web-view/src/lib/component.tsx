@@ -1,4 +1,5 @@
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
+import { plainToInstance } from 'class-transformer';
 import { ReactElement, useEffect, useRef, useState } from 'react';
 import { WebView, WebViewMessageEvent, WebViewNavigation } from 'react-native-webview';
 import { commonStyle } from '@open-webui-react-native/mobile/shared/ui/styles';
@@ -10,15 +11,16 @@ import {
   FullScreenModal,
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { authService, Provider } from '@open-webui-react-native/shared/data-access/api';
+import { authService, MfaChallenge, Provider } from '@open-webui-react-native/shared/data-access/api';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { getApiUrl, getHost } from '@open-webui-react-native/shared/utils/config';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
-import { mobileUserAgent, tokenCaptureScript } from './script';
+import { WebViewMessageType } from './enums';
+import { mfaChallengeCaptureScript, mobileUserAgent, tokenCaptureScript } from './script';
 
 // If the token cookie doesn't appear shortly after we land back on Open WebUI,
 // fail loudly instead of leaving the user on a stuck spinner.
-const TOKEN_CAPTURE_TIMEOUT = 6000;
+const TOKEN_CAPTURE_TIMEOUT = 10000;
 
 // Path portion of a URL, without query/hash. We match on PATH (not host) because
 // the IdP (e.g. Keycloak) may be reverse-proxied under the SAME origin as Open
@@ -34,9 +36,16 @@ export type OauthWebViewProps = {
   provider: Provider;
   onClose: () => void;
   onGetToken: (token: string) => void;
+  onMfaChallenge: (challenge: MfaChallenge) => void;
 };
 
-export function OauthWebView({ isVisible, provider, onClose, onGetToken }: OauthWebViewProps): ReactElement {
+export function OauthWebView({
+  isVisible,
+  provider,
+  onClose,
+  onGetToken,
+  onMfaChallenge,
+}: OauthWebViewProps): ReactElement {
   const translate = useTranslation('AUTH.SIGN_IN.OAUTH_WEB_VIEW_MODAL');
   const webViewRef = useRef<WebView>(null);
   const isTokenCaptured = useRef(false);
@@ -99,6 +108,13 @@ export function OauthWebView({ isVisible, provider, onClose, onGetToken }: Oauth
       return;
     }
 
+    if (/[?&](mfa|pending)=1/.test(state.url)) {
+      clearCaptureTimeout();
+      setIsProcessing(false);
+
+      return;
+    }
+
     setIsProcessing(true);
     webViewRef.current?.injectJavaScript(tokenCaptureScript);
 
@@ -126,7 +142,21 @@ export function OauthWebView({ isVisible, provider, onClose, onGetToken }: Oauth
   const handleMessage = (event: WebViewMessageEvent): void => {
     const payload = JSON.parse(event.nativeEvent.data);
 
-    if (payload?.type === 'token' && payload.token && !isTokenCaptured.current) {
+    if (payload?.type === WebViewMessageType.MFA && !isTokenCaptured.current) {
+      isTokenCaptured.current = true;
+      clearCaptureTimeout();
+      onMfaChallenge(plainToInstance(MfaChallenge, payload.challenge as object));
+
+      return;
+    }
+
+    if (payload?.type === WebViewMessageType.MFA_ERROR) {
+      handleFailOauthFlow();
+
+      return;
+    }
+
+    if (payload?.type === WebViewMessageType.TOKEN && payload.token && !isTokenCaptured.current) {
       isTokenCaptured.current = true;
       clearCaptureTimeout();
       handleToken(payload.token);
@@ -158,6 +188,7 @@ export function OauthWebView({ isVisible, provider, onClose, onGetToken }: Oauth
             <WebView
               ref={webViewRef}
               source={{ uri: `${apiUrl}/oauth/${provider}/login` }}
+              injectedJavaScriptBeforeContentLoaded={mfaChallengeCaptureScript}
               userAgent={mobileUserAgent}
               incognito
               thirdPartyCookiesEnabled

@@ -16,7 +16,8 @@
         "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "This sign-in method isn't supported by the app yet. Please try a different sign-in option.",
         "TEXT_SERVER_UNREACHABLE": "Can't reach the server. Check the address and your connection. For a local HTTP server, start the address with http://.",
         "TEXT_NOT_OPEN_WEBUI_SERVER": "The server responded, but it is not an Open WebUI server. Check the address.",
-        "BUTTON_RETRY_SERVER_CHECK": "Check the server again"
+        "BUTTON_RETRY_SERVER_CHECK": "Check the server again",
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "Your account is awaiting administrator approval."
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Continue with {{provider}}"
@@ -24,6 +25,48 @@
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "Close",
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "This sign-in method is unavailable. Please use another option to continue."
+      }
+    },
+    "MFA_VERIFICATION": {
+      "TEXT_TITLE": "Verify your sign-in",
+      "TEXT_DESCRIPTION": "Enter the six-digit code from your authenticator app.",
+      "TEXT_RECOVERY_CODE_DESCRIPTION": "Use one of your saved recovery codes.",
+      "TEXT_AUTHENTICATOR_CODE": "Authenticator code",
+      "TEXT_RECOVERY_CODE": "Recovery code",
+      "BUTTON_USE_RECOVERY_CODE": "Use a recovery code",
+      "BUTTON_USE_AUTHENTICATOR_CODE": "Use an authenticator code",
+      "BUTTON_CONTINUE": "Continue",
+      "BUTTON_BACK_TO_SIGN_IN": "Back to sign in"
+    },
+    "MFA_AUTHENTICATOR_SETUP": {
+      "TEXT_TITLE": "Set up your authenticator",
+      "TEXT_DESCRIPTION": "Scan QR or enter key in your authenticator app and then enter a six-digit code.",
+      "TEXT_TAP_TO_COPY_KEY": "Tap to copy key",
+      "TEXT_FAILED_TO_LOAD_KEY": "Couldn't load the authenticator key. Please try again.",
+      "BUTTON_TRY_AGAIN": "Try again",
+      "TEXT_AUTHENTICATOR_CODE": "Authenticator code",
+      "BUTTON_CONTINUE": "Continue",
+      "BUTTON_BACK_TO_SIGN_IN": "Back to sign in"
+    },
+    "MFA_RECOVERY_CODES": {
+      "TEXT_TITLE": "Save your recovery codes",
+      "TEXT_DESCRIPTION": "Save recovery codes in a safe storage. They will not be shown again.\nEach code works once.",
+      "TEXT_RECOVERY_CODES": "Recovery codes",
+      "TEXT_TAP_TO_COPY_CODES": "Tap to copy codes",
+      "TEXT_I_HAVE_SAVED_CODES": "I have saved my recovery codes",
+      "BUTTON_CONTINUE": "Continue",
+      "BUTTON_BACK_TO_SIGN_IN": "Back to sign in"
+    },
+    "MFA_RECOVERY": {
+      "TEXT_TITLE": "Recover your authenticator",
+      "TEXT_DESCRIPTION": "Enter the recovery token from your administrator.",
+      "TEXT_RECOVERY_TOKEN": "Recovery token",
+      "BUTTON_CONTINUE": "Continue",
+      "BUTTON_BACK_TO_SIGN_IN": "Back to sign in"
+    },
+    "MFA_FORM": {
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Please enter the code"
       }
     }
   }

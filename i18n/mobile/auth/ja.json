@@ -16,7 +16,8 @@
         "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "このサインイン方法はまだアプリでサポートされていません。別のサインイン方法をお試しください。",
         "TEXT_SERVER_UNREACHABLE": "サーバーに接続できません。アドレスと接続を確認してください。ローカル HTTP サーバーの場合は、アドレスの先頭に http:// を付けてください。",
         "TEXT_NOT_OPEN_WEBUI_SERVER": "サーバーは応答しましたが、Open WebUI サーバーではありません。アドレスを確認してください。",
-        "BUTTON_RETRY_SERVER_CHECK": "サーバーを再確認"
+        "BUTTON_RETRY_SERVER_CHECK": "サーバーを再確認",
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "アカウントは管理者の承認待ちです。"
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "{{provider}} で続行"
@@ -24,6 +25,48 @@
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "閉じる",
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "このサインイン方法は利用できません。別の方法をお試しください。"
+      }
+    },
+    "MFA_VERIFICATION": {
+      "TEXT_TITLE": "サインインの確認",
+      "TEXT_DESCRIPTION": "認証アプリに表示される6桁のコードを入力してください。",
+      "TEXT_RECOVERY_CODE_DESCRIPTION": "保存したリカバリーコードのいずれかを使用してください。",
+      "TEXT_AUTHENTICATOR_CODE": "認証コード",
+      "TEXT_RECOVERY_CODE": "リカバリーコード",
+      "BUTTON_USE_RECOVERY_CODE": "リカバリーコードを使用",
+      "BUTTON_USE_AUTHENTICATOR_CODE": "認証コードを使用",
+      "BUTTON_CONTINUE": "続行",
+      "BUTTON_BACK_TO_SIGN_IN": "サインインに戻る"
+    },
+    "MFA_AUTHENTICATOR_SETUP": {
+      "TEXT_TITLE": "認証アプリを設定",
+      "TEXT_DESCRIPTION": "認証アプリでQRコードをスキャンするかキーを入力し、6桁のコードを入力してください。",
+      "TEXT_TAP_TO_COPY_KEY": "タップしてキーをコピー",
+      "TEXT_FAILED_TO_LOAD_KEY": "認証アプリのキーを読み込めませんでした。もう一度お試しください。",
+      "BUTTON_TRY_AGAIN": "再試行",
+      "TEXT_AUTHENTICATOR_CODE": "認証コード",
+      "BUTTON_CONTINUE": "続行",
+      "BUTTON_BACK_TO_SIGN_IN": "サインインに戻る"
+    },
+    "MFA_RECOVERY_CODES": {
+      "TEXT_TITLE": "リカバリーコードを保存",
+      "TEXT_DESCRIPTION": "リカバリーコードを安全な場所に保存してください。再度表示されることはありません。\n各コードは1回のみ使用できます。",
+      "TEXT_RECOVERY_CODES": "リカバリーコード",
+      "TEXT_TAP_TO_COPY_CODES": "タップしてコードをコピー",
+      "TEXT_I_HAVE_SAVED_CODES": "リカバリーコードを保存しました",
+      "BUTTON_CONTINUE": "続行",
+      "BUTTON_BACK_TO_SIGN_IN": "サインインに戻る"
+    },
+    "MFA_RECOVERY": {
+      "TEXT_TITLE": "認証アプリを復旧",
+      "TEXT_DESCRIPTION": "管理者から受け取ったリカバリートークンを入力してください。",
+      "TEXT_RECOVERY_TOKEN": "リカバリートークン",
+      "BUTTON_CONTINUE": "続行",
+      "BUTTON_BACK_TO_SIGN_IN": "サインインに戻る"
+    },
+    "MFA_FORM": {
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "コードを入力してください"
       }
     }
   }
