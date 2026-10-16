@@ -1,10 +1,13 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { Fragment, PropsWithChildren, ReactElement, useImperativeHandle, useRef } from 'react';
+import { Fragment, PropsWithChildren, ReactElement, useImperativeHandle, useMemo, useRef } from 'react';
+import { AccessibilityActionEvent } from 'react-native';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import {
   ActionsBottomSheet,
   ActionSheetItemProps,
   AnimatedView,
-  AppPressable,
+  hapticImpactHandler,
+  View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { useAnimateMessage } from './hooks/use-animate-message';
 
@@ -26,8 +29,18 @@ export function MessageActionsSheetWrapper({
   const handleLongPress = (): void => {
     if (isResponseGenerating) return;
 
+    hapticImpactHandler();
     startAnimation();
     actionsSheetRef.current?.present();
+  };
+
+  const longPressGesture = useMemo(
+    () => Gesture.LongPress().enabled(!isResponseGenerating).runOnJS(true).onStart(handleLongPress),
+    [isResponseGenerating],
+  );
+
+  const handleAccessibilityAction = (event: AccessibilityActionEvent): void => {
+    if (event.nativeEvent.actionName === 'longpress') handleLongPress();
   };
 
   const handleDismissActionsSheet = (): void => {
@@ -57,9 +70,14 @@ export function MessageActionsSheetWrapper({
         ref={actionsSheetRef}
       />
       <AnimatedView style={animatedStyle}>
-        <AppPressable className='active:opacity-100' onLongPress={handleLongPress}>
-          {children}
-        </AppPressable>
+        <GestureDetector gesture={longPressGesture}>
+          <View
+            accessible
+            accessibilityActions={[{ name: 'longpress' }]}
+            onAccessibilityAction={handleAccessibilityAction}>
+            {children}
+          </View>
+        </GestureDetector>
       </AnimatedView>
     </Fragment>
   );
