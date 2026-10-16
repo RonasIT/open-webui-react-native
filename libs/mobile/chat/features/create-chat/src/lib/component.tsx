@@ -76,7 +76,7 @@ export function CreateChat({
   }, [existedFolderId]);
 
   return (
-    <View className='flex-1 bg-background-primary pt-[60px] pb-44'>
+    <View testID='chat-create' className='flex-1 bg-background-primary pt-[60px] pb-44'>
       <SearchFolderView
         selectedItemId={folderId}
         onSelectItem={setFolderId}
