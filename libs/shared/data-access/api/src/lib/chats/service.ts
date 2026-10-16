@@ -160,6 +160,14 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
     );
   }
 
+  public async deleteMessage(chatId: string, messageId: string): Promise<ChatResponse> {
+    const response = await getApiService().delete<ChatResponse>(
+      `${chatServiceConfig.versionedRoute}/${chatId}/messages/${messageId}`,
+    );
+
+    return createEntityInstance<ChatResponse>(ChatResponse, response);
+  }
+
   public async shareChat(chatId: string): Promise<ShareChatResponse> {
     const response = await getApiService().post<ShareChatResponse>(
       `${chatServiceConfig.versionedRoute}/${chatId}/share`,
