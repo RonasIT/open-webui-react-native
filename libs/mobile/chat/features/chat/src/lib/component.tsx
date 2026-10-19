@@ -22,7 +22,9 @@ import {
   chatQueriesKeys,
   createMessagesList,
   getPendingToolCall,
+  isFeaturePermitted,
   isTemporaryChatId,
+  tasksApi,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import { AttachedListItem, ImageData, Role } from '@open-webui-react-native/shared/data-access/common';
@@ -62,6 +64,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
     attachedItems: Array<AttachedListItem>;
     attachedImages: Array<ImageData>;
   } | null>(null);
+  const [tryAgainMessageId, setTryAgainMessageId] = useState<string | null>(null);
 
   const isTemporaryChat = isTemporaryChatId(chatId);
 
@@ -84,11 +87,13 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   } = chatApi.useGet(chatId, { enabled: !isTemporaryChat });
   const { data: profile } = authApi.useGetProfile();
   const { sendMessage, isLoading: isSending } = useSendMessage({ chatData: chat });
+  const { mutate: stopChatTasks } = tasksApi.useStopChatTasks();
 
   // NOTE: Only the owner may post into a chat: the backend rejects a completion in somebody else's
   // chat with a 404 no matter what the shared folder grants, so a chat opened from a folder shared
   // with the user is read-only for them — the web client replaces its composer the same way.
   const isReadonly = Boolean(chat?.userId && profile && chat.userId !== profile.id);
+  const canDeleteMessages = !isReadonly && isFeaturePermitted('chat', 'deleteMessage', true);
   const {
     editingMessageId,
     startEditing,
@@ -118,8 +123,8 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   const isAwaitingToolApproval = Boolean(getPendingToolCall(currentMessage));
 
   const hasFailed = Boolean(currentMessage?.error?.content);
-  const isResponseGenerating = !currentMessage?.done && !isAwaitingToolApproval && !hasFailed;
   const isAssistantMessage = currentMessage?.role === Role.ASSISTANT;
+  const isResponseGenerating = isAssistantMessage && !currentMessage.done && !isAwaitingToolApproval && !hasFailed;
 
   // NOTE: With message queueing enabled, a generating response no longer force-disables the text input —
   // the user can keep typing and submit the next message immediately (queued via `queuedMessage`). The
@@ -195,7 +200,14 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   };
 
   const handleTryAgain = (messageId: string): void => {
-    handleQuickSuggestion(messageId, '');
+    if (!isResponseGenerating) {
+      return handleQuickSuggestion(messageId, '');
+    }
+
+    // NOTE: Only the reply being generated offers "Try again" now. The new reply starts once the
+    // backend has stopped this one (the request resolves after the task is cancelled), otherwise both
+    // would stream into the chat. It starts from the effect below so it reads the chat as it is then.
+    stopChatTasks({ chatId, lastMessageId: messageId }, { onSuccess: () => setTryAgainMessageId(messageId) });
   };
 
   const handleAddDetails = (messageId: string): void => {
@@ -272,6 +284,17 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   }, [isResponseGenerating, queuedMessage, selectedModelId, sendMessage]);
 
   useEffect(() => {
+    if (isResponseGenerating || !tryAgainMessageId) return;
+
+    // NOTE: A queued message may have started a new turn after the stop; retrying the older reply
+    // then would switch the branch under it, so the retry is dropped.
+    if (tryAgainMessageId === history?.currentId) {
+      handleQuickSuggestion(tryAgainMessageId, '');
+    }
+    setTryAgainMessageId(null);
+  }, [isResponseGenerating, tryAgainMessageId, history?.currentId]);
+
+  useEffect(() => {
     if (isNewChat && !firstMessageGeneratedRef.current && isAssistantMessage && currentMessage.done) {
       firstMessageGeneratedRef.current = true;
       requestStoreReview(chatId);
@@ -304,6 +327,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
             editingMessageId={editingMessageId}
             onFollowUpPress={handleFollowUpPress}
             isResponseGenerating={isResponseGenerating}
+            canDeleteMessages={canDeleteMessages}
           />
         </React.Suspense>
       )}

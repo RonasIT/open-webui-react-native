@@ -126,19 +126,26 @@
     },
     "USER_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Bearbeiten",
-      "TEXT_COPY": "Kopieren"
+      "TEXT_COPY": "Kopieren",
+      "TEXT_DELETE": "Löschen"
     },
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Bearbeiten",
       "TEXT_COPY": "Kopieren",
       "TEXT_CONTINUE_RESPONSE": "Antwort fortsetzen",
       "TEXT_REGENERATE": "Neu generieren",
+      "TEXT_DELETE": "Löschen",
       "REGENERATE_MESSAGE_ACTION_SHEET": {
         "TEXT_SUGGEST_A_CHANGE": "Änderung vorschlagen",
         "TEXT_TRY_AGAIN": "Erneut versuchen",
         "TEXT_ADD_DETAILS": "Details hinzufügen",
         "TEXT_MORE_CONCISE": "Prägnanter"
       }
+    },
+    "USE_DELETE_MESSAGE": {
+      "TEXT_DELETE_MESSAGE": "Nachricht löschen?",
+      "TEXT_CANNOT_BE_UNDONE": "Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie fortfahren?",
+      "BUTTON_DELETE": "Löschen"
     },
     "EDIT_MESSAGE_INPUT": {
       "TEXT_EDIT_MESSAGE": "Nachricht bearbeiten",

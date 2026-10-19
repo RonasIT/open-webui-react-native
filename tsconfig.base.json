@@ -106,6 +106,9 @@
       "@open-webui-react-native/mobile/chat/features/use-create-new-chat": [
         "libs/mobile/chat/features/use-create-new-chat/src/index.ts"
       ],
+      "@open-webui-react-native/mobile/chat/features/use-delete-message": [
+        "libs/mobile/chat/features/use-delete-message/src/index.ts"
+      ],
       "@open-webui-react-native/mobile/chat/features/use-edit-message": [
         "libs/mobile/chat/features/use-edit-message/src/index.ts"
       ],
