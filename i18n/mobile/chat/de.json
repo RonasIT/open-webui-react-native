@@ -43,6 +43,7 @@
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "Systemprompt",
         "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Nicht festgelegt",
+        "TEXT_MODEL_CONTROLS": "Modellsteuerung",
         "TEXT_TOOLS": "Tools",
         "TEXT_FULL_ACCESS_FOR_TOOLS": "Vollzugriff",
         "BUTTON_CLOSE": "Schließen"
@@ -196,6 +197,11 @@
         "BUTTON_SUBMIT": "Senden",
         "BUTTON_DENY": "Überspringen"
       }
+    },
+    "MODEL_CONTROLS_SHEET": {
+      "TEXT_TITLE": "Modellsteuerung",
+      "TEXT_DEFAULT": "Standard",
+      "TEXT_DEFAULT_WITH_OPTION": "Standard · {{option}}"
     },
     "ATTACH_KNOWLEDGE_SHEET": {
       "TEXT_TITLE": "Wissen",

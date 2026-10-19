@@ -43,6 +43,7 @@
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "Системный промпт",
         "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Не задано",
+        "TEXT_MODEL_CONTROLS": "Параметры модели",
         "TEXT_TOOLS": "Инструменты",
         "TEXT_FULL_ACCESS_FOR_TOOLS": "Полный доступ",
         "BUTTON_CLOSE": "Закрыть"
@@ -197,6 +198,11 @@
         "BUTTON_SUBMIT": "Отправить",
         "BUTTON_DENY": "Пропустить"
       }
+    },
+    "MODEL_CONTROLS_SHEET": {
+      "TEXT_TITLE": "Параметры модели",
+      "TEXT_DEFAULT": "По умолчанию",
+      "TEXT_DEFAULT_WITH_OPTION": "По умолчанию · {{option}}"
     },
     "ATTACH_KNOWLEDGE_SHEET": {
       "TEXT_TITLE": "База знаний",

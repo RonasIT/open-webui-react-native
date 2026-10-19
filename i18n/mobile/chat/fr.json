@@ -43,6 +43,7 @@
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "Invite système",
         "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Non défini",
+        "TEXT_MODEL_CONTROLS": "Contrôles du modèle",
         "TEXT_TOOLS": "Outils",
         "TEXT_FULL_ACCESS_FOR_TOOLS": "Accès complet",
         "BUTTON_CLOSE": "Fermer"
@@ -196,6 +197,11 @@
         "BUTTON_SUBMIT": "Envoyer",
         "BUTTON_DENY": "Ignorer"
       }
+    },
+    "MODEL_CONTROLS_SHEET": {
+      "TEXT_TITLE": "Contrôles du modèle",
+      "TEXT_DEFAULT": "Par défaut",
+      "TEXT_DEFAULT_WITH_OPTION": "Par défaut · {{option}}"
     },
     "ATTACH_KNOWLEDGE_SHEET": {
       "TEXT_TITLE": "Connaissances",

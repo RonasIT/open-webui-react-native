@@ -43,6 +43,7 @@
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "System prompt",
         "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Not set",
+        "TEXT_MODEL_CONTROLS": "Model controls",
         "TEXT_TOOLS": "Tools",
         "TEXT_FULL_ACCESS_FOR_TOOLS": "Full access for tools",
         "BUTTON_CLOSE": "Close"
@@ -196,6 +197,11 @@
         "BUTTON_SUBMIT": "Send",
         "BUTTON_DENY": "Skip"
       }
+    },
+    "MODEL_CONTROLS_SHEET": {
+      "TEXT_TITLE": "Model controls",
+      "TEXT_DEFAULT": "Default",
+      "TEXT_DEFAULT_WITH_OPTION": "Default · {{option}}"
     },
     "ATTACH_KNOWLEDGE_SHEET": {
       "TEXT_TITLE": "Knowledge",
