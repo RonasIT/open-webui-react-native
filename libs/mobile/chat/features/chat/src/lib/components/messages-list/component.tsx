@@ -235,7 +235,6 @@ export default function ChatMessagesList({
           onAddDetails={onAddDetails}
           onMoreConcise={onMoreConcise}
           isResponseGenerating={isResponseGenerating}
-          isBeingGenerated={isResponseGenerating && item.id === history?.currentId}
           isSkeleton={isSkeleton}
           canDelete={canDelete}
           isLast={isLast}>
