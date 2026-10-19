@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 import { SvgXml } from 'react-native-svg';
 import { useMfaNavigation } from '@open-webui-react-native/mobile/auth/features/use-mfa-navigation';
 import { MfaLayout } from '@open-webui-react-native/mobile/auth/ui/mfa-layout';
-import { MfaCodeFormSchema } from '@open-webui-react-native/mobile/auth/utils/mfa-form';
 import {
   AppButton,
   AppPressable,
@@ -18,9 +17,9 @@ import {
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { ConfirmMfaEnrollmentRequest, mfaApi, mfaState$ } from '@open-webui-react-native/shared/data-access/api';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
+import { qrCodeSize } from './constants';
+import { AuthenticatorSetupFormSchema } from './forms';
 import { decodeQrCode } from './utils';
-
-const qrCodeSize = 248;
 
 export function MfaAuthenticatorSetup(): ReactElement {
   const translate = useTranslation('AUTH.MFA_AUTHENTICATOR_SETUP');
@@ -38,9 +37,9 @@ export function MfaAuthenticatorSetup(): ReactElement {
     control,
     handleSubmit,
     formState: { isValid },
-  } = useForm<MfaCodeFormSchema>({
-    defaultValues: new MfaCodeFormSchema(),
-    resolver: yupResolver(MfaCodeFormSchema.validationSchema),
+  } = useForm<AuthenticatorSetupFormSchema>({
+    defaultValues: new AuthenticatorSetupFormSchema(),
+    resolver: yupResolver(AuthenticatorSetupFormSchema.validationSchema),
   });
 
   const { mutateAsync, isPending } = mfaApi.useConfirmEnrollment();
@@ -105,8 +104,6 @@ export function MfaAuthenticatorSetup(): ReactElement {
         keyboardType='number-pad'
         textContentType='oneTimeCode'
         autoComplete='one-time-code'
-        returnKeyType='done'
-        onSubmitEditing={submit}
       />
       <AppButton
         text={translate('BUTTON_CONTINUE')}

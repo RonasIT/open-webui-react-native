@@ -5,9 +5,9 @@ import { ReactElement, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMfaNavigation } from '@open-webui-react-native/mobile/auth/features/use-mfa-navigation';
 import { MfaLayout } from '@open-webui-react-native/mobile/auth/ui/mfa-layout';
-import { MfaCodeFormSchema } from '@open-webui-react-native/mobile/auth/utils/mfa-form';
 import { AppButton, FormFloatedLabelInput } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { VerifyMfaRequest, mfaApi, mfaState$ } from '@open-webui-react-native/shared/data-access/api';
+import { VerificationFormSchema } from './forms';
 
 export function MfaVerification(): ReactElement {
   const translate = useTranslation('AUTH.MFA_VERIFICATION');
@@ -22,9 +22,9 @@ export function MfaVerification(): ReactElement {
     handleSubmit,
     reset,
     formState: { isValid },
-  } = useForm<MfaCodeFormSchema>({
-    defaultValues: new MfaCodeFormSchema(),
-    resolver: yupResolver(MfaCodeFormSchema.validationSchema),
+  } = useForm<VerificationFormSchema>({
+    defaultValues: new VerificationFormSchema(),
+    resolver: yupResolver(VerificationFormSchema.validationSchema),
   });
 
   const { mutateAsync, isPending } = mfaApi.useVerify();
@@ -61,8 +61,6 @@ export function MfaVerification(): ReactElement {
         autoCapitalize='none'
         autoCorrect={false}
         autoFocus
-        returnKeyType='done'
-        onSubmitEditing={submit}
       />
       <AppButton
         text={translate('BUTTON_CONTINUE')}

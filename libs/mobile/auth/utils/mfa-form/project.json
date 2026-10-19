@@ -1,9 +1,0 @@
-{
-  "name": "mobile/auth/utils/mfa-form",
-  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/mobile/auth/utils/mfa-form/src",
-  "projectType": "library",
-  "tags": ["app:mobile", "scope:auth", "type:utils"],
-  "// targets": "to see all targets run: nx show project mobile/auth/utils/mfa-form --web",
-  "targets": {}
-}

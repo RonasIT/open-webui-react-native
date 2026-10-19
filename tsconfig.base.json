@@ -51,7 +51,6 @@
         "libs/mobile/auth/features/use-mfa-navigation/src/index.ts"
       ],
       "@open-webui-react-native/mobile/auth/ui/mfa-layout": ["libs/mobile/auth/ui/mfa-layout/src/index.ts"],
-      "@open-webui-react-native/mobile/auth/utils/mfa-form": ["libs/mobile/auth/utils/mfa-form/src/index.ts"],
       "@open-webui-react-native/mobile/chat/data-access/archived-chats-filter-state": [
         "libs/mobile/chat/data-access/archived-chats-filter-state/src/index.ts"
       ],

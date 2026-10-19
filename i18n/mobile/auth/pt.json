@@ -36,7 +36,10 @@
       "BUTTON_USE_RECOVERY_CODE": "Usar um código de recuperação",
       "BUTTON_USE_AUTHENTICATOR_CODE": "Usar um código do autenticador",
       "BUTTON_CONTINUE": "Continuar",
-      "BUTTON_BACK_TO_SIGN_IN": "Voltar ao login"
+      "BUTTON_BACK_TO_SIGN_IN": "Voltar ao login",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Digite o código"
+      }
     },
     "MFA_AUTHENTICATOR_SETUP": {
       "TEXT_TITLE": "Configure seu autenticador",
@@ -46,7 +49,10 @@
       "BUTTON_TRY_AGAIN": "Tentar novamente",
       "TEXT_AUTHENTICATOR_CODE": "Código do autenticador",
       "BUTTON_CONTINUE": "Continuar",
-      "BUTTON_BACK_TO_SIGN_IN": "Voltar ao login"
+      "BUTTON_BACK_TO_SIGN_IN": "Voltar ao login",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Digite o código"
+      }
     },
     "MFA_RECOVERY_CODES": {
       "TEXT_TITLE": "Salve seus códigos de recuperação",
@@ -55,18 +61,19 @@
       "TEXT_TAP_TO_COPY_CODES": "Toque para copiar os códigos",
       "TEXT_I_HAVE_SAVED_CODES": "Salvei meus códigos de recuperação",
       "BUTTON_CONTINUE": "Continuar",
-      "BUTTON_BACK_TO_SIGN_IN": "Voltar ao login"
+      "BUTTON_BACK_TO_SIGN_IN": "Voltar ao login",
+      "TEXT_LEAVE_CONFIRM_TITLE": "Sair sem salvar os códigos?",
+      "TEXT_LEAVE_CONFIRM_MESSAGE": "Os códigos de recuperação não serão exibidos novamente.",
+      "BUTTON_LEAVE": "Sair"
     },
     "MFA_RECOVERY": {
       "TEXT_TITLE": "Recupere seu autenticador",
       "TEXT_DESCRIPTION": "Digite o token de recuperação fornecido pelo administrador.",
       "TEXT_RECOVERY_TOKEN": "Token de recuperação",
       "BUTTON_CONTINUE": "Continuar",
-      "BUTTON_BACK_TO_SIGN_IN": "Voltar ao login"
-    },
-    "MFA_FORM": {
+      "BUTTON_BACK_TO_SIGN_IN": "Voltar ao login",
       "VALIDATION": {
-        "TEXT_REQUIRED_CODE": "Digite o código"
+        "TEXT_REQUIRED_RECOVERY_TOKEN": "Digite o token de recuperação"
       }
     }
   }

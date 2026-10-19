@@ -36,7 +36,10 @@
       "BUTTON_USE_RECOVERY_CODE": "Utiliser un code de récupération",
       "BUTTON_USE_AUTHENTICATOR_CODE": "Utiliser un code d'authentification",
       "BUTTON_CONTINUE": "Continuer",
-      "BUTTON_BACK_TO_SIGN_IN": "Retour à la connexion"
+      "BUTTON_BACK_TO_SIGN_IN": "Retour à la connexion",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Veuillez saisir le code"
+      }
     },
     "MFA_AUTHENTICATOR_SETUP": {
       "TEXT_TITLE": "Configurez votre authentificateur",
@@ -46,7 +49,10 @@
       "BUTTON_TRY_AGAIN": "Réessayer",
       "TEXT_AUTHENTICATOR_CODE": "Code d'authentification",
       "BUTTON_CONTINUE": "Continuer",
-      "BUTTON_BACK_TO_SIGN_IN": "Retour à la connexion"
+      "BUTTON_BACK_TO_SIGN_IN": "Retour à la connexion",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Veuillez saisir le code"
+      }
     },
     "MFA_RECOVERY_CODES": {
       "TEXT_TITLE": "Enregistrez vos codes de récupération",
@@ -55,18 +61,19 @@
       "TEXT_TAP_TO_COPY_CODES": "Touchez pour copier les codes",
       "TEXT_I_HAVE_SAVED_CODES": "J'ai enregistré mes codes de récupération",
       "BUTTON_CONTINUE": "Continuer",
-      "BUTTON_BACK_TO_SIGN_IN": "Retour à la connexion"
+      "BUTTON_BACK_TO_SIGN_IN": "Retour à la connexion",
+      "TEXT_LEAVE_CONFIRM_TITLE": "Quitter sans enregistrer les codes ?",
+      "TEXT_LEAVE_CONFIRM_MESSAGE": "Les codes de récupération ne seront plus affichés.",
+      "BUTTON_LEAVE": "Quitter"
     },
     "MFA_RECOVERY": {
       "TEXT_TITLE": "Récupérez votre authentificateur",
       "TEXT_DESCRIPTION": "Saisissez le jeton de récupération fourni par votre administrateur.",
       "TEXT_RECOVERY_TOKEN": "Jeton de récupération",
       "BUTTON_CONTINUE": "Continuer",
-      "BUTTON_BACK_TO_SIGN_IN": "Retour à la connexion"
-    },
-    "MFA_FORM": {
+      "BUTTON_BACK_TO_SIGN_IN": "Retour à la connexion",
       "VALIDATION": {
-        "TEXT_REQUIRED_CODE": "Veuillez saisir le code"
+        "TEXT_REQUIRED_RECOVERY_TOKEN": "Veuillez saisir le jeton de récupération"
       }
     }
   }

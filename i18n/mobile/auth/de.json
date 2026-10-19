@@ -36,7 +36,10 @@
       "BUTTON_USE_RECOVERY_CODE": "Wiederherstellungscode verwenden",
       "BUTTON_USE_AUTHENTICATOR_CODE": "Authenticator-Code verwenden",
       "BUTTON_CONTINUE": "Weiter",
-      "BUTTON_BACK_TO_SIGN_IN": "Zurück zur Anmeldung"
+      "BUTTON_BACK_TO_SIGN_IN": "Zurück zur Anmeldung",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Bitte gib den Code ein"
+      }
     },
     "MFA_AUTHENTICATOR_SETUP": {
       "TEXT_TITLE": "Authenticator einrichten",
@@ -46,7 +49,10 @@
       "BUTTON_TRY_AGAIN": "Erneut versuchen",
       "TEXT_AUTHENTICATOR_CODE": "Authenticator-Code",
       "BUTTON_CONTINUE": "Weiter",
-      "BUTTON_BACK_TO_SIGN_IN": "Zurück zur Anmeldung"
+      "BUTTON_BACK_TO_SIGN_IN": "Zurück zur Anmeldung",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Bitte gib den Code ein"
+      }
     },
     "MFA_RECOVERY_CODES": {
       "TEXT_TITLE": "Wiederherstellungscodes speichern",
@@ -55,18 +61,19 @@
       "TEXT_TAP_TO_COPY_CODES": "Tippen, um die Codes zu kopieren",
       "TEXT_I_HAVE_SAVED_CODES": "Ich habe meine Wiederherstellungscodes gespeichert",
       "BUTTON_CONTINUE": "Weiter",
-      "BUTTON_BACK_TO_SIGN_IN": "Zurück zur Anmeldung"
+      "BUTTON_BACK_TO_SIGN_IN": "Zurück zur Anmeldung",
+      "TEXT_LEAVE_CONFIRM_TITLE": "Verlassen, ohne die Codes zu speichern?",
+      "TEXT_LEAVE_CONFIRM_MESSAGE": "Die Wiederherstellungscodes werden nicht erneut angezeigt.",
+      "BUTTON_LEAVE": "Verlassen"
     },
     "MFA_RECOVERY": {
       "TEXT_TITLE": "Authenticator wiederherstellen",
       "TEXT_DESCRIPTION": "Gib das Wiederherstellungstoken von deinem Administrator ein.",
       "TEXT_RECOVERY_TOKEN": "Wiederherstellungstoken",
       "BUTTON_CONTINUE": "Weiter",
-      "BUTTON_BACK_TO_SIGN_IN": "Zurück zur Anmeldung"
-    },
-    "MFA_FORM": {
+      "BUTTON_BACK_TO_SIGN_IN": "Zurück zur Anmeldung",
       "VALIDATION": {
-        "TEXT_REQUIRED_CODE": "Bitte gib den Code ein"
+        "TEXT_REQUIRED_RECOVERY_TOKEN": "Bitte gib das Wiederherstellungstoken ein"
       }
     }
   }

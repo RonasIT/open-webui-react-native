@@ -5,9 +5,9 @@ import { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMfaNavigation } from '@open-webui-react-native/mobile/auth/features/use-mfa-navigation';
 import { MfaLayout } from '@open-webui-react-native/mobile/auth/ui/mfa-layout';
-import { MfaCodeFormSchema } from '@open-webui-react-native/mobile/auth/utils/mfa-form';
 import { AppButton, FormFloatedLabelInput } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { RecoverMfaRequest, mfaApi, mfaState$ } from '@open-webui-react-native/shared/data-access/api';
+import { RecoveryFormSchema } from './forms';
 
 export function MfaRecovery(): ReactElement {
   const translate = useTranslation('AUTH.MFA_RECOVERY');
@@ -19,16 +19,16 @@ export function MfaRecovery(): ReactElement {
     control,
     handleSubmit,
     formState: { isValid },
-  } = useForm<MfaCodeFormSchema>({
-    defaultValues: new MfaCodeFormSchema(),
-    resolver: yupResolver(MfaCodeFormSchema.validationSchema),
+  } = useForm<RecoveryFormSchema>({
+    defaultValues: new RecoveryFormSchema(),
+    resolver: yupResolver(RecoveryFormSchema.validationSchema),
   });
 
   const { mutateAsync, isPending } = mfaApi.useRecover();
 
-  const submit = handleSubmit(async ({ code }) => {
+  const submit = handleSubmit(async ({ resetToken }) => {
     try {
-      const challenge = await mutateAsync(new RecoverMfaRequest({ challengeToken, resetToken: code.trim() }));
+      const challenge = await mutateAsync(new RecoverMfaRequest({ challengeToken, resetToken: resetToken.trim() }));
       openStep(challenge, true);
     } catch (error) {
       handleError(error);
@@ -38,14 +38,12 @@ export function MfaRecovery(): ReactElement {
   return (
     <MfaLayout title={translate('TEXT_TITLE')} description={translate('TEXT_DESCRIPTION')}>
       <FormFloatedLabelInput
-        name='code'
+        name='resetToken'
         control={control}
         label={translate('TEXT_RECOVERY_TOKEN')}
         autoCapitalize='none'
         autoCorrect={false}
         autoFocus
-        returnKeyType='done'
-        onSubmitEditing={submit}
       />
       <AppButton
         text={translate('BUTTON_CONTINUE')}

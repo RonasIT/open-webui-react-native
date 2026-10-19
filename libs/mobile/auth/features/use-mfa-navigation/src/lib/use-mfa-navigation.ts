@@ -2,10 +2,11 @@ import { i18n } from '@ronas-it/react-native-common-modules/i18n';
 import { HttpStatusCode, isAxiosError } from 'axios';
 import { useRouter } from 'expo-router';
 import { navigationConfig, useInitialNavigation } from '@open-webui-react-native/mobile/shared/utils/navigation';
-import { isExpiredMfaChallengeError, MfaChallenge, mfaState$ } from '@open-webui-react-native/shared/data-access/api';
+import { MfaChallenge, mfaState$ } from '@open-webui-react-native/shared/data-access/api';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { stepRoutes } from './config';
+import { isExpiredMfaChallengeError } from './utils';
 
 interface UseMfaNavigationUsage {
   openStep: (challenge: MfaChallenge, shouldReplace?: boolean) => void;

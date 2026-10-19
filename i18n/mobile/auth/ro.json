@@ -36,7 +36,10 @@
       "BUTTON_USE_RECOVERY_CODE": "Folosește un cod de recuperare",
       "BUTTON_USE_AUTHENTICATOR_CODE": "Folosește un cod de autentificare",
       "BUTTON_CONTINUE": "Continuă",
-      "BUTTON_BACK_TO_SIGN_IN": "Înapoi la autentificare"
+      "BUTTON_BACK_TO_SIGN_IN": "Înapoi la autentificare",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Introdu codul"
+      }
     },
     "MFA_AUTHENTICATOR_SETUP": {
       "TEXT_TITLE": "Configurează autentificatorul",
@@ -46,7 +49,10 @@
       "BUTTON_TRY_AGAIN": "Încercați din nou",
       "TEXT_AUTHENTICATOR_CODE": "Cod de autentificare",
       "BUTTON_CONTINUE": "Continuă",
-      "BUTTON_BACK_TO_SIGN_IN": "Înapoi la autentificare"
+      "BUTTON_BACK_TO_SIGN_IN": "Înapoi la autentificare",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Introdu codul"
+      }
     },
     "MFA_RECOVERY_CODES": {
       "TEXT_TITLE": "Salvează codurile de recuperare",
@@ -55,18 +61,19 @@
       "TEXT_TAP_TO_COPY_CODES": "Atinge pentru a copia codurile",
       "TEXT_I_HAVE_SAVED_CODES": "Am salvat codurile de recuperare",
       "BUTTON_CONTINUE": "Continuă",
-      "BUTTON_BACK_TO_SIGN_IN": "Înapoi la autentificare"
+      "BUTTON_BACK_TO_SIGN_IN": "Înapoi la autentificare",
+      "TEXT_LEAVE_CONFIRM_TITLE": "Ieși fără să salvezi codurile?",
+      "TEXT_LEAVE_CONFIRM_MESSAGE": "Codurile de recuperare nu vor mai fi afișate.",
+      "BUTTON_LEAVE": "Ieși"
     },
     "MFA_RECOVERY": {
       "TEXT_TITLE": "Recuperează autentificatorul",
       "TEXT_DESCRIPTION": "Introdu tokenul de recuperare primit de la administrator.",
       "TEXT_RECOVERY_TOKEN": "Token de recuperare",
       "BUTTON_CONTINUE": "Continuă",
-      "BUTTON_BACK_TO_SIGN_IN": "Înapoi la autentificare"
-    },
-    "MFA_FORM": {
+      "BUTTON_BACK_TO_SIGN_IN": "Înapoi la autentificare",
       "VALIDATION": {
-        "TEXT_REQUIRED_CODE": "Introdu codul"
+        "TEXT_REQUIRED_RECOVERY_TOKEN": "Introdu tokenul de recuperare"
       }
     }
   }

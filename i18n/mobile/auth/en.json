@@ -36,7 +36,10 @@
       "BUTTON_USE_RECOVERY_CODE": "Use a recovery code",
       "BUTTON_USE_AUTHENTICATOR_CODE": "Use an authenticator code",
       "BUTTON_CONTINUE": "Continue",
-      "BUTTON_BACK_TO_SIGN_IN": "Back to sign in"
+      "BUTTON_BACK_TO_SIGN_IN": "Back to sign in",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Please enter the code"
+      }
     },
     "MFA_AUTHENTICATOR_SETUP": {
       "TEXT_TITLE": "Set up your authenticator",
@@ -46,7 +49,10 @@
       "BUTTON_TRY_AGAIN": "Try again",
       "TEXT_AUTHENTICATOR_CODE": "Authenticator code",
       "BUTTON_CONTINUE": "Continue",
-      "BUTTON_BACK_TO_SIGN_IN": "Back to sign in"
+      "BUTTON_BACK_TO_SIGN_IN": "Back to sign in",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Please enter the code"
+      }
     },
     "MFA_RECOVERY_CODES": {
       "TEXT_TITLE": "Save your recovery codes",
@@ -55,18 +61,19 @@
       "TEXT_TAP_TO_COPY_CODES": "Tap to copy codes",
       "TEXT_I_HAVE_SAVED_CODES": "I have saved my recovery codes",
       "BUTTON_CONTINUE": "Continue",
-      "BUTTON_BACK_TO_SIGN_IN": "Back to sign in"
+      "BUTTON_BACK_TO_SIGN_IN": "Back to sign in",
+      "TEXT_LEAVE_CONFIRM_TITLE": "Leave without saving the codes?",
+      "TEXT_LEAVE_CONFIRM_MESSAGE": "Recovery codes won't be shown again.",
+      "BUTTON_LEAVE": "Leave"
     },
     "MFA_RECOVERY": {
       "TEXT_TITLE": "Recover your authenticator",
       "TEXT_DESCRIPTION": "Enter the recovery token from your administrator.",
       "TEXT_RECOVERY_TOKEN": "Recovery token",
       "BUTTON_CONTINUE": "Continue",
-      "BUTTON_BACK_TO_SIGN_IN": "Back to sign in"
-    },
-    "MFA_FORM": {
+      "BUTTON_BACK_TO_SIGN_IN": "Back to sign in",
       "VALIDATION": {
-        "TEXT_REQUIRED_CODE": "Please enter the code"
+        "TEXT_REQUIRED_RECOVERY_TOKEN": "Please enter the recovery token"
       }
     }
   }

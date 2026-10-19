@@ -36,7 +36,10 @@
       "BUTTON_USE_RECOVERY_CODE": "Usar un código de recuperación",
       "BUTTON_USE_AUTHENTICATOR_CODE": "Usar un código de autenticación",
       "BUTTON_CONTINUE": "Continuar",
-      "BUTTON_BACK_TO_SIGN_IN": "Volver al inicio de sesión"
+      "BUTTON_BACK_TO_SIGN_IN": "Volver al inicio de sesión",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Introduce el código"
+      }
     },
     "MFA_AUTHENTICATOR_SETUP": {
       "TEXT_TITLE": "Configura tu autenticador",
@@ -46,7 +49,10 @@
       "BUTTON_TRY_AGAIN": "Reintentar",
       "TEXT_AUTHENTICATOR_CODE": "Código de autenticación",
       "BUTTON_CONTINUE": "Continuar",
-      "BUTTON_BACK_TO_SIGN_IN": "Volver al inicio de sesión"
+      "BUTTON_BACK_TO_SIGN_IN": "Volver al inicio de sesión",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Introduce el código"
+      }
     },
     "MFA_RECOVERY_CODES": {
       "TEXT_TITLE": "Guarda tus códigos de recuperación",
@@ -55,18 +61,19 @@
       "TEXT_TAP_TO_COPY_CODES": "Toca para copiar los códigos",
       "TEXT_I_HAVE_SAVED_CODES": "He guardado mis códigos de recuperación",
       "BUTTON_CONTINUE": "Continuar",
-      "BUTTON_BACK_TO_SIGN_IN": "Volver al inicio de sesión"
+      "BUTTON_BACK_TO_SIGN_IN": "Volver al inicio de sesión",
+      "TEXT_LEAVE_CONFIRM_TITLE": "¿Salir sin guardar los códigos?",
+      "TEXT_LEAVE_CONFIRM_MESSAGE": "Los códigos de recuperación no se volverán a mostrar.",
+      "BUTTON_LEAVE": "Salir"
     },
     "MFA_RECOVERY": {
       "TEXT_TITLE": "Recupera tu autenticador",
       "TEXT_DESCRIPTION": "Introduce el token de recuperación de tu administrador.",
       "TEXT_RECOVERY_TOKEN": "Token de recuperación",
       "BUTTON_CONTINUE": "Continuar",
-      "BUTTON_BACK_TO_SIGN_IN": "Volver al inicio de sesión"
-    },
-    "MFA_FORM": {
+      "BUTTON_BACK_TO_SIGN_IN": "Volver al inicio de sesión",
       "VALIDATION": {
-        "TEXT_REQUIRED_CODE": "Introduce el código"
+        "TEXT_REQUIRED_RECOVERY_TOKEN": "Introduce el token de recuperación"
       }
     }
   }

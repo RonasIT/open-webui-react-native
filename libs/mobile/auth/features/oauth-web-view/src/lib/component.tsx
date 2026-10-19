@@ -17,6 +17,7 @@ import { getApiUrl, getHost } from '@open-webui-react-native/shared/utils/config
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { WebViewMessageType } from './enums';
 import { mfaChallengeCaptureScript, mobileUserAgent, tokenCaptureScript } from './script';
+import { isMfaOrPendingApprovalUrl } from './utils';
 
 // If the token cookie doesn't appear shortly after we land back on Open WebUI,
 // fail loudly instead of leaving the user on a stuck spinner.
@@ -108,7 +109,7 @@ export function OauthWebView({
       return;
     }
 
-    if (/[?&](mfa|pending)=1/.test(state.url)) {
+    if (isMfaOrPendingApprovalUrl(state.url)) {
       clearCaptureTimeout();
       setIsProcessing(false);
 

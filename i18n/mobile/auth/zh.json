@@ -36,7 +36,10 @@
       "BUTTON_USE_RECOVERY_CODE": "使用恢复码",
       "BUTTON_USE_AUTHENTICATOR_CODE": "使用身份验证器验证码",
       "BUTTON_CONTINUE": "继续",
-      "BUTTON_BACK_TO_SIGN_IN": "返回登录"
+      "BUTTON_BACK_TO_SIGN_IN": "返回登录",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "请输入验证码"
+      }
     },
     "MFA_AUTHENTICATOR_SETUP": {
       "TEXT_TITLE": "设置身份验证器",
@@ -46,7 +49,10 @@
       "BUTTON_TRY_AGAIN": "重试",
       "TEXT_AUTHENTICATOR_CODE": "身份验证器验证码",
       "BUTTON_CONTINUE": "继续",
-      "BUTTON_BACK_TO_SIGN_IN": "返回登录"
+      "BUTTON_BACK_TO_SIGN_IN": "返回登录",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "请输入验证码"
+      }
     },
     "MFA_RECOVERY_CODES": {
       "TEXT_TITLE": "保存您的恢复码",
@@ -55,18 +61,19 @@
       "TEXT_TAP_TO_COPY_CODES": "点击复制恢复码",
       "TEXT_I_HAVE_SAVED_CODES": "我已保存恢复码",
       "BUTTON_CONTINUE": "继续",
-      "BUTTON_BACK_TO_SIGN_IN": "返回登录"
+      "BUTTON_BACK_TO_SIGN_IN": "返回登录",
+      "TEXT_LEAVE_CONFIRM_TITLE": "不保存恢复码就离开？",
+      "TEXT_LEAVE_CONFIRM_MESSAGE": "恢复码将不会再次显示。",
+      "BUTTON_LEAVE": "离开"
     },
     "MFA_RECOVERY": {
       "TEXT_TITLE": "恢复身份验证器",
       "TEXT_DESCRIPTION": "输入管理员提供的恢复令牌。",
       "TEXT_RECOVERY_TOKEN": "恢复令牌",
       "BUTTON_CONTINUE": "继续",
-      "BUTTON_BACK_TO_SIGN_IN": "返回登录"
-    },
-    "MFA_FORM": {
+      "BUTTON_BACK_TO_SIGN_IN": "返回登录",
       "VALIDATION": {
-        "TEXT_REQUIRED_CODE": "请输入验证码"
+        "TEXT_REQUIRED_RECOVERY_TOKEN": "请输入恢复令牌"
       }
     }
   }

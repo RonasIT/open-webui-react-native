@@ -1,11 +1,13 @@
 import { useSelector } from '@legendapp/state/react';
 import { i18n, useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import * as Clipboard from 'expo-clipboard';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
+import { BackHandler } from 'react-native';
 import { useMfaNavigation } from '@open-webui-react-native/mobile/auth/features/use-mfa-navigation';
 import { MfaLayout } from '@open-webui-react-native/mobile/auth/ui/mfa-layout';
 import { AppButton, AppPressable, AppText, Checkbox, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { mfaState$ } from '@open-webui-react-native/shared/data-access/api';
+import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 export function MfaRecoveryCodes(): ReactElement {
@@ -27,6 +29,23 @@ export function MfaRecoveryCodes(): ReactElement {
       completeSignIn(sessionToken);
     }
   };
+
+  const handleBackToSignInPress = (): void => {
+    alertService.confirm({
+      title: translate('TEXT_LEAVE_CONFIRM_TITLE'),
+      message: translate('TEXT_LEAVE_CONFIRM_MESSAGE'),
+      confirmButtonText: translate('BUTTON_LEAVE'),
+      confirmButtonStyle: 'destructive',
+      onConfirm: backToSignIn,
+    });
+  };
+
+  // Codes are shown once, so the Android back button must not leave this screen.
+  useEffect(() => {
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => true);
+
+    return () => subscription.remove();
+  }, []);
 
   return (
     <MfaLayout title={translate('TEXT_TITLE')} description={translate('TEXT_DESCRIPTION')}>
@@ -50,7 +69,7 @@ export function MfaRecoveryCodes(): ReactElement {
       <AppButton
         text={translate('BUTTON_BACK_TO_SIGN_IN')}
         variant='ghost'
-        onPress={backToSignIn} />
+        onPress={handleBackToSignInPress} />
     </MfaLayout>
   );
 }

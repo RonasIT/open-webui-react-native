@@ -36,7 +36,10 @@
       "BUTTON_USE_RECOVERY_CODE": "リカバリーコードを使用",
       "BUTTON_USE_AUTHENTICATOR_CODE": "認証コードを使用",
       "BUTTON_CONTINUE": "続行",
-      "BUTTON_BACK_TO_SIGN_IN": "サインインに戻る"
+      "BUTTON_BACK_TO_SIGN_IN": "サインインに戻る",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "コードを入力してください"
+      }
     },
     "MFA_AUTHENTICATOR_SETUP": {
       "TEXT_TITLE": "認証アプリを設定",
@@ -46,7 +49,10 @@
       "BUTTON_TRY_AGAIN": "再試行",
       "TEXT_AUTHENTICATOR_CODE": "認証コード",
       "BUTTON_CONTINUE": "続行",
-      "BUTTON_BACK_TO_SIGN_IN": "サインインに戻る"
+      "BUTTON_BACK_TO_SIGN_IN": "サインインに戻る",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "コードを入力してください"
+      }
     },
     "MFA_RECOVERY_CODES": {
       "TEXT_TITLE": "リカバリーコードを保存",
@@ -55,18 +61,19 @@
       "TEXT_TAP_TO_COPY_CODES": "タップしてコードをコピー",
       "TEXT_I_HAVE_SAVED_CODES": "リカバリーコードを保存しました",
       "BUTTON_CONTINUE": "続行",
-      "BUTTON_BACK_TO_SIGN_IN": "サインインに戻る"
+      "BUTTON_BACK_TO_SIGN_IN": "サインインに戻る",
+      "TEXT_LEAVE_CONFIRM_TITLE": "コードを保存せずに戻りますか？",
+      "TEXT_LEAVE_CONFIRM_MESSAGE": "リカバリーコードは再表示されません。",
+      "BUTTON_LEAVE": "戻る"
     },
     "MFA_RECOVERY": {
       "TEXT_TITLE": "認証アプリを復旧",
       "TEXT_DESCRIPTION": "管理者から受け取ったリカバリートークンを入力してください。",
       "TEXT_RECOVERY_TOKEN": "リカバリートークン",
       "BUTTON_CONTINUE": "続行",
-      "BUTTON_BACK_TO_SIGN_IN": "サインインに戻る"
-    },
-    "MFA_FORM": {
+      "BUTTON_BACK_TO_SIGN_IN": "サインインに戻る",
       "VALIDATION": {
-        "TEXT_REQUIRED_CODE": "コードを入力してください"
+        "TEXT_REQUIRED_RECOVERY_TOKEN": "リカバリートークンを入力してください"
       }
     }
   }
