@@ -78,8 +78,6 @@ export function ChatMenuList({
     isRefetching: isSharedFoldersRefetching,
     refetch: refetchSharedFolders,
   } = foldersApi.useGetSharedFolders({ enabled: canUseFolders });
-  // NOTE: Permissions live in the profile, so pull-to-refresh refetches it too — otherwise an admin's
-  // permission change (e.g. "Enforce Temporary Chat") is only picked up after the 5-minute staleTime.
   const { isRefetching: isProfileRefetching, refetch: refetchProfile } = authApi.useGetProfile();
 
   const isLoading =
