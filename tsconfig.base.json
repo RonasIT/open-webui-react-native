@@ -28,6 +28,18 @@
       "@open-webui-react-native/mobile/auth/features/email-sign-in-form": [
         "libs/mobile/auth/features/email-sign-in-form/src/index.ts"
       ],
+      "@open-webui-react-native/mobile/auth/features/mfa-authenticator-setup": [
+        "libs/mobile/auth/features/mfa-authenticator-setup/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/auth/features/mfa-recovery": [
+        "libs/mobile/auth/features/mfa-recovery/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/auth/features/mfa-recovery-codes": [
+        "libs/mobile/auth/features/mfa-recovery-codes/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/auth/features/mfa-verification": [
+        "libs/mobile/auth/features/mfa-verification/src/index.ts"
+      ],
       "@open-webui-react-native/mobile/auth/features/oauth-sign-in": [
         "libs/mobile/auth/features/oauth-sign-in/src/index.ts"
       ],
@@ -35,6 +47,10 @@
         "libs/mobile/auth/features/oauth-web-view/src/index.ts"
       ],
       "@open-webui-react-native/mobile/auth/features/sign-in": ["libs/mobile/auth/features/sign-in/src/index.ts"],
+      "@open-webui-react-native/mobile/auth/features/use-mfa-navigation": [
+        "libs/mobile/auth/features/use-mfa-navigation/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/auth/ui/mfa-layout": ["libs/mobile/auth/ui/mfa-layout/src/index.ts"],
       "@open-webui-react-native/mobile/chat/data-access/archived-chats-filter-state": [
         "libs/mobile/chat/data-access/archived-chats-filter-state/src/index.ts"
       ],

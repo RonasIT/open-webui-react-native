@@ -8,7 +8,9 @@ class AuthService {
   public async signInWithEmailPassword(request: SignInRequest): Promise<SignInResponse> {
     const response: SignInResponse = await getApiService().post(`${authApiConfig.route}/signin`, request);
 
-    authState$.signIn(response.token);
+    if (response.token) {
+      authState$.signIn(response.token);
+    }
 
     return plainToInstance(SignInResponse, response);
   }
