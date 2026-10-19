@@ -3,6 +3,10 @@ import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { Fragment, ReactElement, useRef } from 'react';
 import {
+  ModelControlsSheet,
+  ModelControlsSheetMethods,
+} from '@open-webui-react-native/mobile/chat/features/model-controls-sheet';
+import {
   ActionSheetItem,
   AppBottomSheet,
   AppSwitch,
@@ -11,7 +15,9 @@ import {
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import {
+  AIModel,
   ChatResponse,
+  isModelControlsAvailable,
   Tool,
   ToolApprovalMode,
   toolApprovalState$,
@@ -26,6 +32,7 @@ export interface ChatSettingsSheetProps {
   selectedToolIds: Array<string>;
   onApplyToolIds: (toolIds: Array<string>) => void;
   chat?: ChatResponse;
+  model?: AIModel;
   disabled?: boolean;
   isToolPermissionsEnabled?: boolean;
 }
@@ -35,13 +42,17 @@ export function ChatSettingsSheet({
   selectedToolIds,
   onApplyToolIds,
   chat,
+  model,
   disabled,
   isToolPermissionsEnabled,
 }: ChatSettingsSheetProps): ReactElement {
   const translate = useTranslation('CHAT.FORM_CHAT_INPUT.CHAT_SETTINGS_SHEET');
   const modalRef = useRef<BottomSheetModal>(null);
   const systemPromptSheetRef = useRef<SystemPromptSheetMethods>(null);
+  const modelControlsSheetRef = useRef<ModelControlsSheetMethods>(null);
   const toolsSheetRef = useRef<ToolsSheetMethods>(null);
+
+  const isModelControlsRowVisible = isModelControlsAvailable(model);
 
   const { systemPrompt, saveSystemPrompt } = useChatSystemPrompt({ chat });
   const hasSystemPrompt = !!systemPrompt;
@@ -53,6 +64,11 @@ export function ChatSettingsSheet({
 
   const handleSystemPromptRowPress = (): void => {
     systemPromptSheetRef.current?.present(systemPrompt);
+  };
+
+  const handleModelControlsRowPress = (): void => {
+    closeMenu();
+    modelControlsSheetRef.current?.present();
   };
 
   const handleToolsRowPress = (): void => {
@@ -91,6 +107,14 @@ export function ChatSettingsSheet({
                 hasSubActions
                 onPress={handleSystemPromptRowPress}
               />
+              {isModelControlsRowVisible && (
+                <ActionSheetItem
+                  title={translate('TEXT_MODEL_CONTROLS')}
+                  iconName='knobs'
+                  hasSubActions
+                  onPress={handleModelControlsRowPress}
+                />
+              )}
               <ActionSheetItem
                 title={translate('TEXT_TOOLS')}
                 iconName='tools'
@@ -123,6 +147,10 @@ export function ChatSettingsSheet({
         onSave={saveSystemPrompt}
         onClose={() => modalRef.current?.present()}
       />
+      <ModelControlsSheet
+        ref={modelControlsSheetRef}
+        model={model}
+        onClose={() => modalRef.current?.present()} />
       <ToolsSheet
         ref={toolsSheetRef}
         tools={tools}
