@@ -22,7 +22,6 @@ interface AiMessageActionsProps {
   onMoreConcise: (messageId: string) => void;
   isLast: boolean;
   isResponseGenerating: boolean;
-  isBeingGenerated: boolean;
   isSkeleton: boolean;
   canDelete: boolean;
 }
@@ -39,7 +38,6 @@ export function AiMessageActions({
   onMoreConcise,
   isLast,
   isResponseGenerating,
-  isBeingGenerated,
   isSkeleton,
   canDelete,
   children,
@@ -56,7 +54,6 @@ export function AiMessageActions({
     onDeleted: close,
   });
 
-  const isOtherMessageBeingGenerated = isResponseGenerating && !isBeingGenerated;
   const isChangeDisabled = isResponseGenerating || isSkeleton;
 
   const copyToClipboard = async (): Promise<void> => {
@@ -131,7 +128,7 @@ export function AiMessageActions({
       iconName: 'refresh',
       onPress: openRegenerateActions,
       hasSubActions: true,
-      disabled: isOtherMessageBeingGenerated,
+      disabled: isResponseGenerating,
     },
     canDelete && {
       title: translate('TEXT_DELETE'),
@@ -154,7 +151,7 @@ export function AiMessageActions({
       title: translate('REGENERATE_MESSAGE_ACTION_SHEET.TEXT_TRY_AGAIN'),
       iconName: 'refresh',
       onPress: handleTryAgainPress,
-      disabled: isOtherMessageBeingGenerated,
+      disabled: isResponseGenerating,
     },
     {
       title: translate('REGENERATE_MESSAGE_ACTION_SHEET.TEXT_ADD_DETAILS'),
