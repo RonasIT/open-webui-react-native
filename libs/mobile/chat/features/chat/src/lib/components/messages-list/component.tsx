@@ -38,6 +38,7 @@ interface ChatMessagesListProps {
   onMoreConcise: (messageId: string) => void;
   onFollowUpPress: (text: string) => void;
   isResponseGenerating: boolean;
+  canDeleteMessages: boolean;
   history?: ChatHistory;
   messages?: Array<Message>;
   editingMessageId?: string;
@@ -58,6 +59,7 @@ export default function ChatMessagesList({
   editingMessageId,
   onFollowUpPress,
   isResponseGenerating,
+  canDeleteMessages,
 }: ChatMessagesListProps): ReactElement {
   const listRef = useRef<React.ComponentRef<typeof FlashList<Message>>>(null);
   const isScrollToBottomAvailable = useRef(false);
@@ -217,9 +219,14 @@ export default function ChatMessagesList({
 
       const isLast = item.id === lastAssistantMessageInUIList?.id;
       const isSkeleton = isSkeletonMessage(message);
+      // NOTE: Same rules as the web client: a reply can be deleted only while it has other versions,
+      // the first message of the chat too.
+      const canDelete =
+        canDeleteMessages && ((item.role === Role.USER && index > 0) || getSiblingsInfo(message).hasSiblings);
 
       return item.role === Role.ASSISTANT ? (
         <AiMessageActions
+          chatId={chatId}
           message={message}
           onEditPress={onEditPress}
           onSuggestPress={onSuggestPress}
@@ -230,6 +237,7 @@ export default function ChatMessagesList({
           isResponseGenerating={isResponseGenerating}
           isBeingGenerated={isResponseGenerating && item.id === history?.currentId}
           isSkeleton={isSkeleton}
+          canDelete={canDelete}
           isLast={isLast}>
           <ChatAiMessage
             message={message}
@@ -247,9 +255,11 @@ export default function ChatMessagesList({
         </AiMessageActions>
       ) : (
         <UserMessageActions
+          chatId={chatId}
           message={message}
           onEditPress={() => handleEditPress(index, message.id, message.content)}
-          isResponseGenerating={isResponseGenerating}>
+          isResponseGenerating={isResponseGenerating}
+          canDelete={canDelete}>
           <ChatUserMessage
             message={message}
             isEditing={editingMessageId === item.id}
@@ -274,6 +284,7 @@ export default function ChatMessagesList({
       onAddDetails,
       onMoreConcise,
       isResponseGenerating,
+      canDeleteMessages,
     ],
   );
 

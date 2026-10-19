@@ -126,19 +126,26 @@
     },
     "USER_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Editar",
-      "TEXT_COPY": "Copiar"
+      "TEXT_COPY": "Copiar",
+      "TEXT_DELETE": "Excluir"
     },
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Editar",
       "TEXT_COPY": "Copiar",
       "TEXT_CONTINUE_RESPONSE": "Continuar resposta",
       "TEXT_REGENERATE": "Regenerar",
+      "TEXT_DELETE": "Excluir",
       "REGENERATE_MESSAGE_ACTION_SHEET": {
         "TEXT_SUGGEST_A_CHANGE": "Sugerir uma alteração",
         "TEXT_TRY_AGAIN": "Tentar novamente",
         "TEXT_ADD_DETAILS": "Adicionar detalhes",
         "TEXT_MORE_CONCISE": "Mais conciso"
       }
+    },
+    "USE_DELETE_MESSAGE": {
+      "TEXT_DELETE_MESSAGE": "Excluir mensagem?",
+      "TEXT_CANNOT_BE_UNDONE": "Esta ação não pode ser desfeita. Você deseja continuar?",
+      "BUTTON_DELETE": "Excluir"
     },
     "EDIT_MESSAGE_INPUT": {
       "TEXT_EDIT_MESSAGE": "Editar mensagem",
