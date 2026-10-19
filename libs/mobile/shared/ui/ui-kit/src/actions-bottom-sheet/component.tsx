@@ -2,6 +2,7 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { Fragment, PropsWithChildren, ReactElement } from 'react';
 import { AppBottomSheet, AppBottomSheetModalProps, AppBottomSheetProps } from '../bottom-sheet';
+import { AppText } from '../text';
 import { View } from '../view';
 import { ActionSheetItem, ActionSheetItemProps } from './components';
 
@@ -12,6 +13,8 @@ export type ActionsBottomSheetProps = PropsWithChildren<Partial<AppBottomSheetPr
     areActionsDisabled?: boolean;
     onClose?: () => void;
     closeButtonText?: string;
+    title?: string;
+    description?: string;
     ref?: React.RefObject<BottomSheetModal | null>;
   };
 
@@ -22,6 +25,8 @@ export function ActionsBottomSheet({
   areActionsDisabled,
   onClose,
   closeButtonText,
+  title,
+  description,
   ref,
   ...restProps
 }: ActionsBottomSheetProps): ReactElement {
@@ -50,7 +55,15 @@ export function ActionsBottomSheet({
       enablePanDownToClose={false}
       content={
         <Fragment>
-          <View className='rounded-2xl overflow-hidden'>{actions.map(renderActionComponent)}</View>
+          <View className='rounded-2xl overflow-hidden'>
+            {(title || description) && (
+              <View className='bg-background-primary px-24 py-20 gap-8'>
+                {title && <AppText className='text-md-sm sm:text-md font-medium'>{title}</AppText>}
+                {description && <AppText className='text-sm-sm sm:text-sm text-text-secondary'>{description}</AppText>}
+              </View>
+            )}
+            {actions.map(renderActionComponent)}
+          </View>
           <ActionSheetItem
             isCentered
             title={closeButtonText || translate('BUTTON_CANCEL')}

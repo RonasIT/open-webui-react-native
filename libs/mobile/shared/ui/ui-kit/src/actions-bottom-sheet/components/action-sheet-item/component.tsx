@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { Icon, IconName, IconProps } from '../../../icon';
 import { AppPressable, AppPressableProps } from '../../../pressable';
@@ -17,6 +17,7 @@ export interface ActionSheetItemProps extends AppPressableProps {
   isDanger?: boolean;
   hasSubActions?: boolean;
   numberOfLines?: number;
+  rightContent?: ReactNode;
 }
 
 export function ActionSheetItem({
@@ -31,6 +32,7 @@ export function ActionSheetItem({
   isDanger,
   hasSubActions = false,
   numberOfLines,
+  rightContent,
   ...restProps
 }: ActionSheetItemProps): ReactElement {
   return (
@@ -60,13 +62,14 @@ export function ActionSheetItem({
         className={cn('text-md-sm sm:text-md', isDanger && 'text-status-danger', !value && numberOfLines && 'flex-1')}>
         {title}
       </AppText>
-      {(!!value || hasSubActions) && (
+      {(!!value || hasSubActions || rightContent) && (
         <View className='min-w-0 flex-1 flex-row items-center justify-end gap-8'>
           {!!value && (
             <AppText numberOfLines={1} className='shrink text-right text-sm-sm sm:text-sm text-text-secondary'>
               {value}
             </AppText>
           )}
+          {rightContent}
           {hasSubActions && <Icon name='chevronRight' className='shrink-0' />}
         </View>
       )}
