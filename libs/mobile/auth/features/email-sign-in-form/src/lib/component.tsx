@@ -140,6 +140,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
     <View className='w-full gap-8'>
       <FormFloatedLabelInput
         name='url'
+        testID='sign-in-api-url'
         control={control}
         value={query}
         onChangeText={setQuery}
@@ -173,6 +174,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
           <FormFloatedLabelInput
             inputRef={emailRef}
             name='email'
+            testID='sign-in-email'
             control={control}
             autoCapitalize='none'
             autoCorrect={false}
@@ -186,6 +188,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
           />
           <FormFloatedLabelInput
             name='password'
+            testID='sign-in-password'
             control={control}
             inputRef={passwordRef}
             autoCapitalize='none'
@@ -210,6 +213,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
       {showSignInButton && (
         <AppButton
           text={translate('BUTTON_SIGN_IN')}
+          testID='sign-in-submit'
           disabled={!isFormValid}
           isLoading={isPending}
           className='mt-16'

@@ -84,6 +84,7 @@ jobs:
     timeout-minutes: 60
     env:
       APP_ID: ${{ vars.EXPO_PUBLIC_APP_ID }}
+      API_URL: ${{ vars.E2E_API_URL }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -140,6 +141,10 @@ jobs:
 
       - name: Run Maestro tests
         uses: reactivecircus/android-emulator-runner@v2
+        env:
+          EMAIL: ${{ secrets.E2E_EMAIL }}
+          PASSWORD: ${{ secrets.E2E_PASSWORD }}
+          ARTIFACT_PASSWORD: ${{ secrets.E2E_ARTIFACT_PASSWORD }}
         with:
           api-level: 34
           arch: x86_64
@@ -154,7 +159,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: maestro-report
-          path: maestro-output
+          path: maestro-output.7z
           if-no-files-found: ignore
-          # Maestro writes part of its output into dot-folders
-          include-hidden-files: true

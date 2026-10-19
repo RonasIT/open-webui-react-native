@@ -6,6 +6,7 @@ import { CodeBlock } from '@open-webui-react-native/mobile/shared/ui/code-block'
 import { colors, rem, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { MathSvg, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { AppMarkdownViewProps } from '../../types/app-markdown-view-props';
+import { normalizeMathDelimiters } from '../../utils';
 import { MathBlock } from '../math-block';
 import { NitroMarkdownTableRenderer } from '../nitro-markdown-table-renderer';
 
@@ -76,6 +77,12 @@ export function NitroMarkdownView({
     [codeBlockWidth, isContentReady],
   );
 
+  // NOTE: The native parser only knows `$`/`$$` math, so `\(…\)`/`\[…\]` are converted for parity with DefaultMarkdownView.
+  const content = useMemo(
+    () => normalizeMathDelimiters(typeof children === 'string' ? children : String(children ?? '')),
+    [children],
+  );
+
   const theme = useMemo(
     () =>
       isDarkColorScheme
@@ -90,7 +97,7 @@ export function NitroMarkdownView({
       theme={theme}
       renderers={renderers}
       onLinkPress={handleLinkPress}>
-      {typeof children === 'string' ? children : String(children ?? '')}
+      {content}
     </Markdown>
   );
 }
