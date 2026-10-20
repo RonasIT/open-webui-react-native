@@ -69,6 +69,7 @@
     "expo-linking": "~57.0.4",
     "expo-localization": "~57.0.1",
     "expo-media-library": "~57.0.3",
+    "expo-paste-input": "0.2.2",
     "expo-router": "~57.0.8",
     "expo-sharing": "~57.0.7",
     "expo-speech": "~57.0.1",
