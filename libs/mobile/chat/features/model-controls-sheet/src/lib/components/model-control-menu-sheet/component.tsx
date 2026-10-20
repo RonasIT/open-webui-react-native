@@ -1,7 +1,7 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } from 'react';
-import { ActionSheetItemProps, ActionsBottomSheet, Icon } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { ActionsBottomSheet, ActionsBottomSheetAction, Icon } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { ModelControl, ModelControlChoices } from '@open-webui-react-native/shared/data-access/api';
 import { getModelControlDefaultLabel } from '../../utils';
 
@@ -41,7 +41,7 @@ export function ModelControlMenuSheet({ ref, controls, choices, onSelect }: Mode
     sheetRef.current?.close();
   };
 
-  const getActions = (): Array<ActionSheetItemProps> => {
+  const getActions = (): Array<ActionsBottomSheetAction> => {
     if (!control || !activeControlKey) {
       return [];
     }
@@ -50,6 +50,7 @@ export function ModelControlMenuSheet({ ref, controls, choices, onSelect }: Mode
 
     return [
       {
+        key: 'default',
         title: getModelControlDefaultLabel(control, translate),
         isIconShown: false,
         rightContent: isDefaultSelected ? <Icon name='tick' /> : undefined,
@@ -59,6 +60,8 @@ export function ModelControlMenuSheet({ ref, controls, choices, onSelect }: Mode
         },
       },
       ...Object.entries(control.options).map(([optionKey, option]) => ({
+        // NOTE: Prefixed so an option keyed `default` doesn't clash with the Default item.
+        key: `option-${optionKey}`,
         title: option.label,
         isIconShown: false,
         rightContent: currentChoice === optionKey ? <Icon name='tick' /> : undefined,

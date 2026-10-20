@@ -10,9 +10,12 @@ import { AppText } from '../text';
 import { View } from '../view';
 import { ActionSheetItem, ActionSheetItemProps } from './components';
 
+// NOTE: `key` is needed when titles may repeat, e.g. labels set by an admin; defaults to the title.
+export type ActionsBottomSheetAction = ActionSheetItemProps & { key?: string };
+
 export type ActionsBottomSheetProps = PropsWithChildren<Partial<AppBottomSheetProps>> &
   Partial<AppBottomSheetModalProps> & {
-    actions: Array<ActionSheetItemProps>;
+    actions: Array<ActionsBottomSheetAction>;
     withSeparator?: boolean;
     areActionsDisabled?: boolean;
     onClose?: () => void;
@@ -50,9 +53,9 @@ export function ActionsBottomSheet({
     ref?.current?.close();
   };
 
-  const renderActionComponent = ({ disabled, isLoading, ...action }: ActionSheetItemProps): ReactElement => (
+  const renderActionComponent = ({ key, disabled, isLoading, ...action }: ActionsBottomSheetAction): ReactElement => (
     <ActionSheetItem
-      key={action.title}
+      key={key ?? action.title}
       disabled={areActionsDisabled || disabled || isLoading}
       isLoading={isLoading}
       {...action}
