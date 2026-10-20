@@ -11,8 +11,8 @@ import Animated, {
 import { AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { ModelControlOption } from '@open-webui-react-native/shared/data-access/api';
 
-const THUMB_SIZE = 24;
-const ANIMATION_DURATION = 150;
+const thumbSize = 24;
+const animationDuration = 150;
 
 export interface OptionSliderProps {
   options: Record<string, ModelControlOption>;
@@ -27,18 +27,18 @@ export function OptionSlider({ options, choice, defaultOptionKey, onOptionChange
   const selectedIndex = Math.max(0, optionKeys.indexOf(choice ?? defaultOptionKey ?? ''));
 
   const [trackWidth, setTrackWidth] = useState(0);
-  // Option shown in the tooltip while dragging.
+  //NOTE: Option shown in the tooltip while dragging.
   const [dragIndex, setDragIndex] = useState(selectedIndex);
 
   const isDragging = useSharedValue(false);
   const dragOffset = useSharedValue(0);
   const dragStartOffset = useSharedValue(0);
   const tooltipWidth = useSharedValue(0);
-  // Index dropped by the last drag; the thumb stays there until the parent passes it back as the choice.
+  //NOTE: Index dropped by the last drag; the thumb stays there until the parent passes it back as the choice.
   const droppedIndex = useSharedValue(-1);
 
-  const stepWidth = stepCount > 1 ? (trackWidth - THUMB_SIZE) / (stepCount - 1) : 0;
-  const maxOffset = trackWidth - THUMB_SIZE;
+  const stepWidth = stepCount > 1 ? (trackWidth - thumbSize) / (stepCount - 1) : 0;
+  const maxOffset = trackWidth - thumbSize;
   const selectedOffset = selectedIndex * stepWidth;
 
   const handleTrackLayout = (event: LayoutChangeEvent): void => {
@@ -53,7 +53,7 @@ export function OptionSlider({ options, choice, defaultOptionKey, onOptionChange
     onOptionChange(optionKeys[index]);
   };
 
-  // Pan starts only after a horizontal move, so vertical swipes still scroll the sheet.
+  //NOTE: Pan starts only after a horizontal move, so vertical swipes still scroll the sheet.
   const panGesture = Gesture.Pan()
     .activeOffsetX([-8, 8])
     .failOffsetY([-8, 8])
@@ -72,7 +72,7 @@ export function OptionSlider({ options, choice, defaultOptionKey, onOptionChange
     })
     .onEnd(() => {
       const index = Math.round(dragOffset.value / stepWidth);
-      dragOffset.value = withTiming(index * stepWidth, { duration: ANIMATION_DURATION });
+      dragOffset.value = withTiming(index * stepWidth, { duration: animationDuration });
       droppedIndex.value = index;
       isDragging.value = false;
       runOnJS(selectIndex)(index);
@@ -80,7 +80,7 @@ export function OptionSlider({ options, choice, defaultOptionKey, onOptionChange
 
   const tapGesture = Gesture.Tap().onEnd((event) => {
     droppedIndex.value = -1;
-    const offset = Math.min(Math.max(event.x - THUMB_SIZE / 2, 0), maxOffset);
+    const offset = Math.min(Math.max(event.x - thumbSize / 2, 0), maxOffset);
     runOnJS(selectIndex)(Math.round(offset / stepWidth));
   });
 
@@ -91,7 +91,7 @@ export function OptionSlider({ options, choice, defaultOptionKey, onOptionChange
   const thumbPosition = useDerivedValue(() => {
     const isFollowingGesture = isDragging.value || (droppedIndex.value !== -1 && droppedIndex.value !== selectedIndex);
 
-    return isFollowingGesture ? dragOffset.value : withTiming(selectedOffset, { duration: ANIMATION_DURATION });
+    return isFollowingGesture ? dragOffset.value : withTiming(selectedOffset, { duration: animationDuration });
   }, [selectedIndex, selectedOffset]);
 
   const thumbStyle = useAnimatedStyle(() => ({
@@ -99,15 +99,15 @@ export function OptionSlider({ options, choice, defaultOptionKey, onOptionChange
   }));
 
   const rangeStyle = useAnimatedStyle(() => ({
-    width: thumbPosition.value + THUMB_SIZE / 2,
+    width: thumbPosition.value + thumbSize / 2,
   }));
 
   // Centred over the thumb, but kept inside the track so the sheet does not clip it at the ends.
   const tooltipStyle = useAnimatedStyle(() => {
-    const centredOffset = dragOffset.value + THUMB_SIZE / 2 - tooltipWidth.value / 2;
+    const centredOffset = dragOffset.value + thumbSize / 2 - tooltipWidth.value / 2;
 
     return {
-      opacity: withTiming(isDragging.value ? 1 : 0, { duration: ANIMATION_DURATION }),
+      opacity: withTiming(isDragging.value ? 1 : 0, { duration: animationDuration }),
       transform: [{ translateX: Math.min(Math.max(centredOffset, 0), trackWidth - tooltipWidth.value) }],
     };
   });
