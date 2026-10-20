@@ -14,28 +14,26 @@ export interface RemoveStaleModelControlChoicesArgs {
   settings: UserSettings;
 }
 
-export function removeStaleModelControlChoices({
+export async function removeStaleModelControlChoices({
   model,
   staleControlKeys,
   settings,
-}: RemoveStaleModelControlChoicesArgs): void {
-  const modelId = model.id;
+}: RemoveStaleModelControlChoicesArgs): Promise<void> {
   const modelControls = model.info?.params?.modelControls ?? {};
-  const currentChoices = getModelControlChoices(settings, modelId);
-  const cleanedChoices = { ...currentChoices };
+  const cleanedChoices = { ...getModelControlChoices(settings, model.id) };
 
   for (const controlKey of staleControlKeys) {
-    const controlLabel = modelControls[controlKey]?.label ?? controlKey;
-    ToastService.show(i18n.t('SHARED.MODEL_CONTROLS.TEXT_STALE_CHOICE', { control: controlLabel }));
+    ToastService.show(i18n.t('SHARED.MODEL_CONTROLS.TEXT_STALE_CHOICE', { control: modelControls[controlKey].label }));
     delete cleanedChoices[controlKey];
   }
 
-  const previousSettings = settings;
-  const patchedSettings = buildUserSettingsWithModelControlChoices(previousSettings, modelId, cleanedChoices);
+  const patchedSettings = buildUserSettingsWithModelControlChoices(settings, model.id, cleanedChoices);
 
   queryClient.setQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey, patchedSettings);
 
-  void usersService.updateUserSettings(patchedSettings).catch(() => {
-    queryClient.setQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey, previousSettings);
-  });
+  try {
+    await usersService.updateUserSettings(patchedSettings);
+  } catch {
+    queryClient.setQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey, settings);
+  }
 }

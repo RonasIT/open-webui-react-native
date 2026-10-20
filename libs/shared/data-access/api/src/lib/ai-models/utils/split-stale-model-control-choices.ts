@@ -17,7 +17,12 @@ export function splitStaleModelControlChoices(
   for (const [controlKey, optionKey] of Object.entries(choices)) {
     const control = modelControls[controlKey];
 
-    if (!control || !control.options[optionKey]) {
+    //NOTE: A choice for a removed control is dropped silently: the backend ignores it too.
+    if (!control) {
+      continue;
+    }
+
+    if (!control.options[optionKey]) {
       staleControlKeys.push(controlKey);
       continue;
     }

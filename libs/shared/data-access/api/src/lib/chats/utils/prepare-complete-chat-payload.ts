@@ -84,7 +84,7 @@ export function prepareCompleteChatPayload({
 
   let completionModelControls: CompleteChatParams['modelControls'];
 
-  if (isModelControlsAvailable(cachedModel) && cachedModel && userSettings) {
+  if (cachedModel && userSettings && isModelControlsAvailable(cachedModel)) {
     const choices = getModelControlChoices(userSettings, model);
     const { validChoices, staleControlKeys } = splitStaleModelControlChoices(cachedModel, choices);
 

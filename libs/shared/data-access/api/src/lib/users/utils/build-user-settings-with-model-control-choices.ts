@@ -4,16 +4,18 @@ import { UiParams } from '../models/ui-params';
 import { UiSettings } from '../models/ui-settings';
 
 export function buildUserSettingsWithModelControlChoices(
-  settings: UserSettings,
+  settings: UserSettings | null | undefined,
   modelId: string,
   choices: ModelControlChoices,
 ): UserSettings {
-  const existingParams = settings.ui.params ?? new UiParams({});
+  // A user who never saved settings gets `null` from the backend.
+  const existingUi = settings?.ui ?? new UiSettings({});
+  const existingParams = existingUi.params ?? new UiParams({});
   const modelControls = { ...(existingParams.modelControls ?? {}), [modelId]: choices };
 
   return new UserSettings({
     ui: new UiSettings({
-      ...settings.ui,
+      ...existingUi,
       params: new UiParams({
         ...existingParams,
         modelControls,
