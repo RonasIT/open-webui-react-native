@@ -1,6 +1,10 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { Fragment, PropsWithChildren, ReactElement } from 'react';
+import { useWindowDimensions } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useBottomInset } from '@open-webui-react-native/mobile/shared/utils/use-bottom-inset';
 import { AppBottomSheet, AppBottomSheetModalProps, AppBottomSheetProps } from '../bottom-sheet';
 import { AppText } from '../text';
 import { View } from '../view';
@@ -18,6 +22,9 @@ export type ActionsBottomSheetProps = PropsWithChildren<Partial<AppBottomSheetPr
     ref?: React.RefObject<BottomSheetModal | null>;
   };
 
+// NOTE: Cancel button (64) + its top margin (16) + a gap above the card (24).
+const reservedHeight = 104;
+
 export function ActionsBottomSheet({
   renderTrigger,
   actions,
@@ -31,6 +38,12 @@ export function ActionsBottomSheet({
   ...restProps
 }: ActionsBottomSheetProps): ReactElement {
   const translate = useTranslation('SHARED.COMMON.ACTIONS_BOTTOM_SHEET');
+  const { height: windowHeight } = useWindowDimensions();
+  const { top } = useSafeAreaInsets();
+  const bottomInset = useBottomInset();
+
+  // NOTE: A long list scrolls inside the card, so Cancel always stays on screen.
+  const cardMaxHeight = windowHeight - top - bottomInset - reservedHeight;
 
   const handleSheetClose = (): void => {
     onClose?.();
@@ -53,16 +66,20 @@ export function ActionsBottomSheet({
       withoutBackground
       className='pt-[0px]'
       enablePanDownToClose={false}
+      // NOTE: The sheet does not move by content drags, so the list below gets the scroll gesture.
+      enableContentPanningGesture={false}
       content={
         <Fragment>
-          <View className='rounded-2xl overflow-hidden'>
+          <View style={{ maxHeight: cardMaxHeight }} className='rounded-2xl overflow-hidden'>
             {(title || description) && (
               <View className='bg-background-primary px-24 py-20 gap-8'>
                 {title && <AppText className='text-md-sm sm:text-md font-medium'>{title}</AppText>}
                 {description && <AppText className='text-sm-sm sm:text-sm text-text-secondary'>{description}</AppText>}
               </View>
             )}
-            {actions.map(renderActionComponent)}
+            <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
+              {actions.map(renderActionComponent)}
+            </ScrollView>
           </View>
           <ActionSheetItem
             isCentered
