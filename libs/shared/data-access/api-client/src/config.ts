@@ -6,6 +6,7 @@ export const apiConfig = {
       'v1/auths/mfa/enroll/confirm',
       'v1/auths/mfa/verify',
       'v1/auths/mfa/recover',
+      'v1/auths/signout',
     ],
   },
 };

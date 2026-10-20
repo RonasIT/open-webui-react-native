@@ -16,12 +16,6 @@ function useSignInWithEmailPassword(
   });
 }
 
-function useSignOut(): UseMutationResult<void, AxiosError, void> {
-  return useMutation<void, AxiosError, void>({
-    mutationFn: authService.signOut,
-  });
-}
-
 function useGetProfile(): UseQueryResult<SignInResponse, AxiosError> {
   return useQuery<SignInResponse, AxiosError>({
     queryFn: authService.getProfile,
@@ -60,5 +54,4 @@ export const authApi = {
   useGetProfile,
   useUpdateProfile,
   useUpdatePassword,
-  useSignOut,
 };

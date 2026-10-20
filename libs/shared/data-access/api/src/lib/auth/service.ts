@@ -15,13 +15,18 @@ class AuthService {
     return plainToInstance(SignInResponse, response);
   }
 
-  public async signOut(): Promise<void> {
+  // The token is passed explicitly because logout wipes it from storage right after firing this request,
+  // before tokenInterceptor reads it on dispatch.
+  public async signOut(token: string): Promise<void> {
+    const headers = { Authorization: `Bearer ${token}` };
+    const params = { skipToast: true };
+
     try {
-      await getApiService().post(`${authApiConfig.route}/signout`, undefined, { params: { skipToast: true } });
+      await getApiService().post(`${authApiConfig.route}/signout`, undefined, { params, headers });
     } catch (error) {
       // Fallback for Open WebUI < 0.6.23 (before PR #24420), where /signout was GET.
       if ((error as { response?: { status?: number } })?.response?.status === 405) {
-        await getApiService().get(`${authApiConfig.route}/signout`);
+        await getApiService().get(`${authApiConfig.route}/signout`, params, { headers });
 
         return;
       }
