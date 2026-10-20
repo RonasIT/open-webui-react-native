@@ -113,7 +113,7 @@
       "TEXT_IMAGE_UPLOAD_FAILED": "Não foi possível enviar a foto. Verifique sua conexão e tente novamente"
     },
     "MODEL_CONTROLS": {
-      "TEXT_STALE_CHOICE": "A opção selecionada para «{{control}}» não está mais disponível — a opção padrão é usada"
+      "TEXT_STALE_CHOICE": "A opção selecionada para “{{control}}” não está mais disponível — a opção padrão é usada"
     }
   }
 }

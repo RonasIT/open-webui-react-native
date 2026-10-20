@@ -113,7 +113,7 @@
       "TEXT_IMAGE_UPLOAD_FAILED": "无法上传照片。请检查网络连接后重试"
     },
     "MODEL_CONTROLS": {
-      "TEXT_STALE_CHOICE": "「{{control}}」的所选选项已不可用 — 将使用默认选项"
+      "TEXT_STALE_CHOICE": "“{{control}}”的所选选项已不可用 — 将使用默认选项"
     }
   }
 }
