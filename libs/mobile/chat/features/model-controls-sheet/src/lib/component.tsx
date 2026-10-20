@@ -86,7 +86,7 @@ export function ModelControlsSheet({ ref, model, onClose }: ModelControlsSheetPr
 
     const { validChoices } = splitStaleModelControlChoices(model, draftChoices);
 
-    updateUserSettings(buildUserSettingsWithModelControlChoices(userSettings, model.id, validChoices), {
+    updateUserSettings(buildUserSettingsWithModelControlChoices(model.id, validChoices), {
       onError: () => ToastService.showError(),
     });
   };

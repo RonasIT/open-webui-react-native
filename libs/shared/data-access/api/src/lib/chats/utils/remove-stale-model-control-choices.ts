@@ -27,7 +27,7 @@ export async function removeStaleModelControlChoices({
     delete cleanedChoices[controlKey];
   }
 
-  const patchedSettings = buildUserSettingsWithModelControlChoices(settings, model.id, cleanedChoices);
+  const patchedSettings = buildUserSettingsWithModelControlChoices(model.id, cleanedChoices);
 
   queryClient.setQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey, patchedSettings);
 
