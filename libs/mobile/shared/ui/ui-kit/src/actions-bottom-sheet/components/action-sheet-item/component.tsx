@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement } from 'react';
 import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { Icon, IconName, IconProps } from '../../../icon';
 import { AppPressable, AppPressableProps } from '../../../pressable';
@@ -17,7 +17,7 @@ export interface ActionSheetItemProps extends AppPressableProps {
   isDanger?: boolean;
   hasSubActions?: boolean;
   numberOfLines?: number;
-  rightContent?: ReactNode;
+  rightContent?: ReactElement;
 }
 
 export function ActionSheetItem({
