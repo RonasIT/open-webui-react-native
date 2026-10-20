@@ -208,8 +208,15 @@
     },
     "MODEL_CONTROLS_SHEET": {
       "TEXT_TITLE": "Controale model",
-      "TEXT_DEFAULT": "Implicit",
-      "TEXT_DEFAULT_WITH_OPTION": "Implicit · {{option}}"
+      "TEXT_SAVE_FAILED": "Controalele modelului nu au putut fi salvate. Încearcă din nou.",
+      "MODEL_CONTROL_ROW": {
+        "TEXT_DEFAULT": "Implicit",
+        "TEXT_DEFAULT_WITH_OPTION": "Implicit · {{option}}"
+      },
+      "MODEL_CONTROL_MENU_SHEET": {
+        "TEXT_DEFAULT": "Implicit",
+        "TEXT_DEFAULT_WITH_OPTION": "Implicit · {{option}}"
+      }
     },
     "ATTACH_KNOWLEDGE_SHEET": {
       "TEXT_TITLE": "Bază de cunoștințe",

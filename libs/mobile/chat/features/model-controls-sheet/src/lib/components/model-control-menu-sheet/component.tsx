@@ -3,6 +3,7 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } from 'react';
 import { ActionSheetItemProps, ActionsBottomSheet, Icon } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { ModelControl, ModelControlChoices } from '@open-webui-react-native/shared/data-access/api';
+import { getModelControlDefaultLabel } from '../../utils';
 
 export type ModelControlMenuSheetMethods = {
   present: (controlKey: string) => void;
@@ -18,7 +19,7 @@ export interface ModelControlMenuSheetProps {
 }
 
 export function ModelControlMenuSheet({ ref, controls, choices, onSelect }: ModelControlMenuSheetProps): ReactElement {
-  const translate = useTranslation('CHAT.MODEL_CONTROLS_SHEET');
+  const translate = useTranslation('CHAT.MODEL_CONTROLS_SHEET.MODEL_CONTROL_MENU_SHEET');
   const sheetRef = useRef<BottomSheetModal>(null);
   const [activeControlKey, setActiveControlKey] = useState<string | null>(null);
 
@@ -45,14 +46,11 @@ export function ModelControlMenuSheet({ ref, controls, choices, onSelect }: Mode
       return [];
     }
 
-    const defaultOptionLabel = control.default ? control.options[control.default]?.label : undefined;
     const isDefaultSelected = !currentChoice || !control.options[currentChoice];
 
     return [
       {
-        title: defaultOptionLabel
-          ? translate('TEXT_DEFAULT_WITH_OPTION', { option: defaultOptionLabel })
-          : translate('TEXT_DEFAULT'),
+        title: getModelControlDefaultLabel(control, translate),
         isIconShown: false,
         rightContent: isDefaultSelected ? <Icon name='tick' /> : undefined,
         onPress: (): void => {

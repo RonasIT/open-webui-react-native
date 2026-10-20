@@ -207,8 +207,15 @@
     },
     "MODEL_CONTROLS_SHEET": {
       "TEXT_TITLE": "Modellsteuerung",
-      "TEXT_DEFAULT": "Standard",
-      "TEXT_DEFAULT_WITH_OPTION": "Standard · {{option}}"
+      "TEXT_SAVE_FAILED": "Modellsteuerung konnte nicht gespeichert werden. Bitte versuche es erneut.",
+      "MODEL_CONTROL_ROW": {
+        "TEXT_DEFAULT": "Standard",
+        "TEXT_DEFAULT_WITH_OPTION": "Standard · {{option}}"
+      },
+      "MODEL_CONTROL_MENU_SHEET": {
+        "TEXT_DEFAULT": "Standard",
+        "TEXT_DEFAULT_WITH_OPTION": "Standard · {{option}}"
+      }
     },
     "ATTACH_KNOWLEDGE_SHEET": {
       "TEXT_TITLE": "Wissen",

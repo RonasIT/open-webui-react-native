@@ -3,7 +3,7 @@ import { ModelControl } from '@open-webui-react-native/shared/data-access/api';
 export function getModelControlValueLabel(
   control: ModelControl,
   choice: string | undefined,
-  translateDefault: (key: string, params?: Record<string, string>) => string,
+  translate: (key: string, params?: Record<string, string>) => string,
 ): string {
   if (choice && control.options[choice]) {
     return control.options[choice].label;
@@ -13,5 +13,5 @@ export function getModelControlValueLabel(
     return control.options[control.default].label;
   }
 
-  return translateDefault('TEXT_DEFAULT');
+  return translate('TEXT_DEFAULT');
 }

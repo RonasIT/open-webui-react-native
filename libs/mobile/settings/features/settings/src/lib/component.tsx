@@ -14,11 +14,11 @@ import { Avatar, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import {
   authApi,
-  buildUserSettings,
   chatApi,
   isTemporaryChatEnforced,
   modelsApi,
   UiSettings,
+  UserSettings,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
@@ -111,11 +111,11 @@ export function Settings(): ReactElement {
   };
 
   const handleDefaultModelChange = (modelId: string): void => {
-    updateUserSettings(buildUserSettings({ ui: { models: [modelId] } }));
+    updateUserSettings(new UserSettings({ ui: new UiSettings({ models: [modelId] }) }));
   };
 
   const handleDefaultSystemPromptChange = (systemPrompt: string): void => {
-    updateUserSettings(buildUserSettings({ ui: { system: systemPrompt } }));
+    updateUserSettings(new UserSettings({ ui: new UiSettings({ system: systemPrompt }) }));
   };
 
   const handleMarkdownRendererChange = (value: MarkdownRenderer): void => {
@@ -125,7 +125,7 @@ export function Settings(): ReactElement {
   const createUiSettingToggleHandler =
     <K extends keyof UiSettings>(key: K) =>
     (value: UiSettings[K]): void => {
-      updateUserSettings(buildUserSettings({ ui: { [key]: value } }));
+      updateUserSettings(new UserSettings({ ui: new UiSettings({ [key]: value }) }));
     };
 
   const handleArchivedChatsPress = (): void =>

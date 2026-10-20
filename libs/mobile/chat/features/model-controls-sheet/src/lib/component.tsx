@@ -11,7 +11,6 @@ import {
 import {
   AIModel,
   ModelControl,
-  buildUserSettingsWithModelControlChoices,
   getModelControlChoices,
   ModelControlChoices,
   splitStaleModelControlChoices,
@@ -39,7 +38,9 @@ export function ModelControlsSheet({ ref, model, onClose }: ModelControlsSheetPr
   const isDraftTouchedRef = useRef(false);
 
   const { data: userSettings, refetch } = usersApi.useGetUserSettings();
-  const { mutate: updateUserSettings } = usersApi.useUpdateUserSettings();
+  const { mutate: updateModelControlChoices } = usersApi.useUpdateModelControlChoices({
+    onError: () => ToastService.showError(translate('TEXT_SAVE_FAILED')),
+  });
 
   const [draftChoices, setDraftChoices] = useState<ModelControlChoices>({});
 
@@ -86,17 +87,12 @@ export function ModelControlsSheet({ ref, model, onClose }: ModelControlsSheetPr
 
     const { validChoices } = splitStaleModelControlChoices(model, draftChoices);
 
-    updateUserSettings(buildUserSettingsWithModelControlChoices(model.id, validChoices), {
-      onError: () => ToastService.showError(),
-    });
+    updateModelControlChoices({ modelId: model.id, choices: validChoices });
   };
 
-  const handleMenuSelect = (controlKey: string, optionKey?: string): void => {
+  //NOTE: No option means the default: the choice is removed, not saved.
+  const handleChoiceChange = (controlKey: string, optionKey?: string): void => {
     updateDraft((current) => (optionKey ? { ...current, [controlKey]: optionKey } : omit(current, controlKey)));
-  };
-
-  const handleSliderOptionChange = (controlKey: string, optionKey: string): void => {
-    updateDraft((current) => ({ ...current, [controlKey]: optionKey }));
   };
 
   const handleMenuPress = (controlKey: string): void => {
@@ -108,9 +104,8 @@ export function ModelControlsSheet({ ref, model, onClose }: ModelControlsSheetPr
       controlKey={controlKey}
       control={control}
       choice={draftChoices[controlKey]}
-      translateDefault={translate}
       onMenuPress={handleMenuPress}
-      onSliderOptionChange={handleSliderOptionChange}
+      onSliderOptionChange={handleChoiceChange}
     />
   );
 
@@ -139,7 +134,7 @@ export function ModelControlsSheet({ ref, model, onClose }: ModelControlsSheetPr
             ref={menuSheetRef}
             controls={modelControls}
             choices={draftChoices}
-            onSelect={handleMenuSelect}
+            onSelect={handleChoiceChange}
           />
         </View>
       }

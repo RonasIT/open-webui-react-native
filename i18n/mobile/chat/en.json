@@ -207,8 +207,15 @@
     },
     "MODEL_CONTROLS_SHEET": {
       "TEXT_TITLE": "Model controls",
-      "TEXT_DEFAULT": "Default",
-      "TEXT_DEFAULT_WITH_OPTION": "Default · {{option}}"
+      "TEXT_SAVE_FAILED": "Couldn't save model controls. Please try again.",
+      "MODEL_CONTROL_ROW": {
+        "TEXT_DEFAULT": "Default",
+        "TEXT_DEFAULT_WITH_OPTION": "Default · {{option}}"
+      },
+      "MODEL_CONTROL_MENU_SHEET": {
+        "TEXT_DEFAULT": "Default",
+        "TEXT_DEFAULT_WITH_OPTION": "Default · {{option}}"
+      }
     },
     "ATTACH_KNOWLEDGE_SHEET": {
       "TEXT_TITLE": "Knowledge",

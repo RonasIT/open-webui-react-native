@@ -207,8 +207,15 @@
     },
     "MODEL_CONTROLS_SHEET": {
       "TEXT_TITLE": "Controles do modelo",
-      "TEXT_DEFAULT": "Padrão",
-      "TEXT_DEFAULT_WITH_OPTION": "Padrão · {{option}}"
+      "TEXT_SAVE_FAILED": "Não foi possível salvar os controles do modelo. Tente novamente.",
+      "MODEL_CONTROL_ROW": {
+        "TEXT_DEFAULT": "Padrão",
+        "TEXT_DEFAULT_WITH_OPTION": "Padrão · {{option}}"
+      },
+      "MODEL_CONTROL_MENU_SHEET": {
+        "TEXT_DEFAULT": "Padrão",
+        "TEXT_DEFAULT_WITH_OPTION": "Padrão · {{option}}"
+      }
     },
     "ATTACH_KNOWLEDGE_SHEET": {
       "TEXT_TITLE": "Conhecimento",

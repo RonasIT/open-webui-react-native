@@ -207,8 +207,15 @@
     },
     "MODEL_CONTROLS_SHEET": {
       "TEXT_TITLE": "Controles del modelo",
-      "TEXT_DEFAULT": "Predeterminado",
-      "TEXT_DEFAULT_WITH_OPTION": "Predeterminado · {{option}}"
+      "TEXT_SAVE_FAILED": "No se pudieron guardar los controles del modelo. Inténtalo de nuevo.",
+      "MODEL_CONTROL_ROW": {
+        "TEXT_DEFAULT": "Predeterminado",
+        "TEXT_DEFAULT_WITH_OPTION": "Predeterminado · {{option}}"
+      },
+      "MODEL_CONTROL_MENU_SHEET": {
+        "TEXT_DEFAULT": "Predeterminado",
+        "TEXT_DEFAULT_WITH_OPTION": "Predeterminado · {{option}}"
+      }
     },
     "ATTACH_KNOWLEDGE_SHEET": {
       "TEXT_TITLE": "Conocimiento",

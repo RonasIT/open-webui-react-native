@@ -89,7 +89,7 @@ export function prepareCompleteChatPayload({
     const { validChoices, staleControlKeys } = splitStaleModelControlChoices(cachedModel, choices);
 
     if (staleControlKeys.length > 0) {
-      removeStaleModelControlChoices({ model: cachedModel, staleControlKeys, settings: userSettings });
+      removeStaleModelControlChoices({ model: cachedModel, staleControlKeys });
     }
 
     if (Object.keys(validChoices).length > 0) {

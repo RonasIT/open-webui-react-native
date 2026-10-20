@@ -1,3 +1,4 @@
-export * from './build-user-settings';
-export * from './build-user-settings-with-model-control-choices';
 export * from './get-user-avatar-source';
+export * from './merge-user-settings';
+export * from './restore-user-settings-query-data';
+export * from './set-model-control-choices';

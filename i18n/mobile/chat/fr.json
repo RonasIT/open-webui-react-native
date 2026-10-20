@@ -207,8 +207,15 @@
     },
     "MODEL_CONTROLS_SHEET": {
       "TEXT_TITLE": "Contrôles du modèle",
-      "TEXT_DEFAULT": "Par défaut",
-      "TEXT_DEFAULT_WITH_OPTION": "Par défaut · {{option}}"
+      "TEXT_SAVE_FAILED": "Impossible d'enregistrer les contrôles du modèle. Veuillez réessayer.",
+      "MODEL_CONTROL_ROW": {
+        "TEXT_DEFAULT": "Par défaut",
+        "TEXT_DEFAULT_WITH_OPTION": "Par défaut · {{option}}"
+      },
+      "MODEL_CONTROL_MENU_SHEET": {
+        "TEXT_DEFAULT": "Par défaut",
+        "TEXT_DEFAULT_WITH_OPTION": "Par défaut · {{option}}"
+      }
     },
     "ATTACH_KNOWLEDGE_SHEET": {
       "TEXT_TITLE": "Connaissances",

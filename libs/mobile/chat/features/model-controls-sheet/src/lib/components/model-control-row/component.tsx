@@ -1,29 +1,31 @@
+import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement } from 'react';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { AppPressable, AppText, Icon, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { ModelControl, ModelControlDisplay } from '@open-webui-react-native/shared/data-access/api';
-import { getModelControlValueLabel } from '../../utils';
+import { getModelControlDefaultLabel, getModelControlValueLabel } from '../../utils';
 import { OptionSlider } from '../option-slider';
 
 export interface ModelControlRowProps {
   controlKey: string;
   control: ModelControl;
   choice?: string;
-  translateDefault: (key: string, params?: Record<string, string>) => string;
   onMenuPress: (controlKey: string) => void;
-  onSliderOptionChange: (controlKey: string, optionKey: string) => void;
+  onSliderOptionChange: (controlKey: string, optionKey?: string) => void;
 }
 
 export function ModelControlRow({
   controlKey,
   control,
   choice,
-  translateDefault,
   onMenuPress,
   onSliderOptionChange,
 }: ModelControlRowProps): ReactElement {
+  const translate = useTranslation('CHAT.MODEL_CONTROLS_SHEET.MODEL_CONTROL_ROW');
+
   // A stale choice (option removed by the admin) shows as the default.
   const validChoice = choice && control.options[choice] ? choice : undefined;
-  const valueLabel = getModelControlValueLabel(control, validChoice, translateDefault);
+  const valueLabel = getModelControlValueLabel(control, validChoice, translate);
   const isSlider = control.display === ModelControlDisplay.SLIDER;
 
   const header = (
@@ -54,6 +56,14 @@ export function ModelControlRow({
           defaultOptionKey={control.default}
           onOptionChange={(optionKey) => onSliderOptionChange(controlKey, optionKey)}
         />
+        <AppPressable
+          disabled={!validChoice}
+          className={cn('self-start active:opacity-60', !validChoice && 'opacity-40')}
+          onPress={() => onSliderOptionChange(controlKey)}>
+          <AppText className='text-sm-sm sm:text-sm text-text-secondary'>
+            {getModelControlDefaultLabel(control, translate)}
+          </AppText>
+        </AppPressable>
       </View>
     );
   }

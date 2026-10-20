@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { LayoutChangeEvent } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
@@ -40,6 +40,11 @@ export function OptionSlider({ options, choice, defaultOptionKey, onOptionChange
   const stepWidth = stepCount > 1 ? (trackWidth - thumbSize) / (stepCount - 1) : 0;
   const maxOffset = trackWidth - thumbSize;
   const selectedOffset = selectedIndex * stepWidth;
+
+  //NOTE: The parent took the dropped option or reset the choice, so the thumb follows the choice again.
+  useEffect(() => {
+    droppedIndex.value = -1;
+  }, [selectedIndex, droppedIndex]);
 
   const handleTrackLayout = (event: LayoutChangeEvent): void => {
     setTrackWidth(event.nativeEvent.layout.width);
