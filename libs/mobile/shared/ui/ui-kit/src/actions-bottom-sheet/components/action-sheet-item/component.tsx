@@ -33,15 +33,17 @@ export function ActionSheetItem({
   hasSubActions = false,
   numberOfLines,
   rightContent,
+  disabled,
   ...restProps
 }: ActionSheetItemProps): ReactElement {
   return (
     <AppPressable
       className={cn(
-        `bg-background-primary px-24 py-20 gap-12 flex-row items-center active:opacity-100 active:bg-background-secondary disabled:opacity-40`,
+        `bg-background-primary px-24 py-20 gap-12 flex-row items-center active:opacity-100 active:bg-background-secondary`,
         isCentered ? 'justify-center' : 'justify-start',
         className,
       )}
+      disabled={disabled}
       {...restProps}>
       {isLoading ? (
         <View className='h-24 w-24'>
@@ -50,27 +52,43 @@ export function ActionSheetItem({
       ) : (
         iconName && (
           <View className='h-24 w-24'>
-            {isIconShown && <Icon
-              name={iconName}
-              className={cn(isDanger && 'color-status-danger')}
-              {...iconProps} />}
+            {isIconShown && (
+              <Icon
+                name={iconName}
+                {...iconProps}
+                className={cn(
+                  isDanger && 'color-status-danger',
+                  iconProps?.className,
+                  disabled && 'color-text-tertiary',
+                )}
+              />
+            )}
           </View>
         )
       )}
       <AppText
         numberOfLines={numberOfLines}
-        className={cn('text-md-sm sm:text-md', isDanger && 'text-status-danger', !value && numberOfLines && 'flex-1')}>
+        className={cn(
+          'text-md-sm sm:text-md',
+          disabled ? 'text-text-tertiary' : isDanger && 'text-status-danger',
+          !value && numberOfLines && 'flex-1',
+        )}>
         {title}
       </AppText>
       {(!!value || hasSubActions || rightContent) && (
         <View className='min-w-0 flex-1 flex-row items-center justify-end gap-8'>
           {!!value && (
-            <AppText numberOfLines={1} className='shrink text-right text-sm-sm sm:text-sm text-text-secondary'>
+            <AppText
+              numberOfLines={1}
+              className={cn(
+                'shrink text-right text-sm-sm sm:text-sm',
+                disabled ? 'text-text-tertiary' : 'text-text-secondary',
+              )}>
               {value}
             </AppText>
           )}
           {rightContent}
-          {hasSubActions && <Icon name='chevronRight' className='shrink-0' />}
+          {hasSubActions && <Icon name='chevronRight' className={cn('shrink-0', disabled && 'color-text-tertiary')} />}
         </View>
       )}
     </AppPressable>

@@ -128,19 +128,26 @@
     },
     "USER_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Изменить",
-      "TEXT_COPY": "Копировать"
+      "TEXT_COPY": "Копировать",
+      "TEXT_DELETE": "Удалить"
     },
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Изменить",
       "TEXT_COPY": "Копировать",
       "TEXT_CONTINUE_RESPONSE": "Продолжить ответ",
       "TEXT_REGENERATE": "Перегенерировать",
+      "TEXT_DELETE": "Удалить",
       "REGENERATE_MESSAGE_ACTION_SHEET": {
         "TEXT_SUGGEST_A_CHANGE": "Предложить изменение",
         "TEXT_TRY_AGAIN": "Попробовать снова",
         "TEXT_ADD_DETAILS": "Добавить детали",
         "TEXT_MORE_CONCISE": "Более кратко"
       }
+    },
+    "USE_DELETE_MESSAGE": {
+      "TEXT_DELETE_MESSAGE": "Удалить сообщение?",
+      "TEXT_CANNOT_BE_UNDONE": "Это действие нельзя отменить. Вы хотите продолжить?",
+      "BUTTON_DELETE": "Удалить"
     },
     "EDIT_MESSAGE_INPUT": {
       "TEXT_EDIT_MESSAGE": "Редактировать сообщение",

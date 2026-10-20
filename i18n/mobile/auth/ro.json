@@ -16,7 +16,8 @@
         "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Această metodă de conectare nu este încă acceptată de aplicație. Te rugăm să încerci o altă opțiune de conectare.",
         "TEXT_SERVER_UNREACHABLE": "Serverul nu poate fi accesat. Verifică adresa și conexiunea. Pentru un server HTTP local, începe adresa cu http://.",
         "TEXT_NOT_OPEN_WEBUI_SERVER": "Serverul a răspuns, dar nu este un server Open WebUI. Verifică adresa.",
-        "BUTTON_RETRY_SERVER_CHECK": "Verifică din nou serverul"
+        "BUTTON_RETRY_SERVER_CHECK": "Verifică din nou serverul",
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "Contul dvs. așteaptă aprobarea administratorului."
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Continuă cu {{provider}}"
@@ -24,6 +25,55 @@
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "Închide",
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Această metodă de conectare nu este disponibilă. Te rugăm să folosești o altă opțiune pentru a continua."
+      }
+    },
+    "MFA_VERIFICATION": {
+      "TEXT_TITLE": "Confirmă autentificarea",
+      "TEXT_DESCRIPTION": "Introdu codul de șase cifre din aplicația de autentificare.",
+      "TEXT_RECOVERY_CODE_DESCRIPTION": "Folosește unul dintre codurile de recuperare salvate.",
+      "TEXT_AUTHENTICATOR_CODE": "Cod de autentificare",
+      "TEXT_RECOVERY_CODE": "Cod de recuperare",
+      "BUTTON_USE_RECOVERY_CODE": "Folosește un cod de recuperare",
+      "BUTTON_USE_AUTHENTICATOR_CODE": "Folosește un cod de autentificare",
+      "BUTTON_CONTINUE": "Continuă",
+      "BUTTON_BACK_TO_SIGN_IN": "Înapoi la autentificare",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Introdu codul"
+      }
+    },
+    "MFA_AUTHENTICATOR_SETUP": {
+      "TEXT_TITLE": "Configurează autentificatorul",
+      "TEXT_DESCRIPTION": "Scanează codul QR sau introdu cheia în aplicația de autentificare, apoi introdu codul de șase cifre.",
+      "TEXT_TAP_TO_COPY_KEY": "Atinge pentru a copia cheia",
+      "TEXT_FAILED_TO_LOAD_KEY": "Cheia autentificatorului nu a putut fi încărcată. Vă rugăm să încercați din nou.",
+      "BUTTON_TRY_AGAIN": "Încercați din nou",
+      "TEXT_AUTHENTICATOR_CODE": "Cod de autentificare",
+      "BUTTON_CONTINUE": "Continuă",
+      "BUTTON_BACK_TO_SIGN_IN": "Înapoi la autentificare",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Introdu codul"
+      }
+    },
+    "MFA_RECOVERY_CODES": {
+      "TEXT_TITLE": "Salvează codurile de recuperare",
+      "TEXT_DESCRIPTION": "Salvează codurile de recuperare într-un loc sigur. Nu vor mai fi afișate.\nFiecare cod funcționează o singură dată.",
+      "TEXT_RECOVERY_CODES": "Coduri de recuperare",
+      "TEXT_TAP_TO_COPY_CODES": "Atinge pentru a copia codurile",
+      "TEXT_I_HAVE_SAVED_CODES": "Am salvat codurile de recuperare",
+      "BUTTON_CONTINUE": "Continuă",
+      "BUTTON_BACK_TO_SIGN_IN": "Înapoi la autentificare",
+      "TEXT_LEAVE_CONFIRM_TITLE": "Ieși fără să salvezi codurile?",
+      "TEXT_LEAVE_CONFIRM_MESSAGE": "Codurile de recuperare nu vor mai fi afișate.",
+      "BUTTON_LEAVE": "Ieși"
+    },
+    "MFA_RECOVERY": {
+      "TEXT_TITLE": "Recuperează autentificatorul",
+      "TEXT_DESCRIPTION": "Introdu tokenul de recuperare primit de la administrator.",
+      "TEXT_RECOVERY_TOKEN": "Token de recuperare",
+      "BUTTON_CONTINUE": "Continuă",
+      "BUTTON_BACK_TO_SIGN_IN": "Înapoi la autentificare",
+      "VALIDATION": {
+        "TEXT_REQUIRED_RECOVERY_TOKEN": "Introdu tokenul de recuperare"
       }
     }
   }

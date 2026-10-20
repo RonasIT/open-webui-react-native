@@ -19,6 +19,9 @@ export class ChatPermissions {
   @Expose()
   public delete: boolean;
 
+  @Expose({ name: 'delete_message' })
+  public deleteMessage: boolean;
+
   @Expose()
   public edit: boolean;
 

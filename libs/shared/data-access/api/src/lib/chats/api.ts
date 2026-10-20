@@ -13,14 +13,10 @@ import {
 import { AxiosError } from 'axios';
 import { merge } from 'lodash-es';
 import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
-import { getNextPageParam, Role } from '@open-webui-react-native/shared/data-access/common';
+import { getNextPageParam } from '@open-webui-react-native/shared/data-access/common';
 import { refetchOnMountWithStaleCheck } from '@open-webui-react-native/shared/data-access/persist-query-helpers';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
-import {
-  getOutputText,
-  useSubscribeToEvent,
-  WebSocketEventName,
-} from '@open-webui-react-native/shared/data-access/websocket';
+import { useSubscribeToEvent, WebSocketEventName } from '@open-webui-react-native/shared/data-access/websocket';
 import { foldersApiConfig } from '../folders';
 import { archivedChatListQueryKey } from './archived-chat-list-query-keys';
 import { chatQueriesKeys } from './chat-queries-keys';
@@ -42,6 +38,7 @@ import {
   handleChatSocketEvent,
   invalidateArchivedChatListQuery,
   invalidateSearchChatsQuery,
+  normalizeChatResponse,
   patchChatQueryData,
   resetChatStreamBuffer,
 } from './utils';
@@ -113,24 +110,7 @@ export const getChatQueryOptions = (
   options?: Omit<UseQueryOptions<ChatResponse, AxiosError<ApiErrorData>>, 'queryKey' | 'queryFn'>,
 ) => ({
   queryKey: chatQueriesKeys.get(id).queryKey,
-  queryFn: async (): Promise<ChatResponse> => {
-    const result = await chatService.get(id);
-    const messages = result.chat.history.messages;
-
-    for (const message of Object.values(messages)) {
-      if (message.role === Role.ASSISTANT) {
-        message.done = true;
-
-        // NOTE: Backends on Open WebUI 0.11.0+ may return assistant text only in the `output`
-        // array. Derive `content` from it when absent so both old and new formats render.
-        if (!message.content) {
-          message.content = getOutputText(message.output);
-        }
-      }
-    }
-
-    return result;
-  },
+  queryFn: async (): Promise<ChatResponse> => normalizeChatResponse(await chatService.get(id)),
   staleTime: 5000,
   ...options,
 });
@@ -386,6 +366,30 @@ export function useDelete(
 
           return draft.filter((item) => item.id !== id);
         });
+      }
+    },
+    ...options,
+  });
+}
+
+export function useDeleteMessage(
+  options?: UseMutationOptions<ChatResponse, AxiosError<ApiErrorData>, { chatId: string; messageId: string }>,
+): UseMutationResult<ChatResponse, AxiosError<ApiErrorData>, { chatId: string; messageId: string }> {
+  return useMutation({
+    mutationFn: async ({ chatId, messageId }) =>
+      normalizeChatResponse(await chatService.deleteMessage(chatId, messageId)),
+    onSuccess: (chat, { chatId }) => {
+      // NOTE: Replaced, not patched: patchChatQueryData merges deeply and would keep the deleted messages.
+      queryClient.setQueryData(chatQueriesKeys.get(chatId).queryKey, chat);
+
+      // NOTE: The backend bumps updated_at, which moves the chat up in the lists.
+      queryClient.invalidateQueries({ queryKey: chatServiceConfig.getChatListQueryKey });
+      queryClient.invalidateQueries({ queryKey: chatServiceConfig.getPinnedChatListQueryKey });
+      invalidateSearchChatsQuery();
+
+      if (chat.folderId) {
+        queryClient.invalidateQueries({ queryKey: foldersApiConfig.getFolderChatListQueryKey(chat.folderId) });
+        queryClient.invalidateQueries({ queryKey: foldersApiConfig.getFolderChatsQueryKey(chat.folderId) });
       }
     },
     ...options,
@@ -813,6 +817,7 @@ export const chatApi = {
   useGet,
   useUpdate,
   useDelete,
+  useDeleteMessage,
   usePinChat,
   useCloneChat,
   useGetChatList,

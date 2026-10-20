@@ -26,3 +26,5 @@ export * from './resolve-default-tool-ids';
 export * from './remove-stale-model-control-choices';
 export * from './get-tool-calls';
 export * from './prepare-output-for-save';
+export * from './normalize-chat-response';
+export * from './delete-message-from-history';

@@ -1,5 +1,6 @@
 export * from './chats';
 export * from './auth';
+export * from './mfa';
 export * from './ai-models';
 export * from './users';
 export * from './app-configuration';

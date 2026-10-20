@@ -128,19 +128,26 @@
     },
     "USER_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Editează",
-      "TEXT_COPY": "Copiază"
+      "TEXT_COPY": "Copiază",
+      "TEXT_DELETE": "Șterge"
     },
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Editează",
       "TEXT_COPY": "Copiază",
       "TEXT_CONTINUE_RESPONSE": "Continuă răspunsul",
       "TEXT_REGENERATE": "Regenerează",
+      "TEXT_DELETE": "Șterge",
       "REGENERATE_MESSAGE_ACTION_SHEET": {
         "TEXT_SUGGEST_A_CHANGE": "Sugerează o modificare",
         "TEXT_TRY_AGAIN": "Încearcă din nou",
         "TEXT_ADD_DETAILS": "Adaugă detalii",
         "TEXT_MORE_CONCISE": "Mai concis"
       }
+    },
+    "USE_DELETE_MESSAGE": {
+      "TEXT_DELETE_MESSAGE": "Ștergeți mesajul?",
+      "TEXT_CANNOT_BE_UNDONE": "Această acțiune nu poate fi anulată. Doriți să continuați?",
+      "BUTTON_DELETE": "Șterge"
     },
     "EDIT_MESSAGE_INPUT": {
       "TEXT_EDIT_MESSAGE": "Editează mesajul",
