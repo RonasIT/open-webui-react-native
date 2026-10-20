@@ -2,7 +2,6 @@ import markdownIt from 'markdown-it';
 import markdownItMath from 'markdown-it-math/no-default-renderer';
 import { colorScheme } from 'nativewind';
 import React, { ReactElement, ReactNode, useCallback, useMemo } from 'react';
-import { Linking } from 'react-native';
 import Markdown, { ASTNode, MarkdownProps, RenderRules } from 'react-native-markdown-display';
 import { CitationPrefix } from '@open-webui-react-native/mobile/chat/features/use-citations';
 import { CodeBlock } from '@open-webui-react-native/mobile/shared/ui/code-block';
@@ -10,6 +9,7 @@ import { colors, createStyles, useColorScheme, rem } from '@open-webui-react-nat
 import { AppText, MathSvg, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { MarkdownStyles } from '../../types';
 import { AppMarkdownViewProps } from '../../types/app-markdown-view-props';
+import { openLink } from '../../utils';
 import { MarkdownImage } from '../markdown-image';
 import { MarkdownTableRenderer } from '../markdown-table-renderer';
 import { MathBlock } from '../math-block';
@@ -94,7 +94,7 @@ export function DefaultMarkdownView({
                   <AppText
                     key={index}
                     style={[styles.link]}
-                    onPress={() => Linking.openURL(normalized)}>
+                    onPress={() => openLink(normalized)}>
                     {`\u00A0${part}\u00A0`}
                   </AppText>
                 );
@@ -181,8 +181,7 @@ export function DefaultMarkdownView({
       link: (node: ASTNode, children: any, parent: any, styles: MarkdownStyles) => {
         const href = node.attributes?.href ?? '';
         const isCitation = href.startsWith(CitationPrefix.CITATION);
-        // NOTE: Model links may use schemes nothing can open (`sandbox:`), and iOS rejects them even in canOpenURL.
-        const onOpenLink = (): Promise<void> => Linking.openURL(href).catch(() => undefined);
+        const onOpenLink = (): Promise<void> => openLink(href);
 
         if (isCitation) {
           const id = href.split(CitationPrefix.CITATION)[1];

@@ -21,6 +21,7 @@
       "BUTTON_CONFIRM": "确认",
       "BUTTON_OPEN_SETTINGS": "打开设置",
       "TEXT_UNABLE_TO_OPEN_SETTINGS": "无法打开设置",
+      "TEXT_UNABLE_TO_OPEN_LINK": "无法打开链接",
       "TEXT_SETTINGS": "设置",
       "TEXT_DISABLED_IN_OFFLINE_MODE": "离线模式下功能已禁用",
       "ACTIONS_BOTTOM_SHEET": {

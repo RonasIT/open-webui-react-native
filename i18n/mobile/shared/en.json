@@ -21,6 +21,7 @@
       "BUTTON_CONFIRM": "Confirm",
       "BUTTON_OPEN_SETTINGS": "Open Settings",
       "TEXT_UNABLE_TO_OPEN_SETTINGS": "Unable to open settings",
+      "TEXT_UNABLE_TO_OPEN_LINK": "Unable to open link",
       "TEXT_SETTINGS": "Settings",
       "TEXT_DISABLED_IN_OFFLINE_MODE": "Feature are disabled in offline mode",
       "ACTIONS_BOTTOM_SHEET": {
