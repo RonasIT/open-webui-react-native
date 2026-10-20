@@ -17,10 +17,13 @@ import {
 import {
   AIModel,
   ChatResponse,
+  getModelControlChoices,
   isModelControlsAvailable,
+  splitStaleModelControlChoices,
   Tool,
   ToolApprovalMode,
   toolApprovalState$,
+  usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import { useChatSystemPrompt } from '../../hooks';
 import { SelectOptionIcon } from '../select-option-icon';
@@ -52,7 +55,14 @@ export function ChatSettingsSheet({
   const modelControlsSheetRef = useRef<ModelControlsSheetMethods>(null);
   const toolsSheetRef = useRef<ToolsSheetMethods>(null);
 
+  const { data: userSettings } = usersApi.useGetUserSettings();
+
   const isModelControlsRowVisible = isModelControlsAvailable(model);
+  const hasModelControlChoices =
+    isModelControlsRowVisible &&
+    !!model &&
+    Object.keys(splitStaleModelControlChoices(model, getModelControlChoices(userSettings, model.id)).validChoices)
+      .length > 0;
 
   const { systemPrompt, saveSystemPrompt } = useChatSystemPrompt({ chat });
   const hasSystemPrompt = !!systemPrompt;
@@ -84,7 +94,12 @@ export function ChatSettingsSheet({
     <SelectOptionIcon
       iconName='moreDotsInCircle'
       onPress={onPress}
-      isSelected={selectedToolIds.length > 0 || hasSystemPrompt || (!!isToolPermissionsEnabled && !isFullAccess)}
+      isSelected={
+        selectedToolIds.length > 0 ||
+        hasSystemPrompt ||
+        hasModelControlChoices ||
+        (!!isToolPermissionsEnabled && !isFullAccess)
+      }
       disabled={disabled}
     />
   );
