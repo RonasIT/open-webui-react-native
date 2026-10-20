@@ -1,8 +1,8 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } from 'react';
-import { ActionsBottomSheet, Icon } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { ModelControl } from '@open-webui-react-native/shared/data-access/api';
+import { ActionSheetItemProps, ActionsBottomSheet, Icon } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { ModelControl, ModelControlChoices } from '@open-webui-react-native/shared/data-access/api';
 
 export type ModelControlMenuSheetMethods = {
   present: (controlKey: string) => void;
@@ -13,7 +13,7 @@ export type ModelControlMenuSheetRef = ForwardedRef<ModelControlMenuSheetMethods
 export interface ModelControlMenuSheetProps {
   ref?: ModelControlMenuSheetRef;
   controls: Record<string, ModelControl>;
-  choices: Record<string, string>;
+  choices: ModelControlChoices;
   onSelect: (controlKey: string, optionKey?: string) => void;
 }
 
@@ -40,43 +40,46 @@ export function ModelControlMenuSheet({ ref, controls, choices, onSelect }: Mode
     sheetRef.current?.close();
   };
 
-  if (!control || !activeControlKey) {
-    return <ActionsBottomSheet ref={sheetRef} actions={[]} />;
-  }
+  const getActions = (): Array<ActionSheetItemProps> => {
+    if (!control || !activeControlKey) {
+      return [];
+    }
 
-  const defaultOptionLabel = control.default ? control.options[control.default]?.label : undefined;
-  const defaultTitle = defaultOptionLabel
-    ? translate('TEXT_DEFAULT_WITH_OPTION', { option: defaultOptionLabel })
-    : translate('TEXT_DEFAULT');
+    const defaultOptionLabel = control.default ? control.options[control.default]?.label : undefined;
+    const isDefaultSelected = !currentChoice || !control.options[currentChoice];
 
-  const isDefaultSelected = !currentChoice || !control.options[currentChoice];
-
-  const actions = [
-    {
-      title: defaultTitle,
-      isIconShown: false,
-      rightContent: isDefaultSelected ? <Icon name='tick' /> : undefined,
-      onPress: (): void => {
-        onSelect(activeControlKey);
-        closeSheet();
+    return [
+      {
+        title: defaultOptionLabel
+          ? translate('TEXT_DEFAULT_WITH_OPTION', { option: defaultOptionLabel })
+          : translate('TEXT_DEFAULT'),
+        isIconShown: false,
+        rightContent: isDefaultSelected ? <Icon name='tick' /> : undefined,
+        onPress: (): void => {
+          onSelect(activeControlKey);
+          closeSheet();
+        },
       },
-    },
-    ...Object.entries(control.options).map(([optionKey, option]) => ({
-      title: option.label,
-      isIconShown: false,
-      rightContent: currentChoice === optionKey ? <Icon name='tick' /> : undefined,
-      onPress: (): void => {
-        onSelect(activeControlKey, optionKey);
-        closeSheet();
-      },
-    })),
-  ];
+      ...Object.entries(control.options).map(([optionKey, option]) => ({
+        title: option.label,
+        isIconShown: false,
+        rightContent: currentChoice === optionKey ? <Icon name='tick' /> : undefined,
+        onPress: (): void => {
+          onSelect(activeControlKey, optionKey);
+          closeSheet();
+        },
+      })),
+    ];
+  };
 
+  // Push keeps the Model controls sheet open underneath.
   return (
     <ActionsBottomSheet
       ref={sheetRef}
-      title={control.label}
-      description={control.description}
-      actions={actions} />
+      stackBehavior='push'
+      title={control?.label}
+      description={control?.description}
+      actions={getActions()}
+    />
   );
 }

@@ -1,19 +1,13 @@
 import { ReactElement } from 'react';
-import { ActionSheetItem, AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import {
-  AIModel,
-  ModelControl,
-  ModelControlDisplay,
-  splitStaleModelControlChoices,
-} from '@open-webui-react-native/shared/data-access/api';
-import { getModelControlValueLabel } from '../../utils/get-model-control-value-label';
+import { AppPressable, AppText, Icon, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { ModelControl, ModelControlDisplay } from '@open-webui-react-native/shared/data-access/api';
+import { getModelControlValueLabel } from '../../utils';
 import { OptionSlider } from '../option-slider';
 
 export interface ModelControlRowProps {
   controlKey: string;
   control: ModelControl;
-  model: AIModel;
-  draftChoices: Record<string, string>;
+  choice?: string;
   translateDefault: (key: string, params?: Record<string, string>) => string;
   onMenuPress: (controlKey: string) => void;
   onSliderOptionChange: (controlKey: string, optionKey: string) => void;
@@ -22,32 +16,41 @@ export interface ModelControlRowProps {
 export function ModelControlRow({
   controlKey,
   control,
-  model,
-  draftChoices,
+  choice,
   translateDefault,
   onMenuPress,
   onSliderOptionChange,
 }: ModelControlRowProps): ReactElement {
-  const { validChoices } = splitStaleModelControlChoices(model, draftChoices);
-  const effectiveChoice = validChoices[controlKey];
-  const valueLabel = getModelControlValueLabel(control, effectiveChoice, translateDefault);
+  // A stale choice (option removed by the admin) shows as the default.
+  const validChoice = choice && control.options[choice] ? choice : undefined;
+  const valueLabel = getModelControlValueLabel(control, validChoice, translateDefault);
   const isSlider = control.display === ModelControlDisplay.SLIDER;
-  const optionKeys = Object.keys(control.options);
+
+  const header = (
+    // Value sits on the title line, so a long description does not move it.
+    <View className='flex-row items-start gap-16'>
+      <View className='flex-1'>
+        <AppText className='text-md-sm sm:text-md'>{control.label}</AppText>
+        {!!control.description && (
+          <AppText className='text-sm-sm sm:text-sm text-text-secondary'>{control.description}</AppText>
+        )}
+      </View>
+      <View className='max-w-[40%] flex-row items-center gap-8'>
+        <AppText numberOfLines={1} className='shrink text-right text-md-sm sm:text-md text-text-secondary'>
+          {valueLabel}
+        </AppText>
+        {!isSlider && <Icon name='chevronRight' className='shrink-0' />}
+      </View>
+    </View>
+  );
 
   if (isSlider) {
     return (
-      <View className='bg-background-primary px-24 py-20 gap-12'>
-        <View className='gap-4'>
-          <AppText className='text-md-sm sm:text-md'>{control.label}</AppText>
-          {control.description && (
-            <AppText className='text-sm-sm sm:text-sm text-text-secondary'>{control.description}</AppText>
-          )}
-          <AppText className='text-sm-sm sm:text-sm text-text-secondary text-right'>{valueLabel}</AppText>
-        </View>
+      <View className='py-12 gap-16'>
+        {header}
         <OptionSlider
-          optionKeys={optionKeys}
           options={control.options}
-          selectedOptionKey={effectiveChoice}
+          choice={validChoice}
           defaultOptionKey={control.default}
           onOptionChange={(optionKey) => onSliderOptionChange(controlKey, optionKey)}
         />
@@ -56,12 +59,8 @@ export function ModelControlRow({
   }
 
   return (
-    <ActionSheetItem
-      title={control.label}
-      value={valueLabel}
-      hasSubActions
-      isIconShown={false}
-      onPress={() => onMenuPress(controlKey)}
-    />
+    <AppPressable className='py-12 active:opacity-60' onPress={() => onMenuPress(controlKey)}>
+      {header}
+    </AppPressable>
   );
 }

@@ -1,126 +1,137 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useState } from 'react';
 import { LayoutChangeEvent } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { runOnJS, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
-import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
+import Animated, {
+  runOnJS,
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import { AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { ModelControlOption } from '@open-webui-react-native/shared/data-access/api';
 
 const THUMB_SIZE = 24;
+const ANIMATION_DURATION = 150;
 
 export interface OptionSliderProps {
-  optionKeys: Array<string>;
   options: Record<string, ModelControlOption>;
-  selectedOptionKey?: string;
+  choice?: string;
   defaultOptionKey?: string;
   onOptionChange: (optionKey: string) => void;
 }
 
-export function OptionSlider({
-  optionKeys,
-  options,
-  selectedOptionKey,
-  defaultOptionKey,
-  onOptionChange,
-}: OptionSliderProps): ReactElement {
+export function OptionSlider({ options, choice, defaultOptionKey, onOptionChange }: OptionSliderProps): ReactElement {
+  const optionKeys = Object.keys(options);
   const stepCount = optionKeys.length;
-  const resolvedOptionKey = selectedOptionKey ?? defaultOptionKey ?? optionKeys[0];
-  const resolvedIndex = Math.max(0, optionKeys.indexOf(resolvedOptionKey));
+  const selectedIndex = Math.max(0, optionKeys.indexOf(choice ?? defaultOptionKey ?? ''));
 
   const [trackWidth, setTrackWidth] = useState(0);
-  const [activeIndex, setActiveIndex] = useState(resolvedIndex);
-  const [isDragging, setIsDragging] = useState(false);
-  const thumbOffset = useSharedValue(0);
+  // Option shown in the tooltip while dragging.
+  const [dragIndex, setDragIndex] = useState(selectedIndex);
+
+  const isDragging = useSharedValue(false);
+  const dragOffset = useSharedValue(0);
   const dragStartOffset = useSharedValue(0);
+  const tooltipWidth = useSharedValue(0);
+  // Index dropped by the last drag; the thumb stays there until the parent passes it back as the choice.
+  const droppedIndex = useSharedValue(-1);
 
   const stepWidth = stepCount > 1 ? (trackWidth - THUMB_SIZE) / (stepCount - 1) : 0;
-
-  const indexToOffset = (index: number): number => index * stepWidth;
-
-  useEffect(() => {
-    const nextIndex = Math.max(0, optionKeys.indexOf(resolvedOptionKey));
-    setActiveIndex(nextIndex);
-
-    if (trackWidth > 0) {
-      thumbOffset.value = indexToOffset(nextIndex);
-    }
-  }, [resolvedOptionKey, optionKeys, trackWidth, stepWidth]);
+  const maxOffset = trackWidth - THUMB_SIZE;
+  const selectedOffset = selectedIndex * stepWidth;
 
   const handleTrackLayout = (event: LayoutChangeEvent): void => {
-    const width = event.nativeEvent.layout.width;
-    setTrackWidth(width);
-
-    const offset = stepCount > 1 ? indexToOffset(resolvedIndex) : 0;
-    thumbOffset.value = offset;
+    setTrackWidth(event.nativeEvent.layout.width);
   };
 
-  const snapToIndex = (index: number): void => {
-    const clampedIndex = Math.min(Math.max(index, 0), stepCount - 1);
-    setActiveIndex(clampedIndex);
-    thumbOffset.value = indexToOffset(clampedIndex);
-    onOptionChange(optionKeys[clampedIndex]);
-    setIsDragging(false);
+  const handleTooltipLayout = (event: LayoutChangeEvent): void => {
+    tooltipWidth.value = event.nativeEvent.layout.width;
   };
 
+  const selectIndex = (index: number): void => {
+    onOptionChange(optionKeys[index]);
+  };
+
+  // Pan starts only after a horizontal move, so vertical swipes still scroll the sheet.
   const panGesture = Gesture.Pan()
-    .onBegin(() => {
-      runOnJS(setIsDragging)(true);
-      dragStartOffset.value = thumbOffset.value;
+    .activeOffsetX([-8, 8])
+    .failOffsetY([-8, 8])
+    .onStart(() => {
+      droppedIndex.value = -1;
+      dragStartOffset.value = selectedOffset;
+      dragOffset.value = selectedOffset;
+      isDragging.value = true;
+      runOnJS(setDragIndex)(selectedIndex);
     })
     .onUpdate((event) => {
-      if (stepCount <= 1) {
-        return;
-      }
-
-      const maxOffset = trackWidth - THUMB_SIZE;
-      const nextOffset = Math.min(Math.max(dragStartOffset.value + event.translationX, 0), maxOffset);
-      thumbOffset.value = nextOffset;
-      const index = Math.round(nextOffset / stepWidth);
-      runOnJS(setActiveIndex)(index);
+      const offset = Math.min(Math.max(dragStartOffset.value + event.translationX, 0), maxOffset);
+      const index = Math.round(offset / stepWidth);
+      dragOffset.value = offset;
+      runOnJS(setDragIndex)(index);
     })
     .onEnd(() => {
-      if (stepCount <= 1) {
-        runOnJS(setIsDragging)(false);
-
-        return;
-      }
-
-      const index = Math.round(thumbOffset.value / stepWidth);
-      runOnJS(snapToIndex)(index);
+      const index = Math.round(dragOffset.value / stepWidth);
+      dragOffset.value = withTiming(index * stepWidth, { duration: ANIMATION_DURATION });
+      droppedIndex.value = index;
+      isDragging.value = false;
+      runOnJS(selectIndex)(index);
     });
 
+  const tapGesture = Gesture.Tap().onEnd((event) => {
+    droppedIndex.value = -1;
+    const offset = Math.min(Math.max(event.x - THUMB_SIZE / 2, 0), maxOffset);
+    runOnJS(selectIndex)(Math.round(offset / stepWidth));
+  });
+
+  const isEnabled = stepCount > 1 && trackWidth > 0;
+  const gesture = Gesture.Exclusive(panGesture.enabled(isEnabled), tapGesture.enabled(isEnabled));
+
+  // The thumb follows the finger, then glides to the selected option.
+  const thumbPosition = useDerivedValue(() => {
+    const isFollowingGesture = isDragging.value || (droppedIndex.value !== -1 && droppedIndex.value !== selectedIndex);
+
+    return isFollowingGesture ? dragOffset.value : withTiming(selectedOffset, { duration: ANIMATION_DURATION });
+  }, [selectedIndex, selectedOffset]);
+
   const thumbStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: thumbOffset.value }],
+    transform: [{ translateX: thumbPosition.value }],
   }));
 
-  const tooltipLabel = options[optionKeys[activeIndex]]?.label ?? '';
+  const rangeStyle = useAnimatedStyle(() => ({
+    width: thumbPosition.value + THUMB_SIZE / 2,
+  }));
+
+  // Centred over the thumb, but kept inside the track so the sheet does not clip it at the ends.
+  const tooltipStyle = useAnimatedStyle(() => {
+    const centredOffset = dragOffset.value + THUMB_SIZE / 2 - tooltipWidth.value / 2;
+
+    return {
+      opacity: withTiming(isDragging.value ? 1 : 0, { duration: ANIMATION_DURATION }),
+      transform: [{ translateX: Math.min(Math.max(centredOffset, 0), trackWidth - tooltipWidth.value) }],
+    };
+  });
 
   return (
-    <View className='gap-12'>
-      {isDragging && tooltipLabel && (
-        <View className='self-center bg-background-secondary px-12 py-8 rounded-lg'>
-          <AppText className='text-sm-sm sm:text-sm'>{tooltipLabel}</AppText>
-        </View>
-      )}
-      <GestureDetector gesture={panGesture}>
-        <View className='h-32 justify-center' onLayout={handleTrackLayout}>
-          <View className='h-4 bg-background-secondary rounded-full' />
-          <Animated.View
-            style={thumbStyle}
-            className={cn(
-              'absolute top-4 h-24 w-24 -mt-10 rounded-full bg-background-primary border-2 border-border-primary',
-            )}
-          />
-        </View>
-      </GestureDetector>
-      {stepCount > 1 && (
-        <View className='flex-row justify-between'>
-          <AppText className='text-sm-sm sm:text-sm text-text-secondary'>{options[optionKeys[0]]?.label}</AppText>
-          <AppText className='text-sm-sm sm:text-sm text-text-secondary'>
-            {options[optionKeys[stepCount - 1]]?.label}
+    <GestureDetector gesture={gesture}>
+      <View className='h-24 justify-center' onLayout={handleTrackLayout}>
+        <View className='h-[3px] bg-text-tertiary' />
+        <Animated.View style={rangeStyle} className='absolute left-0 h-[3px] bg-brand-primary' />
+        <Animated.View
+          style={thumbStyle}
+          className='absolute left-0 h-24 w-24 items-center justify-center rounded-full bg-brand-primary'>
+          <View className='h-8 w-8 rounded-full bg-text-foreground' />
+        </Animated.View>
+        <Animated.View
+          pointerEvents='none'
+          style={tooltipStyle}
+          onLayout={handleTooltipLayout}
+          className='absolute -top-48 left-0 bg-text-primary px-12 py-8 rounded-lg'>
+          <AppText numberOfLines={1} className='text-sm-sm sm:text-sm text-background-primary'>
+            {options[optionKeys[dragIndex]]?.label}
           </AppText>
-        </View>
-      )}
-    </View>
+        </Animated.View>
+      </View>
+    </GestureDetector>
   );
 }

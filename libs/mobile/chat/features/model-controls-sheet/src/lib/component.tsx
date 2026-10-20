@@ -1,22 +1,24 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
-import { isEqual } from 'lodash-es';
+import { isEqual, omit } from 'lodash-es';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } from 'react';
-import { Keyboard } from 'react-native';
-import { AppBottomSheet, SheetHeader, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import {
+  AppBottomSheet,
+  AppBottomSheetFlashList,
+  SheetHeader,
+  View,
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import {
   AIModel,
+  ModelControl,
   buildUserSettingsWithModelControlChoices,
   getModelControlChoices,
-  UserSettings,
+  ModelControlChoices,
+  splitStaleModelControlChoices,
   usersApi,
-  usersApiConfig,
 } from '@open-webui-react-native/shared/data-access/api';
-import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
-import { ModelControlMenuSheet, ModelControlMenuSheetMethods } from './components/model-control-menu-sheet';
-import { ModelControlRow } from './components/model-control-row';
-import { sanitizeModelControlChoices } from './utils/sanitize-model-control-choices';
+import { ModelControlMenuSheet, ModelControlMenuSheetMethods, ModelControlRow } from './components';
 
 export type ModelControlsSheetMethods = {
   present: () => void;
@@ -34,92 +36,63 @@ export function ModelControlsSheet({ ref, model, onClose }: ModelControlsSheetPr
   const translate = useTranslation('CHAT.MODEL_CONTROLS_SHEET');
   const sheetRef = useRef<BottomSheetModal>(null);
   const menuSheetRef = useRef<ModelControlMenuSheetMethods>(null);
-  const draftTouchedRef = useRef(false);
+  const isDraftTouchedRef = useRef(false);
 
-  const { refetch } = usersApi.useGetUserSettings();
-  const { mutate: updateUserSettings } = usersApi.useUpdateUserSettings({
-    onError: () => ToastService.showError(),
-  });
+  const { data: userSettings, refetch } = usersApi.useGetUserSettings();
+  const { mutate: updateUserSettings } = usersApi.useUpdateUserSettings();
 
-  const [draftChoices, setDraftChoices] = useState<Record<string, string>>({});
+  const [draftChoices, setDraftChoices] = useState<ModelControlChoices>({});
 
   const modelControls = model?.info?.params?.modelControls ?? {};
-  const controlKeys = Object.keys(modelControls);
 
   const closeSheet = (): void => {
     sheetRef.current?.close();
   };
 
-  const updateDraft = (updater: (current: Record<string, string>) => Record<string, string>): void => {
-    draftTouchedRef.current = true;
+  const updateDraft = (updater: (current: ModelControlChoices) => ModelControlChoices): void => {
+    isDraftTouchedRef.current = true;
     setDraftChoices(updater);
   };
 
   useImperativeHandle(
     ref,
     () => ({
-      present: (): void => {
+      present: async (): Promise<void> => {
         if (!model) {
           return;
         }
 
-        const settings = queryClient.getQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey);
-        setDraftChoices({ ...getModelControlChoices(settings, model.id) });
-        draftTouchedRef.current = false;
+        setDraftChoices(getModelControlChoices(userSettings, model.id));
+        isDraftTouchedRef.current = false;
         sheetRef.current?.present();
 
-        void refetch().then(({ data }) => {
-          if (!draftTouchedRef.current && data) {
-            setDraftChoices({ ...getModelControlChoices(data, model.id) });
-          }
-        });
+        //NOTE: The web app may have changed the choice: take it unless the draft is already edited.
+        const { data } = await refetch();
+
+        if (data && !isDraftTouchedRef.current) {
+          setDraftChoices(getModelControlChoices(data, model.id));
+        }
       },
     }),
-    [model, refetch],
+    [model, userSettings, refetch],
   );
 
   const handleConfirmPress = (): void => {
-    if (!model) {
-      closeSheet();
-
-      return;
-    }
-
-    const settings = queryClient.getQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey);
-
-    if (!settings) {
-      closeSheet();
-
-      return;
-    }
-
-    const sanitizedDraft = sanitizeModelControlChoices(model, draftChoices);
-    const cachedChoices = sanitizeModelControlChoices(model, getModelControlChoices(settings, model.id));
-
-    if (isEqual(sanitizedDraft, cachedChoices)) {
-      closeSheet();
-
-      return;
-    }
-
-    updateUserSettings(buildUserSettingsWithModelControlChoices(settings, model.id, sanitizedDraft));
     closeSheet();
+
+    if (!model || isEqual(draftChoices, getModelControlChoices(userSettings, model.id))) {
+      return;
+    }
+
+    const { validChoices } = splitStaleModelControlChoices(model, draftChoices);
+
+    updateUserSettings(buildUserSettingsWithModelControlChoices(userSettings, model.id, validChoices), {
+      onError: () => ToastService.showError(),
+    });
   };
 
   const handleMenuSelect = (controlKey: string, optionKey?: string): void => {
-    updateDraft((current) => {
-      const next = { ...current };
-
-      if (!optionKey) {
-        delete next[controlKey];
-
-        return next;
-      }
-
-      next[controlKey] = optionKey;
-
-      return next;
-    });
+    updateDraft((current) => (optionKey ? { ...current, [controlKey]: optionKey } : omit(current, controlKey)));
   };
 
   const handleSliderOptionChange = (controlKey: string, optionKey: string): void => {
@@ -130,35 +103,38 @@ export function ModelControlsSheet({ ref, model, onClose }: ModelControlsSheetPr
     menuSheetRef.current?.present(controlKey);
   };
 
+  const renderItem = ({ item: [controlKey, control] }: { item: [string, ModelControl] }): ReactElement => (
+    <ModelControlRow
+      controlKey={controlKey}
+      control={control}
+      choice={draftChoices[controlKey]}
+      translateDefault={translate}
+      onMenuPress={handleMenuPress}
+      onSliderOptionChange={handleSliderOptionChange}
+    />
+  );
+
   return (
     <AppBottomSheet
       isModal
       ref={sheetRef}
-      onDismiss={() => {
-        Keyboard.dismiss();
-        onClose?.();
-      }}
+      isScrollable
+      snapPoints={['100%']}
+      onDismiss={onClose}
       content={
-        <View className='gap-16'>
+        <View className='flex-1 bg-background-primary'>
           <SheetHeader
             title={translate('TEXT_TITLE')}
             onGoBack={closeSheet}
             onConfirmPress={handleConfirmPress} />
-          <View className='rounded-2xl overflow-hidden'>
-            {model &&
-              controlKeys.map((controlKey) => (
-                <ModelControlRow
-                  key={controlKey}
-                  controlKey={controlKey}
-                  control={modelControls[controlKey]}
-                  model={model}
-                  draftChoices={draftChoices}
-                  translateDefault={translate}
-                  onMenuPress={handleMenuPress}
-                  onSliderOptionChange={handleSliderOptionChange}
-                />
-              ))}
-          </View>
+          <AppBottomSheetFlashList
+            data={Object.entries(modelControls)}
+            extraData={draftChoices}
+            renderItem={renderItem}
+            keyExtractor={([controlKey]) => controlKey}
+            showsVerticalScrollIndicator={false}
+            className='flex-1'
+          />
           <ModelControlMenuSheet
             ref={menuSheetRef}
             controls={modelControls}
