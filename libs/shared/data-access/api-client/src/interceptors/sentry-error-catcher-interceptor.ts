@@ -1,9 +1,8 @@
 import { AxiosError, HttpStatusCode, isAxiosError } from 'axios';
 import { captureApiError } from '../utils/capture-api-error';
 
-// Only statuses that point at a broken API contract are reported. Errors without a response
-// (network failures, cancellations), 401 and proxy-level 5xx (502/503/504/52x/530) are noise that
-// drains the Sentry quota and hides real API breakages behind the "API error spike" alert.
+// Only statuses that signal a broken API contract: no-response errors, 401 and proxy 5xx are noise that
+// drains the Sentry quota and buries real breakages in the "API error spike" alert.
 const reportableStatuses = new Set<number>([
   HttpStatusCode.BadRequest,
   HttpStatusCode.Forbidden,

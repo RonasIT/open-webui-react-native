@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from 'axios';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
 import { EntityPromiseService } from '@open-webui-react-native/shared/data-access/base-entity';
@@ -33,9 +34,11 @@ export class UsersService extends EntityPromiseService<User> {
     });
   }
 
-  public async getUserSettings(): Promise<UserSettings> {
+  public async getUserSettings(requestOptions?: Pick<AxiosRequestConfig, 'timeout'>): Promise<UserSettings> {
     const response: UserSettings = await getApiService().get(
       `${usersApiConfig.versionedRoute}${usersApiConfig.route}/settings`,
+      undefined,
+      requestOptions,
     );
 
     return plainToInstance(UserSettings, response);

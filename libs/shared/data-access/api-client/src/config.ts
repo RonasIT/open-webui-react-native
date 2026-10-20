@@ -9,4 +9,5 @@ export const apiConfig = {
       'v1/auths/signout',
     ],
   },
+  initRequestTimeout: 15 * 1000,
 };

@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/react-native';
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosRequestConfig } from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { refetchOnMountWithStaleCheck } from '@open-webui-react-native/shared/data-access/persist-query-helpers';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
@@ -20,6 +20,7 @@ type UseGetAppConfigurationResult = UseQueryResult<Configuration, AxiosError> & 
 
 export function useGetAppConfiguration(
   options?: Omit<UseQueryOptions<Configuration, AxiosError>, 'queryKey' | 'queryFn'>,
+  requestOptions?: Pick<AxiosRequestConfig, 'timeout'>,
 ): UseGetAppConfigurationResult {
   const [fetchWithUrlResult, setFetchWithUrlResult] = useState<Configuration | undefined>();
   const [customState, setCustomState] = useState<{
@@ -35,7 +36,7 @@ export function useGetAppConfiguration(
   const latestFetchUrlRef = useRef<string>(undefined);
 
   const result = useQuery<Configuration, AxiosError>({
-    queryFn: () => appConfigurationService.get(),
+    queryFn: () => appConfigurationService.get(undefined, undefined, undefined, requestOptions?.timeout),
     queryKey: appConfigurationApiConfig.getConfigQueryKey,
     staleTime: 5 * 60 * 1000,
     // NOTE: The cache is persisted to MMKV, so without this a launch within `staleTime` of the last
