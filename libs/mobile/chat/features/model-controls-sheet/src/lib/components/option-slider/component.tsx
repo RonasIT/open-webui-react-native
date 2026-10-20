@@ -1,13 +1,8 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { LayoutChangeEvent } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, {
-  runOnJS,
-  useAnimatedStyle,
-  useDerivedValue,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 import { AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { ModelControlOption } from '@open-webui-react-native/shared/data-access/api';
 
@@ -36,6 +31,8 @@ export function OptionSlider({ options, choice, defaultOptionKey, onOptionChange
   const tooltipWidth = useSharedValue(0);
   //NOTE: Index dropped by the last drag; the thumb stays there until the parent passes it back as the choice.
   const droppedIndex = useSharedValue(-1);
+  //NOTE: Mirrors dragIndex on the UI thread, so the JS thread is called only when the option changes.
+  const dragIndexOnUi = useSharedValue(selectedIndex);
 
   const stepWidth = stepCount > 1 ? (trackWidth - thumbSize) / (stepCount - 1) : 0;
   const maxOffset = trackWidth - thumbSize;
@@ -67,26 +64,31 @@ export function OptionSlider({ options, choice, defaultOptionKey, onOptionChange
       dragStartOffset.value = selectedOffset;
       dragOffset.value = selectedOffset;
       isDragging.value = true;
-      runOnJS(setDragIndex)(selectedIndex);
+      dragIndexOnUi.value = selectedIndex;
+      scheduleOnRN(setDragIndex, selectedIndex);
     })
     .onUpdate((event) => {
       const offset = Math.min(Math.max(dragStartOffset.value + event.translationX, 0), maxOffset);
       const index = Math.round(offset / stepWidth);
       dragOffset.value = offset;
-      runOnJS(setDragIndex)(index);
+
+      if (index !== dragIndexOnUi.value) {
+        dragIndexOnUi.value = index;
+        scheduleOnRN(setDragIndex, index);
+      }
     })
     .onEnd(() => {
       const index = Math.round(dragOffset.value / stepWidth);
       dragOffset.value = withTiming(index * stepWidth, { duration: animationDuration });
       droppedIndex.value = index;
       isDragging.value = false;
-      runOnJS(selectIndex)(index);
+      scheduleOnRN(selectIndex, index);
     });
 
   const tapGesture = Gesture.Tap().onEnd((event) => {
     droppedIndex.value = -1;
     const offset = Math.min(Math.max(event.x - thumbSize / 2, 0), maxOffset);
-    runOnJS(selectIndex)(Math.round(offset / stepWidth));
+    scheduleOnRN(selectIndex, Math.round(offset / stepWidth));
   });
 
   const isEnabled = stepCount > 1 && trackWidth > 0;
