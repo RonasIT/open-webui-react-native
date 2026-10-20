@@ -113,7 +113,12 @@
       "TEXT_IMAGE_UPLOAD_FAILED": "Couldn't upload the photo. Check your connection and try again"
     },
     "MODEL_CONTROLS": {
-      "TEXT_STALE_CHOICE": "The selected option for “{{control}}” is no longer available — the default option is used"
+      "TEXT_CONTROL_NAME": "“{{control}}”",
+      "TEXT_CONTROLS_SEPARATOR": ", ",
+      "TEXT_STALE_CHOICE": {
+        "one": "The selected option for {{controls}} is no longer available — the default option is used",
+        "other": "The selected options for {{controls}} are no longer available — the default options are used"
+      }
     }
   }
 }

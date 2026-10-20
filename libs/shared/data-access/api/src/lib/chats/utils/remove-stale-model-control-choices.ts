@@ -7,7 +7,6 @@ import { getModelControlChoices } from '../../ai-models/utils/get-model-control-
 import { usersApiConfig } from '../../users/config';
 import { UserSettings } from '../../users/models';
 import { usersService } from '../../users/service';
-import { restoreUserSettingsQueryData } from '../../users/utils/restore-user-settings-query-data';
 import { setModelControlChoices } from '../../users/utils/set-model-control-choices';
 
 export interface RemoveStaleModelControlChoicesArgs {
@@ -20,22 +19,28 @@ export async function removeStaleModelControlChoices({
   staleControlKeys,
 }: RemoveStaleModelControlChoicesArgs): Promise<void> {
   const modelControls = model.info?.params?.modelControls ?? {};
+  const controlNames = staleControlKeys.map((controlKey) =>
+    i18n.t('SHARED.MODEL_CONTROLS.TEXT_CONTROL_NAME', { control: modelControls[controlKey].label }),
+  );
 
-  for (const controlKey of staleControlKeys) {
-    ToastService.show(i18n.t('SHARED.MODEL_CONTROLS.TEXT_STALE_CHOICE', { control: modelControls[controlKey].label }));
-  }
+  // NOTE: One toast for all controls: the toast library keeps only the last one on screen.
+  ToastService.show(
+    i18n.t('SHARED.MODEL_CONTROLS.TEXT_STALE_CHOICE', {
+      count: controlNames.length,
+      controls: controlNames.join(i18n.t('SHARED.MODEL_CONTROLS.TEXT_CONTROLS_SEPARATOR')),
+    }),
+  );
 
-  const previousSettings = queryClient.getQueryData<UserSettings | null>(usersApiConfig.getUserSettingsQueryKey);
-  const cleanedChoices = omit(getModelControlChoices(previousSettings ?? undefined, model.id), staleControlKeys);
+  // NOTE: A refetch in flight would put the stale choices back over the cleaned ones.
+  await queryClient.cancelQueries({ queryKey: usersApiConfig.getUserSettingsQueryKey });
 
-  queryClient.setQueryData<UserSettings>(
-    usersApiConfig.getUserSettingsQueryKey,
-    setModelControlChoices(previousSettings, model.id, cleanedChoices),
+  queryClient.setQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey, (current) =>
+    setModelControlChoices(current, model.id, omit(getModelControlChoices(current, model.id), staleControlKeys)),
   );
 
   try {
     await usersService.updateModelControlChoices(model.id, (choices) => omit(choices, staleControlKeys));
   } catch {
-    restoreUserSettingsQueryData(previousSettings);
+    // NOTE: Not rolled back: a stale choice is useless, and the next load of the settings cleans it again.
   }
 }

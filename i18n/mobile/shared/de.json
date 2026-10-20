@@ -113,7 +113,12 @@
       "TEXT_IMAGE_UPLOAD_FAILED": "Foto konnte nicht hochgeladen werden. Prüfe die Verbindung und versuche es erneut"
     },
     "MODEL_CONTROLS": {
-      "TEXT_STALE_CHOICE": "Die ausgewählte Option für „{{control}}“ ist nicht mehr verfügbar — die Standardoption wird verwendet"
+      "TEXT_CONTROL_NAME": "„{{control}}“",
+      "TEXT_CONTROLS_SEPARATOR": ", ",
+      "TEXT_STALE_CHOICE": {
+        "one": "Die ausgewählte Option für {{controls}} ist nicht mehr verfügbar — die Standardoption wird verwendet",
+        "other": "Die ausgewählten Optionen für {{controls}} sind nicht mehr verfügbar — die Standardoptionen werden verwendet"
+      }
     }
   }
 }
