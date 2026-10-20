@@ -1,6 +1,7 @@
 import { Observable } from '@legendapp/state';
 import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
+import { PasteEventPayload, TextInputWrapper } from 'expo-paste-input';
 import { xor } from 'lodash-es';
 import { ReactElement, useMemo, useState } from 'react';
 import { Control, FieldValues, Path, useController } from 'react-hook-form';
@@ -38,6 +39,7 @@ import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/uti
 import { toDataUrl } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { AttachmentsMenuSheet, ChatInputBottomRow, ChatSettingsSheet, SelectOptionIcon } from './components';
+import { preparePastedImage } from './utils';
 
 interface FormChatInputProps<T extends FieldValues> extends AppInputProps {
   name: Path<T>;
@@ -176,6 +178,20 @@ export function FormChatInput<T extends FieldValues>({
     field.onChange(text);
   };
 
+  const handlePaste = async (payload: PasteEventPayload): Promise<void> => {
+    if (payload.type !== 'images') {
+      return;
+    }
+
+    for (const uri of payload.uris) {
+      try {
+        onImageUploaded(await preparePastedImage(uri));
+      } catch {
+        continue;
+      }
+    }
+  };
+
   const onStopGenerationPress = (): void => {
     if (!chat) return;
 
@@ -192,83 +208,84 @@ export function FormChatInput<T extends FieldValues>({
           onStopRecording={() => setIsDictateMode(false)}
         />
       ) : (
-        <AppTextInput
-          key={inputRerenderKey}
-          value={field.value}
-          onChangeText={field.onChange}
-          onBlur={field.onBlur}
-          maxHeight={300}
-          editable={!isLoading}
-          multiline
-          scrollEnabled
-          textClassName='text-md-sm sm:text-md'
-          accessoryTop={
-            <AttachedChatItems
-              onDeleteItemPress={onDeleteItemPress}
-              attachedItems={attachedItems}
-              attachedImages={attachedImages}
-              onDeleteImagePress={onDeleteImagePress}
-              onImagePress={handleImagePress}
-            />
-          }
-          accessoryBottom={
-            <ChatInputBottomRow
-              onSubmit={() => onSubmit(options)}
-              isSubmitDisabled={(!isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty) || isImageUploading}
-              onVoiceModePress={onVoiceModePress}
-              isVoiceModeAvailable={isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty}
-              onStopGenerationPress={onStopGenerationPress}
-              isResponseGenerating={isResponseGenerating}
-              isMessageQueueEnabled={isMessageQueueEnabled}
-              isLoading={isLoading || isMicrophonePreparing}>
-              <View className='flex-row flex-1 justify-between'>
-                <View className='gap-16 flex-row '>
-                  <AttachmentsMenuSheet
-                    onItemAttached={onItemAttached}
-                    disabled={isLoading}
-                    onImageUploaded={onImageUploaded}
-                    isKnowledgeCollectionAttached={isKnowledgeCollectionAttached}
-                    isKnowledgeFileAttached={isKnowledgeFileAttached}
-                    chatId={chat?.id}
-                    attachedChatIds={attachedChatIds}
-                  />
-                  {config?.features.enableImageGeneration && (
-                    <SelectOptionIcon
+        <TextInputWrapper key={inputRerenderKey} onPaste={handlePaste}>
+          <AppTextInput
+            value={field.value}
+            onChangeText={field.onChange}
+            onBlur={field.onBlur}
+            maxHeight={300}
+            editable={!isLoading}
+            multiline
+            scrollEnabled
+            textClassName='text-md-sm sm:text-md'
+            accessoryTop={
+              <AttachedChatItems
+                onDeleteItemPress={onDeleteItemPress}
+                attachedItems={attachedItems}
+                attachedImages={attachedImages}
+                onDeleteImagePress={onDeleteImagePress}
+                onImagePress={handleImagePress}
+              />
+            }
+            accessoryBottom={
+              <ChatInputBottomRow
+                onSubmit={() => onSubmit(options)}
+                isSubmitDisabled={(!isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty) || isImageUploading}
+                onVoiceModePress={onVoiceModePress}
+                isVoiceModeAvailable={isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty}
+                onStopGenerationPress={onStopGenerationPress}
+                isResponseGenerating={isResponseGenerating}
+                isMessageQueueEnabled={isMessageQueueEnabled}
+                isLoading={isLoading || isMicrophonePreparing}>
+                <View className='flex-row flex-1 justify-between'>
+                  <View className='gap-16 flex-row '>
+                    <AttachmentsMenuSheet
+                      onItemAttached={onItemAttached}
                       disabled={isLoading}
-                      iconName='generatedImage'
-                      onPress={() => onGenerationOptionPress(ChatGenerationOption.IMAGE_GENERATION)}
-                      isSelected={options.includes(ChatGenerationOption.IMAGE_GENERATION)}
+                      onImageUploaded={onImageUploaded}
+                      isKnowledgeCollectionAttached={isKnowledgeCollectionAttached}
+                      isKnowledgeFileAttached={isKnowledgeFileAttached}
+                      chatId={chat?.id}
+                      attachedChatIds={attachedChatIds}
                     />
-                  )}
-                  {config?.features.enableWebSearch && (
-                    <SelectOptionIcon
+                    {config?.features.enableImageGeneration && (
+                      <SelectOptionIcon
+                        disabled={isLoading}
+                        iconName='generatedImage'
+                        onPress={() => onGenerationOptionPress(ChatGenerationOption.IMAGE_GENERATION)}
+                        isSelected={options.includes(ChatGenerationOption.IMAGE_GENERATION)}
+                      />
+                    )}
+                    {config?.features.enableWebSearch && (
+                      <SelectOptionIcon
+                        disabled={isLoading}
+                        iconName='web'
+                        onPress={() => onGenerationOptionPress(ChatGenerationOption.WEB_SEARCH)}
+                        isSelected={options.includes(ChatGenerationOption.WEB_SEARCH)}
+                      />
+                    )}
+                    <ChatSettingsSheet
                       disabled={isLoading}
-                      iconName='web'
-                      onPress={() => onGenerationOptionPress(ChatGenerationOption.WEB_SEARCH)}
-                      isSelected={options.includes(ChatGenerationOption.WEB_SEARCH)}
+                      tools={tools ?? []}
+                      selectedToolIds={selectedToolIds}
+                      onApplyToolIds={onApplyToolIds}
+                      chat={chat}
+                      model={models?.find(({ id }) => id === modelId)}
+                      isToolPermissionsEnabled={config?.features.enableToolPermissions}
                     />
-                  )}
-                  <ChatSettingsSheet
+                  </View>
+                  <IconButton
                     disabled={isLoading}
-                    tools={tools ?? []}
-                    selectedToolIds={selectedToolIds}
-                    onApplyToolIds={onApplyToolIds}
-                    chat={chat}
-                    model={models?.find(({ id }) => id === modelId)}
-                    isToolPermissionsEnabled={config?.features.enableToolPermissions}
+                    iconName='microphone'
+                    className='p-0 mr-16'
+                    onPress={handleDictateModePress}
                   />
                 </View>
-                <IconButton
-                  disabled={isLoading}
-                  iconName='microphone'
-                  className='p-0 mr-16'
-                  onPress={handleDictateModePress}
-                />
-              </View>
-            </ChatInputBottomRow>
-          }
-          {...restProps}
-        />
+              </ChatInputBottomRow>
+            }
+            {...restProps}
+          />
+        </TextInputWrapper>
       )}
       {isSuggestionShown && (
         <SuggestionsList

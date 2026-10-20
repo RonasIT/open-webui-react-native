@@ -28,6 +28,7 @@ import {
   chatApi,
   ChatListItem,
   foldersApi,
+  isTemporaryChatEnforced,
   MockFolderItemIds,
 } from '@open-webui-react-native/shared/data-access/api';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
@@ -252,7 +253,7 @@ export function ChatActionsMenuSheet({ goToChat, ref, isInChat }: ChatActionsMen
       onPress: () => handleAction(ChatAction.PIN),
     },
     { title: translate('TEXT_RENAME'), iconName: 'editPencil', onPress: () => handleAction(ChatAction.RENAME) },
-    {
+    !isTemporaryChatEnforced() && {
       title: translate('TEXT_CLONE'),
       iconName: 'copy',
       isLoading: isCloning,

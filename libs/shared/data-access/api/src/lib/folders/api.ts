@@ -13,6 +13,7 @@ import { merge } from 'lodash-es';
 import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
 import { getNextPageParam } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
+import { authApi } from '../auth/api';
 import { ChatResponse } from '../chats/models/chat-response';
 import { foldersApiConfig } from './config';
 import {
@@ -134,9 +135,12 @@ function useGetFolders(
 function useGetSharedFolders(
   props?: Omit<UseQueryOptions<Array<SharedFolderListItem>, AxiosError<ApiErrorData>>, 'queryKey' | 'queryFn'>,
 ): UseQueryResult<Array<SharedFolderListItem>, AxiosError<ApiErrorData>> {
+  const { data: profile } = authApi.useGetProfile();
+
   return useQuery<Array<SharedFolderListItem>, AxiosError<ApiErrorData>>({
     queryFn: foldersService.getSharedFolders,
     queryKey: foldersApiConfig.getSharedFoldersQueryKey,
+    select: (folders) => folders.filter((folder) => folder.userId !== profile?.id),
     ...props,
   });
 }
