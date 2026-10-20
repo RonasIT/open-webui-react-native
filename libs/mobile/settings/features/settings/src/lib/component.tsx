@@ -1,5 +1,6 @@
 import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
+import { compact } from 'lodash-es';
 import { ReactElement, useRef } from 'react';
 import { Alert } from 'react-native';
 import {
@@ -14,6 +15,7 @@ import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/n
 import {
   authApi,
   chatApi,
+  isTemporaryChatEnforced,
   modelsApi,
   UiSettings,
   UserSettings,
@@ -308,7 +310,7 @@ export function Settings(): ReactElement {
     },
   ];
 
-  const preferenceOptions: Array<SettingsSectionOption> = [
+  const preferenceOptions: Array<SettingsSectionOption> = compact([
     {
       type: 'switch',
       label: translate('TEXT_ALWAYS_ON_WEB_SEARCH'),
@@ -333,7 +335,7 @@ export function Settings(): ReactElement {
       isEnabled: isChatBubbleUIEnabled,
       onValueChange: createUiSettingToggleHandler('chatBubble'),
     },
-    {
+    !isTemporaryChatEnforced() && {
       type: 'switch',
       label: translate('TEXT_TEMPORARY_CHAT_BY_DEFAULT'),
       isEnabled: isTemporaryChatByDefaultEnabled,
@@ -350,7 +352,7 @@ export function Settings(): ReactElement {
       value: markdownRendererOption && translate(markdownRendererOption.labelKey),
       onPress: () => markdownRendererSheetRef.current?.present(),
     },
-  ];
+  ]);
 
   return (
     <View className='pb-safe'>
