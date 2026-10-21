@@ -75,8 +75,8 @@ export function ActionsBottomSheet({
         <Fragment>
           <View style={{ maxHeight: cardMaxHeight }} className='rounded-2xl overflow-hidden'>
             {(title || description) && (
-              <View className='bg-background-primary px-24 py-20 gap-8'>
-                {title && <AppText className='text-md-sm sm:text-md font-medium'>{title}</AppText>}
+              <View className='bg-background-primary px-24 py-20 gap-4'>
+                {title && <AppText className='text-sm-sm sm:text-sm'>{title}</AppText>}
                 {description && <AppText className='text-sm-sm sm:text-sm text-text-secondary'>{description}</AppText>}
               </View>
             )}
