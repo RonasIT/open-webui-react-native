@@ -9,7 +9,7 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
+import { ApiErrorData, RequestOptions } from '@open-webui-react-native/shared/data-access/api-client';
 import { createEntityApi } from '@open-webui-react-native/shared/data-access/base-entity';
 import { getNextPageParam } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
@@ -53,9 +53,9 @@ function useGetUserInfo(
   });
 }
 
-function useGetUserSettings(): UseQueryResult<UserSettings, AxiosError<ApiErrorData>> {
+function useGetUserSettings(requestOptions?: RequestOptions): UseQueryResult<UserSettings, AxiosError<ApiErrorData>> {
   return useQuery<UserSettings, AxiosError<ApiErrorData>>({
-    queryFn: usersService.getUserSettings,
+    queryFn: () => usersService.getUserSettings(requestOptions),
     queryKey: usersApiConfig.getUserSettingsQueryKey,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });

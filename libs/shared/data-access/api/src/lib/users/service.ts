@@ -1,5 +1,5 @@
 import { instanceToPlain, plainToInstance } from 'class-transformer';
-import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
+import { getApiService, RequestOptions } from '@open-webui-react-native/shared/data-access/api-client';
 import { EntityPromiseService } from '@open-webui-react-native/shared/data-access/base-entity';
 import { ModelControlChoices } from '../ai-models/models/model-control-choices';
 import { usersApiConfig } from './config';
@@ -34,9 +34,11 @@ export class UsersService extends EntityPromiseService<User> {
     });
   }
 
-  public async getUserSettings(): Promise<UserSettings> {
+  public async getUserSettings(requestOptions?: RequestOptions): Promise<UserSettings> {
     const response: UserSettings = await getApiService().get(
       `${usersApiConfig.versionedRoute}${usersApiConfig.route}/settings`,
+      undefined,
+      requestOptions,
     );
 
     return plainToInstance(UserSettings, response);
