@@ -11,7 +11,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { InteractionManager } from 'react-native';
+import { InteractionManager, RefreshControlProps } from 'react-native';
 import { useBottomInset } from '@open-webui-react-native/mobile/shared/utils/use-bottom-inset';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { MockFolderItemIds } from '@open-webui-react-native/shared/data-access/api';
@@ -39,6 +39,7 @@ export interface FullScreenSearchModalProps<Item extends FullScreenSearchListIte
   unfilteredData?: Array<Item>;
   selectedItemId?: string;
   modalComponent?: ReactElement;
+  refreshControl?: ReactElement<RefreshControlProps>;
   ref?: FullScreenSearchModalRef;
 }
 
@@ -50,6 +51,7 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
   unfilteredData,
   selectedItemId,
   modalComponent,
+  refreshControl,
   ref,
 }: FullScreenSearchModalProps<Item>): ReactElement {
   const listRef = useRef<React.ComponentRef<typeof FlashList<Item>>>(null);
@@ -159,6 +161,7 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
                   contentContainerStyle={{ paddingBottom: bottomInset }}
                   showsVerticalScrollIndicator={false}
                   keyboardShouldPersistTaps='handled'
+                  refreshControl={refreshControl}
                   renderItem={renderItem}
                   data={combinedData}
                 />

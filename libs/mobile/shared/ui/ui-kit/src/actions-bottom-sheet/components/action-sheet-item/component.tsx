@@ -17,6 +17,7 @@ export interface ActionSheetItemProps extends AppPressableProps {
   isDanger?: boolean;
   hasSubActions?: boolean;
   numberOfLines?: number;
+  rightContent?: ReactElement;
 }
 
 export function ActionSheetItem({
@@ -31,6 +32,7 @@ export function ActionSheetItem({
   isDanger,
   hasSubActions = false,
   numberOfLines,
+  rightContent,
   disabled,
   ...restProps
 }: ActionSheetItemProps): ReactElement {
@@ -73,7 +75,7 @@ export function ActionSheetItem({
         )}>
         {title}
       </AppText>
-      {(!!value || hasSubActions) && (
+      {(!!value || hasSubActions || rightContent) && (
         <View className='min-w-0 flex-1 flex-row items-center justify-end gap-8'>
           {!!value && (
             <AppText
@@ -85,6 +87,7 @@ export function ActionSheetItem({
               {value}
             </AppText>
           )}
+          {rightContent}
           {hasSubActions && <Icon name='chevronRight' className={cn('shrink-0', disabled && 'color-text-tertiary')} />}
         </View>
       )}

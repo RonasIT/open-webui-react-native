@@ -111,6 +111,14 @@
     },
     "USE_ATTACHED_FILES": {
       "TEXT_IMAGE_UPLOAD_FAILED": "No se pudo subir la foto. Comprueba la conexión e inténtalo de nuevo"
+    },
+    "MODEL_CONTROLS": {
+      "TEXT_CONTROL_NAME": "«{{control}}»",
+      "TEXT_CONTROLS_SEPARATOR": ", ",
+      "TEXT_STALE_CHOICE": {
+        "one": "La opción seleccionada para {{controls}} ya no está disponible — se usa la opción predeterminada",
+        "other": "Las opciones seleccionadas para {{controls}} ya no están disponibles — se usan las opciones predeterminadas"
+      }
     }
   }
 }

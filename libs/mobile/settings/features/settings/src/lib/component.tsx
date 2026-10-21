@@ -20,10 +20,8 @@ import {
   UiSettings,
   UserSettings,
   usersApi,
-  usersApiConfig,
 } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
-import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
 import {
   availableLanguages,
@@ -113,19 +111,11 @@ export function Settings(): ReactElement {
   };
 
   const handleDefaultModelChange = (modelId: string): void => {
-    if (!settings) {
-      return;
-    }
-
-    updateUserSettings(new UserSettings({ ui: new UiSettings({ ...settings.ui, models: [modelId] }) }));
+    updateUserSettings(new UserSettings({ ui: new UiSettings({ models: [modelId] }) }));
   };
 
   const handleDefaultSystemPromptChange = (systemPrompt: string): void => {
-    if (!settings) {
-      return;
-    }
-
-    updateUserSettings(new UserSettings({ ui: new UiSettings({ ...settings.ui, system: systemPrompt }) }));
+    updateUserSettings(new UserSettings({ ui: new UiSettings({ system: systemPrompt }) }));
   };
 
   const handleMarkdownRendererChange = (value: MarkdownRenderer): void => {
@@ -135,15 +125,7 @@ export function Settings(): ReactElement {
   const createUiSettingToggleHandler =
     <K extends keyof UiSettings>(key: K) =>
     (value: UiSettings[K]): void => {
-      // NOTE: Read the latest cached settings (not the `settings` render closure) so two rapid
-      // toggle taps before a re-render don't clobber each other with a stale `ui` snapshot.
-      const latestSettings = queryClient.getQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey);
-
-      if (!latestSettings) {
-        return;
-      }
-
-      updateUserSettings(new UserSettings({ ui: new UiSettings({ ...latestSettings.ui, [key]: value }) }));
+      updateUserSettings(new UserSettings({ ui: new UiSettings({ [key]: value }) }));
     };
 
   const handleArchivedChatsPress = (): void =>

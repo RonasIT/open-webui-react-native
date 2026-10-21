@@ -43,6 +43,7 @@
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "Prompt de sistem",
         "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Nesetat",
+        "TEXT_MODEL_CONTROLS": "Controale model",
         "TEXT_TOOLS": "Instrumente",
         "TEXT_FULL_ACCESS_FOR_TOOLS": "Acces complet",
         "BUTTON_CLOSE": "Închide"
@@ -203,6 +204,18 @@
         "BUTTON_NEXT": "Următorul",
         "BUTTON_SUBMIT": "Trimite",
         "BUTTON_DENY": "Omite"
+      }
+    },
+    "MODEL_CONTROLS_SHEET": {
+      "TEXT_TITLE": "Controale model",
+      "TEXT_SAVE_FAILED": "Controalele modelului nu au putut fi salvate. Încearcă din nou.",
+      "MODEL_CONTROL_ROW": {
+        "TEXT_DEFAULT": "Implicit",
+        "TEXT_DEFAULT_WITH_OPTION": "Implicit · {{option}}"
+      },
+      "MODEL_CONTROL_MENU_SHEET": {
+        "TEXT_DEFAULT": "Implicit",
+        "TEXT_DEFAULT_WITH_OPTION": "Implicit · {{option}}"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

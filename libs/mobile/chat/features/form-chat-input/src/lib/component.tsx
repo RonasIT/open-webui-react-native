@@ -270,6 +270,7 @@ export function FormChatInput<T extends FieldValues>({
                       selectedToolIds={selectedToolIds}
                       onApplyToolIds={onApplyToolIds}
                       chat={chat}
+                      model={models?.find(({ id }) => id === modelId)}
                       isToolPermissionsEnabled={config?.features.enableToolPermissions}
                     />
                   </View>

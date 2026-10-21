@@ -31,6 +31,7 @@ import headphones from './headphones.svg';
 import history from './history.svg';
 import key from './key.svg';
 import keyboard from './keyboard.svg';
+import knobs from './knobs.svg';
 import lessText from './less-text.svg';
 import link from './link.svg';
 import lock from './lock.svg';
@@ -141,5 +142,6 @@ export const Icons = {
   moreText,
   web,
   key,
+  knobs,
   lock,
 };

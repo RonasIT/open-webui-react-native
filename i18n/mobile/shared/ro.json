@@ -111,6 +111,15 @@
     },
     "USE_ATTACHED_FILES": {
       "TEXT_IMAGE_UPLOAD_FAILED": "Fotografia nu a putut fi încărcată. Verifică conexiunea și încearcă din nou"
+    },
+    "MODEL_CONTROLS": {
+      "TEXT_CONTROL_NAME": "„{{control}}”",
+      "TEXT_CONTROLS_SEPARATOR": ", ",
+      "TEXT_STALE_CHOICE": {
+        "one": "Opțiunea selectată pentru {{controls}} nu mai este disponibilă — se folosește opțiunea implicită",
+        "few": "Opțiunile selectate pentru {{controls}} nu mai sunt disponibile — se folosesc opțiunile implicite",
+        "other": "Opțiunile selectate pentru {{controls}} nu mai sunt disponibile — se folosesc opțiunile implicite"
+      }
     }
   }
 }
