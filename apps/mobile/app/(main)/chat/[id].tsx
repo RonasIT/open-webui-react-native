@@ -11,6 +11,7 @@ import {
   AppScreen,
   AppHeader,
   AppPressable,
+  AppRefreshControl,
   AppText,
   Icon,
   FullScreenSearchModal,
@@ -47,7 +48,12 @@ export default function ChatScreen(): ReactElement {
   const isOfflineMode = useSelector(appState$.isOfflineMode);
   const isTemporaryChat = isTemporaryChatId(id);
 
-  const { data: models, isLoading: isModelsLoading } = modelsApi.useGetModels();
+  const {
+    data: models,
+    isLoading: isModelsLoading,
+    isRefetching: isModelsRefetching,
+    refetch: refetchModels,
+  } = modelsApi.useGetModels();
   // NOTE: Temporary chats are never persisted, so there's nothing to fetch — read the client-seeded cache only.
   const { data: chat, isLoading: isChatLoading } = chatApi.useGet(id, { enabled: !isTemporaryChat });
   const { modelId, modelName, onSelectModel } = useSetSelectedModel(id);
@@ -98,6 +104,7 @@ export default function ChatScreen(): ReactElement {
                   selectedItemId={modelId}
                   onSelectItem={onSelectModel}
                   searchPlaceholder={translate('TEXT_SELECT_A_MODEL')}
+                  refreshControl={<AppRefreshControl onRefresh={refetchModels} refreshing={isModelsRefetching} />}
                 />
               </View>
             )

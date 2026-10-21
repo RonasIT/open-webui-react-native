@@ -2,6 +2,7 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useMemo } from 'react';
 import {
   AppPressable,
+  AppRefreshControl,
   AppText,
   FullScreenSearchModal,
   FullScreenSearchModalProps,
@@ -15,7 +16,7 @@ type SearchModelViewProps = Omit<FullScreenSearchModalProps<AIModel>, 'searchPla
 export function SearchModelView({ selectedItemId, ...props }: SearchModelViewProps): ReactElement {
   const translate = useTranslation('CHAT.CREATE_CHAT.SEARCH_MODEL_VIEW');
 
-  const { data: models } = modelsApi.useGetModels();
+  const { data: models, isRefetching, refetch } = modelsApi.useGetModels();
 
   const selectableModels = useMemo(() => getSelectableModels(models), [models]);
 
@@ -38,6 +39,7 @@ export function SearchModelView({ selectedItemId, ...props }: SearchModelViewPro
         selectedItemId={selectedItemId}
         renderTrigger={renderTrigger}
         searchPlaceholder={translate('TEXT_SEARCH_MODEL')}
+        refreshControl={<AppRefreshControl onRefresh={refetch} refreshing={isRefetching} />}
         {...props}
       />
     </View>
