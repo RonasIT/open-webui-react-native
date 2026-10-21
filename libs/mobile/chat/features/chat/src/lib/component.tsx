@@ -143,7 +143,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
       if (
         !isTemporaryChat &&
         lastStatusChangeTimeStamp &&
-        dayjs().diff(lastStatusChangeTimeStamp, 'seconds') > webSocketConfig.pingTimeout
+        dayjs().diff(lastStatusChangeTimeStamp) > webSocketConfig.pingTimeout
       ) {
         refetch();
       }
