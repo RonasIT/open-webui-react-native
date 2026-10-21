@@ -1,7 +1,7 @@
 import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { compact } from 'lodash-es';
-import { ReactElement, useRef } from 'react';
+import { ReactElement, useMemo, useRef } from 'react';
 import { Alert } from 'react-native';
 import {
   ContactSupportSheet,
@@ -10,11 +10,17 @@ import {
 import { SettingsSection, SettingsSectionOption } from '@open-webui-react-native/mobile/settings/ui/section';
 import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-logout';
 import { useSetSelectedModel } from '@open-webui-react-native/mobile/shared/features/use-set-selected-model';
-import { Avatar, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import {
+  Avatar,
+  FullScreenSearchModal,
+  FullScreenSearchModalMethods,
+  View,
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import {
   authApi,
   chatApi,
+  getSelectableModels,
   isTemporaryChatEnforced,
   modelsApi,
   UiSettings,
@@ -37,8 +43,6 @@ import {
   AppVersionFooter,
   ChangePasswordSheet,
   ChangePasswordSheetMethods,
-  DefaultModelSheet,
-  DefaultModelSheetMethods,
   DefaultSystemPromptSheet,
   DefaultSystemPromptSheetMethods,
   ProfileAvatarSheet,
@@ -60,7 +64,7 @@ export function Settings(): ReactElement {
   const navigateOnce = useNavigateOnce();
 
   const { data: profile, isError: isProfileError } = authApi.useGetProfile();
-  const { isError: isModelsError } = modelsApi.useGetModels();
+  const { data: models, isError: isModelsError } = modelsApi.useGetModels();
   const { data: settings, isError: isSettingsError } = usersApi.useGetUserSettings();
   const { mutate: updateUserSettings } = usersApi.useUpdateUserSettings({
     onError: () => ToastService.showError(),
@@ -76,12 +80,14 @@ export function Settings(): ReactElement {
 
   const profileAvatarSheetRef = useRef<ProfileAvatarSheetMethods>(null);
   const profileNameSheetRef = useRef<ProfileNameSheetMethods>(null);
-  const defaultModelSheetRef = useRef<DefaultModelSheetMethods>(null);
+  const defaultModelModalRef = useRef<FullScreenSearchModalMethods>(null);
   const defaultSystemPromptSheetRef = useRef<DefaultSystemPromptSheetMethods>(null);
   const changePasswordSheetRef = useRef<ChangePasswordSheetMethods>(null);
   const contactSupportSheetRef = useRef<ContactSupportSheetMethods>(null);
   const languageSheetRef = useRef<SelectionSheetMethods>(null);
   const markdownRendererSheetRef = useRef<SelectionSheetMethods>(null);
+
+  const selectableModels = useMemo(() => getSelectableModels(models), [models]);
 
   const avatarSource = profile?.profileImageUrl ? { uri: profile.profileImageUrl } : undefined;
   const languageLabel = availableLanguages.find(({ code }) => code === locale)?.label;
@@ -221,7 +227,7 @@ export function Settings(): ReactElement {
     {
       label: translate('TEXT_DEFAULT_MODEL'),
       value: defaultModelValue,
-      onPress: () => defaultModelSheetRef.current?.present(),
+      onPress: () => defaultModelModalRef.current?.present(),
     },
     {
       label: translate('TEXT_DEFAULT_SYSTEM_PROMPT'),
@@ -361,10 +367,12 @@ export function Settings(): ReactElement {
         name={profile?.name}
         avatarUrl={profile?.profileImageUrl} />
       <ChangePasswordSheet ref={changePasswordSheetRef} />
-      <DefaultModelSheet
-        ref={defaultModelSheetRef}
-        selectedModelId={defaultModelId}
-        onConfirm={handleDefaultModelChange}
+      <FullScreenSearchModal
+        ref={defaultModelModalRef}
+        data={selectableModels}
+        selectedItemId={defaultModelId}
+        onSelectItem={handleDefaultModelChange}
+        searchPlaceholder={translate('DEFAULT_MODEL_MODAL.TEXT_SEARCH_MODEL')}
       />
       <DefaultSystemPromptSheet
         ref={defaultSystemPromptSheetRef}
