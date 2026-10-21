@@ -1,6 +1,6 @@
 import { useMutation, UseMutationOptions, UseMutationResult, useQuery, UseQueryResult } from '@tanstack/react-query';
-import { AxiosError, AxiosRequestConfig } from 'axios';
-import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
+import { AxiosError } from 'axios';
+import { ApiErrorData, RequestOptions } from '@open-webui-react-native/shared/data-access/api-client';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { authApiConfig } from './config';
 import { SignInRequest, UpdatePasswordRequest, UpdateProfileRequest } from './models';
@@ -16,9 +16,7 @@ function useSignInWithEmailPassword(
   });
 }
 
-function useGetProfile(
-  requestOptions?: Pick<AxiosRequestConfig, 'timeout'>,
-): UseQueryResult<SignInResponse, AxiosError> {
+function useGetProfile(requestOptions?: RequestOptions): UseQueryResult<SignInResponse, AxiosError> {
   return useQuery<SignInResponse, AxiosError>({
     queryFn: () => authService.getProfile(requestOptions),
     queryKey: authApiConfig.getProfileQueryKey,

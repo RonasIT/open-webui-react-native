@@ -1,6 +1,5 @@
-import { AxiosRequestConfig } from 'axios';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
-import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
+import { getApiService, RequestOptions } from '@open-webui-react-native/shared/data-access/api-client';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { authApiConfig } from './config';
 import { SignInResponse, SignInRequest, UpdateProfileRequest, UpdatePasswordRequest } from './models';
@@ -35,7 +34,7 @@ class AuthService {
     }
   }
 
-  public async getProfile(requestOptions?: Pick<AxiosRequestConfig, 'timeout'>): Promise<SignInResponse> {
+  public async getProfile(requestOptions?: RequestOptions): Promise<SignInResponse> {
     const response: SignInResponse = await getApiService().get(`${authApiConfig.route}/`, undefined, requestOptions);
 
     return plainToInstance(SignInResponse, response);

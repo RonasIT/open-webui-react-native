@@ -1,12 +1,11 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { AxiosError, AxiosRequestConfig } from 'axios';
+import { AxiosError } from 'axios';
+import { RequestOptions } from '@open-webui-react-native/shared/data-access/api-client';
 import { modelsApiConfig } from './config';
 import { AIModel } from './models';
 import { modelsService } from './service';
 
-export function useGetModels(
-  requestOptions?: Pick<AxiosRequestConfig, 'timeout'>,
-): UseQueryResult<Array<AIModel>, AxiosError> {
+export function useGetModels(requestOptions?: RequestOptions): UseQueryResult<Array<AIModel>, AxiosError> {
   return useQuery<Array<AIModel>, AxiosError>({
     queryFn: () => modelsService.get(requestOptions),
     queryKey: modelsApiConfig.getModelsQueryKey,

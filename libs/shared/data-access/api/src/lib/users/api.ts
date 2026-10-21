@@ -8,8 +8,8 @@ import {
   UseQueryOptions,
   UseQueryResult,
 } from '@tanstack/react-query';
-import { AxiosError, AxiosRequestConfig } from 'axios';
-import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
+import { AxiosError } from 'axios';
+import { ApiErrorData, RequestOptions } from '@open-webui-react-native/shared/data-access/api-client';
 import { createEntityApi } from '@open-webui-react-native/shared/data-access/base-entity';
 import { getNextPageParam } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
@@ -51,9 +51,7 @@ function useGetUserInfo(
   });
 }
 
-function useGetUserSettings(
-  requestOptions?: Pick<AxiosRequestConfig, 'timeout'>,
-): UseQueryResult<UserSettings, AxiosError<ApiErrorData>> {
+function useGetUserSettings(requestOptions?: RequestOptions): UseQueryResult<UserSettings, AxiosError<ApiErrorData>> {
   return useQuery<UserSettings, AxiosError<ApiErrorData>>({
     queryFn: () => usersService.getUserSettings(requestOptions),
     queryKey: usersApiConfig.getUserSettingsQueryKey,
