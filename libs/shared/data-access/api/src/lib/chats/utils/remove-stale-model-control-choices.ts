@@ -9,6 +9,9 @@ import { UserSettings } from '../../users/models';
 import { usersService } from '../../users/service';
 import { setModelControlChoices } from '../../users/utils/set-model-control-choices';
 
+// NOTE: The message is long and lists the controls, so it stays on screen longer than the default.
+const staleChoiceToastDuration = 5000;
+
 export interface RemoveStaleModelControlChoicesArgs {
   model: AIModel;
   staleControlKeys: Array<string>;
@@ -29,6 +32,7 @@ export async function removeStaleModelControlChoices({
       count: controlNames.length,
       controls: controlNames.join(i18n.t('SHARED.MODEL_CONTROLS.TEXT_CONTROLS_SEPARATOR')),
     }),
+    staleChoiceToastDuration,
   );
 
   // NOTE: A refetch in flight would put the stale choices back over the cleaned ones.

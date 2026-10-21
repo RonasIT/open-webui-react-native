@@ -32,12 +32,12 @@ export class ToastService {
     });
   }
 
-  public static show(message: string): void {
+  public static show(message: string, visibilityTime = 2000): void {
     Toast.show({
       type: 'info',
       position: 'top',
       topOffset: 32,
-      visibilityTime: 2000,
+      visibilityTime,
       text1: message,
     });
   }
