@@ -13,7 +13,7 @@ import React, {
 } from 'react';
 import { InteractionManager, RefreshControlProps } from 'react-native';
 import { useBottomInset } from '@open-webui-react-native/mobile/shared/utils/use-bottom-inset';
-// eslint-disable-next-line @nx/enforce-module-boundaries
+ 
 import { MockFolderItemIds } from '@open-webui-react-native/shared/data-access/api';
 import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
 import { AppFlashList } from '../flash-list';
@@ -66,17 +66,6 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
     setIsOpen(false);
   };
 
-  useImperativeHandle(
-    ref,
-    () => ({
-      present: (): void => {
-        setIsOpen(true);
-      },
-      close,
-    }),
-    [],
-  );
-
   const filteredData = (data ?? []).filter((item) => new RegExp(query, 'i').test(item.name));
 
   const combinedData = unfilteredData ? [...unfilteredData, ...filteredData] : filteredData;
@@ -100,6 +89,9 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
       }, 300);
     }
   };
+
+  //NOTE No deps: present must see the current data and selected item to scroll to it
+  useImperativeHandle(ref, () => ({ present: handleOpen, close }));
 
   const handleCancel = (): void => {
     setIsOpen(false);
