@@ -112,6 +112,15 @@
     "USE_ATTACHED_FILES": {
       "TEXT_IMAGE_UPLOAD_FAILED": "Не удалось загрузить фото. Проверьте подключение и попробуйте ещё раз"
     },
+    "MARKDOWN_VIEW": {
+      "DIAGRAM_BLOCK": {
+        "BUTTON_CODE": "Код",
+        "BUTTON_DIAGRAM": "Диаграмма",
+        "TEXT_SHOW_CODE": "Показать код",
+        "TEXT_SHOW_DIAGRAM": "Показать диаграмму",
+        "TEXT_OPEN_FULLSCREEN": "Открыть диаграмму на весь экран"
+      }
+    },
     "MODEL_CONTROLS": {
       "TEXT_CONTROL_NAME": "«{{control}}»",
       "TEXT_CONTROLS_SEPARATOR": ", ",

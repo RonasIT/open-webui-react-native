@@ -112,6 +112,15 @@
     "USE_ATTACHED_FILES": {
       "TEXT_IMAGE_UPLOAD_FAILED": "无法上传照片。请检查网络连接后重试"
     },
+    "MARKDOWN_VIEW": {
+      "DIAGRAM_BLOCK": {
+        "BUTTON_CODE": "代码",
+        "BUTTON_DIAGRAM": "图表",
+        "TEXT_SHOW_CODE": "显示代码",
+        "TEXT_SHOW_DIAGRAM": "显示图表",
+        "TEXT_OPEN_FULLSCREEN": "全屏打开图表"
+      }
+    },
     "MODEL_CONTROLS": {
       "TEXT_CONTROL_NAME": "“{{control}}”",
       "TEXT_CONTROLS_SEPARATOR": "、",

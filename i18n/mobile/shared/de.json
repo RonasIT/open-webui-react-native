@@ -112,6 +112,15 @@
     "USE_ATTACHED_FILES": {
       "TEXT_IMAGE_UPLOAD_FAILED": "Foto konnte nicht hochgeladen werden. Prüfe die Verbindung und versuche es erneut"
     },
+    "MARKDOWN_VIEW": {
+      "DIAGRAM_BLOCK": {
+        "BUTTON_CODE": "Code",
+        "BUTTON_DIAGRAM": "Diagramm",
+        "TEXT_SHOW_CODE": "Code anzeigen",
+        "TEXT_SHOW_DIAGRAM": "Diagramm anzeigen",
+        "TEXT_OPEN_FULLSCREEN": "Diagramm im Vollbild öffnen"
+      }
+    },
     "MODEL_CONTROLS": {
       "TEXT_CONTROL_NAME": "„{{control}}“",
       "TEXT_CONTROLS_SEPARATOR": ", ",

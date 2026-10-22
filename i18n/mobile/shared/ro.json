@@ -112,6 +112,15 @@
     "USE_ATTACHED_FILES": {
       "TEXT_IMAGE_UPLOAD_FAILED": "Fotografia nu a putut fi încărcată. Verifică conexiunea și încearcă din nou"
     },
+    "MARKDOWN_VIEW": {
+      "DIAGRAM_BLOCK": {
+        "BUTTON_CODE": "Cod",
+        "BUTTON_DIAGRAM": "Diagramă",
+        "TEXT_SHOW_CODE": "Afișează codul",
+        "TEXT_SHOW_DIAGRAM": "Afișează diagrama",
+        "TEXT_OPEN_FULLSCREEN": "Deschide diagrama pe tot ecranul"
+      }
+    },
     "MODEL_CONTROLS": {
       "TEXT_CONTROL_NAME": "„{{control}}”",
       "TEXT_CONTROLS_SEPARATOR": ", ",

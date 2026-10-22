@@ -112,6 +112,15 @@
     "USE_ATTACHED_FILES": {
       "TEXT_IMAGE_UPLOAD_FAILED": "写真をアップロードできませんでした。接続を確認して、もう一度お試しください"
     },
+    "MARKDOWN_VIEW": {
+      "DIAGRAM_BLOCK": {
+        "BUTTON_CODE": "コード",
+        "BUTTON_DIAGRAM": "図",
+        "TEXT_SHOW_CODE": "コードを表示",
+        "TEXT_SHOW_DIAGRAM": "図を表示",
+        "TEXT_OPEN_FULLSCREEN": "図を全画面で開く"
+      }
+    },
     "MODEL_CONTROLS": {
       "TEXT_CONTROL_NAME": "「{{control}}」",
       "TEXT_CONTROLS_SEPARATOR": "、",
