@@ -19,7 +19,8 @@ export interface OptionSliderProps {
 export function OptionSlider({ options, choice, defaultOptionKey, onOptionChange }: OptionSliderProps): ReactElement {
   const optionKeys = Object.keys(options);
   const stepCount = optionKeys.length;
-  const selectedIndex = Math.max(0, optionKeys.indexOf(choice ?? defaultOptionKey ?? ''));
+  const currentIndex = optionKeys.indexOf(choice ?? defaultOptionKey ?? '');
+  const selectedIndex = Math.max(0, currentIndex);
 
   const [trackWidth, setTrackWidth] = useState(0);
   //NOTE: Option shown in the tooltip while dragging.
@@ -52,7 +53,7 @@ export function OptionSlider({ options, choice, defaultOptionKey, onOptionChange
   };
 
   const selectIndex = (index: number): void => {
-    if (index === selectedIndex) {
+    if (index === currentIndex) {
       return;
     }
 
