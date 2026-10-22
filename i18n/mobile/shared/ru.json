@@ -21,6 +21,7 @@
       "BUTTON_CONFIRM": "Подтвердить",
       "BUTTON_OPEN_SETTINGS": "Открыть настройки",
       "TEXT_UNABLE_TO_OPEN_SETTINGS": "Не удалось открыть настройки",
+      "TEXT_UNABLE_TO_OPEN_LINK": "Не удалось открыть ссылку",
       "TEXT_SETTINGS": "Настройки",
       "TEXT_DISABLED_IN_OFFLINE_MODE": "Функции недоступны в офлайн-режиме",
       "ACTIONS_BOTTOM_SHEET": {
