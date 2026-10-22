@@ -3,7 +3,6 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } from 'react';
 import { ActionsBottomSheet, ActionsBottomSheetAction, Icon } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { ModelControl, ModelControlChoices } from '@open-webui-react-native/shared/data-access/api';
-import { getModelControlDefaultLabel } from '../../utils';
 
 export type ModelControlMenuSheetMethods = {
   present: (controlKey: string) => void;
@@ -46,30 +45,47 @@ export function ModelControlMenuSheet({ ref, controls, choices, onSelect }: Mode
       return [];
     }
 
-    const isDefaultSelected = !currentChoice || !control.options[currentChoice];
+    // An explicit choice equal to the default counts as the default too.
+    const isDefaultSelected = !currentChoice || !control.options[currentChoice] || currentChoice === control.default;
+    const hasDefaultOption = !!control.default && !!control.options[control.default];
+
+    const resetToDefault = (): void => {
+      onSelect(activeControlKey);
+      closeSheet();
+    };
+
+    const optionActions = Object.entries(control.options).map(([optionKey, option]) => {
+      const isDefaultOption = hasDefaultOption && optionKey === control.default;
+      const isSelected = isDefaultOption ? isDefaultSelected : currentChoice === optionKey;
+
+      return {
+        // NOTE: Prefixed so an option keyed `default` doesn't clash with the Default item.
+        key: `option-${optionKey}`,
+        title: isDefaultOption ? translate('TEXT_DEFAULT_OPTION', { option: option.label }) : option.label,
+        isIconShown: false,
+        rightContent: isSelected ? <Icon name='tick' /> : undefined,
+        onPress: isDefaultOption
+          ? resetToDefault
+          : (): void => {
+              onSelect(activeControlKey, optionKey);
+              closeSheet();
+            },
+      };
+    });
+
+    if (hasDefaultOption) {
+      return optionActions;
+    }
 
     return [
       {
         key: 'default',
-        title: getModelControlDefaultLabel(control, translate),
+        title: translate('TEXT_DEFAULT'),
         isIconShown: false,
         rightContent: isDefaultSelected ? <Icon name='tick' /> : undefined,
-        onPress: (): void => {
-          onSelect(activeControlKey);
-          closeSheet();
-        },
+        onPress: resetToDefault,
       },
-      ...Object.entries(control.options).map(([optionKey, option]) => ({
-        // NOTE: Prefixed so an option keyed `default` doesn't clash with the Default item.
-        key: `option-${optionKey}`,
-        title: option.label,
-        isIconShown: false,
-        rightContent: currentChoice === optionKey ? <Icon name='tick' /> : undefined,
-        onPress: (): void => {
-          onSelect(activeControlKey, optionKey);
-          closeSheet();
-        },
-      })),
+      ...optionActions,
     ];
   };
 

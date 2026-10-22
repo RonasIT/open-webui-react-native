@@ -210,11 +210,12 @@
       "TEXT_SAVE_FAILED": "Impossible d'enregistrer les contrôles du modèle. Veuillez réessayer.",
       "MODEL_CONTROL_ROW": {
         "TEXT_DEFAULT": "Par défaut",
-        "TEXT_DEFAULT_WITH_OPTION": "Par défaut · {{option}}"
+        "TEXT_RESET_TO_DEFAULT": "Rétablir la valeur par défaut",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "Rétablir la valeur par défaut ({{option}})"
       },
       "MODEL_CONTROL_MENU_SHEET": {
         "TEXT_DEFAULT": "Par défaut",
-        "TEXT_DEFAULT_WITH_OPTION": "Par défaut · {{option}}"
+        "TEXT_DEFAULT_OPTION": "{{option}} (par défaut)"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

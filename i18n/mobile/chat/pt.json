@@ -210,11 +210,12 @@
       "TEXT_SAVE_FAILED": "Não foi possível salvar os controles do modelo. Tente novamente.",
       "MODEL_CONTROL_ROW": {
         "TEXT_DEFAULT": "Padrão",
-        "TEXT_DEFAULT_WITH_OPTION": "Padrão · {{option}}"
+        "TEXT_RESET_TO_DEFAULT": "Restaurar padrão",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "Restaurar padrão ({{option}})"
       },
       "MODEL_CONTROL_MENU_SHEET": {
         "TEXT_DEFAULT": "Padrão",
-        "TEXT_DEFAULT_WITH_OPTION": "Padrão · {{option}}"
+        "TEXT_DEFAULT_OPTION": "{{option}} (padrão)"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

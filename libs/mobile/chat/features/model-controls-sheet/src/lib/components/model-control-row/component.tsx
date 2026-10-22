@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { AppPressable, AppText, Icon, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { ModelControl, ModelControlDisplay } from '@open-webui-react-native/shared/data-access/api';
-import { getModelControlDefaultLabel, getModelControlValueLabel } from '../../utils';
+import { getModelControlResetLabel, getModelControlValueLabel } from '../../utils';
 import { OptionSlider } from '../option-slider';
 
 export interface ModelControlRowProps {
@@ -66,7 +66,7 @@ export function ModelControlRow({
           className={cn('self-start active:opacity-60', isDefaultSelected && 'opacity-40')}
           onPress={() => onSliderOptionChange(controlKey)}>
           <AppText className='text-sm-sm sm:text-sm text-text-secondary'>
-            {getModelControlDefaultLabel(control, translate)}
+            {getModelControlResetLabel(control, translate)}
           </AppText>
         </AppPressable>
       </View>

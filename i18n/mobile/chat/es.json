@@ -210,11 +210,12 @@
       "TEXT_SAVE_FAILED": "No se pudieron guardar los controles del modelo. Inténtalo de nuevo.",
       "MODEL_CONTROL_ROW": {
         "TEXT_DEFAULT": "Predeterminado",
-        "TEXT_DEFAULT_WITH_OPTION": "Predeterminado · {{option}}"
+        "TEXT_RESET_TO_DEFAULT": "Restablecer a predeterminado",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "Restablecer a predeterminado ({{option}})"
       },
       "MODEL_CONTROL_MENU_SHEET": {
         "TEXT_DEFAULT": "Predeterminado",
-        "TEXT_DEFAULT_WITH_OPTION": "Predeterminado · {{option}}"
+        "TEXT_DEFAULT_OPTION": "{{option}} (predeterminado)"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {
