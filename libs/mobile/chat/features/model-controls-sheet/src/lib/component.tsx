@@ -1,6 +1,6 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
-import { isEqual, omit } from 'lodash-es';
+import { isEqual, omit, omitBy } from 'lodash-es';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } from 'react';
 import {
   AppBottomSheet,
@@ -86,8 +86,10 @@ export function ModelControlsSheet({ ref, model, onClose }: ModelControlsSheetPr
     }
 
     const { validChoices } = splitStaleModelControlChoices(model, draftChoices);
+    //NOTE: A choice equal to the default is the default: drop old explicit ones (web, older builds).
+    const choices = omitBy(validChoices, (optionKey, controlKey) => optionKey === modelControls[controlKey]?.default);
 
-    updateModelControlChoices({ modelId: model.id, choices: validChoices });
+    updateModelControlChoices({ modelId: model.id, choices });
   };
 
   //NOTE: No option means the default: the choice is removed, not saved.
