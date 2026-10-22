@@ -60,10 +60,8 @@
         "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Wiederholen Sie Ihr neues Passwort",
         "TEXT_PASSWORD_CHANGED": "Ihr Passwort wurde geändert"
       },
-      "DEFAULT_MODEL_SHEET": {
-        "TEXT_TITLE": "Standardmodell",
-        "TEXT_SEARCH_MODEL": "Modell suchen",
-        "TEXT_NO_MODELS": "Es gibt keine Modelle."
+      "DEFAULT_MODEL_MODAL": {
+        "TEXT_SEARCH_MODEL": "Modell suchen"
       },
       "DEFAULT_SYSTEM_PROMPT_SHEET": {
         "TEXT_TITLE": "Standard-System-Prompt",

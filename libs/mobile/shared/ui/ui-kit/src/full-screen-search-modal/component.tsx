@@ -66,17 +66,6 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
     setIsOpen(false);
   };
 
-  useImperativeHandle(
-    ref,
-    () => ({
-      present: (): void => {
-        setIsOpen(true);
-      },
-      close,
-    }),
-    [],
-  );
-
   const filteredData = (data ?? []).filter((item) => new RegExp(query, 'i').test(item.name));
 
   const combinedData = unfilteredData ? [...unfilteredData, ...filteredData] : filteredData;
@@ -100,6 +89,9 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
       }, 300);
     }
   };
+
+  //NOTE No deps: present must see the current data and selected item to scroll to it
+  useImperativeHandle(ref, () => ({ present: handleOpen, close }));
 
   const handleCancel = (): void => {
     setIsOpen(false);
