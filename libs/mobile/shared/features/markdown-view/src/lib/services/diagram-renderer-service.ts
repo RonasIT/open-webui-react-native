@@ -22,10 +22,14 @@ export type DiagramRequest = DiagramRenderRequest | DiagramRasterizeRequest;
 
 export type DiagramRenderResult = { svg: string; width: number; height: number } | { error: string };
 
-type DiagramReply = DiagramRenderResult | { png: string };
+// NOTE: Transient errors (timeout, terminated renderer) are not cached, a later mount of the block retries the render.
+type DiagramReply = DiagramRenderResult | { error: string; isTransient: true } | { png: string };
 
 // NOTE: A diagram that kills the WebView process (e.g. OOM) would otherwise be resent after every reload forever.
 const MAX_RENDER_ATTEMPTS = 2;
+// NOTE: A WebView killed while loading (e.g. OOM on a weak device) would otherwise be remounted forever.
+const MAX_RESETS_WITHOUT_READY = 3;
+const MAX_CACHED_RESULTS = 100;
 
 type DiagramRendererMessage = { type: 'ready' } | ({ type: 'result'; id: string } & DiagramReply);
 
@@ -37,12 +41,14 @@ interface PendingRequest {
 
 const getReplyError = (reply: DiagramReply): string => ('error' in reply ? reply.error : 'Unexpected renderer reply');
 
+const rendererTerminatedReply: DiagramReply = { error: 'Diagram renderer process was terminated', isTransient: true };
+
 /**
  * Queue and in-memory cache between diagram blocks and the hidden diagram WebView (`DiagramRenderer`).
  * Results are cached by language + theme + code, so recycled or re-rendered cells do not render twice.
  */
 export class DiagramRendererService {
-  // ponytail: unbounded cache for the app session, add an LRU limit if long sessions grow memory noticeably.
+  // ponytail: FIFO eviction, a block still mounted when its entry is evicted falls back to code; switch to LRU if seen.
   private results = new Map<string, DiagramRenderResult>();
   private pendingRequests = new Map<string, PendingRequest>();
   private requestedKeys = new Set<string>();
@@ -50,6 +56,7 @@ export class DiagramRendererService {
   private send: ((request: DiagramRequest) => void) | null = null;
   private isReady = false;
   private isRendererNeeded = false;
+  private resetsWithoutReady = 0;
   private nextRequestId = 0;
 
   public subscribe = (listener: () => void): (() => void) => {
@@ -75,11 +82,20 @@ export class DiagramRendererService {
 
     this.requestedKeys.add(key);
     this.enqueue({ type: 'render', id: this.createRequestId(), language, code, isDarkTheme }, (reply) => {
+      this.requestedKeys.delete(key);
+
+      if ('isTransient' in reply) {
+        return;
+      }
+
       this.results.set(
         key,
         'svg' in reply ? { svg: reply.svg, width: reply.width, height: reply.height } : { error: getReplyError(reply) },
       );
-      this.requestedKeys.delete(key);
+
+      if (this.results.size > MAX_CACHED_RESULTS) {
+        this.results.delete(this.results.keys().next().value as string);
+      }
       this.notify();
     });
   }
@@ -110,18 +126,34 @@ export class DiagramRendererService {
     this.flush();
   }
 
-  // NOTE: Called when the WebView content process is gone, unanswered requests are resent after the remount
-  // until they reach MAX_RENDER_ATTEMPTS, then they fail and fall back to the code block.
+  // NOTE: Called when the WebView content process is gone, unanswered requests are resent after the remount.
+  // The WebView handles requests one at a time in send order, so only the oldest pending one was being processed:
+  // it alone gets an attempt counted and fails (falls back to the code block) on reaching MAX_RENDER_ATTEMPTS.
+  // A renderer that keeps dying before "ready" fails every pending request and is unmounted until the next request.
   public handleRendererReset(): void {
+    const [inFlight] = this.isReady ? this.pendingRequests.entries() : [];
     this.isReady = false;
+    this.resetsWithoutReady++;
 
-    this.pendingRequests.forEach((pending, id) => {
-      pending.attempts++;
+    if (this.resetsWithoutReady >= MAX_RESETS_WITHOUT_READY) {
+      this.resetsWithoutReady = 0;
+      this.isRendererNeeded = false;
+      this.pendingRequests.forEach((_, id) => this.resolve(id, rendererTerminatedReply));
+      this.notify();
 
-      if (pending.attempts >= MAX_RENDER_ATTEMPTS) {
-        this.resolve(id, { error: 'Diagram renderer process was terminated' });
-      }
-    });
+      return;
+    }
+
+    if (!inFlight) {
+      return;
+    }
+
+    const [id, pending] = inFlight;
+    pending.attempts++;
+
+    if (pending.attempts >= MAX_RENDER_ATTEMPTS) {
+      this.resolve(id, rendererTerminatedReply);
+    }
   }
 
   public handleMessage(data: string): void {
@@ -135,9 +167,15 @@ export class DiagramRendererService {
 
     if (message.type === 'ready') {
       this.isReady = true;
+      this.resetsWithoutReady = 0;
       this.flush();
 
       return;
+    }
+
+    // NOTE: The page reloads after a transient (timeout) reply, requests are sent again on its "ready".
+    if ('isTransient' in message) {
+      this.isReady = false;
     }
 
     this.resolve(message.id, message);

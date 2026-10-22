@@ -34,7 +34,8 @@
   var LIGHT_VEGA_CONFIG = { background: 'transparent' };
   var RENDER_TIMEOUT_MS = 10000;
   var RASTER_SCALE = 3;
-  var RASTER_MAX_SIDE = 4096;
+  // NOTE: Below the iOS canvas area limit (4096²) with headroom, and keeps the base64 PNG sent via postMessage smaller.
+  var RASTER_MAX_SIDE = 3072;
 
   var host = document.getElementById('host');
   var queue = Promise.resolve();
@@ -50,6 +51,13 @@
     if (!svg) {
       throw new Error('Renderer returned no SVG');
     }
+
+    // NOTE: Removing HTML labels with text would leave empty shapes, the block shows the code instead.
+    svg.querySelectorAll('foreignObject').forEach(function (element) {
+      if (element.textContent.trim()) {
+        throw new Error('Diagram uses HTML labels that cannot be displayed');
+      }
+    });
 
     // NOTE: react-native-svg cannot draw HTML content or <switch>; <image> and external <use> could hit the network.
     svg.querySelectorAll('foreignObject, switch, image, script').forEach(function (element) {
@@ -219,7 +227,7 @@
       promise,
       new Promise(function (resolve, reject) {
         setTimeout(function () {
-          reject(new Error('Diagram render timed out'));
+          reject(Object.assign(new Error('Diagram render timed out'), { isTimeout: true }));
         }, RENDER_TIMEOUT_MS);
       }),
     ]);
@@ -280,8 +288,21 @@
 
       post(Object.assign({ type: 'result', id: request.id }, result));
     } catch (error) {
+      var reply = { type: 'result', id: request.id, error: String((error && error.message) || error) };
       host.innerHTML = '';
-      post({ type: 'result', id: request.id, error: String((error && error.message) || error) });
+
+      if (!(error && error.isTimeout)) {
+        post(reply);
+
+        return;
+      }
+
+      // NOTE: The timed-out render keeps running and mermaid has global state, so the page is reloaded instead of
+      // starting the next request next to it. The queue stays blocked, the app resends unanswered requests on "ready".
+      post(Object.assign(reply, { isTransient: true }));
+      location.reload();
+
+      return new Promise(function () {});
     }
   }
 

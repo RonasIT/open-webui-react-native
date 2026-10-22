@@ -59,7 +59,7 @@ export function DiagramRenderer(): ReactElement | null {
     return () => diagramRendererService.setSender(null);
   }, [isRendererNeeded]);
 
-  if (!rendererUri) {
+  if (!isRendererNeeded || !rendererUri) {
     return null;
   }
 
