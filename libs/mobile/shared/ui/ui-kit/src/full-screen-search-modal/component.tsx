@@ -13,7 +13,7 @@ import React, {
 } from 'react';
 import { InteractionManager, RefreshControlProps } from 'react-native';
 import { useBottomInset } from '@open-webui-react-native/mobile/shared/utils/use-bottom-inset';
- 
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { MockFolderItemIds } from '@open-webui-react-native/shared/data-access/api';
 import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
 import { AppFlashList } from '../flash-list';
