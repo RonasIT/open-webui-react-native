@@ -120,6 +120,13 @@
         "TEXT_SHOW_DIAGRAM": "図を表示",
         "TEXT_OPEN_FULLSCREEN": "図を全画面で開く"
       }
+    },
+    "MODEL_CONTROLS": {
+      "TEXT_CONTROL_NAME": "「{{control}}」",
+      "TEXT_CONTROLS_SEPARATOR": "、",
+      "TEXT_STALE_CHOICE": {
+        "other": "{{controls}}の選択肢は利用できなくなりました — デフォルトのオプションが使用されます"
+      }
     }
   }
 }

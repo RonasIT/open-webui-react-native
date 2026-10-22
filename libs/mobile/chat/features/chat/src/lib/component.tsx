@@ -81,6 +81,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
     refetch,
     isLoading,
     isRefetching,
+    isFetchedAfterMount,
     isSuccess,
   } = chatApi.useGet(chatId, { enabled: !isTemporaryChat });
   const { data: profile } = authApi.useGetProfile();
@@ -130,7 +131,9 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
 
   const firstMessageGeneratedRef = useRef(false);
 
-  const shouldHideContent = isLoading || isRefetching || !isMessagesListLoaded || !selectedModelId;
+  // NOTE: Only the first fetch after mount hides the chat; foreground refetches update it in place.
+  const shouldHideContent =
+    isLoading || (isRefetching && !isFetchedAfterMount) || !isMessagesListLoaded || !selectedModelId;
 
   useSubscribeToQueryCache({
     eventType: 'removed',
@@ -143,7 +146,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
       if (
         !isTemporaryChat &&
         lastStatusChangeTimeStamp &&
-        dayjs().diff(lastStatusChangeTimeStamp, 'seconds') > webSocketConfig.pingTimeout
+        dayjs().diff(lastStatusChangeTimeStamp) > webSocketConfig.pingTimeout
       ) {
         refetch();
       }

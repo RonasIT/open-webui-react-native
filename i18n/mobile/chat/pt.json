@@ -43,6 +43,7 @@
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "Prompt do sistema",
         "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Não definido",
+        "TEXT_MODEL_CONTROLS": "Controles do modelo",
         "TEXT_TOOLS": "Ferramentas",
         "TEXT_FULL_ACCESS_FOR_TOOLS": "Acesso total",
         "BUTTON_CLOSE": "Fechar"
@@ -202,6 +203,19 @@
         "BUTTON_NEXT": "Próximo",
         "BUTTON_SUBMIT": "Enviar",
         "BUTTON_DENY": "Ignorar"
+      }
+    },
+    "MODEL_CONTROLS_SHEET": {
+      "TEXT_TITLE": "Controles do modelo",
+      "TEXT_SAVE_FAILED": "Não foi possível salvar os controles do modelo. Tente novamente.",
+      "MODEL_CONTROL_ROW": {
+        "TEXT_DEFAULT": "Padrão",
+        "TEXT_RESET_TO_DEFAULT": "Restaurar padrão",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "Restaurar padrão ({{option}})"
+      },
+      "MODEL_CONTROL_MENU_SHEET": {
+        "TEXT_DEFAULT": "Padrão",
+        "TEXT_DEFAULT_WITH_OPTION": "Padrão · {{option}}"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

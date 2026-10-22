@@ -120,6 +120,14 @@
         "TEXT_SHOW_DIAGRAM": "Diagramm anzeigen",
         "TEXT_OPEN_FULLSCREEN": "Diagramm im Vollbild öffnen"
       }
+    },
+    "MODEL_CONTROLS": {
+      "TEXT_CONTROL_NAME": "„{{control}}“",
+      "TEXT_CONTROLS_SEPARATOR": ", ",
+      "TEXT_STALE_CHOICE": {
+        "one": "Die ausgewählte Option für {{controls}} ist nicht mehr verfügbar — die Standardoption wird verwendet",
+        "other": "Die ausgewählten Optionen für {{controls}} sind nicht mehr verfügbar — die Standardoptionen werden verwendet"
+      }
     }
   }
 }

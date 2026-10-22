@@ -43,6 +43,7 @@
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "系统提示词",
         "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "未设置",
+        "TEXT_MODEL_CONTROLS": "模型控制",
         "TEXT_TOOLS": "工具",
         "TEXT_FULL_ACCESS_FOR_TOOLS": "完全访问",
         "BUTTON_CLOSE": "关闭"
@@ -201,6 +202,19 @@
         "BUTTON_NEXT": "下一步",
         "BUTTON_SUBMIT": "发送",
         "BUTTON_DENY": "跳过"
+      }
+    },
+    "MODEL_CONTROLS_SHEET": {
+      "TEXT_TITLE": "模型控制",
+      "TEXT_SAVE_FAILED": "无法保存模型控制，请重试。",
+      "MODEL_CONTROL_ROW": {
+        "TEXT_DEFAULT": "默认",
+        "TEXT_RESET_TO_DEFAULT": "恢复默认",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "恢复默认（{{option}}）"
+      },
+      "MODEL_CONTROL_MENU_SHEET": {
+        "TEXT_DEFAULT": "默认",
+        "TEXT_DEFAULT_WITH_OPTION": "默认 · {{option}}"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

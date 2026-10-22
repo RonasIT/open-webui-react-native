@@ -43,6 +43,7 @@
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "Systemprompt",
         "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Nicht festgelegt",
+        "TEXT_MODEL_CONTROLS": "Modellsteuerung",
         "TEXT_TOOLS": "Tools",
         "TEXT_FULL_ACCESS_FOR_TOOLS": "Vollzugriff",
         "BUTTON_CLOSE": "Schließen"
@@ -202,6 +203,19 @@
         "BUTTON_NEXT": "Weiter",
         "BUTTON_SUBMIT": "Senden",
         "BUTTON_DENY": "Überspringen"
+      }
+    },
+    "MODEL_CONTROLS_SHEET": {
+      "TEXT_TITLE": "Modellsteuerung",
+      "TEXT_SAVE_FAILED": "Modellsteuerung konnte nicht gespeichert werden. Bitte versuche es erneut.",
+      "MODEL_CONTROL_ROW": {
+        "TEXT_DEFAULT": "Standard",
+        "TEXT_RESET_TO_DEFAULT": "Auf Standard zurücksetzen",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "Auf Standard zurücksetzen ({{option}})"
+      },
+      "MODEL_CONTROL_MENU_SHEET": {
+        "TEXT_DEFAULT": "Standard",
+        "TEXT_DEFAULT_WITH_OPTION": "Standard · {{option}}"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

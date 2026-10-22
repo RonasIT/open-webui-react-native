@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/react-native';
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useEffect, useRef, useState } from 'react';
+import { RequestOptions } from '@open-webui-react-native/shared/data-access/api-client';
 import { refetchOnMountWithStaleCheck } from '@open-webui-react-native/shared/data-access/persist-query-helpers';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { appConfigurationApiConfig } from './config';
@@ -20,6 +21,7 @@ type UseGetAppConfigurationResult = UseQueryResult<Configuration, AxiosError> & 
 
 export function useGetAppConfiguration(
   options?: Omit<UseQueryOptions<Configuration, AxiosError>, 'queryKey' | 'queryFn'>,
+  requestOptions?: RequestOptions,
 ): UseGetAppConfigurationResult {
   const [fetchWithUrlResult, setFetchWithUrlResult] = useState<Configuration | undefined>();
   const [customState, setCustomState] = useState<{
@@ -35,7 +37,7 @@ export function useGetAppConfiguration(
   const latestFetchUrlRef = useRef<string>(undefined);
 
   const result = useQuery<Configuration, AxiosError>({
-    queryFn: () => appConfigurationService.get(),
+    queryFn: () => appConfigurationService.get(requestOptions),
     queryKey: appConfigurationApiConfig.getConfigQueryKey,
     staleTime: 5 * 60 * 1000,
     // NOTE: The cache is persisted to MMKV, so without this a launch within `staleTime` of the last
@@ -57,7 +59,12 @@ export function useGetAppConfiguration(
       const config = await queryClient.fetchQuery({
         queryKey: appConfigurationApiConfig.getUrlConfigQueryKey(configUrl),
         queryFn: () =>
-          appConfigurationService.get(configUrl, true, true, appConfigurationApiConfig.urlConfigRequestTimeout),
+          appConfigurationService.get({
+            url: configUrl,
+            skipToast: true,
+            skipSentryReport: true,
+            timeout: appConfigurationApiConfig.urlConfigRequestTimeout,
+          }),
         meta: { persist: false },
       });
 

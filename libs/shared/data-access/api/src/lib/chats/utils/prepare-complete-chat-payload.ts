@@ -2,6 +2,9 @@ import { FileType, Role } from '@open-webui-react-native/shared/data-access/comm
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { modelsApiConfig } from '../../ai-models/config';
 import { AIModel } from '../../ai-models/models';
+import { getModelControlChoices } from '../../ai-models/utils/get-model-control-choices';
+import { isModelControlsAvailable } from '../../ai-models/utils/is-model-controls-available';
+import { splitStaleModelControlChoices } from '../../ai-models/utils/split-stale-model-control-choices';
 import { appConfigurationApiConfig } from '../../app-configuration/config';
 import { Configuration } from '../../app-configuration/models';
 import { toolsApiConfig } from '../../tools/config';
@@ -22,6 +25,7 @@ import {
 } from '../models';
 import { toolApprovalState$, toolsSelectionState$ } from '../state';
 import { getCompletionFiles } from './get-completion-files';
+import { removeStaleModelControlChoices } from './remove-stale-model-control-choices';
 import { resolveDefaultToolIds } from './resolve-default-tool-ids';
 
 export interface PrepareCompleteChatPayloadArgs {
@@ -72,9 +76,33 @@ export function prepareCompleteChatPayload({
   const configuration = queryClient.getQueryData<Configuration>(appConfigurationApiConfig.getConfigQueryKey);
   const toolApprovalMode = toolApprovalState$.mode.peek();
   const isToolApprovalSupported = configuration?.features?.enableToolPermissions === true;
+  const shouldSendToolApprovalMode = isToolApprovalSupported && toolApprovalMode === ToolApprovalMode.ASK;
+
+  const cachedModel = queryClient
+    .getQueryData<Array<AIModel>>(modelsApiConfig.getModelsQueryKey)
+    ?.find(({ id }) => id === model);
+
+  let completionModelControls: CompleteChatParams['modelControls'];
+
+  if (cachedModel && userSettings && isModelControlsAvailable(cachedModel)) {
+    const choices = getModelControlChoices(userSettings, model);
+    const { validChoices, staleControlKeys } = splitStaleModelControlChoices(cachedModel, choices);
+
+    if (staleControlKeys.length > 0) {
+      removeStaleModelControlChoices({ model: cachedModel, staleControlKeys });
+    }
+
+    if (Object.keys(validChoices).length > 0) {
+      completionModelControls = { [model]: validChoices };
+    }
+  }
+
   const params =
-    isToolApprovalSupported && toolApprovalMode === ToolApprovalMode.ASK
-      ? new CompleteChatParams({ toolApprovalMode })
+    shouldSendToolApprovalMode || completionModelControls
+      ? new CompleteChatParams({
+          toolApprovalMode: shouldSendToolApprovalMode ? toolApprovalMode : undefined,
+          modelControls: completionModelControls,
+        })
       : undefined;
 
   // The backend resolves tools only from `tool_ids` — it applies neither the model's nor the user's

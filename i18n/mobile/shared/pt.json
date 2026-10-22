@@ -120,6 +120,14 @@
         "TEXT_SHOW_DIAGRAM": "Mostrar diagrama",
         "TEXT_OPEN_FULLSCREEN": "Abrir diagrama em tela cheia"
       }
+    },
+    "MODEL_CONTROLS": {
+      "TEXT_CONTROL_NAME": "“{{control}}”",
+      "TEXT_CONTROLS_SEPARATOR": ", ",
+      "TEXT_STALE_CHOICE": {
+        "one": "A opção selecionada para {{controls}} não está mais disponível — a opção padrão é usada",
+        "other": "As opções selecionadas para {{controls}} não estão mais disponíveis — as opções padrão são usadas"
+      }
     }
   }
 }
