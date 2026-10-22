@@ -27,11 +27,6 @@ export function ModelControlRow({
   const validChoice = choice && control.options[choice] ? choice : undefined;
   const valueLabel = getModelControlValueLabel(control, validChoice, translate);
   const isSlider = control.display === ModelControlDisplay.SLIDER;
-  const isDefaultSelected = !validChoice || validChoice === control.default;
-
-  const handleSliderOptionChange = (optionKey: string): void => {
-    onSliderOptionChange(controlKey, optionKey === control.default ? undefined : optionKey);
-  };
 
   const header = (
     // Value sits on the title line, so a long description does not move it.
@@ -59,11 +54,11 @@ export function ModelControlRow({
           options={control.options}
           choice={validChoice}
           defaultOptionKey={control.default}
-          onOptionChange={handleSliderOptionChange}
+          onOptionChange={(optionKey) => onSliderOptionChange(controlKey, optionKey)}
         />
         <AppPressable
-          disabled={isDefaultSelected}
-          className={cn('self-start active:opacity-60', isDefaultSelected && 'opacity-40')}
+          disabled={!validChoice}
+          className={cn('self-start active:opacity-60', !validChoice && 'opacity-40')}
           onPress={() => onSliderOptionChange(controlKey)}>
           <AppText className='text-sm-sm sm:text-sm text-text-secondary'>
             {getModelControlResetLabel(control, translate)}

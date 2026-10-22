@@ -52,6 +52,10 @@ export function OptionSlider({ options, choice, defaultOptionKey, onOptionChange
   };
 
   const selectIndex = (index: number): void => {
+    if (index === selectedIndex) {
+      return;
+    }
+
     onOptionChange(optionKeys[index]);
   };
 
