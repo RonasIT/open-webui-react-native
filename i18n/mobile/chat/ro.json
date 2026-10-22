@@ -216,7 +216,7 @@
       },
       "MODEL_CONTROL_MENU_SHEET": {
         "TEXT_DEFAULT": "Implicit",
-        "TEXT_DEFAULT_OPTION": "{{option}} (implicit)"
+        "TEXT_DEFAULT_WITH_OPTION": "Implicit · {{option}}"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

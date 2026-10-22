@@ -215,7 +215,7 @@
       },
       "MODEL_CONTROL_MENU_SHEET": {
         "TEXT_DEFAULT": "Par défaut",
-        "TEXT_DEFAULT_OPTION": "{{option}} (par défaut)"
+        "TEXT_DEFAULT_WITH_OPTION": "Par défaut · {{option}}"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

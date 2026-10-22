@@ -214,7 +214,7 @@
       },
       "MODEL_CONTROL_MENU_SHEET": {
         "TEXT_DEFAULT": "デフォルト",
-        "TEXT_DEFAULT_OPTION": "{{option}}（デフォルト）"
+        "TEXT_DEFAULT_WITH_OPTION": "デフォルト · {{option}}"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

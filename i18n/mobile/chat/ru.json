@@ -216,7 +216,7 @@
       },
       "MODEL_CONTROL_MENU_SHEET": {
         "TEXT_DEFAULT": "По умолчанию",
-        "TEXT_DEFAULT_OPTION": "{{option}} (по умолчанию)"
+        "TEXT_DEFAULT_WITH_OPTION": "По умолчанию · {{option}}"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

@@ -215,7 +215,7 @@
       },
       "MODEL_CONTROL_MENU_SHEET": {
         "TEXT_DEFAULT": "Padrão",
-        "TEXT_DEFAULT_OPTION": "{{option}} (padrão)"
+        "TEXT_DEFAULT_WITH_OPTION": "Padrão · {{option}}"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

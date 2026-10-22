@@ -215,7 +215,7 @@
       },
       "MODEL_CONTROL_MENU_SHEET": {
         "TEXT_DEFAULT": "Predeterminado",
-        "TEXT_DEFAULT_OPTION": "{{option}} (predeterminado)"
+        "TEXT_DEFAULT_WITH_OPTION": "Predeterminado · {{option}}"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {
