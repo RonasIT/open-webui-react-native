@@ -209,7 +209,8 @@
       "TEXT_SAVE_FAILED": "モデルコントロールを保存できませんでした。もう一度お試しください。",
       "MODEL_CONTROL_ROW": {
         "TEXT_DEFAULT": "デフォルト",
-        "TEXT_DEFAULT_WITH_OPTION": "デフォルト · {{option}}"
+        "TEXT_RESET_TO_DEFAULT": "デフォルトに戻す",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "デフォルトに戻す（{{option}}）"
       },
       "MODEL_CONTROL_MENU_SHEET": {
         "TEXT_DEFAULT": "デフォルト",

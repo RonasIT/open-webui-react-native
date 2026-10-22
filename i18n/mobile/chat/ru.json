@@ -211,7 +211,8 @@
       "TEXT_SAVE_FAILED": "Не удалось сохранить параметры модели. Попробуйте ещё раз.",
       "MODEL_CONTROL_ROW": {
         "TEXT_DEFAULT": "По умолчанию",
-        "TEXT_DEFAULT_WITH_OPTION": "По умолчанию · {{option}}"
+        "TEXT_RESET_TO_DEFAULT": "Вернуть по умолчанию",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "Вернуть по умолчанию ({{option}})"
       },
       "MODEL_CONTROL_MENU_SHEET": {
         "TEXT_DEFAULT": "По умолчанию",

@@ -211,7 +211,8 @@
       "TEXT_SAVE_FAILED": "Controalele modelului nu au putut fi salvate. Încearcă din nou.",
       "MODEL_CONTROL_ROW": {
         "TEXT_DEFAULT": "Implicit",
-        "TEXT_DEFAULT_WITH_OPTION": "Implicit · {{option}}"
+        "TEXT_RESET_TO_DEFAULT": "Resetează la implicit",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "Resetează la implicit ({{option}})"
       },
       "MODEL_CONTROL_MENU_SHEET": {
         "TEXT_DEFAULT": "Implicit",

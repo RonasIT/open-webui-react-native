@@ -210,7 +210,8 @@
       "TEXT_SAVE_FAILED": "Couldn't save model controls. Please try again.",
       "MODEL_CONTROL_ROW": {
         "TEXT_DEFAULT": "Default",
-        "TEXT_DEFAULT_WITH_OPTION": "Default · {{option}}"
+        "TEXT_RESET_TO_DEFAULT": "Reset to default",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "Reset to default ({{option}})"
       },
       "MODEL_CONTROL_MENU_SHEET": {
         "TEXT_DEFAULT": "Default",

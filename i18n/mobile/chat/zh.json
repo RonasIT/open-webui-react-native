@@ -209,7 +209,8 @@
       "TEXT_SAVE_FAILED": "无法保存模型控制，请重试。",
       "MODEL_CONTROL_ROW": {
         "TEXT_DEFAULT": "默认",
-        "TEXT_DEFAULT_WITH_OPTION": "默认 · {{option}}"
+        "TEXT_RESET_TO_DEFAULT": "恢复默认",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "恢复默认（{{option}}）"
       },
       "MODEL_CONTROL_MENU_SHEET": {
         "TEXT_DEFAULT": "默认",

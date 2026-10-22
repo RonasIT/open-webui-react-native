@@ -210,7 +210,8 @@
       "TEXT_SAVE_FAILED": "Modellsteuerung konnte nicht gespeichert werden. Bitte versuche es erneut.",
       "MODEL_CONTROL_ROW": {
         "TEXT_DEFAULT": "Standard",
-        "TEXT_DEFAULT_WITH_OPTION": "Standard · {{option}}"
+        "TEXT_RESET_TO_DEFAULT": "Auf Standard zurücksetzen",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "Auf Standard zurücksetzen ({{option}})"
       },
       "MODEL_CONTROL_MENU_SHEET": {
         "TEXT_DEFAULT": "Standard",
