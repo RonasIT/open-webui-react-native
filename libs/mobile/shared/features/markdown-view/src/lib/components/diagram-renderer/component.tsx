@@ -11,7 +11,7 @@ import { diagramRendererService } from '../../services';
 const rendererHtmlAsset = require('./renderer.html');
 
 /**
- * The single hidden WebView that renders Mermaid / Vega / Vega-Lite code to SVG strings for `DiagramBlock`.
+ * The single hidden WebView that renders Mermaid code to SVG strings and rasterizes diagrams for `DiagramBlock`.
  * Mounted once at the app root, the WebView itself is created only when the first diagram is requested.
  */
 export function DiagramRenderer(): ReactElement | null {

@@ -110,6 +110,9 @@
     "tailwind-merge": "^3.3.0",
     "tailwind-variants": "^1.0.0",
     "tailwindcss": "^3.4.17",
+    "vega": "6.2.0",
+    "vega-interpreter": "2.2.1",
+    "vega-lite": "6.4.2",
     "yup": "^1.6.1"
   },
   "devDependencies": {
@@ -171,9 +174,7 @@
     "tsc-files": "^1.1.4",
     "tslib": "^2.3.0",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.19.0",
-    "vega": "6.2.0",
-    "vega-lite": "6.4.2"
+    "typescript-eslint": "^8.19.0"
   },
   "overrides": {
     "metro": "^0.84.0",

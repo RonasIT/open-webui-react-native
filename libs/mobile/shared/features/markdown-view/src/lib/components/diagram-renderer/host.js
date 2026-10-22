@@ -1,4 +1,4 @@
-/* global mermaid, vega, vegaLite */
+/* global mermaid */
 // NOTE: Runs inside the hidden diagram WebView. Inlined into the generated HTML by
 // tools/scripts/build-diagram-renderer-html.mjs, never bundled by Metro.
 (function () {
@@ -17,21 +17,6 @@
     'text-anchor',
     'dominant-baseline',
   ];
-  var DARK_VEGA_CONFIG = {
-    background: 'transparent',
-    title: { color: '#e5e5e5', subtitleColor: '#d4d4d4' },
-    axis: {
-      labelColor: '#d4d4d4',
-      titleColor: '#e5e5e5',
-      domainColor: '#737373',
-      tickColor: '#737373',
-      gridColor: '#404040',
-    },
-    legend: { labelColor: '#d4d4d4', titleColor: '#e5e5e5' },
-    header: { labelColor: '#d4d4d4', titleColor: '#e5e5e5' },
-    view: { stroke: '#404040' },
-  };
-  var LIGHT_VEGA_CONFIG = { background: 'transparent' };
   var RENDER_TIMEOUT_MS = 10000;
   var RASTER_SCALE = 3;
   // NOTE: Below the iOS canvas area limit (4096²) with headroom, and keeps the base64 PNG sent via postMessage smaller.
@@ -151,7 +136,7 @@
     svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 
     // NOTE: XMLSerializer, not outerHTML: HTML serialization emits `&nbsp;` and may leave `<` unescaped
-    // in attributes (e.g. vega aria-label "<18"), which strict XML parsers (SvgXml, <img> SVG) reject.
+    // in attributes, which strict XML parsers (SvgXml, <img> SVG) reject.
     var result = { svg: new XMLSerializer().serializeToString(svg), width: width, height: height };
     host.innerHTML = '';
 
@@ -184,40 +169,6 @@
       if (leftover) {
         leftover.remove();
       }
-    }
-  }
-
-  async function renderVega(language, code, isDarkTheme) {
-    var spec = JSON.parse(code);
-    var config = isDarkTheme ? DARK_VEGA_CONFIG : LIGHT_VEGA_CONFIG;
-    var isVegaLite = language === 'vega-lite';
-    var vegaSpec = isVegaLite ? vegaLite.compile(spec, { config: config }).spec : spec;
-    var loader = vega.loader();
-    var loaderError = null;
-
-    // NOTE: Specs come from the model, so any network or file access is refused. Vega only logs loader failures
-    // and draws an empty chart, so the error is kept and rethrown to fall back to the code block.
-    loader.load = loader.sanitize = function () {
-      loaderError = new Error('External data and resources are not supported');
-
-      return Promise.reject(loaderError);
-    };
-
-    var view = new vega.View(vega.parse(vegaSpec, isVegaLite ? undefined : config), {
-      renderer: 'none',
-      loader: loader,
-    });
-
-    try {
-      var svg = await view.toSVG();
-
-      if (loaderError) {
-        throw loaderError;
-      }
-
-      return prepareSvg(svg, false);
-    } finally {
-      view.finalize();
     }
   }
 
@@ -277,9 +228,7 @@
       return rasterize(request.svg, request.width, request.height, request.background);
     }
 
-    return request.language === 'mermaid'
-      ? renderMermaid(request.id, request.code, request.isDarkTheme)
-      : renderVega(request.language, request.code, request.isDarkTheme);
+    return renderMermaid(request.id, request.code, request.isDarkTheme);
   }
 
   async function processRequest(request) {
