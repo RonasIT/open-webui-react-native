@@ -1,14 +1,12 @@
-import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
-import * as Clipboard from 'expo-clipboard';
-import { ReactElement, useMemo, useState } from 'react';
+import { ReactElement, ReactNode, useState } from 'react';
 import { StyleProp, TextStyle, ViewStyle } from 'react-native';
 import CodeHighlighter from 'react-native-code-highlighter';
 import { github, stackoverflowDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { screenWidth, spacings, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
-import { View, AppText, TouchableHighlight } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
+import { View, AppText } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { CodeBlockHeader } from './components';
 
-interface CodeBlockProps {
+export interface CodeBlockProps {
   sourceInfo?: string;
   content: string;
   textStyle: StyleProp<TextStyle>;
@@ -16,6 +14,7 @@ interface CodeBlockProps {
   codeBlockWidth?: number;
   minCodeBlockWidth?: number;
   scrollViewStyle?: StyleProp<ViewStyle>;
+  headerActions?: ReactNode;
 }
 
 export function CodeBlock({
@@ -26,36 +25,19 @@ export function CodeBlock({
   minCodeBlockWidth = 320,
   scrollViewStyle,
   fenceStyle,
+  headerActions,
 }: CodeBlockProps): ReactElement {
-  const translate = useTranslation('SHARED.CODE_BLOCK');
   const codeBlockWidth = Math.max(elementCodeBlockWidth, minCodeBlockWidth);
   const [codeContentWidth, setCodeContentWidth] = useState(0);
   const isScrollEnabled = codeContentWidth < codeBlockWidth;
   const { isDarkColorScheme } = useColorScheme();
-
-  const handleCopy = async (): Promise<void> => {
-    await Clipboard.setStringAsync(content);
-    ToastService.showSuccess(translate('TEXT_COPIED_TO_CLIPBOARD'));
-  };
-
-  const copyButton = useMemo(
-    () => (
-      <TouchableHighlight
-        className='p-4 rounded-lg ml-auto'
-        underlayColorClassName='color-background-tertiary'
-        onPress={handleCopy}>
-        <AppText className='text-sm-sm sm:text-sm'>{translate('TEXT_COPY')}</AppText>
-      </TouchableHighlight>
-    ),
-    [handleCopy, translate],
-  );
 
   if (!sourceInfo || sourceInfo === 'markdown') {
     const formattedContent = content.endsWith('\n') ? content.slice(0, -1) : content;
 
     return (
       <View className='gap-4'>
-        {copyButton}
+        <CodeBlockHeader content={content} actions={headerActions} />
         <AppText style={fenceStyle} className={'bg-background-tertiary rounded-lg p-12'}>
           {formattedContent}
         </AppText>
@@ -66,10 +48,11 @@ export function CodeBlock({
   //NOTE styles from createStyles does not work
   return (
     <View className='rounded-lg overflow-hidden my-4 p-12 pt-4 bg-background-tertiary'>
-      <View className='flex-row items-center mb-8'>
-        <AppText className='text-sm-sm sm:text-sm'>{sourceInfo}</AppText>
-        {copyButton}
-      </View>
+      <CodeBlockHeader
+        className='mb-8'
+        title={sourceInfo}
+        content={content}
+        actions={headerActions} />
       <CodeHighlighter
         customStyle={{ backgroundColor: 'transparent' }}
         hljsStyle={isDarkColorScheme ? stackoverflowDark : github}

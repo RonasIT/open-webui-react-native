@@ -111,6 +111,15 @@
     },
     "USE_ATTACHED_FILES": {
       "TEXT_IMAGE_UPLOAD_FAILED": "No se pudo subir la foto. Comprueba la conexión e inténtalo de nuevo"
+    },
+    "MARKDOWN_VIEW": {
+      "DIAGRAM_BLOCK": {
+        "BUTTON_CODE": "Código",
+        "BUTTON_DIAGRAM": "Diagrama",
+        "TEXT_SHOW_CODE": "Mostrar código",
+        "TEXT_SHOW_DIAGRAM": "Mostrar diagrama",
+        "TEXT_OPEN_FULLSCREEN": "Abrir diagrama en pantalla completa"
+      }
     }
   }
 }
