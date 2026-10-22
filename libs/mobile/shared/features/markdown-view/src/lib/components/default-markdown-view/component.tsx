@@ -11,6 +11,8 @@ import { colors, createStyles, useColorScheme, rem } from '@open-webui-react-nat
 import { AppText, MathSvg, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { MarkdownStyles } from '../../types';
 import { AppMarkdownViewProps } from '../../types/app-markdown-view-props';
+import { getDiagramLanguage, getOpenFenceBody, isOpenFenceContent } from '../../utils';
+import { DiagramBlock } from '../diagram-block';
 import { MarkdownTableRenderer } from '../markdown-table-renderer';
 import { MathBlock } from '../math-block';
 import { TextGroup } from '../text-group';
@@ -38,6 +40,10 @@ export function DefaultMarkdownView({
 }: AppMarkdownViewProps): ReactElement {
   const { isDarkColorScheme } = useColorScheme();
   const textColor = elementTextColor || (isDarkColorScheme ? colors.darkTextPrimary : colors.textPrimary);
+  const openFenceBody = useMemo(
+    () => (isContentReady || typeof children !== 'string' ? null : getOpenFenceBody(children)),
+    [children, isContentReady],
+  );
   const fence: RenderRules['fence'] = useCallback(
     (
       node: ASTNode & { sourceInfo?: string },
@@ -46,7 +52,7 @@ export function DefaultMarkdownView({
       styles: MarkdownStyles,
       inheritedStyles = {},
     ) => {
-      return (
+      const codeBlock = (
         <CodeBlock
           fenceStyle={inheritedStyles}
           key={`code-block-${node.key}`}
@@ -56,8 +62,23 @@ export function DefaultMarkdownView({
           codeBlockWidth={codeBlockWidth}
         />
       );
+      const diagramLanguage = getDiagramLanguage(node.sourceInfo);
+
+      // NOTE: A diagram is rendered only once its fence is closed, a streaming block stays a code block.
+      if (!diagramLanguage || isOpenFenceContent(node.content, openFenceBody)) {
+        return codeBlock;
+      }
+
+      return (
+        <DiagramBlock
+          key={`diagram-block-${node.key}`}
+          language={diagramLanguage}
+          content={node.content}>
+          {codeBlock}
+        </DiagramBlock>
+      );
     },
-    [codeBlockWidth],
+    [codeBlockWidth, openFenceBody],
   );
 
   const renderTable: RenderRules['table'] = useCallback(

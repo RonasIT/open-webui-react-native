@@ -7,7 +7,8 @@
     "format": "npx prettier --write . && npm run lint -- --fix",
     "prepare": "husky install",
     "deps:sync": "npx syncpack fix-mismatches",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package && npm run diagrams:build",
+    "diagrams:build": "node tools/scripts/build-diagram-renderer-html.mjs"
   },
   "private": true,
   "dependencies": {
@@ -158,6 +159,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-expo": "~57.0.2",
     "lint-staged": "^16.1.0",
+    "mermaid": "11.17.2",
     "nx": "20.4.6",
     "prettier": "^3.3.2",
     "react-refresh": "^0.18.0",
@@ -169,7 +171,9 @@
     "tsc-files": "^1.1.4",
     "tslib": "^2.3.0",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.19.0"
+    "typescript-eslint": "^8.19.0",
+    "vega": "6.2.0",
+    "vega-lite": "6.4.2"
   },
   "overrides": {
     "metro": "^0.84.0",
