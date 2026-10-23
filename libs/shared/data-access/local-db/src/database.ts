@@ -5,15 +5,11 @@ import { localDbMigrations } from './migrations';
 
 const databaseName = 'local-db.db';
 
-// NOTE: The database is opened once per JS runtime and every operation runs on that single connection through this
-// queue. expo-sqlite crashes or poisons transactions when a database is reopened, closed mid-query or written
-// concurrently (expo/expo#48999, #51903, #51393), so nothing here runs in parallel and nothing closes the connection
-// after a successful open.
+// NOTE: One connection, all operations queued: expo-sqlite breaks on reopen, close mid-query, parallel writes.
 // ponytail: reads wait behind writes; split into a read connection if a large write ever blocks a screen.
-// NOTE: Set on the first enqueued operation, so `undefined` also means the queue has never been used in this runtime.
 let databasePromise: Promise<SQLiteDatabase | null> | undefined;
 let queue: Promise<unknown> = Promise.resolve();
-// NOTE: Bumped by clearLocalDb. A write carrying an older generation is dropped.
+// NOTE: Bumped by clear; a write with an older generation (requested before logout) is dropped.
 let generation = 0;
 
 const captureLocalDbError = (error: unknown, operation: string): void => {
@@ -34,7 +30,6 @@ const migrate = async (db: SQLiteDatabase): Promise<void> => {
   const row = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
   const currentVersion = row?.user_version ?? 0;
 
-  // NOTE: A newer schema means the app was downgraded — its shape is unknown, so the database is recreated.
   if (currentVersion > localDbMigrations.length) {
     throw new Error(`Local DB schema version ${currentVersion} is newer than ${localDbMigrations.length}`);
   }
@@ -55,14 +50,13 @@ const openAndMigrate = async (options?: SQLiteOpenOptions): Promise<SQLiteDataba
 
     return db;
   } catch (error) {
-    // NOTE: Safe to close here: the queue waits for the open, so no query can be running on this connection yet.
     await db.closeAsync().catch(() => undefined);
     throw error;
   }
 };
 
 const deleteDatabaseFiles = async (): Promise<void> => {
-  // NOTE: deleteDatabaseAsync removes only the main file. A leftover WAL could be replayed into the new database.
+  // NOTE: deleteDatabaseAsync leaves -wal/-shm, which could be replayed into the new file.
   for (const suffix of ['', '-wal', '-shm']) {
     await deleteDatabaseAsync(`${databaseName}${suffix}`).catch(() => undefined);
   }
@@ -78,7 +72,7 @@ const openOrRecreate = async (): Promise<SQLiteDatabase | null> => {
   try {
     await deleteDatabaseFiles();
 
-    // NOTE: A new connection: on Android a failed handle may stay cached and be returned again (expo/expo#48999).
+    // NOTE: Otherwise Android may return the cached broken handle (expo/expo#48999).
     return await openAndMigrate({ useNewConnection: true });
   } catch (error) {
     captureLocalDbError(error, 'recreate');
@@ -87,10 +81,7 @@ const openOrRecreate = async (): Promise<SQLiteDatabase | null> => {
   }
 };
 
-// NOTE: Never rejects. If the database cannot be opened even after a recreation, it stays disabled for this runtime
-// and every operation resolves with its fallback value.
 const openDatabase = async (): Promise<SQLiteDatabase | null> => {
-  // NOTE: Set when a logout could not wipe the data — it must not reach the next user.
   const isWipePending = Boolean(appStorageService.localDbWipePending.getBoolean());
 
   if (isWipePending) {
@@ -103,7 +94,7 @@ const openDatabase = async (): Promise<SQLiteDatabase | null> => {
     return db;
   }
 
-  // NOTE: The file deletion may have failed (e.g. the file is still open), so the tables are wiped explicitly too.
+  // NOTE: File deletion fails while the file is open, so the tables are wiped too.
   try {
     await wipe(db);
     appStorageService.localDbWipePending.remove();
@@ -120,7 +111,7 @@ const enqueue = <T>(operation: string, fallback: T, task: (db: SQLiteDatabase) =
   databasePromise ??= openDatabase();
 
   const result = queue.then(async () => {
-    // NOTE: Read at execution time: a failed clear replaces it, and tasks queued before must not see the old data.
+    // NOTE: Read at run time, so a failed clear also disables tasks queued before it.
     const db = await databasePromise;
 
     if (!db) {
@@ -144,8 +135,6 @@ export const getLocalDbGeneration = (): number => generation;
 
 export const readLocalDb = enqueue;
 
-// NOTE: Pass the generation taken before the data was requested from the server: if a clear happened in between,
-// the write is dropped instead of saving the previous account's data into the wiped database.
 export const writeLocalDb = (
   operation: string,
   task: (db: SQLiteDatabase) => Promise<void>,
@@ -156,15 +145,15 @@ export const writeLocalDb = (
       return;
     }
 
+    // NOTE: Not withExclusiveTransactionAsync: it opens a new connection without foreign_keys (no cascade).
     await db.withTransactionAsync(() => task(db));
   });
 
 export const clearLocalDb = (): Promise<void> => {
   generation++;
-  // NOTE: Stays set until the data is actually gone, so a failed or skipped wipe is retried on the next open.
+  // NOTE: Removed only once the data is gone; while set, the next open deletes the files first.
   appStorageService.localDbWipePending.set(true);
 
-  // NOTE: Not opened in this runtime yet — the flag makes the next open delete the files, no need to open them now.
   if (!databasePromise) {
     return Promise.resolve();
   }
@@ -175,8 +164,7 @@ export const clearLocalDb = (): Promise<void> => {
       appStorageService.localDbWipePending.remove();
     } catch (error) {
       captureLocalDbError(error, 'clear');
-      // NOTE: Set again: a first open that was in flight during this clear may have finished its own pending wipe
-      // and removed the flag. The data is still there — disable the database until the next launch wipes it.
+      // NOTE: Set again: a concurrent first open may have removed it.
       appStorageService.localDbWipePending.set(true);
       databasePromise = Promise.resolve(null);
     }

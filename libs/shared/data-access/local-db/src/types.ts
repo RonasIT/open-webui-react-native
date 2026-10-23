@@ -1,20 +1,18 @@
 /* eslint-disable @typescript-eslint/naming-convention -- keys mirror the server JSON */
-// NOTE: Plain server JSON (snake_case, unix seconds) — not class-transformer instances, which do not round-trip
-// the Dayjs fields.
+// NOTE: Plain server JSON: class-transformer instances do not round-trip the Dayjs fields.
 
 export interface LocalChatListItem {
   id: string;
   title: string;
   created_at: number;
   updated_at: number;
-  // NOTE: Omit to keep the stored folder; `null` moves the chat out of its folder.
+  // NOTE: Omit to keep the stored folder, null to clear it.
   folder_id?: string | null;
 }
 
 export interface LocalChatSummary extends LocalChatListItem {
   folder_id: string | null;
   pinned: boolean;
-  // NOTE: `updated_at` of the stored full content; `null` — the content was never downloaded.
   content_updated_at: number | null;
 }
 

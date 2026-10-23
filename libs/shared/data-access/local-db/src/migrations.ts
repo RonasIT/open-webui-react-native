@@ -1,6 +1,4 @@
-// NOTE: Append-only. Entry N upgrades the schema to version N + 1 (stored in PRAGMA user_version).
-// Never edit a shipped entry — add a new one instead.
-// All timestamps are unix seconds, as the server sends them. Server-shaped JSON lives in `data` columns.
+// NOTE: Append-only: entry N migrates to user_version N + 1, never edit a shipped entry.
 export const localDbMigrations: Array<string> = [
   `
     CREATE TABLE chats (

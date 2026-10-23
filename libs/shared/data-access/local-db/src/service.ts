@@ -3,8 +3,6 @@ import { pick } from 'lodash-es';
 import { clearLocalDb, getLocalDbGeneration, readLocalDb, writeLocalDb } from './database';
 import { LocalChat, LocalChatListItem, LocalChatSummary, LocalFolder, LocalProfile, localProfileKeys } from './types';
 
-// NOTE: Every write takes the `generation` from `getGeneration()`, captured before the server request.
-// A logout in between makes the write a no-op.
 class LocalDbService {
   public getGeneration(): number {
     return getLocalDbGeneration();
@@ -46,7 +44,6 @@ class LocalDbService {
     );
   }
 
-  // NOTE: Flags only chats already stored — upsert the pinned list items first.
   public setPinnedChatIds(ids: Array<string>, generation: number): Promise<void> {
     return writeLocalDb(
       'setPinnedChatIds',
@@ -61,7 +58,7 @@ class LocalDbService {
     return writeLocalDb(
       'upsertChat',
       async (db) => {
-        // NOTE: An upsert, not INSERT OR REPLACE: a replace deletes the row first and would cascade to chat_contents.
+        // NOTE: Not INSERT OR REPLACE: it deletes the row and cascades to chat_contents.
         await db.runAsync(
           `INSERT INTO chats (id, title, folder_id, pinned, created_at, updated_at, content_updated_at)
           VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -126,8 +123,7 @@ class LocalDbService {
     });
   }
 
-  // NOTE: List syncs update the chats row without touching the stored JSON, so the row's title, folder and pin win.
-  // `updated_at` stays the content's own: compare it with `getChats()` to see whether the content is stale.
+  // NOTE: Row title/folder/pin win over the JSON; updated_at stays the content version for staleness checks.
   public getChat(id: string): Promise<LocalChat | null> {
     return readLocalDb('getChat', null, async (db) => {
       const row = await db.getFirstAsync<
@@ -174,8 +170,7 @@ class LocalDbService {
     });
   }
 
-  // NOTE: The sign-in response extends the profile with the token and MFA fields, so only the profile keys
-  // are ever written — never the credentials.
+  // NOTE: Whitelisted keys: the sign-in response also carries the token.
   public saveProfile(profile: LocalProfile, generation: number): Promise<void> {
     return writeLocalDb(
       'saveProfile',
