@@ -1,4 +1,5 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { isEqual, omit } from 'lodash-es';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } from 'react';
@@ -16,6 +17,8 @@ import {
   splitStaleModelControlChoices,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { ModelControlMenuSheet, ModelControlMenuSheetMethods, ModelControlRow } from './components';
 
@@ -36,6 +39,7 @@ export function ModelControlsSheet({ ref, model, onClose }: ModelControlsSheetPr
   const sheetRef = useRef<BottomSheetModal>(null);
   const menuSheetRef = useRef<ModelControlMenuSheetMethods>(null);
   const isDraftTouchedRef = useRef(false);
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   const { data: userSettings, refetch } = usersApi.useGetUserSettings();
   const { mutate: updateModelControlChoices } = usersApi.useUpdateModelControlChoices({
@@ -78,16 +82,23 @@ export function ModelControlsSheet({ ref, model, onClose }: ModelControlsSheetPr
     [model, userSettings, refetch],
   );
 
-  const handleConfirmPress = (): void => {
+  // NOTE: Only saving needs the network: offline the sheet stays open with the draft, an unchanged one just closes.
+  const saveChoices = withOfflineGuard((selectedModel: AIModel): void => {
     closeSheet();
 
-    if (!model || isEqual(draftChoices, getModelControlChoices(userSettings, model.id))) {
-      return;
+    const { validChoices } = splitStaleModelControlChoices(selectedModel, draftChoices);
+
+    updateModelControlChoices({ modelId: selectedModel.id, choices: validChoices });
+  });
+
+  const hasUnsavedChanges = !!model && !isEqual(draftChoices, getModelControlChoices(userSettings, model.id));
+
+  const handleConfirmPress = (): void => {
+    if (!model || !hasUnsavedChanges) {
+      return closeSheet();
     }
 
-    const { validChoices } = splitStaleModelControlChoices(model, draftChoices);
-
-    updateModelControlChoices({ modelId: model.id, choices: validChoices });
+    saveChoices(model);
   };
 
   //NOTE: No option means the default: the choice is removed, not saved.
@@ -121,7 +132,9 @@ export function ModelControlsSheet({ ref, model, onClose }: ModelControlsSheetPr
           <SheetHeader
             title={translate('TEXT_TITLE')}
             onGoBack={closeSheet}
-            onConfirmPress={handleConfirmPress} />
+            onConfirmPress={handleConfirmPress}
+            confirmButtonProps={{ isInactive: isOfflineMode && hasUnsavedChanges }}
+          />
           <AppBottomSheetFlashList
             data={Object.entries(modelControls)}
             extraData={draftChoices}

@@ -22,7 +22,7 @@
       "BUTTON_OPEN_SETTINGS": "Open Settings",
       "TEXT_UNABLE_TO_OPEN_SETTINGS": "Unable to open settings",
       "TEXT_SETTINGS": "Settings",
-      "TEXT_DISABLED_IN_OFFLINE_MODE": "Feature are disabled in offline mode",
+      "TEXT_DISABLED_IN_OFFLINE_MODE": "Disabled in offline mode",
       "ACTIONS_BOTTOM_SHEET": {
         "BUTTON_CANCEL": "Cancel"
       },

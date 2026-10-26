@@ -12,6 +12,7 @@ import React, {
   useState,
 } from 'react';
 import { InteractionManager, RefreshControlProps } from 'react-native';
+import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { useBottomInset } from '@open-webui-react-native/mobile/shared/utils/use-bottom-inset';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { MockFolderItemIds } from '@open-webui-react-native/shared/data-access/api';
@@ -41,6 +42,8 @@ export interface FullScreenSearchModalProps<Item extends FullScreenSearchListIte
   modalComponent?: ReactElement;
   refreshControl?: ReactElement<RefreshControlProps>;
   ref?: FullScreenSearchModalRef;
+  // NOTE: Items look disabled but stay pressable, so onSelectItem can tell the user why (e.g. the offline toast).
+  areItemsInactive?: boolean;
 }
 
 export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
@@ -53,6 +56,7 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
   modalComponent,
   refreshControl,
   ref,
+  areItemsInactive,
 }: FullScreenSearchModalProps<Item>): ReactElement {
   const listRef = useRef<React.ComponentRef<typeof FlashList<Item>>>(null);
   const bottomInset = useBottomInset();
@@ -104,10 +108,14 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
         onPress(id);
       } else {
         onSelectItem(id);
-        setIsOpen(false);
+
+        // NOTE: An inactive selection is rejected by onSelectItem, so the modal stays open.
+        if (!areItemsInactive) {
+          setIsOpen(false);
+        }
       }
     },
-    [onSelectItem],
+    [onSelectItem, areItemsInactive],
   );
 
   const renderItem = useCallback(
@@ -120,13 +128,13 @@ export function FullScreenSearchModal<Item extends FullScreenSearchListItem>({
           onSelect={() => handleSelectItem(item.id, item.onPress)}
           name={item.name}
           iconName={item.iconName}
-          containerClassName={item.containerClassName}
+          containerClassName={cn(item.containerClassName, areItemsInactive && 'opacity-30')}
           iconClassName={item.iconClassName}
           textClassName={item.textClassName}
         />
       );
     },
-    [handleSelectItem, selectedItemId],
+    [handleSelectItem, selectedItemId, areItemsInactive],
   );
 
   return (
