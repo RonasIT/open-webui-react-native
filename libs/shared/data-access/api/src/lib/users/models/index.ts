@@ -1,3 +1,6 @@
+export * from './audio-settings';
+export * from './stt-settings';
+export * from './ui-params';
 export * from './user-settings';
 export * from './ui-settings';
 export * from './user';

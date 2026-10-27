@@ -1,0 +1,6 @@
+appId: ${APP_ID}
+---
+- launchApp:
+    clearState: true
+    # NOTE: iOS keeps the Keychain after `clearState`
+    clearKeychain: true

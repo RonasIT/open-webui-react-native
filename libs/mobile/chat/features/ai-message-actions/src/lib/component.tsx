@@ -4,13 +4,15 @@ import * as Clipboard from 'expo-clipboard';
 import { compact } from 'lodash-es';
 import { PropsWithChildren, ReactElement, useRef } from 'react';
 import { View } from 'react-native';
+import { useDeleteMessage } from '@open-webui-react-native/mobile/chat/features/use-delete-message';
 import { MessageActionsSheetWrapper } from '@open-webui-react-native/mobile/chat/ui/message-actions-wrapper';
 import { ActionsBottomSheet, ActionSheetItemProps } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { Message } from '@open-webui-react-native/shared/data-access/api';
-import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 interface AiMessageActionsProps {
+  chatId: string;
   message: Message;
   onEditPress: (messageId: string, content: string) => void;
   onSuggestPress: (messageId: string) => void;
@@ -20,10 +22,13 @@ interface AiMessageActionsProps {
   onMoreConcise: (messageId: string) => void;
   isLast: boolean;
   isResponseGenerating: boolean;
+  isSkeleton: boolean;
+  canDelete: boolean;
 }
 
 //TODO Extend with more actions - https://www.figma.com/design/YPCZjyVlD86psDwUxvMVBc/OpenWebUI-Redesign-React-Native?node-id=27540-25291&t=kg2yUIDp3UQDStLf-0
 export function AiMessageActions({
+  chatId,
   message,
   onEditPress,
   onSuggestPress,
@@ -33,6 +38,8 @@ export function AiMessageActions({
   onMoreConcise,
   isLast,
   isResponseGenerating,
+  isSkeleton,
+  canDelete,
   children,
 }: PropsWithChildren<AiMessageActionsProps>): ReactElement {
   const translate = useTranslation('CHAT.AI_MESSAGE_ACTIONS');
@@ -40,29 +47,39 @@ export function AiMessageActions({
   const actionsSheetRef = useRef<BottomSheetModal>(null);
   const regenerateActionsSheetRef = useRef<BottomSheetModal>(null);
 
+  const close = (): void => actionsSheetRef.current?.dismiss();
+
+  const { deleteMessage, isDeleting } = useDeleteMessage({
+    chatId,
+    onDeleted: close,
+  });
+
+  const isChangeDisabled = isResponseGenerating || isSkeleton;
+
   const copyToClipboard = async (): Promise<void> => {
     await Clipboard.setStringAsync(message.content);
     ToastService.showSuccess(i18n.t('SHARED.COMMON.TEXT_COPIED_TO_CLIPBOARD'));
-    actionsSheetRef.current?.dismiss();
+    close();
   };
 
   const handleEditPress = (): void => {
     onEditPress(message.id, message.content);
-    actionsSheetRef.current?.dismiss();
+    close();
   };
 
   const handleContinueResponsePress = (): void => {
     onContinueResponsePress(message.id, message.content);
-    actionsSheetRef.current?.dismiss();
+    close();
   };
 
   const openRegenerateActions = (): void => {
+    //NOTE: Dismiss the main sheet first, otherwise the default 'switch' stack behavior minimizes it
+    // and a later dismiss() leaves it stuck in DISMISSING, so it never opens again
+    close();
     regenerateActionsSheetRef.current?.present();
   };
 
   const runRegenerateAction = (action?: (messageId: string) => void): void => {
-    actionsSheetRef.current?.dismiss();
-
     //NOTE: Small delay ensures sheet is fully closed before showing input
     setTimeout(() => {
       action?.(message.id);
@@ -88,58 +105,71 @@ export function AiMessageActions({
   };
 
   const actions: Array<ActionSheetItemProps> = compact([
-    isFeatureEnabled(FeatureID.AI_EDIT_MESSAGE) && {
+    {
       title: translate('TEXT_EDIT'),
       iconName: 'editPencil',
       onPress: handleEditPress,
+      disabled: isChangeDisabled,
     },
     {
       title: translate('TEXT_COPY'),
       iconName: 'copy',
       onPress: copyToClipboard,
+      disabled: isSkeleton,
     },
     isLast && {
       title: translate('TEXT_CONTINUE_RESPONSE'),
       iconName: 'play',
       onPress: handleContinueResponsePress,
+      disabled: isChangeDisabled,
     },
-    isFeatureEnabled(FeatureID.AI_REGENERATE_MESSAGE) && {
+    {
       title: translate('TEXT_REGENERATE'),
       iconName: 'refresh',
       onPress: openRegenerateActions,
       hasSubActions: true,
+      disabled: isResponseGenerating,
+    },
+    canDelete && {
+      title: translate('TEXT_DELETE'),
+      iconName: 'trashCan',
+      onPress: withOfflineGuard(() => deleteMessage(message.id)),
+      isDanger: true,
+      isLoading: isDeleting,
+      disabled: isResponseGenerating,
     },
   ]);
 
-  const regenerateActions: Array<ActionSheetItemProps> = compact([
+  const regenerateActions: Array<ActionSheetItemProps> = [
     {
       title: translate('REGENERATE_MESSAGE_ACTION_SHEET.TEXT_SUGGEST_A_CHANGE'),
       iconName: 'keyboard',
       onPress: handleSuggestPress,
+      disabled: isChangeDisabled,
     },
     {
       title: translate('REGENERATE_MESSAGE_ACTION_SHEET.TEXT_TRY_AGAIN'),
       iconName: 'refresh',
       onPress: handleTryAgainPress,
+      disabled: isResponseGenerating,
     },
     {
       title: translate('REGENERATE_MESSAGE_ACTION_SHEET.TEXT_ADD_DETAILS'),
       iconName: 'moreText',
       onPress: handleAddDetailsPress,
+      disabled: isChangeDisabled,
     },
     {
       title: translate('REGENERATE_MESSAGE_ACTION_SHEET.TEXT_MORE_CONCISE'),
       iconName: 'lessText',
       onPress: handleMoreConcisePress,
+      disabled: isChangeDisabled,
     },
-  ]);
+  ];
 
   return (
     <View>
-      <MessageActionsSheetWrapper
-        actions={actions}
-        sheetRef={actionsSheetRef}
-        isResponseGenerating={isResponseGenerating}>
+      <MessageActionsSheetWrapper actions={actions} sheetRef={actionsSheetRef}>
         {children}
       </MessageActionsSheetWrapper>
       <ActionsBottomSheet

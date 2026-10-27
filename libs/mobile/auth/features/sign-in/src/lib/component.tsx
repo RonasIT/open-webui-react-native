@@ -44,7 +44,10 @@ export function SignIn(props: SignInProps): ReactElement {
   };
 
   return (
-    <AppSafeAreaView edges={['bottom']} className='flex-1 pt-32'>
+    <AppSafeAreaView
+      testID='sign-in-screen'
+      edges={['bottom']}
+      className='flex-1 pt-32'>
       <View className='mb-12'>
         <AppText className='text-h2-sm sm:text-h2 font-medium mb-24'>{translate('TEXT_TITLE_EXTERNAL')}</AppText>
       </View>

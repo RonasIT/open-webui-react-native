@@ -32,7 +32,6 @@ import {
   prepareCreateFolderPayload,
 } from '@open-webui-react-native/shared/data-access/api';
 import { AttachedFile, FileData, FileType } from '@open-webui-react-native/shared/data-access/common';
-import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { getDocumentFormData } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { UpsertFolderFormSchema } from './forms';
@@ -261,14 +260,12 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
                   <AppText className='text-sm-sm sm:text-sm'>{translate('TEXT_KNOWLEDGE')}</AppText>
                   {[...(files || []), ...(selectedKnowledge || [])].map(renderKnowledgeItem)}
                   <View className='gap-8'>
-                    {isFeatureEnabled(FeatureID.KNOWLEDGE) && (
-                      <AppButton
-                        variant='outline'
-                        size='sm'
-                        text={translate('BUTTON_SELECT_KNOWLEDGE')}
-                        onPress={handleSelectKnowledgePress}
-                      />
-                    )}
+                    <AppButton
+                      variant='outline'
+                      size='sm'
+                      text={translate('BUTTON_SELECT_KNOWLEDGE')}
+                      onPress={handleSelectKnowledgePress}
+                    />
                     <AppButton
                       isLoading={isFileUploading}
                       variant='outline'

@@ -42,7 +42,6 @@
       "TEXT_KNOWLEDGE": "Connaissances",
       "BUTTON_SELECT_KNOWLEDGE": "Sélectionner des connaissances",
       "BUTTON_UPLOAD_FILES": "Téléverser des fichiers",
-      "TEXT_CREATE": "Créer",
       "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Vous ne pouvez pas téléverser un fichier vide.",
       "TEXT_UNSUPPORTED_TYPE": "Type non pris en charge."
     },

@@ -16,9 +16,14 @@ import {
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { useBottomInset } from '@open-webui-react-native/mobile/shared/utils/use-bottom-inset';
-import { chatApi, ChatListItem, FolderListItem, foldersApi } from '@open-webui-react-native/shared/data-access/api';
+import {
+  authApi,
+  chatApi,
+  ChatListItem,
+  FolderListItem,
+  foldersApi,
+} from '@open-webui-react-native/shared/data-access/api';
 import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
-import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { FoldersList, PinnedChatList } from './components';
 
 interface ChatMenuListProps {
@@ -73,10 +78,16 @@ export function ChatMenuList({
     isRefetching: isSharedFoldersRefetching,
     refetch: refetchSharedFolders,
   } = foldersApi.useGetSharedFolders({ enabled: canUseFolders });
+  const { isRefetching: isProfileRefetching, refetch: refetchProfile } = authApi.useGetProfile();
 
   const isLoading =
     isChatsLoading || isPinnedChatsLoading || isFoldersLoading || isSharedFoldersLoading || isFirstLoading;
-  const isRefetching = isChatsRefetching || isPinnedChatsRefetching || isFoldersRefetching || isSharedFoldersRefetching;
+  const isRefetching =
+    isChatsRefetching ||
+    isPinnedChatsRefetching ||
+    isFoldersRefetching ||
+    isSharedFoldersRefetching ||
+    isProfileRefetching;
 
   const refetch = (): void => {
     // NOTE: react-query's refetch() runs even for a disabled query, so the folders feature gate has
@@ -84,6 +95,7 @@ export function ChatMenuList({
     Promise.all([
       refetchChats(),
       refetchPinnedChats(),
+      refetchProfile(),
       ...(canUseFolders ? [refetchFolders(), refetchSharedFolders()] : []),
     ]);
   };
@@ -122,7 +134,7 @@ export function ChatMenuList({
           refreshControl={<AppRefreshControl onRefresh={refetch} refreshing={isFocused && isRefetching} />}
           ListHeaderComponent={
             <View>
-              {isFeatureEnabled(FeatureID.CHAT_FOLDERS) && canUseFolders && (
+              {canUseFolders && (
                 <Fragment>
                   {/* NOTE: A folder owned by somebody else cannot be renamed or deleted by the
                       recipient, so its row offers no actions on long press. */}

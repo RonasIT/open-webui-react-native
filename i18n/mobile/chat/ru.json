@@ -38,11 +38,12 @@
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Прикрепить веб-страницу",
         "TEXT_WEBPAGE_URLS": "URL веб-страниц",
-        "TEXT_INVALID_URL": "Введите корректный URL."
+        "TEXT_INVALID_URL": "Введите корректный URL, напр. https://example.com"
       },
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "Системный промпт",
         "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Не задано",
+        "TEXT_MODEL_CONTROLS": "Параметры модели",
         "TEXT_TOOLS": "Инструменты",
         "TEXT_FULL_ACCESS_FOR_TOOLS": "Полный доступ",
         "BUTTON_CLOSE": "Закрыть"
@@ -86,25 +87,7 @@
         "TEXT_CREATE_NEW_FOLDER": "Создать новую папку"
       },
       "SUGGESTIONS_LIST": {
-        "TEXT_SUGGESTED": "Рекомендации",
-        "TEXT_SUGGESTION_TITLE_1": "Помоги мне учиться",
-        "TEXT_SUGGESTION_SUBTITLE_1": "словарный запас для вступительного экзамена в колледж",
-        "TEXT_SUGGESTION_CONTENT_1": "Помоги мне учить слова: напиши предложение с пропуском, а я попробую выбрать правильный вариант.",
-        "TEXT_SUGGESTION_TITLE_2": "Дай идеи",
-        "TEXT_SUGGESTION_SUBTITLE_2": "что делать с детскими рисунками",
-        "TEXT_SUGGESTION_CONTENT_2": "Какие 5 творческих идей можно сделать с детскими рисунками? Не хочу их выбрасывать, но они занимают слишком много места.",
-        "TEXT_SUGGESTION_TITLE_3": "Расскажи интересный факт",
-        "TEXT_SUGGESTION_SUBTITLE_3": "о Римской империи",
-        "TEXT_SUGGESTION_CONTENT_3": "Расскажи случайный интересный факт о Римской империи",
-        "TEXT_SUGGESTION_TITLE_4": "Покажи фрагмент кода",
-        "TEXT_SUGGESTION_SUBTITLE_4": "липкого заголовка сайта",
-        "TEXT_SUGGESTION_CONTENT_4": "Покажи фрагмент кода липкого заголовка сайта на CSS и JavaScript.",
-        "TEXT_SUGGESTION_TITLE_5": "Объясни торговлю опционами",
-        "TEXT_SUGGESTION_SUBTITLE_5": "если я знаком с покупкой и продажей акций",
-        "TEXT_SUGGESTION_CONTENT_5": "Объясни торговлю опционами простыми словами, если я знаком с покупкой и продажей акций.",
-        "TEXT_SUGGESTION_TITLE_6": "Преодолеть прокрастинацию",
-        "TEXT_SUGGESTION_SUBTITLE_6": "дай советы",
-        "TEXT_SUGGESTION_CONTENT_6": "Можешь сначала спросить меня о ситуациях, когда я чаще всего откладываю дела, а затем дать несколько советов, как это преодолеть?"
+        "TEXT_SUGGESTED": "Рекомендации"
       }
     },
     "ATTACHED_FILE_ITEM": {
@@ -145,19 +128,26 @@
     },
     "USER_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Изменить",
-      "TEXT_COPY": "Копировать"
+      "TEXT_COPY": "Копировать",
+      "TEXT_DELETE": "Удалить"
     },
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Изменить",
       "TEXT_COPY": "Копировать",
       "TEXT_CONTINUE_RESPONSE": "Продолжить ответ",
       "TEXT_REGENERATE": "Перегенерировать",
+      "TEXT_DELETE": "Удалить",
       "REGENERATE_MESSAGE_ACTION_SHEET": {
         "TEXT_SUGGEST_A_CHANGE": "Предложить изменение",
         "TEXT_TRY_AGAIN": "Попробовать снова",
         "TEXT_ADD_DETAILS": "Добавить детали",
         "TEXT_MORE_CONCISE": "Более кратко"
       }
+    },
+    "USE_DELETE_MESSAGE": {
+      "TEXT_DELETE_MESSAGE": "Удалить сообщение?",
+      "TEXT_CANNOT_BE_UNDONE": "Это действие нельзя отменить. Вы хотите продолжить?",
+      "BUTTON_DELETE": "Удалить"
     },
     "EDIT_MESSAGE_INPUT": {
       "TEXT_EDIT_MESSAGE": "Редактировать сообщение",
@@ -181,7 +171,11 @@
     "VOICE_MODE_MODAL": {
       "TEXT_LISTENING": "Слушаю...",
       "TEXT_THINKING": "Думаю...",
-      "TEXT_TALKING": "Говорю..."
+      "TEXT_TAP_TO_INTERRUPT": "Нажмите, чтобы прервать",
+      "IMAGE_SOURCE_SHEET": {
+        "TEXT_TAKE_PHOTO": "Сделать снимок",
+        "TEXT_CHOOSE_FROM_GALLERY": "Выбрать из галереи"
+      }
     },
     "MESSAGE_FOLLOW_UPS": {
       "TEXT_FOLLOW_UP": "Уточнение"
@@ -210,6 +204,19 @@
         "BUTTON_NEXT": "Далее",
         "BUTTON_SUBMIT": "Отправить",
         "BUTTON_DENY": "Пропустить"
+      }
+    },
+    "MODEL_CONTROLS_SHEET": {
+      "TEXT_TITLE": "Параметры модели",
+      "TEXT_SAVE_FAILED": "Не удалось сохранить параметры модели. Попробуйте ещё раз.",
+      "MODEL_CONTROL_ROW": {
+        "TEXT_DEFAULT": "По умолчанию",
+        "TEXT_RESET_TO_DEFAULT": "Вернуть по умолчанию",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "Вернуть по умолчанию ({{option}})"
+      },
+      "MODEL_CONTROL_MENU_SHEET": {
+        "TEXT_DEFAULT": "По умолчанию",
+        "TEXT_DEFAULT_WITH_OPTION": "По умолчанию · {{option}}"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

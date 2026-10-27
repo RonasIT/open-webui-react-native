@@ -1,5 +1,6 @@
 import { ReactElement } from 'react';
-import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
+import { TextStyle } from 'react-native';
+import { cn, colors, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { Icon, IconName, IconProps } from '../../../icon';
 import { AppPressable, AppPressableProps } from '../../../pressable';
 import { AppSpinner } from '../../../spinner';
@@ -17,6 +18,7 @@ export interface ActionSheetItemProps extends AppPressableProps {
   isDanger?: boolean;
   hasSubActions?: boolean;
   numberOfLines?: number;
+  rightContent?: ReactElement;
 }
 
 export function ActionSheetItem({
@@ -31,15 +33,23 @@ export function ActionSheetItem({
   isDanger,
   hasSubActions = false,
   numberOfLines,
+  rightContent,
+  disabled,
   ...restProps
 }: ActionSheetItemProps): ReactElement {
+  const { isDarkColorScheme } = useColorScheme();
+
+  const disabledDarkStyle: TextStyle | undefined =
+    disabled && isDarkColorScheme ? { color: colors.gray700 } : undefined;
+
   return (
     <AppPressable
       className={cn(
-        `bg-background-primary px-24 py-20 gap-12 flex-row items-center active:opacity-100 active:bg-background-secondary disabled:opacity-40`,
+        `bg-background-primary px-24 py-20 gap-12 flex-row items-center active:opacity-100 active:bg-background-secondary`,
         isCentered ? 'justify-center' : 'justify-start',
         className,
       )}
+      disabled={disabled}
       {...restProps}>
       {isLoading ? (
         <View className='h-24 w-24'>
@@ -48,26 +58,52 @@ export function ActionSheetItem({
       ) : (
         iconName && (
           <View className='h-24 w-24'>
-            {isIconShown && <Icon
-              name={iconName}
-              className={cn(isDanger && 'color-status-danger')}
-              {...iconProps} />}
+            {isIconShown && (
+              <Icon
+                name={iconName}
+                {...iconProps}
+                className={cn(
+                  isDanger && 'color-status-danger',
+                  iconProps?.className,
+                  disabled && 'color-text-tertiary',
+                )}
+                style={[iconProps?.style, disabledDarkStyle]}
+              />
+            )}
           </View>
         )
       )}
       <AppText
         numberOfLines={numberOfLines}
-        className={cn('text-md-sm sm:text-md', isDanger && 'text-status-danger', !value && numberOfLines && 'flex-1')}>
+        className={cn(
+          'text-md-sm sm:text-md',
+          disabled ? 'text-text-tertiary' : isDanger && 'text-status-danger',
+          !value && numberOfLines && 'flex-1',
+        )}
+        style={disabledDarkStyle}>
         {title}
       </AppText>
-      {(!!value || hasSubActions) && (
+      {(!!value || hasSubActions || rightContent) && (
         <View className='min-w-0 flex-1 flex-row items-center justify-end gap-8'>
           {!!value && (
-            <AppText numberOfLines={1} className='shrink text-right text-sm-sm sm:text-sm text-text-secondary'>
+            <AppText
+              numberOfLines={1}
+              className={cn(
+                'shrink text-right text-sm-sm sm:text-sm',
+                disabled ? 'text-text-tertiary' : 'text-text-secondary',
+              )}
+              style={disabledDarkStyle}>
               {value}
             </AppText>
           )}
-          {hasSubActions && <Icon name='chevronRight' className='shrink-0' />}
+          {rightContent}
+          {hasSubActions && (
+            <Icon
+              name='chevronRight'
+              className={cn('shrink-0', disabled && 'color-text-tertiary')}
+              style={disabledDarkStyle}
+            />
+          )}
         </View>
       )}
     </AppPressable>

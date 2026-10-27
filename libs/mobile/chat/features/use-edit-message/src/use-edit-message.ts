@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 import {
   chatApi,
+  Chat,
   ChatResponse,
   isTemporaryChatId,
   patchChatQueryData,
@@ -44,6 +45,10 @@ export const useEditMessage = ({ chat, modelId }: UseEditMessageProps): typeof r
     return editedMessage.role === Role.ASSISTANT;
   };
 
+  const patchTemporaryChat = (chatId: string, preparedChat: ChatResponse): void => {
+    patchChatQueryData(chatId, { ...preparedChat, chat: new Chat(preparedChat.chat) });
+  };
+
   const startEditing = (messageId: string, content: string): void => {
     setEditingMessageId(messageId);
     reset({ editMessageInputValue: content });
@@ -68,7 +73,7 @@ export const useEditMessage = ({ chat, modelId }: UseEditMessageProps): typeof r
     // NOTE: Temporary chats are never persisted — apply the same cache patch onSuccess would have
     // done, skipping the PATCH /chats/{id} call that would otherwise fail against a synthetic id.
     if (isTemporaryChatId(chat.id)) {
-      patchChatQueryData(chat.id, preparedChat);
+      patchTemporaryChat(chat.id, preparedChat);
     } else {
       await updateChat(preparedChat);
     }
@@ -104,7 +109,7 @@ export const useEditMessage = ({ chat, modelId }: UseEditMessageProps): typeof r
     // NOTE: Temporary chats are never persisted — apply the same cache patch onSuccess would have
     // done, skipping the PATCH /chats/{id} call that would otherwise fail against a synthetic id.
     if (isTemporaryChatId(chat.id)) {
-      patchChatQueryData(chat.id, preparedChat);
+      patchTemporaryChat(chat.id, preparedChat);
       triggerCompletion(preparedChat);
     } else {
       await updateChat(preparedChat, { onSuccess: triggerCompletion });

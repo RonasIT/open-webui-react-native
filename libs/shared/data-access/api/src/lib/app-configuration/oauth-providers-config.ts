@@ -9,6 +9,7 @@ interface OauthProviderConfig {
 export const oauthProvidersConfig: Record<SupportedOauthProvider, OauthProviderConfig> = {
   [Provider.GOOGLE]: { name: 'Google' },
   [Provider.MICROSOFT]: { name: 'Microsoft' },
+  [Provider.GITHUB]: { name: 'GitHub' },
   [Provider.OIDC]: { name: 'SSO', hasServerName: true },
 };
 

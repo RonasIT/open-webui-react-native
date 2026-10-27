@@ -13,7 +13,11 @@
         "TEXT_ENTER_YOUR_PASSWORD": "Entrez votre mot de passe",
         "BUTTON_SIGN_IN": "Se connecter",
         "TEXT_SSO_MISCONFIGURED": "La connexion n’est pas configurée sur ce serveur. Veuillez contacter votre administrateur.",
-        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Cette méthode de connexion n’est pas encore prise en charge par l’application. Veuillez essayer une autre option de connexion."
+        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Cette méthode de connexion n’est pas encore prise en charge par l’application. Veuillez essayer une autre option de connexion.",
+        "TEXT_SERVER_UNREACHABLE": "Impossible de joindre le serveur. Vérifiez l’adresse et votre connexion. Pour un serveur HTTP local, commencez l’adresse par http://.",
+        "TEXT_NOT_OPEN_WEBUI_SERVER": "Le serveur a répondu, mais ce n’est pas un serveur Open WebUI. Vérifiez l’adresse.",
+        "BUTTON_RETRY_SERVER_CHECK": "Vérifier à nouveau le serveur",
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "Votre compte est en attente d'approbation par un administrateur."
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Continuer avec {{provider}}"
@@ -21,6 +25,55 @@
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "Fermer",
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Cette méthode de connexion est indisponible. Veuillez utiliser une autre option."
+      }
+    },
+    "MFA_VERIFICATION": {
+      "TEXT_TITLE": "Vérifiez votre connexion",
+      "TEXT_DESCRIPTION": "Saisissez le code à six chiffres de votre application d'authentification.",
+      "TEXT_RECOVERY_CODE_DESCRIPTION": "Utilisez l'un de vos codes de récupération enregistrés.",
+      "TEXT_AUTHENTICATOR_CODE": "Code d'authentification",
+      "TEXT_RECOVERY_CODE": "Code de récupération",
+      "BUTTON_USE_RECOVERY_CODE": "Utiliser un code de récupération",
+      "BUTTON_USE_AUTHENTICATOR_CODE": "Utiliser un code d'authentification",
+      "BUTTON_CONTINUE": "Continuer",
+      "BUTTON_BACK_TO_SIGN_IN": "Retour à la connexion",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Veuillez saisir le code"
+      }
+    },
+    "MFA_AUTHENTICATOR_SETUP": {
+      "TEXT_TITLE": "Configurez votre authentificateur",
+      "TEXT_DESCRIPTION": "Scannez le QR code ou saisissez la clé dans votre application d'authentification, puis saisissez le code à six chiffres.",
+      "TEXT_TAP_TO_COPY_KEY": "Touchez pour copier la clé",
+      "TEXT_FAILED_TO_LOAD_KEY": "Impossible de charger la clé de l'authentificateur. Veuillez réessayer.",
+      "BUTTON_TRY_AGAIN": "Réessayer",
+      "TEXT_AUTHENTICATOR_CODE": "Code d'authentification",
+      "BUTTON_CONTINUE": "Continuer",
+      "BUTTON_BACK_TO_SIGN_IN": "Retour à la connexion",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Veuillez saisir le code"
+      }
+    },
+    "MFA_RECOVERY_CODES": {
+      "TEXT_TITLE": "Enregistrez vos codes de récupération",
+      "TEXT_DESCRIPTION": "Enregistrez les codes de récupération dans un endroit sûr. Ils ne seront plus affichés.\nChaque code ne fonctionne qu'une fois.",
+      "TEXT_RECOVERY_CODES": "Codes de récupération",
+      "TEXT_TAP_TO_COPY_CODES": "Touchez pour copier les codes",
+      "TEXT_I_HAVE_SAVED_CODES": "J'ai enregistré mes codes de récupération",
+      "BUTTON_CONTINUE": "Continuer",
+      "BUTTON_BACK_TO_SIGN_IN": "Retour à la connexion",
+      "TEXT_LEAVE_CONFIRM_TITLE": "Quitter sans enregistrer les codes ?",
+      "TEXT_LEAVE_CONFIRM_MESSAGE": "Les codes de récupération ne seront plus affichés.",
+      "BUTTON_LEAVE": "Quitter"
+    },
+    "MFA_RECOVERY": {
+      "TEXT_TITLE": "Récupérez votre authentificateur",
+      "TEXT_DESCRIPTION": "Saisissez le jeton de récupération fourni par votre administrateur.",
+      "TEXT_RECOVERY_TOKEN": "Jeton de récupération",
+      "BUTTON_CONTINUE": "Continuer",
+      "BUTTON_BACK_TO_SIGN_IN": "Retour à la connexion",
+      "VALIDATION": {
+        "TEXT_REQUIRED_RECOVERY_TOKEN": "Veuillez saisir le jeton de récupération"
       }
     }
   }

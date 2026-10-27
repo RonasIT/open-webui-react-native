@@ -1,17 +1,32 @@
-import { i18n, useTranslation } from '@ronas-it/react-native-common-modules/i18n';
-import { CameraType, useCameraPermissions } from 'expo-camera';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import Modal, { ModalProps } from 'react-native-modal';
 import { useCreateNewChat } from '@open-webui-react-native/mobile/chat/features/use-create-new-chat';
 import { useSendMessage } from '@open-webui-react-native/mobile/chat/features/use-send-message';
+import {
+  imagePickerService,
+  ImagePickerSource,
+} from '@open-webui-react-native/mobile/shared/data-access/image-picker-service';
 import { speechStreamingService } from '@open-webui-react-native/mobile/shared/data-access/speech-streaming-service';
 import { useDictateMode } from '@open-webui-react-native/mobile/shared/features/use-dictate-mode';
 import { colors, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
-import { AppSafeAreaView, AppText, AppToast, IconButton, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { chatApi, isTemporaryChatId } from '@open-webui-react-native/shared/data-access/api';
+import {
+  AppPressable,
+  AppSafeAreaView,
+  AppText,
+  AppToast,
+  IconButton,
+  View,
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import {
+  ChatGenerationOption,
+  chatApi,
+  isTemporaryChatId,
+  tasksApi,
+} from '@open-webui-react-native/shared/data-access/api';
 import { ImageData as ChatImageData } from '@open-webui-react-native/shared/data-access/common';
-import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
-import { CameraPreview, CameraPreviewMethods, Loader, SpeechListener } from './components';
+import { ImageSourceSheet, Loader, SpeechListener } from './components';
 import { voiceModeModalConfig } from './config';
 
 export type VoiceModeModalMethods = {
@@ -31,12 +46,11 @@ const { meteringSilenceThreshold, meteringSilenceDuration } = voiceModeModalConf
 export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalProps): ReactElement {
   const translate = useTranslation('CHAT.VOICE_MODE_MODAL');
   const { isDarkColorScheme } = useColorScheme();
-  const [, requestCameraPermission] = useCameraPermissions();
 
   const silenceTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const cameraPreviewRef = useRef<CameraPreviewMethods>(null);
   const pendingImageRef = useRef<ChatImageData | null>(null);
-  const isCameraOnRef = useRef(false);
+  const shouldResumeListeningRef = useRef(false);
+  const isVisibleRef = useRef(false);
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -49,14 +63,10 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
   const [chatId, setChatId] = useState<string | undefined>(undefined);
   const [modelId, setModelId] = useState<string>('');
 
-  const [isCameraOn, setIsCameraOn] = useState(false);
-  const [cameraFacing, setCameraFacing] = useState<CameraType>('front');
-
   const chatIdRef = useRef(chatId);
   const modelIdRef = useRef(modelId);
   chatIdRef.current = chatId;
   modelIdRef.current = modelId;
-  isCameraOnRef.current = isCameraOn;
 
   const handleChatCreated = (id: string): void => {
     if (isVisible) {
@@ -71,49 +81,59 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
   });
   const { sendMessage, isLoading: isSending } = useSendMessage({ chatData: chat });
   const { startChatCreation, isLoading: isCreating } = useCreateNewChat({ onSuccess: handleChatCreated });
+  const { mutate: stopChatTasks } = tasksApi.useStopChatTasks();
 
   const sendMessageRef = useRef(sendMessage);
   const startChatCreationRef = useRef(startChatCreation);
   sendMessageRef.current = sendMessage;
   startChatCreationRef.current = startChatCreation;
 
-  const { isTranscribing, startSpeechRecording, stopSpeechRecording, completeSpeechRecording, metering } =
-    useDictateMode({
-      updateIntervalMillis: 100,
-      onCompleteRecording: (text: string) => {
+  const {
+    isRecording,
+    isTranscribing,
+    startSpeechRecording,
+    pauseSpeechRecording,
+    stopSpeechRecording,
+    completeSpeechRecording,
+    hasPausedSpeech,
+    metering,
+  } = useDictateMode({
+    updateIntervalMillis: 100,
+    speechThreshold: meteringSilenceThreshold,
+    onCompleteRecording: (text: string, language: string) => {
+      if (text.trim().length) {
         const attachedImages = pendingImageRef.current ? [pendingImageRef.current] : undefined;
         pendingImageRef.current = null;
 
-        if (text.trim().length) {
-          if (chatIdRef.current) {
-            sendMessageRef.current(text, modelIdRef.current, undefined, undefined, attachedImages);
-          } else {
-            startChatCreationRef.current(text, modelIdRef.current, undefined, undefined, attachedImages);
-          }
+        const send = chatIdRef.current ? sendMessageRef.current : startChatCreationRef.current;
+        send(text, modelIdRef.current, [ChatGenerationOption.VOICE], undefined, attachedImages);
 
-          speechStreamingService.resumeContentSpeaking();
-          setIsWaitingNewMessage(true);
-        } else {
-          startSpeechRecording();
-        }
-      },
-    });
+        speechStreamingService.resumeContentSpeaking(language);
+        setIsWaitingNewMessage(true);
+      } else if (isVisibleRef.current) {
+        startSpeechRecording();
+      } else {
+        pendingImageRef.current = null;
+      }
+    },
+  });
 
   const newMessage = chat?.chat.history.messages[chat.chat.history.currentId];
   const isThinking =
     isCreating || isSending || isLoading || isTranscribing || isWaitingNewMessage || isReceivingNewMessage;
 
-  const stopCamera = (): void => {
-    setIsCameraOn(false);
-  };
-
   const close = async (): Promise<void> => {
+    isVisibleRef.current = false;
     // NOTE: Stop TTS immediately; isStopped is set sync so late handleContent/speakText no-ops
     const stopSpeakingPromise = speechStreamingService.stopContentSpeaking();
     speechStreamingService.clearListeners();
     clearSilenceTimeout();
-    stopCamera();
-    pendingImageRef.current = null;
+
+    // NOTE: Transcription in flight still sends; the photo has to leave with that text
+    if (!isTranscribing) {
+      pendingImageRef.current = null;
+    }
+    shouldResumeListeningRef.current = false;
     setIsUserSpeaking(false);
     setIsAiSpeaking(false);
     setIsWaitingNewMessage(false);
@@ -127,6 +147,8 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     ref,
     () => ({
       present: async ({ chatId, modelId }: { chatId?: string; modelId: string }): Promise<void> => {
+        pendingImageRef.current = null;
+        isVisibleRef.current = true;
         // NOTE: If chat exists, we get its ID
         setChatId(chatId);
         setModelId(modelId);
@@ -138,30 +160,60 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     [],
   );
 
-  const startCamera = async (): Promise<void> => {
-    const permission = await requestCameraPermission();
-
-    if (!permission.granted) {
-      ToastService.showError(i18n.t('SHARED.IMAGE_PICKER_SERVICE.TEXT_ACCESS_DENIED'));
-
-      return;
-    }
-
-    setIsCameraOn(true);
+  // NOTE: Pause on open, otherwise silence detection sends the phrase while the user picks a source
+  const handleImageSheetOpen = async (): Promise<void> => {
+    shouldResumeListeningRef.current = true;
+    clearSilenceTimeout();
+    setIsUserSpeaking(false);
+    await pauseSpeechRecording();
   };
 
-  const flipCameraFacing = (): void => {
-    setCameraFacing((current) => (current === 'back' ? 'front' : 'back'));
+  // NOTE: The camera can keep the audio session. A failed restart still sends the cut-off phrase with the photo
+  const resumeListening = async (): Promise<void> => {
+    try {
+      await startSpeechRecording();
+    } catch {
+      await completeSpeechRecording();
+    }
   };
 
-  const capturePendingImage = async (): Promise<void> => {
-    if (!isCameraOnRef.current) {
-      pendingImageRef.current = null;
+  const handleImageSheetDismiss = async (): Promise<void> => {
+    if (shouldResumeListeningRef.current) {
+      shouldResumeListeningRef.current = false;
+      await resumeListening();
+    }
+  };
 
-      return;
+  const handlePickImage = async (source: ImagePickerSource): Promise<void> => {
+    // NOTE: Take the flag so the sheet's onDismiss doesn't resume listening while the picker is open
+    const shouldResumeListening = shouldResumeListeningRef.current;
+    shouldResumeListeningRef.current = false;
+
+    try {
+      const image = await imagePickerService.getImage(source);
+      const asset = image?.assets?.[0];
+
+      if (asset?.base64) {
+        pendingImageRef.current = { uri: asset.uri, base64: asset.base64, mimeType: asset.mimeType };
+      }
+    } finally {
+      if (shouldResumeListening) {
+        await resumeListening();
+      }
+    }
+  };
+
+  const handleInterrupt = async (): Promise<void> => {
+    // NOTE: Stop the generation too, otherwise the old reply keeps streaming into the chat
+    if (chat && newMessage && !newMessage.done) {
+      stopChatTasks({ chatId: chat.id, lastMessageId: chat.chat.history.currentId });
     }
 
-    pendingImageRef.current = (await cameraPreviewRef.current?.takePicture()) ?? null;
+    setIsAiSpeaking(false);
+    setIsWaitingNewMessage(false);
+    setIsReceivingNewMessage(false);
+    await speechStreamingService.stopContentSpeaking();
+    await startSpeechRecording();
   };
 
   const clearSilenceTimeout = (): void => {
@@ -179,7 +231,6 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
     silenceTimeout.current = setTimeout(() => {
       void (async () => {
         setIsUserSpeaking(false);
-        await capturePendingImage();
         await completeSpeechRecording();
       })();
     }, meteringSilenceDuration);
@@ -231,20 +282,16 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
       return;
     }
 
-    if (metering > meteringSilenceThreshold && !isUserSpeaking) {
-      setIsUserSpeaking(true);
-      clearSilenceTimeout();
-    }
-
-    if (isUserSpeaking) {
-      if (metering < meteringSilenceThreshold) {
-        // NOTE: We need to wait for a silence duration before stopping the recording
-        startSilenceTimeout();
-      } else {
-        clearSilenceTimeout();
+    if (metering > meteringSilenceThreshold) {
+      if (!isUserSpeaking) {
+        setIsUserSpeaking(true);
       }
+      clearSilenceTimeout();
+    } else if (metering < meteringSilenceThreshold && (isUserSpeaking || hasPausedSpeech)) {
+      // NOTE: A paused phrase counts as still going, so silence completes it without new speech
+      startSilenceTimeout();
     }
-  }, [isVisible, metering, isUserSpeaking]);
+  }, [isVisible, metering, isUserSpeaking, hasPausedSpeech]);
 
   return (
     <Modal
@@ -257,47 +304,42 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
       animationIn='fadeIn'
       style={{ overflow: 'hidden', margin: 0 }}
       {...props}>
-      <View className='flex-1 bg-background-primary'>
-        <AppSafeAreaView edges={['bottom']} className='flex-1'>
-          <View className='flex-1 items-center justify-center px-24'>
-            {isCameraOn ? (
-              <View className='w-full items-center justify-center'>
-                <CameraPreview
-                  ref={cameraPreviewRef}
-                  facing={cameraFacing}
-                  onClose={stopCamera} />
-                {(isThinking || isAiSpeaking) && (
-                  <View className='absolute inset-0 items-center justify-center'>
-                    <Loader />
-                  </View>
-                )}
-              </View>
-            ) : isThinking || isAiSpeaking ? (
-              <Loader />
-            ) : (
-              <SpeechListener metering={metering} />
-            )}
-          </View>
-          <View className='flex-row justify-between items-center p-24'>
-            <IconButton
-              iconName={isCameraOn ? 'refresh' : 'camera'}
-              onPress={isCameraOn ? flipCameraFacing : startCamera}
-              className='w-40 h-40 bg-background-secondary rounded-full'
-            />
-            <AppText className='text-sm-sm sm:text-sm'>
-              {isAiSpeaking
-                ? translate('TEXT_TALKING')
-                : isThinking
-                  ? translate('TEXT_THINKING')
-                  : translate('TEXT_LISTENING')}
-            </AppText>
-            <IconButton
-              iconName='close'
-              onPress={close}
-              className='w-40 h-40 bg-background-secondary rounded-full' />
-          </View>
-        </AppSafeAreaView>
-      </View>
+      <BottomSheetModalProvider>
+        <View className='flex-1 bg-background-primary'>
+          <AppSafeAreaView edges={['bottom']} className='flex-1'>
+            <AppPressable
+              onPress={handleInterrupt}
+              disabled={!isAiSpeaking}
+              className='flex-1 items-center justify-center px-24'>
+              {isThinking || isAiSpeaking ? <Loader /> : <SpeechListener metering={metering} />}
+            </AppPressable>
+            <View className='flex-row justify-between items-center p-24'>
+              <ImageSourceSheet
+                isTriggerDisabled={!isRecording}
+                onTriggerPress={handleImageSheetOpen}
+                onSelectSource={handlePickImage}
+                onDismiss={handleImageSheetDismiss}
+              />
+              <AppPressable
+                onPress={handleInterrupt}
+                disabled={!isAiSpeaking}
+                hitSlop={8}>
+                <AppText className='text-sm-sm sm:text-sm'>
+                  {isAiSpeaking
+                    ? translate('TEXT_TAP_TO_INTERRUPT')
+                    : isThinking
+                      ? translate('TEXT_THINKING')
+                      : translate('TEXT_LISTENING')}
+                </AppText>
+              </AppPressable>
+              <IconButton
+                iconName='close'
+                onPress={close}
+                className='w-40 h-40 bg-background-secondary rounded-full' />
+            </View>
+          </AppSafeAreaView>
+        </View>
+      </BottomSheetModalProvider>
       <AppToast />
     </Modal>
   );

@@ -42,7 +42,6 @@
       "TEXT_KNOWLEDGE": "Conocimiento",
       "BUTTON_SELECT_KNOWLEDGE": "Seleccionar conocimiento",
       "BUTTON_UPLOAD_FILES": "Subir archivos",
-      "TEXT_CREATE": "Crear",
       "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "No puedes subir un archivo vacío.",
       "TEXT_UNSUPPORTED_TYPE": "Tipo no compatible."
     },

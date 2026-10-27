@@ -2,6 +2,7 @@
 
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { appEnv } from '@open-webui-react-native/shared/utils/app-env';
+import { normalizeServerUrl } from './normalize-server-url';
 
 export const ronasApiUrl = appEnv.select({
   development: 'https://ai.ronas.online',
@@ -11,18 +12,18 @@ export const ronasApiUrl = appEnv.select({
 
 export const testApiUrl = 'https://ai.test-api.online';
 
-const normalizeUrl = (url?: string): string => (url ?? '').trim().replace(/\/+$/, '');
-
 export const resolveApiUrl = (url: string): string => {
-  return normalizeUrl(url) === normalizeUrl(testApiUrl) ? normalizeUrl(ronasApiUrl) : normalizeUrl(url);
+  return normalizeServerUrl(url) === normalizeServerUrl(testApiUrl)
+    ? normalizeServerUrl(ronasApiUrl)
+    : normalizeServerUrl(url);
 };
 
 export const isTestApiUrl = (url?: string): boolean =>
-  normalizeUrl(url ?? appStorageService.apiUrl.get()) === normalizeUrl(testApiUrl);
+  normalizeServerUrl(url ?? appStorageService.apiUrl.get()) === normalizeServerUrl(testApiUrl);
 
 export const getDisplayApiUrl = (): string => {
-  const stored = normalizeUrl(appStorageService.apiUrl.get());
-  const fallback = normalizeUrl(ronasApiUrl);
+  const stored = normalizeServerUrl(appStorageService.apiUrl.get());
+  const fallback = normalizeServerUrl(ronasApiUrl);
 
   return stored || fallback;
 };

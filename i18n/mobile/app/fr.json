@@ -60,10 +60,8 @@
         "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Répétez votre nouveau mot de passe",
         "TEXT_PASSWORD_CHANGED": "Votre mot de passe a été modifié"
       },
-      "DEFAULT_MODEL_SHEET": {
-        "TEXT_TITLE": "Modèle par défaut",
-        "TEXT_SEARCH_MODEL": "Rechercher un modèle",
-        "TEXT_NO_MODELS": "Il n'y a aucun modèle."
+      "DEFAULT_MODEL_MODAL": {
+        "TEXT_SEARCH_MODEL": "Rechercher un modèle"
       },
       "DEFAULT_SYSTEM_PROMPT_SHEET": {
         "TEXT_TITLE": "Prompt système par défaut",

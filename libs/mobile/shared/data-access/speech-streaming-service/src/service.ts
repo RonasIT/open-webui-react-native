@@ -4,6 +4,7 @@ import { SpeechStreamingServiceEvent } from './enums';
 import { prepareSpeakableText } from './prepare-speakable-text';
 
 const textBreakpoints = ['.', '!', '?', ',', ';', ':', '-'];
+const fallbackLanguage = 'en-US';
 
 type SpeechQueueItem = {
   text: string;
@@ -17,6 +18,11 @@ class SpeechStreamingService {
   private queue: Array<SpeechQueueItem>;
   private isProcessingQueue: boolean;
   private listeners: Map<string, Array<(...args: Array<any>) => void>> = new Map();
+  // NOTE: Requested language code, e.g. 'de'
+  private language: string;
+  // NOTE: Voice tag picked for the current reply, e.g. 'de-DE'
+  private voiceLanguage?: string;
+  private voices?: Array<Speech.Voice>;
 
   constructor() {
     this.spokenText = '';
@@ -24,6 +30,7 @@ class SpeechStreamingService {
     this.speechGeneration = 0;
     this.queue = [];
     this.isProcessingQueue = false;
+    this.language = fallbackLanguage;
   }
 
   public onSpeakingStart(callback: () => void): () => void {
@@ -34,7 +41,9 @@ class SpeechStreamingService {
     return this.addEventListener(SpeechStreamingServiceEvent.SPEAKING_END, callback);
   }
 
-  public resumeContentSpeaking = (): void => {
+  public resumeContentSpeaking = (language: string): void => {
+    this.language = language;
+    this.voiceLanguage = undefined;
     this.isStopped = false;
     this.spokenText = '';
     this.queue = [];
@@ -154,6 +163,10 @@ class SpeechStreamingService {
       playsInSilentMode: true,
     });
 
+    if (!this.voiceLanguage) {
+      this.voiceLanguage = await this.getVoiceLanguage();
+    }
+
     if (this.isStopped || generation !== this.speechGeneration) {
       return;
     }
@@ -166,13 +179,39 @@ class SpeechStreamingService {
       }
 
       Speech.speak(text, {
-        // NOTE: Only English is working good for now
-        language: 'en-US',
+        language: this.voiceLanguage,
         onDone: () => resolve(),
         onStopped: () => resolve(),
         onError: () => resolve(),
       });
     });
+  };
+
+  private getVoiceLanguage = async (): Promise<string> => {
+    if (!this.voices?.length) {
+      this.voices = await this.getAvailableVoices();
+    }
+
+    if (!this.voices.length) {
+      return this.language;
+    }
+
+    const language = this.language.toLowerCase();
+    const voice = this.voices.find(({ language: tag }) => {
+      const normalizedTag = tag.replace('_', '-').toLowerCase();
+
+      return normalizedTag === language || normalizedTag.startsWith(`${language}-`);
+    });
+
+    return voice?.language ?? fallbackLanguage;
+  };
+
+  private getAvailableVoices = async (): Promise<Array<Speech.Voice>> => {
+    try {
+      return await Speech.getAvailableVoicesAsync();
+    } catch {
+      return [];
+    }
   };
 
   private addEventListener(event: string, callback: (...args: Array<any>) => void): () => void {

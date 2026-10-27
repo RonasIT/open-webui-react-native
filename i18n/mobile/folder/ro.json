@@ -42,7 +42,6 @@
       "TEXT_KNOWLEDGE": "Bază de cunoștințe",
       "BUTTON_SELECT_KNOWLEDGE": "Selectează baza de cunoștințe",
       "BUTTON_UPLOAD_FILES": "Încarcă fișiere",
-      "TEXT_CREATE": "Creează",
       "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Nu poți încărca un fișier gol.",
       "TEXT_UNSUPPORTED_TYPE": "Tip neacceptat."
     },

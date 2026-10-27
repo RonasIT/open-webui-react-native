@@ -21,6 +21,7 @@ import {
 } from '@open-webui-react-native/shared/data-access/api';
 import { Role } from '@open-webui-react-native/shared/data-access/common';
 import { socketService } from '@open-webui-react-native/shared/data-access/websocket';
+import { isSkeletonMessage } from '../../utils';
 import { ChatAiMessage } from '../ai-message';
 import { ChatBottomButton } from '../chat-bottom-button';
 import { ChatUserMessage } from '../user-message';
@@ -37,6 +38,7 @@ interface ChatMessagesListProps {
   onMoreConcise: (messageId: string) => void;
   onFollowUpPress: (text: string) => void;
   isResponseGenerating: boolean;
+  canDeleteMessages: boolean;
   history?: ChatHistory;
   messages?: Array<Message>;
   editingMessageId?: string;
@@ -57,6 +59,7 @@ export default function ChatMessagesList({
   editingMessageId,
   onFollowUpPress,
   isResponseGenerating,
+  canDeleteMessages,
 }: ChatMessagesListProps): ReactElement {
   const listRef = useRef<React.ComponentRef<typeof FlashList<Message>>>(null);
   const isScrollToBottomAvailable = useRef(false);
@@ -215,9 +218,15 @@ export default function ChatMessagesList({
         .find((m) => history?.messages[m.id]?.role === Role.ASSISTANT);
 
       const isLast = item.id === lastAssistantMessageInUIList?.id;
+      const isSkeleton = isSkeletonMessage(message);
+      // NOTE: Same rules as the web client: a reply can be deleted only while it has other versions,
+      // the first message of the chat too.
+      const canDelete =
+        canDeleteMessages && ((item.role === Role.USER && index > 0) || getSiblingsInfo(message).hasSiblings);
 
       return item.role === Role.ASSISTANT ? (
         <AiMessageActions
+          chatId={chatId}
           message={message}
           onEditPress={onEditPress}
           onSuggestPress={onSuggestPress}
@@ -226,6 +235,8 @@ export default function ChatMessagesList({
           onAddDetails={onAddDetails}
           onMoreConcise={onMoreConcise}
           isResponseGenerating={isResponseGenerating}
+          isSkeleton={isSkeleton}
+          canDelete={canDelete}
           isLast={isLast}>
           <ChatAiMessage
             message={message}
@@ -238,10 +249,16 @@ export default function ChatMessagesList({
             isLast={isLast}
             onFollowUpPress={handleFollowUpPress}
             isResponseGenerating={isResponseGenerating}
+            isSkeleton={isSkeleton}
           />
         </AiMessageActions>
       ) : (
-        <UserMessageActions message={message} onEditPress={() => handleEditPress(index, message.id, message.content)}>
+        <UserMessageActions
+          chatId={chatId}
+          message={message}
+          onEditPress={() => handleEditPress(index, message.id, message.content)}
+          isResponseGenerating={isResponseGenerating}
+          canDelete={canDelete}>
           <ChatUserMessage
             message={message}
             isEditing={editingMessageId === item.id}
@@ -265,6 +282,8 @@ export default function ChatMessagesList({
       onTryAgain,
       onAddDetails,
       onMoreConcise,
+      isResponseGenerating,
+      canDeleteMessages,
     ],
   );
 

@@ -6,7 +6,7 @@ import { Pressable as GesturePressable, PressableProps as GesturePressableProps 
 import { PressableEvent } from 'react-native-gesture-handler/lib/typescript/components/Pressable/PressableProps';
 import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 
-const hapticImpactHandler = async (): Promise<void> =>
+export const hapticImpactHandler = async (): Promise<void> =>
   Platform.OS === 'ios'
     ? Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
     : Haptics.performAndroidHapticsAsync(Haptics.AndroidHaptics.Long_Press);

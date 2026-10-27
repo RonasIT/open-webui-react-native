@@ -17,6 +17,12 @@ export const navigationConfig = {
   auth: {
     root: groups.auth,
     signIn: 'sign-in',
+    mfa: {
+      verification: 'mfa-verification',
+      authenticatorSetup: 'mfa-authenticator-setup',
+      recoveryCodes: 'mfa-recovery-codes',
+      recovery: 'mfa-recovery',
+    },
   },
   main: {
     root: groups.main,

@@ -38,11 +38,12 @@
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "附加网页",
         "TEXT_WEBPAGE_URLS": "网页链接",
-        "TEXT_INVALID_URL": "请输入有效的 URL。"
+        "TEXT_INVALID_URL": "请输入有效的 URL，例如 https://example.com"
       },
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "系统提示词",
         "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "未设置",
+        "TEXT_MODEL_CONTROLS": "模型控制",
         "TEXT_TOOLS": "工具",
         "TEXT_FULL_ACCESS_FOR_TOOLS": "完全访问",
         "BUTTON_CLOSE": "关闭"
@@ -86,25 +87,7 @@
         "TEXT_CREATE_NEW_FOLDER": "创建新文件夹"
       },
       "SUGGESTIONS_LIST": {
-        "TEXT_SUGGESTED": "建议",
-        "TEXT_SUGGESTION_TITLE_1": "帮我学习",
-        "TEXT_SUGGESTION_SUBTITLE_1": "大学入学考试的词汇",
-        "TEXT_SUGGESTION_CONTENT_1": "帮我学习词汇：写一个填空句子，我来试着选择正确的选项。",
-        "TEXT_SUGGESTION_TITLE_2": "给我一些想法",
-        "TEXT_SUGGESTION_SUBTITLE_2": "如何处理孩子们的画作",
-        "TEXT_SUGGESTION_CONTENT_2": "对于孩子们的画作，我能做哪 5 件有创意的事？我不想扔掉它们，但它们也太占地方了。",
-        "TEXT_SUGGESTION_TITLE_3": "告诉我一个有趣的事实",
-        "TEXT_SUGGESTION_SUBTITLE_3": "关于罗马帝国",
-        "TEXT_SUGGESTION_CONTENT_3": "告诉我一个关于罗马帝国的随机有趣事实",
-        "TEXT_SUGGESTION_TITLE_4": "给我看一段代码",
-        "TEXT_SUGGESTION_SUBTITLE_4": "网站粘性页眉的",
-        "TEXT_SUGGESTION_CONTENT_4": "给我看一段网站粘性页眉的 CSS 和 JavaScript 代码片段。",
-        "TEXT_SUGGESTION_TITLE_5": "解释期权交易",
-        "TEXT_SUGGESTION_SUBTITLE_5": "如果我熟悉买卖股票",
-        "TEXT_SUGGESTION_CONTENT_5": "用简单的话解释期权交易，假设我已经熟悉买卖股票。",
-        "TEXT_SUGGESTION_TITLE_6": "克服拖延",
-        "TEXT_SUGGESTION_SUBTITLE_6": "给我一些建议",
-        "TEXT_SUGGESTION_CONTENT_6": "你能先问问我最容易拖延的情况，然后再给我一些克服拖延的建议吗？"
+        "TEXT_SUGGESTED": "建议"
       }
     },
     "ATTACHED_FILE_ITEM": {
@@ -143,19 +126,26 @@
     },
     "USER_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "编辑",
-      "TEXT_COPY": "复制"
+      "TEXT_COPY": "复制",
+      "TEXT_DELETE": "删除"
     },
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "编辑",
       "TEXT_COPY": "复制",
       "TEXT_CONTINUE_RESPONSE": "继续回复",
       "TEXT_REGENERATE": "重新生成",
+      "TEXT_DELETE": "删除",
       "REGENERATE_MESSAGE_ACTION_SHEET": {
         "TEXT_SUGGEST_A_CHANGE": "建议修改",
         "TEXT_TRY_AGAIN": "再试一次",
         "TEXT_ADD_DETAILS": "添加细节",
         "TEXT_MORE_CONCISE": "更简洁"
       }
+    },
+    "USE_DELETE_MESSAGE": {
+      "TEXT_DELETE_MESSAGE": "要删除此消息吗？",
+      "TEXT_CANNOT_BE_UNDONE": "此操作无法撤销。确定要继续吗？",
+      "BUTTON_DELETE": "删除"
     },
     "EDIT_MESSAGE_INPUT": {
       "TEXT_EDIT_MESSAGE": "编辑消息",
@@ -179,7 +169,11 @@
     "VOICE_MODE_MODAL": {
       "TEXT_LISTENING": "正在聆听...",
       "TEXT_THINKING": "正在思考...",
-      "TEXT_TALKING": "正在说话..."
+      "TEXT_TAP_TO_INTERRUPT": "轻触以打断",
+      "IMAGE_SOURCE_SHEET": {
+        "TEXT_TAKE_PHOTO": "拍摄",
+        "TEXT_CHOOSE_FROM_GALLERY": "从相册选择"
+      }
     },
     "MESSAGE_FOLLOW_UPS": {
       "TEXT_FOLLOW_UP": "追问"
@@ -208,6 +202,19 @@
         "BUTTON_NEXT": "下一步",
         "BUTTON_SUBMIT": "发送",
         "BUTTON_DENY": "跳过"
+      }
+    },
+    "MODEL_CONTROLS_SHEET": {
+      "TEXT_TITLE": "模型控制",
+      "TEXT_SAVE_FAILED": "无法保存模型控制，请重试。",
+      "MODEL_CONTROL_ROW": {
+        "TEXT_DEFAULT": "默认",
+        "TEXT_RESET_TO_DEFAULT": "恢复默认",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "恢复默认（{{option}}）"
+      },
+      "MODEL_CONTROL_MENU_SHEET": {
+        "TEXT_DEFAULT": "默认",
+        "TEXT_DEFAULT_WITH_OPTION": "默认 · {{option}}"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

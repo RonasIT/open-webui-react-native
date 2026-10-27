@@ -17,7 +17,6 @@ import { AppHeader, AppPressable, Avatar, IconButton, View } from '@open-webui-r
 import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import { authApi, FolderListItem } from '@open-webui-react-native/shared/data-access/api';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
-import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { useNavigateOnce } from '@open-webui-react-native/shared/utils/navigation';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { router } from 'expo-router';
@@ -67,7 +66,7 @@ export default function ChatListScreen(): ReactElement {
           }
           accessoryRight={
             <View className='flex-row gap-12'>
-              {isFeatureEnabled(FeatureID.CHAT_FOLDERS) && canUseFolders && (
+              {canUseFolders && (
                 <UpsertFolderSheet
                   renderTrigger={({ onPress }) => (
                     <IconButton

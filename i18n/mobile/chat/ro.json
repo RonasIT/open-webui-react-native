@@ -38,11 +38,12 @@
       "ATTACH_WEBPAGE_SHEET": {
         "TEXT_TITLE": "Atașează pagină web",
         "TEXT_WEBPAGE_URLS": "URL-uri pagini web",
-        "TEXT_INVALID_URL": "Introdu un URL valid."
+        "TEXT_INVALID_URL": "Te rugăm să introduci un URL valid, ex. https://example.com"
       },
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "Prompt de sistem",
         "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Nesetat",
+        "TEXT_MODEL_CONTROLS": "Controale model",
         "TEXT_TOOLS": "Instrumente",
         "TEXT_FULL_ACCESS_FOR_TOOLS": "Acces complet",
         "BUTTON_CLOSE": "Închide"
@@ -86,25 +87,7 @@
         "TEXT_CREATE_NEW_FOLDER": "Creează folder nou"
       },
       "SUGGESTIONS_LIST": {
-        "TEXT_SUGGESTED": "Sugestii",
-        "TEXT_SUGGESTION_TITLE_1": "Ajută-mă să învăț",
-        "TEXT_SUGGESTION_SUBTITLE_1": "vocabular pentru un examen de admitere la facultate",
-        "TEXT_SUGGESTION_CONTENT_1": "Ajută-mă să învăț vocabular: scrie-mi o propoziție cu spațiu liber, iar eu voi încerca să aleg varianta corectă.",
-        "TEXT_SUGGESTION_TITLE_2": "Dă-mi idei",
-        "TEXT_SUGGESTION_SUBTITLE_2": "despre ce pot face cu desenele copiilor mei",
-        "TEXT_SUGGESTION_CONTENT_2": "Care sunt 5 idei creative pentru ce aș putea face cu desenele copiilor mei? Nu vreau să le arunc, dar ocupă mult spațiu.",
-        "TEXT_SUGGESTION_TITLE_3": "Spune-mi un fapt interesant",
-        "TEXT_SUGGESTION_SUBTITLE_3": "despre Imperiul Roman",
-        "TEXT_SUGGESTION_CONTENT_3": "Spune-mi un fapt interesant, ales la întâmplare, despre Imperiul Roman",
-        "TEXT_SUGGESTION_TITLE_4": "Arată-mi un fragment de cod",
-        "TEXT_SUGGESTION_SUBTITLE_4": "pentru un antet lipicios (sticky header) al unui site",
-        "TEXT_SUGGESTION_CONTENT_4": "Arată-mi un fragment de cod pentru un antet lipicios al unui site, în CSS și JavaScript.",
-        "TEXT_SUGGESTION_TITLE_5": "Explică tranzacționarea cu opțiuni",
-        "TEXT_SUGGESTION_SUBTITLE_5": "dacă sunt familiarizat cu cumpărarea și vânzarea de acțiuni",
-        "TEXT_SUGGESTION_CONTENT_5": "Explică tranzacționarea cu opțiuni în termeni simpli, presupunând că sunt familiarizat cu cumpărarea și vânzarea de acțiuni.",
-        "TEXT_SUGGESTION_TITLE_6": "Depășește procrastinarea",
-        "TEXT_SUGGESTION_SUBTITLE_6": "dă-mi câteva sfaturi",
-        "TEXT_SUGGESTION_CONTENT_6": "Poți să mă întrebi mai întâi în ce situații procrastinez cel mai mult și apoi să îmi dai câteva sugestii pentru a depăși asta?"
+        "TEXT_SUGGESTED": "Sugestii"
       }
     },
     "ATTACHED_FILE_ITEM": {
@@ -145,19 +128,26 @@
     },
     "USER_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Editează",
-      "TEXT_COPY": "Copiază"
+      "TEXT_COPY": "Copiază",
+      "TEXT_DELETE": "Șterge"
     },
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Editează",
       "TEXT_COPY": "Copiază",
       "TEXT_CONTINUE_RESPONSE": "Continuă răspunsul",
       "TEXT_REGENERATE": "Regenerează",
+      "TEXT_DELETE": "Șterge",
       "REGENERATE_MESSAGE_ACTION_SHEET": {
         "TEXT_SUGGEST_A_CHANGE": "Sugerează o modificare",
         "TEXT_TRY_AGAIN": "Încearcă din nou",
         "TEXT_ADD_DETAILS": "Adaugă detalii",
         "TEXT_MORE_CONCISE": "Mai concis"
       }
+    },
+    "USE_DELETE_MESSAGE": {
+      "TEXT_DELETE_MESSAGE": "Ștergeți mesajul?",
+      "TEXT_CANNOT_BE_UNDONE": "Această acțiune nu poate fi anulată. Doriți să continuați?",
+      "BUTTON_DELETE": "Șterge"
     },
     "EDIT_MESSAGE_INPUT": {
       "TEXT_EDIT_MESSAGE": "Editează mesajul",
@@ -181,7 +171,11 @@
     "VOICE_MODE_MODAL": {
       "TEXT_LISTENING": "Ascult...",
       "TEXT_THINKING": "Mă gândesc...",
-      "TEXT_TALKING": "Vorbesc..."
+      "TEXT_TAP_TO_INTERRUPT": "Atinge pentru a întrerupe",
+      "IMAGE_SOURCE_SHEET": {
+        "TEXT_TAKE_PHOTO": "Fotografiază",
+        "TEXT_CHOOSE_FROM_GALLERY": "Alege din galerie"
+      }
     },
     "MESSAGE_FOLLOW_UPS": {
       "TEXT_FOLLOW_UP": "Continuare"
@@ -210,6 +204,19 @@
         "BUTTON_NEXT": "Următorul",
         "BUTTON_SUBMIT": "Trimite",
         "BUTTON_DENY": "Omite"
+      }
+    },
+    "MODEL_CONTROLS_SHEET": {
+      "TEXT_TITLE": "Controale model",
+      "TEXT_SAVE_FAILED": "Controalele modelului nu au putut fi salvate. Încearcă din nou.",
+      "MODEL_CONTROL_ROW": {
+        "TEXT_DEFAULT": "Implicit",
+        "TEXT_RESET_TO_DEFAULT": "Resetează la implicit",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "Resetează la implicit ({{option}})"
+      },
+      "MODEL_CONTROL_MENU_SHEET": {
+        "TEXT_DEFAULT": "Implicit",
+        "TEXT_DEFAULT_WITH_OPTION": "Implicit · {{option}}"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

@@ -31,9 +31,11 @@ import headphones from './headphones.svg';
 import history from './history.svg';
 import key from './key.svg';
 import keyboard from './keyboard.svg';
+import knobs from './knobs.svg';
 import lessText from './less-text.svg';
 import link from './link.svg';
 import lock from './lock.svg';
+import githubLogo from './logos/github.svg';
 import googleLogo from './logos/google.svg';
 import logoDark from './logos/logo-dark.svg';
 import logoLight from './logos/logo-light.svg';
@@ -74,6 +76,7 @@ export const Icons = {
   logoLight,
   googleLogo,
   microsoftLogo,
+  githubLogo,
   jsonFile,
   txtFile,
   camera,
@@ -139,5 +142,6 @@ export const Icons = {
   moreText,
   web,
   key,
+  knobs,
   lock,
 };

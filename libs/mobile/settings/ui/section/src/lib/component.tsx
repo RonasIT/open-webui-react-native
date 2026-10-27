@@ -11,11 +11,15 @@ interface SettingsSectionProps {
 export function SettingsSection({ title, options }: SettingsSectionProps): ReactElement {
   return (
     <View>
-      {!!title && <AppText className='text-sm-sm sm:text-sm text-text-secondary pt-20 pb-8'>{title}</AppText>}
+      {!!title && (
+        <AppText className='text-sm-sm sm:text-sm text-text-secondary px-content-offset pt-20 pb-8'>{title}</AppText>
+      )}
       {options.map((option) => (
         <View key={option.label}>
           <SettingsSectionItem option={option} />
-          <AppDivider className='h-[1px] bg-background-tertiary' />
+          <View className='px-content-offset'>
+            <AppDivider className='h-[1px] bg-background-tertiary' />
+          </View>
         </View>
       ))}
     </View>

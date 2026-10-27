@@ -93,16 +93,14 @@
       "TEXT_DELETE_CHAT": "Supprimer la discussion ?",
       "TEXT_THIS_WILL_DELETE": "Cela supprimera {{name}}",
       "TEXT_CLONE_OF": "Clone de {{title}}",
-      "TEXT_CHAT_ACTIONS": "Actions de la discussion",
       "TEXT_MOVE_TO_FOLDER": "Déplacer vers un dossier",
+      "TEXT_CHAT_MOVED": "Discussion déplacée avec succès",
       "DOWNLOAD_CHAT_OPTIONS_SHEET": {
         "TEXT_EXPORT_CHAT_JSON": "Exporter la discussion (.json)",
-        "TEXT_PLAIN_TEXT": "Texte brut (.txt)",
-        "TEXT_PDF_DOCUMENT": "Document PDF (.pdf)"
+        "TEXT_PLAIN_TEXT": "Texte brut (.txt)"
       },
       "MOVE_CHAT_TO_FOLDER_MODAL": {
         "TEXT_SEARCH_FOLDER": "Rechercher un dossier",
-        "TEXT_NO_FOLDERS": "Aucun dossier",
         "TEXT_CREATE_NEW_FOLDER": "Créer un dossier",
         "TEXT_NO_FOLDER": "Aucun dossier"
       }
@@ -113,6 +111,14 @@
     },
     "USE_ATTACHED_FILES": {
       "TEXT_IMAGE_UPLOAD_FAILED": "Impossible d'envoyer la photo. Vérifiez votre connexion et réessayez"
+    },
+    "MODEL_CONTROLS": {
+      "TEXT_CONTROL_NAME": "« {{control}} »",
+      "TEXT_CONTROLS_SEPARATOR": ", ",
+      "TEXT_STALE_CHOICE": {
+        "one": "L'option sélectionnée pour {{controls}} n'est plus disponible — l'option par défaut est utilisée",
+        "other": "Les options sélectionnées pour {{controls}} ne sont plus disponibles — les options par défaut sont utilisées"
+      }
     }
   }
 }

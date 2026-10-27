@@ -1,6 +1,7 @@
 import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
-import { ReactElement, useRef } from 'react';
+import { compact } from 'lodash-es';
+import { ReactElement, useMemo, useRef } from 'react';
 import { Alert } from 'react-native';
 import {
   ContactSupportSheet,
@@ -9,19 +10,24 @@ import {
 import { SettingsSection, SettingsSectionOption } from '@open-webui-react-native/mobile/settings/ui/section';
 import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-logout';
 import { useSetSelectedModel } from '@open-webui-react-native/mobile/shared/features/use-set-selected-model';
-import { Avatar, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import {
+  Avatar,
+  FullScreenSearchModal,
+  FullScreenSearchModalMethods,
+  View,
+} from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import {
   authApi,
   chatApi,
+  getSelectableModels,
+  isTemporaryChatEnforced,
   modelsApi,
   UiSettings,
   UserSettings,
   usersApi,
-  usersApiConfig,
 } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
-import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
 import {
   availableLanguages,
@@ -29,7 +35,6 @@ import {
   LanguageCode,
   MarkdownRenderer,
 } from '@open-webui-react-native/shared/utils/config';
-import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
 import { hapticFeedbackService } from '@open-webui-react-native/shared/utils/haptic-feedback-service';
 import { useNavigateOnce } from '@open-webui-react-native/shared/utils/navigation';
 import { storeReviewService } from '@open-webui-react-native/shared/utils/store-review-service';
@@ -38,8 +43,6 @@ import {
   AppVersionFooter,
   ChangePasswordSheet,
   ChangePasswordSheetMethods,
-  DefaultModelSheet,
-  DefaultModelSheetMethods,
   DefaultSystemPromptSheet,
   DefaultSystemPromptSheetMethods,
   ProfileAvatarSheet,
@@ -61,7 +64,7 @@ export function Settings(): ReactElement {
   const navigateOnce = useNavigateOnce();
 
   const { data: profile, isError: isProfileError } = authApi.useGetProfile();
-  const { isError: isModelsError } = modelsApi.useGetModels();
+  const { data: models, isError: isModelsError } = modelsApi.useGetModels();
   const { data: settings, isError: isSettingsError } = usersApi.useGetUserSettings();
   const { mutate: updateUserSettings } = usersApi.useUpdateUserSettings({
     onError: () => ToastService.showError(),
@@ -77,12 +80,14 @@ export function Settings(): ReactElement {
 
   const profileAvatarSheetRef = useRef<ProfileAvatarSheetMethods>(null);
   const profileNameSheetRef = useRef<ProfileNameSheetMethods>(null);
-  const defaultModelSheetRef = useRef<DefaultModelSheetMethods>(null);
+  const defaultModelModalRef = useRef<FullScreenSearchModalMethods>(null);
   const defaultSystemPromptSheetRef = useRef<DefaultSystemPromptSheetMethods>(null);
   const changePasswordSheetRef = useRef<ChangePasswordSheetMethods>(null);
   const contactSupportSheetRef = useRef<ContactSupportSheetMethods>(null);
   const languageSheetRef = useRef<SelectionSheetMethods>(null);
   const markdownRendererSheetRef = useRef<SelectionSheetMethods>(null);
+
+  const selectableModels = useMemo(() => getSelectableModels(models), [models]);
 
   const avatarSource = profile?.profileImageUrl ? { uri: profile.profileImageUrl } : undefined;
   const languageLabel = availableLanguages.find(({ code }) => code === locale)?.label;
@@ -112,19 +117,11 @@ export function Settings(): ReactElement {
   };
 
   const handleDefaultModelChange = (modelId: string): void => {
-    if (!settings) {
-      return;
-    }
-
-    updateUserSettings(new UserSettings({ ui: new UiSettings({ ...settings.ui, models: [modelId] }) }));
+    updateUserSettings(new UserSettings({ ui: new UiSettings({ models: [modelId] }) }));
   };
 
   const handleDefaultSystemPromptChange = (systemPrompt: string): void => {
-    if (!settings) {
-      return;
-    }
-
-    updateUserSettings(new UserSettings({ ui: new UiSettings({ ...settings.ui, system: systemPrompt }) }));
+    updateUserSettings(new UserSettings({ ui: new UiSettings({ system: systemPrompt }) }));
   };
 
   const handleMarkdownRendererChange = (value: MarkdownRenderer): void => {
@@ -134,21 +131,11 @@ export function Settings(): ReactElement {
   const createUiSettingToggleHandler =
     <K extends keyof UiSettings>(key: K) =>
     (value: UiSettings[K]): void => {
-      // NOTE: Read the latest cached settings (not the `settings` render closure) so two rapid
-      // toggle taps before a re-render don't clobber each other with a stale `ui` snapshot.
-      const latestSettings = queryClient.getQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey);
-
-      if (!latestSettings) {
-        return;
-      }
-
-      updateUserSettings(new UserSettings({ ui: new UiSettings({ ...latestSettings.ui, [key]: value }) }));
+      updateUserSettings(new UserSettings({ ui: new UiSettings({ [key]: value }) }));
     };
 
   const handleArchivedChatsPress = (): void =>
-    isFeatureEnabled(FeatureID.ARCHIVE_CHAT)
-      ? navigateOnce(`${navigationConfig.main.chat.index}/${navigationConfig.main.chat.archivedChats}`)
-      : ToastService.showFeatureNotImplemented();
+    navigateOnce(`${navigationConfig.main.chat.index}/${navigationConfig.main.chat.archivedChats}`);
 
   const handleRequestDeleteAccountPress = (): void => {
     Alert.alert(
@@ -240,7 +227,7 @@ export function Settings(): ReactElement {
     {
       label: translate('TEXT_DEFAULT_MODEL'),
       value: defaultModelValue,
-      onPress: () => defaultModelSheetRef.current?.present(),
+      onPress: () => defaultModelModalRef.current?.present(),
     },
     {
       label: translate('TEXT_DEFAULT_SYSTEM_PROMPT'),
@@ -311,7 +298,7 @@ export function Settings(): ReactElement {
     },
   ];
 
-  const preferenceOptions: Array<SettingsSectionOption> = [
+  const preferenceOptions: Array<SettingsSectionOption> = compact([
     {
       type: 'switch',
       label: translate('TEXT_ALWAYS_ON_WEB_SEARCH'),
@@ -336,7 +323,7 @@ export function Settings(): ReactElement {
       isEnabled: isChatBubbleUIEnabled,
       onValueChange: createUiSettingToggleHandler('chatBubble'),
     },
-    {
+    !isTemporaryChatEnforced() && {
       type: 'switch',
       label: translate('TEXT_TEMPORARY_CHAT_BY_DEFAULT'),
       isEnabled: isTemporaryChatByDefaultEnabled,
@@ -353,11 +340,11 @@ export function Settings(): ReactElement {
       value: markdownRendererOption && translate(markdownRendererOption.labelKey),
       onPress: () => markdownRendererSheetRef.current?.present(),
     },
-  ];
+  ]);
 
   return (
     <View className='pb-safe'>
-      <View className='py-16 items-center justify-center'>
+      <View className='px-content-offset py-16 items-center justify-center'>
         <Avatar
           source={avatarSource}
           name={profile?.name}
@@ -380,10 +367,12 @@ export function Settings(): ReactElement {
         name={profile?.name}
         avatarUrl={profile?.profileImageUrl} />
       <ChangePasswordSheet ref={changePasswordSheetRef} />
-      <DefaultModelSheet
-        ref={defaultModelSheetRef}
-        selectedModelId={defaultModelId}
-        onConfirm={handleDefaultModelChange}
+      <FullScreenSearchModal
+        ref={defaultModelModalRef}
+        data={selectableModels}
+        selectedItemId={defaultModelId}
+        onSelectItem={handleDefaultModelChange}
+        searchPlaceholder={translate('DEFAULT_MODEL_MODAL.TEXT_SEARCH_MODEL')}
       />
       <DefaultSystemPromptSheet
         ref={defaultSystemPromptSheetRef}

@@ -6,12 +6,24 @@ import { ApiErrorData } from '../types';
 const MAX_STRING_LENGTH = 500;
 const MAX_ARRAY_ITEMS = 20;
 const REDACTED_TEXT_KEYS = new Set(['content', 'message', 'text', 'prompt']);
+const REDACTED_SECRET_KEYS = new Set([
+  'password',
+  'new_password',
+  'code',
+  'challenge_token',
+  'reset_token',
+  'recovery_codes',
+]);
 
 const redactText = (value: string): string => `[redacted:${value.length} chars]`;
 
 const redactSensitiveData = (value: unknown, key?: string, depth = 0): unknown => {
   if (depth > 6) {
     return '[truncated]';
+  }
+
+  if (key && REDACTED_SECRET_KEYS.has(key)) {
+    return '[redacted]';
   }
 
   if (key && REDACTED_TEXT_KEYS.has(key) && typeof value === 'string') {
@@ -108,6 +120,7 @@ export const captureApiError = (error: unknown, { operation, context = {} }: Cap
       scope.setTag('api.operation', operation);
       scope.setTag('http.status_code', String(status ?? 'unknown'));
       scope.setTag('http.method', config?.method ?? 'unknown');
+      scope.setTag('error.category', 'network');
       scope.setLevel('error');
 
       scope.setContext('api', {
@@ -132,6 +145,7 @@ export const captureApiError = (error: unknown, { operation, context = {} }: Cap
 
   Sentry.withScope((scope) => {
     scope.setTag('api.operation', operation);
+    scope.setTag('error.category', 'network');
     scope.setContext('api_request', sanitizeContextForSentry(context));
     Sentry.captureException(error);
   });

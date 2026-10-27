@@ -28,6 +28,18 @@
       "@open-webui-react-native/mobile/auth/features/email-sign-in-form": [
         "libs/mobile/auth/features/email-sign-in-form/src/index.ts"
       ],
+      "@open-webui-react-native/mobile/auth/features/mfa-authenticator-setup": [
+        "libs/mobile/auth/features/mfa-authenticator-setup/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/auth/features/mfa-recovery": [
+        "libs/mobile/auth/features/mfa-recovery/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/auth/features/mfa-recovery-codes": [
+        "libs/mobile/auth/features/mfa-recovery-codes/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/auth/features/mfa-verification": [
+        "libs/mobile/auth/features/mfa-verification/src/index.ts"
+      ],
       "@open-webui-react-native/mobile/auth/features/oauth-sign-in": [
         "libs/mobile/auth/features/oauth-sign-in/src/index.ts"
       ],
@@ -35,6 +47,10 @@
         "libs/mobile/auth/features/oauth-web-view/src/index.ts"
       ],
       "@open-webui-react-native/mobile/auth/features/sign-in": ["libs/mobile/auth/features/sign-in/src/index.ts"],
+      "@open-webui-react-native/mobile/auth/features/use-mfa-navigation": [
+        "libs/mobile/auth/features/use-mfa-navigation/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/auth/ui/mfa-layout": ["libs/mobile/auth/ui/mfa-layout/src/index.ts"],
       "@open-webui-react-native/mobile/chat/data-access/archived-chats-filter-state": [
         "libs/mobile/chat/data-access/archived-chats-filter-state/src/index.ts"
       ],
@@ -50,14 +66,14 @@
       "@open-webui-react-native/mobile/chat/features/archived-chats-list": [
         "libs/mobile/chat/features/archived-chats-list/src/index.ts"
       ],
+      "@open-webui-react-native/mobile/chat/features/attach-knowledge-sheet": [
+        "libs/mobile/chat/features/attach-knowledge-sheet/src/index.ts"
+      ],
       "@open-webui-react-native/mobile/chat/features/attached-chat-items": [
         "libs/mobile/chat/features/attached-chat-items/src/index.ts"
       ],
       "@open-webui-react-native/mobile/chat/features/attached-file-item": [
         "libs/mobile/chat/features/attached-file-item/src/index.ts"
-      ],
-      "@open-webui-react-native/mobile/chat/features/attach-knowledge-sheet": [
-        "libs/mobile/chat/features/attach-knowledge-sheet/src/index.ts"
       ],
       "@open-webui-react-native/mobile/chat/features/attached-image-item": [
         "libs/mobile/chat/features/attached-image-item/src/index.ts"
@@ -79,8 +95,8 @@
       "@open-webui-react-native/mobile/chat/features/message-version-controls": [
         "libs/mobile/chat/features/message-version-controls/src/index.ts"
       ],
-      "@open-webui-react-native/mobile/chat/features/models-sheet": [
-        "libs/mobile/chat/features/models-sheet/src/index.ts"
+      "@open-webui-react-native/mobile/chat/features/model-controls-sheet": [
+        "libs/mobile/chat/features/model-controls-sheet/src/index.ts"
       ],
       "@open-webui-react-native/mobile/chat/features/search-archived-chats": [
         "libs/mobile/chat/features/search-archived-chats/src/index.ts"
@@ -108,6 +124,9 @@
       ],
       "@open-webui-react-native/mobile/chat/features/use-create-new-chat": [
         "libs/mobile/chat/features/use-create-new-chat/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/chat/features/use-delete-message": [
+        "libs/mobile/chat/features/use-delete-message/src/index.ts"
       ],
       "@open-webui-react-native/mobile/chat/features/use-edit-message": [
         "libs/mobile/chat/features/use-edit-message/src/index.ts"
@@ -152,13 +171,10 @@
       "@open-webui-react-native/mobile/folder/features/share-with-sheet": [
         "libs/mobile/folder/features/share-with-sheet/src/index.ts"
       ],
-      "@open-webui-react-native/mobile/folder/ui/access-row": ["libs/mobile/folder/ui/access-row/src/index.ts"],
       "@open-webui-react-native/mobile/folder/features/upsert-folder-sheet": [
         "libs/mobile/folder/features/upsert-folder-sheet/src/index.ts"
       ],
-      "@open-webui-react-native/mobile/profile/features/menu-sheet": [
-        "libs/mobile/profile/features/menu-sheet/src/index.ts"
-      ],
+      "@open-webui-react-native/mobile/folder/ui/access-row": ["libs/mobile/folder/ui/access-row/src/index.ts"],
       "@open-webui-react-native/mobile/settings/features/contact-support-sheet": [
         "libs/mobile/settings/features/contact-support-sheet/src/index.ts"
       ],
@@ -166,12 +182,6 @@
         "libs/mobile/settings/features/settings/src/index.ts"
       ],
       "@open-webui-react-native/mobile/settings/ui/section": ["libs/mobile/settings/ui/section/src/index.ts"],
-      "@open-webui-react-native/mobile/shared/data-access/base-entity": [
-        "libs/mobile/shared/data-access/base-entity/src/index.ts"
-      ],
-      "@open-webui-react-native/mobile/shared/data-access/entity-service": [
-        "libs/mobile/shared/data-access/entity-service/src/index.ts"
-      ],
       "@open-webui-react-native/mobile/shared/data-access/file-system-service": [
         "libs/mobile/shared/data-access/file-system-service/src/index.ts"
       ],
@@ -183,9 +193,6 @@
       ],
       "@open-webui-react-native/mobile/shared/data-access/speech-streaming-service": [
         "libs/mobile/shared/data-access/speech-streaming-service/src/index.ts"
-      ],
-      "@open-webui-react-native/mobile/shared/data-access/storage": [
-        "libs/mobile/shared/data-access/storage/src/index.ts"
       ],
       "@open-webui-react-native/mobile/shared/features/chat-actions-menu-sheet": [
         "libs/mobile/shared/features/chat-actions-menu-sheet/src/index.ts"
@@ -202,9 +209,6 @@
       "@open-webui-react-native/mobile/shared/features/markdown-view": [
         "libs/mobile/shared/features/markdown-view/src/index.ts"
       ],
-      "@open-webui-react-native/mobile/shared/features/sidebar-menu": [
-        "libs/mobile/shared/features/sidebar-menu/src/index.ts"
-      ],
       "@open-webui-react-native/mobile/shared/features/toast": ["libs/mobile/shared/features/toast/src/index.ts"],
       "@open-webui-react-native/mobile/shared/features/use-attached-files": [
         "libs/mobile/shared/features/use-attached-files/src/index.ts"
@@ -212,11 +216,11 @@
       "@open-webui-react-native/mobile/shared/features/use-audio-recorder": [
         "libs/mobile/shared/features/use-audio-recorder/src/index.ts"
       ],
-      "@open-webui-react-native/mobile/shared/features/use-folders-enabled": [
-        "libs/mobile/shared/features/use-folders-enabled/src/index.ts"
-      ],
       "@open-webui-react-native/mobile/shared/features/use-dictate-mode": [
         "libs/mobile/shared/features/use-dictate-mode/src/index.ts"
+      ],
+      "@open-webui-react-native/mobile/shared/features/use-folders-enabled": [
+        "libs/mobile/shared/features/use-folders-enabled/src/index.ts"
       ],
       "@open-webui-react-native/mobile/shared/features/use-logout": [
         "libs/mobile/shared/features/use-logout/src/index.ts"

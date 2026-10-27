@@ -13,6 +13,9 @@ export class Features {
   @Expose({ name: 'web_search' })
   public webSearch: boolean;
 
+  @Expose()
+  public voice: boolean;
+
   constructor(features: Partial<Features> = {}) {
     Object.assign(this, features);
   }

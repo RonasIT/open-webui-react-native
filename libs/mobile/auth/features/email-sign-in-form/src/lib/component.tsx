@@ -1,19 +1,24 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
+import { HttpStatusCode } from 'axios';
 import { Fragment, ReactElement, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { TextInput } from 'react-native';
+import { useMfaNavigation } from '@open-webui-react-native/mobile/auth/features/use-mfa-navigation';
 import { AppButton, AppText, View, FormFloatedLabelInput } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 import {
   appConfigurationApi,
   authApi,
+  MfaChallenge,
+  MfaNextStep,
   Provider,
+  SignInResponse,
   supportedOauthProviders,
 } from '@open-webui-react-native/shared/data-access/api';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
-import { resolveApiUrl } from '@open-webui-react-native/shared/utils/config';
-import { FeatureID, isFeatureEnabled } from '@open-webui-react-native/shared/utils/feature-flag';
+import { normalizeServerUrl, resolveApiUrl } from '@open-webui-react-native/shared/utils/config';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
 import { UrlInputLoader } from './components';
 import { emailFormConfig } from './config';
@@ -27,11 +32,12 @@ interface EmailSignInFormProps {
 
 export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }: EmailSignInFormProps): ReactElement {
   const translate = useTranslation('AUTH.SIGN_IN.EMAIL_FORM');
+  const { openStep } = useMfaNavigation();
   const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
-  const isApiUrlFeatureEnabled = isFeatureEnabled(FeatureID.API_URL);
 
   const { query, setQuery, debouncedQuery } = useDebouncedQuery({ initialValue: appStorageService.apiUrl.get() });
+  const queryRef = useRef(query);
 
   const {
     control,
@@ -49,10 +55,36 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
     isFetchWithUrlLoading,
     isFetchWithUrlSuccess,
     isFetchWithUrlError,
+    fetchWithUrlError,
   } = appConfigurationApi.useGetAppConfiguration({ enabled: false });
-  const { mutate, isPending } = authApi.useSignInWithEmailPassword({ onSuccess });
 
-  const isUrlValid = !errors.url && debouncedQuery.length !== 0 && query.length !== 0;
+  const handleSignInSuccess = (response: SignInResponse): void => {
+    if (response.nextStep === MfaNextStep.PENDING) {
+      ToastService.showError(translate('TEXT_ACCOUNT_PENDING_APPROVAL'));
+
+      return;
+    }
+
+    if (response.challengeToken && response.nextStep) {
+      openStep(
+        new MfaChallenge({
+          nextStep: response.nextStep,
+          challengeToken: response.challengeToken,
+        }),
+      );
+
+      return;
+    }
+
+    if (response.token) {
+      onSuccess();
+    }
+  };
+
+  const { mutate, isPending } = authApi.useSignInWithEmailPassword({ onSuccess: handleSignInSuccess });
+
+  const serverUrl = normalizeServerUrl(debouncedQuery);
+  const isUrlValid = !errors.url && !!serverUrl && normalizeServerUrl(query) === serverUrl;
 
   const isUrlWithConfig = isFetchWithUrlSuccess && !!(config?.name && config?.version);
   const isUrlWithoutConfig = isFetchWithUrlSuccess && !(config?.name && config?.version);
@@ -76,9 +108,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
     !hasSupportedOauthProviders &&
     (hasOauthProviders || isLdapEnabled);
 
-  const isFormValid = isApiUrlFeatureEnabled
-    ? (!isLoginFormRequired || isValid) && isUrlValid && isUrlWithConfig
-    : !isLoginFormRequired || isValid;
+  const isFormValid = (!isLoginFormRequired || isValid) && isUrlValid && isUrlWithConfig;
 
   const onSubmit = (form: FormValues<EmailFormSchema>): void => {
     mutate({ email: form.email, password: form.password });
@@ -88,63 +118,93 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
     mutate({ email: '', password: '' });
   };
 
+  const checkServerUrl = async (): Promise<void> => {
+    if (!isUrlValid) {
+      return;
+    }
+
+    setOauthProviders({});
+
+    const checkedConfig = await fetchWithUrl(resolveApiUrl(serverUrl));
+    const isInputStillChecked = normalizeServerUrl(queryRef.current) === serverUrl;
+
+    if (!isInputStillChecked || !checkedConfig?.name || !checkedConfig?.version) {
+      return;
+    }
+
+    appStorageService.apiUrl.set(serverUrl);
+    setOauthProviders(checkedConfig.oauth?.providers ?? {});
+  };
+
+  const getUrlCheckErrorText = (): string | undefined => {
+    if (!isUrlValid || isFetchWithUrlLoading) {
+      return;
+    }
+
+    const responseStatus = fetchWithUrlError?.response?.status;
+
+    if (isFetchWithUrlError && (!responseStatus || responseStatus >= HttpStatusCode.InternalServerError)) {
+      return translate('TEXT_SERVER_UNREACHABLE');
+    }
+
+    if (isFetchWithUrlError || isUrlWithoutConfig) {
+      return translate('TEXT_NOT_OPEN_WEBUI_SERVER');
+    }
+  };
+
   useEffect(() => {
+    queryRef.current = query;
     setValue('url', query, { shouldValidate: true });
     onApiUrlChange?.(query);
-    setOauthProviders({});
+
+    if (normalizeServerUrl(query) !== serverUrl) {
+      setOauthProviders({});
+    }
   }, [query]);
 
   useEffect(() => {
-    const refetchConfig = async (): Promise<void> => {
-      if (isUrlValid) {
-        const res = await fetchWithUrl(resolveApiUrl(debouncedQuery));
-
-        if (res?.name && res?.version) {
-          appStorageService.apiUrl.set(debouncedQuery);
-          setOauthProviders(res.oauth.providers);
-        }
-      }
-    };
-
-    refetchConfig();
-  }, [debouncedQuery]);
+    checkServerUrl();
+  }, [serverUrl, isUrlValid]);
 
   return (
     <View className='w-full gap-8'>
-      {isApiUrlFeatureEnabled && (
-        <FormFloatedLabelInput
-          name='url'
-          control={control}
-          value={query}
-          onChangeText={setQuery}
-          autoCapitalize='none'
-          autoCorrect={false}
-          secureTextEntry={false}
-          returnKeyType='next'
-          keyboardType='url'
-          placeholder={emailFormConfig.apiUrlPlaceholder}
-          label={translate('TEXT_API_URL')}
-          onSubmitEditing={() => emailRef.current?.focus()}
-          enablesReturnKeyAutomatically={true}
-          accessoryRight={
-            isUrlValid ? (
-              <UrlInputLoader
-                isLoading={isFetchWithUrlLoading}
-                isSuccess={isUrlWithConfig}
-                isError={isFetchWithUrlError || isUrlWithoutConfig}
-              />
-            ) : undefined
-          }
-          helperText={
-            isUrlValid && isUrlWithConfig && !isFetchWithUrlLoading ? `${config?.name} ${config?.version}` : undefined
-          }
-        />
-      )}
+      <FormFloatedLabelInput
+        name='url'
+        testID='sign-in-api-url'
+        control={control}
+        value={query}
+        onChangeText={setQuery}
+        autoCapitalize='none'
+        autoCorrect={false}
+        secureTextEntry={false}
+        returnKeyType='next'
+        keyboardType='url'
+        placeholder={emailFormConfig.apiUrlPlaceholder}
+        label={translate('TEXT_API_URL')}
+        onSubmitEditing={() => emailRef.current?.focus()}
+        enablesReturnKeyAutomatically={true}
+        accessoryRight={
+          isUrlValid ? (
+            <UrlInputLoader
+              isLoading={isFetchWithUrlLoading}
+              isSuccess={isUrlWithConfig}
+              isError={isFetchWithUrlError || isUrlWithoutConfig}
+              retryLabel={translate('BUTTON_RETRY_SERVER_CHECK')}
+              onRetry={checkServerUrl}
+            />
+          ) : undefined
+        }
+        error={errors.url?.message ?? getUrlCheckErrorText()}
+        helperText={
+          isUrlValid && isUrlWithConfig && !isFetchWithUrlLoading ? `${config?.name} ${config?.version}` : undefined
+        }
+      />
       {isLoginFormRequired && (
         <Fragment>
           <FormFloatedLabelInput
             inputRef={emailRef}
             name='email'
+            testID='sign-in-email'
             control={control}
             autoCapitalize='none'
             autoCorrect={false}
@@ -158,6 +218,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
           />
           <FormFloatedLabelInput
             name='password'
+            testID='sign-in-password'
             control={control}
             inputRef={passwordRef}
             autoCapitalize='none'
@@ -182,6 +243,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
       {showSignInButton && (
         <AppButton
           text={translate('BUTTON_SIGN_IN')}
+          testID='sign-in-submit'
           disabled={!isFormValid}
           isLoading={isPending}
           className='mt-16'
