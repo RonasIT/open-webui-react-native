@@ -25,8 +25,8 @@ import {
   ToolCallResolveAction,
 } from '@open-webui-react-native/shared/data-access/api';
 import { FileType } from '@open-webui-react-native/shared/data-access/common';
-import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
+import { resolveServerUrl } from '@open-webui-react-native/shared/utils/files';
 import { buildToolCallViews, parseResponseMessageContent } from '../../utils';
 import { ChatImagesGroup } from '../images';
 import { SkeletonMessage } from '../skeleton-message';
@@ -72,8 +72,6 @@ export function ChatAiMessage({
     error: messageError,
   } = message;
 
-  const apiUrl = getApiUrl();
-
   // NOTE: Mirrors the web app — `modelName` is a client-only snapshot the backend never guarantees
   // (older chats, imports, or continued responses can lack it entirely), so it's a fallback rather
   // than the source of truth. The live models list, keyed by the (always-present) model id, is.
@@ -87,10 +85,12 @@ export function ChatAiMessage({
     () =>
       (files ?? []).reduce(
         (acc, file, index) =>
-          file.type === FileType.IMAGE ? [...acc, { type: file.type, url: `${apiUrl}${file.url}`, index }] : acc,
+          file.type === FileType.IMAGE && file.url
+            ? [...acc, { type: file.type, url: resolveServerUrl(file.url), index }]
+            : acc,
         [] as Array<AttachedImageWithIndex>,
       ),
-    [apiUrl, files],
+    [files],
   );
 
   const { handleImagePress, handleAllPhotosPress, selectedImageIndex, isPreviewVisible, handleCloseImagePress } =
