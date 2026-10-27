@@ -7,6 +7,17 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
+
+concurrency:
+  group: open-webui-release-watch
+  cancel-in-progress: false
+
+# NOTE: `main` accepts changes only via PR; `gh pr create` needs "Allow GitHub Actions to create and approve pull requests"
+env:
+  STATE_FILE: .github/state/open-webui-last-release.txt
+  STATE_BRANCH: chore/open-webui-release-watch
+  BASE_BRANCH: ${{ github.event.repository.default_branch || 'main' }}
 
 jobs:
   check-release:
@@ -15,6 +26,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ env.BASE_BRANCH }}
 
       - name: Fetch latest open-webui release
         id: latest_release
@@ -22,22 +35,27 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          TAG_NAME=$(gh api repos/open-webui/open-webui/releases/latest --jq '.tag_name')
-          HTML_URL=$(gh api repos/open-webui/open-webui/releases/latest --jq '.html_url')
+          RELEASE=$(gh api repos/open-webui/open-webui/releases/latest --jq '[.tag_name, .html_url] | @tsv')
+          IFS=$'\t' read -r TAG_NAME HTML_URL <<< "$RELEASE"
 
-          if [ -z "$TAG_NAME" ] || [ "$TAG_NAME" = "null" ]; then
-            echo "Could not resolve latest release tag_name" >&2
+          # NOTE: Values come from an external repo: validate them and pass them on only through env
+          if [[ ! "$TAG_NAME" =~ ^v[0-9A-Za-z.+-]+$ ]]; then
+            echo "Unexpected release tag_name: $TAG_NAME" >&2
             exit 1
           fi
 
-          echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
-          echo "html_url=$HTML_URL" >> "$GITHUB_OUTPUT"
+          if [[ ! "$HTML_URL" =~ ^https://github\.com/open-webui/open-webui/releases/tag/[0-9A-Za-z.+-]+$ ]]; then
+            echo "Unexpected release html_url: $HTML_URL" >&2
+            exit 1
+          fi
+
+          echo "TAG_NAME=$TAG_NAME" >> "$GITHUB_ENV"
+          echo "HTML_URL=$HTML_URL" >> "$GITHUB_ENV"
 
       - name: Compare with last seen release
         id: compare
         run: |
           set -euo pipefail
-          STATE_FILE=".github/state/open-webui-last-release.txt"
 
           if [ -f "$STATE_FILE" ]; then
             LAST_SEEN=$(cat "$STATE_FILE")
@@ -47,38 +65,69 @@ jobs:
 
           echo "last_seen=$LAST_SEEN" >> "$GITHUB_OUTPUT"
 
-          if [ "$LAST_SEEN" = "${{ steps.latest_release.outputs.tag_name }}" ]; then
+          if [ "$LAST_SEEN" = "$TAG_NAME" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Update state file
+      # NOTE: Any PR for the tag (open, merged or closed) means the release is already handled
+      - name: Check for existing PR
+        id: existing_pr
         if: steps.compare.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          mkdir -p .github/state
-          echo -n "${{ steps.latest_release.outputs.tag_name }}" > .github/state/open-webui-last-release.txt
+          PR_TITLE="chore: update open-webui last seen release to $TAG_NAME"
+          PR_TITLES=$(gh pr list --head "$STATE_BRANCH" --state all --limit 100 --json title,isCrossRepository \
+            --jq '.[] | select(.isCrossRepository | not) | .title')
 
-      - name: Commit and push state file
-        if: steps.compare.outputs.changed == 'true'
+          if printf '%s\n' "$PR_TITLES" | grep -Fxq "$PR_TITLE"; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          echo "pr_title=$PR_TITLE" >> "$GITHUB_OUTPUT"
+
+      - name: Update state file
+        if: steps.compare.outputs.changed == 'true' && steps.existing_pr.outputs.exists == 'false'
+        run: |
+          set -euo pipefail
+          mkdir -p "$(dirname "$STATE_FILE")"
+          echo -n "$TAG_NAME" > "$STATE_FILE"
+
+      - name: Push state branch and open PR
+        if: steps.compare.outputs.changed == 'true' && steps.existing_pr.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_TITLE: ${{ steps.existing_pr.outputs.pr_title }}
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .github/state/open-webui-last-release.txt
-          git commit -m "chore: update open-webui last seen release to ${{ steps.latest_release.outputs.tag_name }}"
-          git push
+          git switch -C "$STATE_BRANCH"
+          git add "$STATE_FILE"
+          git commit -m "$PR_TITLE"
+          git push --force origin "$STATE_BRANCH"
+
+          PR_NUMBER=$(gh pr list --head "$STATE_BRANCH" --base "$BASE_BRANCH" --state open --json number,isCrossRepository \
+            --jq 'map(select(.isCrossRepository | not)) | .[0].number // empty')
+
+          if [ -n "$PR_NUMBER" ]; then
+            gh pr edit "$PR_NUMBER" --title "$PR_TITLE" --body "$HTML_URL"
+          else
+            gh pr create --head "$STATE_BRANCH" --base "$BASE_BRANCH" --title "$PR_TITLE" --body "$HTML_URL"
+          fi
 
       - name: Notify Google Chat
-        if: steps.compare.outputs.changed == 'true'
+        if: steps.compare.outputs.changed == 'true' && steps.existing_pr.outputs.exists == 'false'
         env:
           GOOGLE_CHAT_WEBHOOK_URL: ${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}
         run: |
           set -euo pipefail
-          TAG_NAME="${{ steps.latest_release.outputs.tag_name }}"
-          HTML_URL="${{ steps.latest_release.outputs.html_url }}"
 
-          curl -X POST -H "Content-Type: application/json" \
-            -d "{\"text\": \"New open-webui release: ${TAG_NAME}\n${HTML_URL}\"}" \
+          curl -fsS -X POST -H "Content-Type: application/json" \
+            -d "$(jq -n --arg text "New open-webui release: ${TAG_NAME}"$'\n'"${HTML_URL}" '{text: $text}')" \
             "$GOOGLE_CHAT_WEBHOOK_URL"
