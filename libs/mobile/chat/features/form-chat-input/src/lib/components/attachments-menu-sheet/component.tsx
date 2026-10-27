@@ -1,4 +1,5 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { Fragment, ReactElement, useEffect, useRef } from 'react';
 import {
@@ -12,6 +13,7 @@ import {
 } from '@open-webui-react-native/mobile/shared/data-access/image-picker-service';
 import { ActionsBottomSheet, ActionSheetItemProps, IconButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { ChatListItem, filesApi, isFeaturePermitted, Knowledge } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import {
   AttachedChat,
   AttachedKnowledgeCollection,
@@ -21,6 +23,7 @@ import {
   FileType,
   PickedImageData,
 } from '@open-webui-react-native/shared/data-access/common';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { getDocumentFormData } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { AttachWebpageSheet, AttachWebpageSheetMethods } from '../attach-webpage-sheet';
@@ -51,6 +54,7 @@ export function AttachmentsMenuSheet({
   const referenceChatsSheetRef = useRef<ReferenceChatsSheetMethods>(null);
   const attachWebpageSheetRef = useRef<AttachWebpageSheetMethods>(null);
   const isFileUploadEnabled = isFeaturePermitted('chat', 'fileUpload', true);
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
   const {
     mutate: uploadFile,
     isPending: isFileUploading,
@@ -62,7 +66,8 @@ export function AttachmentsMenuSheet({
 
   const closeModal = (): void => modalRef.current?.close();
 
-  const handlePickImage = async (source: ImagePickerSource): Promise<void> => {
+  // NOTE: Every item uploads or searches on the server, and the network may drop while the menu is open.
+  const handlePickImage = withOfflineGuard(async (source: ImagePickerSource): Promise<void> => {
     const image = await imagePickerService.getImage(source);
     const asset = image?.assets?.[0];
 
@@ -72,10 +77,10 @@ export function AttachmentsMenuSheet({
 
     closeModal();
     onImageUploaded?.({ uri: asset.uri, base64: asset.base64, mimeType: asset.mimeType });
-  };
+  });
 
   // TODO: Move into hook when attach to message will be implemented
-  const handlePickFile = async (): Promise<void> => {
+  const handlePickFile = withOfflineGuard(async (): Promise<void> => {
     const { assets } = await fileSystemService.pickFile({ multiple: false });
 
     if (!assets) {
@@ -97,17 +102,17 @@ export function AttachmentsMenuSheet({
     }
 
     uploadFile(getDocumentFormData(file));
-  };
+  });
 
-  const handleAttachKnowledgePress = (): void => {
+  const handleAttachKnowledgePress = withOfflineGuard((): void => {
     closeModal();
     attachKnowledgeSheetRef.current?.present();
-  };
+  });
 
-  const handleReferenceChatsPress = (): void => {
+  const handleReferenceChatsPress = withOfflineGuard((): void => {
     closeModal();
     referenceChatsSheetRef.current?.present();
-  };
+  });
 
   // NOTE: status is always PROCESSED here, mirroring the web client — a referenced chat has
   // no server-side processing step to wait on, unlike an uploaded file.
@@ -123,10 +128,10 @@ export function AttachmentsMenuSheet({
     });
   };
 
-  const handleAttachWebpagePress = (): void => {
+  const handleAttachWebpagePress = withOfflineGuard((): void => {
     closeModal();
     attachWebpageSheetRef.current?.present();
-  };
+  });
 
   const handleSelectKnowledgeCollection = (knowledge: Knowledge): void => {
     onItemAttached({
@@ -192,9 +197,11 @@ export function AttachmentsMenuSheet({
   const renderTrigger = ({ onPress }: { onPress: () => void }): ReactElement => (
     <IconButton
       disabled={disabled}
+      isInactive={isOfflineMode}
       iconName='plus'
-      onPress={onPress}
-      className='p-0' />
+      onPress={withOfflineGuard(onPress)}
+      className='p-0'
+    />
   );
 
   useEffect(() => {
@@ -209,7 +216,9 @@ export function AttachmentsMenuSheet({
       <ActionsBottomSheet
         ref={modalRef}
         renderTrigger={renderTrigger}
-        actions={actions} />
+        areActionsInactive={isOfflineMode}
+        actions={actions}
+      />
       <AttachKnowledgeSheet
         ref={attachKnowledgeSheetRef}
         isCollectionAttached={isKnowledgeCollectionAttached}

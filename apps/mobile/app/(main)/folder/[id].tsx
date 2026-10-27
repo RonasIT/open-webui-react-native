@@ -1,7 +1,10 @@
+import { useSelector } from '@legendapp/state/react';
 import { ChatsList } from '@open-webui-react-native/mobile/folder/features/chats-list';
 import { AppHeader, AppScreen, IconButton } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { FolderScreenParams, navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import { AccessPermission, foldersApi } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { useNavigateOnce } from '@open-webui-react-native/shared/utils/navigation';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ReactElement } from 'react';
@@ -10,6 +13,7 @@ export default function FolderScreen(): ReactElement {
   const navigateOnce = useNavigateOnce();
   const { id, title }: FolderScreenParams = useLocalSearchParams();
   const router = useRouter();
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   const { data: sharedFolders, isPending: isSharedFoldersPending } = foldersApi.useGetSharedFolders();
 
@@ -17,11 +21,12 @@ export default function FolderScreen(): ReactElement {
   const canCreateChat =
     !isSharedFoldersPending && (!sharedFolder || sharedFolder.permission === AccessPermission.WRITE);
 
-  const handleNewChatPress = (): void =>
+  const handleNewChatPress = withOfflineGuard((): void =>
     navigateOnce({
       pathname: `${navigationConfig.main.chat.index}/${navigationConfig.main.chat.create}`,
       params: { folderId: id },
-    });
+    }),
+  );
 
   const handleChatPress = (id: string): void => navigateOnce(navigationConfig.main.chat.view({ id }));
 
@@ -39,7 +44,9 @@ export default function FolderScreen(): ReactElement {
               <IconButton
                 className='p-0'
                 iconName='plusInCircle'
-                onPress={handleNewChatPress} />
+                isInactive={isOfflineMode}
+                onPress={handleNewChatPress}
+              />
             ) : undefined
           }
         />

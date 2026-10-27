@@ -18,6 +18,8 @@ type AppButtonProps = {
   isFullWidth?: boolean;
   className?: string;
   iconClassName?: string;
+  // NOTE: Looks disabled but stays pressable, so onPress can tell the user why (e.g. the offline toast).
+  isInactive?: boolean;
 } & ButtonVariants &
   Omit<AppPressableProps, 'children'>;
 
@@ -97,12 +99,13 @@ export const AppButton = ({
   disabled,
   className,
   iconClassName,
+  isInactive,
   ...pressableProps
 }: AppButtonProps): ReactElement => {
   const { containerClasses, textClasses, pressedTextClasses } = getButtonClasses({
     variant,
     size,
-    disabled: !!disabled,
+    disabled: !!disabled || !!isInactive,
     isFullWidth,
   });
 

@@ -16,6 +16,7 @@ export interface UseChatSystemPromptArgs {
 export interface UseChatSystemPromptResult {
   systemPrompt: string;
   saveSystemPrompt: (value: string) => void;
+  isSavedOnServer: boolean;
 }
 
 export function useChatSystemPrompt({ chat }: UseChatSystemPromptArgs): UseChatSystemPromptResult {
@@ -46,5 +47,8 @@ export function useChatSystemPrompt({ chat }: UseChatSystemPromptArgs): UseChatS
     }
   };
 
-  return { systemPrompt, saveSystemPrompt };
+  // NOTE: A new chat keeps its prompt locally until it's created, a temporary one is never persisted.
+  const isSavedOnServer = !!chat && !isTemporaryChatId(chat.id);
+
+  return { systemPrompt, saveSystemPrompt, isSavedOnServer };
 }

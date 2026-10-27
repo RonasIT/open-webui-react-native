@@ -1,4 +1,5 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } from 'react';
 import {
@@ -15,6 +16,8 @@ import {
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { compressImage } from '@open-webui-react-native/mobile/shared/utils/compressor';
 import { authApi, UpdateProfileRequest } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { toDataUrl } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { profileAvatarSheetConfig } from './config';
@@ -37,6 +40,7 @@ export function ProfileAvatarSheet({ name, imageUrl, ref, ...props }: ProfileAva
 
   const [pickedImageDataUrl, setPickedImageDataUrl] = useState<string | null>(null);
   const [isProcessingImage, setIsProcessingImage] = useState(false);
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   const { mutate: updateProfile, isPending } = authApi.useUpdateProfile();
 
@@ -88,7 +92,7 @@ export function ProfileAvatarSheet({ name, imageUrl, ref, ...props }: ProfileAva
 
   const handleRestoreDefaultPress = (): void => setPickedImageDataUrl(null);
 
-  const handleConfirmPress = (): void => {
+  const handleConfirmPress = withOfflineGuard((): void => {
     if (!pickedImageDataUrl || !name || isPending) {
       closeSheet();
 
@@ -98,7 +102,7 @@ export function ProfileAvatarSheet({ name, imageUrl, ref, ...props }: ProfileAva
     updateProfile(new UpdateProfileRequest({ name, profileImageUrl: pickedImageDataUrl }), {
       onSuccess: closeSheet,
     });
-  };
+  });
 
   const currentImageUrl = pickedImageDataUrl || imageUrl;
 
@@ -115,7 +119,7 @@ export function ProfileAvatarSheet({ name, imageUrl, ref, ...props }: ProfileAva
             title={translate('TEXT_TITLE')}
             onGoBack={closeSheet}
             onConfirmPress={handleConfirmPress}
-            confirmButtonProps={{ isLoading: isPending, disabled: isPending }}
+            confirmButtonProps={{ isLoading: isPending, disabled: isPending, isInactive: isOfflineMode }}
           />
           <View className='gap-8'>
             <View className='items-center justify-center py-32'>

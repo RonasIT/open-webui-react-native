@@ -1,3 +1,4 @@
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement } from 'react';
 import { Path, Control, useController, FieldValues } from 'react-hook-form';
@@ -10,6 +11,8 @@ import {
   AppInputProps,
   IconButton,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 
 interface SuggestChangeInputProps<T extends FieldValues> extends AppInputProps {
   onCancel: () => void;
@@ -28,6 +31,7 @@ export function SuggestChangeInput<T extends FieldValues>({
   const translate = useTranslation('CHAT.SUGGEST_CHANGE_INPUT');
 
   const { field } = useController({ control, name });
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   return (
     <AppTextInput
@@ -57,7 +61,8 @@ export function SuggestChangeInput<T extends FieldValues>({
           />
           <IconButton
             iconName='arrowUp'
-            onPress={() => onSend(field.value)}
+            onPress={withOfflineGuard(() => onSend(field.value))}
+            isInactive={isOfflineMode}
             className='rounded-full bg-text-primary p-4'
             iconProps={{ className: 'color-background-primary' }}
           />

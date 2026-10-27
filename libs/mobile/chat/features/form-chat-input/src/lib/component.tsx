@@ -26,6 +26,7 @@ import {
   toolsSelectionState$,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import {
   AttachedImage,
   AttachedListItem,
@@ -95,6 +96,7 @@ export function FormChatInput<T extends FieldValues>({
 
   const { field } = useController({ control, name });
 
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
   const items = useSelector(attachedItems);
   const images = useSelector(attachedImages);
 
@@ -147,14 +149,16 @@ export function FormChatInput<T extends FieldValues>({
       : [],
   );
 
-  const onVoiceModePress = async (): Promise<void> => {
+  const onVoiceModePress = withOfflineGuard(async (): Promise<void> => {
     if (!modelId) {
       return ToastService.showError(translate('TEXT_MODEL_NOT_SELECTED'));
     }
     setIsMicrophonePreparing(true);
     await openVoiceModeModal({ chatId: chat?.id, modelId });
     setIsMicrophonePreparing(false);
-  };
+  });
+
+  const handleSubmitPress = withOfflineGuard(() => onSubmit(options));
 
   const handleSuggestionPress = (suggestion: string): void => {
     field.onChange(suggestion);
@@ -178,17 +182,19 @@ export function FormChatInput<T extends FieldValues>({
     field.onChange(text);
   };
 
-  const handlePaste = async (payload: PasteEventPayload): Promise<void> => {
-    if (payload.type !== 'images') {
-      return;
-    }
-
-    for (const uri of payload.uris) {
+  const attachPastedImages = withOfflineGuard(async (uris: Array<string>): Promise<void> => {
+    for (const uri of uris) {
       try {
         onImageUploaded(await preparePastedImage(uri));
       } catch {
         continue;
       }
+    }
+  });
+
+  const handlePaste = (payload: PasteEventPayload): void => {
+    if (payload.type === 'images') {
+      attachPastedImages(payload.uris);
     }
   };
 
@@ -229,13 +235,14 @@ export function FormChatInput<T extends FieldValues>({
             }
             accessoryBottom={
               <ChatInputBottomRow
-                onSubmit={() => onSubmit(options)}
+                onSubmit={handleSubmitPress}
                 isSubmitDisabled={(!isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty) || isImageUploading}
                 onVoiceModePress={onVoiceModePress}
                 isVoiceModeAvailable={isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty}
                 onStopGenerationPress={onStopGenerationPress}
                 isResponseGenerating={isResponseGenerating}
                 isMessageQueueEnabled={isMessageQueueEnabled}
+                isSubmitInactive={isOfflineMode}
                 isLoading={isLoading || isMicrophonePreparing}>
                 <View className='flex-row flex-1 justify-between'>
                   <View className='gap-16 flex-row '>
@@ -276,6 +283,7 @@ export function FormChatInput<T extends FieldValues>({
                   </View>
                   <IconButton
                     disabled={isLoading}
+                    isInactive={isOfflineMode}
                     iconName='microphone'
                     className='p-0 mr-16'
                     onPress={handleDictateModePress}
