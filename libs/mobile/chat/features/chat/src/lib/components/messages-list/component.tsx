@@ -1,3 +1,4 @@
+import { useSelector } from '@legendapp/state/react';
 import { FlashList } from '@shopify/flash-list';
 import { useLocalSearchParams } from 'expo-router';
 import { delay } from 'lodash-es';
@@ -19,6 +20,7 @@ import {
   patchChatQueryData,
   prepareCompleteChatPayload,
 } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { Role } from '@open-webui-react-native/shared/data-access/common';
 import { socketService } from '@open-webui-react-native/shared/data-access/websocket';
 import { isSkeletonMessage } from '../../utils';
@@ -70,6 +72,7 @@ export default function ChatMessagesList({
   const previousTouchY = useRef(0);
 
   const { bottom } = useSafeAreaInsets();
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   const { showPreviousSibling, showNextSibling, getSiblingsInfo } = useManageMessageSiblings(chatId, history);
   const { mutate: completeChat } = chatApi.useCompleteChat();
@@ -218,7 +221,8 @@ export default function ChatMessagesList({
         .find((m) => history?.messages[m.id]?.role === Role.ASSISTANT);
 
       const isLast = item.id === lastAssistantMessageInUIList?.id;
-      const isSkeleton = isSkeletonMessage(message);
+      // NOTE: Offline nothing is streaming, so an empty reply is an interrupted one, not a pending one.
+      const isSkeleton = !isOfflineMode && isSkeletonMessage(message);
       // NOTE: Same rules as the web client: a reply can be deleted only while it has other versions,
       // the first message of the chat too.
       const canDelete =
@@ -283,6 +287,7 @@ export default function ChatMessagesList({
       onAddDetails,
       onMoreConcise,
       isResponseGenerating,
+      isOfflineMode,
       canDeleteMessages,
     ],
   );

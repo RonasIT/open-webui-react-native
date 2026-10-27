@@ -1,4 +1,5 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useSelector } from '@legendapp/state/react';
 import { i18n, useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import * as Clipboard from 'expo-clipboard';
 import { compact } from 'lodash-es';
@@ -8,6 +9,7 @@ import { useDeleteMessage } from '@open-webui-react-native/mobile/chat/features/
 import { MessageActionsSheetWrapper } from '@open-webui-react-native/mobile/chat/ui/message-actions-wrapper';
 import { ActionsBottomSheet, ActionSheetItemProps } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { Message } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
@@ -46,6 +48,7 @@ export function AiMessageActions({
 
   const actionsSheetRef = useRef<BottomSheetModal>(null);
   const regenerateActionsSheetRef = useRef<BottomSheetModal>(null);
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   const close = (): void => actionsSheetRef.current?.dismiss();
 
@@ -79,14 +82,14 @@ export function AiMessageActions({
     regenerateActionsSheetRef.current?.present();
   };
 
-  const runRegenerateAction = (action?: (messageId: string) => void): void => {
+  const runRegenerateAction = withOfflineGuard((action?: (messageId: string) => void): void => {
     //NOTE: Small delay ensures sheet is fully closed before showing input
     setTimeout(() => {
       action?.(message.id);
     }, 100);
 
     regenerateActionsSheetRef.current?.dismiss();
-  };
+  });
 
   const handleSuggestPress = (): void => {
     runRegenerateAction(onSuggestPress);
@@ -108,8 +111,9 @@ export function AiMessageActions({
     {
       title: translate('TEXT_EDIT'),
       iconName: 'editPencil',
-      onPress: handleEditPress,
+      onPress: withOfflineGuard(handleEditPress),
       disabled: isChangeDisabled,
+      isInactive: isOfflineMode,
     },
     {
       title: translate('TEXT_COPY'),
@@ -120,20 +124,23 @@ export function AiMessageActions({
     isLast && {
       title: translate('TEXT_CONTINUE_RESPONSE'),
       iconName: 'play',
-      onPress: handleContinueResponsePress,
+      onPress: withOfflineGuard(handleContinueResponsePress),
       disabled: isChangeDisabled,
+      isInactive: isOfflineMode,
     },
     {
       title: translate('TEXT_REGENERATE'),
       iconName: 'refresh',
-      onPress: openRegenerateActions,
+      onPress: withOfflineGuard(openRegenerateActions),
       hasSubActions: true,
       disabled: isResponseGenerating,
+      isInactive: isOfflineMode,
     },
     canDelete && {
       title: translate('TEXT_DELETE'),
       iconName: 'trashCan',
       onPress: withOfflineGuard(() => deleteMessage(message.id)),
+      isInactive: isOfflineMode,
       isDanger: true,
       isLoading: isDeleting,
       disabled: isResponseGenerating,
@@ -176,6 +183,7 @@ export function AiMessageActions({
         onClose={() => regenerateActionsSheetRef.current?.dismiss()}
         onBackdropPress={() => regenerateActionsSheetRef.current?.dismiss()}
         actions={regenerateActions}
+        areActionsInactive={isOfflineMode}
         ref={regenerateActionsSheetRef}
       />
     </View>

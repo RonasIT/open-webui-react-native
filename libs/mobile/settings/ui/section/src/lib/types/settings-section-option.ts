@@ -5,6 +5,8 @@ interface SettingsSectionOptionBase {
   label: string;
   iconName?: IconName;
   isDanger?: boolean;
+  // NOTE: Looks disabled but stays pressable, so the handler can tell the user why (e.g. the offline toast).
+  isInactive?: boolean;
 }
 
 export interface SettingsSectionLinkOption extends SettingsSectionOptionBase {

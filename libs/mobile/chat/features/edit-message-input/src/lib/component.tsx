@@ -1,3 +1,4 @@
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement } from 'react';
 import { Path, Control, useController, FieldValues } from 'react-hook-form';
@@ -9,6 +10,8 @@ import {
   Icon,
   AppInputProps,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 
 interface EditMessageInputProps<T extends FieldValues> extends AppInputProps {
   onSave: (message: string) => void;
@@ -31,6 +34,7 @@ export function EditMessageInput<T extends FieldValues>({
   const translate = useTranslation('CHAT.EDIT_MESSAGE_INPUT');
 
   const { field } = useController({ control, name });
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   // NOTE: An assistant reply cannot be saved empty; user-message editing keeps its current behavior.
   const isAiSaveDisabled = isAiMessage && !field.value?.trim();
@@ -59,8 +63,9 @@ export function EditMessageInput<T extends FieldValues>({
             size='xs'
             className='border-background-tertiary bg-background-primary'
             text={translate(isAiMessage ? 'BUTTON_SAVE_AS_COPY' : 'BUTTON_SAVE')}
-            onPress={() => onSave(field.value)}
+            onPress={withOfflineGuard(() => onSave(field.value))}
             disabled={isAiSaveDisabled}
+            isInactive={isOfflineMode}
           />
           <View className='flex-row gap-12 justify-end flex-1'>
             <AppButton
@@ -73,8 +78,9 @@ export function EditMessageInput<T extends FieldValues>({
             <AppButton
               size='xs'
               text={translate(isAiMessage ? 'BUTTON_SAVE' : 'BUTTON_SEND')}
-              onPress={() => onSend(field.value)}
+              onPress={withOfflineGuard(() => onSend(field.value))}
               disabled={isAiSaveDisabled}
+              isInactive={isOfflineMode}
             />
           </View>
         </View>
