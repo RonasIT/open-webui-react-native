@@ -21,7 +21,9 @@ export const handleChatFilesEvent = async (socketResponse: ChatEventBase): Promi
   queryClient.setQueryData(queryKey, (draft: ChatResponse) => {
     if (!draft) return;
 
-    if (!draft.chat.messages) {
+    // NOTE: Events come for every chat of the user, including replies generated on another device that
+    // this cache does not have yet. Patching would add a stub message that the next save sends to the server.
+    if (!draft.chat.messages || !draft.chat.history.messages[messageId]) {
       return draft;
     }
 
@@ -37,7 +39,7 @@ export const handleChatFilesEvent = async (socketResponse: ChatEventBase): Promi
             ...draft.chat.history.messages,
             [messageId]: {
               ...draft.chat.history.messages[messageId],
-              files: getUpdatedFiles(draft.chat.history.messages[messageId]?.files),
+              files: getUpdatedFiles(draft.chat.history.messages[messageId].files),
             },
           },
         },
