@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { authService, resetChatSessionState } from '@open-webui-react-native/shared/data-access/api';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { cookieService } from '@open-webui-react-native/shared/data-access/cookie';
+import { localDbService } from '@open-webui-react-native/shared/data-access/local-db';
 import { queryPersister } from '@open-webui-react-native/shared/data-access/persist-query-storage';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 
@@ -22,6 +23,7 @@ export const useLogout = (): { logout: () => Promise<void> } => {
     resetChatSessionState();
     cookieService.clearAll();
     await queryPersister.removeClient();
+    await localDbService.clear();
   };
 
   return { logout };
