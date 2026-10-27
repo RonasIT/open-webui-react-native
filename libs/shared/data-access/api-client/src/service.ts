@@ -57,6 +57,7 @@ const setupInterceptors = (service: ApiService): void => {
         null,
         unauthorizedInterceptor({
           publicEndpoints: apiConfig.auth.unauthorizedRoutes,
+          hasToken: () => Boolean(appStorageService.token.get()),
           checkSession: () => checkSession(service),
           onSessionExpired,
           onError: ({ response }: AxiosError<ApiErrorData>) => {
