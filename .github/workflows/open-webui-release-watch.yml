@@ -9,18 +9,14 @@ permissions:
   contents: write
   pull-requests: write
 
-# NOTE: Prevents a scheduled and a manual run from racing and sending the notification twice
 concurrency:
   group: open-webui-release-watch
   cancel-in-progress: false
 
-# NOTE: `main` is protected by a ruleset (changes only via PR), so the state file is updated through
-# a PR from a fixed branch. Creating a PR with GITHUB_TOKEN requires the repository setting
-# "Allow GitHub Actions to create and approve pull requests" to be enabled
+# NOTE: `main` accepts changes only via PR; `gh pr create` needs "Allow GitHub Actions to create and approve pull requests"
 env:
   STATE_FILE: .github/state/open-webui-last-release.txt
   STATE_BRANCH: chore/open-webui-release-watch
-  # NOTE: `default_branch` isn't guaranteed in the `schedule` event payload
   BASE_BRANCH: ${{ github.event.repository.default_branch || 'main' }}
 
 jobs:
@@ -30,7 +26,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        # NOTE: Always the default branch, so a manual run from another branch can't bring its commits into the PR
         with:
           ref: ${{ env.BASE_BRANCH }}
 
@@ -43,8 +38,7 @@ jobs:
           RELEASE=$(gh api repos/open-webui/open-webui/releases/latest --jq '[.tag_name, .html_url] | @tsv')
           IFS=$'\t' read -r TAG_NAME HTML_URL <<< "$RELEASE"
 
-          # NOTE: The values come from an external repo, so they are validated and passed to later steps
-          # only through env, never interpolated into scripts
+          # NOTE: Values come from an external repo: validate them and pass them on only through env
           if [[ ! "$TAG_NAME" =~ ^v[0-9A-Za-z.+-]+$ ]]; then
             echo "Unexpected release tag_name: $TAG_NAME" >&2
             exit 1
@@ -77,8 +71,7 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      # NOTE: A PR for the tag (open, merged or closed) means this release was already handled,
-      # so repeated runs don't create PRs or send notifications again
+      # NOTE: Any PR for the tag (open, merged or closed) means the release is already handled
       - name: Check for existing PR
         id: existing_pr
         if: steps.compare.outputs.changed == 'true'
