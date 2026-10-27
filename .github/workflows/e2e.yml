@@ -1,8 +1,10 @@
 name: E2E
 
+# NOTE: The push trigger on `staging` is disabled while the test Open WebUI server (E2E_API_URL) is down.
+# Restore it when the server is back:
+#   push:
+#     branches: [staging]
 on:
-  push:
-    branches: [staging]
   workflow_dispatch:
 
 # NOTE: All runs share one test account, so they wait for each other

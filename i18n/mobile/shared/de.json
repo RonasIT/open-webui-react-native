@@ -21,6 +21,7 @@
       "BUTTON_CONFIRM": "Bestätigen",
       "BUTTON_OPEN_SETTINGS": "Einstellungen öffnen",
       "TEXT_UNABLE_TO_OPEN_SETTINGS": "Einstellungen können nicht geöffnet werden",
+      "TEXT_UNABLE_TO_OPEN_LINK": "Link kann nicht geöffnet werden",
       "TEXT_SETTINGS": "Einstellungen",
       "TEXT_DISABLED_IN_OFFLINE_MODE": "Funktionen sind im Offline-Modus deaktiviert",
       "ACTIONS_BOTTOM_SHEET": {

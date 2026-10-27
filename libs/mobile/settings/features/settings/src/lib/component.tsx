@@ -28,6 +28,7 @@ import {
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
 import {
   availableLanguages,
@@ -60,6 +61,7 @@ export function Settings(): ReactElement {
   const locale = useSelector(appState$.locale);
   const markdownRenderer = useSelector(appState$.markdownRenderer);
   const isHapticFeedbackEnabled = useSelector(appState$.isHapticFeedbackEnabled);
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
   const { logout } = useLogout();
   const navigateOnce = useNavigateOnce();
 
@@ -116,9 +118,9 @@ export function Settings(): ReactElement {
     appState$.setLocale(value);
   };
 
-  const handleDefaultModelChange = (modelId: string): void => {
+  const handleDefaultModelChange = withOfflineGuard((modelId: string): void => {
     updateUserSettings(new UserSettings({ ui: new UiSettings({ models: [modelId] }) }));
-  };
+  });
 
   const handleDefaultSystemPromptChange = (systemPrompt: string): void => {
     updateUserSettings(new UserSettings({ ui: new UiSettings({ system: systemPrompt }) }));
@@ -128,14 +130,14 @@ export function Settings(): ReactElement {
     appState$.setMarkdownRenderer(value);
   };
 
-  const createUiSettingToggleHandler =
-    <K extends keyof UiSettings>(key: K) =>
-    (value: UiSettings[K]): void => {
+  const createUiSettingToggleHandler = <K extends keyof UiSettings>(key: K): ((value: UiSettings[K]) => void) =>
+    withOfflineGuard((value: UiSettings[K]): void => {
       updateUserSettings(new UserSettings({ ui: new UiSettings({ [key]: value }) }));
-    };
+    });
 
-  const handleArchivedChatsPress = (): void =>
-    navigateOnce(`${navigationConfig.main.chat.index}/${navigationConfig.main.chat.archivedChats}`);
+  const handleArchivedChatsPress = withOfflineGuard((): void =>
+    navigateOnce(`${navigationConfig.main.chat.index}/${navigationConfig.main.chat.archivedChats}`),
+  );
 
   const handleRequestDeleteAccountPress = (): void => {
     Alert.alert(
@@ -184,19 +186,20 @@ export function Settings(): ReactElement {
     action: () => void;
     confirm?: { title: string; message: string; confirmButtonStyle?: 'destructive' };
   }): (() => void) => {
-    const guardedAction = (): void => {
+    // NOTE: Checked again on confirm, as the network may drop while the alert is open.
+    const guardedAction = withOfflineGuard((): void => {
       if (!isPending) {
         action();
       }
-    };
+    });
 
-    return (): void => {
+    return withOfflineGuard((): void => {
       if (confirm) {
         alertService.confirm({ ...confirm, onConfirm: guardedAction });
       } else {
         guardedAction();
       }
-    };
+    });
   };
 
   const handleArchiveAllChatsPress = createChatActionHandler({
@@ -227,12 +230,14 @@ export function Settings(): ReactElement {
     {
       label: translate('TEXT_DEFAULT_MODEL'),
       value: defaultModelValue,
-      onPress: () => defaultModelModalRef.current?.present(),
+      isInactive: isOfflineMode,
+      onPress: withOfflineGuard(() => defaultModelModalRef.current?.present()),
     },
     {
       label: translate('TEXT_DEFAULT_SYSTEM_PROMPT'),
       value: defaultSystemPromptValue,
-      onPress: () => defaultSystemPromptSheetRef.current?.present(),
+      isInactive: isOfflineMode,
+      onPress: withOfflineGuard(() => defaultSystemPromptSheetRef.current?.present()),
     },
     {
       label: translate('TEXT_LANGUAGE'),
@@ -245,17 +250,20 @@ export function Settings(): ReactElement {
     {
       label: translate('TEXT_PROFILE_NAME'),
       value: profileNameValue,
-      onPress: () => profileNameSheetRef.current?.present(),
+      isInactive: isOfflineMode,
+      onPress: withOfflineGuard(() => profileNameSheetRef.current?.present()),
     },
     {
       label: translate('TEXT_AVATAR'),
       accessoryRight: <Avatar source={avatarSource} name={profile?.name} />,
-      onPress: () => profileAvatarSheetRef.current?.present(),
+      isInactive: isOfflineMode,
+      onPress: withOfflineGuard(() => profileAvatarSheetRef.current?.present()),
     },
     {
       label: translate('TEXT_CHANGE_PASSWORD'),
       iconName: 'key',
-      onPress: () => changePasswordSheetRef.current?.present(),
+      isInactive: isOfflineMode,
+      onPress: withOfflineGuard(() => changePasswordSheetRef.current?.present()),
     },
     {
       type: 'action',
@@ -281,19 +289,36 @@ export function Settings(): ReactElement {
     {
       label: translate('TEXT_REPORT_A_BUG'),
       iconName: 'message',
-      onPress: () => contactSupportSheetRef.current?.present(),
+      isInactive: isOfflineMode,
+      onPress: withOfflineGuard(() => contactSupportSheetRef.current?.present()),
     },
     { label: translate('TEXT_RATE_APP'), iconName: 'star', onPress: handleRateAppPress },
   ];
 
   const chatsOptions: Array<SettingsSectionOption> = [
-    { label: translate('TEXT_ARCHIVED_CHATS'), iconName: 'archive', onPress: handleArchivedChatsPress },
-    { type: 'action', label: translate('TEXT_EXPORT_ALL_CHATS'), onPress: handleExportAllChatsPress },
-    { type: 'action', label: translate('TEXT_ARCHIVE_ALL'), onPress: handleArchiveAllChatsPress },
+    {
+      label: translate('TEXT_ARCHIVED_CHATS'),
+      iconName: 'archive',
+      isInactive: isOfflineMode,
+      onPress: handleArchivedChatsPress,
+    },
+    {
+      type: 'action',
+      label: translate('TEXT_EXPORT_ALL_CHATS'),
+      isInactive: isOfflineMode,
+      onPress: handleExportAllChatsPress,
+    },
+    {
+      type: 'action',
+      label: translate('TEXT_ARCHIVE_ALL'),
+      isInactive: isOfflineMode,
+      onPress: handleArchiveAllChatsPress,
+    },
     {
       type: 'action',
       label: translate('TEXT_DELETE_ALL'),
       isDanger: true,
+      isInactive: isOfflineMode,
       onPress: handleDeleteAllChatsPress,
     },
   ];
@@ -303,6 +328,7 @@ export function Settings(): ReactElement {
       type: 'switch',
       label: translate('TEXT_ALWAYS_ON_WEB_SEARCH'),
       isEnabled: isWebSearchAlwaysOnEnabled,
+      isInactive: isOfflineMode,
       onValueChange: createUiSettingToggleHandler('webSearch'),
     },
     {
@@ -315,24 +341,28 @@ export function Settings(): ReactElement {
       type: 'switch',
       label: translate('TEXT_ENABLE_MESSAGE_QUEUE'),
       isEnabled: isMessageQueueEnabled,
+      isInactive: isOfflineMode,
       onValueChange: createUiSettingToggleHandler('enableMessageQueue'),
     },
     {
       type: 'switch',
       label: translate('TEXT_CHAT_BUBBLE_UI'),
       isEnabled: isChatBubbleUIEnabled,
+      isInactive: isOfflineMode,
       onValueChange: createUiSettingToggleHandler('chatBubble'),
     },
     !isTemporaryChatEnforced() && {
       type: 'switch',
       label: translate('TEXT_TEMPORARY_CHAT_BY_DEFAULT'),
       isEnabled: isTemporaryChatByDefaultEnabled,
+      isInactive: isOfflineMode,
       onValueChange: createUiSettingToggleHandler('temporaryChatByDefault'),
     },
     {
       type: 'switch',
       label: translate('TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE'),
       isEnabled: isUserMessageMarkdownEnabled,
+      isInactive: isOfflineMode,
       onValueChange: createUiSettingToggleHandler('renderMarkdownInUserMessages'),
     },
     {
@@ -373,6 +403,7 @@ export function Settings(): ReactElement {
         selectedItemId={defaultModelId}
         onSelectItem={handleDefaultModelChange}
         searchPlaceholder={translate('DEFAULT_MODEL_MODAL.TEXT_SEARCH_MODEL')}
+        areItemsInactive={isOfflineMode}
       />
       <DefaultSystemPromptSheet
         ref={defaultSystemPromptSheetRef}

@@ -1,12 +1,12 @@
 import { ReactElement, useCallback, useMemo } from 'react';
-import { Linking } from 'react-native';
-import { Markdown, darkMarkdownTheme, type MarkdownRenderers } from 'react-native-nitro-markdown';
+import { Markdown, darkMarkdownTheme, defaultMarkdownTheme, type MarkdownRenderers } from 'react-native-nitro-markdown';
 import { CitationPrefix } from '@open-webui-react-native/mobile/chat/features/use-citations';
 import { CodeBlock } from '@open-webui-react-native/mobile/shared/ui/code-block';
 import { colors, rem, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { MathSvg, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { AppMarkdownViewProps } from '../../types/app-markdown-view-props';
-import { normalizeMathDelimiters } from '../../utils';
+import { normalizeMathDelimiters, openLink } from '../../utils';
+import { MarkdownImage } from '../markdown-image';
 import { MathBlock } from '../math-block';
 import { NitroMarkdownTableRenderer } from '../nitro-markdown-table-renderer';
 
@@ -29,7 +29,7 @@ export function NitroMarkdownView({
         return false;
       }
 
-      Linking.openURL(href);
+      openLink(href);
 
       return false;
     },
@@ -50,6 +50,18 @@ export function NitroMarkdownView({
             codeBlockWidth={codeBlockWidth}
           />
         );
+      },
+      paragraph({ node, children }) {
+        if (!node.children?.some((child) => child.type === 'image')) return undefined;
+
+        // NOTE: The package renders a paragraph as Text, where an image gets no height on iOS. The children come
+        // already split into Text runs and image blocks, so only the wrapper has to be a View.
+        return <View style={{ marginBottom: defaultMarkdownTheme.spacing.l }}>{children}</View>;
+      },
+      image({ url, alt }) {
+        if (!url) return null;
+
+        return <MarkdownImage source={url} alt={alt} />;
       },
       table({ node, Renderer }) {
         return <NitroMarkdownTableRenderer node={node} Renderer={Renderer} />;

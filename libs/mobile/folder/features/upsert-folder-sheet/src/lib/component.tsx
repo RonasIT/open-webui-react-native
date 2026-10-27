@@ -31,7 +31,9 @@ import {
   Knowledge,
   prepareCreateFolderPayload,
 } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { AttachedFile, FileData, FileType } from '@open-webui-react-native/shared/data-access/common';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { getDocumentFormData } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { UpsertFolderFormSchema } from './forms';
@@ -55,6 +57,7 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
 
   const [folderId, setFolderId] = useState<string | null>(null);
   const [selectedKnowledge, setSelectedKnowledge] = useState<Array<Knowledge>>([]);
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   const {
     mutate: uploadFile,
@@ -163,7 +166,7 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
     reset(new UpsertFolderFormSchema());
   };
 
-  const handleUploadFilesPress = async (): Promise<void> => {
+  const handleUploadFilesPress = withOfflineGuard(async (): Promise<void> => {
     const { assets } = await fileSystemService.pickFile({ multiple: false });
 
     if (!assets) {
@@ -185,7 +188,7 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
     }
 
     uploadFile(getDocumentFormData(file));
-  };
+  });
 
   useEffect(() => {
     if (isFileUploaded && file) {
@@ -231,8 +234,8 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
           <SheetHeader
             title={folderId ? translate('TEXT_EDIT_FOLDER') : translate('TEXT_NEW_FOLDER')}
             onGoBack={closeModal}
-            onConfirmPress={handleSubmit(onSubmit)}
-            confirmButtonProps={{ isLoading: isFolderCreating || isFolderUpdating }}
+            onConfirmPress={withOfflineGuard(handleSubmit(onSubmit))}
+            confirmButtonProps={{ isLoading: isFolderCreating || isFolderUpdating, isInactive: isOfflineMode }}
           />
           {isFolderLoading ? (
             <View className='flex-1'>
@@ -268,6 +271,7 @@ export function UpsertFolderSheet({ ref, ...props }: UpsertFolderSheetProps): Re
                     />
                     <AppButton
                       isLoading={isFileUploading}
+                      isInactive={isOfflineMode}
                       variant='outline'
                       size='sm'
                       text={translate('BUTTON_UPLOAD_FILES')}

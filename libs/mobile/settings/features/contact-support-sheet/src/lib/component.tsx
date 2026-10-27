@@ -22,7 +22,9 @@ import {
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { appConfigurationApi, authApi, supabaseApi } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { ImageData } from '@open-webui-react-native/shared/data-access/common';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { AttachmentRow } from './components';
 import { contactSupportSheetConfig } from './config';
@@ -44,6 +46,7 @@ export function ContactSupportSheet({ ref, ...props }: ContactSupportSheetProps)
 
   const sheetRef = useRef<BottomSheetModal>(null);
   const inputRef = useRef<TextInput>(null);
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   const { data: profile } = authApi.useGetProfile();
   const { data: configuration } = appConfigurationApi.useGetAppConfiguration();
@@ -142,8 +145,8 @@ export function ContactSupportSheet({ ref, ...props }: ContactSupportSheetProps)
           <SheetHeader
             title={translate('TEXT_REPORT_BUG')}
             onGoBack={closeModal}
-            onConfirmPress={handleSubmit(onSubmit)}
-            confirmButtonProps={{ isLoading: isPending }}
+            onConfirmPress={withOfflineGuard(handleSubmit(onSubmit))}
+            confirmButtonProps={{ isLoading: isPending, isInactive: isOfflineMode }}
           />
           <AppBottomSheetKeyboardAwareScrollView>
             <View className='pt-8 gap-16 flex-1 bg-background-primary' style={{ paddingBottom: bottom + 24 }}>
