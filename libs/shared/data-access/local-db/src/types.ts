@@ -22,7 +22,7 @@ export interface LocalChat {
   created_at: number;
   updated_at: number;
   folder_id: string | null;
-  pinned: boolean;
+  pinned: boolean | null;
   [key: string]: unknown;
 }
 

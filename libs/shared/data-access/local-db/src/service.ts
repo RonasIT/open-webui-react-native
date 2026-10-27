@@ -22,7 +22,8 @@ class LocalDbService {
             title = excluded.title,
             created_at = excluded.created_at,
             updated_at = excluded.updated_at,
-            folder_id = CASE WHEN ? THEN excluded.folder_id ELSE chats.folder_id END`,
+            folder_id = CASE WHEN ? THEN excluded.folder_id ELSE chats.folder_id END
+          WHERE excluded.updated_at >= chats.updated_at`,
         );
 
         try {
@@ -59,7 +60,8 @@ class LocalDbService {
       'upsertChat',
       async (db) => {
         // NOTE: Not INSERT OR REPLACE: it deletes the row and cascades to chat_contents.
-        await db.runAsync(
+        // NOTE: An older response (out of order) is skipped; updated_at keeps the newest version seen.
+        const { changes } = await db.runAsync(
           `INSERT INTO chats (id, title, folder_id, pinned, created_at, updated_at, content_updated_at)
           VALUES (?, ?, ?, ?, ?, ?, ?)
           ON CONFLICT (id) DO UPDATE SET
@@ -67,16 +69,22 @@ class LocalDbService {
             folder_id = excluded.folder_id,
             pinned = excluded.pinned,
             created_at = excluded.created_at,
-            updated_at = excluded.updated_at,
-            content_updated_at = excluded.content_updated_at`,
+            updated_at = MAX(chats.updated_at, excluded.updated_at),
+            content_updated_at = excluded.content_updated_at
+          WHERE chats.content_updated_at IS NULL OR excluded.content_updated_at >= chats.content_updated_at`,
           chat.id,
           chat.title,
           chat.folder_id,
-          chat.pinned,
+          chat.pinned ?? false,
           chat.created_at,
           chat.updated_at,
           chat.updated_at,
         );
+
+        if (!changes) {
+          return;
+        }
+
         await db.runAsync(
           'INSERT INTO chat_contents (chat_id, data) VALUES (?, ?) ON CONFLICT (chat_id) DO UPDATE SET data = excluded.data',
           chat.id,
@@ -155,7 +163,11 @@ class LocalDbService {
         await db.execAsync('DELETE FROM folders');
 
         for (const folder of folders) {
-          await db.runAsync('INSERT INTO folders (id, data) VALUES (?, ?)', folder.id, JSON.stringify(folder));
+          await db.runAsync(
+            'INSERT OR REPLACE INTO folders (id, data) VALUES (?, ?)',
+            folder.id,
+            JSON.stringify(folder),
+          );
         }
       },
       generation,
