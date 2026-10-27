@@ -1,0 +1,1 @@
+export { MarkdownImage } from './component';

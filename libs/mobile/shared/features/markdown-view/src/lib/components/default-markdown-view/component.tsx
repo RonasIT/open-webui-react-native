@@ -2,8 +2,6 @@ import markdownIt from 'markdown-it';
 import markdownItMath from 'markdown-it-math/no-default-renderer';
 import { colorScheme } from 'nativewind';
 import React, { ReactElement, ReactNode, useCallback, useMemo } from 'react';
-import { Linking } from 'react-native';
-import FitImage from 'react-native-fit-image';
 import Markdown, { ASTNode, MarkdownProps, RenderRules } from 'react-native-markdown-display';
 import { CitationPrefix } from '@open-webui-react-native/mobile/chat/features/use-citations';
 import { CodeBlock } from '@open-webui-react-native/mobile/shared/ui/code-block';
@@ -11,6 +9,8 @@ import { colors, createStyles, useColorScheme, rem } from '@open-webui-react-nat
 import { AppText, MathSvg, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { MarkdownStyles } from '../../types';
 import { AppMarkdownViewProps } from '../../types/app-markdown-view-props';
+import { openLink } from '../../utils';
+import { MarkdownImage } from '../markdown-image';
 import { MarkdownTableRenderer } from '../markdown-table-renderer';
 import { MathBlock } from '../math-block';
 import { TextGroup } from '../text-group';
@@ -94,7 +94,7 @@ export function DefaultMarkdownView({
                   <AppText
                     key={index}
                     style={[styles.link]}
-                    onPress={() => Linking.openURL(normalized)}>
+                    onPress={() => openLink(normalized)}>
                     {`\u00A0${part}\u00A0`}
                   </AppText>
                 );
@@ -121,14 +121,28 @@ export function DefaultMarkdownView({
           {children}
         </AppText>
       ),
-      paragraph: (node: ASTNode, children: any, parent: any, styles: MarkdownStyles) => (
-        <AppText
-          key={`paragraph-${node.key}`}
-          style={[styles.paragraph]}
-          {...textProps}>
-          {children}
-        </AppText>
-      ),
+      paragraph: (node: ASTNode, children: any, parent: any, styles: MarkdownStyles) => {
+        // NOTE: An image inside Text is an inline attachment that gets no height on iOS, so a paragraph with an image
+        // (a direct child, or wrapped in a link) is a View, as in the package's own rule.
+        const hasImage = node.children.some((child) => child.type === 'image' || child.type === 'blocklink');
+
+        if (hasImage) {
+          return (
+            <View key={`paragraph-${node.key}`} style={styles._VIEW_SAFE_paragraph}>
+              {children}
+            </View>
+          );
+        }
+
+        return (
+          <AppText
+            key={`paragraph-${node.key}`}
+            style={[styles.paragraph]}
+            {...textProps}>
+            {children}
+          </AppText>
+        );
+      },
       textgroup: (node: ASTNode, children: Array<ReactNode>, parent: any, styles: MarkdownStyles) => (
         <TextGroup
           node={node}
@@ -167,7 +181,7 @@ export function DefaultMarkdownView({
       link: (node: ASTNode, children: any, parent: any, styles: MarkdownStyles) => {
         const href = node.attributes?.href ?? '';
         const isCitation = href.startsWith(CitationPrefix.CITATION);
-        const onOpenLink = async (): Promise<void> => (await Linking.canOpenURL(href)) && Linking.openURL(href);
+        const onOpenLink = (): Promise<void> => openLink(href);
 
         if (isCitation) {
           const id = href.split(CitationPrefix.CITATION)[1];
@@ -205,16 +219,15 @@ export function DefaultMarkdownView({
       ),
       table: renderTable,
       //NOTE: A props object containing a "key" prop is being spread into JSX error fix
-      image: (node: ASTNode, children, parent, styles) => {
-        const uri = node.attributes?.src;
+      image: (node: ASTNode) => {
+        const source = node.attributes?.src;
 
-        if (!uri) return null;
+        if (!source) return null;
 
-        return <FitImage
+        return <MarkdownImage
           key={`image-${node.key}`}
-          source={{ uri }}
-          style={styles.image}
-          resizeMode='contain' />;
+          source={source}
+          alt={node.attributes?.alt} />;
       },
     };
   }, [fence, onCitationPress, isContentReady, renderTable]);

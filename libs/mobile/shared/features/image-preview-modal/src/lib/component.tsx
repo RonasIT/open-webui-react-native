@@ -14,6 +14,7 @@ import {
   IconButton,
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { getServerImageSource } from '@open-webui-react-native/shared/data-access/api';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { AttachedImageWithIndex } from './types';
 
@@ -32,7 +33,6 @@ export function ImagePreviewModal({
 }: ImagePreviewModalProps): ReactElement {
   const isAndroid = Platform.OS === 'android';
   const listRef = useRef<React.ComponentRef<typeof FlashList<AttachedImageWithIndex>>>(null);
-  const token = appStorageService.token.get();
   const activeIndexRef = useRef<number>(initialIndex ?? 0);
 
   const handleViewableItemsChanged = useCallback(
@@ -46,8 +46,10 @@ export function ImagePreviewModal({
 
   const { downloadImage, isDownloading } = useImageDownloader();
 
+  // NOTE: Images can come from markdown and point anywhere, so the token goes only to the app's own server.
   const handleDownloadPress = (): void => {
-    downloadImage(images[activeIndexRef.current].url, appStorageService.token.get());
+    const { uri, headers } = getServerImageSource(images[activeIndexRef.current].url);
+    downloadImage(uri, headers ? (appStorageService.token.get() ?? undefined) : undefined);
   };
 
   const { panGesture, animatedOpacityStyles, animatedScaleStyles } = useSwipeToClose({ onReachDistance: onClosePress });
@@ -57,10 +59,8 @@ export function ImagePreviewModal({
       <AppZoom isDoubleTapEnabled className='flex-1'>
         <AppImage
           className='w-screen h-full'
-          authorizationToken={token}
           contentFit='contain'
-          source={{ uri: item.url }}
-        />
+          source={getServerImageSource(item.url)} />
       </AppZoom>
     </AnimatedView>
   );
