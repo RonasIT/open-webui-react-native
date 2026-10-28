@@ -2,6 +2,7 @@ import { plainToInstance } from 'class-transformer';
 import {
   applyResponseStreamEvent,
   ChatEventBase,
+  getResponseStreamOutput,
   getResponseStreamText,
   ResponseStreamEvent,
 } from '@open-webui-react-native/shared/data-access/websocket';
@@ -20,16 +21,14 @@ export const handleResponseCompletionEvent = (socketResponse: ChatEventBase): vo
     return;
   }
 
-  if (event.response?.output) {
-    buffer.output = event.response.output;
-  }
+  // NOTE: Rebuilt on every event: while the model thinks, only the reasoning item in `output` changes.
+  buffer.output = getResponseStreamOutput(buffer.streamState);
 
   const content = getResponseStreamText(buffer.streamState);
 
-  if (!content) {
-    return;
+  if (content) {
+    buffer.content = content;
   }
 
-  buffer.content = content;
   scheduleChatStreamFlush(chatId);
 };

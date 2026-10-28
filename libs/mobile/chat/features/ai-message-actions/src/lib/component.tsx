@@ -8,9 +8,10 @@ import { View } from 'react-native';
 import { useDeleteMessage } from '@open-webui-react-native/mobile/chat/features/use-delete-message';
 import { MessageActionsSheetWrapper } from '@open-webui-react-native/mobile/chat/ui/message-actions-wrapper';
 import { ActionsBottomSheet, ActionSheetItemProps } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { Message } from '@open-webui-react-native/shared/data-access/api';
+import { Message, replaceDetailsWithMarkers } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
+import { removeDetailsBlocks } from '@open-webui-react-native/shared/utils/strings';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 interface AiMessageActionsProps {
@@ -58,15 +59,17 @@ export function AiMessageActions({
   });
 
   const isChangeDisabled = isResponseGenerating || isSkeleton;
+  // NOTE: Older Open WebUI versions keep reasoning and tool calls in the text as `<details>` blocks.
+  const answerText = removeDetailsBlocks(message.content ?? '');
 
   const copyToClipboard = async (): Promise<void> => {
-    await Clipboard.setStringAsync(message.content);
+    await Clipboard.setStringAsync(answerText);
     ToastService.showSuccess(i18n.t('SHARED.COMMON.TEXT_COPIED_TO_CLIPBOARD'));
     close();
   };
 
   const handleEditPress = (): void => {
-    onEditPress(message.id, message.content);
+    onEditPress(message.id, replaceDetailsWithMarkers(message.content));
     close();
   };
 
@@ -119,7 +122,7 @@ export function AiMessageActions({
       title: translate('TEXT_COPY'),
       iconName: 'copy',
       onPress: copyToClipboard,
-      disabled: isSkeleton,
+      disabled: isSkeleton || !answerText,
     },
     isLast && {
       title: translate('TEXT_CONTINUE_RESPONSE'),

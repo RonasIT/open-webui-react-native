@@ -8,8 +8,16 @@ export type ToolData = {
   rawOutput: string;
 };
 
+export type ReasoningData = {
+  isDone: boolean;
+  duration?: number;
+  text: string;
+};
+
+export type DetailsBlock = { type: 'tool_calls'; tool: ToolData } | { type: 'reasoning'; reasoning: ReasoningData };
+
 export type ParseResponseMessageContentResult = {
-  toolsData: Array<ToolData>;
+  detailsBlocks: Array<DetailsBlock>;
   messageContent: string;
 };
 
@@ -88,24 +96,26 @@ const indexAfterOpenDetailsTag = (s: string): number => {
   return -1;
 };
 
-const tryParseLeadingToolCallsDetails = (content: string): { tool: ToolData; rest: string } | null => {
-  const leadingWs = content.match(/^\s*/)?.[0] ?? '';
-  const fromDetails = content.slice(leadingWs.length);
+interface RawDetailsBlock {
+  start: number;
+  end: number;
+  attrs: Record<string, string>;
+  body: string;
+}
 
-  if (!fromDetails.toLowerCase().startsWith('<details')) {
+const findNextDetailsBlock = (content: string, fromIndex: number): RawDetailsBlock | null => {
+  const openRe = /<\s*details\b/gi;
+  openRe.lastIndex = fromIndex;
+  const open = openRe.exec(content);
+
+  if (!open) {
     return null;
   }
 
+  const fromDetails = content.slice(open.index);
   const openEnd = indexAfterOpenDetailsTag(fromDetails);
 
   if (openEnd === -1) {
-    return null;
-  }
-
-  const openTag = fromDetails.slice(0, openEnd);
-  const attrs = parseTagAttributes(openTag);
-
-  if ((attrs.type ?? '').toLowerCase() !== 'tool_calls') {
     return null;
   }
 
@@ -115,38 +125,60 @@ const tryParseLeadingToolCallsDetails = (content: string): { tool: ToolData; res
     return null;
   }
 
-  const id = attrs.id ?? undefined;
-  const toolName = attrs.name ?? '';
-  const blockEnd = leadingWs.length + openEnd + closeMatch.index + closeMatch[0].length;
-  const rest = content.slice(blockEnd).trimStart();
-
   return {
-    tool: {
-      id,
-      toolName,
-      rawArguments: attrs.arguments ?? '',
-      rawOutput: attrs.result ?? '',
-    },
-    rest,
+    start: open.index,
+    end: open.index + openEnd + closeMatch.index + closeMatch[0].length,
+    attrs: parseTagAttributes(fromDetails.slice(0, openEnd)),
+    body: fromDetails.slice(openEnd, openEnd + closeMatch.index),
   };
 };
 
+const toToolData = (attrs: Record<string, string>): ToolData => ({
+  id: attrs.id ?? undefined,
+  toolName: attrs.name ?? '',
+  rawArguments: attrs.arguments ?? '',
+  rawOutput: attrs.result ?? '',
+});
+
+// NOTE: Open WebUI up to 0.9 stored reasoning in the text as `<details type="reasoning">` with every line quoted.
+const toReasoningData = (attrs: Record<string, string>, body: string): ReasoningData => {
+  const duration = attrs.duration ? Number(attrs.duration) : NaN;
+
+  return {
+    isDone: attrs.done === 'true',
+    duration: Number.isFinite(duration) ? duration : undefined,
+    text: body
+      .replace(/<\s*summary\b[^>]*>[\s\S]*?<\s*\/\s*summary\s*>/i, '')
+      .replace(/^ *> ?/gm, '')
+      .trim(),
+  };
+};
+
+// NOTE: Tool-call blocks are taken only from the leading run; a later `<details>` is the model's own markup.
 export const parseResponseMessageContent = (content: string): ParseResponseMessageContentResult => {
-  const toolsData: Array<ToolData> = [];
-  let rest = content;
+  const detailsBlocks: Array<DetailsBlock> = [];
+  let messageContent = '';
+  let index = 0;
+  let isLeadingRun = true;
 
-  for (;;) {
-    const next = tryParseLeadingToolCallsDetails(rest);
+  for (let block = findNextDetailsBlock(content, index); block; block = findNextDetailsBlock(content, index)) {
+    const textBefore = content.slice(index, block.start);
+    const type = (block.attrs.type ?? '').toLowerCase();
 
-    if (!next) {
-      break;
+    isLeadingRun = isLeadingRun && !textBefore.trim();
+    messageContent += textBefore;
+    index = block.end;
+
+    if (type === 'reasoning') {
+      detailsBlocks.push({ type, reasoning: toReasoningData(block.attrs, block.body) });
+    } else if (type === 'tool_calls' && isLeadingRun) {
+      detailsBlocks.push({ type, tool: toToolData(block.attrs) });
+    } else {
+      isLeadingRun = false;
+      messageContent += content.slice(block.start, block.end);
     }
-    toolsData.push(next.tool);
-    rest = next.rest;
   }
 
-  // NOTE: A message with no `<details>` block never goes through `tryParseLeadingToolCallsDetails`,
-  // whose own trimming only fires after finding one — so a leading/trailing blank line from the
-  // model renders as an empty markdown paragraph, showing up as extra space above the text.
-  return { toolsData, messageContent: rest.trim() };
+  // NOTE: Trimmed so a blank line from the model does not render as an empty paragraph.
+  return { detailsBlocks, messageContent: (messageContent + content.slice(index)).trim() };
 };

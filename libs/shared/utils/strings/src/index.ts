@@ -3,3 +3,4 @@ export * from './get-line-count';
 export * from './join-string';
 export * from './parse-object-to-string';
 export * from './strip-origin';
+export * from './remove-details-blocks';

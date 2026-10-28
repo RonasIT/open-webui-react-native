@@ -30,8 +30,9 @@ import { FileType } from '@open-webui-react-native/shared/data-access/common';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
-import { buildToolCallViews, parseResponseMessageContent } from '../../utils';
+import { buildMessageRows, parseResponseMessageContent } from '../../utils';
 import { ChatImagesGroup } from '../images';
+import { ReasoningCard } from '../reasoning-card';
 import { SkeletonMessage } from '../skeleton-message';
 import { ToolCallCard } from '../tool-call-card';
 import { AskUserCard, ToolApprovalCard } from './components';
@@ -103,8 +104,9 @@ export function ChatAiMessage({
   // NOTE: Failures surface through the api-client error interceptor's toast, so no onError here.
   const { mutate: resolveToolCall, isPending: isResolvingToolCall } = chatApi.useResolveToolCall();
 
-  const { toolsData, messageContent } = parseResponseMessageContent(text);
-  const toolCalls = buildToolCallViews(message, toolsData);
+  const { detailsBlocks, messageContent } = parseResponseMessageContent(text);
+  // NOTE: Offline the stream is gone, so reasoning still in progress will not finish.
+  const rows = buildMessageRows(message, detailsBlocks, Boolean(isMessageDone) || isOfflineMode);
   const textWithCitations = prepareTextWithCitations(messageContent, citations);
   const hasFollowUps = Array.isArray(followUps) && followUps.length > 0;
   const pendingToolCall = getPendingToolCall(message);
@@ -177,11 +179,15 @@ export function ChatAiMessage({
           />
         </View>
       )}
-      {toolCalls.length > 0 && (
+      {rows.length > 0 && (
         <View className='mt-8 gap-8'>
-          {toolCalls.map((toolCall) => (
-            <ToolCallCard key={toolCall.key} toolCall={toolCall} />
-          ))}
+          {rows.map((row) =>
+            row.type === 'reasoning' ? (
+              <ReasoningCard key={row.reasoning.key} reasoning={row.reasoning} />
+            ) : (
+              <ToolCallCard key={row.toolCall.key} toolCall={row.toolCall} />
+            ),
+          )}
         </View>
       )}
       {text ? (

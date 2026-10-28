@@ -192,6 +192,23 @@
         "TEXT_REJECTED_PREFIX": "Abgelehnt",
         "TEXT_SAVE_FAILED": "Datei konnte nicht gespeichert werden"
       },
+      "REASONING_CARD": {
+        "TEXT_THINKING": "Denkt nach…",
+        "TEXT_THOUGHT": "Nachgedacht",
+        "TEXT_THOUGHT_FOR_LESS_THAN_SECOND": "Weniger als eine Sekunde nachgedacht",
+        "TEXT_THOUGHT_FOR_SECONDS": {
+          "one": "{{count}} Sekunde nachgedacht",
+          "other": "{{count}} Sekunden nachgedacht"
+        },
+        "TEXT_THOUGHT_FOR_MINUTES": {
+          "one": "{{count}} Minute nachgedacht",
+          "other": "{{count}} Minuten nachgedacht"
+        },
+        "TEXT_THOUGHT_FOR_HOURS": {
+          "one": "{{count}} Stunde nachgedacht",
+          "other": "{{count}} Stunden nachgedacht"
+        }
+      },
       "TOOL_APPROVAL_CARD": {
         "TEXT_ALLOW_PREFIX": "Zulassen",
         "BUTTON_ALLOW": "Zulassen",

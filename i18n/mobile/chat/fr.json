@@ -192,6 +192,23 @@
         "TEXT_REJECTED_PREFIX": "Refusé",
         "TEXT_SAVE_FAILED": "Impossible d'enregistrer le fichier"
       },
+      "REASONING_CARD": {
+        "TEXT_THINKING": "Réflexion…",
+        "TEXT_THOUGHT": "Réflexion terminée",
+        "TEXT_THOUGHT_FOR_LESS_THAN_SECOND": "A réfléchi moins d’une seconde",
+        "TEXT_THOUGHT_FOR_SECONDS": {
+          "one": "A réfléchi {{count}} seconde",
+          "other": "A réfléchi {{count}} secondes"
+        },
+        "TEXT_THOUGHT_FOR_MINUTES": {
+          "one": "A réfléchi {{count}} minute",
+          "other": "A réfléchi {{count}} minutes"
+        },
+        "TEXT_THOUGHT_FOR_HOURS": {
+          "one": "A réfléchi {{count}} heure",
+          "other": "A réfléchi {{count}} heures"
+        }
+      },
       "TOOL_APPROVAL_CARD": {
         "TEXT_ALLOW_PREFIX": "Autoriser",
         "BUTTON_ALLOW": "Autoriser",

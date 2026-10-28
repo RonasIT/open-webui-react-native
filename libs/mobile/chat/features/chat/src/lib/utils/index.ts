@@ -7,3 +7,5 @@ export * from './normalize-tool-payload';
 export * from './build-tool-call-views';
 export * from './get-attached-image-url';
 export * from './is-skeleton-message';
+export * from './build-message-rows';
+export * from './get-reasoning-label';
