@@ -22,13 +22,18 @@ export const getReasoningLabel = ({ isDone, duration }: Pick<ReasoningData, 'isD
     return { key: 'TEXT_THOUGHT_FOR_LESS_THAN_SECOND' };
   }
 
-  if (duration < SECONDS_IN_MINUTE) {
-    return { key: 'TEXT_THOUGHT_FOR_SECONDS', count: Math.round(duration) };
+  // NOTE: Rounded before picking the unit, so 59.6 s reads as a minute rather than "60 seconds".
+  const seconds = Math.round(duration);
+
+  if (seconds < SECONDS_IN_MINUTE) {
+    return { key: 'TEXT_THOUGHT_FOR_SECONDS', count: seconds };
   }
 
-  if (duration < SECONDS_IN_HOUR) {
-    return { key: 'TEXT_THOUGHT_FOR_MINUTES', count: Math.round(duration / SECONDS_IN_MINUTE) };
+  const minutes = Math.round(seconds / SECONDS_IN_MINUTE);
+
+  if (minutes * SECONDS_IN_MINUTE < SECONDS_IN_HOUR) {
+    return { key: 'TEXT_THOUGHT_FOR_MINUTES', count: minutes };
   }
 
-  return { key: 'TEXT_THOUGHT_FOR_HOURS', count: Math.round(duration / SECONDS_IN_HOUR) };
+  return { key: 'TEXT_THOUGHT_FOR_HOURS', count: Math.round(seconds / SECONDS_IN_HOUR) };
 };

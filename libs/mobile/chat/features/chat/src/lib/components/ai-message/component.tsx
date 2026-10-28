@@ -190,7 +190,7 @@ export function ChatAiMessage({
           )}
         </View>
       )}
-      {text ? (
+      {messageContent ? (
         <Fragment>
           <ChatImagesGroup
             images={attachedImages}

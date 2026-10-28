@@ -89,7 +89,9 @@ const applyDelta = (state: ResponseStreamState, event: ResponseStreamEvent, delt
           content: appendToPart(
             item.content,
             event.contentIndex ?? 0,
-            ChatCompletionOutputPartType.OUTPUT_TEXT,
+            itemType === ChatCompletionOutputItemType.REASONING
+              ? ChatCompletionOutputPartType.REASONING_TEXT
+              : ChatCompletionOutputPartType.OUTPUT_TEXT,
             event.delta,
           ),
         };
