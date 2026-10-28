@@ -28,6 +28,7 @@ export const handleChatSocketEvent = (socketResponse: ChatEventBase): void => {
       handleChatStatusEvent(response);
       break;
     case ChatEventType.FILES:
+    case ChatEventType.MESSAGE_FILES:
       handleChatFilesEvent(response);
       break;
     case ChatEventType.MESSAGE_FOLLOW_UPS:
