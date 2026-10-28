@@ -1,4 +1,5 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useRef } from 'react';
 import {
@@ -6,6 +7,7 @@ import {
   ActionsBottomSheetProps,
   ActionSheetItemProps,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
 import { useExportArchivedChats, useUnarchiveChats } from '../../hooks';
@@ -18,6 +20,7 @@ export function ArchivedChatsActionsSheet({ renderTrigger }: ArchivedChatsAction
   const translate = useTranslation('CHAT.ARCHIVED_CHATS_LIST.ARCHIVED_CHATS_ACTIONS_SHEET');
 
   const actionsSheetRef = useRef<BottomSheetModal>(null);
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   const { unarchiveAllChats, isUnarchiving: isUnarchivingAllChats } = useUnarchiveChats();
 
@@ -31,10 +34,10 @@ export function ArchivedChatsActionsSheet({ renderTrigger }: ArchivedChatsAction
 
   const { exportArchivedChats, isExporting } = useExportArchivedChats();
 
-  const handleConfirmUnarchiveAll = async (): Promise<void> => {
+  const handleConfirmUnarchiveAll = withOfflineGuard(async (): Promise<void> => {
     await unarchiveAllChats();
     actionsSheetRef.current?.close();
-  };
+  });
 
   const handleExportArchivedChats = async (): Promise<void> => {
     await exportArchivedChats();
@@ -56,8 +59,12 @@ export function ArchivedChatsActionsSheet({ renderTrigger }: ArchivedChatsAction
     },
   ];
 
-  return <ActionsBottomSheet
-    actions={actions}
-    renderTrigger={renderTrigger}
-    ref={actionsSheetRef} />;
+  return (
+    <ActionsBottomSheet
+      actions={actions}
+      areActionsInactive={isOfflineMode}
+      renderTrigger={renderTrigger}
+      ref={actionsSheetRef}
+    />
+  );
 }

@@ -1,3 +1,4 @@
+import { useSelector } from '@legendapp/state/react';
 import { Fragment, ReactElement, useMemo } from 'react';
 import { FollowUpsList } from '@open-webui-react-native/mobile/chat/features/follow-ups-list';
 import { MessageVersionControls } from '@open-webui-react-native/mobile/chat/features/message-version-controls';
@@ -24,7 +25,9 @@ import {
   ResolveToolCallRequest,
   ToolCallResolveAction,
 } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { FileType } from '@open-webui-react-native/shared/data-access/common';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
 import { buildToolCallViews, parseResponseMessageContent } from '../../utils';
@@ -73,6 +76,7 @@ export function ChatAiMessage({
   } = message;
 
   const apiUrl = getApiUrl();
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   // NOTE: Mirrors the web app — `modelName` is a client-only snapshot the backend never guarantees
   // (older chats, imports, or continued responses can lack it entirely), so it's a fallback rather
@@ -108,21 +112,25 @@ export function ChatAiMessage({
   // answers instead of an approval — the backend rejects `approve` for it with 400.
   const askUserPrompt = pendingToolCall?.isAskUser ? parseAskUserPrompt(pendingToolCall.toolArguments) : undefined;
 
-  const resolvePendingToolCall = (action: ToolCallResolveAction, draftAnswers?: AskUserDraftAnswers): void => {
-    if (!pendingToolCall) {
-      return;
-    }
+  const resolvePendingToolCall = withOfflineGuard(
+    (action: ToolCallResolveAction, draftAnswers?: AskUserDraftAnswers): void => {
+      if (!pendingToolCall) {
+        return;
+      }
 
-    resolveToolCall({
-      chatId,
-      messageId: message.id,
-      request: new ResolveToolCallRequest({
-        callId: pendingToolCall.callId,
-        action,
-        answers: draftAnswers && buildAskUserAnswers(draftAnswers),
-      }),
-    });
-  };
+      resolveToolCall({
+        chatId,
+        messageId: message.id,
+        request: new ResolveToolCallRequest({
+          callId: pendingToolCall.callId,
+          action,
+          answers: draftAnswers && buildAskUserAnswers(draftAnswers),
+        }),
+      });
+    },
+  );
+
+  const handleFollowUpPress = withOfflineGuard(onFollowUpPress);
 
   return (
     <View>
@@ -149,6 +157,7 @@ export function ChatAiMessage({
             toolName={pendingToolCall.toolName}
             toolArguments={pendingToolCall.toolArguments}
             isResolving={isResolvingToolCall}
+            areActionsInactive={isOfflineMode}
             onAllowPress={() => resolvePendingToolCall(ToolCallResolveAction.APPROVE)}
             onDenyPress={() => resolvePendingToolCall(ToolCallResolveAction.REJECT)}
           />
@@ -162,6 +171,7 @@ export function ChatAiMessage({
             key={pendingToolCall.callId}
             prompt={askUserPrompt}
             isResolving={isResolvingToolCall}
+            areActionsInactive={isOfflineMode}
             onSubmit={(answers) => resolvePendingToolCall(ToolCallResolveAction.ANSWER, answers)}
             onDenyPress={() => resolvePendingToolCall(ToolCallResolveAction.REJECT)}
           />
@@ -224,8 +234,10 @@ export function ChatAiMessage({
       {!isResponseGenerating && isLast && hasFollowUps && (
         <FollowUpsList
           followUps={followUps}
-          onPress={onFollowUpPress}
-          containerClassName='mt-12' />
+          onPress={handleFollowUpPress}
+          isInactive={isOfflineMode}
+          containerClassName='mt-12'
+        />
       )}
     </View>
   );

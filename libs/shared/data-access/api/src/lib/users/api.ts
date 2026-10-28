@@ -89,7 +89,10 @@ function useUpdateUserSettings({
       return { previousSettings };
     },
     onError: (error, settings, onMutateResult, context) => {
-      restoreUserSettingsQueryData(onMutateResult?.previousSettings);
+      // NOTE: No onMutateResult means onMutate never ran (e.g. blocked offline), so there is nothing to roll back.
+      if (onMutateResult) {
+        restoreUserSettingsQueryData(onMutateResult.previousSettings);
+      }
       onError?.(error, settings, onMutateResult, context);
     },
     ...props,
@@ -130,7 +133,10 @@ function useUpdateModelControlChoices({
       return { previousSettings };
     },
     onError: (error, request, onMutateResult, context) => {
-      restoreUserSettingsQueryData(onMutateResult?.previousSettings);
+      // NOTE: No onMutateResult means onMutate never ran (e.g. blocked offline), so there is nothing to roll back.
+      if (onMutateResult) {
+        restoreUserSettingsQueryData(onMutateResult.previousSettings);
+      }
       onError?.(error, request, onMutateResult, context);
     },
     onSuccess: (params) => {

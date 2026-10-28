@@ -260,6 +260,7 @@
       "@open-webui-react-native/shared/data-access/base-entity": ["libs/shared/data-access/base-entity/src/index.ts"],
       "@open-webui-react-native/shared/data-access/common": ["libs/shared/data-access/common/src/index.ts"],
       "@open-webui-react-native/shared/data-access/cookie": ["libs/shared/data-access/cookie/src/index.ts"],
+      "@open-webui-react-native/shared/data-access/local-db": ["libs/shared/data-access/local-db/src/index.ts"],
       "@open-webui-react-native/shared/data-access/persist-query-helpers": [
         "libs/shared/data-access/persist-query-helpers/src/index.ts"
       ],

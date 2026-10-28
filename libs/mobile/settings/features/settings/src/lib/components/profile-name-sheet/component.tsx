@@ -1,5 +1,6 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef } from 'react';
 import { useForm } from 'react-hook-form';
@@ -14,6 +15,8 @@ import {
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { authApi, UpdateProfileRequest } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { ProfileNameFormSchema } from '../../forms';
 
 export type ProfileNameSheetMethods = {
@@ -33,6 +36,7 @@ export function ProfileNameSheet({ name, avatarUrl, ref, ...props }: ProfileName
   const { bottom } = useSafeAreaInsets();
   const sheetRef = useRef<BottomSheetModal>(null);
   const nameInputRef = useRef<TextInput>(null);
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   const { mutate: updateProfile, isPending } = authApi.useUpdateProfile();
 
@@ -57,7 +61,7 @@ export function ProfileNameSheet({ name, avatarUrl, ref, ...props }: ProfileName
   //NOTE: Autofocus causes scrolling to an incorrect position
   const handleOpen = (): void => nameInputRef.current?.focus();
 
-  const handleConfirmPress = handleSubmit((values) => {
+  const submitForm = handleSubmit((values) => {
     if (isPending) {
       return;
     }
@@ -73,6 +77,8 @@ export function ProfileNameSheet({ name, avatarUrl, ref, ...props }: ProfileName
     });
   });
 
+  const handleConfirmPress = withOfflineGuard(submitForm);
+
   return (
     <AppBottomSheet
       {...props}
@@ -87,7 +93,7 @@ export function ProfileNameSheet({ name, avatarUrl, ref, ...props }: ProfileName
             title={translate('TEXT_TITLE')}
             onGoBack={closeSheet}
             onConfirmPress={handleConfirmPress}
-            confirmButtonProps={{ isLoading: isPending, disabled: isPending }}
+            confirmButtonProps={{ isLoading: isPending, disabled: isPending, isInactive: isOfflineMode }}
           />
           <AppBottomSheetKeyboardAwareScrollView>
             <View className='pt-8 gap-16' style={{ paddingBottom: bottom + 24 }}>

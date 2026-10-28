@@ -1,5 +1,6 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -21,7 +22,9 @@ import {
   ProcessUrlType,
   retrievalApi,
 } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { AttachedListItem, FileType } from '@open-webui-react-native/shared/data-access/common';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { AttachWebpageFormSchema } from './forms';
 
 export type AttachWebpageSheetMethods = {
@@ -40,6 +43,7 @@ export function AttachWebpageSheet({ ref, onItemAttached }: AttachWebpageSheetPr
   const sheetRef = useRef<BottomSheetModal>(null);
   const inputRef = useRef<BottomSheetTextInputRef>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
   const { mutateAsync: processUrl } = retrievalApi.useProcessUrl();
 
   const { control, handleSubmit, reset } = useForm({
@@ -66,7 +70,7 @@ export function AttachWebpageSheet({ ref, onItemAttached }: AttachWebpageSheetPr
     inputRef.current?.focus();
   };
 
-  const handleConfirmPress = handleSubmit(async ({ url }) => {
+  const submitForm = handleSubmit(async ({ url }) => {
     if (isSubmitting) {
       return;
     }
@@ -102,6 +106,8 @@ export function AttachWebpageSheet({ ref, onItemAttached }: AttachWebpageSheetPr
     }
   });
 
+  const handleConfirmPress = withOfflineGuard(submitForm);
+
   return (
     <AppBottomSheet
       isModal
@@ -114,7 +120,7 @@ export function AttachWebpageSheet({ ref, onItemAttached }: AttachWebpageSheetPr
             title={translate('TEXT_TITLE')}
             onGoBack={closeSheet}
             onConfirmPress={handleConfirmPress}
-            confirmButtonProps={{ isLoading: isSubmitting, disabled: isSubmitting }}
+            confirmButtonProps={{ isLoading: isSubmitting, disabled: isSubmitting, isInactive: isOfflineMode }}
           />
           <View className='gap-8'>
             <AppText className='text-sm-sm sm:text-sm text-text-secondary'>{translate('TEXT_WEBPAGE_URLS')}</AppText>

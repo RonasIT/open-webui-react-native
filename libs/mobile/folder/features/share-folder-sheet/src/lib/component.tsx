@@ -1,4 +1,5 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { useQueries } from '@tanstack/react-query';
 import { uniq } from 'lodash-es';
@@ -34,7 +35,9 @@ import {
   usersApiConfig,
   usersService,
 } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { AccessListItem } from './types';
 import { addAccessGrants, buildAccessList, removeAccessGrants, updateAccessPermission } from './utils';
 
@@ -57,6 +60,7 @@ export function ShareFolderSheet({ ref, ...props }: ShareFolderSheetProps): Reac
   const [folder, setFolder] = useState<FolderListItem | undefined>();
   const [editedGrants, setEditedGrants] = useState<Array<AccessGrant> | undefined>();
   const [permissionItem, setPermissionItem] = useState<AccessListItem | undefined>();
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   const closeModal = (): void => sheetRef.current?.close();
 
@@ -101,11 +105,11 @@ export function ShareFolderSheet({ ref, ...props }: ShareFolderSheetProps): Reac
     };
   }, []);
 
-  const handleConfirmPress = (): void => {
+  const handleConfirmPress = withOfflineGuard((): void => {
     if (folder) {
       updateFolderAccess({ id: folder.id, accessGrants: grants });
     }
-  };
+  });
 
   const handleAddPress = (): void => shareWithSheetRef.current?.present(grants);
 
@@ -151,7 +155,7 @@ export function ShareFolderSheet({ ref, ...props }: ShareFolderSheetProps): Reac
             title={translate('TEXT_SHARE_FOLDER')}
             onGoBack={closeModal}
             onConfirmPress={handleConfirmPress}
-            confirmButtonProps={{ isLoading: isAccessUpdating }}
+            confirmButtonProps={{ isLoading: isAccessUpdating, isInactive: isOfflineMode }}
           />
           {isFolderLoading ? (
             <View className='flex-1'>

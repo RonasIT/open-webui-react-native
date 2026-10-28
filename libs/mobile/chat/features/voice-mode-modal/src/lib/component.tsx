@@ -1,4 +1,5 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import Modal, { ModalProps } from 'react-native-modal';
@@ -25,7 +26,9 @@ import {
   isTemporaryChatId,
   tasksApi,
 } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { ImageData as ChatImageData } from '@open-webui-react-native/shared/data-access/common';
+import { showOfflineToast } from '@open-webui-react-native/shared/features/network';
 import { ImageSourceSheet, Loader, SpeechListener } from './components';
 import { voiceModeModalConfig } from './config';
 
@@ -53,6 +56,7 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
   const isVisibleRef = useRef(false);
 
   const [isVisible, setIsVisible] = useState(false);
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   const [isUserSpeaking, setIsUserSpeaking] = useState(false);
   const [isAiSpeaking, setIsAiSpeaking] = useState(false);
@@ -235,6 +239,14 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
       })();
     }, meteringSilenceDuration);
   };
+
+  // NOTE: Voice mode needs the network for transcription and replies, so it can't wait out a lost connection.
+  useEffect(() => {
+    if (isVisible && isOfflineMode) {
+      showOfflineToast();
+      void close();
+    }
+  }, [isVisible, isOfflineMode]);
 
   useEffect(() => {
     if (isVisible) {

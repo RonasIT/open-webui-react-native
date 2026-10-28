@@ -12,6 +12,7 @@ interface UseFolderSearchListParams {
   createFolderText: string;
   onCreateFolderPress: () => void;
   canCreateFolder?: boolean;
+  isCreateFolderInactive?: boolean;
 }
 
 interface UseFolderSearchListResult {
@@ -24,6 +25,7 @@ export function useFolderSearchList({
   createFolderText,
   onCreateFolderPress,
   canCreateFolder = true,
+  isCreateFolderInactive,
 }: UseFolderSearchListParams): UseFolderSearchListResult {
   const { isDarkColorScheme } = useColorScheme();
 
@@ -41,14 +43,14 @@ export function useFolderSearchList({
               name: createFolderText,
               onPress: onCreateFolderPress,
               iconName: 'folderPlus' as IconName,
-              containerClassName: 'mb-24',
+              containerClassName: isCreateFolderInactive ? 'mb-24 opacity-30' : 'mb-24',
               textClassName: 'text-brand-primary',
               iconClassName: 'color-brand-primary',
             },
           ]
         : []),
     ],
-    [isDarkColorScheme, canCreateFolder, noFolderText, createFolderText, onCreateFolderPress],
+    [isDarkColorScheme, canCreateFolder, isCreateFolderInactive, noFolderText, createFolderText, onCreateFolderPress],
   );
 
   return { emptyFolders, createFolderId: MockFolderItemIds.CREATE_FOLDER_ID };

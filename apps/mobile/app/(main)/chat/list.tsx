@@ -1,3 +1,4 @@
+import { useSelector } from '@legendapp/state/react';
 import { ChatMenuList } from '@open-webui-react-native/mobile/chat/features/menu-list';
 import {
   FolderActionsSheet,
@@ -16,6 +17,7 @@ import { ScreenWrapper } from '@open-webui-react-native/mobile/shared/ui/screen-
 import { AppHeader, AppPressable, Avatar, IconButton, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import { authApi, FolderListItem } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { useNavigateOnce } from '@open-webui-react-native/shared/utils/navigation';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
@@ -30,11 +32,13 @@ export default function ChatListScreen(): ReactElement {
   const shareFolderSheetRef = useRef<ShareFolderSheetMethods>(null);
   const { data: profile } = authApi.useGetProfile();
   const canUseFolders = useFoldersEnabled();
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   const handleChatPress = (id: string): void => navigateOnce(navigationConfig.main.chat.view({ id }));
 
-  const handleNewChatPress = (): void =>
-    navigateOnce(`${navigationConfig.main.chat.index}/${navigationConfig.main.chat.create}`);
+  const handleNewChatPress = withOfflineGuard((): void =>
+    navigateOnce(`${navigationConfig.main.chat.index}/${navigationConfig.main.chat.create}`),
+  );
 
   const handleSettingsPress = (): void => navigateOnce(navigationConfig.main.settings);
 
@@ -72,14 +76,18 @@ export default function ChatListScreen(): ReactElement {
                     <IconButton
                       className='p-0'
                       iconName='folderPlus'
-                      onPress={withOfflineGuard(onPress)} />
+                      isInactive={isOfflineMode}
+                      onPress={withOfflineGuard(onPress)}
+                    />
                   )}
                 />
               )}
               <IconButton
                 className='p-0'
                 iconName='plusInCircle'
-                onPress={handleNewChatPress} />
+                isInactive={isOfflineMode}
+                onPress={handleNewChatPress}
+              />
             </View>
           }
         />

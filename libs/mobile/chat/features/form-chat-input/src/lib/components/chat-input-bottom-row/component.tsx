@@ -12,6 +12,7 @@ export interface ChatInputBottomRowProps extends PropsWithChildren {
   isVoiceModeAvailable?: boolean;
   isSubmitDisabled?: boolean;
   isLoading?: boolean;
+  isSubmitInactive?: boolean;
 }
 
 export function ChatInputBottomRow({
@@ -19,6 +20,7 @@ export function ChatInputBottomRow({
   onVoiceModePress,
   isVoiceModeAvailable,
   isLoading,
+  isSubmitInactive,
   children,
   isSubmitDisabled,
   isResponseGenerating,
@@ -38,6 +40,7 @@ export function ChatInputBottomRow({
         {showSendButton && (
           <IconButton
             disabled={isSubmitDisabled}
+            isInactive={isSubmitInactive}
             onPress={isVoiceModeAvailable ? onVoiceModePress : onSubmit}
             iconName={isVoiceModeAvailable ? 'headphones' : 'arrowUp'}
             className='rounded-full self-end bg-text-primary p-4'

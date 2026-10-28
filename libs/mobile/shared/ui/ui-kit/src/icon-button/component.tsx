@@ -9,6 +9,8 @@ export interface IconButtonProps extends AppPressableProps {
   iconName: IconName;
   iconProps?: Omit<IconProps, 'name'>;
   isLoading?: boolean;
+  // NOTE: Looks disabled but stays pressable, so onPress can tell the user why (e.g. the offline toast).
+  isInactive?: boolean;
 }
 
 export function IconButton({
@@ -16,6 +18,7 @@ export function IconButton({
   iconName,
   iconProps,
   isLoading,
+  isInactive,
   disabled,
   ...restProps
 }: IconButtonProps): ReactElement {
@@ -23,7 +26,7 @@ export function IconButton({
     <AppPressable
       hitSlop={8}
       disabled={disabled || isLoading}
-      className={cn('p-8 disabled:opacity-30 items-center justify-center', className)}
+      className={cn('p-8 disabled:opacity-30 items-center justify-center', isInactive && 'opacity-30', className)}
       {...restProps}>
       {isLoading ? <AppSpinner size='small' /> : <Icon name={iconName} {...iconProps} />}
     </AppPressable>
