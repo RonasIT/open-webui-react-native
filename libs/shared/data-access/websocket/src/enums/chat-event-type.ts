@@ -9,5 +9,9 @@ export enum ChatEventType {
   TITLE = 'chat:title',
   STATUS = 'status',
   FILES = 'files',
+  // NOTE: Since Open WebUI 0.12 generated images (native `generate_image` / `edit_image` tools and
+  // images streamed by image models) arrive under this type. Older backends and legacy function
+  // calling still send `files` with the same payload shape, so both event types are handled the same way.
+  MESSAGE_FILES = 'chat:message:files',
   MESSAGE_FOLLOW_UPS = 'chat:message:follow_ups',
 }

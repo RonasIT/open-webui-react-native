@@ -19,7 +19,7 @@ const getErrorMessageFromData = (data: ApiErrorData): string | undefined => {
   }
 };
 
-const getErrorMessage = (data?: ApiErrorData, status?: number): string => {
+export const getErrorMessage = (data?: ApiErrorData, status?: number): string => {
   const errorMessageByData = data && getErrorMessageFromData(data);
 
   if (errorMessageByData) {

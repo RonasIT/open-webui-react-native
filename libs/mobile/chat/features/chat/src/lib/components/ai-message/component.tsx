@@ -28,8 +28,8 @@ import {
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { FileType } from '@open-webui-react-native/shared/data-access/common';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
-import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
+import { resolveServerUrl } from '@open-webui-react-native/shared/utils/files';
 import { buildMessageRows, parseResponseMessageContent } from '../../utils';
 import { ChatImagesGroup } from '../images';
 import { ReasoningCard } from '../reasoning-card';
@@ -76,7 +76,6 @@ export function ChatAiMessage({
     error: messageError,
   } = message;
 
-  const apiUrl = getApiUrl();
   const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   // NOTE: Mirrors the web app — `modelName` is a client-only snapshot the backend never guarantees
@@ -92,10 +91,12 @@ export function ChatAiMessage({
     () =>
       (files ?? []).reduce(
         (acc, file, index) =>
-          file.type === FileType.IMAGE ? [...acc, { type: file.type, url: `${apiUrl}${file.url}`, index }] : acc,
+          file.type === FileType.IMAGE && file.url
+            ? [...acc, { type: file.type, url: resolveServerUrl(file.url), index }]
+            : acc,
         [] as Array<AttachedImageWithIndex>,
       ),
-    [apiUrl, files],
+    [files],
   );
 
   const { handleImagePress, handleAllPhotosPress, selectedImageIndex, isPreviewVisible, handleCloseImagePress } =
