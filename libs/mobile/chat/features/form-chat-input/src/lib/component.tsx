@@ -17,13 +17,17 @@ import { AppTextInput, AppInputProps, View, IconButton } from '@open-webui-react
 import {
   appConfigurationApi,
   ChatGenerationOption,
+  chatSelectionState$,
   ChatResponse,
+  getAvailableGenerationOptions,
+  getChatSelectionForModel,
   modelsApi,
-  NEW_CHAT_TOOLS_SELECTION_KEY,
+  NEW_CHAT_SELECTION_KEY,
+  resolveDefaultGenerationOptions,
   resolveDefaultToolIds,
   tasksApi,
   toolsApi,
-  toolsSelectionState$,
+  updateChatSelection,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
@@ -103,25 +107,25 @@ export function FormChatInput<T extends FieldValues>({
   const [isMicrophonePreparing, setIsMicrophonePreparing] = useState<boolean>(false);
   const [isDictateMode, setIsDictateMode] = useState<boolean>(false);
 
-  const [options, setOptions] = useState<Array<ChatGenerationOption>>([]);
-
   // NOTE: The chat being composed has no id yet, so its selection is parked under a placeholder
   // key that `useCreateNewChat` moves onto the real id once the chat exists.
-  const toolsSelectionKey = chat?.id ?? NEW_CHAT_TOOLS_SELECTION_KEY;
-  const toolsSelection = useSelector(toolsSelectionState$[toolsSelectionKey]);
+  const selectionKey = chat?.id ?? NEW_CHAT_SELECTION_KEY;
+  const storedSelection = useSelector(chatSelectionState$[selectionKey]);
+  const selection = getChatSelectionForModel(storedSelection, modelId);
+
+  const model = models?.find(({ id }) => id === modelId);
 
   const defaultToolIds = useMemo(
-    () =>
-      resolveDefaultToolIds({
-        model: models?.find(({ id }) => id === modelId),
-        tools,
-        uiSettings: userSettings?.ui,
-      }),
-    [models, modelId, tools, userSettings],
+    () => resolveDefaultToolIds({ model, tools, uiSettings: userSettings?.ui }),
+    [model, tools, userSettings],
   );
 
-  const selectedToolIds =
-    toolsSelection && toolsSelection.modelId === modelId ? toolsSelection.toolIds : defaultToolIds;
+  const availableGenerationOptions = getAvailableGenerationOptions(model, config);
+
+  const selectedToolIds = selection.toolIds ?? defaultToolIds;
+  const selectedGenerationOptions =
+    selection.generationOptions ??
+    resolveDefaultGenerationOptions({ model, availableOptions: availableGenerationOptions });
 
   const { handleImagePress, selectedImageIndex, isPreviewVisible, handleCloseImagePress } = useImagePreview();
   const { present: openVoiceModeModal } = useVoiceModeModal();
@@ -158,16 +162,18 @@ export function FormChatInput<T extends FieldValues>({
     setIsMicrophonePreparing(false);
   });
 
-  const handleSubmitPress = withOfflineGuard(() => onSubmit(options));
+  const handleSubmitPress = withOfflineGuard(() => onSubmit(selectedGenerationOptions));
 
   const handleSuggestionPress = (suggestion: string): void => {
     field.onChange(suggestion);
   };
 
-  const onGenerationOptionPress = (option: ChatGenerationOption): void => setOptions((state) => xor(state, [option]));
+  const onGenerationOptionPress = (option: ChatGenerationOption): void => {
+    updateChatSelection(selectionKey, modelId, { generationOptions: xor(selectedGenerationOptions, [option]) });
+  };
 
   const onApplyToolIds = (toolIds: Array<string>): void => {
-    toolsSelectionState$[toolsSelectionKey].set({ modelId, toolIds });
+    updateChatSelection(selectionKey, modelId, { toolIds });
   };
 
   const handleDictateModePress = withOfflineGuard(() => setIsDictateMode(true));
@@ -255,20 +261,20 @@ export function FormChatInput<T extends FieldValues>({
                       chatId={chat?.id}
                       attachedChatIds={attachedChatIds}
                     />
-                    {config?.features.enableImageGeneration && (
+                    {availableGenerationOptions.includes(ChatGenerationOption.IMAGE_GENERATION) && (
                       <SelectOptionIcon
                         disabled={isLoading}
                         iconName='generatedImage'
                         onPress={() => onGenerationOptionPress(ChatGenerationOption.IMAGE_GENERATION)}
-                        isSelected={options.includes(ChatGenerationOption.IMAGE_GENERATION)}
+                        isSelected={selectedGenerationOptions.includes(ChatGenerationOption.IMAGE_GENERATION)}
                       />
                     )}
-                    {config?.features.enableWebSearch && (
+                    {availableGenerationOptions.includes(ChatGenerationOption.WEB_SEARCH) && (
                       <SelectOptionIcon
                         disabled={isLoading}
                         iconName='web'
                         onPress={() => onGenerationOptionPress(ChatGenerationOption.WEB_SEARCH)}
-                        isSelected={options.includes(ChatGenerationOption.WEB_SEARCH)}
+                        isSelected={selectedGenerationOptions.includes(ChatGenerationOption.WEB_SEARCH)}
                       />
                     )}
                     <ChatSettingsSheet
@@ -277,7 +283,7 @@ export function FormChatInput<T extends FieldValues>({
                       selectedToolIds={selectedToolIds}
                       onApplyToolIds={onApplyToolIds}
                       chat={chat}
-                      model={models?.find(({ id }) => id === modelId)}
+                      model={model}
                       isToolPermissionsEnabled={config?.features.enableToolPermissions}
                     />
                   </View>
