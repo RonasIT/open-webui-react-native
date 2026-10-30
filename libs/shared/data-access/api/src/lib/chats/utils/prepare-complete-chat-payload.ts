@@ -23,9 +23,11 @@ import {
   Features,
   Message,
 } from '../models';
-import { toolApprovalState$, toolsSelectionState$ } from '../state';
+import { chatSelectionState$, getChatSelectionForModel, toolApprovalState$ } from '../state';
+import { getAvailableGenerationOptions } from './get-available-generation-options';
 import { getCompletionFiles } from './get-completion-files';
 import { removeStaleModelControlChoices } from './remove-stale-model-control-choices';
+import { resolveDefaultGenerationOptions } from './resolve-default-generation-options';
 import { resolveDefaultToolIds } from './resolve-default-tool-ids';
 
 export interface PrepareCompleteChatPayloadArgs {
@@ -34,6 +36,7 @@ export interface PrepareCompleteChatPayloadArgs {
   messages: Array<Message>;
   sessionId: string;
   model: string;
+  // Falls back to the chat's current selection (or the model defaults) when omitted.
   generationOptions?: Array<ChatGenerationOption>;
   // The parent user message of the assistant turn being generated. The backend uses it to
   // link the assistant's parentId; omitting it orphans the user message (drops from the branch).
@@ -106,21 +109,24 @@ export function prepareCompleteChatPayload({
       : undefined;
 
   // The backend resolves tools only from `tool_ids` — it applies neither the model's nor the user's
-  // defaults — so the client has to send them, exactly as the web interface does. Read from the
-  // shared selection rather than threaded through every completion entry point, so that a
-  // follow-up, a regenerate and a queued message all use the tools the chat is actually set up
-  // with. An empty array would be sent as `tool_ids: []`, so it collapses to `undefined` instead.
-  const toolsSelection = toolsSelectionState$[chatId].peek();
+  // defaults — so the client has to send them, exactly as the web interface does. Tools and
+  // generation options are read from the shared selection rather than threaded through every
+  // completion entry point, so that a follow-up, a regenerate, an edit and a queued message all use
+  // what the chat is actually set up with. An empty tools array would be sent as `tool_ids: []`, so
+  // it collapses to `undefined` instead.
+  const selection = getChatSelectionForModel(chatSelectionState$[chatId].peek(), model);
   const resolvedToolIds =
-    toolsSelection?.modelId === model
-      ? toolsSelection.toolIds
-      : resolveDefaultToolIds({
-          model: queryClient
-            .getQueryData<Array<AIModel>>(modelsApiConfig.getModelsQueryKey)
-            ?.find(({ id }) => id === model),
-          tools: queryClient.getQueryData<Array<Tool>>(toolsApiConfig.getToolsQueryKey),
-          uiSettings: userSettings?.ui,
-        });
+    selection.toolIds ??
+    resolveDefaultToolIds({
+      model: cachedModel,
+      tools: queryClient.getQueryData<Array<Tool>>(toolsApiConfig.getToolsQueryKey),
+      uiSettings: userSettings?.ui,
+    });
+  const availableGenerationOptions = getAvailableGenerationOptions(cachedModel, configuration);
+  const resolvedGenerationOptions =
+    generationOptions ??
+    selection.generationOptions ??
+    resolveDefaultGenerationOptions({ model: cachedModel, availableOptions: availableGenerationOptions });
 
   const prepareChatMessages = (): Array<ChatMessage> => {
     const chatSystemPrompt = (chatResponse?.chat.params?.system as string | undefined)?.trim();
@@ -184,10 +190,12 @@ export function prepareCompleteChatPayload({
       tagsGeneration: isFirstExchange,
     }),
     features: new Features({
-      codeInterpreter: generationOptions?.includes(ChatGenerationOption.CODE_INTERPRETER),
-      imageGeneration: generationOptions?.includes(ChatGenerationOption.IMAGE_GENERATION),
-      webSearch: (userSettings?.ui.webSearch ?? false) || generationOptions?.includes(ChatGenerationOption.WEB_SEARCH),
-      voice: generationOptions?.includes(ChatGenerationOption.VOICE),
+      codeInterpreter: resolvedGenerationOptions.includes(ChatGenerationOption.CODE_INTERPRETER),
+      imageGeneration: resolvedGenerationOptions.includes(ChatGenerationOption.IMAGE_GENERATION),
+      webSearch:
+        (Boolean(userSettings?.ui.webSearch) && availableGenerationOptions.includes(ChatGenerationOption.WEB_SEARCH)) ||
+        resolvedGenerationOptions.includes(ChatGenerationOption.WEB_SEARCH),
+      voice: resolvedGenerationOptions.includes(ChatGenerationOption.VOICE),
     }),
     params,
     toolIds: resolvedToolIds.length > 0 ? resolvedToolIds : undefined,
