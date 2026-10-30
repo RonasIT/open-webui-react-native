@@ -106,6 +106,7 @@ export function ChangePasswordSheet({ ref, ...props }: ChangePasswordSheetProps)
                 label={translate('TEXT_CURRENT_PASSWORD')}
                 placeholder={translate('TEXT_ENTER_CURRENT_PASSWORD')}
                 onSubmitEditing={() => newPasswordRef.current?.focus()}
+                isPassword
               />
               <FormFloatedLabelInput
                 name='newPassword'
@@ -118,6 +119,7 @@ export function ChangePasswordSheet({ ref, ...props }: ChangePasswordSheetProps)
                 label={translate('TEXT_NEW_PASSWORD')}
                 placeholder={translate('TEXT_ENTER_NEW_PASSWORD')}
                 onSubmitEditing={() => confirmPasswordRef.current?.focus()}
+                isPassword
               />
               <FormFloatedLabelInput
                 name='confirmPassword'
@@ -130,6 +132,7 @@ export function ChangePasswordSheet({ ref, ...props }: ChangePasswordSheetProps)
                 label={translate('TEXT_CONFIRM_NEW_PASSWORD')}
                 placeholder={translate('TEXT_ENTER_CONFIRM_NEW_PASSWORD')}
                 onSubmitEditing={handleConfirmPress}
+                isPassword
               />
             </View>
           </AppBottomSheetKeyboardAwareScrollView>

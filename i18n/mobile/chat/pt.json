@@ -192,6 +192,23 @@
         "TEXT_REJECTED_PREFIX": "Negado",
         "TEXT_SAVE_FAILED": "Não foi possível salvar o arquivo"
       },
+      "REASONING_CARD": {
+        "TEXT_THINKING": "Pensando…",
+        "TEXT_THOUGHT": "Pensou",
+        "TEXT_THOUGHT_FOR_LESS_THAN_SECOND": "Pensou por menos de um segundo",
+        "TEXT_THOUGHT_FOR_SECONDS": {
+          "one": "Pensou por {{count}} segundo",
+          "other": "Pensou por {{count}} segundos"
+        },
+        "TEXT_THOUGHT_FOR_MINUTES": {
+          "one": "Pensou por {{count}} minuto",
+          "other": "Pensou por {{count}} minutos"
+        },
+        "TEXT_THOUGHT_FOR_HOURS": {
+          "one": "Pensou por {{count}} hora",
+          "other": "Pensou por {{count}} horas"
+        }
+      },
       "TOOL_APPROVAL_CARD": {
         "TEXT_ALLOW_PREFIX": "Permitir",
         "BUTTON_ALLOW": "Permitir",
