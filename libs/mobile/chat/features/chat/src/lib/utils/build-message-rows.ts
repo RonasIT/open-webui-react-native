@@ -41,9 +41,7 @@ export const buildMessageRows = (
   isMessageDone: boolean,
 ): Array<MessageRow> => {
   const output = message.output ?? [];
-  const legacyTools = detailsBlocks.flatMap((block) => (block.type === 'tool_calls' ? [block.tool] : []));
-  const toolCallViews = buildToolCallViews(message, legacyTools);
-  const toolCallViewsByKey = new Map(toolCallViews.map((view) => [view.key, view]));
+  const toolCallViewsByKey = new Map(buildToolCallViews(message, []).map((view) => [view.key, view]));
   const hasOutputReasoning = output.some((item) => item.type === ChatCompletionOutputItemType.REASONING);
   const hasOutputToolCalls = getToolCalls(message).length > 0;
   const rows: Array<MessageRow> = [];
@@ -60,8 +58,6 @@ export const buildMessageRows = (
     }
   });
 
-  let legacyToolIndex = 0;
-
   // NOTE: Only for older chats: when `output` already has reasoning or tool calls, their `<details>` blocks
   // are skipped.
   detailsBlocks.forEach((block, index) => {
@@ -74,7 +70,8 @@ export const buildMessageRows = (
     }
 
     if (block.type === 'tool_calls' && !hasOutputToolCalls) {
-      rows.push({ type: 'tool', toolCall: toolCallViews[legacyToolIndex++] });
+      const [toolCall] = buildToolCallViews(message, [block.tool]);
+      rows.push({ type: 'tool', toolCall: { ...toolCall, key: block.tool.id ?? `legacy-tool-${index}` } });
     }
   });
 
