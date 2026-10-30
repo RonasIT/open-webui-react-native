@@ -5,8 +5,8 @@ import {
   ChatCompletionOutputItemStatus,
   ChatCompletionOutputItemType,
 } from '@open-webui-react-native/shared/data-access/websocket';
+import { DetailsBlock, ReasoningData } from '@open-webui-react-native/shared/utils/strings';
 import { buildToolCallViews, ToolCallView } from './build-tool-call-views';
-import { DetailsBlock, ReasoningData } from './parse-response-message-content';
 
 const FINISHED_STATUSES = new Set<string>(Object.values(ChatCompletionOutputItemStatus));
 

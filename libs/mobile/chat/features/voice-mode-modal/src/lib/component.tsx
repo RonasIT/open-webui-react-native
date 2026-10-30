@@ -29,7 +29,7 @@ import {
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { ImageData as ChatImageData } from '@open-webui-react-native/shared/data-access/common';
 import { showOfflineToast } from '@open-webui-react-native/shared/features/network';
-import { removeDetailsBlocks } from '@open-webui-react-native/shared/utils/strings';
+import { parseResponseMessageContent } from '@open-webui-react-native/shared/utils/strings';
 import { ImageSourceSheet, Loader, SpeechListener } from './components';
 import { voiceModeModalConfig } from './config';
 
@@ -268,8 +268,8 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
       return;
     }
 
-    // NOTE: Older Open WebUI versions keep reasoning and tool calls in the text as `<details>` blocks.
-    const answerText = removeDetailsBlocks(newMessage?.content ?? '');
+    // NOTE: Same text as on screen: older Open WebUI versions keep reasoning and tool calls in it as `<details>`.
+    const answerText = parseResponseMessageContent(newMessage?.content ?? '').messageContent;
 
     if (isWaitingNewMessage && newMessage) {
       if (!newMessage.done) {

@@ -6,8 +6,8 @@ import {
   ChatCompletionOutputFileType,
 } from '@open-webui-react-native/shared/data-access/websocket';
 import { getDataUriMimeType, isDataUri, resolveServerUrl } from '@open-webui-react-native/shared/utils/files';
+import { ToolData } from '@open-webui-react-native/shared/utils/strings';
 import { normalizeToolInput, normalizeToolOutput } from './normalize-tool-payload';
-import { ToolData } from './parse-response-message-content';
 
 const IMAGE_MIME_TYPE_PREFIX = 'image/';
 

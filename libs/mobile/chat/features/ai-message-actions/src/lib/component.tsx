@@ -11,7 +11,7 @@ import { ActionsBottomSheet, ActionSheetItemProps } from '@open-webui-react-nati
 import { Message, replaceDetailsWithMarkers } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
-import { removeDetailsBlocks } from '@open-webui-react-native/shared/utils/strings';
+import { parseResponseMessageContent } from '@open-webui-react-native/shared/utils/strings';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 interface AiMessageActionsProps {
@@ -59,8 +59,8 @@ export function AiMessageActions({
   });
 
   const isChangeDisabled = isResponseGenerating || isSkeleton;
-  // NOTE: Older Open WebUI versions keep reasoning and tool calls in the text as `<details>` blocks.
-  const answerText = removeDetailsBlocks(message.content ?? '');
+  // NOTE: Same text as on screen: older Open WebUI versions keep reasoning and tool calls in it as `<details>`.
+  const answerText = parseResponseMessageContent(message.content ?? '').messageContent;
 
   const copyToClipboard = async (): Promise<void> => {
     await Clipboard.setStringAsync(answerText);

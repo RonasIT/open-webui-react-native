@@ -1,4 +1,4 @@
-import { ReasoningData } from './parse-response-message-content';
+import { ReasoningData } from '@open-webui-react-native/shared/utils/strings';
 
 const SECONDS_IN_MINUTE = 60;
 const SECONDS_IN_HOUR = 3600;
