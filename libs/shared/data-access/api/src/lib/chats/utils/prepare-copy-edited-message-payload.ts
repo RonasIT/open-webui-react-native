@@ -2,6 +2,7 @@ import uuid from 'react-native-uuid';
 import { Role } from '@open-webui-react-native/shared/data-access/common';
 import { ChatResponse, History, Message } from '../models';
 import { createMessagesList } from './create-messages-list';
+import { restoreDetailsFromMarkers } from './details-edit-markers';
 import { replaceOutputText } from './replace-output-text';
 
 export function prepareCopyEditedMessagePayload(
@@ -18,14 +19,15 @@ export function prepareCopyEditedMessagePayload(
   const newAssistantMessageId = uuid.v4();
 
   const parentId = original.parentId ?? original.id;
+  const content = restoreDetailsFromMarkers(newContent, original.content);
 
   const newAssistantMessage: Message = {
     ...original,
     id: newAssistantMessageId,
     parentId,
     childrenIds: [],
-    content: newContent,
-    output: replaceOutputText(original.output, newContent),
+    content,
+    output: replaceOutputText(original.output, content),
     done: true,
   };
 

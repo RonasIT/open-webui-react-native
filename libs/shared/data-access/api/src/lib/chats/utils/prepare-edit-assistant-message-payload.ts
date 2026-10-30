@@ -1,5 +1,6 @@
 import { Role } from '@open-webui-react-native/shared/data-access/common';
 import { ChatResponse } from '../models';
+import { restoreDetailsFromMarkers } from './details-edit-markers';
 import { replaceOutputText } from './replace-output-text';
 
 export function prepareEditAssistantMessagePayload(
@@ -13,10 +14,11 @@ export function prepareEditAssistantMessagePayload(
   const target = messagesMap[messageId];
   if (!target || target.role !== Role.ASSISTANT) return oldData;
 
+  const content = restoreDetailsFromMarkers(newContent, target.content);
   const updatedMessage = {
     ...target,
-    content: newContent,
-    output: replaceOutputText(target.output, newContent),
+    content,
+    output: replaceOutputText(target.output, content),
     done: true,
   };
 
