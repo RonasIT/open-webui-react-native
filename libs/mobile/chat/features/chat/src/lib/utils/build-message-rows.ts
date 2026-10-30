@@ -2,12 +2,13 @@ import { getToolCalls, Message } from '@open-webui-react-native/shared/data-acce
 import {
   ChatCompletionOutputContentPart,
   ChatCompletionOutputItem,
+  ChatCompletionOutputItemStatus,
   ChatCompletionOutputItemType,
 } from '@open-webui-react-native/shared/data-access/websocket';
 import { buildToolCallViews, ToolCallView } from './build-tool-call-views';
 import { DetailsBlock, ReasoningData } from './parse-response-message-content';
 
-const FINISHED_STATUSES = new Set(['completed', 'failed', 'incomplete']);
+const FINISHED_STATUSES = new Set<string>(Object.values(ChatCompletionOutputItemStatus));
 
 export interface ReasoningView extends ReasoningData {
   key: string;
