@@ -43,6 +43,7 @@
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "Системный промпт",
         "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Не задано",
+        "TEXT_MODEL_CONTROLS": "Параметры модели",
         "TEXT_TOOLS": "Инструменты",
         "TEXT_FULL_ACCESS_FOR_TOOLS": "Полный доступ",
         "BUTTON_CLOSE": "Закрыть"
@@ -127,19 +128,26 @@
     },
     "USER_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Изменить",
-      "TEXT_COPY": "Копировать"
+      "TEXT_COPY": "Копировать",
+      "TEXT_DELETE": "Удалить"
     },
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Изменить",
       "TEXT_COPY": "Копировать",
       "TEXT_CONTINUE_RESPONSE": "Продолжить ответ",
       "TEXT_REGENERATE": "Перегенерировать",
+      "TEXT_DELETE": "Удалить",
       "REGENERATE_MESSAGE_ACTION_SHEET": {
         "TEXT_SUGGEST_A_CHANGE": "Предложить изменение",
         "TEXT_TRY_AGAIN": "Попробовать снова",
         "TEXT_ADD_DETAILS": "Добавить детали",
         "TEXT_MORE_CONCISE": "Более кратко"
       }
+    },
+    "USE_DELETE_MESSAGE": {
+      "TEXT_DELETE_MESSAGE": "Удалить сообщение?",
+      "TEXT_CANNOT_BE_UNDONE": "Это действие нельзя отменить. Вы хотите продолжить?",
+      "BUTTON_DELETE": "Удалить"
     },
     "EDIT_MESSAGE_INPUT": {
       "TEXT_EDIT_MESSAGE": "Редактировать сообщение",
@@ -196,6 +204,19 @@
         "BUTTON_NEXT": "Далее",
         "BUTTON_SUBMIT": "Отправить",
         "BUTTON_DENY": "Пропустить"
+      }
+    },
+    "MODEL_CONTROLS_SHEET": {
+      "TEXT_TITLE": "Параметры модели",
+      "TEXT_SAVE_FAILED": "Не удалось сохранить параметры модели. Попробуйте ещё раз.",
+      "MODEL_CONTROL_ROW": {
+        "TEXT_DEFAULT": "По умолчанию",
+        "TEXT_RESET_TO_DEFAULT": "Вернуть по умолчанию",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "Вернуть по умолчанию ({{option}})"
+      },
+      "MODEL_CONTROL_MENU_SHEET": {
+        "TEXT_DEFAULT": "По умолчанию",
+        "TEXT_DEFAULT_WITH_OPTION": "По умолчанию · {{option}}"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

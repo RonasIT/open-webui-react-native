@@ -43,6 +43,7 @@
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "システムプロンプト",
         "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "未設定",
+        "TEXT_MODEL_CONTROLS": "モデルコントロール",
         "TEXT_TOOLS": "ツール",
         "TEXT_FULL_ACCESS_FOR_TOOLS": "フルアクセス",
         "BUTTON_CLOSE": "閉じる"
@@ -125,19 +126,26 @@
     },
     "USER_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "編集",
-      "TEXT_COPY": "コピー"
+      "TEXT_COPY": "コピー",
+      "TEXT_DELETE": "削除"
     },
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "編集",
       "TEXT_COPY": "コピー",
       "TEXT_CONTINUE_RESPONSE": "回答を続ける",
       "TEXT_REGENERATE": "再生成",
+      "TEXT_DELETE": "削除",
       "REGENERATE_MESSAGE_ACTION_SHEET": {
         "TEXT_SUGGEST_A_CHANGE": "変更を提案",
         "TEXT_TRY_AGAIN": "もう一度試す",
         "TEXT_ADD_DETAILS": "詳細を追加",
         "TEXT_MORE_CONCISE": "より簡潔に"
       }
+    },
+    "USE_DELETE_MESSAGE": {
+      "TEXT_DELETE_MESSAGE": "メッセージを削除しますか？",
+      "TEXT_CANNOT_BE_UNDONE": "このアクションは取り消し不可です。続けますか？",
+      "BUTTON_DELETE": "削除"
     },
     "EDIT_MESSAGE_INPUT": {
       "TEXT_EDIT_MESSAGE": "メッセージを編集",
@@ -194,6 +202,19 @@
         "BUTTON_NEXT": "次へ",
         "BUTTON_SUBMIT": "送信",
         "BUTTON_DENY": "スキップ"
+      }
+    },
+    "MODEL_CONTROLS_SHEET": {
+      "TEXT_TITLE": "モデルコントロール",
+      "TEXT_SAVE_FAILED": "モデルコントロールを保存できませんでした。もう一度お試しください。",
+      "MODEL_CONTROL_ROW": {
+        "TEXT_DEFAULT": "デフォルト",
+        "TEXT_RESET_TO_DEFAULT": "デフォルトに戻す",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "デフォルトに戻す（{{option}}）"
+      },
+      "MODEL_CONTROL_MENU_SHEET": {
+        "TEXT_DEFAULT": "デフォルト",
+        "TEXT_DEFAULT_WITH_OPTION": "デフォルト · {{option}}"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

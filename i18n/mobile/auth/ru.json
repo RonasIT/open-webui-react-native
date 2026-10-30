@@ -16,7 +16,8 @@
         "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Этот способ входа пока не поддерживается приложением. Попробуйте другой способ входа.",
         "TEXT_SERVER_UNREACHABLE": "Не удалось связаться с сервером. Проверьте адрес и подключение к сети. Для локального HTTP-сервера укажите http:// в начале адреса.",
         "TEXT_NOT_OPEN_WEBUI_SERVER": "Сервер ответил, но это не сервер Open WebUI. Проверьте адрес.",
-        "BUTTON_RETRY_SERVER_CHECK": "Проверить сервер ещё раз"
+        "BUTTON_RETRY_SERVER_CHECK": "Проверить сервер ещё раз",
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "Ваш аккаунт ожидает одобрения администратором."
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Продолжить с {{provider}}"
@@ -24,6 +25,55 @@
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "Закрыть",
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Этот способ входа недоступен. Пожалуйста, выберите другой вариант."
+      }
+    },
+    "MFA_VERIFICATION": {
+      "TEXT_TITLE": "Подтвердите вход",
+      "TEXT_DESCRIPTION": "Введите шестизначный код из приложения-аутентификатора.",
+      "TEXT_RECOVERY_CODE_DESCRIPTION": "Используйте один из сохранённых кодов восстановления.",
+      "TEXT_AUTHENTICATOR_CODE": "Код аутентификатора",
+      "TEXT_RECOVERY_CODE": "Код восстановления",
+      "BUTTON_USE_RECOVERY_CODE": "Использовать код восстановления",
+      "BUTTON_USE_AUTHENTICATOR_CODE": "Использовать код аутентификатора",
+      "BUTTON_CONTINUE": "Продолжить",
+      "BUTTON_BACK_TO_SIGN_IN": "Вернуться ко входу",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Введите код"
+      }
+    },
+    "MFA_AUTHENTICATOR_SETUP": {
+      "TEXT_TITLE": "Настройте аутентификатор",
+      "TEXT_DESCRIPTION": "Отсканируйте QR-код или введите ключ в приложении-аутентификаторе, затем введите шестизначный код.",
+      "TEXT_TAP_TO_COPY_KEY": "Нажмите, чтобы скопировать ключ",
+      "TEXT_FAILED_TO_LOAD_KEY": "Не удалось загрузить ключ аутентификатора. Попробуйте ещё раз.",
+      "BUTTON_TRY_AGAIN": "Повторить",
+      "TEXT_AUTHENTICATOR_CODE": "Код аутентификатора",
+      "BUTTON_CONTINUE": "Продолжить",
+      "BUTTON_BACK_TO_SIGN_IN": "Вернуться ко входу",
+      "VALIDATION": {
+        "TEXT_REQUIRED_CODE": "Введите код"
+      }
+    },
+    "MFA_RECOVERY_CODES": {
+      "TEXT_TITLE": "Сохраните коды восстановления",
+      "TEXT_DESCRIPTION": "Сохраните коды восстановления в надёжном месте. Они больше не будут показаны.\nКаждый код работает один раз.",
+      "TEXT_RECOVERY_CODES": "Коды восстановления",
+      "TEXT_TAP_TO_COPY_CODES": "Нажмите, чтобы скопировать коды",
+      "TEXT_I_HAVE_SAVED_CODES": "Я сохранил коды восстановления",
+      "BUTTON_CONTINUE": "Продолжить",
+      "BUTTON_BACK_TO_SIGN_IN": "Вернуться ко входу",
+      "TEXT_LEAVE_CONFIRM_TITLE": "Выйти, не сохранив коды?",
+      "TEXT_LEAVE_CONFIRM_MESSAGE": "Коды восстановления больше не будут показаны.",
+      "BUTTON_LEAVE": "Выйти"
+    },
+    "MFA_RECOVERY": {
+      "TEXT_TITLE": "Восстановите аутентификатор",
+      "TEXT_DESCRIPTION": "Введите токен восстановления, полученный от администратора.",
+      "TEXT_RECOVERY_TOKEN": "Токен восстановления",
+      "BUTTON_CONTINUE": "Продолжить",
+      "BUTTON_BACK_TO_SIGN_IN": "Вернуться ко входу",
+      "VALIDATION": {
+        "TEXT_REQUIRED_RECOVERY_TOKEN": "Введите токен восстановления"
       }
     }
   }

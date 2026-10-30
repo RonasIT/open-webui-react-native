@@ -7,6 +7,7 @@ import {
   ChatResponse,
   chatSystemPromptState$,
   createTemporaryChatId,
+  isTemporaryChatEnforced,
   NEW_CHAT_SYSTEM_PROMPT_KEY,
   NEW_CHAT_TOOLS_SELECTION_KEY,
   patchChatList,
@@ -70,8 +71,8 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
     };
 
     // NOTE: Temporary chats are never persisted (no POST /chats/new, no chat-list entry) — they only
-    // exist client-side for this session
-    if (userSettings?.ui.temporaryChatByDefault) {
+    // exist client-side for this session. When the server enforces them, POST /chats/new returns 403.
+    if (isTemporaryChatEnforced() || userSettings?.ui.temporaryChatByDefault) {
       const id = createTemporaryChatId(socketSessionId);
       const chatResponse = new ChatResponse({
         id,

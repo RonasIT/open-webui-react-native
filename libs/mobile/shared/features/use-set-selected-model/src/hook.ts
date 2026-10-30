@@ -18,18 +18,30 @@ export interface UseSetSelectedModelResult {
 export const useSetSelectedModel = (chatId?: string): UseSetSelectedModelResult => {
   const [modelId, setModelId] = useState<string | undefined>(undefined);
 
-  const { data: settings, isSuccess: isSettingsSuccess, isLoading: isSettingsLoading } = usersApi.useGetUserSettings();
+  const {
+    data: settings,
+    isSuccess: isSettingsSuccess,
+    isLoading: isSettingsLoading,
+    isFetched: isSettingsFetched,
+  } = usersApi.useGetUserSettings();
   const {
     data: config,
     isSuccess: isConfigSuccess,
     isLoading: isConfigLoading,
+    isFetched: isConfigFetched,
   } = appConfigurationApi.useGetAppConfiguration();
-  const { data: models, isSuccess: isModelsSuccess, isLoading: isModelsLoading } = modelsApi.useGetModels();
+  const {
+    data: models,
+    isSuccess: isModelsSuccess,
+    isLoading: isModelsLoading,
+    isFetched: isModelsFetched,
+  } = modelsApi.useGetModels();
   const isTemporaryChat = isTemporaryChatId(chatId);
   const {
     data: chat,
     isSuccess: isChatSuccess,
     isLoading: isChatLoading,
+    isFetched: isChatFetched,
   } = chatApi.useGet(chatId as string, { enabled: !!chatId && !isTemporaryChat });
 
   // NOTE: Temporary chats are never persisted, so their useGet query is disabled above (it can't
@@ -37,7 +49,13 @@ export const useSetSelectedModel = (chatId?: string): UseSetSelectedModelResult 
   const isDataReceived =
     isSettingsSuccess && isConfigSuccess && isModelsSuccess && (!chatId || isTemporaryChat || isChatSuccess);
 
-  const isLoading = isSettingsLoading || isConfigLoading || isModelsLoading || isChatLoading;
+  // NOTE: As in useInitRequests, only the first fetch blocks the screen: without data a refetch goes back
+  // to `pending` and would keep the spinner on every retry cycle.
+  const isLoading =
+    (isSettingsLoading && !isSettingsFetched) ||
+    (isConfigLoading && !isConfigFetched) ||
+    (isModelsLoading && !isModelsFetched) ||
+    (isChatLoading && !isChatFetched);
 
   const defaultModelId = useMemo(() => {
     if (!isDataReceived || !models?.length) {

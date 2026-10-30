@@ -4,6 +4,9 @@ export class ChatPermissions {
   @Expose()
   public controls: boolean;
 
+  @Expose()
+  public params: boolean;
+
   @Expose({ name: 'system_prompt' })
   public systemPrompt: boolean;
 
@@ -15,6 +18,9 @@ export class ChatPermissions {
 
   @Expose()
   public delete: boolean;
+
+  @Expose({ name: 'delete_message' })
+  public deleteMessage: boolean;
 
   @Expose()
   public edit: boolean;

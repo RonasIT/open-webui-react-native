@@ -1,0 +1,9 @@
+{
+  "name": "mobile/auth/ui/mfa-layout",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mobile/auth/ui/mfa-layout/src",
+  "projectType": "library",
+  "tags": ["app:mobile", "scope:auth", "type:ui"],
+  "// targets": "to see all targets run: nx show project mobile/auth/ui/mfa-layout --web",
+  "targets": {}
+}

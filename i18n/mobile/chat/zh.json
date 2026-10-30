@@ -43,6 +43,7 @@
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "系统提示词",
         "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "未设置",
+        "TEXT_MODEL_CONTROLS": "模型控制",
         "TEXT_TOOLS": "工具",
         "TEXT_FULL_ACCESS_FOR_TOOLS": "完全访问",
         "BUTTON_CLOSE": "关闭"
@@ -125,19 +126,26 @@
     },
     "USER_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "编辑",
-      "TEXT_COPY": "复制"
+      "TEXT_COPY": "复制",
+      "TEXT_DELETE": "删除"
     },
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "编辑",
       "TEXT_COPY": "复制",
       "TEXT_CONTINUE_RESPONSE": "继续回复",
       "TEXT_REGENERATE": "重新生成",
+      "TEXT_DELETE": "删除",
       "REGENERATE_MESSAGE_ACTION_SHEET": {
         "TEXT_SUGGEST_A_CHANGE": "建议修改",
         "TEXT_TRY_AGAIN": "再试一次",
         "TEXT_ADD_DETAILS": "添加细节",
         "TEXT_MORE_CONCISE": "更简洁"
       }
+    },
+    "USE_DELETE_MESSAGE": {
+      "TEXT_DELETE_MESSAGE": "要删除此消息吗？",
+      "TEXT_CANNOT_BE_UNDONE": "此操作无法撤销。确定要继续吗？",
+      "BUTTON_DELETE": "删除"
     },
     "EDIT_MESSAGE_INPUT": {
       "TEXT_EDIT_MESSAGE": "编辑消息",
@@ -194,6 +202,19 @@
         "BUTTON_NEXT": "下一步",
         "BUTTON_SUBMIT": "发送",
         "BUTTON_DENY": "跳过"
+      }
+    },
+    "MODEL_CONTROLS_SHEET": {
+      "TEXT_TITLE": "模型控制",
+      "TEXT_SAVE_FAILED": "无法保存模型控制，请重试。",
+      "MODEL_CONTROL_ROW": {
+        "TEXT_DEFAULT": "默认",
+        "TEXT_RESET_TO_DEFAULT": "恢复默认",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "恢复默认（{{option}}）"
+      },
+      "MODEL_CONTROL_MENU_SHEET": {
+        "TEXT_DEFAULT": "默认",
+        "TEXT_DEFAULT_WITH_OPTION": "默认 · {{option}}"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

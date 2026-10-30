@@ -43,6 +43,7 @@
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "Prompt do sistema",
         "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Não definido",
+        "TEXT_MODEL_CONTROLS": "Controles do modelo",
         "TEXT_TOOLS": "Ferramentas",
         "TEXT_FULL_ACCESS_FOR_TOOLS": "Acesso total",
         "BUTTON_CLOSE": "Fechar"
@@ -126,19 +127,26 @@
     },
     "USER_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Editar",
-      "TEXT_COPY": "Copiar"
+      "TEXT_COPY": "Copiar",
+      "TEXT_DELETE": "Excluir"
     },
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Editar",
       "TEXT_COPY": "Copiar",
       "TEXT_CONTINUE_RESPONSE": "Continuar resposta",
       "TEXT_REGENERATE": "Regenerar",
+      "TEXT_DELETE": "Excluir",
       "REGENERATE_MESSAGE_ACTION_SHEET": {
         "TEXT_SUGGEST_A_CHANGE": "Sugerir uma alteração",
         "TEXT_TRY_AGAIN": "Tentar novamente",
         "TEXT_ADD_DETAILS": "Adicionar detalhes",
         "TEXT_MORE_CONCISE": "Mais conciso"
       }
+    },
+    "USE_DELETE_MESSAGE": {
+      "TEXT_DELETE_MESSAGE": "Excluir mensagem?",
+      "TEXT_CANNOT_BE_UNDONE": "Esta ação não pode ser desfeita. Você deseja continuar?",
+      "BUTTON_DELETE": "Excluir"
     },
     "EDIT_MESSAGE_INPUT": {
       "TEXT_EDIT_MESSAGE": "Editar mensagem",
@@ -195,6 +203,19 @@
         "BUTTON_NEXT": "Próximo",
         "BUTTON_SUBMIT": "Enviar",
         "BUTTON_DENY": "Ignorar"
+      }
+    },
+    "MODEL_CONTROLS_SHEET": {
+      "TEXT_TITLE": "Controles do modelo",
+      "TEXT_SAVE_FAILED": "Não foi possível salvar os controles do modelo. Tente novamente.",
+      "MODEL_CONTROL_ROW": {
+        "TEXT_DEFAULT": "Padrão",
+        "TEXT_RESET_TO_DEFAULT": "Restaurar padrão",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "Restaurar padrão ({{option}})"
+      },
+      "MODEL_CONTROL_MENU_SHEET": {
+        "TEXT_DEFAULT": "Padrão",
+        "TEXT_DEFAULT_WITH_OPTION": "Padrão · {{option}}"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

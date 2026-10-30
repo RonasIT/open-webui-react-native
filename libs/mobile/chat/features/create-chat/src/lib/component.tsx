@@ -9,7 +9,11 @@ import { useAttachedFiles } from '@open-webui-react-native/mobile/shared/feature
 import { useSetSelectedModel } from '@open-webui-react-native/mobile/shared/features/use-set-selected-model';
 import { AppText, Icon, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
-import { ChatGenerationOption, usersApi } from '@open-webui-react-native/shared/data-access/api';
+import {
+  ChatGenerationOption,
+  isTemporaryChatEnforced,
+  usersApi,
+} from '@open-webui-react-native/shared/data-access/api';
 import { webSocketState$ } from '@open-webui-react-native/shared/data-access/websocket';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { SearchFolderView, SearchModelView } from './components';
@@ -31,7 +35,7 @@ export function CreateChat({
   const isSocketConnected = useSelector(webSocketState$.isSocketConnected);
 
   const { data: userSettings } = usersApi.useGetUserSettings();
-  const isTemporaryChat = userSettings?.ui.temporaryChatByDefault ?? false;
+  const isTemporaryChat = isTemporaryChatEnforced() || (userSettings?.ui.temporaryChatByDefault ?? false);
 
   const {
     attachedItems,
@@ -76,7 +80,7 @@ export function CreateChat({
   }, [existedFolderId]);
 
   return (
-    <View className='flex-1 bg-background-primary pt-[60px] pb-44'>
+    <View testID='chat-create' className='flex-1 bg-background-primary pt-[60px] pb-44'>
       <SearchFolderView
         selectedItemId={folderId}
         onSelectItem={setFolderId}

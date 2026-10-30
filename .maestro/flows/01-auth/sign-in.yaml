@@ -1,0 +1,15 @@
+appId: ${APP_ID}
+name: Sign in with email and password
+tags:
+  - smoke
+onFlowStart:
+  - startRecording: recording
+onFlowComplete:
+  - stopRecording
+---
+- runFlow: ../../subflows/launch-clean.yaml
+- runFlow: ../../subflows/sign-in.yaml
+- extendedWaitUntil:
+    visible:
+      id: chat-create
+    timeout: 60000

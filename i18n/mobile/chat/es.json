@@ -43,6 +43,7 @@
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "Prompt del sistema",
         "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "No establecido",
+        "TEXT_MODEL_CONTROLS": "Controles del modelo",
         "TEXT_TOOLS": "Herramientas",
         "TEXT_FULL_ACCESS_FOR_TOOLS": "Acceso completo",
         "BUTTON_CLOSE": "Cerrar"
@@ -126,19 +127,26 @@
     },
     "USER_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Editar",
-      "TEXT_COPY": "Copiar"
+      "TEXT_COPY": "Copiar",
+      "TEXT_DELETE": "Eliminar"
     },
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Editar",
       "TEXT_COPY": "Copiar",
       "TEXT_CONTINUE_RESPONSE": "Continuar respuesta",
       "TEXT_REGENERATE": "Regenerar",
+      "TEXT_DELETE": "Eliminar",
       "REGENERATE_MESSAGE_ACTION_SHEET": {
         "TEXT_SUGGEST_A_CHANGE": "Sugerir un cambio",
         "TEXT_TRY_AGAIN": "Intentar de nuevo",
         "TEXT_ADD_DETAILS": "Añadir detalles",
         "TEXT_MORE_CONCISE": "Más conciso"
       }
+    },
+    "USE_DELETE_MESSAGE": {
+      "TEXT_DELETE_MESSAGE": "¿Eliminar mensaje?",
+      "TEXT_CANNOT_BE_UNDONE": "Esta acción no se puede deshacer. ¿Desea continuar?",
+      "BUTTON_DELETE": "Eliminar"
     },
     "EDIT_MESSAGE_INPUT": {
       "TEXT_EDIT_MESSAGE": "Editar mensaje",
@@ -195,6 +203,19 @@
         "BUTTON_NEXT": "Siguiente",
         "BUTTON_SUBMIT": "Enviar",
         "BUTTON_DENY": "Omitir"
+      }
+    },
+    "MODEL_CONTROLS_SHEET": {
+      "TEXT_TITLE": "Controles del modelo",
+      "TEXT_SAVE_FAILED": "No se pudieron guardar los controles del modelo. Inténtalo de nuevo.",
+      "MODEL_CONTROL_ROW": {
+        "TEXT_DEFAULT": "Predeterminado",
+        "TEXT_RESET_TO_DEFAULT": "Restablecer a predeterminado",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "Restablecer a predeterminado ({{option}})"
+      },
+      "MODEL_CONTROL_MENU_SHEET": {
+        "TEXT_DEFAULT": "Predeterminado",
+        "TEXT_DEFAULT_WITH_OPTION": "Predeterminado · {{option}}"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

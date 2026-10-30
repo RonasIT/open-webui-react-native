@@ -42,8 +42,9 @@ export function FolderActionsSheet({ onEditPress, onSharePress, ref }: FolderAct
   const { data: sharedFolders } = foldersApi.useGetSharedFolders({ enabled: canUseFolders });
   const { mutateAsync: deleteFolder, isPending: isDeleting } = foldersApi.useDeleteFolder();
 
-  // NOTE: The shared list holds exactly the folders owned by somebody else, so a folder missing from
-  // it belongs to the current user. Sharing and deleting are reserved for the folder's creator.
+  // NOTE: `useGetSharedFolders` drops the current user's own folders, so the list holds exactly the
+  // ones owned by somebody else and a folder missing from it belongs to the current user. Sharing and
+  // deleting are reserved for the folder's creator.
   const isOwner = !sharedFolders?.some((sharedFolder) => sharedFolder.id === folder?.id);
   // NOTE: On top of ownership an admin always may share, everyone else needs the `sharing.folders`
   // permission, which is off by default — same gate as the web client.

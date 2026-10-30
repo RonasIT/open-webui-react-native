@@ -43,6 +43,7 @@
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "Invite système",
         "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Non défini",
+        "TEXT_MODEL_CONTROLS": "Contrôles du modèle",
         "TEXT_TOOLS": "Outils",
         "TEXT_FULL_ACCESS_FOR_TOOLS": "Accès complet",
         "BUTTON_CLOSE": "Fermer"
@@ -126,19 +127,26 @@
     },
     "USER_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Modifier",
-      "TEXT_COPY": "Copier"
+      "TEXT_COPY": "Copier",
+      "TEXT_DELETE": "Supprimer"
     },
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Modifier",
       "TEXT_COPY": "Copier",
       "TEXT_CONTINUE_RESPONSE": "Continuer la réponse",
       "TEXT_REGENERATE": "Régénérer",
+      "TEXT_DELETE": "Supprimer",
       "REGENERATE_MESSAGE_ACTION_SHEET": {
         "TEXT_SUGGEST_A_CHANGE": "Suggérer une modification",
         "TEXT_TRY_AGAIN": "Réessayer",
         "TEXT_ADD_DETAILS": "Ajouter des détails",
         "TEXT_MORE_CONCISE": "Plus concis"
       }
+    },
+    "USE_DELETE_MESSAGE": {
+      "TEXT_DELETE_MESSAGE": "Supprimer le message ?",
+      "TEXT_CANNOT_BE_UNDONE": "Cette action ne peut pas être annulée. Souhaitez-vous continuer ?",
+      "BUTTON_DELETE": "Supprimer"
     },
     "EDIT_MESSAGE_INPUT": {
       "TEXT_EDIT_MESSAGE": "Modifier le message",
@@ -195,6 +203,19 @@
         "BUTTON_NEXT": "Suivant",
         "BUTTON_SUBMIT": "Envoyer",
         "BUTTON_DENY": "Ignorer"
+      }
+    },
+    "MODEL_CONTROLS_SHEET": {
+      "TEXT_TITLE": "Contrôles du modèle",
+      "TEXT_SAVE_FAILED": "Impossible d'enregistrer les contrôles du modèle. Veuillez réessayer.",
+      "MODEL_CONTROL_ROW": {
+        "TEXT_DEFAULT": "Par défaut",
+        "TEXT_RESET_TO_DEFAULT": "Rétablir la valeur par défaut",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "Rétablir la valeur par défaut ({{option}})"
+      },
+      "MODEL_CONTROL_MENU_SHEET": {
+        "TEXT_DEFAULT": "Par défaut",
+        "TEXT_DEFAULT_WITH_OPTION": "Par défaut · {{option}}"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

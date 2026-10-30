@@ -43,6 +43,7 @@
       "CHAT_SETTINGS_SHEET": {
         "TEXT_SYSTEM_PROMPT": "System prompt",
         "TEXT_SYSTEM_PROMPT_PLACEHOLDER": "Not set",
+        "TEXT_MODEL_CONTROLS": "Model controls",
         "TEXT_TOOLS": "Tools",
         "TEXT_FULL_ACCESS_FOR_TOOLS": "Full access for tools",
         "BUTTON_CLOSE": "Close"
@@ -126,19 +127,26 @@
     },
     "USER_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Edit",
-      "TEXT_COPY": "Copy"
+      "TEXT_COPY": "Copy",
+      "TEXT_DELETE": "Delete"
     },
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Edit",
       "TEXT_COPY": "Copy",
       "TEXT_CONTINUE_RESPONSE": "Continue response",
       "TEXT_REGENERATE": "Regenerate",
+      "TEXT_DELETE": "Delete",
       "REGENERATE_MESSAGE_ACTION_SHEET": {
         "TEXT_SUGGEST_A_CHANGE": "Suggest a change",
         "TEXT_TRY_AGAIN": "Try again",
         "TEXT_ADD_DETAILS": "Add details",
         "TEXT_MORE_CONCISE": "More concise"
       }
+    },
+    "USE_DELETE_MESSAGE": {
+      "TEXT_DELETE_MESSAGE": "Delete message?",
+      "TEXT_CANNOT_BE_UNDONE": "This action cannot be undone. Do you wish to continue?",
+      "BUTTON_DELETE": "Delete"
     },
     "EDIT_MESSAGE_INPUT": {
       "TEXT_EDIT_MESSAGE": "Edit message",
@@ -195,6 +203,19 @@
         "BUTTON_NEXT": "Next",
         "BUTTON_SUBMIT": "Send",
         "BUTTON_DENY": "Skip"
+      }
+    },
+    "MODEL_CONTROLS_SHEET": {
+      "TEXT_TITLE": "Model controls",
+      "TEXT_SAVE_FAILED": "Couldn't save model controls. Please try again.",
+      "MODEL_CONTROL_ROW": {
+        "TEXT_DEFAULT": "Default",
+        "TEXT_RESET_TO_DEFAULT": "Reset to default",
+        "TEXT_RESET_TO_DEFAULT_WITH_OPTION": "Reset to default ({{option}})"
+      },
+      "MODEL_CONTROL_MENU_SHEET": {
+        "TEXT_DEFAULT": "Default",
+        "TEXT_DEFAULT_WITH_OPTION": "Default · {{option}}"
       }
     },
     "ATTACH_KNOWLEDGE_SHEET": {

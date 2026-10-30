@@ -4,16 +4,21 @@ import { HttpStatusCode } from 'axios';
 import { Fragment, ReactElement, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { TextInput } from 'react-native';
+import { useMfaNavigation } from '@open-webui-react-native/mobile/auth/features/use-mfa-navigation';
 import { AppButton, AppText, View, FormFloatedLabelInput } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 import {
   appConfigurationApi,
   authApi,
+  MfaChallenge,
+  MfaNextStep,
   Provider,
+  SignInResponse,
   supportedOauthProviders,
 } from '@open-webui-react-native/shared/data-access/api';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { normalizeServerUrl, resolveApiUrl } from '@open-webui-react-native/shared/utils/config';
+import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
 import { UrlInputLoader } from './components';
 import { emailFormConfig } from './config';
@@ -27,6 +32,7 @@ interface EmailSignInFormProps {
 
 export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }: EmailSignInFormProps): ReactElement {
   const translate = useTranslation('AUTH.SIGN_IN.EMAIL_FORM');
+  const { openStep } = useMfaNavigation();
   const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
 
@@ -51,7 +57,31 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
     isFetchWithUrlError,
     fetchWithUrlError,
   } = appConfigurationApi.useGetAppConfiguration({ enabled: false });
-  const { mutate, isPending } = authApi.useSignInWithEmailPassword({ onSuccess });
+
+  const handleSignInSuccess = (response: SignInResponse): void => {
+    if (response.nextStep === MfaNextStep.PENDING) {
+      ToastService.showError(translate('TEXT_ACCOUNT_PENDING_APPROVAL'));
+
+      return;
+    }
+
+    if (response.challengeToken && response.nextStep) {
+      openStep(
+        new MfaChallenge({
+          nextStep: response.nextStep,
+          challengeToken: response.challengeToken,
+        }),
+      );
+
+      return;
+    }
+
+    if (response.token) {
+      onSuccess();
+    }
+  };
+
+  const { mutate, isPending } = authApi.useSignInWithEmailPassword({ onSuccess: handleSignInSuccess });
 
   const serverUrl = normalizeServerUrl(debouncedQuery);
   const isUrlValid = !errors.url && !!serverUrl && normalizeServerUrl(query) === serverUrl;
@@ -140,6 +170,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
     <View className='w-full gap-8'>
       <FormFloatedLabelInput
         name='url'
+        testID='sign-in-api-url'
         control={control}
         value={query}
         onChangeText={setQuery}
@@ -173,6 +204,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
           <FormFloatedLabelInput
             inputRef={emailRef}
             name='email'
+            testID='sign-in-email'
             control={control}
             autoCapitalize='none'
             autoCorrect={false}
@@ -186,6 +218,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
           />
           <FormFloatedLabelInput
             name='password'
+            testID='sign-in-password'
             control={control}
             inputRef={passwordRef}
             autoCapitalize='none'
@@ -210,6 +243,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
       {showSignInButton && (
         <AppButton
           text={translate('BUTTON_SIGN_IN')}
+          testID='sign-in-submit'
           disabled={!isFormValid}
           isLoading={isPending}
           className='mt-16'

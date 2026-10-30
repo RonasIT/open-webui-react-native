@@ -1,5 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 import { AudioSettings } from './audio-settings';
+import { UiParams } from './ui-params';
 
 export class UiSettings {
   @Expose()
@@ -32,6 +33,10 @@ export class UiSettings {
   @Expose()
   @Type(() => AudioSettings)
   public audio?: AudioSettings;
+
+  @Expose()
+  @Type(() => UiParams)
+  public params?: UiParams;
 
   constructor(response: Partial<UiSettings>) {
     Object.assign(this, response);

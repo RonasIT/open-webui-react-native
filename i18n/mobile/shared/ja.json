@@ -111,6 +111,13 @@
     },
     "USE_ATTACHED_FILES": {
       "TEXT_IMAGE_UPLOAD_FAILED": "写真をアップロードできませんでした。接続を確認して、もう一度お試しください"
+    },
+    "MODEL_CONTROLS": {
+      "TEXT_CONTROL_NAME": "「{{control}}」",
+      "TEXT_CONTROLS_SEPARATOR": "、",
+      "TEXT_STALE_CHOICE": {
+        "other": "{{controls}}の選択肢は利用できなくなりました — デフォルトのオプションが使用されます"
+      }
     }
   }
 }
