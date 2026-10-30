@@ -3,7 +3,6 @@ import { ChatCompletionOutputPartType } from '../enums/chat-completion-output-pa
 import { ChatCompletionOutputItem } from '../models/chat-event-data/chat-completion-chunk';
 import { ChatCompletionOutputContentPart } from '../models/chat-event-data/chat-completion-output-content-part';
 import { ResponseStreamEvent } from '../models/chat-event-data/response-stream-event';
-import { getOutputText } from './get-output-text';
 
 // NOTE: Answer deltas go into `message` items only, reasoning deltas into `reasoning` items only.
 const ANSWER_DELTA_TYPES = ['output_text', 'text'];
@@ -153,6 +152,3 @@ export const getResponseStreamOutput = (state: ResponseStreamState): Array<ChatC
   Array.from(state.entries())
     .sort(([a], [b]) => a - b)
     .map(([, item]) => item);
-
-export const getResponseStreamText = (state: ResponseStreamState): string =>
-  getOutputText(getResponseStreamOutput(state));
