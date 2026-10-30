@@ -1,276 +1,175 @@
+import { QueryKey } from '@tanstack/react-query';
+import { WebView } from 'react-native-webview';
 import { DiagramLanguage } from '../enums';
 import { RenderedDiagram } from '../types';
-import { renderVega } from '../utils';
 
-// NOTE: Only mermaid is rendered in the WebView.
 export interface DiagramRenderRequest {
-  type: 'render';
-  id: string;
+  language: DiagramLanguage;
   code: string;
   isDarkTheme: boolean;
 }
 
-// NOTE: Draws an already rendered SVG to a PNG (base64) for the fullscreen image viewer.
-export interface DiagramRasterizeRequest {
-  type: 'rasterize';
-  id: string;
-  svg: string;
-  width: number;
-  height: number;
-  background: string;
-}
+type DiagramRequest =
+  ({ type: 'render' } & DiagramRenderRequest) | ({ type: 'rasterize'; background: string } & RenderedDiagram);
 
-export type DiagramRequest = DiagramRenderRequest | DiagramRasterizeRequest;
-
-export type DiagramRenderResult = RenderedDiagram | { error: string };
-
-// NOTE: Transient errors (timeout, terminated renderer) are not cached, a later mount of the block retries the render.
-type DiagramReply = DiagramRenderResult | { error: string; isTransient: true } | { png: string };
-
-// NOTE: A diagram that kills the WebView process (e.g. OOM) would otherwise be resent after every reload forever.
-const MAX_RENDER_ATTEMPTS = 2;
-// NOTE: A WebView killed while loading (e.g. OOM on a weak device) would otherwise be remounted forever.
-const MAX_RESETS_WITHOUT_READY = 3;
-const MAX_CACHED_RESULTS = 100;
-// NOTE: Cannot interrupt synchronous vega work, it only unblocks the in-process queue after a render that never settles.
-const IN_PROCESS_RENDER_TIMEOUT_MS = 10000;
-
-type DiagramRendererMessage = { type: 'ready' } | ({ type: 'result'; id: string } & DiagramReply);
+type DiagramRendererMessage = { type: 'ready' } | { type: 'result'; id: string; result?: unknown; error?: string };
 
 interface PendingRequest {
-  request: DiagramRequest;
-  attempts: number;
-  complete: (reply: DiagramReply) => void;
+  id: string;
+  resolve: (result: unknown) => void;
+  reject: (error: Error) => void;
 }
 
-const getReplyError = (reply: DiagramReply): string => ('error' in reply ? reply.error : 'Unexpected renderer reply');
+// NOTE: A diagram that hangs the WebView (e.g. a huge mermaid layout) is cut off by recreating the WebView.
+const requestTimeoutMs = 10000;
 
-const rendererTerminatedReply: DiagramReply = { error: 'Diagram renderer process was terminated', isTransient: true };
+export const getDiagramQueryKey = ({ language, code, isDarkTheme }: DiagramRenderRequest): QueryKey => [
+  'diagram',
+  language,
+  isDarkTheme,
+  code,
+];
 
 /**
- * Render queue and in-memory cache for diagram blocks. Vega / Vega-Lite charts render in the app JS runtime,
- * mermaid diagrams and rasterization go to the hidden diagram WebView (`DiagramRenderer`).
- * Results are cached by language + theme + code, so recycled or re-rendered cells do not render twice.
+ * Sends requests to the hidden WebView of `DiagramRenderer` one at a time: renders diagram code to SVG and
+ * rasterizes a rendered SVG to a PNG for the fullscreen viewer.
+ * Rendered diagrams are cached by TanStack Query in `DiagramBlock`, not here.
  */
 export class DiagramRendererService {
-  // ponytail: FIFO eviction, a block still mounted when its entry is evicted falls back to code; switch to LRU if seen.
-  private results = new Map<string, DiagramRenderResult>();
-  private pendingRequests = new Map<string, PendingRequest>();
-  private requestedKeys = new Set<string>();
-  private listeners = new Set<() => void>();
-  private send: ((request: DiagramRequest) => void) | null = null;
+  private webView: WebView | null = null;
+  private restartWebView: (() => void) | null = null;
+  private showWebView: (() => void) | null = null;
+  private isWebViewNeeded = false;
+  private ready!: Promise<void>;
+  private markReady!: () => void;
+  private failReady!: (error: Error) => void;
   private isReady = false;
-  private isRendererNeeded = false;
-  private resetsWithoutReady = 0;
-  private nextRequestId = 0;
-  private inProcessQueue = Promise.resolve();
+  // NOTE: Settles when the last queued request settles. One request at a time, so a timeout belongs to it alone.
+  private chain: Promise<void> = Promise.resolve();
+  private current: PendingRequest | null = null;
+  private nextId = 0;
 
-  public subscribe = (listener: () => void): (() => void) => {
-    this.listeners.add(listener);
-
-    return () => this.listeners.delete(listener);
-  };
-
-  public getIsRendererNeeded = (): boolean => this.isRendererNeeded;
-
-  public getResult = (key: string): DiagramRenderResult | undefined => this.results.get(key);
-
-  public getKey(language: DiagramLanguage, code: string, isDarkTheme: boolean): string {
-    return `${language}:${isDarkTheme ? 'dark' : 'light'}:${code}`;
+  constructor() {
+    this.createReady();
   }
 
-  public requestRender(language: DiagramLanguage, code: string, isDarkTheme: boolean): void {
-    const key = this.getKey(language, code, isDarkTheme);
-
-    if (this.results.has(key) || this.requestedKeys.has(key)) {
-      return;
-    }
-
-    this.requestedKeys.add(key);
-
-    if (language !== DiagramLanguage.MERMAID) {
-      this.renderInProcess(key, language, code, isDarkTheme);
-
-      return;
-    }
-
-    this.enqueue({ type: 'render', id: this.createRequestId(), code, isDarkTheme }, (reply) => {
-      this.requestedKeys.delete(key);
-
-      if ('isTransient' in reply) {
-        return;
-      }
-
-      this.storeResult(key, 'svg' in reply ? reply : { error: getReplyError(reply) });
-    });
+  public attach(webView: WebView | null, restartWebView: () => void): void {
+    this.webView = webView;
+    this.restartWebView = restartWebView;
   }
 
-  /**
-   * Rasterizes a rendered diagram (from the cache, nothing is re-rendered) to a base64 PNG on a solid background.
-   */
-  public rasterize(key: string, background: string): Promise<string> {
-    const result = this.results.get(key);
+  // NOTE: The WebView (and its ~4 MB of HTML) is created only when the first diagram is requested.
+  public onWebViewNeeded(showWebView: () => void): void {
+    this.showWebView = showWebView;
 
-    if (!result || 'error' in result) {
-      return Promise.reject(new Error('Diagram is not rendered'));
+    // NOTE: A diagram may have been requested before `DiagramRenderer` subscribed.
+    if (this.isWebViewNeeded) {
+      showWebView();
     }
-
-    return new Promise((resolve, reject) => {
-      this.enqueue({ type: 'rasterize', id: this.createRequestId(), ...result, background }, (reply) =>
-        'png' in reply ? resolve(reply.png) : reject(new Error(getReplyError(reply))),
-      );
-    });
   }
 
-  public setSender(send: ((request: DiagramRequest) => void) | null): void {
-    this.send = send;
-
-    if (!send) {
-      this.isReady = false;
-    }
-    this.flush();
+  public render(request: DiagramRenderRequest): Promise<RenderedDiagram> {
+    return this.enqueue({ type: 'render', ...request }) as Promise<RenderedDiagram>;
   }
 
-  // NOTE: Called when the WebView content process is gone, unanswered requests are resent after the remount.
-  // The WebView handles requests one at a time in send order, so only the oldest pending one was being processed:
-  // it alone gets an attempt counted and fails (falls back to the code block) on reaching MAX_RENDER_ATTEMPTS.
-  // A renderer that keeps dying before "ready" fails every pending request and is unmounted until the next request.
-  public handleRendererReset(): void {
-    const [inFlight] = this.isReady ? this.pendingRequests.entries() : [];
-    this.isReady = false;
-    this.resetsWithoutReady++;
+  // NOTE: Returns a base64 PNG of the diagram at its own size, on a solid background.
+  public async rasterize(diagram: RenderedDiagram, background: string): Promise<string> {
+    const { png } = (await this.enqueue({ type: 'rasterize', ...diagram, background })) as { png: string };
 
-    if (this.resetsWithoutReady >= MAX_RESETS_WITHOUT_READY) {
-      this.resetsWithoutReady = 0;
-      this.isRendererNeeded = false;
-      this.pendingRequests.forEach((_, id) => this.resolve(id, rendererTerminatedReply));
-      this.notify();
-
-      return;
-    }
-
-    if (!inFlight) {
-      return;
-    }
-
-    const [id, pending] = inFlight;
-    pending.attempts++;
-
-    if (pending.attempts >= MAX_RENDER_ATTEMPTS) {
-      this.resolve(id, rendererTerminatedReply);
-    }
+    return png;
   }
 
   public handleMessage(data: string): void {
-    let message: DiagramRendererMessage;
-
-    try {
-      message = JSON.parse(data);
-    } catch {
-      return;
-    }
+    const message = JSON.parse(data) as DiagramRendererMessage;
 
     if (message.type === 'ready') {
       this.isReady = true;
-      this.resetsWithoutReady = 0;
-      this.flush();
+      this.markReady();
 
       return;
     }
 
-    // NOTE: The page reloads after a transient (timeout) reply, requests are sent again on its "ready".
-    if ('isTransient' in message) {
-      this.isReady = false;
+    const current = this.current;
+
+    if (!current || message.id !== current.id) {
+      return;
     }
 
-    this.resolve(message.id, message);
+    this.current = null;
+
+    if (message.error !== undefined) {
+      current.reject(new Error(message.error));
+    } else {
+      current.resolve(message.result);
+    }
   }
 
-  // NOTE: Vega needs no DOM, so charts render in the app JS runtime and only mermaid goes to the WebView.
-  // Charts render one at a time and yield to the event loop before each one, so a message with many charts
-  // does not block the UI in one long task.
-  // A failing link (e.g. a throwing subscriber) is caught, so it never stalls the following renders.
-  private renderInProcess(key: string, language: DiagramLanguage, code: string, isDarkTheme: boolean): void {
-    this.inProcessQueue = this.inProcessQueue
-      .then(async () => {
-        await new Promise((resolve) => setTimeout(resolve, 0));
-        const result = await this.renderVegaWithTimeout(language, code, isDarkTheme);
-        this.requestedKeys.delete(key);
+  // NOTE: Called on a timeout and when the WebView process is gone: the current request fails, the next ones
+  // wait for the recreated WebView.
+  public restart(): void {
+    const current = this.current;
+    this.current = null;
 
-        // NOTE: A timeout is transient and not cached, a later mount of the block retries the render.
-        if (result) {
-          this.storeResult(key, result);
-        }
-      })
-      .catch(() => undefined);
+    // NOTE: A WebView that died while loading fails the request waiting for it, so a page that keeps crashing
+    // on load costs one remount per request instead of an endless remount loop.
+    if (!this.isReady) {
+      this.failReady(new Error('Diagram renderer failed to load'));
+    }
+    this.isReady = false;
+    this.createReady();
+
+    current?.reject(new Error('Diagram renderer was restarted'));
+    this.restartWebView?.();
   }
 
-  private async renderVegaWithTimeout(
-    language: DiagramLanguage,
-    code: string,
-    isDarkTheme: boolean,
-  ): Promise<DiagramRenderResult | null> {
-    let timeoutId: ReturnType<typeof setTimeout> | undefined;
-    const timeout = new Promise<null>((resolve) => {
-      timeoutId = setTimeout(() => resolve(null), IN_PROCESS_RENDER_TIMEOUT_MS);
-    });
+  private async enqueue(request: DiagramRequest): Promise<unknown> {
+    const previous = this.chain;
+    let release = (): void => undefined;
+    this.chain = new Promise((resolve) => (release = resolve));
+
+    if (!this.isWebViewNeeded) {
+      this.isWebViewNeeded = true;
+      this.showWebView?.();
+    }
 
     try {
-      return await Promise.race([renderVega(language, code, isDarkTheme), timeout]);
-    } catch (error) {
-      return { error: error instanceof Error ? error.message : String(error) };
+      await previous;
+
+      return await this.send(request);
     } finally {
-      clearTimeout(timeoutId);
+      release();
     }
   }
 
-  private storeResult(key: string, result: DiagramRenderResult): void {
-    this.results.set(key, 'svg' in result ? { svg: result.svg, width: result.width, height: result.height } : result);
+  private async send(request: DiagramRequest): Promise<unknown> {
+    await this.ready;
+    const id = String(this.nextId++);
 
-    if (this.results.size > MAX_CACHED_RESULTS) {
-      this.results.delete(this.results.keys().next().value as string);
-    }
-    this.notify();
+    return new Promise((resolve, reject) => {
+      const timeoutId = setTimeout(() => this.restart(), requestTimeoutMs);
+
+      this.current = {
+        id,
+        resolve: (result) => {
+          clearTimeout(timeoutId);
+          resolve(result);
+        },
+        reject: (error) => {
+          clearTimeout(timeoutId);
+          reject(error);
+        },
+      };
+      this.webView?.injectJavaScript(`window.handleDiagramRequest(${JSON.stringify({ id, ...request })});true;`);
+    });
   }
 
-  private createRequestId(): string {
-    return `diagram${this.nextRequestId++}`;
-  }
-
-  private enqueue(request: DiagramRequest, complete: PendingRequest['complete']): void {
-    this.pendingRequests.set(request.id, { request, attempts: 0, complete });
-
-    if (this.isReady) {
-      this.send?.(request);
-    }
-
-    if (!this.isRendererNeeded) {
-      this.isRendererNeeded = true;
-      this.notify();
-    }
-  }
-
-  private resolve(id: string, reply: DiagramReply): void {
-    const pending = this.pendingRequests.get(id);
-
-    if (!pending) {
-      return;
-    }
-
-    this.pendingRequests.delete(id);
-    pending.complete(reply);
-  }
-
-  private flush(): void {
-    if (!this.isReady || !this.send) {
-      return;
-    }
-
-    this.pendingRequests.forEach(({ request }) => this.send?.(request));
-  }
-
-  private notify(): void {
-    this.listeners.forEach((listener) => listener());
+  private createReady(): void {
+    this.ready = new Promise((resolve, reject) => {
+      this.markReady = resolve;
+      this.failReady = reject;
+    });
+    // NOTE: Nobody may be waiting when it fails, the rejection is still seen by the next `await this.ready`.
+    this.ready.catch(() => undefined);
   }
 }
 

@@ -1,4 +1,4 @@
-/* global mermaid */
+/* global mermaid, vega, vegaLite */
 // NOTE: Runs inside the hidden diagram WebView. Inlined into the generated HTML by
 // tools/scripts/build-diagram-renderer-html.mjs, never bundled by Metro.
 (function () {
@@ -17,13 +17,29 @@
     'text-anchor',
     'dominant-baseline',
   ];
-  var RENDER_TIMEOUT_MS = 10000;
+  var SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
+  var DARK_VEGA_CONFIG = {
+    background: 'transparent',
+    title: { color: '#e5e5e5', subtitleColor: '#d4d4d4' },
+    axis: {
+      labelColor: '#d4d4d4',
+      titleColor: '#e5e5e5',
+      domainColor: '#737373',
+      tickColor: '#737373',
+      gridColor: '#404040',
+    },
+    legend: { labelColor: '#d4d4d4', titleColor: '#e5e5e5' },
+    header: { labelColor: '#d4d4d4', titleColor: '#e5e5e5' },
+    view: { stroke: '#404040' },
+  };
+  var LIGHT_VEGA_CONFIG = { background: 'transparent' };
+  // NOTE: The web app treats a spec with these keys as vega-lite, even in a ```vega block.
+  var VEGA_LITE_KEYS = ['mark', 'encoding', 'layer', 'hconcat', 'vconcat', 'repeat', 'facet'];
   var RASTER_SCALE = 3;
   // NOTE: Below the iOS canvas area limit (4096²) with headroom, and keeps the base64 PNG sent via postMessage smaller.
   var RASTER_MAX_SIDE = 3072;
 
   var host = document.getElementById('host');
-  var queue = Promise.resolve();
   var mermaidTheme = null;
   function post(message) {
     window.ReactNativeWebView.postMessage(JSON.stringify(message));
@@ -96,7 +112,7 @@
 
         if (startUsers.length) {
           var reversed = marker.cloneNode(true);
-          var group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+          var group = document.createElementNS(SVG_NAMESPACE, 'g');
           var refX = parseFloat(marker.getAttribute('refX')) || 0;
           var refY = parseFloat(marker.getAttribute('refY')) || 0;
           reversed.id = marker.id + '-reversed';
@@ -125,6 +141,10 @@
       height = box.height;
     }
 
+    if (!width || !height) {
+      throw new Error('Diagram is empty');
+    }
+
     if (!viewBox || !viewBox.width) {
       svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
     }
@@ -133,7 +153,7 @@
     svg.removeAttribute('width');
     svg.removeAttribute('height');
     svg.removeAttribute('style');
-    svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    svg.setAttribute('xmlns', SVG_NAMESPACE);
 
     // NOTE: XMLSerializer, not outerHTML: HTML serialization emits `&nbsp;` and may leave `<` unescaped
     // in attributes, which strict XML parsers (SvgXml, <img> SVG) reject.
@@ -158,13 +178,15 @@
       mermaidTheme = theme;
     }
 
+    var elementId = 'diagram' + id;
+
     try {
-      var output = await mermaid.render(id, code);
+      var output = await mermaid.render(elementId, code);
 
       return prepareSvg(output.svg, true);
     } finally {
       // NOTE: mermaid may leave its temporary container (or an error SVG) in the body.
-      var leftover = document.getElementById('d' + id);
+      var leftover = document.getElementById('d' + elementId);
 
       if (leftover) {
         leftover.remove();
@@ -172,16 +194,50 @@
     }
   }
 
-  // NOTE: A render that never settles would block the serial queue for every following diagram.
-  function withTimeout(promise) {
-    return Promise.race([
-      promise,
-      new Promise(function (resolve, reject) {
-        setTimeout(function () {
-          reject(Object.assign(new Error('Diagram render timed out'), { isTimeout: true }));
-        }, RENDER_TIMEOUT_MS);
-      }),
-    ]);
+  async function renderVega(language, code, isDarkTheme) {
+    var spec = JSON.parse(code);
+    var config = isDarkTheme ? DARK_VEGA_CONFIG : LIGHT_VEGA_CONFIG;
+    var isVegaLite =
+      language === 'vega-lite' ||
+      String(spec.$schema || '').indexOf('vega-lite') !== -1 ||
+      VEGA_LITE_KEYS.some(function (key) {
+        return key in spec;
+      });
+    // NOTE: vega-lite applies the theme config while compiling, a vega spec gets it as the parse config.
+    var vegaSpec = isVegaLite ? vegaLite.compile(spec, { config: config }).spec : spec;
+    var loader = vega.loader();
+    var loaderError = null;
+
+    // NOTE: Specs come from the model, so any network or file access is refused. Vega only logs loader failures
+    // and draws an empty chart, so the error is kept and rethrown to fall back to the code block.
+    function refuseLoading() {
+      loaderError = new Error('External data and resources are not supported');
+
+      return Promise.reject(loaderError);
+    }
+
+    loader.load = refuseLoading;
+    // NOTE: A link (`href` channel) gets no URL instead of failing the chart, the <a> is unwrapped by prepareSvg.
+    loader.sanitize = function (uri, options) {
+      return options && options.context === 'href' ? Promise.resolve({}) : refuseLoading();
+    };
+
+    // NOTE: Spec expressions are interpreted (AST mode), not compiled with `new Function`, so the CSP needs no
+    // 'unsafe-eval'.
+    var runtime = vega.parse(vegaSpec, isVegaLite ? undefined : config, { ast: true });
+    var view = new vega.View(runtime, { renderer: 'none', loader: loader, expr: vega.expressionInterpreter });
+
+    try {
+      var svg = await view.toSVG();
+
+      if (loaderError) {
+        throw loaderError;
+      }
+
+      return prepareSvg(svg, false);
+    } finally {
+      view.finalize();
+    }
   }
 
   async function rasterize(svgText, width, height, background) {
@@ -228,38 +284,19 @@
       return rasterize(request.svg, request.width, request.height, request.background);
     }
 
-    return renderMermaid(request.id, request.code, request.isDarkTheme);
+    return request.language === 'mermaid'
+      ? renderMermaid(request.id, request.code, request.isDarkTheme)
+      : renderVega(request.language, request.code, request.isDarkTheme);
   }
 
-  async function processRequest(request) {
+  // NOTE: The app sends one request at a time and handles timeouts by recreating the WebView.
+  window.handleDiagramRequest = async function (request) {
     try {
-      var result = await withTimeout(handle(request));
-
-      post(Object.assign({ type: 'result', id: request.id }, result));
+      post({ type: 'result', id: request.id, result: await handle(request) });
     } catch (error) {
-      var reply = { type: 'result', id: request.id, error: String((error && error.message) || error) };
       host.innerHTML = '';
-
-      if (!(error && error.isTimeout)) {
-        post(reply);
-
-        return;
-      }
-
-      // NOTE: The timed-out render keeps running and mermaid has global state, so the page is reloaded instead of
-      // starting the next request next to it. The queue stays blocked, the app resends unanswered requests on "ready".
-      post(Object.assign(reply, { isTransient: true }));
-      location.reload();
-
-      return new Promise(function () {});
+      post({ type: 'result', id: request.id, error: String((error && error.message) || error) });
     }
-  }
-
-  // NOTE: Requests (renders and rasterizations) run one at a time, mermaid keeps global state between calls.
-  window.handleDiagramRequest = function (request) {
-    queue = queue.then(function () {
-      return processRequest(request);
-    });
   };
 
   post({ type: 'ready' });

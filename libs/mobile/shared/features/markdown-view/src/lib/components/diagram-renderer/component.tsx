@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/react-native';
 import { Asset } from 'expo-asset';
-import { ReactElement, useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { WebView } from 'react-native-webview';
 import { createStyles } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
@@ -11,30 +11,26 @@ import { diagramRendererService } from '../../services';
 const rendererHtmlAsset = require('./renderer.html');
 
 /**
- * The single hidden WebView that renders Mermaid code to SVG strings and rasterizes diagrams for `DiagramBlock`.
- * Mounted once at the app root, the WebView itself is created only when the first diagram is requested.
+ * The single hidden WebView that renders Mermaid / Vega / Vega-Lite code to SVG and rasterizes diagrams
+ * for `DiagramBlock`. Mounted once at the app root and driven by `diagramRendererService`,
+ * the WebView itself is created only when the first diagram is requested.
  */
 export function DiagramRenderer(): ReactElement | null {
-  const webViewRef = useRef<WebView>(null);
-  // NOTE: Bumped to remount the WebView, an instance whose content process is gone must not be reused.
-  const [webViewGeneration, setWebViewGeneration] = useState(0);
+  const [isNeeded, setIsNeeded] = useState(false);
   const [rendererUri, setRendererUri] = useState<string | null>(null);
-  const isRendererNeeded = useSyncExternalStore(
-    diagramRendererService.subscribe,
-    diagramRendererService.getIsRendererNeeded,
-  );
-
-  const handleRendererGone = (): void => {
-    diagramRendererService.handleRendererReset();
-    setWebViewGeneration((generation) => generation + 1);
-  };
+  // NOTE: Bumped by the service to recreate the WebView after a timeout or a terminated content process.
+  const [webViewKey, setWebViewKey] = useState(0);
 
   useEffect(() => {
-    if (!isRendererNeeded) {
+    diagramRendererService.onWebViewNeeded(() => setIsNeeded(true));
+  }, []);
+
+  useEffect(() => {
+    if (!isNeeded) {
       return;
     }
 
-    // NOTE: On failure the renderer never reports ready, requests stay pending and diagram blocks keep showing code.
+    // NOTE: On failure the renderer never reports ready, diagram blocks keep showing code.
     const loadRenderer = async (): Promise<void> => {
       try {
         const [asset] = await Asset.loadAsync(rendererHtmlAsset);
@@ -45,29 +41,17 @@ export function DiagramRenderer(): ReactElement | null {
     };
 
     loadRenderer();
-  }, [isRendererNeeded]);
+  }, [isNeeded]);
 
-  useEffect(() => {
-    if (!isRendererNeeded) {
-      return;
-    }
-
-    diagramRendererService.setSender((request) => {
-      webViewRef.current?.injectJavaScript(`window.handleDiagramRequest(${JSON.stringify(request)});true;`);
-    });
-
-    return () => diagramRendererService.setSender(null);
-  }, [isRendererNeeded]);
-
-  if (!isRendererNeeded || !rendererUri) {
+  if (!rendererUri) {
     return null;
   }
 
   return (
     <View pointerEvents='none' style={styles.container}>
       <WebView
-        key={webViewGeneration}
-        ref={webViewRef}
+        key={webViewKey}
+        ref={(webView) => diagramRendererService.attach(webView, () => setWebViewKey((key) => key + 1))}
         source={{ uri: rendererUri }}
         // NOTE: Non-whitelisted URLs would be opened in an external app, so every URL is passed to
         // onShouldStartLoadWithRequest instead, which keeps the page on local files (the asset is file:// in dev too).
@@ -79,8 +63,8 @@ export function DiagramRenderer(): ReactElement | null {
         // file-URL props keep their false defaults and the page CSP blocks any request.
         allowFileAccess
         onMessage={(event) => diagramRendererService.handleMessage(event.nativeEvent.data)}
-        onContentProcessDidTerminate={handleRendererGone}
-        onRenderProcessGone={handleRendererGone}
+        onContentProcessDidTerminate={() => diagramRendererService.restart()}
+        onRenderProcessGone={() => diagramRendererService.restart()}
       />
     </View>
   );

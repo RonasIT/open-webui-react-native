@@ -1,4 +1,4 @@
-// Builds the self-contained HTML of the hidden diagram WebView (mermaid, no CDN; vega charts render in the app JS)
+// Builds the self-contained HTML of the hidden diagram WebView (mermaid, vega and vega-lite, no CDN)
 // into an asset file that the markdown-view library loads into the WebView by URI (kept out of the JS bundle).
 // Usage: node tools/scripts/build-diagram-renderer-html.mjs
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -8,9 +8,25 @@ import { fileURLToPath } from 'node:url';
 const rootDir = join(dirname(fileURLToPath(import.meta.url)), '../..');
 const rendererDir = join(rootDir, 'libs/mobile/shared/features/markdown-view/src/lib/components/diagram-renderer');
 
-const scripts = [join(rootDir, 'node_modules/mermaid/dist/mermaid.min.js'), join(rendererDir, 'host.js')].map((path) =>
-  readFileSync(path, 'utf8'),
-);
+const readScript = (path) => readFileSync(join(rootDir, path), 'utf8');
+
+// NOTE: vega-interpreter ships only as an ES module. Its vega-util imports are taken from the vega global
+// and its export is attached to it, so the page needs no 'unsafe-eval' for spec expressions.
+const interpreterModule = readScript('node_modules/vega-interpreter/build/vega-interpreter.js')
+  .replace(/^import \{([^}]+)\} from 'vega-util';$/m, 'var {$1} = vega;')
+  .replace(/^export \{ expression as expressionInterpreter \};$/m, 'vega.expressionInterpreter = expression;');
+
+if (/^(import|export)\b/m.test(interpreterModule)) {
+  throw new Error('Unexpected vega-interpreter build format, update build-diagram-renderer-html.mjs');
+}
+
+const scripts = [
+  readScript('node_modules/mermaid/dist/mermaid.min.js'),
+  readScript('node_modules/vega/build/vega.min.js'),
+  readScript('node_modules/vega-lite/build/vega-lite.min.js'),
+  `(function () {${interpreterModule}})();`,
+  readFileSync(join(rendererDir, 'host.js'), 'utf8'),
+];
 
 const html = [
   '<!doctype html><html><head><meta charset="utf-8">',

@@ -1,5 +1,6 @@
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
-import { cloneElement, ReactElement, useEffect, useState, useSyncExternalStore } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { cloneElement, ReactElement, useState } from 'react';
 import { SvgXml } from 'react-native-svg';
 import { ImagePreviewModal } from '@open-webui-react-native/mobile/shared/features/image-preview-modal';
 import { CodeBlockHeader, CodeBlockProps } from '@open-webui-react-native/mobile/shared/ui/code-block';
@@ -8,7 +9,10 @@ import { AppPressable, AppText, TouchableHighlight, View } from '@open-webui-rea
 import { FileType } from '@open-webui-react-native/shared/data-access/common';
 import { DiagramLanguage } from '../../enums';
 import { useDiagramImage } from '../../hooks';
-import { diagramRendererService } from '../../services';
+import { diagramRendererService, getDiagramQueryKey } from '../../services';
+
+// NOTE: Rendered SVGs stay in memory this long after the last block showing them unmounts.
+const diagramCacheTime = 30 * 60 * 1000;
 
 interface DiagramBlockProps {
   language: DiagramLanguage;
@@ -25,21 +29,26 @@ export function DiagramBlock({ language, content, children }: DiagramBlockProps)
   const translate = useTranslation('SHARED.MARKDOWN_VIEW.DIAGRAM_BLOCK');
   const { isDarkColorScheme } = useColorScheme();
   const [isCodeShown, setIsCodeShown] = useState(false);
-  const key = diagramRendererService.getKey(language, content, isDarkColorScheme);
-  const result = useSyncExternalStore(diagramRendererService.subscribe, () => diagramRendererService.getResult(key));
+  const request = { language, code: content, isDarkTheme: isDarkColorScheme };
+  const { data: diagram } = useQuery({
+    queryKey: getDiagramQueryKey(request),
+    queryFn: () => diagramRendererService.render(request),
+    staleTime: Infinity,
+    gcTime: diagramCacheTime,
+    // NOTE: A diagram that failed or hung is not rendered again, the block keeps showing its code.
+    retry: false,
+    retryOnMount: false,
+    meta: { persist: false },
+  });
   // NOTE: The PNG gets a solid theme background, a transparent one looks broken on the black image viewer.
   const { imageUri, isPreparing, openImage, closeImage } = useDiagramImage(
-    key,
+    diagram,
     isDarkColorScheme ? colors.darkBackgroundPrimary : colors.backgroundPrimary,
   );
 
   const toggleCode = (): void => setIsCodeShown(!isCodeShown);
 
-  useEffect(() => {
-    diagramRendererService.requestRender(language, content, isDarkColorScheme);
-  }, [language, content, isDarkColorScheme]);
-
-  if (!result || 'error' in result) {
+  if (!diagram) {
     return children;
   }
 
@@ -72,12 +81,15 @@ export function DiagramBlock({ language, content, children }: DiagramBlockProps)
         accessibilityRole='button'
         accessibilityLabel={translate('TEXT_OPEN_FULLSCREEN')}
         className='items-center'>
-        <View style={{ width: '100%', maxWidth: result.width, aspectRatio: result.width / result.height }}>
-          <SvgXml
-            xml={result.svg}
-            width='100%'
-            height='100%'
-            fallback={children} />
+        {/* NOTE: Yoga derives aspectRatio height from the unclamped width, so the width limit sits on a parent. */}
+        <View style={{ width: '100%', maxWidth: diagram.width }}>
+          <View style={{ width: '100%', aspectRatio: diagram.width / diagram.height }}>
+            <SvgXml
+              xml={diagram.svg}
+              width='100%'
+              height='100%'
+              fallback={children} />
+          </View>
         </View>
       </AppPressable>
       {imageUri && (
