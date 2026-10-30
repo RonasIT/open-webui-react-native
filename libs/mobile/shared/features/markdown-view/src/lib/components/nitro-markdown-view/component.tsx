@@ -5,7 +5,8 @@ import { CodeBlock } from '@open-webui-react-native/mobile/shared/ui/code-block'
 import { colors, rem, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { MathSvg, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { AppMarkdownViewProps } from '../../types/app-markdown-view-props';
-import { normalizeMathDelimiters, openLink } from '../../utils';
+import { getDiagramLanguage, getOpenFenceBody, isOpenFenceContent, normalizeMathDelimiters, openLink } from '../../utils';
+import { DiagramBlock } from '../diagram-block';
 import { MarkdownImage } from '../markdown-image';
 import { MathBlock } from '../math-block';
 import { NitroMarkdownTableRenderer } from '../nitro-markdown-table-renderer';
@@ -19,6 +20,10 @@ export function NitroMarkdownView({
 }: AppMarkdownViewProps): ReactElement {
   const { isDarkColorScheme } = useColorScheme();
   const textColor = elementTextColor || (isDarkColorScheme ? colors.darkTextPrimary : colors.textPrimary);
+  const openFenceBody = useMemo(
+    () => (isContentReady || typeof children !== 'string' ? null : getOpenFenceBody(children)),
+    [children, isContentReady],
+  );
 
   const handleLinkPress = useCallback(
     (href: string): boolean => {
@@ -40,7 +45,7 @@ export function NitroMarkdownView({
     () => ({
       // eslint-disable-next-line @typescript-eslint/naming-convention
       code_block({ content, language }) {
-        return (
+        const codeBlock = (
           <CodeBlock
             key={`code-block-${language ?? 'text'}-${content.length}`}
             sourceInfo={language}
@@ -49,6 +54,22 @@ export function NitroMarkdownView({
             fenceStyle={{}}
             codeBlockWidth={codeBlockWidth}
           />
+        );
+        const diagramLanguage = getDiagramLanguage(language);
+
+        // NOTE: A diagram is rendered only once its fence is closed, a streaming block stays a code block.
+        // The key is stable, unlike the code block one that changes with every streamed chunk.
+        if (!diagramLanguage || isOpenFenceContent(content, openFenceBody)) {
+          return codeBlock;
+        }
+
+        return (
+          <DiagramBlock
+            key='diagram-block'
+            language={diagramLanguage}
+            content={content}>
+            {codeBlock}
+          </DiagramBlock>
         );
       },
       paragraph({ node, children }) {
@@ -86,7 +107,7 @@ export function NitroMarkdownView({
           isContentReady={isContentReady} />;
       },
     }),
-    [codeBlockWidth, isContentReady],
+    [codeBlockWidth, isContentReady, openFenceBody],
   );
 
   // NOTE: The native parser only knows `$`/`$$` math, so `\(…\)`/`\[…\]` are converted for parity with DefaultMarkdownView.

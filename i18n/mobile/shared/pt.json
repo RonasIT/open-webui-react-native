@@ -113,6 +113,15 @@
     "USE_ATTACHED_FILES": {
       "TEXT_IMAGE_UPLOAD_FAILED": "Não foi possível enviar a foto. Verifique sua conexão e tente novamente"
     },
+    "MARKDOWN_VIEW": {
+      "DIAGRAM_BLOCK": {
+        "BUTTON_CODE": "Código",
+        "BUTTON_DIAGRAM": "Diagrama",
+        "TEXT_SHOW_CODE": "Mostrar código",
+        "TEXT_SHOW_DIAGRAM": "Mostrar diagrama",
+        "TEXT_OPEN_FULLSCREEN": "Abrir diagrama em tela cheia"
+      }
+    },
     "MODEL_CONTROLS": {
       "TEXT_CONTROL_NAME": "“{{control}}”",
       "TEXT_CONTROLS_SEPARATOR": ", ",

@@ -113,6 +113,15 @@
     "USE_ATTACHED_FILES": {
       "TEXT_IMAGE_UPLOAD_FAILED": "Couldn't upload the photo. Check your connection and try again"
     },
+    "MARKDOWN_VIEW": {
+      "DIAGRAM_BLOCK": {
+        "BUTTON_CODE": "Code",
+        "BUTTON_DIAGRAM": "Diagram",
+        "TEXT_SHOW_CODE": "Show code",
+        "TEXT_SHOW_DIAGRAM": "Show diagram",
+        "TEXT_OPEN_FULLSCREEN": "Open diagram in full screen"
+      }
+    },
     "MODEL_CONTROLS": {
       "TEXT_CONTROL_NAME": "“{{control}}”",
       "TEXT_CONTROLS_SEPARATOR": ", ",
