@@ -49,12 +49,14 @@ export const buildMessageRows = (
   const rows: Array<MessageRow> = [];
 
   output.forEach((item, index) => {
-    const toolCall = hasOutputToolCalls && toolCallViewsByKey.get(item.callId ?? item.id ?? '');
-
     if (item.type === ChatCompletionOutputItemType.REASONING) {
       rows.push({ type: 'reasoning', reasoning: buildReasoningView(item, index, output, isMessageDone) });
-    } else if (item.type === ChatCompletionOutputItemType.FUNCTION_CALL && toolCall) {
-      rows.push({ type: 'tool', toolCall });
+    } else if (item.type === ChatCompletionOutputItemType.FUNCTION_CALL && hasOutputToolCalls) {
+      const toolCall = toolCallViewsByKey.get(item.callId ?? item.id ?? '');
+
+      if (toolCall) {
+        rows.push({ type: 'tool', toolCall });
+      }
     }
   });
 
