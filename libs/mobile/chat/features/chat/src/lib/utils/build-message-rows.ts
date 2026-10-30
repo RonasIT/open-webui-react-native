@@ -62,6 +62,8 @@ export const buildMessageRows = (
 
   let legacyToolIndex = 0;
 
+  // NOTE: Only for older chats: when `output` already has reasoning or tool calls, their `<details>` blocks
+  // are skipped.
   detailsBlocks.forEach((block, index) => {
     if (block.type === 'reasoning' && !hasOutputReasoning) {
       const { isDone, ...reasoning } = block.reasoning;
