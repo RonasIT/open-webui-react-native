@@ -122,13 +122,11 @@ export function prepareCompleteChatPayload({
       tools: queryClient.getQueryData<Array<Tool>>(toolsApiConfig.getToolsQueryKey),
       uiSettings: userSettings?.ui,
     });
+  const availableGenerationOptions = getAvailableGenerationOptions(cachedModel, configuration);
   const resolvedGenerationOptions =
     generationOptions ??
     selection.generationOptions ??
-    resolveDefaultGenerationOptions({
-      model: cachedModel,
-      availableOptions: getAvailableGenerationOptions(cachedModel, configuration),
-    });
+    resolveDefaultGenerationOptions({ model: cachedModel, availableOptions: availableGenerationOptions });
 
   const prepareChatMessages = (): Array<ChatMessage> => {
     const chatSystemPrompt = (chatResponse?.chat.params?.system as string | undefined)?.trim();
@@ -195,7 +193,8 @@ export function prepareCompleteChatPayload({
       codeInterpreter: resolvedGenerationOptions.includes(ChatGenerationOption.CODE_INTERPRETER),
       imageGeneration: resolvedGenerationOptions.includes(ChatGenerationOption.IMAGE_GENERATION),
       webSearch:
-        (userSettings?.ui.webSearch ?? false) || resolvedGenerationOptions.includes(ChatGenerationOption.WEB_SEARCH),
+        (Boolean(userSettings?.ui.webSearch) && availableGenerationOptions.includes(ChatGenerationOption.WEB_SEARCH)) ||
+        resolvedGenerationOptions.includes(ChatGenerationOption.WEB_SEARCH),
       voice: resolvedGenerationOptions.includes(ChatGenerationOption.VOICE),
     }),
     params,
