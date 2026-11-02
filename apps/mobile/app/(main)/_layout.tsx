@@ -1,5 +1,6 @@
 import { AppSpinner } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
+import { useChatSync } from '@open-webui-react-native/shared/features/chat-sync';
 import { useInitRequests } from '@open-webui-react-native/shared/features/use-init-requests';
 import { useIsRestoring } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
@@ -12,6 +13,7 @@ export const unstable_settings = {
 
 export default function MainLayout(): ReactElement {
   const { isLoading } = useInitRequests();
+  useChatSync({ isEnabled: !isLoading });
   const isRestoring = useIsRestoring();
 
   //NOTE Needs to prefetch all necessary data before showing the main screen

@@ -3,6 +3,7 @@ import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { mapValues } from 'lodash-es';
 import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
 import { EntityPromiseService } from '@open-webui-react-native/shared/data-access/base-entity';
+import { LocalChat, LocalChatListItem, localDbService } from '@open-webui-react-native/shared/data-access/local-db';
 import { chatServiceConfig } from './configs';
 import {
   ChatListItem,
@@ -55,9 +56,22 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
     });
   }
 
+  public async get(id: string): Promise<ChatResponse> {
+    const generation = localDbService.getGeneration();
+    const response = await getApiService().get<LocalChat>(`${this.endpoint}/${id}`);
+    void localDbService.upsertChat(response, generation);
+
+    return createEntityInstance<ChatResponse>(ChatResponse, response);
+  }
+
   public async getChatList(params: GetChatListRequest): Promise<Array<ChatListItem>> {
     const request = instanceToPlain(new GetChatListRequest(params), { exposeUnsetFields: false });
-    const response = await getApiService().get<Array<ChatListItem>>(`${chatServiceConfig.versionedRoute}/`, request);
+    const generation = localDbService.getGeneration();
+    const response = await getApiService().get<Array<LocalChatListItem>>(
+      `${chatServiceConfig.versionedRoute}/`,
+      request,
+    );
+    void localDbService.upsertChatListItems(response, generation);
 
     const data = response.map((item) =>
       plainToInstance(ChatListItem, item, {
@@ -70,7 +84,14 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
   }
 
   public async getPinnedChatList(): Promise<Array<ChatListItem>> {
-    const response = await getApiService().get<Array<ChatListItem>>(`${chatServiceConfig.versionedRoute}/pinned`);
+    const generation = localDbService.getGeneration();
+    const response = await getApiService().get<Array<LocalChatListItem>>(`${chatServiceConfig.versionedRoute}/pinned`);
+    // NOTE: The default chat list excludes pinned chats, so their rows are created here.
+    void localDbService.upsertChatListItems(response, generation);
+    void localDbService.setPinnedChatIds(
+      response.map((item) => item.id),
+      generation,
+    );
 
     const data = response.map((item) =>
       plainToInstance(ChatListItem, item, {
