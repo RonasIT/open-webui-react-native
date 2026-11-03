@@ -1,3 +1,4 @@
+import { uniq } from 'lodash-es';
 import { FileType, Role } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { modelsApiConfig } from '../../ai-models/config';
@@ -36,7 +37,8 @@ export interface PrepareCompleteChatPayloadArgs {
   messages: Array<Message>;
   sessionId: string;
   model: string;
-  // Falls back to the chat's current selection (or the model defaults) when omitted.
+  // Added on top of the chat's current selection (or the model defaults), e.g. voice mode sends
+  // `voice` together with the web search / image generation toggles, as the web client does.
   generationOptions?: Array<ChatGenerationOption>;
   // The parent user message of the assistant turn being generated. The backend uses it to
   // link the assistant's parentId; omitting it orphans the user message (drops from the branch).
@@ -123,10 +125,11 @@ export function prepareCompleteChatPayload({
       uiSettings: userSettings?.ui,
     });
   const availableGenerationOptions = getAvailableGenerationOptions(cachedModel, configuration);
-  const resolvedGenerationOptions =
-    generationOptions ??
-    selection.generationOptions ??
-    resolveDefaultGenerationOptions({ model: cachedModel, availableOptions: availableGenerationOptions });
+  const resolvedGenerationOptions = uniq([
+    ...(selection.generationOptions ??
+      resolveDefaultGenerationOptions({ model: cachedModel, availableOptions: availableGenerationOptions })),
+    ...(generationOptions ?? []),
+  ]);
 
   const prepareChatMessages = (): Array<ChatMessage> => {
     const chatSystemPrompt = (chatResponse?.chat.params?.system as string | undefined)?.trim();
