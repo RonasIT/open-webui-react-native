@@ -125,10 +125,12 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
       fromInstancePartial: true,
     });
 
-    const response = await getApiService().post<ChatResponse>(
+    const generation = localDbService.getGeneration();
+    const response = await getApiService().post<LocalChat>(
       `${this.endpoint}/${updatedEntity.id}`,
       prepareChatForSave(updatedEntity),
     );
+    void localDbService.upsertChat(response, generation);
 
     return createEntityInstance<ChatResponse>(ChatResponse, response);
   }
@@ -136,19 +138,26 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
   public async updateChatFolder(params: MoveChatToFolderRequest): Promise<ChatResponse> {
     const request = instanceToPlain<MoveChatToFolderRequest>(new MoveChatToFolderRequest(params));
 
-    const response = await getApiService().post<ChatResponse>(`${this.endpoint}/${request.id}/folder`, request);
+    const generation = localDbService.getGeneration();
+    const response = await getApiService().post<LocalChat>(`${this.endpoint}/${request.id}/folder`, request);
+    void localDbService.upsertChat(response, generation);
 
     return createEntityInstance<ChatResponse>(ChatResponse, response);
   }
 
   public async pinChat(chatId: string): Promise<ChatResponse> {
-    const response = await getApiService().post<ChatResponse>(`${this.endpoint}/${chatId}/pin`);
+    const generation = localDbService.getGeneration();
+    // NOTE: The response carries the toggled `pinned`, so the local row stays consistent with the pinned list.
+    const response = await getApiService().post<LocalChat>(`${this.endpoint}/${chatId}/pin`);
+    void localDbService.upsertChat(response, generation);
 
     return createEntityInstance<ChatResponse>(ChatResponse, response);
   }
 
   public async cloneChat({ chatId, title }: { chatId: string; title: string }): Promise<ChatResponse> {
-    const response = await getApiService().post<ChatResponse>(`${this.endpoint}/${chatId}/clone`, { title });
+    const generation = localDbService.getGeneration();
+    const response = await getApiService().post<LocalChat>(`${this.endpoint}/${chatId}/clone`, { title });
+    void localDbService.upsertChat(response, generation);
 
     return createEntityInstance<ChatResponse>(ChatResponse, response);
   }
@@ -156,9 +165,17 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
   public async createNewChat(params: CreateNewChatRequest): Promise<ChatResponse> {
     const request = instanceToPlain<CreateNewChatRequest>(params);
 
-    const response = await getApiService().post<ChatResponse>(`${chatServiceConfig.versionedRoute}/new`, request);
+    const generation = localDbService.getGeneration();
+    const response = await getApiService().post<LocalChat>(`${chatServiceConfig.versionedRoute}/new`, request);
+    void localDbService.upsertChat(response, generation);
 
     return createEntityInstance(ChatResponse, response);
+  }
+
+  public async delete(id: string): Promise<void> {
+    const generation = localDbService.getGeneration();
+    await super.delete(id);
+    void localDbService.deleteChat(id, generation);
   }
 
   public async completeChat(params: CompleteChatRequest): Promise<CompleteChatResponse> {
@@ -182,9 +199,11 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
   }
 
   public async deleteMessage(chatId: string, messageId: string): Promise<ChatResponse> {
-    const response = await getApiService().delete<ChatResponse>(
+    const generation = localDbService.getGeneration();
+    const response = await getApiService().delete<LocalChat>(
       `${chatServiceConfig.versionedRoute}/${chatId}/messages/${messageId}`,
     );
+    void localDbService.upsertChat(response, generation);
 
     return createEntityInstance<ChatResponse>(ChatResponse, response);
   }
@@ -202,7 +221,12 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
   }
 
   public async archiveChat(chatId: string): Promise<ChatResponse> {
-    const response = await getApiService().post<ChatResponse>(`${chatServiceConfig.versionedRoute}/${chatId}/archive`);
+    const generation = localDbService.getGeneration();
+    const response = await getApiService().post<LocalChat>(`${chatServiceConfig.versionedRoute}/${chatId}/archive`);
+    // NOTE: The endpoint toggles the flag (unarchive too); archived chats are not part of the synced list.
+    void (response.archived
+      ? localDbService.deleteChat(chatId, generation)
+      : localDbService.upsertChat(response, generation));
 
     return createEntityInstance<ChatResponse>(ChatResponse, response);
   }

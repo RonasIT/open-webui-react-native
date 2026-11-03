@@ -13,8 +13,9 @@ export const unstable_settings = {
 
 export default function MainLayout(): ReactElement {
   const { isLoading } = useInitRequests();
-  useChatSync({ isEnabled: !isLoading });
   const isRestoring = useIsRestoring();
+  // NOTE: While the cache is restoring, queries report idle, so isLoading alone is false too early.
+  useChatSync({ isEnabled: !isLoading && !isRestoring });
 
   //NOTE Needs to prefetch all necessary data before showing the main screen
   if (isLoading || isRestoring) {

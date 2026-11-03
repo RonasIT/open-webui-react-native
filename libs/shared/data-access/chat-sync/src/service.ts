@@ -26,6 +26,8 @@ const chatListRequestOptions = { timeout: 60 * 1000 };
 type ServerChatListItem = LocalChatListItem & { active?: boolean };
 
 class ChatSyncService {
+  // NOTE: Set only when every stale chat was attempted (failed ones count), not when canContinue stopped the run.
+  public lastCompletedRunAt = 0;
   private isRunning = false;
   private isRerunRequested = false;
 
@@ -62,7 +64,7 @@ class ChatSyncService {
       generation === localDbService.getGeneration() &&
       authState$.isAuthenticated.get() &&
       onlineManager.isOnline() &&
-      AppState.currentState === 'active'
+      AppState.currentState !== 'background'
     );
   }
 
@@ -129,6 +131,10 @@ class ChatSyncService {
     };
 
     await Promise.all(Array.from({ length: concurrency }, syncNextChats));
+
+    if (nextIndex === staleChatIds.length) {
+      this.lastCompletedRunAt = Date.now();
+    }
 
     if (__DEV__) {
       const sizeInBytes = await localDbService.getSizeInBytes();
