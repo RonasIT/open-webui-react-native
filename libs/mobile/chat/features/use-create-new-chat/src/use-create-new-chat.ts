@@ -5,15 +5,15 @@ import {
   ChatGenerationOption,
   chatQueriesKeys,
   ChatResponse,
+  chatSelectionState$,
   chatSystemPromptState$,
   createTemporaryChatId,
   isTemporaryChatEnforced,
+  NEW_CHAT_SELECTION_KEY,
   NEW_CHAT_SYSTEM_PROMPT_KEY,
-  NEW_CHAT_TOOLS_SELECTION_KEY,
   patchChatList,
   prepareCompleteChatPayload,
   prepareCreateChatPayload,
-  toolsSelectionState$,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import { AttachedListItem, ImageData } from '@open-webui-react-native/shared/data-access/common';
@@ -50,15 +50,16 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
       systemPrompt: chatSystemPromptState$[NEW_CHAT_SYSTEM_PROMPT_KEY].peek(),
     });
 
-    // NOTE: The tools were picked on the create-chat screen, before a chat id existed, so the
-    // selection is parked under a placeholder key. Move it onto the real id — otherwise the chat
-    // screen shows no tools selected and every later message in the chat silently drops them.
-    const adoptToolsSelection = (chatId: string): void => {
-      const pendingSelection = toolsSelectionState$[NEW_CHAT_TOOLS_SELECTION_KEY].peek();
+    // NOTE: The tools and generation options were picked on the create-chat screen, before a chat id
+    // existed, so the selection is parked under a placeholder key. Move it onto the real id —
+    // otherwise the chat screen falls back to the defaults and every later message in the chat
+    // silently drops the user's choice.
+    const adoptChatSelection = (chatId: string): void => {
+      const pendingSelection = chatSelectionState$[NEW_CHAT_SELECTION_KEY].peek();
 
       if (pendingSelection) {
-        toolsSelectionState$[chatId].set(pendingSelection);
-        toolsSelectionState$[NEW_CHAT_TOOLS_SELECTION_KEY].delete();
+        chatSelectionState$[chatId].set(pendingSelection);
+        chatSelectionState$[NEW_CHAT_SELECTION_KEY].delete();
       }
     };
 
@@ -86,7 +87,7 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
       });
 
       queryClient.setQueryData<ChatResponse>(chatQueriesKeys.get(id).queryKey, chatResponse);
-      adoptToolsSelection(id);
+      adoptChatSelection(id);
       clearPendingSystemPrompt();
       onSuccess?.(id);
 
@@ -115,7 +116,7 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
 
         queryClient.setQueryData<ChatResponse>(chatQueriesKeys.get(data.id).queryKey, data);
 
-        adoptToolsSelection(data.id);
+        adoptChatSelection(data.id);
         clearPendingSystemPrompt();
         onSuccess?.(data.id);
         patchChatList({

@@ -11,7 +11,9 @@ import { AppText, Icon, View } from '@open-webui-react-native/mobile/shared/ui/u
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 import {
   ChatGenerationOption,
+  chatSelectionState$,
   isTemporaryChatEnforced,
+  NEW_CHAT_SELECTION_KEY,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
@@ -74,6 +76,12 @@ export function CreateChat({
 
       startChatCreation(inputValue, modelId, options, attachedItems.get(), attachedImages.get(), folderId);
     })();
+
+  // NOTE: As in the web interface, a new chat starts from the model defaults: a selection left by
+  // an earlier draft that was never sent must not carry over.
+  useEffect(() => {
+    chatSelectionState$[NEW_CHAT_SELECTION_KEY].delete();
+  }, []);
 
   useEffect(() => {
     if (existedFolderId) {
