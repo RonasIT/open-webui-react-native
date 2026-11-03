@@ -193,6 +193,26 @@
         "TEXT_REJECTED_PREFIX": "Respins",
         "TEXT_SAVE_FAILED": "Fișierul nu a putut fi salvat"
       },
+      "REASONING_CARD": {
+        "TEXT_THINKING": "Se gândește…",
+        "TEXT_THOUGHT": "A gândit",
+        "TEXT_THOUGHT_FOR_LESS_THAN_SECOND": "A gândit mai puțin de o secundă",
+        "TEXT_THOUGHT_FOR_SECONDS": {
+          "one": "A gândit {{count}} secundă",
+          "few": "A gândit {{count}} secunde",
+          "other": "A gândit {{count}} de secunde"
+        },
+        "TEXT_THOUGHT_FOR_MINUTES": {
+          "one": "A gândit {{count}} minut",
+          "few": "A gândit {{count}} minute",
+          "other": "A gândit {{count}} de minute"
+        },
+        "TEXT_THOUGHT_FOR_HOURS": {
+          "one": "A gândit {{count}} oră",
+          "few": "A gândit {{count}} ore",
+          "other": "A gândit {{count}} de ore"
+        }
+      },
       "TOOL_APPROVAL_CARD": {
         "TEXT_ALLOW_PREFIX": "Permite",
         "BUTTON_ALLOW": "Permite",

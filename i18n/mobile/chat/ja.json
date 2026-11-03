@@ -191,6 +191,20 @@
         "TEXT_REJECTED_PREFIX": "拒否",
         "TEXT_SAVE_FAILED": "ファイルを保存できませんでした"
       },
+      "REASONING_CARD": {
+        "TEXT_THINKING": "思考中…",
+        "TEXT_THOUGHT": "思考完了",
+        "TEXT_THOUGHT_FOR_LESS_THAN_SECOND": "1秒未満思考",
+        "TEXT_THOUGHT_FOR_SECONDS": {
+          "other": "{{count}}秒間思考"
+        },
+        "TEXT_THOUGHT_FOR_MINUTES": {
+          "other": "{{count}}分間思考"
+        },
+        "TEXT_THOUGHT_FOR_HOURS": {
+          "other": "{{count}}時間思考"
+        }
+      },
       "TOOL_APPROVAL_CARD": {
         "TEXT_ALLOW_PREFIX": "許可",
         "BUTTON_ALLOW": "許可",

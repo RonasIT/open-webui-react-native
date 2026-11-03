@@ -4,4 +4,6 @@ export enum ChatCompletionOutputPartType {
   OUTPUT_TEXT = 'output_text',
   INPUT_TEXT = 'input_text',
   INPUT_IMAGE = 'input_image',
+  SUMMARY_TEXT = 'summary_text',
+  REASONING_TEXT = 'reasoning_text',
 }

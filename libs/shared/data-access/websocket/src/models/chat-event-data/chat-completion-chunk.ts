@@ -50,6 +50,36 @@ export class ChatCompletionOutputItem {
   @Expose()
   @Type(() => ChatCompletionOutputFile)
   public files?: Array<ChatCompletionOutputFile>;
+
+  // NOTE: Fields of `reasoning` items. Those not shown are modelled so `prepareOutputForSave` keeps them.
+  @Expose()
+  @Type(() => ChatCompletionOutputContentPart)
+  public summary?: Array<ChatCompletionOutputContentPart> | null;
+
+  @Expose()
+  public duration?: number;
+
+  @Expose({ name: 'started_at' })
+  public startedAt?: number;
+
+  @Expose({ name: 'ended_at' })
+  public endedAt?: number;
+
+  @Expose()
+  public attributes?: Record<string, unknown>;
+
+  @Expose({ name: 'start_tag' })
+  public startTag?: string;
+
+  @Expose({ name: 'end_tag' })
+  public endTag?: string;
+
+  @Expose({ name: 'reasoning_details' })
+  public reasoningDetails?: unknown;
+
+  constructor(outputItem: Partial<ChatCompletionOutputItem> = {}) {
+    Object.assign(this, outputItem);
+  }
 }
 
 export class ChatCompletionChunk {

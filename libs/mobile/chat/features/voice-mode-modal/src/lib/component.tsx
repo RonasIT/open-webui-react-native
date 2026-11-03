@@ -29,6 +29,7 @@ import {
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { ImageData as ChatImageData } from '@open-webui-react-native/shared/data-access/common';
 import { showOfflineToast } from '@open-webui-react-native/shared/features/network';
+import { parseResponseMessageContent } from '@open-webui-react-native/shared/utils/strings';
 import { ImageSourceSheet, Loader, SpeechListener } from './components';
 import { voiceModeModalConfig } from './config';
 
@@ -267,21 +268,24 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
       return;
     }
 
+    // NOTE: Same text as on screen: older Open WebUI versions keep reasoning and tool calls in it as `<details>`.
+    const answerText = parseResponseMessageContent(newMessage?.content ?? '').messageContent;
+
     if (isWaitingNewMessage && newMessage) {
       if (!newMessage.done) {
         // NOTE: Start receiving a new message via WebSocket
         setIsWaitingNewMessage(false);
         setIsReceivingNewMessage(true);
-        speechStreamingService.handleContent(newMessage.content);
-      } else if (newMessage.content.trim()) {
+        speechStreamingService.handleContent(answerText);
+      } else if (answerText) {
         // NOTE: Reply already finished before streaming subscription (common on create-chat)
         setIsWaitingNewMessage(false);
-        speechStreamingService.handleContent(newMessage.content, true);
+        speechStreamingService.handleContent(answerText, true);
       }
     }
 
     if (isReceivingNewMessage && newMessage) {
-      speechStreamingService.handleContent(newMessage.content, newMessage.done);
+      speechStreamingService.handleContent(answerText, newMessage.done);
 
       if (newMessage.done) {
         setIsReceivingNewMessage(false);

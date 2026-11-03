@@ -191,6 +191,20 @@
         "TEXT_REJECTED_PREFIX": "已拒绝",
         "TEXT_SAVE_FAILED": "无法保存文件"
       },
+      "REASONING_CARD": {
+        "TEXT_THINKING": "思考中…",
+        "TEXT_THOUGHT": "已思考",
+        "TEXT_THOUGHT_FOR_LESS_THAN_SECOND": "思考了不到 1 秒",
+        "TEXT_THOUGHT_FOR_SECONDS": {
+          "other": "思考了 {{count}} 秒"
+        },
+        "TEXT_THOUGHT_FOR_MINUTES": {
+          "other": "思考了 {{count}} 分钟"
+        },
+        "TEXT_THOUGHT_FOR_HOURS": {
+          "other": "思考了 {{count}} 小时"
+        }
+      },
       "TOOL_APPROVAL_CARD": {
         "TEXT_ALLOW_PREFIX": "允许",
         "BUTTON_ALLOW": "允许",
