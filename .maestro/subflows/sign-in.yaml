@@ -8,7 +8,7 @@ appId: ${APP_ID}
     id: sign-in-api-url
 # NOTE: The input is prefilled with the last used URL
 - eraseText: 100
-- inputText: ${API_URL || 'https://ai.ronas.online'}
+- inputText: ${API_URL || 'https://ai.ronas.cloud'}
 - tapOn:
     id: sign-in-email
 - inputText:
