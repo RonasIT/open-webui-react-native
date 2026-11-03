@@ -2,6 +2,7 @@ import { HttpStatusCode } from 'axios';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
 import { EntityPromiseService } from '@open-webui-react-native/shared/data-access/base-entity';
+import { LocalChat, localDbService, LocalFolder } from '@open-webui-react-native/shared/data-access/local-db';
 import { ChatResponse } from '../chats/models/chat-response';
 import { foldersApiConfig } from './config';
 import {
@@ -58,7 +59,9 @@ class FoldersService extends EntityPromiseService<FolderResponse> {
   }
 
   public async getFolders(): Promise<Array<FolderListItem>> {
-    const response = await getApiService().get<Array<FolderListItem>>(`${foldersApiConfig.route}/`);
+    const generation = localDbService.getGeneration();
+    const response = await getApiService().get<Array<LocalFolder>>(foldersApiConfig.listRoute);
+    void localDbService.replaceFolders(response, generation);
 
     return response.map((item) => plainToInstance(FolderListItem, item));
   }
@@ -101,7 +104,9 @@ class FoldersService extends EntityPromiseService<FolderResponse> {
   }
 
   public async getFolderChats(id: string): Promise<Array<ChatResponse>> {
-    const response = await getApiService().get<Array<ChatResponse>>(`${foldersApiConfig.chatsRoute}/folder/${id}`);
+    const generation = localDbService.getGeneration();
+    const response = await getApiService().get<Array<LocalChat>>(`${foldersApiConfig.chatsRoute}/folder/${id}`);
+    response.forEach((chat) => void localDbService.upsertChat(chat, generation));
 
     return response.map((item) => plainToInstance(ChatResponse, item));
   }
