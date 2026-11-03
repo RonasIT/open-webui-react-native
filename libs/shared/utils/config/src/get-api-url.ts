@@ -5,9 +5,9 @@ import { appEnv } from '@open-webui-react-native/shared/utils/app-env';
 import { normalizeServerUrl } from './normalize-server-url';
 
 export const ronasApiUrl = appEnv.select({
-  development: 'https://ai.ronas.online',
-  staging: 'https://ai.ronas.online',
-  production: 'https://ai.ronas.online',
+  development: 'https://ai.ronas.cloud',
+  staging: 'https://ai.ronas.cloud',
+  production: 'https://ai.ronas.cloud',
 });
 
 export const testApiUrl = 'https://ai.test-api.online';
