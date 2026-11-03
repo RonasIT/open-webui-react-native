@@ -60,7 +60,7 @@ class FoldersService extends EntityPromiseService<FolderResponse> {
 
   public async getFolders(): Promise<Array<FolderListItem>> {
     const generation = localDbService.getGeneration();
-    const response = await getApiService().get<Array<LocalFolder>>(`${foldersApiConfig.route}/`);
+    const response = await getApiService().get<Array<LocalFolder>>(foldersApiConfig.listRoute);
     void localDbService.replaceFolders(response, generation);
 
     return response.map((item) => plainToInstance(FolderListItem, item));

@@ -1,4 +1,6 @@
+import * as Sentry from '@sentry/react-native';
 import { onlineManager } from '@tanstack/react-query';
+import { isAxiosError } from 'axios';
 import { instanceToPlain } from 'class-transformer';
 import { AppState } from 'react-native';
 import {
@@ -13,6 +15,7 @@ import {
   LocalChatListItem,
   localDbService,
   LocalFolder,
+  ServerChatListItem,
 } from '@open-webui-react-native/shared/data-access/local-db';
 
 const concurrency = 2;
@@ -21,15 +24,25 @@ const silentParams = { skipToast: true, skipSentryReport: true };
 // NOTE: No default timeout: a hung request would keep isRunning set and block every later sync.
 const requestOptions = { timeout: 30 * 1000 };
 const chatListRequestOptions = { timeout: 60 * 1000 };
+const completedRunSyncIntervalMs = 60 * 1000;
 
-// NOTE: `active` is set while the server streams a reply; `GET v1/chats/{id}` would return the partial message.
-type ServerChatListItem = LocalChatListItem & { active?: boolean };
+// NOTE: Request failures (offline, server error) are expected; anything else is a bug.
+const captureUnexpectedError = (error: unknown, operation: string): void => {
+  if (isAxiosError(error)) {
+    return;
+  }
+
+  Sentry.withScope((scope) => {
+    scope.setTag('chat-sync.operation', operation);
+    Sentry.captureException(error);
+  });
+};
 
 class ChatSyncService {
-  // NOTE: Set only when every stale chat was attempted (failed ones count), not when canContinue stopped the run.
-  public lastCompletedRunAt = 0;
   private isRunning = false;
   private isRerunRequested = false;
+  // NOTE: Set only when every stale chat was attempted (failed ones count), not when canContinue stopped the run.
+  private lastCompletedRunAt = 0;
 
   // NOTE: Never rejects; a stopped or failed run is resumed by the next call (stale chats stay stale).
   public async sync(): Promise<void> {
@@ -39,7 +52,7 @@ class ChatSyncService {
       return;
     }
 
-    if (!this.canContinue(localDbService.getGeneration())) {
+    if (!this.canRun()) {
       return;
     }
 
@@ -47,25 +60,33 @@ class ChatSyncService {
 
     try {
       await this.run();
-    } catch {
-      // NOTE: List requests failed (offline, server error); nothing to report.
+    } catch (error) {
+      captureUnexpectedError(error, 'run');
     } finally {
       this.isRunning = false;
     }
 
     if (this.isRerunRequested) {
       this.isRerunRequested = false;
-      await this.sync();
+      await this.syncIfDue();
     }
   }
 
+  // NOTE: Skipped within a minute after a completed run; a stopped run resumes right away.
+  public async syncIfDue(): Promise<void> {
+    if (Date.now() - this.lastCompletedRunAt < completedRunSyncIntervalMs) {
+      return;
+    }
+
+    await this.sync();
+  }
+
+  private canRun(): boolean {
+    return authState$.isAuthenticated.get() && onlineManager.isOnline() && AppState.currentState !== 'background';
+  }
+
   private canContinue(generation: number): boolean {
-    return (
-      generation === localDbService.getGeneration() &&
-      authState$.isAuthenticated.get() &&
-      onlineManager.isOnline() &&
-      AppState.currentState !== 'background'
-    );
+    return generation === localDbService.getGeneration() && this.canRun();
   }
 
   private async run(): Promise<void> {
@@ -81,16 +102,12 @@ class ChatSyncService {
     // NOTE: Without `page` the server returns all non-archived chats.
     const [chats, pinnedChats, folders] = await Promise.all([
       apiService.get<Array<ServerChatListItem>>(
-        `${chatServiceConfig.versionedRoute}/`,
+        chatServiceConfig.listRoute,
         { ...listRequest, ...silentParams },
         chatListRequestOptions,
       ),
-      apiService.get<Array<LocalChatListItem>>(
-        `${chatServiceConfig.versionedRoute}/pinned`,
-        silentParams,
-        requestOptions,
-      ),
-      apiService.get<Array<LocalFolder>>(`${foldersApiConfig.route}/`, silentParams, requestOptions),
+      apiService.get<Array<LocalChatListItem>>(chatServiceConfig.pinnedListRoute, silentParams, requestOptions),
+      apiService.get<Array<LocalFolder>>(foldersApiConfig.listRoute, silentParams, requestOptions),
     ]);
 
     await localDbService.upsertChatListItems(chats, generation);
@@ -118,13 +135,14 @@ class ChatSyncService {
 
         try {
           const chat = await apiService.get<LocalChat>(
-            `${chatServiceConfig.versionedRoute}/${id}`,
+            chatServiceConfig.getChatRoute(id),
             silentParams,
             requestOptions,
           );
           await localDbService.upsertChat(chat, generation);
           syncedCount++;
-        } catch {
+        } catch (error) {
+          captureUnexpectedError(error, 'syncChat');
           failedCount++;
         }
       }
