@@ -54,7 +54,7 @@ const prepareChatForSave = (entity: ChatResponse): Record<string, unknown> => {
 const saveOwnChatLocally = (chat: LocalChat, generation: number): void => {
   const profile = queryClient.getQueryData<SignInResponse>(authApiConfig.getProfileQueryKey);
 
-  if (chat.user_id === profile?.id) {
+  if (profile && chat.user_id === profile.id) {
     void localDbService.upsertChat(chat, generation);
   }
 };
