@@ -1,4 +1,5 @@
 import { instanceToPlain, plainToInstance } from 'class-transformer';
+import { isUndefined, omitBy } from 'lodash-es';
 import { getApiService, RequestOptions } from '@open-webui-react-native/shared/data-access/api-client';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { authApiConfig } from './config';
@@ -40,10 +41,12 @@ class AuthService {
     return plainToInstance(SignInResponse, response);
   }
 
+  // NOTE: Open WebUI writes the whole profile form, so the fields the app does not edit are sent back as stored.
   public async updateProfile(request: UpdateProfileRequest): Promise<UpdateProfileRequest> {
+    const { bio, gender, dateOfBirth } = await this.getProfile();
     const response: UpdateProfileRequest = await getApiService().post(
       `${authApiConfig.route}/update/profile`,
-      instanceToPlain(request),
+      instanceToPlain(new UpdateProfileRequest({ bio, gender, dateOfBirth, ...omitBy(request, isUndefined) })),
     );
 
     return plainToInstance(UpdateProfileRequest, response);

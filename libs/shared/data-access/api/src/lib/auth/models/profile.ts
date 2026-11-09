@@ -16,6 +16,15 @@ export class Profile extends BaseEntity<string> {
   public profileImageUrl: string;
 
   @Expose()
+  public bio?: string | null;
+
+  @Expose()
+  public gender?: string | null;
+
+  @Expose({ name: 'date_of_birth' })
+  public dateOfBirth?: string | null;
+
+  @Expose()
   @Type(() => Permissions)
   public permissions: Permissions;
 
