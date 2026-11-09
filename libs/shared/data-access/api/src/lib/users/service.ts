@@ -82,13 +82,21 @@ export class UsersService extends EntityPromiseService<User> {
 
     // NOTE: Open WebUI 0.10.0–0.11.3 replaces `ui` whole, so the full `ui` is sent and saves run one
     // at a time to not undo each other; remove with 0.11.3 support.
-    const write = this.fullSettingsWrite.then(async () =>
-      this.postUserSettings(mergeUserSettings(await this.getRawUserSettings(), settings)),
-    );
-    this.fullSettingsWrite = write.catch(() => undefined);
+    const write = this.writeFullSettings(settings, this.fullSettingsWrite);
+    this.fullSettingsWrite = write;
     await write;
 
     return settings;
+  }
+
+  private async writeFullSettings(settings: UserSettings, previousWrite: Promise<void>): Promise<void> {
+    try {
+      await previousWrite;
+    } catch {
+      // NOTE: A failed earlier save must not block this one; its caller already got the error.
+    }
+
+    await this.postUserSettings(mergeUserSettings(await this.getRawUserSettings(), settings));
   }
 
   private async postUserSettings(settings: UserSettings): Promise<void> {
