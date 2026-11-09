@@ -2,10 +2,14 @@ import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { getApiService, RequestOptions } from '@open-webui-react-native/shared/data-access/api-client';
 import { EntityPromiseService } from '@open-webui-react-native/shared/data-access/base-entity';
 import { ModelControlChoices } from '../ai-models/models/model-control-choices';
+import { isServerVersionAtLeast } from '../app-configuration/utils/is-server-version-at-least';
 import { usersApiConfig } from './config';
 import { SearchUsersRequest, SearchUsersResponse, UiParams, UiSettings, User, UserInfo, UserSettings } from './models';
+import { mergeUserSettings } from './utils/merge-user-settings';
 
 export class UsersService extends EntityPromiseService<User> {
+  private fullSettingsWrite: Promise<void> = Promise.resolve();
+
   constructor() {
     super({
       endpoint: usersApiConfig.versionedRoute,
@@ -68,14 +72,30 @@ export class UsersService extends EntityPromiseService<User> {
     return updatedParams;
   }
 
-  // NOTE: Sends a patch: `ui` fields that are left out stay unchanged on the backend.
+  // NOTE: Open WebUI 0.11.4+ patches `ui` field by field, so only the changed fields are sent.
   public async updateUserSettings(settings: UserSettings): Promise<UserSettings> {
+    if (isServerVersionAtLeast('0.11.4')) {
+      await this.postUserSettings(settings);
+
+      return settings;
+    }
+
+    // NOTE: Open WebUI 0.10.0–0.11.3 replaces `ui` whole, so the full `ui` is sent and saves run one
+    // at a time to not undo each other; remove with 0.11.3 support.
+    const write = this.fullSettingsWrite.then(async () =>
+      this.postUserSettings(mergeUserSettings(await this.getRawUserSettings(), settings)),
+    );
+    this.fullSettingsWrite = write.catch(() => undefined);
+    await write;
+
+    return settings;
+  }
+
+  private async postUserSettings(settings: UserSettings): Promise<void> {
     await getApiService().post(
       `${usersApiConfig.versionedRoute}${usersApiConfig.route}/settings/update`,
       instanceToPlain(settings),
     );
-
-    return settings;
   }
 }
 
