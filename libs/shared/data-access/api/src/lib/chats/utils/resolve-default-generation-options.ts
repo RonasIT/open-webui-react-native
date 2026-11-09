@@ -13,8 +13,8 @@ export interface ResolveDefaultGenerationOptionsArgs {
 }
 
 // Generation options a chat starts with when the user has not toggled any, mirroring the web
-// interface: an option is on when the model lists it among its default features and explicitly has
-// the matching capability. Unlike the button visibility, an unset capability does not count here.
+// interface: an option is on when the model lists it among its default features and does not turn
+// the matching capability off. An unset capability counts as supported, as in the web.
 export function resolveDefaultGenerationOptions({
   model,
   availableOptions,
@@ -22,6 +22,7 @@ export function resolveDefaultGenerationOptions({
   const meta = model?.info?.meta;
 
   return availableOptions.filter(
-    (option) => Boolean(meta?.capabilities?.[option]) && Boolean(meta?.defaultFeatureIds?.includes(featureIds[option])),
+    (option) =>
+      (meta?.capabilities?.[option] ?? true) && Boolean(meta?.defaultFeatureIds?.includes(featureIds[option])),
   );
 }
