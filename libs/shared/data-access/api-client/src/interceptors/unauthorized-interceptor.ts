@@ -25,9 +25,12 @@ export const unauthorizedInterceptor =
       return Promise.reject(error);
     }
 
-    if (isGetProfileRequest(error.config) || !(await checkSession())) {
+    const isSessionExpired = isGetProfileRequest(error.config) || !(await checkSession());
+
+    // NOTE: The user may have logged out while the session check was in flight.
+    if (isSessionExpired && hasToken()) {
       onSessionExpired();
-    } else if (!error.config?.params?.skipToast) {
+    } else if (!isSessionExpired && !error.config?.params?.skipToast) {
       onError(error);
     }
 
