@@ -105,6 +105,38 @@ class LocalDbService {
     );
   }
 
+  public deleteAllChats(generation: number): Promise<void> {
+    return writeLocalDb(
+      'deleteAllChats',
+      async (db) => {
+        await db.runAsync('DELETE FROM chats');
+      },
+      generation,
+    );
+  }
+
+  // NOTE: Also deletes the subfolders and the chats in all of them, as the backend does.
+  public deleteFolder(id: string, generation: number): Promise<void> {
+    return writeLocalDb(
+      'deleteFolder',
+      async (db) => {
+        const rows = await db.getAllAsync<{ id: string }>(
+          `WITH RECURSIVE subtree(id) AS (
+            SELECT ?
+            UNION SELECT folders.id FROM folders JOIN subtree ON json_extract(folders.data, '$.parent_id') = subtree.id
+          )
+          SELECT id FROM subtree`,
+          id,
+        );
+        const ids = JSON.stringify(rows.map((row) => row.id));
+
+        await db.runAsync('DELETE FROM chats WHERE folder_id IN (SELECT value FROM json_each(?))', ids);
+        await db.runAsync('DELETE FROM folders WHERE id IN (SELECT value FROM json_each(?))', ids);
+      },
+      generation,
+    );
+  }
+
   // NOTE: Chats created after maxCreatedAt (written after the list was fetched) are kept.
   public async deleteChatsNotIn(ids: Array<string>, maxCreatedAt: number, generation: number): Promise<number> {
     let deletedCount = 0;

@@ -4,6 +4,8 @@ import { getApiService } from '@open-webui-react-native/shared/data-access/api-c
 import { EntityPromiseService } from '@open-webui-react-native/shared/data-access/base-entity';
 import { LocalChat, localDbService, LocalFolder } from '@open-webui-react-native/shared/data-access/local-db';
 import { ChatResponse } from '../chats/models/chat-response';
+import { saveChatLocally } from '../chats/service';
+import { BackgroundRequestOptions, getBackgroundRequestConfig } from '../chats/utils/background-request';
 import { foldersApiConfig } from './config';
 import {
   CreateFolderRequest,
@@ -59,11 +61,26 @@ class FoldersService extends EntityPromiseService<FolderResponse> {
   }
 
   public async getFolders(): Promise<Array<FolderListItem>> {
-    const generation = localDbService.getGeneration();
-    const response = await getApiService().get<Array<LocalFolder>>(foldersApiConfig.listRoute);
-    void localDbService.replaceFolders(response, generation);
+    const response = await this.fetchFolders();
 
     return response.map((item) => plainToInstance(FolderListItem, item));
+  }
+
+  // NOTE: Raw server JSON; the background sync calls it directly, so the local DB rules stay in this service.
+  public async fetchFolders(background?: BackgroundRequestOptions): Promise<Array<LocalFolder>> {
+    const { params, options } = getBackgroundRequestConfig(background);
+    const generation = localDbService.getGeneration();
+    const response = await getApiService().get<Array<LocalFolder>>(foldersApiConfig.listRoute, params, options);
+    void localDbService.replaceFolders(response, generation);
+
+    return response;
+  }
+
+  // NOTE: The backend deletes the subfolders and every chat in them too (`delete_contents` defaults to true).
+  public async delete(id: string): Promise<void> {
+    const generation = localDbService.getGeneration();
+    await super.delete(id);
+    void localDbService.deleteFolder(id, generation);
   }
 
   // NOTE: Folders shared with the current user do not come from `GET /folders/`, which only lists
@@ -106,7 +123,7 @@ class FoldersService extends EntityPromiseService<FolderResponse> {
   public async getFolderChats(id: string): Promise<Array<ChatResponse>> {
     const generation = localDbService.getGeneration();
     const response = await getApiService().get<Array<LocalChat>>(`${foldersApiConfig.chatsRoute}/folder/${id}`);
-    response.forEach((chat) => void localDbService.upsertChat(chat, generation));
+    response.forEach((chat) => void saveChatLocally(chat, generation));
 
     return response.map((item) => plainToInstance(ChatResponse, item));
   }
