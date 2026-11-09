@@ -22,6 +22,7 @@ import {
   authApi,
   getUserAvatarSource,
   groupsApi,
+  isFeaturePermitted,
   PrincipalType,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
@@ -64,13 +65,19 @@ export function ShareWithSheet({ onAdd, ref, ...props }: ShareWithSheetProps): R
   const hasGrant = (principalType: PrincipalType, principalId: string): boolean =>
     grants.some((grant) => grant.principalType === principalType && grant.principalId === principalId);
 
+  // NOTE: Open WebUI drops (0.10.0–0.12.3) or rejects with 403 (0.12.4+) grants to an audience these deny.
+  const canShareWithGroups = isFeaturePermitted('accessGrants', 'allowGroups', true);
+  const canShareWithUsers = isFeaturePermitted('accessGrants', 'allowUsers', true);
+
   // NOTE: Groups come unpaginated, so they are filtered by the query locally; users are searched by the backend.
-  const availableGroups = (groups ?? []).filter(
-    (group) => !hasGrant(PrincipalType.GROUP, group.id) && new RegExp(query, 'i').test(group.name),
-  );
-  const availableUsers = (users ?? []).filter(
-    (user) => !hasGrant(PrincipalType.USER, user.id) && user.id !== profile?.id,
-  );
+  const availableGroups = canShareWithGroups
+    ? (groups ?? []).filter(
+        (group) => !hasGrant(PrincipalType.GROUP, group.id) && new RegExp(query, 'i').test(group.name),
+      )
+    : [];
+  const availableUsers = canShareWithUsers
+    ? (users ?? []).filter((user) => !hasGrant(PrincipalType.USER, user.id) && user.id !== profile?.id)
+    : [];
 
   const items = compact<ShareWithListItem>([
     availableGroups.length &&

@@ -1,4 +1,5 @@
 import { Expose, Type } from 'class-transformer';
+import { AccessGrantsPermissions } from './access-grants-permissions';
 import { ChatPermissions } from './chat-permissions';
 import { FeaturesPermissions } from './features-permissions';
 import { SharingPermissions } from './sharing-permissions';
@@ -20,6 +21,10 @@ export class Permissions {
   @Expose()
   @Type(() => FeaturesPermissions)
   public features: FeaturesPermissions;
+
+  @Expose({ name: 'access_grants' })
+  @Type(() => AccessGrantsPermissions)
+  public accessGrants: AccessGrantsPermissions;
 
   constructor(model: Partial<Permissions>) {
     Object.assign(this, model);

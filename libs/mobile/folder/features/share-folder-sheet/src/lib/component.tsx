@@ -31,6 +31,7 @@ import {
   foldersApiConfig,
   groupsApi,
   getUserAvatarSource,
+  isFeaturePermitted,
   PrincipalType,
   usersApiConfig,
   usersService,
@@ -111,6 +112,9 @@ export function ShareFolderSheet({ ref, ...props }: ShareFolderSheetProps): Reac
     }
   });
 
+  const canAddAccess =
+    isFeaturePermitted('accessGrants', 'allowUsers', true) || isFeaturePermitted('accessGrants', 'allowGroups', true);
+
   const handleAddPress = (): void => shareWithSheetRef.current?.present(grants);
 
   const handleAdd = (selection: ShareWithSelection): void => setEditedGrants(addAccessGrants(grants, selection));
@@ -182,14 +186,16 @@ export function ShareFolderSheet({ ref, ...props }: ShareFolderSheetProps): Reac
                 <View className='gap-12'>
                   <View className='flex-row items-center gap-12'>
                     <AppText className='text-sm-sm sm:text-sm flex-1'>{translate('TEXT_ACCESS_LIST')}</AppText>
-                    <AppButton
-                      variant='outline'
-                      size='sm'
-                      iconName='plus'
-                      text={translate('BUTTON_ADD')}
-                      onPress={handleAddPress}
-                      className='px-16 py-4'
-                    />
+                    {canAddAccess && (
+                      <AppButton
+                        variant='outline'
+                        size='sm'
+                        iconName='plus'
+                        text={translate('BUTTON_ADD')}
+                        onPress={handleAddPress}
+                        className='px-16 py-4'
+                      />
+                    )}
                   </View>
                   <View>
                     {accessList.map((item) => (
