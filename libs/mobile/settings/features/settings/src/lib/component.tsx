@@ -21,6 +21,8 @@ import {
   authApi,
   chatApi,
   getSelectableModels,
+  isInterfaceSettingsPermitted,
+  isSystemPromptSettingPermitted,
   isTemporaryChatEnforced,
   modelsApi,
   UiSettings,
@@ -226,14 +228,16 @@ export function Settings(): ReactElement {
     action: exportAllChats,
   });
 
-  const generalOptions: Array<SettingsSectionOption> = [
-    {
+  const isInterfaceEditable = isInterfaceSettingsPermitted();
+
+  const generalOptions: Array<SettingsSectionOption> = compact([
+    isInterfaceEditable && {
       label: translate('TEXT_DEFAULT_MODEL'),
       value: defaultModelValue,
       isInactive: isOfflineMode,
       onPress: withOfflineGuard(() => defaultModelModalRef.current?.present()),
     },
-    {
+    isSystemPromptSettingPermitted() && {
       label: translate('TEXT_DEFAULT_SYSTEM_PROMPT'),
       value: defaultSystemPromptValue,
       isInactive: isOfflineMode,
@@ -244,7 +248,7 @@ export function Settings(): ReactElement {
       value: languageLabel,
       onPress: () => languageSheetRef.current?.present(),
     },
-  ];
+  ]);
 
   const profileOptions: Array<SettingsSectionOption> = [
     {
@@ -324,7 +328,7 @@ export function Settings(): ReactElement {
   ];
 
   const preferenceOptions: Array<SettingsSectionOption> = compact([
-    {
+    isInterfaceEditable && {
       type: 'switch',
       label: translate('TEXT_ALWAYS_ON_WEB_SEARCH'),
       isEnabled: isWebSearchAlwaysOnEnabled,
@@ -337,28 +341,29 @@ export function Settings(): ReactElement {
       isEnabled: isHapticFeedbackEnabled,
       onValueChange: appState$.setHapticFeedbackEnabled,
     },
-    {
+    isInterfaceEditable && {
       type: 'switch',
       label: translate('TEXT_ENABLE_MESSAGE_QUEUE'),
       isEnabled: isMessageQueueEnabled,
       isInactive: isOfflineMode,
       onValueChange: createUiSettingToggleHandler('enableMessageQueue'),
     },
-    {
+    isInterfaceEditable && {
       type: 'switch',
       label: translate('TEXT_CHAT_BUBBLE_UI'),
       isEnabled: isChatBubbleUIEnabled,
       isInactive: isOfflineMode,
       onValueChange: createUiSettingToggleHandler('chatBubble'),
     },
-    !isTemporaryChatEnforced() && {
-      type: 'switch',
-      label: translate('TEXT_TEMPORARY_CHAT_BY_DEFAULT'),
-      isEnabled: isTemporaryChatByDefaultEnabled,
-      isInactive: isOfflineMode,
-      onValueChange: createUiSettingToggleHandler('temporaryChatByDefault'),
-    },
-    {
+    isInterfaceEditable &&
+      !isTemporaryChatEnforced() && {
+        type: 'switch',
+        label: translate('TEXT_TEMPORARY_CHAT_BY_DEFAULT'),
+        isEnabled: isTemporaryChatByDefaultEnabled,
+        isInactive: isOfflineMode,
+        onValueChange: createUiSettingToggleHandler('temporaryChatByDefault'),
+      },
+    isInterfaceEditable && {
       type: 'switch',
       label: translate('TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE'),
       isEnabled: isUserMessageMarkdownEnabled,
