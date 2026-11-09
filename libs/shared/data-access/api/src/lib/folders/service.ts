@@ -92,12 +92,18 @@ class FoldersService extends EntityPromiseService<FolderResponse> {
       { page },
     );
 
-    return (
-      plainToInstance(SharedFolderChatsResponse, response, {
-        excludeExtraneousValues: true,
-        enableImplicitConversion: true,
-      }).chats ?? []
-    );
+    const { chats, hasMore } = plainToInstance(SharedFolderChatsResponse, response, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+    });
+
+    // NOTE: Open WebUI 0.10.0–0.10.2 ignores `page`, returns the first 60 chats and has no `has_more`;
+    // remove with 0.10.2 support.
+    if (hasMore === undefined && page > 1) {
+      return [];
+    }
+
+    return chats ?? [];
   }
 
   public async getFolderChats(id: string): Promise<Array<ChatResponse>> {
