@@ -95,7 +95,7 @@ export class SocketService {
   private startHeartbeat(): void {
     this.stopHeartbeat();
     this._heartbeatTimer = setInterval(() => {
-      this._socket?.emit(webSocketConfig.heartbeatEvent, {});
+      this._socket?.emit(WebSocketEventName.HEARTBEAT, {});
     }, webSocketConfig.heartbeatInterval);
   }
 
