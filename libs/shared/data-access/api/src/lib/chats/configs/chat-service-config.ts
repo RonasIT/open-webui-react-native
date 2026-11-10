@@ -1,5 +1,10 @@
+const versionedRoute = 'v1/chats';
+
 export const chatServiceConfig = {
-  versionedRoute: 'v1/chats',
+  versionedRoute,
+  listRoute: `${versionedRoute}/`,
+  pinnedListRoute: `${versionedRoute}/pinned`,
+  getChatRoute: (id: string): string => `${versionedRoute}/${id}`,
   route: '/chat',
   getChatListQueryKey: ['chat-list'],
   getPinnedChatListQueryKey: ['pinned-chat-list'],
