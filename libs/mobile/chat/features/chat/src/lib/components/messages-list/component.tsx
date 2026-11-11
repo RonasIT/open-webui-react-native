@@ -16,6 +16,7 @@ import {
   Chat,
   chatApi,
   History as ChatHistory,
+  getMessageText,
   Message,
   patchChatQueryData,
   prepareCompleteChatPayload,
@@ -245,7 +246,7 @@ export default function ChatMessagesList({
           <ChatAiMessage
             message={message}
             chatId={chatId}
-            onEditPress={() => handleEditPress(index, message.id, message.content)}
+            onEditPress={() => handleEditPress(index, message.id, getMessageText(message))}
             isEditing={editingMessageId === item.id}
             onPreviousSibling={showPreviousSibling}
             onNextSibling={showNextSibling}

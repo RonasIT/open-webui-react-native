@@ -40,10 +40,11 @@ export const handleChatCompletionEvent = async (socketResponse: ChatEventBase): 
     buffer.streamState = seedResponseStreamState(chatCompletionData.output);
   }
 
-  // NOTE: Backends up to 0.10.x deliver assistant text as a flat `content` string; 0.11.0+ deliver
-  // it inside an `output` array (Responses API format). Fall back to the latter so streamed content
-  // renders and — importantly — the terminal `done` branch below still runs.
-  const content = chatCompletionData.content || getOutputText(chatCompletionData.output);
+  // NOTE: 0.10.0+ streaming snapshots (and the terminal `done`) carry the text only in `output`.
+  // A flat `content` string is the older shape. `content` is also not always a string — an empty
+  // assistant stub comes back as `[]`, which is truthy and would hide the output text.
+  const flatContent = typeof chatCompletionData.content === 'string' ? chatCompletionData.content : '';
+  const content = flatContent || getOutputText(chatCompletionData.output);
 
   if (content) {
     buffer.content = content;
