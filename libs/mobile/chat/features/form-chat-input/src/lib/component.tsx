@@ -21,6 +21,7 @@ import {
   ChatResponse,
   getAvailableGenerationOptions,
   getChatSelectionForModel,
+  isFeaturePermitted,
   modelsApi,
   NEW_CHAT_SELECTION_KEY,
   resolveDefaultGenerationOptions,
@@ -106,6 +107,10 @@ export function FormChatInput<T extends FieldValues>({
 
   const [isMicrophonePreparing, setIsMicrophonePreparing] = useState<boolean>(false);
   const [isDictateMode, setIsDictateMode] = useState<boolean>(false);
+  // NOTE: Open WebUI answers 403 to transcription without `chat.stt`; Voice mode also needs `chat.call`, as in the web.
+  const isDictationPermitted = isFeaturePermitted('chat', 'stt', true);
+  const isVoiceModePermitted =
+    isFeatureEnabled(FeatureID.VOICE_MODE) && isDictationPermitted && isFeaturePermitted('chat', 'call', true);
 
   // NOTE: The chat being composed has no id yet, so its selection is parked under a placeholder
   // key that `useCreateNewChat` moves onto the real id once the chat exists.
@@ -242,9 +247,9 @@ export function FormChatInput<T extends FieldValues>({
             accessoryBottom={
               <ChatInputBottomRow
                 onSubmit={handleSubmitPress}
-                isSubmitDisabled={(!isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty) || isImageUploading}
+                isSubmitDisabled={(!isVoiceModePermitted && isInputEmpty) || isImageUploading}
                 onVoiceModePress={onVoiceModePress}
-                isVoiceModeAvailable={isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty}
+                isVoiceModeAvailable={isVoiceModePermitted && isInputEmpty}
                 onStopGenerationPress={onStopGenerationPress}
                 isResponseGenerating={isResponseGenerating}
                 isMessageQueueEnabled={isMessageQueueEnabled}
@@ -287,13 +292,15 @@ export function FormChatInput<T extends FieldValues>({
                       isToolPermissionsEnabled={config?.features.enableToolPermissions}
                     />
                   </View>
-                  <IconButton
-                    disabled={isLoading}
-                    isInactive={isOfflineMode}
-                    iconName='microphone'
-                    className='p-0 mr-16'
-                    onPress={handleDictateModePress}
-                  />
+                  {isDictationPermitted && (
+                    <IconButton
+                      disabled={isLoading}
+                      isInactive={isOfflineMode}
+                      iconName='microphone'
+                      className='p-0 mr-16'
+                      onPress={handleDictateModePress}
+                    />
+                  )}
                 </View>
               </ChatInputBottomRow>
             }
