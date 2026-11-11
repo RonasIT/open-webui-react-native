@@ -25,7 +25,10 @@ const baseApi = createEntityApi({
   entityService: usersService,
 });
 
-function useSearchUsers(query: string): UseInfiniteQueryResult<Array<UserInfo>, AxiosError<ApiErrorData>> {
+function useSearchUsers(
+  query: string,
+  props?: { enabled?: boolean },
+): UseInfiniteQueryResult<Array<UserInfo>, AxiosError<ApiErrorData>> {
   return useInfiniteQuery({
     queryFn: ({ pageParam }) => usersService.searchUsers({ query, page: pageParam }),
     queryKey: usersApiConfig.searchUsersQueryKey(query),
@@ -38,6 +41,7 @@ function useSearchUsers(query: string): UseInfiniteQueryResult<Array<UserInfo>, 
         itemsPerPage: usersApiConfig.usersPerPage,
       }),
     select: (data) => data.pages.flatMap((page) => page.users),
+    ...props,
   });
 }
 
