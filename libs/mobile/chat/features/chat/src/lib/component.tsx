@@ -1,8 +1,9 @@
 import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import dayjs from 'dayjs';
+import { useFocusEffect } from 'expo-router';
 import { delay } from 'lodash-es';
-import React, { Fragment, ReactElement, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Fragment, ReactElement, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { InteractionManager } from 'react-native';
 import { EditMessageInput } from '@open-webui-react-native/mobile/chat/features/edit-message-input';
@@ -11,6 +12,7 @@ import { SuggestChangeInput } from '@open-webui-react-native/mobile/chat/feature
 import { useEditMessage } from '@open-webui-react-native/mobile/chat/features/use-edit-message';
 import { useSendMessage } from '@open-webui-react-native/mobile/chat/features/use-send-message';
 import { useSuggestChange } from '@open-webui-react-native/mobile/chat/features/use-suggest-change';
+import { speechStreamingService } from '@open-webui-react-native/mobile/shared/data-access/speech-streaming-service';
 import { useAttachedFiles } from '@open-webui-react-native/mobile/shared/features/use-attached-files';
 import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { AppKeyboardStickyView, AppSpinner, AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
@@ -156,6 +158,15 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
       }
     },
   });
+
+  const stopMessageSpeaking = (): void => {
+    void speechStreamingService.stopMessageSpeaking();
+  };
+
+  useAppStateChange({ status: 'background', onChange: stopMessageSpeaking });
+
+  // NOTE: Pushed screens keep the chat mounted, so reading aloud stops on blur too
+  useFocusEffect(useCallback(() => stopMessageSpeaking, [chatId]));
 
   const { control, handleSubmit, reset } = useForm<FormValues<FormChatInputSchema>>({
     defaultValues: {

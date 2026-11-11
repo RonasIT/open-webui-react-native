@@ -157,6 +157,8 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
         // NOTE: If chat exists, we get its ID
         setChatId(chatId);
         setModelId(modelId);
+        // NOTE: A message may be read aloud from its actions, the mic must not pick it up
+        await speechStreamingService.stopContentSpeaking();
         await startSpeechRecording();
         setIsVisible(true);
       },

@@ -1,7 +1,9 @@
+import { observable } from '@legendapp/state';
 import { setAudioModeAsync } from 'expo-audio';
 import * as Speech from 'expo-speech';
 import { SpeechStreamingServiceEvent } from './enums';
 import { prepareSpeakableText } from './prepare-speakable-text';
+import { splitSpeechText } from './split-speech-text';
 
 const textBreakpoints = ['.', '!', '?', ',', ';', ':', '-'];
 const fallbackLanguage = 'en-US';
@@ -12,6 +14,8 @@ type SpeechQueueItem = {
 };
 
 class SpeechStreamingService {
+  // NOTE: Message read aloud from its actions; null while idle or in voice mode
+  public speakingMessageId$ = observable<string | null>(null);
   private spokenText: string;
   private isStopped: boolean;
   private speechGeneration: number;
@@ -53,10 +57,33 @@ class SpeechStreamingService {
     // NOTE: Bump generation before await so in-flight onDone / queue work becomes stale
     this.speechGeneration += 1;
     this.isStopped = true;
+    this.speakingMessageId$.set(null);
     this.spokenText = '';
     this.queue = [];
     await Speech.stop();
     this.isProcessingQueue = false;
+  };
+
+  public speakMessage = async (messageId: string, text: string, language: string): Promise<void> => {
+    const stopPromise = this.stopContentSpeaking();
+    const generation = this.speechGeneration;
+    await stopPromise;
+
+    // NOTE: Another message or a stop came in while the previous speech was stopping
+    if (generation !== this.speechGeneration) {
+      return;
+    }
+
+    this.resumeContentSpeaking(language);
+    this.speakingMessageId$.set(messageId);
+    this.handleContent(text, true);
+  };
+
+  // NOTE: Leaves voice mode speech alone, it lives outside the chat screen
+  public stopMessageSpeaking = async (): Promise<void> => {
+    if (this.speakingMessageId$.peek()) {
+      await this.stopContentSpeaking();
+    }
   };
 
   public handleContent(text: string, isDone?: boolean): void {
@@ -144,6 +171,7 @@ class SpeechStreamingService {
         if (item.isFinal) {
           this.emit(SpeechStreamingServiceEvent.SPEAKING_END);
           this.spokenText = '';
+          this.speakingMessageId$.set(null);
         }
       }
     } finally {
@@ -171,20 +199,20 @@ class SpeechStreamingService {
       return;
     }
 
-    await new Promise<void>((resolve) => {
+    for (const part of splitSpeechText(text, Speech.maxSpeechInputLength)) {
       if (this.isStopped || generation !== this.speechGeneration) {
-        resolve();
-
         return;
       }
 
-      Speech.speak(text, {
-        language: this.voiceLanguage,
-        onDone: () => resolve(),
-        onStopped: () => resolve(),
-        onError: () => resolve(),
+      await new Promise<void>((resolve) => {
+        Speech.speak(part, {
+          language: this.voiceLanguage,
+          onDone: () => resolve(),
+          onStopped: () => resolve(),
+          onError: () => resolve(),
+        });
       });
-    });
+    }
   };
 
   private getVoiceLanguage = async (): Promise<string> => {

@@ -132,6 +132,8 @@
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "编辑",
       "TEXT_COPY": "复制",
+      "TEXT_READ_ALOUD": "朗读",
+      "TEXT_STOP_READING_ALOUD": "停止",
       "TEXT_CONTINUE_RESPONSE": "继续回复",
       "TEXT_REGENERATE": "重新生成",
       "TEXT_DELETE": "删除",

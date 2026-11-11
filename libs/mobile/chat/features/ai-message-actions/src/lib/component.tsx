@@ -7,8 +7,14 @@ import { PropsWithChildren, ReactElement, useRef } from 'react';
 import { View } from 'react-native';
 import { useDeleteMessage } from '@open-webui-react-native/mobile/chat/features/use-delete-message';
 import { MessageActionsSheetWrapper } from '@open-webui-react-native/mobile/chat/ui/message-actions-wrapper';
+import { speechStreamingService } from '@open-webui-react-native/mobile/shared/data-access/speech-streaming-service';
 import { ActionsBottomSheet, ActionSheetItemProps } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { Message, replaceDetailsWithMarkers } from '@open-webui-react-native/shared/data-access/api';
+import {
+  isFeaturePermitted,
+  Message,
+  replaceDetailsWithMarkers,
+  usersApi,
+} from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { parseResponseMessageContent } from '@open-webui-react-native/shared/utils/strings';
@@ -50,6 +56,9 @@ export function AiMessageActions({
   const actionsSheetRef = useRef<BottomSheetModal>(null);
   const regenerateActionsSheetRef = useRef<BottomSheetModal>(null);
   const isOfflineMode = useSelector(appState$.isOfflineMode);
+  const locale = useSelector(appState$.locale);
+  const isSpeaking = useSelector(() => speechStreamingService.speakingMessageId$.get() === message.id);
+  const { data: userSettings } = usersApi.useGetUserSettings();
 
   const close = (): void => actionsSheetRef.current?.dismiss();
 
@@ -65,6 +74,17 @@ export function AiMessageActions({
   const copyToClipboard = async (): Promise<void> => {
     await Clipboard.setStringAsync(answerText);
     ToastService.showSuccess(i18n.t('SHARED.COMMON.TEXT_COPIED_TO_CLIPBOARD'));
+    close();
+  };
+
+  const toggleReadingAloud = (): void => {
+    if (isSpeaking) {
+      void speechStreamingService.stopContentSpeaking();
+    } else {
+      // NOTE: Same language as voice mode
+      const language = userSettings?.ui?.audio?.stt?.language || locale;
+      void speechStreamingService.speakMessage(message.id, answerText, language);
+    }
     close();
   };
 
@@ -123,6 +143,13 @@ export function AiMessageActions({
       iconName: 'copy',
       onPress: copyToClipboard,
       disabled: isSkeleton || !answerText,
+    },
+    isFeaturePermitted('chat', 'tts', true) && {
+      title: isSpeaking ? translate('TEXT_STOP_READING_ALOUD') : translate('TEXT_READ_ALOUD'),
+      iconName: isSpeaking ? 'stop' : 'volume',
+      onPress: toggleReadingAloud,
+      // NOTE: Stopping is always allowed
+      disabled: !isSpeaking && (isChangeDisabled || !answerText),
     },
     isLast && {
       title: translate('TEXT_CONTINUE_RESPONSE'),
