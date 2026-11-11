@@ -54,6 +54,7 @@ export function FolderActionsSheet({ onEditPress, onSharePress, ref }: FolderAct
   // permission, which is off by default — same gate as the web client.
   const canShare = isOwner && isFeaturePermitted('sharing', 'folders', false);
 
+  // NOTE: Open WebUI returns only the caller's own chats here, and a member cannot read the others' (401).
   const getFolderChats = async (id: string): Promise<Array<ChatResponse>> =>
     await queryClient.fetchQuery<Array<ChatResponse>>({
       queryKey: foldersApiConfig.getFolderChatsQueryKey(id),
@@ -145,7 +146,7 @@ export function FolderActionsSheet({ onEditPress, onSharePress, ref }: FolderAct
     },
     ...(canShare ? [shareAction] : []),
     {
-      title: translate('TEXT_EXPORT'),
+      title: translate('TEXT_EXPORT_MY_CHATS'),
       iconName: 'exportIcon',
       onPress: withOfflineGuard(onChatsExport),
       isLoading: isExportLoading,

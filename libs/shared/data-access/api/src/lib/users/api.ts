@@ -79,7 +79,7 @@ function useUpdateUserSettings({
   UpdateUserSettingsContext
 > = {}): UseMutationResult<UserSettings, AxiosError<ApiErrorData>, UserSettings, UpdateUserSettingsContext> {
   return useMutation<UserSettings, AxiosError<ApiErrorData>, UserSettings, UpdateUserSettingsContext>({
-    mutationFn: usersService.updateUserSettings,
+    mutationFn: (settings) => usersService.updateUserSettings(settings),
     onMutate: async (settings) => {
       await queryClient.cancelQueries({ queryKey: usersApiConfig.getUserSettingsQueryKey });
 

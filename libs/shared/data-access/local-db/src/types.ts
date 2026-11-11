@@ -10,6 +10,11 @@ export interface LocalChatListItem {
   folder_id?: string | null;
 }
 
+// NOTE: `active` is set while the server streams a reply; `GET v1/chats/{id}` would return the partial message.
+export interface ServerChatListItem extends LocalChatListItem {
+  active?: boolean;
+}
+
 export interface LocalChatSummary extends LocalChatListItem {
   folder_id: string | null;
   pinned: boolean;
@@ -18,6 +23,7 @@ export interface LocalChatSummary extends LocalChatListItem {
 
 export interface LocalChat {
   id: string;
+  user_id?: string;
   title: string;
   created_at: number;
   updated_at: number;
