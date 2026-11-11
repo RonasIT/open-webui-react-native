@@ -51,23 +51,23 @@ export function ShareWithSheet({ onAdd, ref, ...props }: ShareWithSheetProps): R
 
   const { query, setQuery, debouncedQuery } = useDebouncedQuery({ delay: 300 });
 
+  // NOTE: Open WebUI drops (0.10.0–0.12.3) or rejects with 403 (0.12.4+) grants to an audience these deny.
+  const canShareWithGroups = isFeaturePermitted('accessGrants', 'allowGroups', true);
+  const canShareWithUsers = isFeaturePermitted('accessGrants', 'allowUsers', true);
+
   const { data: profile } = authApi.useGetProfile();
-  const { data: groups, isLoading: isGroupsLoading } = groupsApi.useGetGroups();
+  const { data: groups, isLoading: isGroupsLoading } = groupsApi.useGetGroups(true, { enabled: canShareWithGroups });
   const {
     data: users,
     isLoading: isUsersLoading,
     isFetchingNextPage,
     fetchNextPage,
-  } = usersApi.useSearchUsers(debouncedQuery);
+  } = usersApi.useSearchUsers(debouncedQuery, { enabled: canShareWithUsers });
 
   const isLoading = isGroupsLoading || isUsersLoading;
 
   const hasGrant = (principalType: PrincipalType, principalId: string): boolean =>
     grants.some((grant) => grant.principalType === principalType && grant.principalId === principalId);
-
-  // NOTE: Open WebUI drops (0.10.0–0.12.3) or rejects with 403 (0.12.4+) grants to an audience these deny.
-  const canShareWithGroups = isFeaturePermitted('accessGrants', 'allowGroups', true);
-  const canShareWithUsers = isFeaturePermitted('accessGrants', 'allowUsers', true);
 
   // NOTE: Groups come unpaginated, so they are filtered by the query locally; users are searched by the backend.
   const availableGroups = canShareWithGroups
@@ -172,7 +172,7 @@ export function ShareWithSheet({ onAdd, ref, ...props }: ShareWithSheetProps): R
               data={items}
               renderItem={renderItem}
               showsVerticalScrollIndicator={false}
-              onEndReached={fetchNextPage}
+              onEndReached={canShareWithUsers ? fetchNextPage : undefined}
               ListFooterComponent={isFetchingNextPage ? <AppSpinner /> : null}
               ListEmptyComponent={
                 <ListEmptyComponent containerClassName='mt-16' description={translate('TEXT_NOBODY_TO_SHARE_WITH')} />
