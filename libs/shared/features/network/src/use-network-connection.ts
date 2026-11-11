@@ -8,8 +8,10 @@ interface UseNetworkConnectionResult {
 }
 
 export const useNetworkConnection = (): UseNetworkConnectionResult => {
-  const { isConnected, isInternetReachable } = useNetInfo();
-  const isOfflineMode = isInternetReachable === false || isConnected === false;
+  // NOTE: `isInternetReachable` is ignored on purpose: it fails when Google or the OS connectivity check is blocked
+  // (some regions, VPN-only or local networks) even though the user's own server is reachable.
+  const { isConnected } = useNetInfo();
+  const isOfflineMode = isConnected === false;
 
   useEffect(() => {
     appState$.setIsOfflineMode(isOfflineMode);
