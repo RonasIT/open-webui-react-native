@@ -6,6 +6,7 @@ import { ForwardedRef, ReactElement, useImperativeHandle, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { TextInput } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-logout';
 import {
   AppBottomSheet,
   AppBottomSheetKeyboardAwareScrollView,
@@ -38,6 +39,7 @@ export function ChangePasswordSheet({ ref, ...props }: ChangePasswordSheetProps)
   const newPasswordRef = useRef<TextInput>(null);
   const confirmPasswordRef = useRef<TextInput>(null);
   const isOfflineMode = useSelector(appState$.isOfflineMode);
+  const { logout } = useLogout();
 
   const { mutate: updatePassword, isPending } = authApi.useUpdatePassword();
 
@@ -68,9 +70,12 @@ export function ChangePasswordSheet({ ref, ...props }: ChangePasswordSheetProps)
     }
 
     updatePassword(new UpdatePasswordRequest({ password: values.currentPassword, newPassword: values.newPassword }), {
+      // NOTE: Open WebUI 0.12.0+ (0.11.1+ with Redis) revokes every session on a password change, the
+      // current one included; signing out on every version leaves the same clear state, as in the web.
       onSuccess: () => {
         closeSheet();
         ToastService.showSuccess(translate('TEXT_PASSWORD_CHANGED'));
+        logout();
       },
     });
   });

@@ -1,8 +1,11 @@
 const folderChatListQueryKeyPrefix = ['folders', 'chat-list'];
 const folderChatsQueryKeyPrefix = ['folders', 'chats'];
 
+const route = 'v1/folders';
+
 export const foldersApiConfig = {
-  route: 'v1/folders',
+  route,
+  listRoute: `${route}/`,
   chatsRoute: 'v1/chats',
   createFolderQueryKey: ['folders', 'create'],
   updateFolderQueryKey: ['folders', 'update'],

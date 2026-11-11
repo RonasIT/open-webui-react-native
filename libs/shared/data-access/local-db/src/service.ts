@@ -105,6 +105,80 @@ class LocalDbService {
     );
   }
 
+  public deleteAllChats(generation: number): Promise<void> {
+    return writeLocalDb(
+      'deleteAllChats',
+      async (db) => {
+        await db.runAsync('DELETE FROM chats');
+      },
+      generation,
+    );
+  }
+
+  // NOTE: Also deletes the subfolders and the chats in all of them, as the backend does.
+  public deleteFolder(id: string, generation: number): Promise<void> {
+    return writeLocalDb(
+      'deleteFolder',
+      async (db) => {
+        const rows = await db.getAllAsync<{ id: string }>(
+          `WITH RECURSIVE subtree(id) AS (
+            SELECT ?
+            UNION SELECT folders.id FROM folders JOIN subtree ON json_extract(folders.data, '$.parent_id') = subtree.id
+          )
+          SELECT id FROM subtree`,
+          id,
+        );
+        const ids = JSON.stringify(rows.map((row) => row.id));
+
+        await db.runAsync('DELETE FROM chats WHERE folder_id IN (SELECT value FROM json_each(?))', ids);
+        await db.runAsync('DELETE FROM folders WHERE id IN (SELECT value FROM json_each(?))', ids);
+      },
+      generation,
+    );
+  }
+
+  // NOTE: Chats created after maxCreatedAt (written after the list was fetched) are kept.
+  public async deleteChatsNotIn(ids: Array<string>, maxCreatedAt: number, generation: number): Promise<number> {
+    let deletedCount = 0;
+
+    await writeLocalDb(
+      'deleteChatsNotIn',
+      async (db) => {
+        const { changes } = await db.runAsync(
+          'DELETE FROM chats WHERE id NOT IN (SELECT value FROM json_each(?)) AND created_at <= ?',
+          JSON.stringify(ids),
+          maxCreatedAt,
+        );
+        deletedCount = changes;
+      },
+      generation,
+    );
+
+    return deletedCount;
+  }
+
+  public getStaleChatIds(): Promise<Array<string>> {
+    return readLocalDb('getStaleChatIds', [], async (db) => {
+      const rows = await db.getAllAsync<{ id: string }>(
+        `SELECT id FROM chats WHERE content_updated_at IS NULL OR content_updated_at < updated_at
+        ORDER BY updated_at DESC`,
+      );
+
+      return rows.map((row) => row.id);
+    });
+  }
+
+  // NOTE: Main file only, the WAL file is not counted.
+  public getSizeInBytes(): Promise<number> {
+    return readLocalDb('getSizeInBytes', 0, async (db) => {
+      const row = await db.getFirstAsync<{ size: number }>(
+        'SELECT page_count * page_size AS size FROM pragma_page_count(), pragma_page_size()',
+      );
+
+      return row?.size ?? 0;
+    });
+  }
+
   public getChats(filter: { folderId?: string; pinned?: boolean } = {}): Promise<Array<LocalChatSummary>> {
     return readLocalDb('getChats', [], async (db) => {
       const conditions: Array<string> = [];
