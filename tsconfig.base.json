@@ -258,6 +258,7 @@
       "@open-webui-react-native/shared/data-access/app-state": ["libs/shared/data-access/app-state/src/index.ts"],
       "@open-webui-react-native/shared/data-access/auth": ["libs/shared/data-access/auth/src/index.ts"],
       "@open-webui-react-native/shared/data-access/base-entity": ["libs/shared/data-access/base-entity/src/index.ts"],
+      "@open-webui-react-native/shared/data-access/chat-sync": ["libs/shared/data-access/chat-sync/src/index.ts"],
       "@open-webui-react-native/shared/data-access/common": ["libs/shared/data-access/common/src/index.ts"],
       "@open-webui-react-native/shared/data-access/cookie": ["libs/shared/data-access/cookie/src/index.ts"],
       "@open-webui-react-native/shared/data-access/local-db": ["libs/shared/data-access/local-db/src/index.ts"],
@@ -270,6 +271,7 @@
       "@open-webui-react-native/shared/data-access/query-client": ["libs/shared/data-access/query-client/src/index.ts"],
       "@open-webui-react-native/shared/data-access/storage": ["libs/shared/data-access/storage/src/index.ts"],
       "@open-webui-react-native/shared/data-access/websocket": ["libs/shared/data-access/websocket/src/index.ts"],
+      "@open-webui-react-native/shared/features/chat-sync": ["libs/shared/features/chat-sync/src/index.ts"],
       "@open-webui-react-native/shared/features/get-chat-as-text": [
         "libs/shared/features/get-chat-as-text/src/index.ts"
       ],
