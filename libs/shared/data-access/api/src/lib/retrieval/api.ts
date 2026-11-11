@@ -9,7 +9,7 @@ function useProcessUrl(
   props?: UseMutationOptions<ProcessUrlResponse, AxiosError<ApiErrorData>, ProcessUrlRequest>,
 ): UseMutationResult<ProcessUrlResponse, AxiosError<ApiErrorData>, ProcessUrlRequest> {
   return useMutation<ProcessUrlResponse, AxiosError<ApiErrorData>, ProcessUrlRequest>({
-    mutationFn: retrievalService.processUrl,
+    mutationFn: (request) => retrievalService.processUrl(request),
     mutationKey: retrievalApiConfig.processUrlQueryKey,
     ...props,
   });

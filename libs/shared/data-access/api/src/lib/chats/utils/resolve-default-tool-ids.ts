@@ -10,10 +10,10 @@ export interface ResolveDefaultToolIdsArgs {
 }
 
 // Tools a chat starts with when the user has not picked any, mirroring the web interface: the
-// model's own defaults win, and the user's default tools apply only to models that define none.
+// model's own list wins, even an empty one, and the user's default tools apply only when the model
+// has no list at all.
 export function resolveDefaultToolIds({ model, tools, uiSettings }: ResolveDefaultToolIdsArgs): Array<string> {
-  const modelToolIds = model?.info?.meta?.toolIds;
-  const defaultToolIds = modelToolIds?.length ? modelToolIds : (uiSettings?.tools ?? []);
+  const defaultToolIds = model?.info?.meta?.toolIds ?? uiSettings?.tools ?? [];
 
   return uniq(defaultToolIds).filter((toolId) => {
     const tool = tools?.find(({ id }) => id === toolId);
