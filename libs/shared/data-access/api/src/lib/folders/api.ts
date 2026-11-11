@@ -126,7 +126,7 @@ function useGetFolders(
   props?: Omit<UseQueryOptions<Array<FolderListItem>, AxiosError<ApiErrorData>>, 'queryKey' | 'queryFn'>,
 ): UseQueryResult<Array<FolderListItem>, AxiosError<ApiErrorData>> {
   return useQuery<Array<FolderListItem>, AxiosError<ApiErrorData>>({
-    queryFn: foldersService.getFolders,
+    queryFn: () => foldersService.getFolders(),
     queryKey: foldersApiConfig.getFoldersQueryKey,
     ...props,
   });
