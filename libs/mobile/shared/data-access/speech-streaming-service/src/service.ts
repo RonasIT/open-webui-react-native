@@ -3,7 +3,7 @@ import { setAudioModeAsync } from 'expo-audio';
 import * as Speech from 'expo-speech';
 import { SpeechStreamingServiceEvent } from './enums';
 import { prepareSpeakableText } from './prepare-speakable-text';
-import { resolveSpeechLanguage } from './resolve-speech-language';
+import { hasEnoughLettersForSpeechLanguage, resolveSpeechLanguage } from './resolve-speech-language';
 import { splitSpeechText } from './split-speech-text';
 
 const textBreakpoints = ['.', '!', '?', ',', ';', ':', '-'];
@@ -104,6 +104,17 @@ class SpeechStreamingService {
 
     // NOTE: Speak cleaned markdown; cursor tracks speakable length
     const speakableText = prepareSpeakableText(text, { holdIncomplete: !isDone });
+
+    if (this.shouldDetectLanguage) {
+      // NOTE: Streamed replies start with short segments, so the voice waits for enough text to pick its language
+      if (!isDone && !hasEnoughLettersForSpeechLanguage(speakableText)) {
+        return;
+      }
+
+      this.language = resolveSpeechLanguage(speakableText, this.language);
+      this.shouldDetectLanguage = false;
+    }
+
     const unspokenText = speakableText.slice(this.spokenText.length);
 
     let textToSpeak = '';
@@ -203,8 +214,7 @@ class SpeechStreamingService {
     });
 
     if (!this.voiceLanguage) {
-      // NOTE: Resolved once per reply from its first segment
-      this.voiceLanguage = await this.getVoiceLanguage(text);
+      this.voiceLanguage = await this.getVoiceLanguage();
     }
 
     if (this.isStopped || generation !== this.speechGeneration) {
@@ -227,18 +237,16 @@ class SpeechStreamingService {
     }
   };
 
-  private getVoiceLanguage = async (text: string): Promise<string> => {
-    const requestedLanguage = this.shouldDetectLanguage ? resolveSpeechLanguage(text, this.language) : this.language;
-
+  private getVoiceLanguage = async (): Promise<string> => {
     if (!this.voices?.length) {
       this.voices = await this.getAvailableVoices();
     }
 
     if (!this.voices.length) {
-      return requestedLanguage;
+      return this.language;
     }
 
-    const language = requestedLanguage.toLowerCase();
+    const language = this.language.toLowerCase();
     const voice = this.voices.find(({ language: tag }) => {
       const normalizedTag = tag.replace('_', '-').toLowerCase();
 

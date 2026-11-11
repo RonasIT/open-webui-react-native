@@ -1,31 +1,51 @@
-const latinLanguages = ['en', 'de', 'fr', 'es', 'pt', 'ro'];
+import { LanguageCode } from '@open-webui-react-native/shared/utils/config';
+
+const latinPattern = /\p{Script=Latin}/gu;
+const cyrillicPattern = /\p{Script=Cyrillic}/gu;
+const cjkPattern = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]/gu;
+const kanaPattern = /[\p{Script=Hiragana}\p{Script=Katakana}]/u;
+const minLetterCount = 20;
+
+// NOTE: Languages not listed here are written in Latin script
+const languagePatterns: Partial<Record<string, RegExp>> = {
+  [LanguageCode.RUSSIAN]: cyrillicPattern,
+  [LanguageCode.CHINESE]: cjkPattern,
+  [LanguageCode.JAPANESE]: cjkPattern,
+};
 
 const countLetters = (text: string, pattern: RegExp): number => text.match(pattern)?.length ?? 0;
 
-const getTextLanguage = (text: string, languageCode: string): string | undefined => {
-  const latinCount = countLetters(text, /\p{Script=Latin}/gu);
-  const cyrillicCount = countLetters(text, /\p{Script=Cyrillic}/gu);
-  const cjkCount = countLetters(text, /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]/gu);
+// NOTE: Fewer letters (e.g. "Docker,") can't tell the language of the reply
+export const hasEnoughLettersForSpeechLanguage = (text: string): boolean =>
+  countLetters(text, /\p{L}/gu) >= minLetterCount;
+
+const getDominantScriptLanguage = (text: string): LanguageCode | undefined => {
+  const latinCount = countLetters(text, latinPattern);
+  const cyrillicCount = countLetters(text, cyrillicPattern);
+  const cjkCount = countLetters(text, cjkPattern);
 
   if (!latinCount && !cyrillicCount && !cjkCount) {
     return undefined;
   }
 
   if (latinCount >= cyrillicCount && latinCount >= cjkCount) {
-    return latinLanguages.includes(languageCode) ? languageCode : 'en';
+    return LanguageCode.ENGLISH;
   }
 
   if (cyrillicCount >= cjkCount) {
-    return 'ru';
+    return LanguageCode.RUSSIAN;
   }
 
-  return /[\p{Script=Hiragana}\p{Script=Katakana}]/u.test(text) ? 'ja' : 'zh';
+  return kanaPattern.test(text) ? LanguageCode.JAPANESE : LanguageCode.CHINESE;
 };
 
-// NOTE: Switches to a language that can read the text's script; Latin-script languages aren't told apart
+// NOTE: Switches only when the text has no letter of the app language's script; Latin languages aren't told apart
 export const resolveSpeechLanguage = (text: string, language: string): string => {
-  const languageCode = language.split('-')[0].toLowerCase();
-  const textLanguage = getTextLanguage(text, languageCode);
+  const languagePattern = languagePatterns[language.split('-')[0].toLowerCase()] ?? latinPattern;
 
-  return !textLanguage || textLanguage === languageCode ? language : textLanguage;
+  if (!hasEnoughLettersForSpeechLanguage(text) || countLetters(text, languagePattern) > 0) {
+    return language;
+  }
+
+  return getDominantScriptLanguage(text) ?? language;
 };

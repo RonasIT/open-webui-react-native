@@ -7,7 +7,10 @@ import { PropsWithChildren, ReactElement, useRef } from 'react';
 import { View } from 'react-native';
 import { useDeleteMessage } from '@open-webui-react-native/mobile/chat/features/use-delete-message';
 import { MessageActionsSheetWrapper } from '@open-webui-react-native/mobile/chat/ui/message-actions-wrapper';
-import { speechStreamingService } from '@open-webui-react-native/mobile/shared/data-access/speech-streaming-service';
+import {
+  prepareSpeakableText,
+  speechStreamingService,
+} from '@open-webui-react-native/mobile/shared/data-access/speech-streaming-service';
 import { ActionsBottomSheet, ActionSheetItemProps } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import {
   isFeaturePermitted,
@@ -147,7 +150,7 @@ export function AiMessageActions({
       iconName: isSpeaking ? 'stop' : 'volume',
       onPress: toggleReadingAloud,
       // NOTE: Stopping is always allowed
-      disabled: !isSpeaking && (isChangeDisabled || !answerText),
+      disabled: !isSpeaking && (isChangeDisabled || !prepareSpeakableText(answerText)),
     },
     isLast && {
       title: translate('TEXT_CONTINUE_RESPONSE'),

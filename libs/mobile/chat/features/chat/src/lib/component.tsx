@@ -1,7 +1,7 @@
 import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import dayjs from 'dayjs';
-import { useFocusEffect } from 'expo-router';
+import { useFocusEffect, useIsFocused } from 'expo-router';
 import { delay } from 'lodash-es';
 import React, { Fragment, ReactElement, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -52,6 +52,8 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
 
   const [isInputFocusing, setIsInputFocusing] = useState(false); //NOTE: Needs to avoid ChatBottomButton jumping when auto-scrolling after focus
 
+  const isFocused = useIsFocused();
+  const speakingMessageId = useSelector(speechStreamingService.speakingMessageId$);
   const isSocketConnected = useSelector(webSocketState$.isSocketConnected);
   const isOfflineMode = useSelector(appState$.isOfflineMode);
   const { data: userSettings } = usersApi.useGetUserSettings();
@@ -290,6 +292,13 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
       setQueuedMessage(null);
     }
   }, [isResponseGenerating, isOfflineMode, queuedMessage, selectedModelId, sendMessage]);
+
+  // NOTE: Deleting, regenerating or switching a branch removes the message being read
+  useEffect(() => {
+    if (isFocused && speakingMessageId && !messages.some(({ id }) => id === speakingMessageId)) {
+      void speechStreamingService.stopContentSpeaking();
+    }
+  }, [isFocused, speakingMessageId, messages]);
 
   useEffect(() => {
     if (isNewChat && !firstMessageGeneratedRef.current && isAssistantMessage && currentMessage.done) {
