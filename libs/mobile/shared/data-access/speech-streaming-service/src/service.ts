@@ -3,6 +3,7 @@ import { setAudioModeAsync } from 'expo-audio';
 import * as Speech from 'expo-speech';
 import { SpeechStreamingServiceEvent } from './enums';
 import { prepareSpeakableText } from './prepare-speakable-text';
+import { resolveSpeechLanguage } from './resolve-speech-language';
 import { splitSpeechText } from './split-speech-text';
 
 const textBreakpoints = ['.', '!', '?', ',', ';', ':', '-'];
@@ -24,6 +25,8 @@ class SpeechStreamingService {
   private listeners: Map<string, Array<(...args: Array<any>) => void>> = new Map();
   // NOTE: Requested language code, e.g. 'de'
   private language: string;
+  // NOTE: Only the app locale is known, so the text's script may pick a better language
+  private shouldDetectLanguage: boolean;
   // NOTE: Voice tag picked for the current reply, e.g. 'de-DE'
   private voiceLanguage?: string;
   private voices?: Array<Speech.Voice>;
@@ -35,6 +38,7 @@ class SpeechStreamingService {
     this.queue = [];
     this.isProcessingQueue = false;
     this.language = fallbackLanguage;
+    this.shouldDetectLanguage = false;
   }
 
   public onSpeakingStart(callback: () => void): () => void {
@@ -45,8 +49,10 @@ class SpeechStreamingService {
     return this.addEventListener(SpeechStreamingServiceEvent.SPEAKING_END, callback);
   }
 
-  public resumeContentSpeaking = (language: string): void => {
-    this.language = language;
+  // NOTE: sttLanguage is the user's explicit choice and is never overridden
+  public resumeContentSpeaking = (locale: string, sttLanguage?: string): void => {
+    this.language = sttLanguage || locale;
+    this.shouldDetectLanguage = !sttLanguage;
     this.voiceLanguage = undefined;
     this.isStopped = false;
     this.spokenText = '';
@@ -64,7 +70,12 @@ class SpeechStreamingService {
     this.isProcessingQueue = false;
   };
 
-  public speakMessage = async (messageId: string, text: string, language: string): Promise<void> => {
+  public speakMessage = async (
+    messageId: string,
+    text: string,
+    locale: string,
+    sttLanguage?: string,
+  ): Promise<void> => {
     const stopPromise = this.stopContentSpeaking();
     const generation = this.speechGeneration;
     await stopPromise;
@@ -74,7 +85,7 @@ class SpeechStreamingService {
       return;
     }
 
-    this.resumeContentSpeaking(language);
+    this.resumeContentSpeaking(locale, sttLanguage);
     this.speakingMessageId$.set(messageId);
     this.handleContent(text, true);
   };
@@ -192,7 +203,8 @@ class SpeechStreamingService {
     });
 
     if (!this.voiceLanguage) {
-      this.voiceLanguage = await this.getVoiceLanguage();
+      // NOTE: Resolved once per reply from its first segment
+      this.voiceLanguage = await this.getVoiceLanguage(text);
     }
 
     if (this.isStopped || generation !== this.speechGeneration) {
@@ -215,16 +227,18 @@ class SpeechStreamingService {
     }
   };
 
-  private getVoiceLanguage = async (): Promise<string> => {
+  private getVoiceLanguage = async (text: string): Promise<string> => {
+    const requestedLanguage = this.shouldDetectLanguage ? resolveSpeechLanguage(text, this.language) : this.language;
+
     if (!this.voices?.length) {
       this.voices = await this.getAvailableVoices();
     }
 
     if (!this.voices.length) {
-      return this.language;
+      return requestedLanguage;
     }
 
-    const language = this.language.toLowerCase();
+    const language = requestedLanguage.toLowerCase();
     const voice = this.voices.find(({ language: tag }) => {
       const normalizedTag = tag.replace('_', '-').toLowerCase();
 

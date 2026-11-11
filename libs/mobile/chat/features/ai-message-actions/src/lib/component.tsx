@@ -81,9 +81,7 @@ export function AiMessageActions({
     if (isSpeaking) {
       void speechStreamingService.stopContentSpeaking();
     } else {
-      // NOTE: Same language as voice mode
-      const language = userSettings?.ui?.audio?.stt?.language || locale;
-      void speechStreamingService.speakMessage(message.id, answerText, language);
+      void speechStreamingService.speakMessage(message.id, answerText, locale, userSettings?.ui?.audio?.stt?.language);
     }
     close();
   };
