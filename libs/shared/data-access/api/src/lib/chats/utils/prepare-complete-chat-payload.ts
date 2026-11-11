@@ -8,6 +8,7 @@ import { isModelControlsAvailable } from '../../ai-models/utils/is-model-control
 import { splitStaleModelControlChoices } from '../../ai-models/utils/split-stale-model-control-choices';
 import { appConfigurationApiConfig } from '../../app-configuration/config';
 import { Configuration } from '../../app-configuration/models';
+import { isServerVersionAtLeast } from '../../app-configuration/utils/is-server-version-at-least';
 import { toolsApiConfig } from '../../tools/config';
 import { Tool } from '../../tools/models';
 import { usersApiConfig } from '../../users/config';
@@ -47,6 +48,8 @@ export interface PrepareCompleteChatPayloadArgs {
   assistantMessageId?: string;
   // Set only for guided regeneration: the instruction the backend appends as the last user turn.
   regenerationPrompt?: string;
+  // Set only for guided regeneration: the assistant message the instruction revises.
+  regenerationMessageId?: string;
 }
 
 export function prepareCompleteChatPayload({
@@ -59,6 +62,7 @@ export function prepareCompleteChatPayload({
   userMessage,
   assistantMessageId,
   regenerationPrompt,
+  regenerationMessageId,
 }: PrepareCompleteChatPayloadArgs): CompleteChatRequest {
   const userSettings = queryClient.getQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey);
   const chatResponse = queryClient.getQueryData<ChatResponse>(chatQueriesKeys.get(chatId).queryKey);
@@ -213,6 +217,8 @@ export function prepareCompleteChatPayload({
     parentId: resolvedUserMessage?.parentId ?? null,
     assistantMessageId,
     regenerationPrompt,
+    // NOTE: Open WebUI before 0.12.4 does not know the field and forwards it to the provider; remove with 0.12.3 support.
+    regenerationMessageId: isServerVersionAtLeast('0.12.4') ? regenerationMessageId : undefined,
   });
 
   return request;
