@@ -151,7 +151,7 @@ export function prepareCompleteChatPayload({
         ]
       : [];
 
-    const historyMessages = messages.map((message) => {
+    const historyMessages = messages.flatMap((message) => {
       const content: Array<ChatMessageContent> = [];
 
       if (message.content) {
@@ -176,10 +176,19 @@ export function prepareCompleteChatPayload({
         );
       }
 
-      return new ChatMessage({
-        role: message.role,
-        content,
-      });
+      // NOTE: Drop the empty assistant placeholder. A temporary chat is not in the DB, so 0.10
+      // sends this array to the model and to follow-up generation. A blank assistant turn is what
+      // comes back as "None". The web client filters the same way (`content.trim()` / `output`).
+      if (message.role === Role.ASSISTANT && content.length === 0) {
+        return [];
+      }
+
+      return [
+        new ChatMessage({
+          role: message.role,
+          content,
+        }),
+      ];
     });
 
     return [...systemMessage, ...historyMessages];
