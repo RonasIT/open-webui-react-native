@@ -71,8 +71,8 @@ export default function ChatScreen(): ReactElement {
   }, [rootNavigation, path, id]);
 
   const renderTrigger = ({ onPress }: { onPress: () => void }): ReactElement => (
-    <AppPressable className='flex-row items-center' onPress={onPress}>
-      <AppText numberOfLines={1} className='text-md-sm sm:text-md font-medium max-w-[80%]'>
+    <AppPressable className='flex-row items-center max-w-full' onPress={onPress}>
+      <AppText numberOfLines={1} className='text-md-sm sm:text-md font-medium shrink'>
         {modelName}
       </AppText>
       <Icon name='chevronDown' />
@@ -89,7 +89,7 @@ export default function ChatScreen(): ReactElement {
             isLoading && !modelId ? (
               translate('TEXT_LOADING')
             ) : (
-              <View className='items-center'>
+              <View className='items-center max-w-full'>
                 {isTemporaryChat && (
                   <View className='flex-row items-center gap-4'>
                     <Icon name='eyeClosed' className='size-12 shrink-0 color-text-secondary' />
