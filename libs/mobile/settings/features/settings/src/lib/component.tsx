@@ -271,17 +271,21 @@ export function Settings(): ReactElement {
     },
     {
       type: 'action',
-      label: translate('TEXT_DELETE_ACCOUNT'),
-      iconName: 'trashCan',
-      isDanger: true,
-      onPress: handleRequestDeleteAccountPress,
-    },
-    {
-      type: 'action',
       label: translate('TEXT_LOGOUT'),
       iconName: 'logout',
       isDanger: true,
       onPress: handleRequestLogoutPress,
+    },
+  ];
+
+  // NOTE: Kept apart from Logout so the two are not mistaken for each other.
+  const deleteAccountOptions: Array<SettingsSectionOption> = [
+    {
+      type: 'action',
+      label: translate('TEXT_DELETE_ACCOUNT'),
+      iconName: 'trashCan',
+      isDanger: true,
+      onPress: handleRequestDeleteAccountPress,
     },
   ];
 
@@ -392,6 +396,7 @@ export function Settings(): ReactElement {
       <SettingsSection title={translate('TEXT_SECTION_FEEDBACK')} options={feedbackOptions} />
       <SettingsSection title={translate('TEXT_SECTION_CHATS')} options={chatsOptions} />
       <SettingsSection options={preferenceOptions} />
+      <SettingsSection options={deleteAccountOptions} />
       <AppVersionFooter />
       <ProfileAvatarSheet
         ref={profileAvatarSheetRef}
