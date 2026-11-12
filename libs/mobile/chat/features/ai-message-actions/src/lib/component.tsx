@@ -8,7 +8,7 @@ import { View } from 'react-native';
 import { useDeleteMessage } from '@open-webui-react-native/mobile/chat/features/use-delete-message';
 import { MessageActionsSheetWrapper } from '@open-webui-react-native/mobile/chat/ui/message-actions-wrapper';
 import { ActionsBottomSheet, ActionSheetItemProps } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { getMessageText, Message, replaceDetailsWithMarkers } from '@open-webui-react-native/shared/data-access/api';
+import { Message, replaceDetailsWithMarkers } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { parseResponseMessageContent } from '@open-webui-react-native/shared/utils/strings';
@@ -60,8 +60,7 @@ export function AiMessageActions({
 
   const isChangeDisabled = isResponseGenerating || isSkeleton;
   // NOTE: Same text as on screen: older Open WebUI versions keep reasoning and tool calls in it as `<details>`.
-  const messageText = getMessageText(message);
-  const answerText = parseResponseMessageContent(messageText).messageContent;
+  const answerText = parseResponseMessageContent(message.content ?? '').messageContent;
 
   const copyToClipboard = async (): Promise<void> => {
     await Clipboard.setStringAsync(answerText);
@@ -70,12 +69,12 @@ export function AiMessageActions({
   };
 
   const handleEditPress = (): void => {
-    onEditPress(message.id, replaceDetailsWithMarkers(messageText));
+    onEditPress(message.id, replaceDetailsWithMarkers(message.content));
     close();
   };
 
   const handleContinueResponsePress = (): void => {
-    onContinueResponsePress(message.id, messageText);
+    onContinueResponsePress(message.id, message.content);
     close();
   };
 

@@ -1,7 +1,6 @@
 export * from './prepare-create-chat-payload';
 export * from './prepare-complete-chat-payload';
 export * from './get-completion-files';
-export * from './get-message-text';
 export * from './prepare-send-message-payload';
 export * from './patch-chat-message-with-completion';
 export * from './patch-completed-message';

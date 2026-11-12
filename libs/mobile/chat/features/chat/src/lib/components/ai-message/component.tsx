@@ -18,7 +18,6 @@ import {
   AskUserDraftAnswers,
   buildAskUserAnswers,
   chatApi,
-  getMessageText,
   getPendingToolCall,
   Message,
   modelsApi,
@@ -66,6 +65,7 @@ export function ChatAiMessage({
   onFollowUpPress,
 }: ChatAiMessageProps): ReactElement {
   const {
+    content: text,
     model: modelId,
     modelName: aiModelName,
     files,
@@ -106,7 +106,6 @@ export function ChatAiMessage({
   // NOTE: Failures surface through the api-client error interceptor's toast, so no onError here.
   const { mutate: resolveToolCall, isPending: isResolvingToolCall } = chatApi.useResolveToolCall();
 
-  const text = getMessageText(message);
   const { detailsBlocks, messageContent } = parseResponseMessageContent(text);
   // NOTE: Offline the stream is gone, so reasoning still in progress will not finish.
   const rows = buildMessageRows(message, detailsBlocks, Boolean(isMessageDone) || isOfflineMode);
