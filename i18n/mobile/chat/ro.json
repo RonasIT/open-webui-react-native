@@ -134,6 +134,8 @@
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Editează",
       "TEXT_COPY": "Copiază",
+      "TEXT_READ_ALOUD": "Citește cu voce tare",
+      "TEXT_STOP_READING_ALOUD": "Oprește",
       "TEXT_CONTINUE_RESPONSE": "Continuă răspunsul",
       "TEXT_REGENERATE": "Regenerează",
       "TEXT_DELETE": "Șterge",

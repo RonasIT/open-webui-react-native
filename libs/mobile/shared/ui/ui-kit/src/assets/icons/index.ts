@@ -69,6 +69,7 @@ import unarchive from './unarchive.svg';
 import unpin from './unpin.svg';
 import uploadFile from './upload-file.svg';
 import users from './users.svg';
+import volume from './volume.svg';
 import web from './web.svg';
 
 export const Icons = {
@@ -144,4 +145,5 @@ export const Icons = {
   key,
   knobs,
   lock,
+  volume,
 };
