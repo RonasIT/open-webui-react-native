@@ -212,6 +212,8 @@ export function prepareCompleteChatPayload({
         (Boolean(userSettings?.ui.webSearch) && availableGenerationOptions.includes(ChatGenerationOption.WEB_SEARCH)) ||
         resolvedGenerationOptions.includes(ChatGenerationOption.WEB_SEARCH),
       voice: resolvedGenerationOptions.includes(ChatGenerationOption.VOICE),
+      // NOTE: Without it the backend skips saved memories and memory tools. Same rule as the web client.
+      memory: userSettings?.ui.memory ?? configuration?.features?.enableMemories ?? false,
     }),
     params,
     toolIds: resolvedToolIds.length > 0 ? resolvedToolIds : undefined,
