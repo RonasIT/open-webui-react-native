@@ -1,5 +1,7 @@
-# Gitignored files copied into each new worktree
+Gitignored files copied into each new worktree
 .env.local
 apps/mobile/.env.local
 node_modules
 apps/mobile/.expo
+.claude
+CLAUDE.md
