@@ -1,9 +1,12 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import * as Clipboard from 'expo-clipboard';
 import { Fragment, ReactElement, Ref, useState } from 'react';
 import { AppText, View, AppBottomSheet, AppButton, AppSpinner } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { chatApi, getShareChatLink } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 interface ShareChatModalProps {
@@ -14,6 +17,7 @@ interface ShareChatModalProps {
 export function ShareChatModal({ chatId, ref }: ShareChatModalProps): ReactElement {
   const translate = useTranslation('CHAT.SHARE_CHAT_MODAL');
   const [isOpen, setIsOpen] = useState(false);
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
   const { data: chat } = chatApi.useGet(chatId, {
     enabled: isOpen,
   });
@@ -30,15 +34,15 @@ export function ShareChatModal({ chatId, ref }: ShareChatModalProps): ReactEleme
   });
   const isShared = !!chat?.shareId;
 
-  const handleShareChat = async (): Promise<void> => {
+  const handleShareChat = withOfflineGuard(async (): Promise<void> => {
     shareChat(chatId);
-  };
+  });
 
-  const handleDeleteLink = () => {
+  const handleDeleteLink = withOfflineGuard((): void => {
     deleteShareChatLink(chatId);
-  };
+  });
 
-  const handleBeforePress = () => {
+  const handleBeforePress = (): void => {
     if (chat?.shareId) {
       handleCopyLink(chat.shareId);
     }
@@ -86,6 +90,7 @@ export function ShareChatModal({ chatId, ref }: ShareChatModalProps): ReactEleme
               iconClassName='color-background-primary'
               className='h-[48px]'
               onPress={handleShareChat}
+              isInactive={isOfflineMode}
               isLoading={isSharing || isDeleting}
             />
           </View>

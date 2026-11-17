@@ -18,6 +18,7 @@ export type ActionsBottomSheetProps = PropsWithChildren<Partial<AppBottomSheetPr
     actions: Array<ActionsBottomSheetAction>;
     withSeparator?: boolean;
     areActionsDisabled?: boolean;
+    areActionsInactive?: boolean;
     onClose?: () => void;
     closeButtonText?: string;
     title?: string;
@@ -33,6 +34,7 @@ export function ActionsBottomSheet({
   actions,
   withSeparator,
   areActionsDisabled,
+  areActionsInactive,
   onClose,
   closeButtonText,
   title,
@@ -53,10 +55,17 @@ export function ActionsBottomSheet({
     ref?.current?.close();
   };
 
-  const renderActionComponent = ({ key, disabled, isLoading, ...action }: ActionsBottomSheetAction): ReactElement => (
+  const renderActionComponent = ({
+    key,
+    disabled,
+    isLoading,
+    isInactive,
+    ...action
+  }: ActionsBottomSheetAction): ReactElement => (
     <ActionSheetItem
       key={key ?? action.title}
       disabled={areActionsDisabled || disabled || isLoading}
+      isInactive={areActionsInactive || isInactive}
       isLoading={isLoading}
       {...action}
     />

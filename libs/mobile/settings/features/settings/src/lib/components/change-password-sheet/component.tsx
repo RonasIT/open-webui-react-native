@@ -1,10 +1,12 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { TextInput } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-logout';
 import {
   AppBottomSheet,
   AppBottomSheetKeyboardAwareScrollView,
@@ -14,6 +16,8 @@ import {
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { authApi, UpdatePasswordRequest } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { ChangePasswordFormSchema } from '../../forms';
 
@@ -34,6 +38,8 @@ export function ChangePasswordSheet({ ref, ...props }: ChangePasswordSheetProps)
   const currentPasswordRef = useRef<TextInput>(null);
   const newPasswordRef = useRef<TextInput>(null);
   const confirmPasswordRef = useRef<TextInput>(null);
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
+  const { logout } = useLogout();
 
   const { mutate: updatePassword, isPending } = authApi.useUpdatePassword();
 
@@ -58,18 +64,23 @@ export function ChangePasswordSheet({ ref, ...props }: ChangePasswordSheetProps)
   //NOTE: Autofocus causes scrolling to an incorrect position
   const handleOpen = (): void => currentPasswordRef.current?.focus();
 
-  const handleConfirmPress = handleSubmit((values) => {
+  const submitForm = handleSubmit((values) => {
     if (isPending) {
       return;
     }
 
     updatePassword(new UpdatePasswordRequest({ password: values.currentPassword, newPassword: values.newPassword }), {
+      // NOTE: Open WebUI 0.12.0+ (0.11.1+ with Redis) revokes every session on a password change, the
+      // current one included; signing out on every version leaves the same clear state, as in the web.
       onSuccess: () => {
         closeSheet();
         ToastService.showSuccess(translate('TEXT_PASSWORD_CHANGED'));
+        logout();
       },
     });
   });
+
+  const handleConfirmPress = withOfflineGuard(submitForm);
 
   return (
     <AppBottomSheet
@@ -85,7 +96,7 @@ export function ChangePasswordSheet({ ref, ...props }: ChangePasswordSheetProps)
             title={translate('TEXT_TITLE')}
             onGoBack={closeSheet}
             onConfirmPress={handleConfirmPress}
-            confirmButtonProps={{ isLoading: isPending, disabled: isPending }}
+            confirmButtonProps={{ isLoading: isPending, disabled: isPending, isInactive: isOfflineMode }}
           />
           <AppBottomSheetKeyboardAwareScrollView>
             <View className='pt-8 gap-16' style={{ paddingBottom: bottom + 24 }}>
@@ -100,6 +111,7 @@ export function ChangePasswordSheet({ ref, ...props }: ChangePasswordSheetProps)
                 label={translate('TEXT_CURRENT_PASSWORD')}
                 placeholder={translate('TEXT_ENTER_CURRENT_PASSWORD')}
                 onSubmitEditing={() => newPasswordRef.current?.focus()}
+                isPassword
               />
               <FormFloatedLabelInput
                 name='newPassword'
@@ -112,6 +124,7 @@ export function ChangePasswordSheet({ ref, ...props }: ChangePasswordSheetProps)
                 label={translate('TEXT_NEW_PASSWORD')}
                 placeholder={translate('TEXT_ENTER_NEW_PASSWORD')}
                 onSubmitEditing={() => confirmPasswordRef.current?.focus()}
+                isPassword
               />
               <FormFloatedLabelInput
                 name='confirmPassword'
@@ -124,6 +137,7 @@ export function ChangePasswordSheet({ ref, ...props }: ChangePasswordSheetProps)
                 label={translate('TEXT_CONFIRM_NEW_PASSWORD')}
                 placeholder={translate('TEXT_ENTER_CONFIRM_NEW_PASSWORD')}
                 onSubmitEditing={handleConfirmPress}
+                isPassword
               />
             </View>
           </AppBottomSheetKeyboardAwareScrollView>

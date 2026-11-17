@@ -12,7 +12,7 @@ export class ResponseStreamResponse {
 
 // NOTE: Payload of the `response:completion` socket event (Open WebUI 0.11.1+). It mirrors a
 // Responses-API streaming event: `response.output_text.delta`, `response.output_item.added`,
-// `response.completed`, etc. Only the fields affecting the visible assistant text are modelled —
+// `response.completed`, etc. Only the fields affecting the visible answer and reasoning are modelled —
 // the authoritative full `output` still arrives with the terminal `chat:completion` done event.
 export class ResponseStreamEvent {
   @Expose()
@@ -25,6 +25,15 @@ export class ResponseStreamEvent {
   // output accumulated before a tool call, so it stays aligned with `chat:completion` snapshots.
   @Expose({ name: 'output_index' })
   public outputIndex?: number;
+
+  @Expose({ name: 'item_id' })
+  public itemId?: string;
+
+  @Expose({ name: 'content_index' })
+  public contentIndex?: number;
+
+  @Expose({ name: 'summary_index' })
+  public summaryIndex?: number;
 
   @Expose()
   @Type(() => ChatCompletionOutputItem)

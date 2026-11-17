@@ -26,6 +26,7 @@ import {
   isTemporaryChatId,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { AttachedListItem, ImageData, Role } from '@open-webui-react-native/shared/data-access/common';
 import { useSubscribeToQueryCache } from '@open-webui-react-native/shared/data-access/query-client';
 import { webSocketConfig, webSocketState$ } from '@open-webui-react-native/shared/data-access/websocket';
@@ -50,6 +51,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   const [isInputFocusing, setIsInputFocusing] = useState(false); //NOTE: Needs to avoid ChatBottomButton jumping when auto-scrolling after focus
 
   const isSocketConnected = useSelector(webSocketState$.isSocketConnected);
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
   const { data: userSettings } = usersApi.useGetUserSettings();
   const isMessageQueueEnabled = userSettings?.ui.enableMessageQueue ?? true;
 
@@ -122,7 +124,9 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
 
   const hasFailed = Boolean(currentMessage?.error?.content);
   const isAssistantMessage = currentMessage?.role === Role.ASSISTANT;
-  const isResponseGenerating = isAssistantMessage && !currentMessage.done && !isAwaitingToolApproval && !hasFailed;
+  // NOTE: Offline the stream is gone, so a turn in progress counts as interrupted: no spinner, no Stop.
+  const isResponseGenerating =
+    isAssistantMessage && !currentMessage.done && !isAwaitingToolApproval && !hasFailed && !isOfflineMode;
 
   // NOTE: With message queueing enabled, a generating response no longer force-disables the text input —
   // the user can keep typing and submit the next message immediately (queued via `queuedMessage`). The
@@ -264,7 +268,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   }, [isNewChat, isSuccess, chatId]);
 
   useEffect(() => {
-    if (!isResponseGenerating && queuedMessage && selectedModelId) {
+    if (!isResponseGenerating && !isOfflineMode && queuedMessage && selectedModelId) {
       sendMessage(
         queuedMessage.inputValue,
         selectedModelId,
@@ -274,7 +278,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
       );
       setQueuedMessage(null);
     }
-  }, [isResponseGenerating, queuedMessage, selectedModelId, sendMessage]);
+  }, [isResponseGenerating, isOfflineMode, queuedMessage, selectedModelId, sendMessage]);
 
   useEffect(() => {
     if (isNewChat && !firstMessageGeneratedRef.current && isAssistantMessage && currentMessage.done) {
@@ -346,7 +350,8 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
               onFocus={handleInputFocus}
               name='inputValue'
               onSubmit={onSubmit}
-              isLoading={isSending || !isSocketConnected || isComposerBlockedByGeneration}
+              // NOTE: Offline the socket is down by design: the composer stays editable and FormChatInput blocks sending.
+              isLoading={isSending || (!isSocketConnected && !isOfflineMode) || isComposerBlockedByGeneration}
               attachedItems={attachedItems}
               onItemAttached={handleItemAttached}
               onDeleteItemPress={handleDeleteItem}

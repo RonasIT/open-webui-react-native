@@ -21,6 +21,7 @@
       "BUTTON_CONFIRM": "Confirmer",
       "BUTTON_OPEN_SETTINGS": "Ouvrir les paramètres",
       "TEXT_UNABLE_TO_OPEN_SETTINGS": "Impossible d’ouvrir les paramètres",
+      "TEXT_UNABLE_TO_OPEN_LINK": "Impossible d’ouvrir le lien",
       "TEXT_SETTINGS": "Paramètres",
       "TEXT_DISABLED_IN_OFFLINE_MODE": "Les fonctionnalités sont désactivées en mode hors ligne",
       "ACTIONS_BOTTOM_SHEET": {
@@ -111,6 +112,15 @@
     },
     "USE_ATTACHED_FILES": {
       "TEXT_IMAGE_UPLOAD_FAILED": "Impossible d'envoyer la photo. Vérifiez votre connexion et réessayez"
+    },
+    "MARKDOWN_VIEW": {
+      "DIAGRAM_BLOCK": {
+        "BUTTON_CODE": "Code",
+        "BUTTON_DIAGRAM": "Diagramme",
+        "TEXT_SHOW_CODE": "Afficher le code",
+        "TEXT_SHOW_DIAGRAM": "Afficher le diagramme",
+        "TEXT_OPEN_FULLSCREEN": "Ouvrir le diagramme en plein écran"
+      }
     },
     "MODEL_CONTROLS": {
       "TEXT_CONTROL_NAME": "« {{control}} »",

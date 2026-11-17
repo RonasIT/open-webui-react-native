@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useAudioRecorder } from '@open-webui-react-native/mobile/shared/features/use-audio-recorder';
 import { audioApi, usersApi } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
+import { showOfflineToast } from '@open-webui-react-native/shared/features/network';
 import { joinString } from '@open-webui-react-native/shared/utils/strings';
 import { normalizeMetering } from './normalize-metering';
 import { getSpeechFormData } from './utils';
@@ -153,7 +154,14 @@ export const useDictateMode = ({
         clearPausedSpeech();
         transcribeAudio(getSpeechFormData(uri, speechLanguage), {
           onSuccess: (response) => finishRecording(response.text, pausedSpeech),
-          onError: () => finishRecording(undefined, pausedSpeech),
+          onError: () => {
+            // NOTE: The network dropped during recording, so transcription was blocked — say why the text is gone.
+            if (appState$.isOfflineMode.get()) {
+              showOfflineToast();
+            }
+
+            finishRecording(undefined, pausedSpeech);
+          },
         });
       } else {
         await finishRecording();

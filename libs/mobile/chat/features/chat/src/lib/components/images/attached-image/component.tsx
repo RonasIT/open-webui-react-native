@@ -2,7 +2,7 @@ import { ImageRef, Image } from 'expo-image';
 import { ReactElement, useEffect, useState } from 'react';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { AppImage, AppImageProps, AppPressable } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
+import { getServerImageSource } from '@open-webui-react-native/shared/data-access/api';
 import { ImageSkeleton } from '../image-skeleton';
 
 export interface AttachedImageViewProps extends AppImageProps {
@@ -37,10 +37,7 @@ export function AttachedImageView({
   }));
 
   const loadImage = async (): Promise<void> => {
-    const image = await Image.loadAsync({
-      uri: url,
-      headers: { Authorization: `Bearer ${appStorageService.token.get()}` },
-    });
+    const image = await Image.loadAsync(getServerImageSource(url));
     setImage(image);
 
     if (!shouldHideSkeleton) {

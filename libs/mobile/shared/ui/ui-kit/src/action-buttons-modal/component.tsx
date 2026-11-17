@@ -23,7 +23,7 @@ export interface ActionButtonsModalProps {
   description?: string | ReactElement;
   withInput?: boolean;
   ref?: ActionButtonsModalRef;
-  isScrollable?: boolean;
+  isConfirmInactive?: boolean;
 }
 
 export function ActionButtonsModal({
@@ -33,7 +33,7 @@ export function ActionButtonsModal({
   description,
   withInput,
   ref,
-  isScrollable,
+  isConfirmInactive,
 }: ActionButtonsModalProps): ReactElement {
   const translate = useTranslation('SHARED.ACTION_BUTTONS_MODAL');
   const modalRef = useRef<BottomSheetModal>(null);
@@ -97,6 +97,7 @@ export function ActionButtonsModal({
             <AppButton
               text={translate('BUTTON_CONFIRM')}
               onPress={handleConfirm}
+              isInactive={isConfirmInactive}
               isLoading={isConfirming}
               className='flex-1'
             />

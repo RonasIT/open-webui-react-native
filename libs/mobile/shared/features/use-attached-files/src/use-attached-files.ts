@@ -4,6 +4,7 @@ import { isAxiosError } from 'axios';
 import { fileSystemService } from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
 import { compressImage } from '@open-webui-react-native/mobile/shared/utils/compressor';
 import { filesApi, isFeaturePermitted } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import {
   AttachedListItem,
   AttachmentStatus,
@@ -11,6 +12,7 @@ import {
   ImageData,
   PickedImageData,
 } from '@open-webui-react-native/shared/data-access/common';
+import { showOfflineToast } from '@open-webui-react-native/shared/features/network';
 import { ImageMimeType } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
@@ -90,7 +92,9 @@ export function useAttachedFiles({ shouldUploadImages = false }: UseAttachedFile
     } catch (error) {
       // NOTE: The api-client interceptor toasts every server error but stays silent on network
       // failures, so only those need a toast here. The image stays as an error chip until removed.
-      if (isAxiosError(error) && !error.response) {
+      if (appState$.isOfflineMode.get()) {
+        showOfflineToast();
+      } else if (isAxiosError(error) && !error.response) {
         ToastService.showError(translate('TEXT_IMAGE_UPLOAD_FAILED'));
       }
 

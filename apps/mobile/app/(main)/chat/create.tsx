@@ -11,6 +11,7 @@ import { AppHeader, AppSpinner } from '@open-webui-react-native/mobile/shared/ui
 import { uiState$ } from '@open-webui-react-native/mobile/shared/ui/ui-state';
 import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { router } from 'expo-router';
 import { ReactElement, useRef } from 'react';
@@ -27,7 +28,7 @@ export default function CreateChatScreen(): ReactElement {
     });
   };
 
-  const openCreateFolderModal = (): void => upsertFolderSheetRef.current?.present();
+  const openCreateFolderModal = withOfflineGuard((): void => upsertFolderSheetRef.current?.present());
 
   const handleBackPress = (): void => router.back();
 

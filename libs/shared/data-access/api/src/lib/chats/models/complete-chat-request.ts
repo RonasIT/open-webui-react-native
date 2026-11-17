@@ -88,6 +88,10 @@ export class CompleteChatRequest {
   @Expose({ name: 'regeneration_prompt' })
   public regenerationPrompt?: string;
 
+  // Guided regeneration: the reply being revised, which the backend adds to the history it rebuilds.
+  @Expose({ name: 'regeneration_message_id' })
+  public regenerationMessageId?: string;
+
   constructor(request: Partial<CompleteChatRequest> = {}) {
     Object.assign(this, request);
   }

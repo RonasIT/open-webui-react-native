@@ -58,7 +58,7 @@
         "TEXT_ENTER_NEW_PASSWORD": "Introdu parola nouă",
         "TEXT_CONFIRM_NEW_PASSWORD": "Confirmă parola nouă",
         "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Repetă parola nouă",
-        "TEXT_PASSWORD_CHANGED": "Parola a fost schimbată"
+        "TEXT_PASSWORD_CHANGED": "Parola a fost actualizată. Conectează-te din nou."
       },
       "DEFAULT_MODEL_MODAL": {
         "TEXT_SEARCH_MODEL": "Caută model"

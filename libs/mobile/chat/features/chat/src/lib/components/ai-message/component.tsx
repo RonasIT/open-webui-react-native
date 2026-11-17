@@ -1,3 +1,4 @@
+import { useSelector } from '@legendapp/state/react';
 import { Fragment, ReactElement, useMemo } from 'react';
 import { FollowUpsList } from '@open-webui-react-native/mobile/chat/features/follow-ups-list';
 import { MessageVersionControls } from '@open-webui-react-native/mobile/chat/features/message-version-controls';
@@ -24,11 +25,15 @@ import {
   ResolveToolCallRequest,
   ToolCallResolveAction,
 } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { FileType } from '@open-webui-react-native/shared/data-access/common';
-import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { formatDateTime } from '@open-webui-react-native/shared/utils/date';
-import { buildToolCallViews, parseResponseMessageContent } from '../../utils';
+import { resolveServerUrl } from '@open-webui-react-native/shared/utils/files';
+import { parseResponseMessageContent } from '@open-webui-react-native/shared/utils/strings';
+import { buildMessageRows } from '../../utils';
 import { ChatImagesGroup } from '../images';
+import { ReasoningCard } from '../reasoning-card';
 import { SkeletonMessage } from '../skeleton-message';
 import { ToolCallCard } from '../tool-call-card';
 import { AskUserCard, ToolApprovalCard } from './components';
@@ -72,7 +77,7 @@ export function ChatAiMessage({
     error: messageError,
   } = message;
 
-  const apiUrl = getApiUrl();
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   // NOTE: Mirrors the web app — `modelName` is a client-only snapshot the backend never guarantees
   // (older chats, imports, or continued responses can lack it entirely), so it's a fallback rather
@@ -87,10 +92,12 @@ export function ChatAiMessage({
     () =>
       (files ?? []).reduce(
         (acc, file, index) =>
-          file.type === FileType.IMAGE ? [...acc, { type: file.type, url: `${apiUrl}${file.url}`, index }] : acc,
+          file.type === FileType.IMAGE && file.url
+            ? [...acc, { type: file.type, url: resolveServerUrl(file.url), index }]
+            : acc,
         [] as Array<AttachedImageWithIndex>,
       ),
-    [apiUrl, files],
+    [files],
   );
 
   const { handleImagePress, handleAllPhotosPress, selectedImageIndex, isPreviewVisible, handleCloseImagePress } =
@@ -99,8 +106,9 @@ export function ChatAiMessage({
   // NOTE: Failures surface through the api-client error interceptor's toast, so no onError here.
   const { mutate: resolveToolCall, isPending: isResolvingToolCall } = chatApi.useResolveToolCall();
 
-  const { toolsData, messageContent } = parseResponseMessageContent(text);
-  const toolCalls = buildToolCallViews(message, toolsData);
+  const { detailsBlocks, messageContent } = parseResponseMessageContent(text);
+  // NOTE: Offline the stream is gone, so reasoning still in progress will not finish.
+  const rows = buildMessageRows(message, detailsBlocks, Boolean(isMessageDone) || isOfflineMode);
   const textWithCitations = prepareTextWithCitations(messageContent, citations);
   const hasFollowUps = Array.isArray(followUps) && followUps.length > 0;
   const pendingToolCall = getPendingToolCall(message);
@@ -108,21 +116,25 @@ export function ChatAiMessage({
   // answers instead of an approval — the backend rejects `approve` for it with 400.
   const askUserPrompt = pendingToolCall?.isAskUser ? parseAskUserPrompt(pendingToolCall.toolArguments) : undefined;
 
-  const resolvePendingToolCall = (action: ToolCallResolveAction, draftAnswers?: AskUserDraftAnswers): void => {
-    if (!pendingToolCall) {
-      return;
-    }
+  const resolvePendingToolCall = withOfflineGuard(
+    (action: ToolCallResolveAction, draftAnswers?: AskUserDraftAnswers): void => {
+      if (!pendingToolCall) {
+        return;
+      }
 
-    resolveToolCall({
-      chatId,
-      messageId: message.id,
-      request: new ResolveToolCallRequest({
-        callId: pendingToolCall.callId,
-        action,
-        answers: draftAnswers && buildAskUserAnswers(draftAnswers),
-      }),
-    });
-  };
+      resolveToolCall({
+        chatId,
+        messageId: message.id,
+        request: new ResolveToolCallRequest({
+          callId: pendingToolCall.callId,
+          action,
+          answers: draftAnswers && buildAskUserAnswers(draftAnswers),
+        }),
+      });
+    },
+  );
+
+  const handleFollowUpPress = withOfflineGuard(onFollowUpPress);
 
   return (
     <View>
@@ -149,6 +161,7 @@ export function ChatAiMessage({
             toolName={pendingToolCall.toolName}
             toolArguments={pendingToolCall.toolArguments}
             isResolving={isResolvingToolCall}
+            areActionsInactive={isOfflineMode}
             onAllowPress={() => resolvePendingToolCall(ToolCallResolveAction.APPROVE)}
             onDenyPress={() => resolvePendingToolCall(ToolCallResolveAction.REJECT)}
           />
@@ -162,19 +175,24 @@ export function ChatAiMessage({
             key={pendingToolCall.callId}
             prompt={askUserPrompt}
             isResolving={isResolvingToolCall}
+            areActionsInactive={isOfflineMode}
             onSubmit={(answers) => resolvePendingToolCall(ToolCallResolveAction.ANSWER, answers)}
             onDenyPress={() => resolvePendingToolCall(ToolCallResolveAction.REJECT)}
           />
         </View>
       )}
-      {toolCalls.length > 0 && (
+      {rows.length > 0 && (
         <View className='mt-8 gap-8'>
-          {toolCalls.map((toolCall) => (
-            <ToolCallCard key={toolCall.key} toolCall={toolCall} />
-          ))}
+          {rows.map((row) =>
+            row.type === 'reasoning' ? (
+              <ReasoningCard key={row.reasoning.key} reasoning={row.reasoning} />
+            ) : (
+              <ToolCallCard key={row.toolCall.key} toolCall={row.toolCall} />
+            ),
+          )}
         </View>
       )}
-      {text ? (
+      {messageContent ? (
         <Fragment>
           <ChatImagesGroup
             images={attachedImages}
@@ -224,8 +242,10 @@ export function ChatAiMessage({
       {!isResponseGenerating && isLast && hasFollowUps && (
         <FollowUpsList
           followUps={followUps}
-          onPress={onFollowUpPress}
-          containerClassName='mt-12' />
+          onPress={handleFollowUpPress}
+          isInactive={isOfflineMode}
+          containerClassName='mt-12'
+        />
       )}
     </View>
   );

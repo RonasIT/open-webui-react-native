@@ -70,6 +70,10 @@ export class Features {
   @Expose({ name: 'enable_onedrive_integration' })
   public enableOnedriveIntegration: boolean;
 
+  // NOTE: Sent only to a signed-in user; the default for `features.memory` when `ui.memory` is unset.
+  @Expose({ name: 'enable_memories' })
+  public enableMemories?: boolean;
+
   // NOTE: Open WebUI 0.11.1+. Off unless the server sets ENABLE_TOOL_PERMISSIONS — with it off the
   // backend forces `tool_approval_mode: 'full'`, so the approval UI has nothing to show.
   @Expose({ name: 'enable_tool_permissions' })

@@ -1,3 +1,4 @@
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement } from 'react';
 import {
@@ -15,6 +16,7 @@ import {
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { AccessPermission, FolderListItem, foldersApi } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 
 interface SearchFolderViewProps extends Omit<
   FullScreenSearchModalProps<FolderListItem>,
@@ -34,11 +36,13 @@ export function SearchFolderView({
   const { isDarkColorScheme } = useColorScheme();
 
   const canUseFolders = useFoldersEnabled();
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
   const { emptyFolders } = useFolderSearchList({
     noFolderText: translate('TEXT_NO_FOLDER'),
     createFolderText: translate('TEXT_CREATE_NEW_FOLDER'),
     onCreateFolderPress,
     canCreateFolder: canUseFolders,
+    isCreateFolderInactive: isOfflineMode,
   });
 
   const { data: folders } = foldersApi.useGetFolders({ enabled: canUseFolders });

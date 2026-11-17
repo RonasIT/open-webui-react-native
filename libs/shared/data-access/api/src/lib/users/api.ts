@@ -25,7 +25,10 @@ const baseApi = createEntityApi({
   entityService: usersService,
 });
 
-function useSearchUsers(query: string): UseInfiniteQueryResult<Array<UserInfo>, AxiosError<ApiErrorData>> {
+function useSearchUsers(
+  query: string,
+  props?: { enabled?: boolean },
+): UseInfiniteQueryResult<Array<UserInfo>, AxiosError<ApiErrorData>> {
   return useInfiniteQuery({
     queryFn: ({ pageParam }) => usersService.searchUsers({ query, page: pageParam }),
     queryKey: usersApiConfig.searchUsersQueryKey(query),
@@ -38,6 +41,7 @@ function useSearchUsers(query: string): UseInfiniteQueryResult<Array<UserInfo>, 
         itemsPerPage: usersApiConfig.usersPerPage,
       }),
     select: (data) => data.pages.flatMap((page) => page.users),
+    ...props,
   });
 }
 
@@ -75,7 +79,7 @@ function useUpdateUserSettings({
   UpdateUserSettingsContext
 > = {}): UseMutationResult<UserSettings, AxiosError<ApiErrorData>, UserSettings, UpdateUserSettingsContext> {
   return useMutation<UserSettings, AxiosError<ApiErrorData>, UserSettings, UpdateUserSettingsContext>({
-    mutationFn: usersService.updateUserSettings,
+    mutationFn: (settings) => usersService.updateUserSettings(settings),
     onMutate: async (settings) => {
       await queryClient.cancelQueries({ queryKey: usersApiConfig.getUserSettingsQueryKey });
 
@@ -89,7 +93,10 @@ function useUpdateUserSettings({
       return { previousSettings };
     },
     onError: (error, settings, onMutateResult, context) => {
-      restoreUserSettingsQueryData(onMutateResult?.previousSettings);
+      // NOTE: No onMutateResult means onMutate never ran (e.g. blocked offline), so there is nothing to roll back.
+      if (onMutateResult) {
+        restoreUserSettingsQueryData(onMutateResult.previousSettings);
+      }
       onError?.(error, settings, onMutateResult, context);
     },
     ...props,
@@ -130,7 +137,10 @@ function useUpdateModelControlChoices({
       return { previousSettings };
     },
     onError: (error, request, onMutateResult, context) => {
-      restoreUserSettingsQueryData(onMutateResult?.previousSettings);
+      // NOTE: No onMutateResult means onMutate never ran (e.g. blocked offline), so there is nothing to roll back.
+      if (onMutateResult) {
+        restoreUserSettingsQueryData(onMutateResult.previousSettings);
+      }
       onError?.(error, request, onMutateResult, context);
     },
     onSuccess: (params) => {

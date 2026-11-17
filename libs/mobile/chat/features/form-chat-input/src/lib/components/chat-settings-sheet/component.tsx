@@ -54,7 +54,7 @@ export function ChatSettingsSheet({
 
   const isModelControlsRowVisible = isModelControlsAvailable(model);
 
-  const { systemPrompt, saveSystemPrompt } = useChatSystemPrompt({ chat });
+  const { systemPrompt, saveSystemPrompt, isSavedOnServer } = useChatSystemPrompt({ chat });
   const hasSystemPrompt = !!systemPrompt;
 
   const approvalMode = useSelector(toolApprovalState$.mode);
@@ -145,6 +145,7 @@ export function ChatSettingsSheet({
       <SystemPromptSheet
         ref={systemPromptSheetRef}
         onSave={saveSystemPrompt}
+        isSavedOnServer={isSavedOnServer}
         onClose={() => modalRef.current?.present()}
       />
       <ModelControlsSheet

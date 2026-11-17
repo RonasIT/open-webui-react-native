@@ -28,7 +28,7 @@ function useUpdateProfile(
   props?: UseMutationOptions<UpdateProfileRequest, AxiosError<ApiErrorData>, UpdateProfileRequest>,
 ): UseMutationResult<UpdateProfileRequest, AxiosError<ApiErrorData>, UpdateProfileRequest> {
   return useMutation<UpdateProfileRequest, AxiosError<ApiErrorData>, UpdateProfileRequest>({
-    mutationFn: authService.updateProfile,
+    mutationFn: (request) => authService.updateProfile(request),
     onSuccess: (request) => {
       queryClient.setQueryData<SignInResponse>(authApiConfig.getProfileQueryKey, (profile) =>
         profile

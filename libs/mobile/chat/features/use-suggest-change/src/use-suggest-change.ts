@@ -92,6 +92,7 @@ export const useSuggestChange = ({ chat, modelId }: UseSuggestChangeProps): UseS
       sessionId: socketService.socketSessionId,
       model: modelId,
       regenerationPrompt: instruction || undefined,
+      regenerationMessageId: instruction ? messageId : undefined,
     });
 
     completeChat(payload);

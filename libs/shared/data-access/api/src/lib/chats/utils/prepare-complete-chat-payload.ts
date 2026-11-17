@@ -1,3 +1,4 @@
+import { uniq } from 'lodash-es';
 import { FileType, Role } from '@open-webui-react-native/shared/data-access/common';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { modelsApiConfig } from '../../ai-models/config';
@@ -7,6 +8,7 @@ import { isModelControlsAvailable } from '../../ai-models/utils/is-model-control
 import { splitStaleModelControlChoices } from '../../ai-models/utils/split-stale-model-control-choices';
 import { appConfigurationApiConfig } from '../../app-configuration/config';
 import { Configuration } from '../../app-configuration/models';
+import { isServerVersionAtLeast } from '../../app-configuration/utils/is-server-version-at-least';
 import { toolsApiConfig } from '../../tools/config';
 import { Tool } from '../../tools/models';
 import { usersApiConfig } from '../../users/config';
@@ -23,9 +25,11 @@ import {
   Features,
   Message,
 } from '../models';
-import { toolApprovalState$, toolsSelectionState$ } from '../state';
+import { chatSelectionState$, getChatSelectionForModel, toolApprovalState$ } from '../state';
+import { getAvailableGenerationOptions } from './get-available-generation-options';
 import { getCompletionFiles } from './get-completion-files';
 import { removeStaleModelControlChoices } from './remove-stale-model-control-choices';
+import { resolveDefaultGenerationOptions } from './resolve-default-generation-options';
 import { resolveDefaultToolIds } from './resolve-default-tool-ids';
 
 export interface PrepareCompleteChatPayloadArgs {
@@ -34,6 +38,8 @@ export interface PrepareCompleteChatPayloadArgs {
   messages: Array<Message>;
   sessionId: string;
   model: string;
+  // Added on top of the chat's current selection (or the model defaults), e.g. voice mode sends
+  // `voice` together with the web search / image generation toggles, as the web client does.
   generationOptions?: Array<ChatGenerationOption>;
   // The parent user message of the assistant turn being generated. The backend uses it to
   // link the assistant's parentId; omitting it orphans the user message (drops from the branch).
@@ -42,6 +48,8 @@ export interface PrepareCompleteChatPayloadArgs {
   assistantMessageId?: string;
   // Set only for guided regeneration: the instruction the backend appends as the last user turn.
   regenerationPrompt?: string;
+  // Set only for guided regeneration: the assistant message the instruction revises.
+  regenerationMessageId?: string;
 }
 
 export function prepareCompleteChatPayload({
@@ -54,6 +62,7 @@ export function prepareCompleteChatPayload({
   userMessage,
   assistantMessageId,
   regenerationPrompt,
+  regenerationMessageId,
 }: PrepareCompleteChatPayloadArgs): CompleteChatRequest {
   const userSettings = queryClient.getQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey);
   const chatResponse = queryClient.getQueryData<ChatResponse>(chatQueriesKeys.get(chatId).queryKey);
@@ -106,21 +115,25 @@ export function prepareCompleteChatPayload({
       : undefined;
 
   // The backend resolves tools only from `tool_ids` — it applies neither the model's nor the user's
-  // defaults — so the client has to send them, exactly as the web interface does. Read from the
-  // shared selection rather than threaded through every completion entry point, so that a
-  // follow-up, a regenerate and a queued message all use the tools the chat is actually set up
-  // with. An empty array would be sent as `tool_ids: []`, so it collapses to `undefined` instead.
-  const toolsSelection = toolsSelectionState$[chatId].peek();
+  // defaults — so the client has to send them, exactly as the web interface does. Tools and
+  // generation options are read from the shared selection rather than threaded through every
+  // completion entry point, so that a follow-up, a regenerate, an edit and a queued message all use
+  // what the chat is actually set up with. An empty tools array would be sent as `tool_ids: []`, so
+  // it collapses to `undefined` instead.
+  const selection = getChatSelectionForModel(chatSelectionState$[chatId].peek(), model);
   const resolvedToolIds =
-    toolsSelection?.modelId === model
-      ? toolsSelection.toolIds
-      : resolveDefaultToolIds({
-          model: queryClient
-            .getQueryData<Array<AIModel>>(modelsApiConfig.getModelsQueryKey)
-            ?.find(({ id }) => id === model),
-          tools: queryClient.getQueryData<Array<Tool>>(toolsApiConfig.getToolsQueryKey),
-          uiSettings: userSettings?.ui,
-        });
+    selection.toolIds ??
+    resolveDefaultToolIds({
+      model: cachedModel,
+      tools: queryClient.getQueryData<Array<Tool>>(toolsApiConfig.getToolsQueryKey),
+      uiSettings: userSettings?.ui,
+    });
+  const availableGenerationOptions = getAvailableGenerationOptions(cachedModel, configuration);
+  const resolvedGenerationOptions = uniq([
+    ...(selection.generationOptions ??
+      resolveDefaultGenerationOptions({ model: cachedModel, availableOptions: availableGenerationOptions })),
+    ...(generationOptions ?? []),
+  ]);
 
   const prepareChatMessages = (): Array<ChatMessage> => {
     const chatSystemPrompt = (chatResponse?.chat.params?.system as string | undefined)?.trim();
@@ -138,7 +151,7 @@ export function prepareCompleteChatPayload({
         ]
       : [];
 
-    const historyMessages = messages.map((message) => {
+    const historyMessages = messages.flatMap((message) => {
       const content: Array<ChatMessageContent> = [];
 
       if (message.content) {
@@ -163,10 +176,19 @@ export function prepareCompleteChatPayload({
         );
       }
 
-      return new ChatMessage({
-        role: message.role,
-        content,
-      });
+      // NOTE: Drop the empty assistant placeholder. A temporary chat is not in the DB, so 0.10
+      // sends this array to the model and to follow-up generation. A blank assistant turn is what
+      // comes back as "None". The web client filters the same way (`content.trim()` / `output`).
+      if (message.role === Role.ASSISTANT && content.length === 0) {
+        return [];
+      }
+
+      return [
+        new ChatMessage({
+          role: message.role,
+          content,
+        }),
+      ];
     });
 
     return [...systemMessage, ...historyMessages];
@@ -184,10 +206,14 @@ export function prepareCompleteChatPayload({
       tagsGeneration: isFirstExchange,
     }),
     features: new Features({
-      codeInterpreter: generationOptions?.includes(ChatGenerationOption.CODE_INTERPRETER),
-      imageGeneration: generationOptions?.includes(ChatGenerationOption.IMAGE_GENERATION),
-      webSearch: (userSettings?.ui.webSearch ?? false) || generationOptions?.includes(ChatGenerationOption.WEB_SEARCH),
-      voice: generationOptions?.includes(ChatGenerationOption.VOICE),
+      codeInterpreter: resolvedGenerationOptions.includes(ChatGenerationOption.CODE_INTERPRETER),
+      imageGeneration: resolvedGenerationOptions.includes(ChatGenerationOption.IMAGE_GENERATION),
+      webSearch:
+        (Boolean(userSettings?.ui.webSearch) && availableGenerationOptions.includes(ChatGenerationOption.WEB_SEARCH)) ||
+        resolvedGenerationOptions.includes(ChatGenerationOption.WEB_SEARCH),
+      voice: resolvedGenerationOptions.includes(ChatGenerationOption.VOICE),
+      // NOTE: Without it the backend skips saved memories and memory tools. Same rule as the web client.
+      memory: userSettings?.ui.memory ?? configuration?.features?.enableMemories ?? false,
     }),
     params,
     toolIds: resolvedToolIds.length > 0 ? resolvedToolIds : undefined,
@@ -202,6 +228,8 @@ export function prepareCompleteChatPayload({
     parentId: resolvedUserMessage?.parentId ?? null,
     assistantMessageId,
     regenerationPrompt,
+    // NOTE: Open WebUI before 0.12.4 does not know the field and forwards it to the provider; remove with 0.12.3 support.
+    regenerationMessageId: isServerVersionAtLeast('0.12.4') ? regenerationMessageId : undefined,
   });
 
   return request;

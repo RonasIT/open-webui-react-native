@@ -28,3 +28,7 @@ export * from './get-tool-calls';
 export * from './prepare-output-for-save';
 export * from './normalize-chat-response';
 export * from './delete-message-from-history';
+export * from './get-available-generation-options';
+export * from './resolve-default-generation-options';
+export * from './details-edit-markers';
+export * from './background-request';

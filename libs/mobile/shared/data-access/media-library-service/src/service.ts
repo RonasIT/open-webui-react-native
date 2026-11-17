@@ -18,6 +18,13 @@ export class MediaLibraryService {
       return;
     }
 
+    // NOTE: A local file (e.g. a rasterized diagram) is saved as is, there is nothing to download or decode.
+    if (source.startsWith('file://')) {
+      await MediaLibrary.saveToLibraryAsync(source);
+
+      return source;
+    }
+
     const ext = this.getExtensionFromSource(source);
     const filename = `image_${Date.now()}.${ext}`;
     const targetPath = `${FileSystem.cacheDirectory}${filename}`;

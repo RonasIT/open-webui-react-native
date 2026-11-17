@@ -1,10 +1,12 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { Fragment, ReactElement, useRef } from 'react';
 import { DownloadChatOptionsSheet } from '@open-webui-react-native/mobile/shared/features/download-chat-options-sheet';
 import { ChatListRow, ChatListRowProps } from '@open-webui-react-native/mobile/shared/ui/chat-list-row';
 import { ActionsBottomSheet, ActionSheetItemProps } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { chatApi, ChatListItem } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
 
@@ -18,6 +20,7 @@ export function ArchivedChatItem({ item, onItemPress, ...restProps }: ArchivedCh
 
   const actionsSheetRef = useRef<BottomSheetModal>(null);
   const downloadOptionsModalRef = useRef<BottomSheetModal>(null);
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   const { mutateAsync: deleteChat, isPending: isDeleting } = chatApi.useDelete();
   const { mutateAsync: unarchiveChat, isPending: isUnarchiving } = chatApi.useUnarchiveChat();
@@ -25,10 +28,10 @@ export function ArchivedChatItem({ item, onItemPress, ...restProps }: ArchivedCh
   const handlePress = (): void => onItemPress(item.id);
   const handleLongPress = (): void => actionsSheetRef.current?.present();
 
-  const handleConfirmDeletePress = async (): Promise<void> => {
+  const handleConfirmDeletePress = withOfflineGuard(async (): Promise<void> => {
     await deleteChat({ id: item.id });
     actionsSheetRef.current?.close();
-  };
+  });
 
   const showDeleteChatAlert = (): void => {
     alertService.confirm({
@@ -79,7 +82,10 @@ export function ArchivedChatItem({ item, onItemPress, ...restProps }: ArchivedCh
         disabled={isUnarchiving}
         {...restProps}
       />
-      <ActionsBottomSheet actions={actions} ref={actionsSheetRef} />
+      <ActionsBottomSheet
+        actions={actions}
+        areActionsInactive={isOfflineMode}
+        ref={actionsSheetRef} />
       <DownloadChatOptionsSheet ref={downloadOptionsModalRef} chatId={item.id} />
     </Fragment>
   );

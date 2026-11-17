@@ -69,7 +69,7 @@ function useGetChatList(): UseInfiniteQueryResult<Array<ChatListItem>, AxiosErro
 
 function useGetPinnedChatList(): UseQueryResult<Array<ChatListItem>, AxiosError<ApiErrorData>> {
   const result = useQuery({
-    queryFn: chatService.getPinnedChatList,
+    queryFn: () => chatService.getPinnedChatList(),
     queryKey: chatServiceConfig.getPinnedChatListQueryKey,
   });
 

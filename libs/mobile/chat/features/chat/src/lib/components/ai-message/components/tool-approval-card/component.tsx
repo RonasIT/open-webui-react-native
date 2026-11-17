@@ -8,12 +8,14 @@ export interface ToolApprovalCardProps {
   onDenyPress: () => void;
   toolArguments?: string;
   isResolving?: boolean;
+  areActionsInactive?: boolean;
 }
 
 export function ToolApprovalCard({
   toolName,
   toolArguments,
   isResolving,
+  areActionsInactive,
   onAllowPress,
   onDenyPress,
 }: ToolApprovalCardProps): ReactElement {
@@ -41,6 +43,7 @@ export function ToolApprovalCard({
           className='px-16'
           isLoading={isResolving}
           disabled={isResolving}
+          isInactive={areActionsInactive}
           onPress={onAllowPress}
         />
         <AppButton
@@ -48,6 +51,7 @@ export function ToolApprovalCard({
           size='sm'
           variant='ghost'
           disabled={isResolving}
+          isInactive={areActionsInactive}
           onPress={onDenyPress}
         />
       </View>

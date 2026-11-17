@@ -31,7 +31,7 @@ name: <What the flow checks>
 - testID: `<screen>-<element>` in kebab-case, e.g. `sign-in-email`, `chat-create`. Select elements by `id`, not by text.
 - Tags: `smoke` — critical path; `wip` — not finished; `flaky` — unstable. `wip` and `flaky` are excluded from runs.
 - Test data created by flows is named `e2e-<area>-<timestamp>`, e.g. `e2e-chat-1760000000000`.
-- Values come from the environment, never hardcoded: `APP_ID`, `EMAIL`, `PASSWORD`, `API_URL` (optional, empty means `https://ai.ronas.online`).
+- Values come from the environment, never hardcoded: `APP_ID`, `EMAIL`, `PASSWORD`, `API_URL` (optional, empty means `https://ai.ronas.cloud`).
 - CI takes them from `vars.EXPO_PUBLIC_APP_ID`, `vars.E2E_API_URL`, `secrets.E2E_EMAIL`, `secrets.E2E_PASSWORD` and `secrets.E2E_ARTIFACT_PASSWORD`.
 
 ## Run locally

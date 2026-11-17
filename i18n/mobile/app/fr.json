@@ -58,7 +58,7 @@
         "TEXT_ENTER_NEW_PASSWORD": "Saisissez votre nouveau mot de passe",
         "TEXT_CONFIRM_NEW_PASSWORD": "Confirmer le nouveau mot de passe",
         "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Répétez votre nouveau mot de passe",
-        "TEXT_PASSWORD_CHANGED": "Votre mot de passe a été modifié"
+        "TEXT_PASSWORD_CHANGED": "Mot de passe modifié. Veuillez vous reconnecter."
       },
       "DEFAULT_MODEL_MODAL": {
         "TEXT_SEARCH_MODEL": "Rechercher un modèle"

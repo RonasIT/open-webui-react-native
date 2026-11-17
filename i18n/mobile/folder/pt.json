@@ -6,7 +6,7 @@
     "FOLDER_ACTIONS_SHEET": {
       "TEXT_EDIT": "Editar",
       "TEXT_SHARE": "Compartilhar",
-      "TEXT_EXPORT": "Exportar",
+      "TEXT_EXPORT_MY_CHATS": "Exportar meus chats",
       "TEXT_DELETE": "Excluir",
       "TEXT_KEEP": "Manter",
       "TEXT_DELETE_FOLDER": "Excluir pasta?",

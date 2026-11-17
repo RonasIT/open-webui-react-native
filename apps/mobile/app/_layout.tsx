@@ -1,5 +1,6 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { useSelector } from '@legendapp/state/react';
+import { DiagramRenderer } from '@open-webui-react-native/mobile/shared/features/markdown-view';
 import { ToastProvider } from '@open-webui-react-native/mobile/shared/features/toast';
 import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-logout';
 import { colors, fonts, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
@@ -174,6 +175,7 @@ function App(): ReactElement | null {
             <Stack.Screen name={navigationConfig.main.root} options={{ headerShown: false }} />
           </Stack.Protected>
         </Stack>
+        <DiagramRenderer />
       </View>
     </ThemeProvider>
   );

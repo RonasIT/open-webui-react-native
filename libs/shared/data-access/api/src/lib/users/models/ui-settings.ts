@@ -16,6 +16,9 @@ export class UiSettings {
   public webSearch?: boolean;
 
   @Expose()
+  public memory?: boolean;
+
+  @Expose()
   public tools?: Array<string>;
 
   @Expose()

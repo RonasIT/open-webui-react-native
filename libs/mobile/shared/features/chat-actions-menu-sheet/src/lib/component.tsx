@@ -1,4 +1,5 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { compact, debounce, delay } from 'lodash-es';
 import { ForwardedRef, Fragment, ReactElement, useImperativeHandle, useMemo, useRef, useState } from 'react';
@@ -31,6 +32,7 @@ import {
   isTemporaryChatEnforced,
   MockFolderItemIds,
 } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
@@ -57,6 +59,7 @@ export function ChatActionsMenuSheet({ goToChat, ref, isInChat }: ChatActionsMen
   const fullScreenSearchModalRef = useRef<FullScreenSearchModalMethods>(null);
   const upsertFolderSheetRef = useRef<UpsertFolderSheetMethods>(null);
   const { resetToChatsListScreen } = useInitialNavigation();
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   const { mutateAsync: updateChat, isPending: isUpdating } = chatApi.useUpdate();
   const { mutateAsync: updateChatFolder } = chatApi.useUpdateChatFolder();
@@ -100,9 +103,9 @@ export function ChatActionsMenuSheet({ goToChat, ref, isInChat }: ChatActionsMen
   const isArchived = chatFullData?.archived;
   const isPinned = chatFullData?.pinned;
 
-  const openCreateFolderModal = (): void => {
+  const openCreateFolderModal = withOfflineGuard((): void => {
     upsertFolderSheetRef.current?.present();
-  };
+  });
 
   const { emptyFolders } = useFolderSearchList({
     noFolderText: translate('MOVE_CHAT_TO_FOLDER_MODAL.TEXT_NO_FOLDER'),
@@ -111,7 +114,7 @@ export function ChatActionsMenuSheet({ goToChat, ref, isInChat }: ChatActionsMen
     canCreateFolder: canUseFolders,
   });
 
-  const handleAction = useMemo(
+  const debouncedAction = useMemo(
     () =>
       debounce(
         async (action: ChatAction): Promise<void> => {
@@ -151,6 +154,9 @@ export function ChatActionsMenuSheet({ goToChat, ref, isInChat }: ChatActionsMen
     [activeChat, folderId, isPinned],
   );
 
+  // NOTE: The sheet opens online only, but the network may drop while it or its modals are open.
+  const handleAction = withOfflineGuard(debouncedAction);
+
   const closeActionsModal = (): Promise<void> =>
     // Need to delay to ensure the actions modal is closed before opening the new modal
     new Promise((resolve) => {
@@ -163,10 +169,10 @@ export function ChatActionsMenuSheet({ goToChat, ref, isInChat }: ChatActionsMen
     renameModalRef.current?.present(chatTitle);
   };
 
-  const onRenameConfirm = async (title: string): Promise<void> => {
+  const onRenameConfirm = withOfflineGuard(async (title: string): Promise<void> => {
     await updateChat({ id: chatId, chat: { title } as Chat });
     renameModalRef.current?.close();
-  };
+  });
 
   const openDeleteAlert = async (): Promise<void> => {
     alertService.confirm({
@@ -188,10 +194,10 @@ export function ChatActionsMenuSheet({ goToChat, ref, isInChat }: ChatActionsMen
     }
   };
 
-  const openShareChatModal = async (): Promise<void> => {
+  const openShareChatModal = withOfflineGuard(async (): Promise<void> => {
     await closeActionsModal();
     shareChatModalRef.current?.present();
-  };
+  });
 
   const moveToFolderHandler = async (): Promise<void> => {
     await closeActionsModal();
@@ -230,7 +236,7 @@ export function ChatActionsMenuSheet({ goToChat, ref, isInChat }: ChatActionsMen
     closeActionsModal();
   };
 
-  const onFolderSelectedHandler = async (id: string | null): Promise<void> => {
+  const onFolderSelectedHandler = withOfflineGuard(async (id: string | null): Promise<void> => {
     await updateChatFolder({
       id: chatId,
       folderId: id === MockFolderItemIds.NO_FOLDER_ID ? null : id,
@@ -238,7 +244,7 @@ export function ChatActionsMenuSheet({ goToChat, ref, isInChat }: ChatActionsMen
     });
     fullScreenSearchModalRef.current?.close();
     ToastService.showSuccess(translate('TEXT_CHAT_MOVED'));
-  };
+  });
 
   const actions: Array<ActionSheetItemProps> = compact([
     canUseFolders && {
@@ -266,12 +272,12 @@ export function ChatActionsMenuSheet({ goToChat, ref, isInChat }: ChatActionsMen
       onPress: () => handleAction(isArchived ? ChatAction.RESTORE : ChatAction.ARCHIVE),
     },
     { title: translate('TEXT_SHARE'), iconName: 'exportIcon', onPress: openShareChatModal },
-    { title: translate('TEXT_DOWNLOAD'), iconName: 'download', onPress: openDownloadOptionsModal },
+    { title: translate('TEXT_DOWNLOAD'), iconName: 'download', onPress: withOfflineGuard(openDownloadOptionsModal) },
     {
       title: translate('TEXT_DELETE'),
       iconName: 'trashCan',
       isLoading: isDeleting,
-      onPress: openDeleteAlert,
+      onPress: withOfflineGuard(openDeleteAlert),
       isDanger: true,
     },
   ]);
@@ -280,12 +286,15 @@ export function ChatActionsMenuSheet({ goToChat, ref, isInChat }: ChatActionsMen
     <Fragment>
       <ActionsBottomSheet
         areActionsDisabled={isLoading}
+        areActionsInactive={isOfflineMode}
         actions={actions}
-        ref={actionsSheetRef} />
+        ref={actionsSheetRef}
+      />
       <ActionButtonsModal
         ref={renameModalRef}
         onConfirm={onRenameConfirm}
         isConfirming={isUpdating}
+        isConfirmInactive={isOfflineMode}
         title={translate('TEXT_RENAME_CHAT')}
         withInput
       />
@@ -298,6 +307,7 @@ export function ChatActionsMenuSheet({ goToChat, ref, isInChat }: ChatActionsMen
         ref={fullScreenSearchModalRef}
         onSelectItem={onFolderSelectedHandler}
         searchPlaceholder={translate('MOVE_CHAT_TO_FOLDER_MODAL.TEXT_SEARCH_FOLDER')}
+        areItemsInactive={isOfflineMode}
         modalComponent={<UpsertFolderSheet ref={upsertFolderSheetRef} />}
       />
     </Fragment>

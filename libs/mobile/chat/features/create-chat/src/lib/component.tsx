@@ -11,9 +11,12 @@ import { AppText, Icon, View } from '@open-webui-react-native/mobile/shared/ui/u
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
 import {
   ChatGenerationOption,
+  chatSelectionState$,
   isTemporaryChatEnforced,
+  NEW_CHAT_SELECTION_KEY,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { webSocketState$ } from '@open-webui-react-native/shared/data-access/websocket';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { SearchFolderView, SearchModelView } from './components';
@@ -33,6 +36,7 @@ export function CreateChat({
   const translateChatScreen = useTranslation('CHAT.CHAT_SCREEN');
   const { folderId: existedFolderId } = useLocalSearchParams();
   const isSocketConnected = useSelector(webSocketState$.isSocketConnected);
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   const { data: userSettings } = usersApi.useGetUserSettings();
   const isTemporaryChat = isTemporaryChatEnforced() || (userSettings?.ui.temporaryChatByDefault ?? false);
@@ -73,6 +77,12 @@ export function CreateChat({
       startChatCreation(inputValue, modelId, options, attachedItems.get(), attachedImages.get(), folderId);
     })();
 
+  // NOTE: As in the web interface, a new chat starts from the model defaults: a selection left by
+  // an earlier draft that was never sent must not carry over.
+  useEffect(() => {
+    chatSelectionState$[NEW_CHAT_SELECTION_KEY].delete();
+  }, []);
+
   useEffect(() => {
     if (existedFolderId) {
       setFolderId(existedFolderId as string);
@@ -102,7 +112,8 @@ export function CreateChat({
         control={control}
         name='inputValue'
         onSubmit={onSubmit}
-        isLoading={isCreating || !isSocketConnected}
+        // NOTE: Offline the socket is down by design: the composer stays editable and FormChatInput blocks sending.
+        isLoading={isCreating || (!isSocketConnected && !isOfflineMode)}
         isSuggestionShown={true}
         attachedItems={attachedItems}
         onItemAttached={handleItemAttached}

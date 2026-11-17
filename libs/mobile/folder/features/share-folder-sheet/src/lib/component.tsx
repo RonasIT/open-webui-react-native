@@ -1,4 +1,5 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { useQueries } from '@tanstack/react-query';
 import { uniq } from 'lodash-es';
@@ -30,11 +31,14 @@ import {
   foldersApiConfig,
   groupsApi,
   getUserAvatarSource,
+  isFeaturePermitted,
   PrincipalType,
   usersApiConfig,
   usersService,
 } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { AccessListItem } from './types';
 import { addAccessGrants, buildAccessList, removeAccessGrants, updateAccessPermission } from './utils';
 
@@ -57,6 +61,7 @@ export function ShareFolderSheet({ ref, ...props }: ShareFolderSheetProps): Reac
   const [folder, setFolder] = useState<FolderListItem | undefined>();
   const [editedGrants, setEditedGrants] = useState<Array<AccessGrant> | undefined>();
   const [permissionItem, setPermissionItem] = useState<AccessListItem | undefined>();
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   const closeModal = (): void => sheetRef.current?.close();
 
@@ -101,11 +106,14 @@ export function ShareFolderSheet({ ref, ...props }: ShareFolderSheetProps): Reac
     };
   }, []);
 
-  const handleConfirmPress = (): void => {
+  const handleConfirmPress = withOfflineGuard((): void => {
     if (folder) {
       updateFolderAccess({ id: folder.id, accessGrants: grants });
     }
-  };
+  });
+
+  const canAddAccess =
+    isFeaturePermitted('accessGrants', 'allowUsers', true) || isFeaturePermitted('accessGrants', 'allowGroups', true);
 
   const handleAddPress = (): void => shareWithSheetRef.current?.present(grants);
 
@@ -151,7 +159,7 @@ export function ShareFolderSheet({ ref, ...props }: ShareFolderSheetProps): Reac
             title={translate('TEXT_SHARE_FOLDER')}
             onGoBack={closeModal}
             onConfirmPress={handleConfirmPress}
-            confirmButtonProps={{ isLoading: isAccessUpdating }}
+            confirmButtonProps={{ isLoading: isAccessUpdating, isInactive: isOfflineMode }}
           />
           {isFolderLoading ? (
             <View className='flex-1'>
@@ -178,14 +186,16 @@ export function ShareFolderSheet({ ref, ...props }: ShareFolderSheetProps): Reac
                 <View className='gap-12'>
                   <View className='flex-row items-center gap-12'>
                     <AppText className='text-sm-sm sm:text-sm flex-1'>{translate('TEXT_ACCESS_LIST')}</AppText>
-                    <AppButton
-                      variant='outline'
-                      size='sm'
-                      iconName='plus'
-                      text={translate('BUTTON_ADD')}
-                      onPress={handleAddPress}
-                      className='px-16 py-4'
-                    />
+                    {canAddAccess && (
+                      <AppButton
+                        variant='outline'
+                        size='sm'
+                        iconName='plus'
+                        text={translate('BUTTON_ADD')}
+                        onPress={handleAddPress}
+                        className='px-16 py-4'
+                      />
+                    )}
                   </View>
                   <View>
                     {accessList.map((item) => (

@@ -1,0 +1,1 @@
+export { CodeBlockHeader } from './component';

@@ -1,12 +1,13 @@
 import { ReactElement, useCallback, useMemo } from 'react';
-import { Linking } from 'react-native';
-import { Markdown, darkMarkdownTheme, type MarkdownRenderers } from 'react-native-nitro-markdown';
+import { Markdown, darkMarkdownTheme, defaultMarkdownTheme, type MarkdownRenderers } from 'react-native-nitro-markdown';
 import { CitationPrefix } from '@open-webui-react-native/mobile/chat/features/use-citations';
 import { CodeBlock } from '@open-webui-react-native/mobile/shared/ui/code-block';
 import { colors, rem, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { MathSvg, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { AppMarkdownViewProps } from '../../types/app-markdown-view-props';
-import { normalizeMathDelimiters } from '../../utils';
+import { getDiagramLanguage, getOpenFenceBody, isOpenFenceContent, normalizeMathDelimiters, openLink } from '../../utils';
+import { DiagramBlock } from '../diagram-block';
+import { MarkdownImage } from '../markdown-image';
 import { MathBlock } from '../math-block';
 import { NitroMarkdownTableRenderer } from '../nitro-markdown-table-renderer';
 
@@ -19,6 +20,10 @@ export function NitroMarkdownView({
 }: AppMarkdownViewProps): ReactElement {
   const { isDarkColorScheme } = useColorScheme();
   const textColor = elementTextColor || (isDarkColorScheme ? colors.darkTextPrimary : colors.textPrimary);
+  const openFenceBody = useMemo(
+    () => (isContentReady || typeof children !== 'string' ? null : getOpenFenceBody(children)),
+    [children, isContentReady],
+  );
 
   const handleLinkPress = useCallback(
     (href: string): boolean => {
@@ -29,7 +34,7 @@ export function NitroMarkdownView({
         return false;
       }
 
-      Linking.openURL(href);
+      openLink(href);
 
       return false;
     },
@@ -40,7 +45,7 @@ export function NitroMarkdownView({
     () => ({
       // eslint-disable-next-line @typescript-eslint/naming-convention
       code_block({ content, language }) {
-        return (
+        const codeBlock = (
           <CodeBlock
             key={`code-block-${language ?? 'text'}-${content.length}`}
             sourceInfo={language}
@@ -50,6 +55,34 @@ export function NitroMarkdownView({
             codeBlockWidth={codeBlockWidth}
           />
         );
+        const diagramLanguage = getDiagramLanguage(language);
+
+        // NOTE: A diagram is rendered only once its fence is closed, a streaming block stays a code block.
+        // The key is stable, unlike the code block one that changes with every streamed chunk.
+        if (!diagramLanguage || isOpenFenceContent(content, openFenceBody)) {
+          return codeBlock;
+        }
+
+        return (
+          <DiagramBlock
+            key='diagram-block'
+            language={diagramLanguage}
+            content={content}>
+            {codeBlock}
+          </DiagramBlock>
+        );
+      },
+      paragraph({ node, children }) {
+        if (!node.children?.some((child) => child.type === 'image')) return undefined;
+
+        // NOTE: The package renders a paragraph as Text, where an image gets no height on iOS. The children come
+        // already split into Text runs and image blocks, so only the wrapper has to be a View.
+        return <View style={{ marginBottom: defaultMarkdownTheme.spacing.l }}>{children}</View>;
+      },
+      image({ url, alt }) {
+        if (!url) return null;
+
+        return <MarkdownImage source={url} alt={alt} />;
       },
       table({ node, Renderer }) {
         return <NitroMarkdownTableRenderer node={node} Renderer={Renderer} />;
@@ -74,7 +107,7 @@ export function NitroMarkdownView({
           isContentReady={isContentReady} />;
       },
     }),
-    [codeBlockWidth, isContentReady],
+    [codeBlockWidth, isContentReady, openFenceBody],
   );
 
   // NOTE: The native parser only knows `$`/`$$` math, so `\(…\)`/`\[…\]` are converted for parity with DefaultMarkdownView.

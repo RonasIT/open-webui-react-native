@@ -1,4 +1,5 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef, useState } from 'react';
 import { fileSystemService } from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
@@ -16,7 +17,9 @@ import {
   foldersService,
   isFeaturePermitted,
 } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { alertService } from '@open-webui-react-native/shared/utils/alert-service';
 
 export type FolderActionsSheetMethods = {
@@ -37,6 +40,7 @@ export function FolderActionsSheet({ onEditPress, onSharePress, ref }: FolderAct
 
   const [folder, setFolder] = useState<FolderListItem | undefined>();
   const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   const canUseFolders = useFoldersEnabled();
   const { data: sharedFolders } = foldersApi.useGetSharedFolders({ enabled: canUseFolders });
@@ -50,6 +54,7 @@ export function FolderActionsSheet({ onEditPress, onSharePress, ref }: FolderAct
   // permission, which is off by default — same gate as the web client.
   const canShare = isOwner && isFeaturePermitted('sharing', 'folders', false);
 
+  // NOTE: Open WebUI returns only the caller's own chats here, and a member cannot read the others' (401).
   const getFolderChats = async (id: string): Promise<Array<ChatResponse>> =>
     await queryClient.fetchQuery<Array<ChatResponse>>({
       queryKey: foldersApiConfig.getFolderChatsQueryKey(id),
@@ -85,12 +90,12 @@ export function FolderActionsSheet({ onEditPress, onSharePress, ref }: FolderAct
     });
   };
 
-  const onDeleteConfirm = async (): Promise<void> => {
+  const onDeleteConfirm = withOfflineGuard(async (): Promise<void> => {
     if (folder) {
       await deleteFolder(folder.id);
     }
     closeActionsModal();
-  };
+  });
 
   const onChatsExport = async (): Promise<void> => {
     setIsExportLoading(true);
@@ -122,7 +127,7 @@ export function FolderActionsSheet({ onEditPress, onSharePress, ref }: FolderAct
   const deleteAction: ActionSheetItemProps = {
     title: translate('TEXT_DELETE'),
     iconName: 'trashCan',
-    onPress: openDeleteAlert,
+    onPress: withOfflineGuard(openDeleteAlert),
     isLoading: isDeleting,
     isDanger: true,
   };
@@ -130,24 +135,27 @@ export function FolderActionsSheet({ onEditPress, onSharePress, ref }: FolderAct
   const shareAction: ActionSheetItemProps = {
     title: translate('TEXT_SHARE'),
     iconName: 'users',
-    onPress: onSharePressHandler,
+    onPress: withOfflineGuard(onSharePressHandler),
   };
 
   const actions: Array<ActionSheetItemProps> = [
     {
       title: translate('TEXT_EDIT'),
       iconName: 'editPencil',
-      onPress: onEditPressHandler,
+      onPress: withOfflineGuard(onEditPressHandler),
     },
     ...(canShare ? [shareAction] : []),
     {
-      title: translate('TEXT_EXPORT'),
+      title: translate('TEXT_EXPORT_MY_CHATS'),
       iconName: 'exportIcon',
-      onPress: onChatsExport,
+      onPress: withOfflineGuard(onChatsExport),
       isLoading: isExportLoading,
     },
     ...(isOwner ? [deleteAction] : []),
   ];
 
-  return <ActionsBottomSheet actions={actions} ref={actionsSheetRef} />;
+  return <ActionsBottomSheet
+    actions={actions}
+    areActionsInactive={isOfflineMode}
+    ref={actionsSheetRef} />;
 }

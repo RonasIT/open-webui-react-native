@@ -19,6 +19,8 @@ export interface ActionSheetItemProps extends AppPressableProps {
   hasSubActions?: boolean;
   numberOfLines?: number;
   rightContent?: ReactElement;
+  // NOTE: Looks disabled but stays pressable, so onPress can tell the user why (e.g. the offline toast).
+  isInactive?: boolean;
 }
 
 export function ActionSheetItem({
@@ -35,12 +37,14 @@ export function ActionSheetItem({
   numberOfLines,
   rightContent,
   disabled,
+  isInactive,
   ...restProps
 }: ActionSheetItemProps): ReactElement {
   const { isDarkColorScheme } = useColorScheme();
+  const isDisabledLook = disabled || isInactive;
 
   const disabledDarkStyle: TextStyle | undefined =
-    disabled && isDarkColorScheme ? { color: colors.gray700 } : undefined;
+    isDisabledLook && isDarkColorScheme ? { color: colors.gray700 } : undefined;
 
   return (
     <AppPressable
@@ -65,7 +69,7 @@ export function ActionSheetItem({
                 className={cn(
                   isDanger && 'color-status-danger',
                   iconProps?.className,
-                  disabled && 'color-text-tertiary',
+                  isDisabledLook && 'color-text-tertiary',
                 )}
                 style={[iconProps?.style, disabledDarkStyle]}
               />
@@ -77,7 +81,7 @@ export function ActionSheetItem({
         numberOfLines={numberOfLines}
         className={cn(
           'text-md-sm sm:text-md',
-          disabled ? 'text-text-tertiary' : isDanger && 'text-status-danger',
+          isDisabledLook ? 'text-text-tertiary' : isDanger && 'text-status-danger',
           !value && numberOfLines && 'flex-1',
         )}
         style={disabledDarkStyle}>
@@ -90,7 +94,7 @@ export function ActionSheetItem({
               numberOfLines={1}
               className={cn(
                 'shrink text-right text-sm-sm sm:text-sm',
-                disabled ? 'text-text-tertiary' : 'text-text-secondary',
+                isDisabledLook ? 'text-text-tertiary' : 'text-text-secondary',
               )}
               style={disabledDarkStyle}>
               {value}
@@ -100,7 +104,7 @@ export function ActionSheetItem({
           {hasSubActions && (
             <Icon
               name='chevronRight'
-              className={cn('shrink-0', disabled && 'color-text-tertiary')}
+              className={cn('shrink-0', isDisabledLook && 'color-text-tertiary')}
               style={disabledDarkStyle}
             />
           )}

@@ -37,13 +37,15 @@ export function AppHeader({
       <View className='min-w-64 items-start justify-center'>
         {accessoryLeft ? accessoryLeft : renderDefaultBackButton()}
       </View>
-      {typeof title === 'string' ? (
-        <AppText className={cn('font-medium', titleClassName)} numberOfLines={1}>
-          {title}
-        </AppText>
-      ) : (
-        title
-      )}
+      <View className='flex-1 items-center'>
+        {typeof title === 'string' ? (
+          <AppText className={cn('font-medium', titleClassName)} numberOfLines={1}>
+            {title}
+          </AppText>
+        ) : (
+          title
+        )}
+      </View>
       <View className='min-w-64 items-end justify-center'>{accessoryRight}</View>
     </View>
   );

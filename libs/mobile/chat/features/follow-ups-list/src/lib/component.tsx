@@ -7,9 +7,15 @@ interface FollowUpsListProps {
   onPress: (text: string) => void;
   followUps?: Array<string>;
   containerClassName?: string;
+  isInactive?: boolean;
 }
 
-export function FollowUpsList({ onPress, followUps, containerClassName }: FollowUpsListProps): ReactElement | null {
+export function FollowUpsList({
+  onPress,
+  followUps,
+  containerClassName,
+  isInactive,
+}: FollowUpsListProps): ReactElement | null {
   const translate = useTranslation('CHAT.MESSAGE_FOLLOW_UPS');
 
   if (!followUps?.length) return null;
@@ -23,7 +29,9 @@ export function FollowUpsList({ onPress, followUps, containerClassName }: Follow
           <AppPressable
             onPress={() => onPress(followUp)}
             className='active:opacity-1 active:bg-background-secondary p-8'>
-            <AppText className='text-text-secondary text-sm-sm'>{followUp}</AppText>
+            <AppText className={cn('text-sm-sm', isInactive ? 'text-text-tertiary' : 'text-text-secondary')}>
+              {followUp}
+            </AppText>
           </AppPressable>
 
           {index < followUps.length - 1 && <AppDivider />}

@@ -1,0 +1,1 @@
+export { DiagramBlock } from './component';

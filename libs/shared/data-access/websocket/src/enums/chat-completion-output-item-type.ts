@@ -4,4 +4,5 @@ export enum ChatCompletionOutputItemType {
   MESSAGE = 'message',
   FUNCTION_CALL = 'function_call',
   FUNCTION_CALL_OUTPUT = 'function_call_output',
+  REASONING = 'reasoning',
 }

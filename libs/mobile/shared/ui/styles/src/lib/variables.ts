@@ -36,6 +36,7 @@ export const colors = {
 
   //Dark mode colors
   darkTextPrimary: '#FFFFFF',
+  darkTextSecondary: '#A1A9B4',
 
   darkBackgroundPrimary: '#222526',
 };

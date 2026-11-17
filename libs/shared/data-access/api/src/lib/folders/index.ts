@@ -4,3 +4,4 @@ export * from './service';
 export * from './models';
 export * from './utils';
 export * from './enums';
+export * from './service';

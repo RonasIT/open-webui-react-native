@@ -17,6 +17,7 @@ class AppStorageService {
   public createdChatsIds = new StorageItem('createdChatsIds', storage);
   public storeReviewFirstTriggeredAt = new StorageItem('storeReviewFirstTriggeredAt', storage);
   public storeReviewNextAttemptAt = new StorageItem('storeReviewNextAttemptAt', storage);
+  public localDbWipePending = new StorageItem('localDbWipePending', storage);
 }
 
 export const appStorageService = new AppStorageService();

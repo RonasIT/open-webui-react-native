@@ -9,9 +9,16 @@ export interface AskUserCardProps {
   onSubmit: (answers: AskUserDraftAnswers) => void;
   onDenyPress: () => void;
   isResolving?: boolean;
+  areActionsInactive?: boolean;
 }
 
-export function AskUserCard({ prompt, isResolving, onSubmit, onDenyPress }: AskUserCardProps): ReactElement {
+export function AskUserCard({
+  prompt,
+  isResolving,
+  areActionsInactive,
+  onSubmit,
+  onDenyPress,
+}: AskUserCardProps): ReactElement {
   const translate = useTranslation('CHAT.AI_MESSAGE.ASK_USER_CARD');
 
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -139,6 +146,7 @@ export function AskUserCard({ prompt, isResolving, onSubmit, onDenyPress }: AskU
             className='px-16'
             isLoading={isResolving}
             disabled={isResolving || !isAnswered(answers)}
+            isInactive={areActionsInactive}
             onPress={handleSubmitPress}
           />
         )}
@@ -147,6 +155,7 @@ export function AskUserCard({ prompt, isResolving, onSubmit, onDenyPress }: AskU
           size='sm'
           variant='ghost'
           disabled={isResolving}
+          isInactive={areActionsInactive}
           onPress={onDenyPress}
         />
       </View>

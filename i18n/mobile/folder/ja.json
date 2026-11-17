@@ -6,7 +6,7 @@
     "FOLDER_ACTIONS_SHEET": {
       "TEXT_EDIT": "編集",
       "TEXT_SHARE": "共有",
-      "TEXT_EXPORT": "エクスポート",
+      "TEXT_EXPORT_MY_CHATS": "自分のチャットをエクスポート",
       "TEXT_DELETE": "削除",
       "TEXT_KEEP": "保持",
       "TEXT_DELETE_FOLDER": "フォルダを削除しますか？",

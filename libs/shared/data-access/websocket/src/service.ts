@@ -14,6 +14,7 @@ export class SocketService {
   private _socket: Socket | null = null;
   private _listeners: Record<string, Array<SocketEventListener>> = {};
   private _socketSessionId = '';
+  private _heartbeatTimer: ReturnType<typeof setInterval> | null = null;
 
   public init(token: string, onConnect: () => void, onDisconnect: () => void): void {
     if (this._socket) return;
@@ -32,12 +33,14 @@ export class SocketService {
     this._socket.on(SocketState.CONNECT, () => {
       if (this._socket?.id) {
         this._socketSessionId = this._socket.id;
+        this.startHeartbeat();
         onConnect();
       }
     });
 
     this._socket.on(SocketState.DISCONNECT, () => {
       this._socketSessionId = '';
+      this.stopHeartbeat();
       onDisconnect();
     });
 
@@ -57,6 +60,7 @@ export class SocketService {
   }
 
   public disconnect(): void {
+    this.stopHeartbeat();
     this._socket?.disconnect();
     this._socket = null;
     this._socketSessionId = '';
@@ -86,6 +90,20 @@ export class SocketService {
 
   public get socketSessionId(): string {
     return this._socketSessionId;
+  }
+
+  private startHeartbeat(): void {
+    this.stopHeartbeat();
+    this._heartbeatTimer = setInterval(() => {
+      this._socket?.emit(WebSocketEventName.HEARTBEAT, {});
+    }, webSocketConfig.heartbeatInterval);
+  }
+
+  private stopHeartbeat(): void {
+    if (this._heartbeatTimer) {
+      clearInterval(this._heartbeatTimer);
+      this._heartbeatTimer = null;
+    }
   }
 }
 

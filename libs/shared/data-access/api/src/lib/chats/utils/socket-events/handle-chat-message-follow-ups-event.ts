@@ -13,7 +13,9 @@ export const handleChatMessageFollowUpsEvent = async (socketResponse: ChatEventB
   queryClient.setQueryData(queryKey, (draft: ChatResponse) => {
     if (!draft) return;
 
-    if (!draft.chat.messages) {
+    // NOTE: Events come for every chat of the user, including replies generated on another device that
+    // this cache does not have yet. Patching would add a stub message that the next save sends to the server.
+    if (!draft.chat.messages || !draft.chat.history.messages[messageId]) {
       return draft;
     }
 
@@ -33,14 +35,17 @@ export const handleChatMessageFollowUpsEvent = async (socketResponse: ChatEventB
             },
           },
         },
-        messages: [
-          ...draft.chat.messages.slice(0, messageIndex),
-          {
-            ...draft.chat.messages[messageIndex],
-            followUps: socketData.followUps,
-          },
-          ...draft.chat.messages.slice(messageIndex + 1),
-        ],
+        messages:
+          messageIndex === -1
+            ? draft.chat.messages
+            : [
+                ...draft.chat.messages.slice(0, messageIndex),
+                {
+                  ...draft.chat.messages[messageIndex],
+                  followUps: socketData.followUps,
+                },
+                ...draft.chat.messages.slice(messageIndex + 1),
+              ],
       },
     };
   });

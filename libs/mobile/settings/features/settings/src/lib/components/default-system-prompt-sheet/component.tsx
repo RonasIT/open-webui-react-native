@@ -1,4 +1,5 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ForwardedRef, ReactElement, useImperativeHandle, useRef } from 'react';
 import { useForm } from 'react-hook-form';
@@ -12,6 +13,8 @@ import {
   SheetHeader,
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
+import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { DefaultSystemPromptFormSchema } from '../../forms';
 
 export type DefaultSystemPromptSheetMethods = {
@@ -36,6 +39,7 @@ export function DefaultSystemPromptSheet({
   const { bottom } = useSafeAreaInsets();
   const sheetRef = useRef<BottomSheetModal>(null);
   const inputRef = useRef<TextInput>(null);
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: new DefaultSystemPromptFormSchema(),
@@ -54,10 +58,12 @@ export function DefaultSystemPromptSheet({
     [systemPrompt],
   );
 
-  const handleConfirmPress = handleSubmit((values) => {
+  const submitForm = handleSubmit((values) => {
     onConfirm(values.systemPrompt.trim());
     closeSheet();
   });
+
+  const handleConfirmPress = withOfflineGuard(submitForm);
 
   return (
     <AppBottomSheet
@@ -71,7 +77,9 @@ export function DefaultSystemPromptSheet({
           <SheetHeader
             title={translate('TEXT_TITLE')}
             onGoBack={closeSheet}
-            onConfirmPress={handleConfirmPress} />
+            onConfirmPress={handleConfirmPress}
+            confirmButtonProps={{ isInactive: isOfflineMode }}
+          />
           <AppBottomSheetKeyboardAwareScrollView>
             <View className='pt-8' style={{ paddingBottom: bottom + 24 }}>
               <FormFloatedLabelInput

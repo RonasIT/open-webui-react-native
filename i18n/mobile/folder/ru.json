@@ -6,7 +6,7 @@
     "FOLDER_ACTIONS_SHEET": {
       "TEXT_EDIT": "Изменить",
       "TEXT_SHARE": "Поделиться",
-      "TEXT_EXPORT": "Экспорт",
+      "TEXT_EXPORT_MY_CHATS": "Экспортировать мои чаты",
       "TEXT_DELETE": "Удалить",
       "TEXT_KEEP": "Оставить",
       "TEXT_DELETE_FOLDER": "Удалить папку?",

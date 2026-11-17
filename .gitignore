@@ -73,3 +73,6 @@ CLAUDE.local.md
 claude.md
 claude.local.md
 .claude.md
+
+# Generated diagram WebView HTML (npm run diagrams:build)
+libs/mobile/shared/features/markdown-view/src/lib/components/diagram-renderer/renderer.html

@@ -193,6 +193,26 @@
         "TEXT_REJECTED_PREFIX": "Отклонено",
         "TEXT_SAVE_FAILED": "Не удалось сохранить файл"
       },
+      "REASONING_CARD": {
+        "TEXT_THINKING": "Размышляет…",
+        "TEXT_THOUGHT": "Размышление завершено",
+        "TEXT_THOUGHT_FOR_LESS_THAN_SECOND": "Размышлял меньше секунды",
+        "TEXT_THOUGHT_FOR_SECONDS": {
+          "one": "Размышлял {{count}} секунду",
+          "few": "Размышлял {{count}} секунды",
+          "many": "Размышлял {{count}} секунд"
+        },
+        "TEXT_THOUGHT_FOR_MINUTES": {
+          "one": "Размышлял {{count}} минуту",
+          "few": "Размышлял {{count}} минуты",
+          "many": "Размышлял {{count}} минут"
+        },
+        "TEXT_THOUGHT_FOR_HOURS": {
+          "one": "Размышлял {{count}} час",
+          "few": "Размышлял {{count}} часа",
+          "many": "Размышлял {{count}} часов"
+        }
+      },
       "TOOL_APPROVAL_CARD": {
         "TEXT_ALLOW_PREFIX": "Разрешить",
         "BUTTON_ALLOW": "Разрешить",

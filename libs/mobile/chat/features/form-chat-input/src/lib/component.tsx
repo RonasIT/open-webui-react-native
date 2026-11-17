@@ -17,15 +17,21 @@ import { AppTextInput, AppInputProps, View, IconButton } from '@open-webui-react
 import {
   appConfigurationApi,
   ChatGenerationOption,
+  chatSelectionState$,
   ChatResponse,
+  getAvailableGenerationOptions,
+  getChatSelectionForModel,
+  isFeaturePermitted,
   modelsApi,
-  NEW_CHAT_TOOLS_SELECTION_KEY,
+  NEW_CHAT_SELECTION_KEY,
+  resolveDefaultGenerationOptions,
   resolveDefaultToolIds,
   tasksApi,
   toolsApi,
-  toolsSelectionState$,
+  updateChatSelection,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import {
   AttachedImage,
   AttachedListItem,
@@ -95,31 +101,36 @@ export function FormChatInput<T extends FieldValues>({
 
   const { field } = useController({ control, name });
 
+  const isOfflineMode = useSelector(appState$.isOfflineMode);
   const items = useSelector(attachedItems);
   const images = useSelector(attachedImages);
 
   const [isMicrophonePreparing, setIsMicrophonePreparing] = useState<boolean>(false);
   const [isDictateMode, setIsDictateMode] = useState<boolean>(false);
-
-  const [options, setOptions] = useState<Array<ChatGenerationOption>>([]);
+  // NOTE: Open WebUI answers 403 to transcription without `chat.stt`; Voice mode also needs `chat.call`, as in the web.
+  const isDictationPermitted = isFeaturePermitted('chat', 'stt', true);
+  const isVoiceModePermitted =
+    isFeatureEnabled(FeatureID.VOICE_MODE) && isDictationPermitted && isFeaturePermitted('chat', 'call', true);
 
   // NOTE: The chat being composed has no id yet, so its selection is parked under a placeholder
   // key that `useCreateNewChat` moves onto the real id once the chat exists.
-  const toolsSelectionKey = chat?.id ?? NEW_CHAT_TOOLS_SELECTION_KEY;
-  const toolsSelection = useSelector(toolsSelectionState$[toolsSelectionKey]);
+  const selectionKey = chat?.id ?? NEW_CHAT_SELECTION_KEY;
+  const storedSelection = useSelector(chatSelectionState$[selectionKey]);
+  const selection = getChatSelectionForModel(storedSelection, modelId);
+
+  const model = models?.find(({ id }) => id === modelId);
 
   const defaultToolIds = useMemo(
-    () =>
-      resolveDefaultToolIds({
-        model: models?.find(({ id }) => id === modelId),
-        tools,
-        uiSettings: userSettings?.ui,
-      }),
-    [models, modelId, tools, userSettings],
+    () => resolveDefaultToolIds({ model, tools, uiSettings: userSettings?.ui }),
+    [model, tools, userSettings],
   );
 
-  const selectedToolIds =
-    toolsSelection && toolsSelection.modelId === modelId ? toolsSelection.toolIds : defaultToolIds;
+  const availableGenerationOptions = getAvailableGenerationOptions(model, config);
+
+  const selectedToolIds = selection.toolIds ?? defaultToolIds;
+  const selectedGenerationOptions =
+    selection.generationOptions ??
+    resolveDefaultGenerationOptions({ model, availableOptions: availableGenerationOptions });
 
   const { handleImagePress, selectedImageIndex, isPreviewVisible, handleCloseImagePress } = useImagePreview();
   const { present: openVoiceModeModal } = useVoiceModeModal();
@@ -147,23 +158,27 @@ export function FormChatInput<T extends FieldValues>({
       : [],
   );
 
-  const onVoiceModePress = async (): Promise<void> => {
+  const onVoiceModePress = withOfflineGuard(async (): Promise<void> => {
     if (!modelId) {
       return ToastService.showError(translate('TEXT_MODEL_NOT_SELECTED'));
     }
     setIsMicrophonePreparing(true);
     await openVoiceModeModal({ chatId: chat?.id, modelId });
     setIsMicrophonePreparing(false);
-  };
+  });
+
+  const handleSubmitPress = withOfflineGuard(() => onSubmit(selectedGenerationOptions));
 
   const handleSuggestionPress = (suggestion: string): void => {
     field.onChange(suggestion);
   };
 
-  const onGenerationOptionPress = (option: ChatGenerationOption): void => setOptions((state) => xor(state, [option]));
+  const onGenerationOptionPress = (option: ChatGenerationOption): void => {
+    updateChatSelection(selectionKey, modelId, { generationOptions: xor(selectedGenerationOptions, [option]) });
+  };
 
   const onApplyToolIds = (toolIds: Array<string>): void => {
-    toolsSelectionState$[toolsSelectionKey].set({ modelId, toolIds });
+    updateChatSelection(selectionKey, modelId, { toolIds });
   };
 
   const handleDictateModePress = withOfflineGuard(() => setIsDictateMode(true));
@@ -178,17 +193,19 @@ export function FormChatInput<T extends FieldValues>({
     field.onChange(text);
   };
 
-  const handlePaste = async (payload: PasteEventPayload): Promise<void> => {
-    if (payload.type !== 'images') {
-      return;
-    }
-
-    for (const uri of payload.uris) {
+  const attachPastedImages = withOfflineGuard(async (uris: Array<string>): Promise<void> => {
+    for (const uri of uris) {
       try {
         onImageUploaded(await preparePastedImage(uri));
       } catch {
         continue;
       }
+    }
+  });
+
+  const handlePaste = (payload: PasteEventPayload): void => {
+    if (payload.type === 'images') {
+      attachPastedImages(payload.uris);
     }
   };
 
@@ -229,13 +246,14 @@ export function FormChatInput<T extends FieldValues>({
             }
             accessoryBottom={
               <ChatInputBottomRow
-                onSubmit={() => onSubmit(options)}
-                isSubmitDisabled={(!isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty) || isImageUploading}
+                onSubmit={handleSubmitPress}
+                isSubmitDisabled={(!isVoiceModePermitted && isInputEmpty) || isImageUploading}
                 onVoiceModePress={onVoiceModePress}
-                isVoiceModeAvailable={isFeatureEnabled(FeatureID.VOICE_MODE) && isInputEmpty}
+                isVoiceModeAvailable={isVoiceModePermitted && isInputEmpty}
                 onStopGenerationPress={onStopGenerationPress}
                 isResponseGenerating={isResponseGenerating}
                 isMessageQueueEnabled={isMessageQueueEnabled}
+                isSubmitInactive={isOfflineMode}
                 isLoading={isLoading || isMicrophonePreparing}>
                 <View className='flex-row flex-1 justify-between'>
                   <View className='gap-16 flex-row '>
@@ -248,20 +266,20 @@ export function FormChatInput<T extends FieldValues>({
                       chatId={chat?.id}
                       attachedChatIds={attachedChatIds}
                     />
-                    {config?.features.enableImageGeneration && (
+                    {availableGenerationOptions.includes(ChatGenerationOption.IMAGE_GENERATION) && (
                       <SelectOptionIcon
                         disabled={isLoading}
                         iconName='generatedImage'
                         onPress={() => onGenerationOptionPress(ChatGenerationOption.IMAGE_GENERATION)}
-                        isSelected={options.includes(ChatGenerationOption.IMAGE_GENERATION)}
+                        isSelected={selectedGenerationOptions.includes(ChatGenerationOption.IMAGE_GENERATION)}
                       />
                     )}
-                    {config?.features.enableWebSearch && (
+                    {availableGenerationOptions.includes(ChatGenerationOption.WEB_SEARCH) && (
                       <SelectOptionIcon
                         disabled={isLoading}
                         iconName='web'
                         onPress={() => onGenerationOptionPress(ChatGenerationOption.WEB_SEARCH)}
-                        isSelected={options.includes(ChatGenerationOption.WEB_SEARCH)}
+                        isSelected={selectedGenerationOptions.includes(ChatGenerationOption.WEB_SEARCH)}
                       />
                     )}
                     <ChatSettingsSheet
@@ -270,16 +288,19 @@ export function FormChatInput<T extends FieldValues>({
                       selectedToolIds={selectedToolIds}
                       onApplyToolIds={onApplyToolIds}
                       chat={chat}
-                      model={models?.find(({ id }) => id === modelId)}
+                      model={model}
                       isToolPermissionsEnabled={config?.features.enableToolPermissions}
                     />
                   </View>
-                  <IconButton
-                    disabled={isLoading}
-                    iconName='microphone'
-                    className='p-0 mr-16'
-                    onPress={handleDictateModePress}
-                  />
+                  {isDictationPermitted && (
+                    <IconButton
+                      disabled={isLoading}
+                      isInactive={isOfflineMode}
+                      iconName='microphone'
+                      className='p-0 mr-16'
+                      onPress={handleDictateModePress}
+                    />
+                  )}
                 </View>
               </ChatInputBottomRow>
             }

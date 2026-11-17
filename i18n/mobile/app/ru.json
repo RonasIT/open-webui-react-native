@@ -58,7 +58,7 @@
         "TEXT_ENTER_NEW_PASSWORD": "Введите новый пароль",
         "TEXT_CONFIRM_NEW_PASSWORD": "Подтвердите новый пароль",
         "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Повторите новый пароль",
-        "TEXT_PASSWORD_CHANGED": "Пароль успешно изменён"
+        "TEXT_PASSWORD_CHANGED": "Пароль изменён. Войдите снова."
       },
       "DEFAULT_MODEL_MODAL": {
         "TEXT_SEARCH_MODEL": "Поиск модели"
