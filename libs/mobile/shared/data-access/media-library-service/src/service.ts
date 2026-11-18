@@ -33,9 +33,7 @@ export class MediaLibraryService {
 
     // TODO: Update logic for download AI-generated images, root task: xhttps://app.clickup.com/t/24336023/PRD-1740
     if (source.startsWith('http')) {
-      const headers = getRequestHeaders(source);
-
-      await FileSystem.downloadAsync(source, targetPath, headers ? { headers } : undefined);
+      await FileSystem.downloadAsync(source, targetPath, { headers: getRequestHeaders(source) });
     } else {
       const base64 = source.startsWith('data:image') ? source.split(',')[1] : source;
       await FileSystem.writeAsStringAsync(targetPath, base64, {

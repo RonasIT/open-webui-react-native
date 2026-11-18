@@ -13,23 +13,20 @@ const readOrigin = (url: string): string | undefined => {
   }
 };
 
-// NOTE: `serverUrl` is the server the request is meant for: the saved one, or the one a URL check reaches.
-// The token goes only to the saved server, the Access pass only to the server it was issued for.
-export const getRequestHeaders = (
-  requestUrl: string,
-  serverUrl: string = getApiUrl(),
-): Record<string, string> | undefined => {
+export const getRequestHeaders = (requestUrl: string): Record<string, string> => {
+  // NOTE: Not a secret, so it goes with every request, a URL check of an unsaved server included.
+  // With it Cloudflare Access answers 401 instead of a redirect the device follows to its login page.
+  const headers: Record<string, string> = { 'X-Requested-With': 'XMLHttpRequest' };
   const requestOrigin = readOrigin(requestUrl);
 
-  if (!requestOrigin || requestOrigin !== readOrigin(serverUrl)) {
-    return undefined;
+  if (!requestOrigin) {
+    return headers;
   }
 
-  // NOTE: With this header Cloudflare Access answers 401 instead of a redirect the device follows to its login page.
-  const headers: Record<string, string> = { 'X-Requested-With': 'XMLHttpRequest' };
   const token = appStorageService.token.get();
   const accessPass = authState$.accessPass.get();
 
+  // NOTE: The token goes only to the saved server, the Access pass only to the server it was issued for.
   if (token && requestOrigin === readOrigin(getApiUrl())) {
     headers.Authorization = `Bearer ${token}`;
   }
