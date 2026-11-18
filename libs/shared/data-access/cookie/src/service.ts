@@ -24,6 +24,23 @@ class CookieService {
     await this.clearByName(serverUrl, accessPassCookieName, 'clearAccessPass');
   }
 
+  // NOTE: Drops all a sign-in WebView left, the Cloudflare login session (`CF_Session`) included. On Android
+  // the WebView and the app share one store; on iOS the WebKit store is separate and needs its own call.
+  public async clearWebViewSession(): Promise<void> {
+    try {
+      await NitroCookies.clearAll();
+
+      if (isWebKitStore) {
+        await NitroCookies.clearAll(true);
+      }
+    } catch (error) {
+      Sentry.withScope((scope) => {
+        scope.setTag('cookie.operation', 'clearWebViewSession');
+        Sentry.captureException(error);
+      });
+    }
+  }
+
   public async clearAll(): Promise<void> {
     await NitroCookies.clearAll();
   }

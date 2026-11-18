@@ -12,7 +12,7 @@ import { getConfigPath } from './utils';
 
 type UseGetAppConfigurationResult = UseQueryResult<Configuration, AxiosError> & {
   fetchWithUrlResult: Configuration | undefined;
-  fetchWithUrl: (url: string, accessPass?: string) => Promise<Configuration | undefined>;
+  fetchWithUrl: (url: string) => Promise<Configuration | undefined>;
   isFetchWithUrlSuccess: boolean;
   isFetchWithUrlError: boolean;
   isFetchWithUrlLoading: boolean;
@@ -48,7 +48,7 @@ export function useGetAppConfiguration(
     ...options,
   });
 
-  const fetchWithUrl = async (url: string, accessPass?: string): Promise<Configuration | undefined> => {
+  const fetchWithUrl = async (url: string): Promise<Configuration | undefined> => {
     const configUrl = getConfigPath(url);
     const isLatestFetch = (): boolean => latestFetchUrlRef.current === url;
 
@@ -64,7 +64,6 @@ export function useGetAppConfiguration(
             skipToast: true,
             skipSentryReport: true,
             timeout: appConfigurationApiConfig.urlConfigRequestTimeout,
-            accessPass,
           }),
         meta: { persist: false },
       });

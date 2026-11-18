@@ -1,4 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { HttpStatusCode } from 'axios';
 import { Fragment, ReactElement, useEffect, useRef, useState } from 'react';
@@ -18,26 +19,14 @@ import {
   supportedOauthProviders,
 } from '@open-webui-react-native/shared/data-access/api';
 import { isCloudflareAccessError } from '@open-webui-react-native/shared/data-access/api-client';
-import { cookieService } from '@open-webui-react-native/shared/data-access/cookie';
+import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
-import { getApiUrl, normalizeServerUrl, resolveApiUrl } from '@open-webui-react-native/shared/utils/config';
+import { normalizeServerUrl, resolveApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
 import { UrlInputLoader } from './components';
 import { emailFormConfig } from './config';
 import { EmailFormSchema } from './forms';
-
-interface ServerAccessPass {
-  serverUrl: string;
-  value: string;
-}
-
-const getSavedAccessPass = (): ServerAccessPass | null => {
-  const serverUrl = normalizeServerUrl(appStorageService.apiUrl.get());
-  const value = appStorageService.accessPass.get();
-
-  return serverUrl && value ? { serverUrl, value } : null;
-};
 
 interface EmailSignInFormProps {
   onSuccess: () => void;
@@ -53,7 +42,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
 
   const { query, setQuery, debouncedQuery } = useDebouncedQuery({ initialValue: appStorageService.apiUrl.get() });
   const queryRef = useRef(query);
-  const [accessPass, setAccessPass] = useState<ServerAccessPass | null>(getSavedAccessPass);
+  const accessPass = useSelector(authState$.accessPass);
   const [isAccessWebViewVisible, setIsAccessWebViewVisible] = useState(false);
 
   const {
@@ -107,7 +96,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
   const isUrlWithoutConfig = isFetchWithUrlSuccess && !(config?.name && config?.version);
   const isCloudflareAccessRequired =
     isUrlValid && !isFetchWithUrlLoading && isFetchWithUrlError && isCloudflareAccessError(fetchWithUrlError);
-  const serverAccessPass = accessPass?.serverUrl === serverUrl ? accessPass.value : undefined;
+  const hasAccessPass = !!serverUrl && accessPass?.serverUrl === resolveApiUrl(serverUrl);
 
   const isAuthEnabled = config?.features?.auth !== false;
   const isLdapEnabled = !!config?.features?.enableLdap;
@@ -138,35 +127,33 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
     mutate({ email: '', password: '' });
   };
 
-  const checkServerUrl = async (checkedAccessPass = serverAccessPass): Promise<void> => {
+  const checkServerUrl = async (): Promise<void> => {
     if (!isUrlValid) {
       return;
     }
 
     setOauthProviders({});
 
-    const checkedConfig = await fetchWithUrl(resolveApiUrl(serverUrl), checkedAccessPass);
+    const checkedConfig = await fetchWithUrl(resolveApiUrl(serverUrl));
     const isInputStillChecked = normalizeServerUrl(queryRef.current) === serverUrl;
 
     if (!isInputStillChecked || !checkedConfig?.name || !checkedConfig?.version) {
       return;
     }
 
-    // NOTE: A server switch drops the old server's pass, so coming back to it asks for Cloudflare Access again.
-    if (normalizeServerUrl(appStorageService.apiUrl.get()) !== serverUrl) {
-      cookieService.clearAccessPass(getApiUrl());
-      setAccessPass((pass) => (pass?.serverUrl === serverUrl ? pass : null));
+    // NOTE: Saving another server drops a pass issued for a different one, so coming back asks for Access again.
+    if (authState$.accessPass.get() && authState$.accessPass.serverUrl.get() !== resolveApiUrl(serverUrl)) {
+      authState$.clearAccessPass();
     }
 
     appStorageService.apiUrl.set(serverUrl);
-    appStorageService.accessPass.set(checkedAccessPass ?? null);
     setOauthProviders(checkedConfig.oauth?.providers ?? {});
   };
 
   const handleAccessPass = (value: string): void => {
     setIsAccessWebViewVisible(false);
-    setAccessPass({ serverUrl, value });
-    checkServerUrl(value);
+    authState$.setAccessPass({ serverUrl: resolveApiUrl(serverUrl), value });
+    checkServerUrl();
   };
 
   // NOTE: The server may have changed while the WebView was open, e.g. Access turned off, so the URL is checked again.
@@ -186,7 +173,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
 
     const serverName = `${config?.name} ${config?.version}`;
 
-    return serverAccessPass ? translate('TEXT_SERVER_VIA_CLOUDFLARE_ACCESS', { server: serverName }) : serverName;
+    return hasAccessPass ? translate('TEXT_SERVER_VIA_CLOUDFLARE_ACCESS', { server: serverName }) : serverName;
   };
 
   const getUrlCheckErrorText = (): string | undefined => {
@@ -243,7 +230,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
               isSuccess={isUrlWithConfig}
               isError={(isFetchWithUrlError && !isCloudflareAccessRequired) || isUrlWithoutConfig}
               retryLabel={translate('BUTTON_RETRY_SERVER_CHECK')}
-              onRetry={() => checkServerUrl()}
+              onRetry={checkServerUrl}
             />
           ) : undefined
         }

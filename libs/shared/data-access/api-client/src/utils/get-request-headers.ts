@@ -1,11 +1,6 @@
+import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
-
-export interface ServerCredentials {
-  serverUrl: string;
-  token?: string;
-  accessPass?: string;
-}
 
 // NOTE: Scheme and port belong to the server. `http://` on the same name is another origin and must not get the token.
 const readOrigin = (url: string): string | undefined => {
@@ -18,32 +13,29 @@ const readOrigin = (url: string): string | undefined => {
   }
 };
 
-const getSavedServerCredentials = (): ServerCredentials => ({
-  serverUrl: getApiUrl(),
-  token: appStorageService.token.get(),
-  accessPass: appStorageService.accessPass.get(),
-});
-
+// NOTE: `serverUrl` is the server the request is meant for: the saved one, or the one a URL check reaches.
+// The token goes only to the saved server, the Access pass only to the server it was issued for.
 export const getRequestHeaders = (
   requestUrl: string,
-  credentials: ServerCredentials = getSavedServerCredentials(),
+  serverUrl: string = getApiUrl(),
 ): Record<string, string> | undefined => {
   const requestOrigin = readOrigin(requestUrl);
-  const serverOrigin = readOrigin(credentials.serverUrl);
 
-  if (!requestOrigin || !serverOrigin || requestOrigin !== serverOrigin) {
+  if (!requestOrigin || requestOrigin !== readOrigin(serverUrl)) {
     return undefined;
   }
 
   // NOTE: With this header Cloudflare Access answers 401 instead of a redirect the device follows to its login page.
   const headers: Record<string, string> = { 'X-Requested-With': 'XMLHttpRequest' };
+  const token = appStorageService.token.get();
+  const accessPass = authState$.accessPass.get();
 
-  if (credentials.token) {
-    headers.Authorization = `Bearer ${credentials.token}`;
+  if (token && requestOrigin === readOrigin(getApiUrl())) {
+    headers.Authorization = `Bearer ${token}`;
   }
 
-  if (credentials.accessPass) {
-    headers.Cookie = `CF_Authorization=${credentials.accessPass}`;
+  if (accessPass && requestOrigin === readOrigin(accessPass.serverUrl)) {
+    headers.Cookie = `CF_Authorization=${accessPass.value}`;
   }
 
   return headers;

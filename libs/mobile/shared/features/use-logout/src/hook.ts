@@ -5,7 +5,6 @@ import { cookieService } from '@open-webui-react-native/shared/data-access/cooki
 import { localDbService } from '@open-webui-react-native/shared/data-access/local-db';
 import { queryPersister } from '@open-webui-react-native/shared/data-access/persist-query-storage';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
-import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 
 interface LogoutOptions {
   // NOTE: Only a sign-out the person chooses drops the Access pass; an expired session keeps it.
@@ -27,8 +26,7 @@ export const useLogout = (): { logout: (options?: LogoutOptions) => Promise<void
     authState$.logout();
 
     if (shouldClearAccessPass) {
-      appStorageService.accessPass.remove();
-      cookieService.clearAccessPass(getApiUrl());
+      authState$.clearAccessPass();
     }
 
     queryClient.removeQueries();
