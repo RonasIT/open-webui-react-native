@@ -4,6 +4,7 @@ import { HttpStatusCode } from 'axios';
 import { Fragment, ReactElement, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { TextInput } from 'react-native';
+import { CloudflareAccessWebView } from '@open-webui-react-native/mobile/auth/features/cloudflare-access-web-view';
 import { useMfaNavigation } from '@open-webui-react-native/mobile/auth/features/use-mfa-navigation';
 import { AppButton, AppText, View, FormFloatedLabelInput } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { FormValues } from '@open-webui-react-native/mobile/shared/utils/form';
@@ -22,7 +23,7 @@ import { appStorageService } from '@open-webui-react-native/shared/data-access/s
 import { getApiUrl, normalizeServerUrl, resolveApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
-import { CloudflareAccessWebView, UrlInputLoader } from './components';
+import { UrlInputLoader } from './components';
 import { emailFormConfig } from './config';
 import { EmailFormSchema } from './forms';
 
