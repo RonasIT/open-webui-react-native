@@ -75,7 +75,9 @@ export function CloudflareAccessWebView({
           {isPageLoading && !isOnLoginPage && <AppSpinner size='large' isFullScreen />}
           {isVisible && (
             <WebView
-              source={{ uri: serverUrl }}
+              // NOTE: A cached server page would open without reaching Access, so no pass is ever set.
+              source={{ uri: serverUrl, headers: { 'Cache-Control': 'no-cache' } }}
+              cacheMode='LOAD_NO_CACHE'
               style={commonStyle.fullFlex}
               onLoadStart={() => setIsPageLoading(true)}
               onLoadEnd={() => setIsPageLoading(false)}
