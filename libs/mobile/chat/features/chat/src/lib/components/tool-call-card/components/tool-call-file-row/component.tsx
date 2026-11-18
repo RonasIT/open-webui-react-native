@@ -2,7 +2,6 @@ import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { ReactElement, useState } from 'react';
 import { fileSystemService } from '@open-webui-react-native/mobile/shared/data-access/file-system-service';
 import { AppPressable, AppSpinner, AppText, Icon, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { ToolCallFile } from '../../../../utils';
 
@@ -21,7 +20,6 @@ export function ToolCallFileRow({ file }: ToolCallFileRowProps): ReactElement {
     try {
       await fileSystemService.shareExternalFile(file.source, file.name, {
         mimeType: file.mimeType,
-        authorizationToken: appStorageService.token.get(),
       });
     } catch {
       ToastService.showError(translate('TEXT_SAVE_FAILED'));

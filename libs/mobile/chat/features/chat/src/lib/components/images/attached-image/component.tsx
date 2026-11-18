@@ -22,8 +22,8 @@ export function AttachedImageView({
 }: AttachedImageViewProps): ReactElement | null {
   const [image, setImage] = useState<ImageRef | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
-
   const imageOpacity = useSharedValue(shouldHideSkeleton ? 1 : 0);
+  const imageSource = getServerImageSource(url);
 
   const aspectRatio = shouldUseAspectRatio && image?.width && image?.height ? image.width / image.height : undefined;
 
@@ -37,7 +37,7 @@ export function AttachedImageView({
   }));
 
   const loadImage = async (): Promise<void> => {
-    const image = await Image.loadAsync(getServerImageSource(url));
+    const image = await Image.loadAsync(imageSource);
     setImage(image);
 
     if (!shouldHideSkeleton) {
@@ -54,7 +54,7 @@ export function AttachedImageView({
     <AppPressable onPress={onPress} className='self-end relative'>
       <Animated.View style={imageAnimatedStyle}>
         <AppImage
-          source={{ uri: url }}
+          source={imageSource}
           style={[commonStyles, style]}
           {...props} />
       </Animated.View>

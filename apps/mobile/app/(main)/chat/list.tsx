@@ -16,7 +16,7 @@ import { useFoldersEnabled } from '@open-webui-react-native/mobile/shared/featur
 import { ScreenWrapper } from '@open-webui-react-native/mobile/shared/ui/screen-wrapper';
 import { AppHeader, AppPressable, Avatar, IconButton, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
-import { authApi, FolderListItem } from '@open-webui-react-native/shared/data-access/api';
+import { authApi, FolderListItem, getServerImageSource } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { useNavigateOnce } from '@open-webui-react-native/shared/utils/navigation';
@@ -63,7 +63,7 @@ export default function ChatListScreen(): ReactElement {
           accessoryLeft={
             <AppPressable onPress={handleSettingsPress}>
               <Avatar
-                source={profile?.profileImageUrl ? { uri: profile.profileImageUrl } : undefined}
+                source={profile?.profileImageUrl ? getServerImageSource(profile.profileImageUrl) : undefined}
                 name={profile?.name}
               />
             </AppPressable>

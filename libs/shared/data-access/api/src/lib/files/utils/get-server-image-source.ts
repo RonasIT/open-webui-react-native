@@ -1,5 +1,4 @@
-import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
-import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
+import { getRequestHeaders } from '@open-webui-react-native/shared/data-access/api-client';
 import { resolveServerUrl } from '@open-webui-react-native/shared/utils/files';
 
 export interface ServerImageSource {
@@ -9,8 +8,7 @@ export interface ServerImageSource {
 
 export const getServerImageSource = (source: string): ServerImageSource => {
   const uri = resolveServerUrl(source);
-  const token = appStorageService.token.get();
-  const isServerUrl = uri.startsWith(`${getApiUrl()}/`);
+  const headers = getRequestHeaders(uri);
 
-  return isServerUrl && token ? { uri, headers: { Authorization: `Bearer ${token}` } } : { uri };
+  return headers ? { uri, headers } : { uri };
 };

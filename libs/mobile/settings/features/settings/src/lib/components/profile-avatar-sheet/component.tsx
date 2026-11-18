@@ -15,7 +15,7 @@ import {
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { compressImage } from '@open-webui-react-native/mobile/shared/utils/compressor';
-import { authApi, UpdateProfileRequest } from '@open-webui-react-native/shared/data-access/api';
+import { authApi, getServerImageSource, UpdateProfileRequest } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
 import { toDataUrl } from '@open-webui-react-native/shared/utils/files';
@@ -124,7 +124,7 @@ export function ProfileAvatarSheet({ name, imageUrl, ref, ...props }: ProfileAva
           <View className='gap-8'>
             <View className='items-center justify-center py-32'>
               <Avatar
-                source={currentImageUrl ? { uri: currentImageUrl } : undefined}
+                source={currentImageUrl ? getServerImageSource(currentImageUrl) : undefined}
                 name={name}
                 className='w-[112] h-[112]'
                 textClassName='text-h2-sm sm:text-h2'

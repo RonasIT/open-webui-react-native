@@ -15,7 +15,7 @@ export const useLogout = (): { logout: () => Promise<void> } => {
     // Not awaited: an unreachable server would block the logout until the system request timeout.
     // The result is irrelevant — the session may already be gone and the client state is wiped anyway.
     if (token) {
-      authService.signOut(token).catch(() => undefined);
+      authService.signOut().catch(() => undefined);
     }
 
     authState$.logout();
