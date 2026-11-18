@@ -13,7 +13,7 @@ export const requestHeadersInterceptor =
     const requestUrl = isAxiosAbsoluteUrl(url) ? url : serverUrl;
     const headers = getRequestHeaders(requestUrl);
 
-    if (request.headers) {
+    if (headers && request.headers) {
       for (const [name, value] of Object.entries(headers)) {
         request.headers.set(name, value);
       }

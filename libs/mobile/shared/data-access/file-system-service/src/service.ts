@@ -38,7 +38,9 @@ export class FileSystemService {
   }
 
   public async downloadFile(uri: string, fileURI: string): Promise<FileSystem.FileSystemDownloadResult> {
-    return await FileSystem.downloadAsync(uri, fileURI, { headers: getRequestHeaders(uri) });
+    const headers = getRequestHeaders(uri);
+
+    return await FileSystem.downloadAsync(uri, fileURI, headers ? { headers } : undefined);
   }
 
   // NOTE: `mimeType` / `utiType` are plain strings rather than the enums because files produced by

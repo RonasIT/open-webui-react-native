@@ -8,6 +8,7 @@ export interface ServerImageSource {
 
 export const getServerImageSource = (source: string): ServerImageSource => {
   const uri = resolveServerUrl(source);
+  const headers = getRequestHeaders(uri);
 
-  return { uri, headers: getRequestHeaders(uri) };
+  return headers ? { uri, headers } : { uri };
 };

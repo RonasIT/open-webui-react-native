@@ -80,8 +80,12 @@ export const getApiService = (url?: string): ApiService => {
     return apiServiceCache.get(apiUrl)!;
   }
 
-  // NOTE: Without it React Native adds the native jar's cookies, and a stale `CF_Authorization` there breaks Access.
-  const service = new ApiService(apiUrl, { withCredentials: false });
+  // NOTE: Without `withCredentials: false` React Native adds the native jar's cookies, and a stale `CF_Authorization`
+  // there breaks Access. `X-Requested-With` is set here too, since a URL check reaches a server that is not saved yet.
+  const service = new ApiService(apiUrl, {
+    withCredentials: false,
+    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+  });
   setupInterceptors(service, apiUrl);
   apiServiceCache.set(apiUrl, service);
 

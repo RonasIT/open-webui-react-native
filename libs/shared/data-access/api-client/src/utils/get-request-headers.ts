@@ -13,25 +13,26 @@ const readOrigin = (url: string): string | undefined => {
   }
 };
 
-export const getRequestHeaders = (requestUrl: string): Record<string, string> => {
-  // NOTE: Not a secret, so it goes with every request, a URL check of an unsaved server included.
-  // With it Cloudflare Access answers 401 instead of a redirect the device follows to its login page.
-  const headers: Record<string, string> = { 'X-Requested-With': 'XMLHttpRequest' };
+// NOTE: Headers go only to our server: the saved one, or the one the Access pass was issued for before it is saved.
+export const getRequestHeaders = (requestUrl: string): Record<string, string> | undefined => {
   const requestOrigin = readOrigin(requestUrl);
+  const accessPass = authState$.accessPass.get();
+  const isSavedServer = !!requestOrigin && requestOrigin === readOrigin(getApiUrl());
+  const isAccessPassServer = !!requestOrigin && !!accessPass && requestOrigin === readOrigin(accessPass.serverUrl);
 
-  if (!requestOrigin) {
-    return headers;
+  if (!isSavedServer && !isAccessPassServer) {
+    return undefined;
   }
 
+  // NOTE: With this header Cloudflare Access answers 401 instead of a redirect the device follows to its login page.
+  const headers: Record<string, string> = { 'X-Requested-With': 'XMLHttpRequest' };
   const token = appStorageService.token.get();
-  const accessPass = authState$.accessPass.get();
 
-  // NOTE: The token goes only to the saved server, the Access pass only to the server it was issued for.
-  if (token && requestOrigin === readOrigin(getApiUrl())) {
+  if (token && isSavedServer) {
     headers.Authorization = `Bearer ${token}`;
   }
 
-  if (accessPass && requestOrigin === readOrigin(accessPass.serverUrl)) {
+  if (accessPass && isAccessPassServer) {
     headers.Cookie = `CF_Authorization=${accessPass.value}`;
   }
 
