@@ -6,10 +6,10 @@ import { mediaLibraryService } from '../service';
 export const useImageDownloader = (): typeof result => {
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
 
-  const downloadImage = async (url: string, authorizationToken?: string): Promise<void> => {
+  const downloadImage = async (url: string): Promise<void> => {
     try {
       setIsDownloading(true);
-      const image = await mediaLibraryService.saveImage(url, authorizationToken);
+      const image = await mediaLibraryService.saveImage(url);
 
       if (image) {
         ToastService.showSuccess(i18n.t('SHARED.MEDIA_LIBRARY_SERVICE.TEXT_SUCCESSFULLY_SAVED'));

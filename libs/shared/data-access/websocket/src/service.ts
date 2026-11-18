@@ -1,5 +1,7 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
 import { io, Socket } from 'socket.io-client';
+
+import { getRequestHeaders } from '@open-webui-react-native/shared/data-access/api-client';
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { webSocketConfig } from './config';
@@ -27,6 +29,7 @@ export class SocketService {
       // NOTE: Workaround required for the socket to connect to the backend, which rejects WS connections without this header.
       extraHeaders: {
         Origin: apiUrl,
+        ...getRequestHeaders(apiUrl),
       },
     });
 

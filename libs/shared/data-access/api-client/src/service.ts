@@ -1,4 +1,4 @@
-import { ApiService, tokenInterceptor } from '@ronas-it/axios-api-client';
+import { ApiService } from '@ronas-it/axios-api-client';
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
 import { AxiosError, HttpStatusCode } from 'axios';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
@@ -11,6 +11,7 @@ import {
   errorCatcherInterceptor,
   getErrorMessage,
   profileNotFoundInterceptor,
+  requestHeadersInterceptor,
   sentryErrorCatcherInterceptor,
   unauthorizedInterceptor,
 } from './interceptors';
@@ -42,15 +43,9 @@ const onSessionExpired = (): void => {
   ToastService.showError(i18n.t('SHARED.API_ERRORS.TEXT_YOUR_SESSION_HAS_EXPIRED'));
 };
 
-const setupInterceptors = (service: ApiService): void => {
+const setupInterceptors = (service: ApiService, apiUrl: string): void => {
   service.useInterceptors({
-    request: [
-      [
-        tokenInterceptor({
-          getToken: () => appStorageService.token.get() ?? '',
-        }),
-      ],
-    ],
+    request: [[requestHeadersInterceptor(apiUrl)]],
     response: [
       [null, sentryErrorCatcherInterceptor()],
       [
@@ -86,7 +81,7 @@ export const getApiService = (url?: string): ApiService => {
   }
 
   const service = new ApiService(apiUrl);
-  setupInterceptors(service);
+  setupInterceptors(service, apiUrl);
   apiServiceCache.set(apiUrl, service);
 
   return service;

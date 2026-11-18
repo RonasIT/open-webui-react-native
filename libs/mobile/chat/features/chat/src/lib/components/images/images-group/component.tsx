@@ -3,7 +3,6 @@ import { ReactElement } from 'react';
 import { AttachedImageWithIndex } from '@open-webui-react-native/mobile/shared/features/image-preview-modal';
 import { cn } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { AppImageProps, AppPressable, AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { AttachedImageView } from '../attached-image';
 import { chatImagesGroupConfig } from './config';
 
@@ -26,8 +25,6 @@ export function ChatImagesGroup({
   containerClassName,
   shouldHideSkeleton,
 }: ChatImagesGroupProps): ReactElement | null {
-  const token = appStorageService.token.get();
-
   const { maxHeight, maxWidth, gap } = chatImagesGroupConfig;
   const count = images.length;
   if (count === 0) return null;
@@ -45,7 +42,6 @@ export function ChatImagesGroup({
       style={style}
       shouldUseAspectRatio={shouldUseAspectRatio}
       shouldHideSkeleton={shouldHideSkeleton}
-      authorizationToken={token}
       contentFit={contentFit}
     />
   );

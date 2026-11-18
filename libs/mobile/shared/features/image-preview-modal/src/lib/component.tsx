@@ -15,7 +15,6 @@ import {
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { getServerImageSource } from '@open-webui-react-native/shared/data-access/api';
-import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { AttachedImageWithIndex } from './types';
 
 interface ImagePreviewModalProps extends Partial<ModalProps> {
@@ -46,10 +45,9 @@ export function ImagePreviewModal({
 
   const { downloadImage, isDownloading } = useImageDownloader();
 
-  // NOTE: Images can come from markdown and point anywhere, so the token goes only to the app's own server.
   const handleDownloadPress = (): void => {
-    const { uri, headers } = getServerImageSource(images[activeIndexRef.current].url);
-    downloadImage(uri, headers ? (appStorageService.token.get() ?? undefined) : undefined);
+    const { uri } = getServerImageSource(images[activeIndexRef.current].url);
+    downloadImage(uri);
   };
 
   const { panGesture, animatedOpacityStyles, animatedScaleStyles } = useSwipeToClose({ onReachDistance: onClosePress });

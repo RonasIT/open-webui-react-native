@@ -3,6 +3,8 @@ import * as DocumentPicker from 'expo-document-picker';
 import { Directory, File, Paths } from 'expo-file-system';
 import * as FileSystem from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
+
+import { getRequestHeaders } from '@open-webui-react-native/shared/data-access/api-client';
 import { isDataUri } from '@open-webui-react-native/shared/utils/files';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { FileExtension, MimeType, UtiType } from './enums';
@@ -35,12 +37,10 @@ export class FileSystemService {
     });
   }
 
-  public async downloadFile(
-    uri: string,
-    fileURI: string,
-    options?: FileSystem.DownloadOptions,
-  ): Promise<FileSystem.FileSystemDownloadResult> {
-    return await FileSystem.downloadAsync(uri, fileURI, options);
+  public async downloadFile(uri: string, fileURI: string): Promise<FileSystem.FileSystemDownloadResult> {
+    const headers = getRequestHeaders(uri);
+
+    return await FileSystem.downloadAsync(uri, fileURI, headers ? { headers } : undefined);
   }
 
   // NOTE: `mimeType` / `utiType` are plain strings rather than the enums because files produced by
@@ -83,11 +83,7 @@ export class FileSystemService {
 
   // NOTE: For a file the app did not create — a tool result fetched from the server, or one the
   // tool inlined as a base64 data URI. Cached only for as long as the share sheet needs it.
-  public async shareExternalFile(
-    source: string,
-    fileName: string,
-    options?: { mimeType?: string; authorizationToken?: string },
-  ): Promise<void> {
+  public async shareExternalFile(source: string, fileName: string, options?: { mimeType?: string }): Promise<void> {
     const fileUri = `${FileSystem.cacheDirectory}${fileName}`;
 
     if (isDataUri(source)) {
@@ -95,13 +91,7 @@ export class FileSystemService {
         encoding: FileSystem.EncodingType.Base64,
       });
     } else {
-      const { authorizationToken } = options ?? {};
-
-      await this.downloadFile(
-        source,
-        fileUri,
-        authorizationToken ? { headers: { Authorization: `Bearer ${authorizationToken}` } } : undefined,
-      );
+      await this.downloadFile(source, fileUri);
     }
 
     try {

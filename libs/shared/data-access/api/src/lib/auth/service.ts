@@ -1,8 +1,9 @@
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { isUndefined, omitBy } from 'lodash-es';
-import { getApiService, RequestOptions } from '@open-webui-react-native/shared/data-access/api-client';
+import { getApiService, getRequestHeaders, RequestOptions } from '@open-webui-react-native/shared/data-access/api-client';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { localDbService, LocalProfile } from '@open-webui-react-native/shared/data-access/local-db';
+import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { authApiConfig } from './config';
 import { SignInResponse, SignInRequest, UpdateProfileRequest, UpdatePasswordRequest } from './models';
 
@@ -17,10 +18,9 @@ class AuthService {
     return plainToInstance(SignInResponse, response);
   }
 
-  // The token is passed explicitly because logout wipes it from storage right after firing this request,
-  // before tokenInterceptor reads it on dispatch.
-  public async signOut(token: string): Promise<void> {
-    const headers = { Authorization: `Bearer ${token}` };
+  // NOTE: Logout clears the token before the interceptor runs, so the header is taken here while it is still stored.
+  public async signOut(): Promise<void> {
+    const headers = getRequestHeaders(`${getApiUrl()}/api/${authApiConfig.route}/signout`);
     const params = { skipToast: true };
 
     try {

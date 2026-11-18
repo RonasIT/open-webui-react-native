@@ -3,10 +3,12 @@ import { PermissionStatus } from 'expo';
 import * as FileSystem from 'expo-file-system/legacy';
 // NOTE: Since SDK 57 the root import only keeps stubs that throw — the old API lives under /legacy.
 import * as MediaLibrary from 'expo-media-library/legacy';
+
+import { getRequestHeaders } from '@open-webui-react-native/shared/data-access/api-client';
 import { permissionAlertService } from '@open-webui-react-native/shared/utils/permission-alert';
 
 export class MediaLibraryService {
-  public async saveImage(source: string, authorizationToken?: string): Promise<string | void> {
+  public async saveImage(source: string): Promise<string | void> {
     const { status } = await MediaLibrary.requestPermissionsAsync(true);
 
     if (status === PermissionStatus.DENIED) {
@@ -31,11 +33,9 @@ export class MediaLibraryService {
 
     // TODO: Update logic for download AI-generated images, root task: xhttps://app.clickup.com/t/24336023/PRD-1740
     if (source.startsWith('http')) {
-      await FileSystem.downloadAsync(
-        source,
-        targetPath,
-        authorizationToken ? { headers: { Authorization: `Bearer ${authorizationToken}` } } : undefined,
-      );
+      const headers = getRequestHeaders(source);
+
+      await FileSystem.downloadAsync(source, targetPath, headers ? { headers } : undefined);
     } else {
       const base64 = source.startsWith('data:image') ? source.split(',')[1] : source;
       await FileSystem.writeAsStringAsync(targetPath, base64, {

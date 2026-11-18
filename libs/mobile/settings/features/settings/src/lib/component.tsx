@@ -21,6 +21,7 @@ import {
   authApi,
   chatApi,
   getSelectableModels,
+  getServerImageSource,
   isInterfaceSettingsPermitted,
   isSystemPromptSettingPermitted,
   isTemporaryChatEnforced,
@@ -93,7 +94,7 @@ export function Settings(): ReactElement {
 
   const selectableModels = useMemo(() => getSelectableModels(models), [models]);
 
-  const avatarSource = profile?.profileImageUrl ? { uri: profile.profileImageUrl } : undefined;
+  const avatarSource = profile?.profileImageUrl ? getServerImageSource(profile.profileImageUrl) : undefined;
   const languageLabel = availableLanguages.find(({ code }) => code === locale)?.label;
   const markdownRendererOption = availableMarkdownRenderers.find(({ code }) => code === markdownRenderer);
 

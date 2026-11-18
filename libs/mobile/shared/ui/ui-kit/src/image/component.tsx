@@ -3,20 +3,14 @@ import { ReactElement } from 'react';
 import { withClassNameInterop } from '@open-webui-react-native/mobile/shared/ui/styles';
 
 export interface AppImageProps extends ImageProps {
-  authorizationToken?: string;
   className?: string;
 }
 
-function AppImage({ source, authorizationToken, ...props }: AppImageProps): ReactElement {
+function AppImage({ source, ...props }: AppImageProps): ReactElement {
   return (
     <Image
-      source={
-        typeof source === 'object'
-          ? { headers: authorizationToken ? { Authorization: `Bearer ${authorizationToken}` } : undefined, ...source }
-          : source
-      }
-      {...props}
-    />
+      source={source}
+      {...props} />
   );
 }
 
