@@ -19,9 +19,57 @@ class CookieService {
     return cookies[accessPassCookieName]?.value || undefined;
   }
 
+  // NOTE: The native jar, not the WebKit store. iOS copies that jar into an incognito WebView when
+  // `sharedCookiesEnabled` is set; Android's WebView reads this same jar.
+  public async setAccessPass(serverUrl: string, value: string): Promise<void> {
+    try {
+      await NitroCookies.set(
+        serverUrl,
+        {
+          name: accessPassCookieName,
+          value,
+          path: '/',
+          secure: serverUrl.startsWith('https://'),
+        },
+        false,
+      );
+
+      // NOTE: Android `CookieManager.setCookie` returns before a following page load can see the cookie.
+      if (Platform.OS === 'android') {
+        await NitroCookies.flush();
+      }
+    } catch (error) {
+      Sentry.withScope((scope) => {
+        scope.setTag('cookie.operation', 'setAccessPass');
+        Sentry.captureException(error);
+      });
+    }
+  }
+
   // NOTE: The app sends the pass as its own header. A copy left in a native store would be added to requests and break Access.
   public async clearAccessPass(serverUrl: string): Promise<void> {
     await this.clearByName(serverUrl, accessPassCookieName, 'clearAccessPass');
+  }
+
+  // NOTE: Synchronous on purpose. The OAuth WebView closes and the socket opens in the same moment, and an
+  // awaited clear can lose that race. iOS also copies the WebView's `token` cookie into this jar and then
+  // joins the jar onto the socket's Cookie header with a comma, which hides the pass. The WebView observer
+  // can write both back after unmount, so the caller clears once more a moment later.
+  public clearOauthJar(serverUrl: string): void {
+    try {
+      NitroCookies.clearByNameSync(serverUrl, accessPassCookieName);
+      NitroCookies.clearByNameSync(serverUrl, 'token');
+
+      // NOTE: Android expires a cookie with another setCookie, which the next request can miss until flush.
+      if (Platform.OS === 'android') {
+        void NitroCookies.flush();
+      }
+    } catch (error) {
+      Sentry.withScope((scope) => {
+        scope.setTag('cookie.operation', 'clearOauthJar');
+        Sentry.captureException(error);
+      });
+    }
   }
 
   // NOTE: Drops all a sign-in WebView left, the Cloudflare login session (`CF_Session`) included. On Android
