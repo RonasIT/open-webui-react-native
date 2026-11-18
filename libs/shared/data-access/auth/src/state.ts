@@ -1,5 +1,4 @@
 import { Observable, observable } from '@legendapp/state';
-import { cookieService } from '@open-webui-react-native/shared/data-access/cookie';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 
 interface AuthState {
@@ -18,7 +17,6 @@ export const authState$: Observable<AuthState> = observable<AuthState>({
     authState$.isUnauthorized.set(false);
   },
   signIn: (token) => {
-    cookieService.setToken(token);
     appStorageService.token.set(token);
     authState$.isAuthenticated.set(true);
   },
