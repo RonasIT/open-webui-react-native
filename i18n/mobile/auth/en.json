@@ -30,7 +30,8 @@
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "This sign-in method is unavailable. Please use another option to continue."
       },
       "CLOUDFLARE_ACCESS_WEB_VIEW": {
-        "BUTTON_CLOSE": "Close"
+        "BUTTON_CLOSE": "Close",
+        "TEXT_ACCESS_PASS_NOT_RECEIVED": "Couldn't sign in to Cloudflare Access. Please try again."
       }
     },
     "MFA_VERIFICATION": {

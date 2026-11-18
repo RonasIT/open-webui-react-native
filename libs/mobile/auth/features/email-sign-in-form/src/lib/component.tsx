@@ -169,6 +169,12 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
     checkServerUrl(value);
   };
 
+  // NOTE: The server may have changed while the WebView was open, e.g. Access turned off, so the URL is checked again.
+  const handleAccessWebViewClose = (): void => {
+    setIsAccessWebViewVisible(false);
+    checkServerUrl();
+  };
+
   const getUrlHelperText = (): string | undefined => {
     if (isCloudflareAccessRequired) {
       return translate('TEXT_PROTECTED_BY_CLOUDFLARE_ACCESS');
@@ -305,7 +311,7 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
       <CloudflareAccessWebView
         isVisible={isAccessWebViewVisible}
         serverUrl={resolveApiUrl(serverUrl)}
-        onClose={() => setIsAccessWebViewVisible(false)}
+        onClose={handleAccessWebViewClose}
         onAccessPass={handleAccessPass}
       />
     </View>

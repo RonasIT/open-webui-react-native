@@ -30,7 +30,8 @@
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Этот способ входа недоступен. Пожалуйста, выберите другой вариант."
       },
       "CLOUDFLARE_ACCESS_WEB_VIEW": {
-        "BUTTON_CLOSE": "Закрыть"
+        "BUTTON_CLOSE": "Закрыть",
+        "TEXT_ACCESS_PASS_NOT_RECEIVED": "Не удалось войти в Cloudflare Access. Попробуйте ещё раз."
       }
     },
     "MFA_VERIFICATION": {

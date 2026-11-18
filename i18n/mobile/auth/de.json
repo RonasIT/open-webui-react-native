@@ -30,7 +30,8 @@
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Diese Anmeldemethode ist nicht verfügbar. Bitte wählen Sie eine andere Option."
       },
       "CLOUDFLARE_ACCESS_WEB_VIEW": {
-        "BUTTON_CLOSE": "Schließen"
+        "BUTTON_CLOSE": "Schließen",
+        "TEXT_ACCESS_PASS_NOT_RECEIVED": "Anmeldung bei Cloudflare Access fehlgeschlagen. Bitte versuche es erneut."
       }
     },
     "MFA_VERIFICATION": {

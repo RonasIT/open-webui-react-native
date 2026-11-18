@@ -30,7 +30,8 @@
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Cette méthode de connexion est indisponible. Veuillez utiliser une autre option."
       },
       "CLOUDFLARE_ACCESS_WEB_VIEW": {
-        "BUTTON_CLOSE": "Fermer"
+        "BUTTON_CLOSE": "Fermer",
+        "TEXT_ACCESS_PASS_NOT_RECEIVED": "Impossible de se connecter à Cloudflare Access. Veuillez réessayer."
       }
     },
     "MFA_VERIFICATION": {

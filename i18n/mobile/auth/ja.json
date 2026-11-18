@@ -30,7 +30,8 @@
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "このサインイン方法は利用できません。別の方法をお試しください。"
       },
       "CLOUDFLARE_ACCESS_WEB_VIEW": {
-        "BUTTON_CLOSE": "閉じる"
+        "BUTTON_CLOSE": "閉じる",
+        "TEXT_ACCESS_PASS_NOT_RECEIVED": "Cloudflare Access にサインインできませんでした。もう一度お試しください。"
       }
     },
     "MFA_VERIFICATION": {

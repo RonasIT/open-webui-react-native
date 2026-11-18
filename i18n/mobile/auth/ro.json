@@ -30,7 +30,8 @@
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Această metodă de conectare nu este disponibilă. Te rugăm să folosești o altă opțiune pentru a continua."
       },
       "CLOUDFLARE_ACCESS_WEB_VIEW": {
-        "BUTTON_CLOSE": "Închide"
+        "BUTTON_CLOSE": "Închide",
+        "TEXT_ACCESS_PASS_NOT_RECEIVED": "Conectarea la Cloudflare Access a eșuat. Încearcă din nou."
       }
     },
     "MFA_VERIFICATION": {

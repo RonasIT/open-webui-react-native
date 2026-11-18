@@ -30,7 +30,8 @@
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "此登录方式不可用。请使用其他方式继续。"
       },
       "CLOUDFLARE_ACCESS_WEB_VIEW": {
-        "BUTTON_CLOSE": "关闭"
+        "BUTTON_CLOSE": "关闭",
+        "TEXT_ACCESS_PASS_NOT_RECEIVED": "无法登录 Cloudflare Access，请重试。"
       }
     },
     "MFA_VERIFICATION": {
