@@ -1,26 +1,41 @@
 import * as Sentry from '@sentry/react-native';
+import { Platform } from 'react-native';
 import NitroCookies from 'react-native-nitro-cookies';
-import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
+
+const accessPassCookieName = 'CF_Authorization';
+// NOTE: On iOS a WebView keeps its cookies in the WebKit store, apart from the store app requests use.
+const isWebKitStore = Platform.OS === 'ios';
 
 class CookieService {
-  public async setToken(token: string): Promise<void> {
-    const apiUrl = `${getApiUrl()}/api/`;
+  // NOTE: Old versions mirrored the Open WebUI token into a `token` cookie. React Native's socket on iOS
+  // joins jar cookies to our `Cookie` header with a comma, which hides the Access pass from Cloudflare.
+  public async clearLegacyToken(serverUrl: string): Promise<void> {
+    await this.clearByName(serverUrl, 'token', 'clearLegacyToken');
+  }
 
+  public async getAccessPass(serverUrl: string): Promise<string | undefined> {
+    const cookies = await NitroCookies.get(serverUrl, isWebKitStore);
+
+    return cookies[accessPassCookieName]?.value || undefined;
+  }
+
+  // NOTE: The app sends the pass as its own header. A copy left in a native store would be added to requests and break Access.
+  public async clearAccessPass(serverUrl: string): Promise<void> {
+    await this.clearByName(serverUrl, accessPassCookieName, 'clearAccessPass');
+  }
+
+  // NOTE: Drops all a sign-in WebView left, the Cloudflare login session (`CF_Session`) included. On Android
+  // the WebView and the app share one store; on iOS the WebKit store is separate and needs its own call.
+  public async clearWebViewSession(): Promise<void> {
     try {
-      await NitroCookies.set(apiUrl, {
-        name: 'token',
-        value: token,
-        path: '/',
-        secure: true,
-        httpOnly: false,
-      });
+      await NitroCookies.clearAll();
+
+      if (isWebKitStore) {
+        await NitroCookies.clearAll(true);
+      }
     } catch (error) {
-      // NOTE: callers (authState$.signIn, appState$.init) fire this without awaiting it — the real
-      // auth token already lives in storage and the Authorization header by this point, so this
-      // cookie is only a best-effort mirror (used by webviews). Report but don't let it surface as
-      // an unhandled promise rejection.
       Sentry.withScope((scope) => {
-        scope.setTag('cookie.operation', 'setToken');
+        scope.setTag('cookie.operation', 'clearWebViewSession');
         Sentry.captureException(error);
       });
     }
@@ -28,6 +43,21 @@ class CookieService {
 
   public async clearAll(): Promise<void> {
     await NitroCookies.clearAll();
+  }
+
+  private async clearByName(serverUrl: string, name: string, operation: string): Promise<void> {
+    try {
+      await NitroCookies.clearByName(serverUrl, name);
+
+      if (isWebKitStore) {
+        await NitroCookies.clearByName(serverUrl, name, true);
+      }
+    } catch (error) {
+      Sentry.withScope((scope) => {
+        scope.setTag('cookie.operation', operation);
+        Sentry.captureException(error);
+      });
+    }
   }
 }
 

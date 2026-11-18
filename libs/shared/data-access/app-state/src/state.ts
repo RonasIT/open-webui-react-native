@@ -3,7 +3,7 @@ import { getLocales } from 'expo-localization';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { cookieService } from '@open-webui-react-native/shared/data-access/cookie';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
-import { constants, LanguageCode, MarkdownRenderer } from '@open-webui-react-native/shared/utils/config';
+import { constants, getApiUrl, LanguageCode, MarkdownRenderer } from '@open-webui-react-native/shared/utils/config';
 import { hapticFeedbackService } from '@open-webui-react-native/shared/utils/haptic-feedback-service';
 
 const isSupportedLocale = (locale?: string | null): locale is LanguageCode =>
@@ -60,9 +60,11 @@ export const appState$: Observable<AppState> = observable<AppState>({
   init: async () => {
     const token = appStorageService.token.get();
 
+    // NOTE: Awaited so the socket, which starts once signed in, never takes the old cookie.
+    await cookieService.clearLegacyToken(getApiUrl());
+
     if (token) {
       authState$.isAuthenticated.set(true);
-      cookieService.setToken(token);
     }
 
     appState$.isInitialLoadingFinished.set(true);

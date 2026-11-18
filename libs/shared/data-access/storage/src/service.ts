@@ -10,6 +10,8 @@ export const storage = new MMKV({
 
 class AppStorageService {
   public token = new StorageItem('token', storage);
+  // NOTE: The Cloudflare Access pass with its server, as JSON; `authState$.accessPass` owns it.
+  public accessPass = new StorageItem('accessPass', storage);
   public apiUrl = new StorageItem('apiUrl', storage);
   public locale = new StorageItem('locale', storage);
   public markdownRenderer = new StorageItem('markdownRenderer', storage);

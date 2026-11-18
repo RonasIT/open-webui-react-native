@@ -19,10 +19,7 @@ export class AppConfigurationService {
     const data: Configuration = await getApiService(url).get(
       appConfigurationApiConfig.route,
       { skipToast, skipSentryReport },
-      {
-        withCredentials: true,
-        timeout,
-      },
+      { timeout },
     );
 
     return plainToInstance(Configuration, data, {

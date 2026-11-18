@@ -1,3 +1,4 @@
+import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 
@@ -12,19 +13,28 @@ const readOrigin = (url: string): string | undefined => {
   }
 };
 
+// NOTE: Headers go only to our server: the saved one, or the one the Access pass was issued for before it is saved.
 export const getRequestHeaders = (requestUrl: string): Record<string, string> | undefined => {
   const requestOrigin = readOrigin(requestUrl);
-  const serverOrigin = readOrigin(getApiUrl());
+  const accessPass = authState$.accessPass.get();
+  const isSavedServer = !!requestOrigin && requestOrigin === readOrigin(getApiUrl());
+  const isAccessPassServer = !!requestOrigin && !!accessPass && requestOrigin === readOrigin(accessPass.serverUrl);
 
-  if (!requestOrigin || !serverOrigin || requestOrigin !== serverOrigin) {
+  if (!isSavedServer && !isAccessPassServer) {
     return undefined;
   }
 
+  // NOTE: With this header Cloudflare Access answers 401 instead of a redirect the device follows to its login page.
+  const headers: Record<string, string> = { 'X-Requested-With': 'XMLHttpRequest' };
   const token = appStorageService.token.get();
 
-  if (!token) {
-    return undefined;
+  if (token && isSavedServer) {
+    headers.Authorization = `Bearer ${token}`;
   }
 
-  return { Authorization: `Bearer ${token}` };
+  if (accessPass && isAccessPassServer) {
+    headers.Cookie = `CF_Authorization=${accessPass.value}`;
+  }
+
+  return headers;
 };

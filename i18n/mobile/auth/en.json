@@ -17,7 +17,10 @@
         "TEXT_SERVER_UNREACHABLE": "Can't reach the server. Check the address and your connection. For a local HTTP server, start the address with http://.",
         "TEXT_NOT_OPEN_WEBUI_SERVER": "The server responded, but it is not an Open WebUI server. Check the address.",
         "BUTTON_RETRY_SERVER_CHECK": "Check the server again",
-        "TEXT_ACCOUNT_PENDING_APPROVAL": "Your account is awaiting administrator approval."
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "Your account is awaiting administrator approval.",
+        "TEXT_PROTECTED_BY_CLOUDFLARE_ACCESS": "This server is protected by Cloudflare Access",
+        "TEXT_SERVER_VIA_CLOUDFLARE_ACCESS": "{{server}} · via Cloudflare Access",
+        "BUTTON_SIGN_IN_TO_CLOUDFLARE_ACCESS": "Sign in to Cloudflare Access"
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Continue with {{provider}}"
@@ -25,6 +28,10 @@
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "Close",
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "This sign-in method is unavailable. Please use another option to continue."
+      },
+      "CLOUDFLARE_ACCESS_WEB_VIEW": {
+        "BUTTON_CLOSE": "Close",
+        "TEXT_ACCESS_PASS_NOT_RECEIVED": "Couldn't sign in to Cloudflare Access. Please try again."
       }
     },
     "MFA_VERIFICATION": {

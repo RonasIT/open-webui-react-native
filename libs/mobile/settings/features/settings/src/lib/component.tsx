@@ -163,7 +163,7 @@ export function Settings(): ReactElement {
 
   const handleLogoutPress = (): void => {
     hapticFeedbackService.trigger();
-    logout();
+    logout({ shouldClearAccessPass: true });
   };
 
   const handleRequestLogoutPress = (): void => {
