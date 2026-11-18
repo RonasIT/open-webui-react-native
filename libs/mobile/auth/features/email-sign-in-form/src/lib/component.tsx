@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { HttpStatusCode } from 'axios';
-import { Fragment, ReactElement, useEffect, useRef } from 'react';
+import { Fragment, ReactElement, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { TextInput } from 'react-native';
 import { useMfaNavigation } from '@open-webui-react-native/mobile/auth/features/use-mfa-navigation';
@@ -16,13 +16,27 @@ import {
   SignInResponse,
   supportedOauthProviders,
 } from '@open-webui-react-native/shared/data-access/api';
+import { isCloudflareAccessError } from '@open-webui-react-native/shared/data-access/api-client';
+import { cookieService } from '@open-webui-react-native/shared/data-access/cookie';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
-import { normalizeServerUrl, resolveApiUrl } from '@open-webui-react-native/shared/utils/config';
+import { getApiUrl, normalizeServerUrl, resolveApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { useDebouncedQuery } from '@open-webui-react-native/shared/utils/use-debounced-query';
-import { UrlInputLoader } from './components';
+import { CloudflareAccessWebView, UrlInputLoader } from './components';
 import { emailFormConfig } from './config';
 import { EmailFormSchema } from './forms';
+
+interface ServerAccessPass {
+  serverUrl: string;
+  value: string;
+}
+
+const getSavedAccessPass = (): ServerAccessPass | null => {
+  const serverUrl = normalizeServerUrl(appStorageService.apiUrl.get());
+  const value = appStorageService.accessPass.get();
+
+  return serverUrl && value ? { serverUrl, value } : null;
+};
 
 interface EmailSignInFormProps {
   onSuccess: () => void;
@@ -38,6 +52,8 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
 
   const { query, setQuery, debouncedQuery } = useDebouncedQuery({ initialValue: appStorageService.apiUrl.get() });
   const queryRef = useRef(query);
+  const [accessPass, setAccessPass] = useState<ServerAccessPass | null>(getSavedAccessPass);
+  const [isAccessWebViewVisible, setIsAccessWebViewVisible] = useState(false);
 
   const {
     control,
@@ -88,6 +104,9 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
 
   const isUrlWithConfig = isFetchWithUrlSuccess && !!(config?.name && config?.version);
   const isUrlWithoutConfig = isFetchWithUrlSuccess && !(config?.name && config?.version);
+  const isCloudflareAccessRequired =
+    isUrlValid && !isFetchWithUrlLoading && isFetchWithUrlError && isCloudflareAccessError(fetchWithUrlError);
+  const serverAccessPass = accessPass?.serverUrl === serverUrl ? accessPass.value : undefined;
 
   const isAuthEnabled = config?.features?.auth !== false;
   const isLdapEnabled = !!config?.features?.enableLdap;
@@ -118,26 +137,53 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
     mutate({ email: '', password: '' });
   };
 
-  const checkServerUrl = async (): Promise<void> => {
+  const checkServerUrl = async (checkedAccessPass = serverAccessPass): Promise<void> => {
     if (!isUrlValid) {
       return;
     }
 
     setOauthProviders({});
 
-    const checkedConfig = await fetchWithUrl(resolveApiUrl(serverUrl));
+    const checkedConfig = await fetchWithUrl(resolveApiUrl(serverUrl), checkedAccessPass);
     const isInputStillChecked = normalizeServerUrl(queryRef.current) === serverUrl;
 
     if (!isInputStillChecked || !checkedConfig?.name || !checkedConfig?.version) {
       return;
     }
 
+    // NOTE: A server switch drops the old server's pass, so coming back to it asks for Cloudflare Access again.
+    if (normalizeServerUrl(appStorageService.apiUrl.get()) !== serverUrl) {
+      cookieService.clearAccessPass(getApiUrl());
+      setAccessPass((pass) => (pass?.serverUrl === serverUrl ? pass : null));
+    }
+
     appStorageService.apiUrl.set(serverUrl);
+    appStorageService.accessPass.set(checkedAccessPass ?? null);
     setOauthProviders(checkedConfig.oauth?.providers ?? {});
   };
 
+  const handleAccessPass = (value: string): void => {
+    setIsAccessWebViewVisible(false);
+    setAccessPass({ serverUrl, value });
+    checkServerUrl(value);
+  };
+
+  const getUrlHelperText = (): string | undefined => {
+    if (isCloudflareAccessRequired) {
+      return translate('TEXT_PROTECTED_BY_CLOUDFLARE_ACCESS');
+    }
+
+    if (!isUrlValid || !isUrlWithConfig || isFetchWithUrlLoading) {
+      return;
+    }
+
+    const serverName = `${config?.name} ${config?.version}`;
+
+    return serverAccessPass ? translate('TEXT_SERVER_VIA_CLOUDFLARE_ACCESS', { server: serverName }) : serverName;
+  };
+
   const getUrlCheckErrorText = (): string | undefined => {
-    if (!isUrlValid || isFetchWithUrlLoading) {
+    if (!isUrlValid || isFetchWithUrlLoading || isCloudflareAccessRequired) {
       return;
     }
 
@@ -188,17 +234,22 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
             <UrlInputLoader
               isLoading={isFetchWithUrlLoading}
               isSuccess={isUrlWithConfig}
-              isError={isFetchWithUrlError || isUrlWithoutConfig}
+              isError={(isFetchWithUrlError && !isCloudflareAccessRequired) || isUrlWithoutConfig}
               retryLabel={translate('BUTTON_RETRY_SERVER_CHECK')}
-              onRetry={checkServerUrl}
+              onRetry={() => checkServerUrl()}
             />
           ) : undefined
         }
         error={errors.url?.message ?? getUrlCheckErrorText()}
-        helperText={
-          isUrlValid && isUrlWithConfig && !isFetchWithUrlLoading ? `${config?.name} ${config?.version}` : undefined
-        }
+        helperText={getUrlHelperText()}
       />
+      {isCloudflareAccessRequired && (
+        <AppButton
+          text={translate('BUTTON_SIGN_IN_TO_CLOUDFLARE_ACCESS')}
+          testID='sign-in-cloudflare-access'
+          onPress={() => setIsAccessWebViewVisible(true)}
+        />
+      )}
       {isLoginFormRequired && (
         <Fragment>
           <FormFloatedLabelInput
@@ -250,6 +301,12 @@ export function EmailSignInForm({ onSuccess, onApiUrlChange, setOauthProviders }
           onPress={isLoginFormRequired ? handleSubmit(onSubmit) : signInWithoutAuth}
         />
       )}
+      <CloudflareAccessWebView
+        isVisible={isAccessWebViewVisible}
+        serverUrl={resolveApiUrl(serverUrl)}
+        onClose={() => setIsAccessWebViewVisible(false)}
+        onAccessPass={handleAccessPass}
+      />
     </View>
   );
 }

@@ -17,7 +17,10 @@
         "TEXT_SERVER_UNREACHABLE": "サーバーに接続できません。アドレスと接続を確認してください。ローカル HTTP サーバーの場合は、アドレスの先頭に http:// を付けてください。",
         "TEXT_NOT_OPEN_WEBUI_SERVER": "サーバーは応答しましたが、Open WebUI サーバーではありません。アドレスを確認してください。",
         "BUTTON_RETRY_SERVER_CHECK": "サーバーを再確認",
-        "TEXT_ACCOUNT_PENDING_APPROVAL": "アカウントは管理者の承認待ちです。"
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "アカウントは管理者の承認待ちです。",
+        "TEXT_PROTECTED_BY_CLOUDFLARE_ACCESS": "このサーバーは Cloudflare Access で保護されています",
+        "TEXT_SERVER_VIA_CLOUDFLARE_ACCESS": "{{server}} · Cloudflare Access 経由",
+        "BUTTON_SIGN_IN_TO_CLOUDFLARE_ACCESS": "Cloudflare Access にサインイン"
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "{{provider}} で続行"
@@ -25,6 +28,9 @@
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "閉じる",
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "このサインイン方法は利用できません。別の方法をお試しください。"
+      },
+      "CLOUDFLARE_ACCESS_WEB_VIEW": {
+        "BUTTON_CLOSE": "閉じる"
       }
     },
     "MFA_VERIFICATION": {

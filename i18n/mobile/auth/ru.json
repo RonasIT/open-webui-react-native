@@ -17,7 +17,10 @@
         "TEXT_SERVER_UNREACHABLE": "Не удалось связаться с сервером. Проверьте адрес и подключение к сети. Для локального HTTP-сервера укажите http:// в начале адреса.",
         "TEXT_NOT_OPEN_WEBUI_SERVER": "Сервер ответил, но это не сервер Open WebUI. Проверьте адрес.",
         "BUTTON_RETRY_SERVER_CHECK": "Проверить сервер ещё раз",
-        "TEXT_ACCOUNT_PENDING_APPROVAL": "Ваш аккаунт ожидает одобрения администратором."
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "Ваш аккаунт ожидает одобрения администратором.",
+        "TEXT_PROTECTED_BY_CLOUDFLARE_ACCESS": "Этот сервер защищён Cloudflare Access",
+        "TEXT_SERVER_VIA_CLOUDFLARE_ACCESS": "{{server}} · через Cloudflare Access",
+        "BUTTON_SIGN_IN_TO_CLOUDFLARE_ACCESS": "Войти в Cloudflare Access"
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Продолжить с {{provider}}"
@@ -25,6 +28,9 @@
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "Закрыть",
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Этот способ входа недоступен. Пожалуйста, выберите другой вариант."
+      },
+      "CLOUDFLARE_ACCESS_WEB_VIEW": {
+        "BUTTON_CLOSE": "Закрыть"
       }
     },
     "MFA_VERIFICATION": {

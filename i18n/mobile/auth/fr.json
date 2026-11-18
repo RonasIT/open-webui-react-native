@@ -17,7 +17,10 @@
         "TEXT_SERVER_UNREACHABLE": "Impossible de joindre le serveur. Vérifiez l’adresse et votre connexion. Pour un serveur HTTP local, commencez l’adresse par http://.",
         "TEXT_NOT_OPEN_WEBUI_SERVER": "Le serveur a répondu, mais ce n’est pas un serveur Open WebUI. Vérifiez l’adresse.",
         "BUTTON_RETRY_SERVER_CHECK": "Vérifier à nouveau le serveur",
-        "TEXT_ACCOUNT_PENDING_APPROVAL": "Votre compte est en attente d'approbation par un administrateur."
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "Votre compte est en attente d'approbation par un administrateur.",
+        "TEXT_PROTECTED_BY_CLOUDFLARE_ACCESS": "Ce serveur est protégé par Cloudflare Access",
+        "TEXT_SERVER_VIA_CLOUDFLARE_ACCESS": "{{server}} · via Cloudflare Access",
+        "BUTTON_SIGN_IN_TO_CLOUDFLARE_ACCESS": "Se connecter à Cloudflare Access"
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Continuer avec {{provider}}"
@@ -25,6 +28,9 @@
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "Fermer",
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Cette méthode de connexion est indisponible. Veuillez utiliser une autre option."
+      },
+      "CLOUDFLARE_ACCESS_WEB_VIEW": {
+        "BUTTON_CLOSE": "Fermer"
       }
     },
     "MFA_VERIFICATION": {

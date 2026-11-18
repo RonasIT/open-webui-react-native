@@ -17,7 +17,10 @@
         "TEXT_SERVER_UNREACHABLE": "无法连接到服务器。请检查地址和网络连接。如果是本地 HTTP 服务器，请在地址开头添加 http://。",
         "TEXT_NOT_OPEN_WEBUI_SERVER": "服务器已响应，但它不是 Open WebUI 服务器。请检查地址。",
         "BUTTON_RETRY_SERVER_CHECK": "重新检查服务器",
-        "TEXT_ACCOUNT_PENDING_APPROVAL": "您的账户正在等待管理员审批。"
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "您的账户正在等待管理员审批。",
+        "TEXT_PROTECTED_BY_CLOUDFLARE_ACCESS": "此服务器受 Cloudflare Access 保护",
+        "TEXT_SERVER_VIA_CLOUDFLARE_ACCESS": "{{server}} · 通过 Cloudflare Access",
+        "BUTTON_SIGN_IN_TO_CLOUDFLARE_ACCESS": "登录 Cloudflare Access"
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "使用 {{provider}} 继续"
@@ -25,6 +28,9 @@
       "OAUTH_WEB_VIEW_MODAL": {
         "BUTTON_CLOSE": "关闭",
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "此登录方式不可用。请使用其他方式继续。"
+      },
+      "CLOUDFLARE_ACCESS_WEB_VIEW": {
+        "BUTTON_CLOSE": "关闭"
       }
     },
     "MFA_VERIFICATION": {

@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/react-native';
 import { Platform } from 'react-native';
 import NitroCookies from 'react-native-nitro-cookies';
 
+const accessPassCookieName = 'CF_Authorization';
 // NOTE: On iOS a WebView keeps its cookies in the WebKit store, apart from the store app requests use.
 const isWebKitStore = Platform.OS === 'ios';
 
@@ -10,6 +11,17 @@ class CookieService {
   // joins jar cookies to our `Cookie` header with a comma, which hides the Access pass from Cloudflare.
   public async clearLegacyToken(serverUrl: string): Promise<void> {
     await this.clearByName(serverUrl, 'token', 'clearLegacyToken');
+  }
+
+  public async getAccessPass(serverUrl: string): Promise<string | undefined> {
+    const cookies = await NitroCookies.get(serverUrl, isWebKitStore);
+
+    return cookies[accessPassCookieName]?.value || undefined;
+  }
+
+  // NOTE: The app sends the pass as its own header. A copy left in a native store would be added to requests and break Access.
+  public async clearAccessPass(serverUrl: string): Promise<void> {
+    await this.clearByName(serverUrl, accessPassCookieName, 'clearAccessPass');
   }
 
   public async clearAll(): Promise<void> {

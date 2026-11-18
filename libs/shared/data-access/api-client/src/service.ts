@@ -80,7 +80,8 @@ export const getApiService = (url?: string): ApiService => {
     return apiServiceCache.get(apiUrl)!;
   }
 
-  const service = new ApiService(apiUrl);
+  // NOTE: Without it React Native adds the native jar's cookies, and a stale `CF_Authorization` there breaks Access.
+  const service = new ApiService(apiUrl, { withCredentials: false });
   setupInterceptors(service, apiUrl);
   apiServiceCache.set(apiUrl, service);
 
