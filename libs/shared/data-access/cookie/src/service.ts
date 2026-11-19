@@ -51,10 +51,8 @@ class CookieService {
     await this.clearByName(serverUrl, accessPassCookieName, 'clearAccessPass');
   }
 
-  // NOTE: Synchronous on purpose. The OAuth WebView closes and the socket opens in the same moment, and an
-  // awaited clear can lose that race. iOS also copies the WebView's `token` cookie into this jar and then
-  // joins the jar onto the socket's Cookie header with a comma, which hides the pass. The WebView observer
-  // can write both back after unmount, so the caller clears once more a moment later.
+  // NOTE: iOS adds jar cookies to every socket connect's Cookie header after a comma, which breaks the pass.
+  // Synchronous, so the jar is empty when the socket opens as the WebView closes.
   public clearOauthJar(serverUrl: string): void {
     try {
       NitroCookies.clearByNameSync(serverUrl, accessPassCookieName);
