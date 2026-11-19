@@ -64,7 +64,6 @@ export function OauthWebView({
   const webViewRef = useRef<WebView>(null);
   const isTokenCaptured = useRef(false);
   const captureTokenTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const isOpen = useRef(false);
   const isSettingAndroidPass = useRef(false);
   const wasVisible = useRef(false);
   const androidWriteGeneration = useRef(0);
@@ -205,7 +204,7 @@ export function OauthWebView({
       for (let attempt = 0; attempt < androidPassWriteAttempts; attempt++) {
         await cookieService.setAccessPass(apiUrl, accessPassValue);
 
-        if (!isOpen.current || writeGeneration !== androidWriteGeneration.current) {
+        if (writeGeneration !== androidWriteGeneration.current) {
           cookieService.clearOauthJar(apiUrl);
 
           return;
@@ -213,7 +212,7 @@ export function OauthWebView({
 
         const stored = await cookieService.getAccessPass(apiUrl);
 
-        if (!isOpen.current || writeGeneration !== androidWriteGeneration.current) {
+        if (writeGeneration !== androidWriteGeneration.current) {
           cookieService.clearOauthJar(apiUrl);
 
           return;
@@ -232,7 +231,7 @@ export function OauthWebView({
       Sentry.captureException(error);
     }
 
-    if (isOpen.current && writeGeneration === androidWriteGeneration.current) {
+    if (writeGeneration === androidWriteGeneration.current) {
       setIsAndroidPassSet(true);
     }
   };
@@ -249,8 +248,6 @@ export function OauthWebView({
   }, [isVisible]);
 
   useEffect(() => {
-    isOpen.current = isVisible;
-
     if (!isVisible) {
       setIsWebViewReady(false);
       setIsAndroidPassSet(false);
