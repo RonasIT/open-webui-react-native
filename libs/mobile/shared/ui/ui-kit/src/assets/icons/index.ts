@@ -51,6 +51,7 @@ import moreDotsInCircle from './more-dots-in-circle.svg';
 import moreDots from './more-dots.svg';
 import moreText from './more-text.svg';
 import noWifi from './no-wifi.svg';
+import pause from './pause.svg';
 import pin from './pin.svg';
 import play from './play.svg';
 import plusInCircle from './plus-in-circle.svg';
@@ -137,6 +138,7 @@ export const Icons = {
   star,
   stop,
   play,
+  pause,
   refresh,
   keyboard,
   lessText,
