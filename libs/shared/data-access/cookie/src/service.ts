@@ -19,8 +19,6 @@ class CookieService {
     return cookies[accessPassCookieName]?.value || undefined;
   }
 
-  // NOTE: The native jar, not the WebKit store. iOS copies that jar into an incognito WebView when
-  // `sharedCookiesEnabled` is set; Android's WebView reads this same jar.
   public async setAccessPass(serverUrl: string, value: string): Promise<void> {
     try {
       await NitroCookies.set(
@@ -31,6 +29,8 @@ class CookieService {
           path: '/',
           secure: serverUrl.startsWith('https://'),
         },
+        // NOTE: The native jar: the incognito WebView has an empty store of its own, and iOS copies
+        // only this jar into it (`sharedCookiesEnabled`). Android has a single jar.
         false,
       );
 
