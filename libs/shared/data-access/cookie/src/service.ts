@@ -19,9 +19,53 @@ class CookieService {
     return cookies[accessPassCookieName]?.value || undefined;
   }
 
+  public async setAccessPass(serverUrl: string, value: string): Promise<void> {
+    try {
+      await NitroCookies.set(
+        serverUrl,
+        {
+          name: accessPassCookieName,
+          value,
+          path: '/',
+          secure: serverUrl.startsWith('https://'),
+        },
+        // NOTE: The native jar: the incognito WebView has an empty store of its own, and iOS copies
+        // only this jar into it (`sharedCookiesEnabled`). Android has a single jar.
+        false,
+      );
+
+      // NOTE: Android `CookieManager.setCookie` returns before a following page load can see the cookie.
+      if (Platform.OS === 'android') {
+        await NitroCookies.flush();
+      }
+    } catch (error) {
+      Sentry.withScope((scope) => {
+        scope.setTag('cookie.operation', 'setAccessPass');
+        Sentry.captureException(error);
+      });
+    }
+  }
+
   // NOTE: The app sends the pass as its own header. A copy left in a native store would be added to requests and break Access.
   public async clearAccessPass(serverUrl: string): Promise<void> {
     await this.clearByName(serverUrl, accessPassCookieName, 'clearAccessPass');
+  }
+
+  // NOTE: The whole jar: a sign-in WebView can leave any server cookie here, and iOS adds jar cookies to every
+  // socket connect's Cookie header after a comma, which breaks the pass.
+  public async clearOauthJar(): Promise<void> {
+    try {
+      await NitroCookies.clearAll();
+
+      if (Platform.OS === 'android') {
+        await NitroCookies.flush();
+      }
+    } catch (error) {
+      Sentry.withScope((scope) => {
+        scope.setTag('cookie.operation', 'clearOauthJar');
+        Sentry.captureException(error);
+      });
+    }
   }
 
   // NOTE: Drops all a sign-in WebView left, the Cloudflare login session (`CF_Session`) included. On Android
@@ -48,6 +92,17 @@ class CookieService {
   private async clearByName(serverUrl: string, name: string, operation: string): Promise<void> {
     try {
       await NitroCookies.clearByName(serverUrl, name);
+
+      // NOTE: On Android that call expires a `Domain=<host>` cookie, which is not the one set without Domain.
+      if (Platform.OS === 'android') {
+        const secure = serverUrl.startsWith('https://') ? '; Secure' : '';
+
+        await NitroCookies.setFromResponse(
+          serverUrl,
+          `${name}=; Path=/${secure}; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
+        );
+        await NitroCookies.flush();
+      }
 
       if (isWebKitStore) {
         await NitroCookies.clearByName(serverUrl, name, true);

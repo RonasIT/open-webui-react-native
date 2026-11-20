@@ -1,6 +1,8 @@
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { plainToInstance } from 'class-transformer';
 import { ReactElement, useEffect, useRef, useState } from 'react';
+import { Platform } from 'react-native';
 import { WebView, WebViewMessageEvent, WebViewNavigation } from 'react-native-webview';
 import { commonStyle } from '@open-webui-react-native/mobile/shared/ui/styles';
 import {
@@ -12,10 +14,12 @@ import {
   View,
 } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { authService, MfaChallenge, Provider } from '@open-webui-react-native/shared/data-access/api';
+import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { getApiUrl, getHost } from '@open-webui-react-native/shared/utils/config';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { WebViewMessageType } from './enums';
+import { useOauthNativeJar } from './hooks';
 import { mfaChallengeCaptureScript, mobileUserAgent, tokenCaptureScript } from './script';
 import { isMfaOrPendingApprovalUrl } from './utils';
 
@@ -54,6 +58,14 @@ export function OauthWebView({
 
   const apiUrl = getApiUrl();
   const apiHost = getHost(apiUrl);
+  const accessPass = useSelector(authState$.accessPass);
+  const accessPassValue = accessPass?.serverUrl === apiUrl ? accessPass.value : undefined;
+  const { isWebViewReady, isAndroidPassSet, writeAndroidPass } = useOauthNativeJar({
+    isVisible,
+    apiUrl,
+    accessPassValue,
+  });
+  const loginUrl = `${apiUrl}/oauth/${provider}/login`;
 
   // Spinner is driven by the real page-load state and the token-validation step.
   const [isPageLoading, setIsPageLoading] = useState(true);
@@ -63,6 +75,7 @@ export function OauthWebView({
   // `onLoadEnd` reliably, which would leave the loader stuck over an otherwise-usable
   // login page. This only gates the spinner — success is still detected by path below.
   const [isOnProviderPage, setIsOnProviderPage] = useState(false);
+  const sourceUri = Platform.OS === 'android' && accessPassValue && !isAndroidPassSet ? 'about:blank' : loginUrl;
 
   const clearCaptureTimeout = (): void => {
     if (captureTokenTimeout.current) {
@@ -83,7 +96,8 @@ export function OauthWebView({
     const host = getHost(state.url);
     // Update the provider-page flag on every navigation event (loading included),
     // so the spinner is suppressed as soon as we leave our host for the IdP.
-    setIsOnProviderPage(host !== apiHost);
+    // The Android blank page is not an IdP: the spinner stays up while the pass is written.
+    setIsOnProviderPage(state.url !== 'about:blank' && host !== apiHost);
 
     if (state.loading || isTokenCaptured.current) {
       return;
@@ -164,6 +178,11 @@ export function OauthWebView({
     }
   };
 
+  const handleLoadEnd = async (): Promise<void> => {
+    setIsPageLoading(false);
+    await writeAndroidPass();
+  };
+
   useEffect(() => {
     if (isVisible) {
       isTokenCaptured.current = false;
@@ -185,20 +204,21 @@ export function OauthWebView({
         </View>
         <View className='h-full'>
           {((isPageLoading && !isOnProviderPage) || isProcessing) && <AppSpinner size='large' isFullScreen />}
-          {isVisible && (
+          {isVisible && isWebViewReady && (
             <WebView
               ref={webViewRef}
-              source={{ uri: `${apiUrl}/oauth/${provider}/login` }}
+              source={{ uri: sourceUri }}
               injectedJavaScriptBeforeContentLoaded={mfaChallengeCaptureScript}
               userAgent={mobileUserAgent}
               incognito
+              sharedCookiesEnabled={Platform.OS === 'ios' && !!accessPassValue}
               thirdPartyCookiesEnabled
               javaScriptEnabled
               domStorageEnabled
               style={commonStyle.fullFlex}
               onMessage={handleMessage}
               onLoadStart={() => setIsPageLoading(true)}
-              onLoadEnd={() => setIsPageLoading(false)}
+              onLoadEnd={handleLoadEnd}
               onNavigationStateChange={handleNavigationStateChange}
             />
           )}
