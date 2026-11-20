@@ -13,6 +13,7 @@ import {
   ChatGenerationOption,
   chatSelectionState$,
   isTemporaryChatEnforced,
+  MockFolderItemIds,
   NEW_CHAT_SELECTION_KEY,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
@@ -68,6 +69,12 @@ export function CreateChat({
     },
   });
 
+  // NOTE: "No folder" is a placeholder item of the picker, not a folder on the server: sending its id
+  // as folder_id makes the server answer 404 and the chat is not created.
+  const handleSelectFolder = (id: string): void => {
+    setFolderId(id === MockFolderItemIds.NO_FOLDER_ID ? undefined : id);
+  };
+
   const onSubmit = (options: Array<ChatGenerationOption>): Promise<void> =>
     handleSubmit(({ inputValue }: FormValues<FormChatInputSchema>): void => {
       if (!modelId) {
@@ -93,7 +100,7 @@ export function CreateChat({
     <View testID='chat-create' className='flex-1 bg-background-primary pt-[60px] pb-44'>
       <SearchFolderView
         selectedItemId={folderId}
-        onSelectItem={setFolderId}
+        onSelectItem={handleSelectFolder}
         onCreateFolderPress={onCreateFolderPress}
         modalComponent={createFolderModalComponent}
         disabled={!!existedFolderId}
