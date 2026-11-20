@@ -28,7 +28,7 @@ export default function ReadAloudStopButton(): ReactElement | null {
       />
       <IconButton
         accessibilityLabel={translate('TEXT_STOP_READING_ALOUD')}
-        onPress={() => void speechStreamingService.stopMessageSpeaking()}
+        onPress={() => void speechStreamingService.stopContentSpeaking()}
         iconName='pause'
         className='p-12 rounded-full bg-brand-secondary'
         iconProps={{ className: 'color-white' }}

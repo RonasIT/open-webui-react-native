@@ -16,7 +16,6 @@ import {
   isFeaturePermitted,
   Message,
   replaceDetailsWithMarkers,
-  usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { withOfflineGuard } from '@open-webui-react-native/shared/features/network';
@@ -59,9 +58,7 @@ export function AiMessageActions({
   const actionsSheetRef = useRef<BottomSheetModal>(null);
   const regenerateActionsSheetRef = useRef<BottomSheetModal>(null);
   const isOfflineMode = useSelector(appState$.isOfflineMode);
-  const locale = useSelector(appState$.locale);
   const isSpeaking = useSelector(() => speechStreamingService.speakingMessageId$.get() === message.id);
-  const { data: userSettings } = usersApi.useGetUserSettings();
 
   const close = (): void => actionsSheetRef.current?.dismiss();
 
@@ -84,7 +81,7 @@ export function AiMessageActions({
     if (isSpeaking) {
       void speechStreamingService.stopContentSpeaking();
     } else {
-      void speechStreamingService.speakMessage(message.id, answerText, locale, userSettings?.ui?.audio?.stt?.language);
+      void speechStreamingService.speakMessage(message.id, answerText);
     }
     close();
   };

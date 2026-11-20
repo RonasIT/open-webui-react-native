@@ -161,14 +161,18 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
     },
   });
 
-  const stopMessageSpeaking = (): void => {
-    void speechStreamingService.stopMessageSpeaking();
-  };
-
-  useAppStateChange({ status: 'background', onChange: stopMessageSpeaking });
+  // NOTE: Voice mode speaks over this screen and stops itself
+  useAppStateChange({
+    status: 'background',
+    onChange: () => {
+      if (speechStreamingService.speakingMessageId$.peek()) {
+        void speechStreamingService.stopContentSpeaking();
+      }
+    },
+  });
 
   // NOTE: Pushed screens keep the chat mounted, so reading aloud stops on blur too
-  useFocusEffect(useCallback(() => stopMessageSpeaking, [chatId]));
+  useFocusEffect(useCallback(() => () => void speechStreamingService.stopContentSpeaking(), [chatId]));
 
   const { control, handleSubmit, reset } = useForm<FormValues<FormChatInputSchema>>({
     defaultValues: {

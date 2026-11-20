@@ -25,7 +25,6 @@ import {
   chatApi,
   isTemporaryChatId,
   tasksApi,
-  usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { ImageData as ChatImageData } from '@open-webui-react-native/shared/data-access/common';
@@ -59,8 +58,6 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
 
   const [isVisible, setIsVisible] = useState(false);
   const isOfflineMode = useSelector(appState$.isOfflineMode);
-  const locale = useSelector(appState$.locale);
-  const { data: userSettings } = usersApi.useGetUserSettings();
 
   const [isUserSpeaking, setIsUserSpeaking] = useState(false);
   const [isAiSpeaking, setIsAiSpeaking] = useState(false);
@@ -116,7 +113,7 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
         const send = chatIdRef.current ? sendMessageRef.current : startChatCreationRef.current;
         send(text, modelIdRef.current, [ChatGenerationOption.VOICE], undefined, attachedImages);
 
-        speechStreamingService.resumeContentSpeaking(locale, userSettings?.ui?.audio?.stt?.language);
+        speechStreamingService.resumeContentSpeaking();
         setIsWaitingNewMessage(true);
       } else if (isVisibleRef.current) {
         startSpeechRecording();

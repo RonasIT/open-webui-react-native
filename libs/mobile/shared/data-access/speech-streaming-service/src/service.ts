@@ -1,6 +1,9 @@
 import { observable } from '@legendapp/state';
 import { setAudioModeAsync } from 'expo-audio';
 import * as Speech from 'expo-speech';
+import { UserSettings, usersApiConfig } from '@open-webui-react-native/shared/data-access/api';
+import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
+import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { SpeechStreamingServiceEvent } from './enums';
 import { prepareSpeakableText } from './prepare-speakable-text';
 import { hasEnoughLettersForSpeechLanguage, resolveSpeechLanguage } from './resolve-speech-language';
@@ -49,9 +52,12 @@ class SpeechStreamingService {
     return this.addEventListener(SpeechStreamingServiceEvent.SPEAKING_END, callback);
   }
 
-  // NOTE: sttLanguage is the user's explicit choice and is never overridden
-  public resumeContentSpeaking = (locale: string, sttLanguage?: string): void => {
-    this.language = sttLanguage || locale;
+  public resumeContentSpeaking = (): void => {
+    // NOTE: The STT language is the user's explicit choice and is never overridden
+    const sttLanguage = queryClient.getQueryData<UserSettings>(usersApiConfig.getUserSettingsQueryKey)?.ui?.audio?.stt
+      ?.language;
+
+    this.language = sttLanguage || appState$.locale.peek();
     this.shouldDetectLanguage = !sttLanguage;
     this.voiceLanguage = undefined;
     this.isStopped = false;
@@ -70,12 +76,7 @@ class SpeechStreamingService {
     this.isProcessingQueue = false;
   };
 
-  public speakMessage = async (
-    messageId: string,
-    text: string,
-    locale: string,
-    sttLanguage?: string,
-  ): Promise<void> => {
+  public speakMessage = async (messageId: string, text: string): Promise<void> => {
     const stopPromise = this.stopContentSpeaking();
     const generation = this.speechGeneration;
     await stopPromise;
@@ -85,16 +86,9 @@ class SpeechStreamingService {
       return;
     }
 
-    this.resumeContentSpeaking(locale, sttLanguage);
+    this.resumeContentSpeaking();
     this.speakingMessageId$.set(messageId);
     this.handleContent(text, true);
-  };
-
-  // NOTE: Leaves voice mode speech alone, it lives outside the chat screen
-  public stopMessageSpeaking = async (): Promise<void> => {
-    if (this.speakingMessageId$.peek()) {
-      await this.stopContentSpeaking();
-    }
   };
 
   public handleContent(text: string, isDone?: boolean): void {
