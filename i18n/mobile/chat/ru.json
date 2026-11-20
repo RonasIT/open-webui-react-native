@@ -134,6 +134,8 @@
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Изменить",
       "TEXT_COPY": "Копировать",
+      "TEXT_READ_ALOUD": "Прочитать вслух",
+      "TEXT_STOP_READING_ALOUD": "Остановить",
       "TEXT_CONTINUE_RESPONSE": "Продолжить ответ",
       "TEXT_REGENERATE": "Перегенерировать",
       "TEXT_DELETE": "Удалить",

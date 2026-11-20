@@ -9,7 +9,7 @@ import { normalizeMetering } from './normalize-metering';
 import { getSpeechFormData } from './utils';
 
 export interface UseDictateModeArgs {
-  onCompleteRecording?: (text: string, language: string) => void;
+  onCompleteRecording?: (text: string) => void;
   onStartRecording?: () => void;
   onStopRecording?: () => void;
   updateIntervalMillis?: number;
@@ -92,7 +92,7 @@ export const useDictateMode = ({
     }
 
     try {
-      onCompleteRecording?.(joinString([await pausedSpeech, text]), speechLanguage);
+      onCompleteRecording?.(joinString([await pausedSpeech, text]));
     } finally {
       if (pausedSpeech) {
         setIsFinishingPausedSpeech(false);

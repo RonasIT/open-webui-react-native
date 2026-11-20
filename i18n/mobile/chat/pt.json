@@ -133,6 +133,8 @@
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "Editar",
       "TEXT_COPY": "Copiar",
+      "TEXT_READ_ALOUD": "Ler em voz alta",
+      "TEXT_STOP_READING_ALOUD": "Parar",
       "TEXT_CONTINUE_RESPONSE": "Continuar resposta",
       "TEXT_REGENERATE": "Regenerar",
       "TEXT_DELETE": "Excluir",

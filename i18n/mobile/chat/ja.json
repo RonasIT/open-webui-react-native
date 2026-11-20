@@ -132,6 +132,8 @@
     "AI_MESSAGE_ACTIONS": {
       "TEXT_EDIT": "編集",
       "TEXT_COPY": "コピー",
+      "TEXT_READ_ALOUD": "読み上げ",
+      "TEXT_STOP_READING_ALOUD": "停止",
       "TEXT_CONTINUE_RESPONSE": "回答を続ける",
       "TEXT_REGENERATE": "再生成",
       "TEXT_DELETE": "削除",

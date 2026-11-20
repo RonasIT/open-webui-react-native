@@ -9,6 +9,7 @@ import { AttachedChatItems } from '@open-webui-react-native/mobile/chat/features
 import { SoundWaveRecorder } from '@open-webui-react-native/mobile/chat/features/sound-wave-recorder';
 import { SuggestionsList } from '@open-webui-react-native/mobile/chat/features/suggestions-list';
 import { useVoiceModeModal } from '@open-webui-react-native/mobile/chat/features/voice-mode-modal';
+import { speechStreamingService } from '@open-webui-react-native/mobile/shared/data-access/speech-streaming-service';
 import {
   ImagePreviewModal,
   useImagePreview,
@@ -181,7 +182,10 @@ export function FormChatInput<T extends FieldValues>({
     updateChatSelection(selectionKey, modelId, { toolIds });
   };
 
-  const handleDictateModePress = withOfflineGuard(() => setIsDictateMode(true));
+  const handleDictateModePress = withOfflineGuard(() => {
+    void speechStreamingService.stopContentSpeaking();
+    setIsDictateMode(true);
+  });
 
   const onStartRecording = (): void => {
     setIsDictateMode(true);

@@ -105,7 +105,7 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
   } = useDictateMode({
     updateIntervalMillis: 100,
     speechThreshold: meteringSilenceThreshold,
-    onCompleteRecording: (text: string, language: string) => {
+    onCompleteRecording: (text: string) => {
       if (text.trim().length) {
         const attachedImages = pendingImageRef.current ? [pendingImageRef.current] : undefined;
         pendingImageRef.current = null;
@@ -113,7 +113,7 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
         const send = chatIdRef.current ? sendMessageRef.current : startChatCreationRef.current;
         send(text, modelIdRef.current, [ChatGenerationOption.VOICE], undefined, attachedImages);
 
-        speechStreamingService.resumeContentSpeaking(language);
+        speechStreamingService.resumeContentSpeaking();
         setIsWaitingNewMessage(true);
       } else if (isVisibleRef.current) {
         startSpeechRecording();
@@ -157,6 +157,8 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
         // NOTE: If chat exists, we get its ID
         setChatId(chatId);
         setModelId(modelId);
+        // NOTE: A message may be read aloud from its actions, the mic must not pick it up
+        await speechStreamingService.stopContentSpeaking();
         await startSpeechRecording();
         setIsVisible(true);
       },

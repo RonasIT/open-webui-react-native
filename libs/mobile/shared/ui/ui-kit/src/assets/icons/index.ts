@@ -51,6 +51,7 @@ import moreDotsInCircle from './more-dots-in-circle.svg';
 import moreDots from './more-dots.svg';
 import moreText from './more-text.svg';
 import noWifi from './no-wifi.svg';
+import pause from './pause.svg';
 import pin from './pin.svg';
 import play from './play.svg';
 import plusInCircle from './plus-in-circle.svg';
@@ -69,6 +70,7 @@ import unarchive from './unarchive.svg';
 import unpin from './unpin.svg';
 import uploadFile from './upload-file.svg';
 import users from './users.svg';
+import volume from './volume.svg';
 import web from './web.svg';
 
 export const Icons = {
@@ -136,6 +138,7 @@ export const Icons = {
   star,
   stop,
   play,
+  pause,
   refresh,
   keyboard,
   lessText,
@@ -144,4 +147,5 @@ export const Icons = {
   key,
   knobs,
   lock,
+  volume,
 };
