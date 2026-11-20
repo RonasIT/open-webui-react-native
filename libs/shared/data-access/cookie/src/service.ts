@@ -93,6 +93,17 @@ class CookieService {
     try {
       await NitroCookies.clearByName(serverUrl, name);
 
+      // NOTE: On Android that call expires a `Domain=<host>` cookie, which is not the one set without Domain.
+      if (Platform.OS === 'android') {
+        const secure = serverUrl.startsWith('https://') ? '; Secure' : '';
+
+        await NitroCookies.setFromResponse(
+          serverUrl,
+          `${name}=; Path=/${secure}; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
+        );
+        await NitroCookies.flush();
+      }
+
       if (isWebKitStore) {
         await NitroCookies.clearByName(serverUrl, name, true);
       }
