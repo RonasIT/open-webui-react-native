@@ -51,16 +51,14 @@ class CookieService {
     await this.clearByName(serverUrl, accessPassCookieName, 'clearAccessPass');
   }
 
-  // NOTE: iOS adds jar cookies to every socket connect's Cookie header after a comma, which breaks the pass.
-  // Synchronous, so the jar is empty when the socket opens as the WebView closes.
-  public clearOauthJar(serverUrl: string): void {
+  // NOTE: The whole jar: a sign-in WebView can leave any server cookie here, and iOS adds jar cookies to every
+  // socket connect's Cookie header after a comma, which breaks the pass.
+  public async clearOauthJar(): Promise<void> {
     try {
-      NitroCookies.clearByNameSync(serverUrl, accessPassCookieName);
-      NitroCookies.clearByNameSync(serverUrl, 'token');
+      await NitroCookies.clearAll();
 
-      // NOTE: Android expires a cookie with another setCookie, which the next request can miss until flush.
       if (Platform.OS === 'android') {
-        void NitroCookies.flush();
+        await NitroCookies.flush();
       }
     } catch (error) {
       Sentry.withScope((scope) => {

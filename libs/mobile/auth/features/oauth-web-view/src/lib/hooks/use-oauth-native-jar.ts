@@ -29,7 +29,8 @@ export function useOauthNativeJar({
   accessPassValue,
 }: UseOauthNativeJarParams): UseOauthNativeJarResult {
   const isSettingAndroidPass = useRef(false);
-  const wasVisible = useRef(false);
+  // NOTE: Without a pass the WebView leaves nothing in the native jar, so there is nothing to clear.
+  const shouldClearJarOnClose = useRef(false);
   const androidWriteGeneration = useRef(0);
 
   // NOTE: iOS must have the pass in the native jar before the WebView mounts: `sharedCookiesEnabled`
@@ -50,7 +51,7 @@ export function useOauthNativeJar({
         await cookieService.setAccessPass(apiUrl, accessPassValue);
 
         if (writeGeneration !== androidWriteGeneration.current) {
-          cookieService.clearOauthJar(apiUrl);
+          await cookieService.clearOauthJar();
 
           return;
         }
@@ -58,7 +59,7 @@ export function useOauthNativeJar({
         const stored = await cookieService.getAccessPass(apiUrl);
 
         if (writeGeneration !== androidWriteGeneration.current) {
-          cookieService.clearOauthJar(apiUrl);
+          await cookieService.clearOauthJar();
 
           return;
         }
@@ -90,16 +91,16 @@ export function useOauthNativeJar({
       isSettingAndroidPass.current = false;
       androidWriteGeneration.current += 1;
 
-      if (!wasVisible.current) {
+      if (!shouldClearJarOnClose.current) {
         return;
       }
 
-      wasVisible.current = false;
-      cookieService.clearOauthJar(apiUrl);
+      shouldClearJarOnClose.current = false;
+      void cookieService.clearOauthJar();
 
       // NOTE: iOS copies the WebView jar back into the native one from an async callback that can
-      // land after the first clear. Repeat until that callback has had time to run.
-      const clearTimer = setInterval(() => cookieService.clearOauthJar(apiUrl), 100);
+      // land after the first clear. Repeat so a later socket reconnect finds the jar empty.
+      const clearTimer = setInterval(() => void cookieService.clearOauthJar(), 100);
       const stopTimer = setTimeout(() => clearInterval(clearTimer), 500);
 
       return () => {
@@ -111,7 +112,7 @@ export function useOauthNativeJar({
     // NOTE: iOS writes the pass before the WebView mounts. The returned cleanup marks that write
     // cancelled when the modal closes during the wait.
     function prepareJarBeforeOpen(): () => void {
-      wasVisible.current = true;
+      shouldClearJarOnClose.current = Boolean(accessPassValue);
 
       let isCancelled = false;
 
@@ -121,7 +122,7 @@ export function useOauthNativeJar({
         }
 
         if (isCancelled) {
-          cookieService.clearOauthJar(apiUrl);
+          await cookieService.clearOauthJar();
 
           return;
         }
@@ -144,11 +145,10 @@ export function useOauthNativeJar({
   }, [isVisible, apiUrl, accessPassValue]);
 
   // NOTE: The modal can disappear while it is still open, and the server URL can change under it.
-  // This cleanup keeps the apiUrl from the run that started it, so the previous server is cleared.
   useEffect(() => {
     function clearJarIfStillOpen(): void {
-      if (wasVisible.current) {
-        cookieService.clearOauthJar(apiUrl);
+      if (shouldClearJarOnClose.current) {
+        void cookieService.clearOauthJar();
       }
     }
 

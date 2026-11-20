@@ -9,6 +9,7 @@ import {
   SupportedOauthProvider,
 } from '@open-webui-react-native/shared/data-access/api';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
+import { cookieService } from '@open-webui-react-native/shared/data-access/cookie';
 import { oauthProviderIcons } from './config';
 
 interface OauthSignInProps {
@@ -36,12 +37,18 @@ export function OauthSignIn({ provider, providerName, onSuccess }: OauthSignInPr
   };
 
   const handleToken = async (token: string): Promise<void> => {
-    authState$.signIn(token);
     // We need to delay to ensure the modal screen is closed before resetting navigation.
     await new Promise<void>((resolve) => {
       handleCloseModal();
       setTimeout(() => resolve(), 100);
     });
+
+    // NOTE: Sign-in opens the socket, which reads the native jar once, so the WebView's cookies go first.
+    if (authState$.accessPass.get()) {
+      await cookieService.clearOauthJar();
+    }
+
+    authState$.signIn(token);
     onSuccess?.();
   };
 
