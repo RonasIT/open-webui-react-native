@@ -3,6 +3,11 @@ import { pick } from 'lodash-es';
 import { clearLocalDb, getLocalDbGeneration, readLocalDb, writeLocalDb } from './database';
 import { LocalChat, LocalChatListItem, LocalChatSummary, LocalFolder, LocalProfile, localProfileKeys } from './types';
 
+// NOTE: A proxy in front of the server (a sign-in page of Cloudflare Access) can answer 200 with HTML: axios
+// returns it as a string, whose characters have no `id` and would fail the NOT NULL columns.
+const hasId = (record: unknown): record is { id: string } =>
+  typeof (record as { id?: unknown } | null)?.id === 'string';
+
 class LocalDbService {
   public getGeneration(): number {
     return getLocalDbGeneration();
@@ -12,7 +17,13 @@ class LocalDbService {
     return clearLocalDb();
   }
 
-  public upsertChatListItems(items: Array<LocalChatListItem>, generation: number): Promise<void> {
+  public upsertChatListItems(response: Array<LocalChatListItem>, generation: number): Promise<void> {
+    const items = Array.isArray(response) ? response.filter(hasId) : [];
+
+    if (!items.length) {
+      return Promise.resolve();
+    }
+
     return writeLocalDb(
       'upsertChatListItems',
       async (db) => {
@@ -231,6 +242,11 @@ class LocalDbService {
   }
 
   public replaceFolders(folders: Array<LocalFolder>, generation: number): Promise<void> {
+    // NOTE: Not a folder list: the stored folders are kept rather than replaced with nothing.
+    if (!Array.isArray(folders) || !folders.every(hasId)) {
+      return Promise.resolve();
+    }
+
     return writeLocalDb(
       'replaceFolders',
       async (db) => {
@@ -258,6 +274,10 @@ class LocalDbService {
 
   // NOTE: Whitelisted keys: the sign-in response also carries the token.
   public saveProfile(profile: LocalProfile, generation: number): Promise<void> {
+    if (!hasId(profile)) {
+      return Promise.resolve();
+    }
+
     return writeLocalDb(
       'saveProfile',
       async (db) => {
