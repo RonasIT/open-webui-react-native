@@ -3,6 +3,12 @@ import { pick } from 'lodash-es';
 import { clearLocalDb, getLocalDbGeneration, readLocalDb, writeLocalDb } from './database';
 import { LocalChat, LocalChatListItem, LocalChatSummary, LocalFolder, LocalProfile, localProfileKeys } from './types';
 
+// NOTE: The writes below take the response typed as the server promises, but a proxy in front of the server
+// (an auth sign-in page) can answer 200 with HTML, which axios returns as a string. A record without an `id`
+// is not the server's data: it is skipped without a report, since the response is wrong, not the write.
+const hasId = (record: unknown): record is { id: string } =>
+  typeof (record as { id?: unknown } | null)?.id === 'string';
+
 class LocalDbService {
   public getGeneration(): number {
     return getLocalDbGeneration();
@@ -12,7 +18,9 @@ class LocalDbService {
     return clearLocalDb();
   }
 
-  public upsertChatListItems(items: Array<LocalChatListItem>, generation: number): Promise<void> {
+  public upsertChatListItems(response: Array<LocalChatListItem>, generation: number): Promise<void> {
+    const items = Array.isArray(response) ? response.filter(hasId) : [];
+
     return writeLocalDb(
       'upsertChatListItems',
       async (db) => {
@@ -56,6 +64,10 @@ class LocalDbService {
   }
 
   public upsertChat(chat: LocalChat, generation: number): Promise<void> {
+    if (!hasId(chat)) {
+      return Promise.resolve();
+    }
+
     return writeLocalDb(
       'upsertChat',
       async (db) => {
@@ -230,7 +242,14 @@ class LocalDbService {
     });
   }
 
-  public replaceFolders(folders: Array<LocalFolder>, generation: number): Promise<void> {
+  public replaceFolders(response: Array<LocalFolder>, generation: number): Promise<void> {
+    // NOTE: Not a folder list: the stored folders are kept rather than replaced with nothing.
+    if (!Array.isArray(response)) {
+      return Promise.resolve();
+    }
+
+    const folders = response.filter(hasId);
+
     return writeLocalDb(
       'replaceFolders',
       async (db) => {
@@ -258,6 +277,10 @@ class LocalDbService {
 
   // NOTE: Whitelisted keys: the sign-in response also carries the token.
   public saveProfile(profile: LocalProfile, generation: number): Promise<void> {
+    if (!hasId(profile)) {
+      return Promise.resolve();
+    }
+
     return writeLocalDb(
       'saveProfile',
       async (db) => {
