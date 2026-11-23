@@ -1,5 +1,5 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
-import { useAudioRecorder as useExpoAudioRecorder, AudioRecorder, AudioModule } from 'expo-audio';
+import { useAudioRecorder as useExpoAudioRecorder, AudioRecorder, AudioModule, PermissionStatus } from 'expo-audio';
 import { useRef, useState } from 'react';
 import { permissionAlertService } from '@open-webui-react-native/shared/utils/permission-alert';
 import { recordingOptions } from './config';
@@ -30,7 +30,7 @@ export const useAudioRecorder = (): UseAudioRecorderResult => {
 
     const permission = await AudioModule.requestRecordingPermissionsAsync();
 
-    if (permission.status !== 'granted') {
+    if (permission.status !== PermissionStatus.GRANTED) {
       permissionAlertService.showAlert(
         i18n.t('SHARED.USE_AUDIO_RECORDER.TEXT_NO_ACCESS'),
         i18n.t('SHARED.USE_AUDIO_RECORDER.TEXT_APP_NEEDS_ACCESS'),
@@ -49,7 +49,7 @@ export const useAudioRecorder = (): UseAudioRecorderResult => {
     recorder.record();
 
     setIsReady(false);
-    //NOTE: Android native-level MediaRecorder needs ~100–150ms to warm up
+    // NOTE: Android native-level MediaRecorder needs ~100–150ms to warm up
     setTimeout(() => setIsReady(true), 150);
 
     return true;
