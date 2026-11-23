@@ -63,9 +63,9 @@ class LocalDbService {
     );
   }
 
-  public upsertChat(chat: LocalChat, generation: number): Promise<void> {
+  public async upsertChat(chat: LocalChat, generation: number): Promise<void> {
     if (!hasId(chat)) {
-      return Promise.resolve();
+      return;
     }
 
     return writeLocalDb(
@@ -242,10 +242,10 @@ class LocalDbService {
     });
   }
 
-  public replaceFolders(response: Array<LocalFolder>, generation: number): Promise<void> {
+  public async replaceFolders(response: Array<LocalFolder>, generation: number): Promise<void> {
     // NOTE: Not a folder list: the stored folders are kept rather than replaced with nothing.
     if (!Array.isArray(response)) {
-      return Promise.resolve();
+      return;
     }
 
     const folders = response.filter(hasId);
@@ -276,9 +276,9 @@ class LocalDbService {
   }
 
   // NOTE: Whitelisted keys: the sign-in response also carries the token.
-  public saveProfile(profile: LocalProfile, generation: number): Promise<void> {
+  public async saveProfile(profile: LocalProfile, generation: number): Promise<void> {
     if (!hasId(profile)) {
-      return Promise.resolve();
+      return;
     }
 
     return writeLocalDb(
