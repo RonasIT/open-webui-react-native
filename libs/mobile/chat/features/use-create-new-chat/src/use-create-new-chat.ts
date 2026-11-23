@@ -15,6 +15,7 @@ import {
   prepareCompleteChatPayload,
   prepareCreateChatPayload,
   refuseUnavailableModel,
+  SendOutcome,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import { AttachedListItem, ImageData } from '@open-webui-react-native/shared/data-access/common';
@@ -41,9 +42,9 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
     attachedItems?: Array<AttachedListItem>,
     attachedImages?: Array<ImageData>,
     folderId?: string,
-  ): 'sent' | 'unavailable' => {
+  ): SendOutcome => {
     if (refuseUnavailableModel(model)) {
-      return 'unavailable';
+      return SendOutcome.UNAVAILABLE;
     }
 
     const payload = prepareCreateChatPayload({
@@ -107,7 +108,7 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
         }),
       );
 
-      return 'sent';
+      return SendOutcome.SENT;
     }
 
     createNewChat(payload, {
@@ -145,7 +146,7 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
       },
     });
 
-    return 'sent';
+    return SendOutcome.SENT;
   };
 
   const result = {

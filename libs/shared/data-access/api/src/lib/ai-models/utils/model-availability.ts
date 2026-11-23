@@ -1,5 +1,5 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
-import { isAxiosError } from 'axios';
+import { HttpStatusCode, isAxiosError } from 'axios';
 import { ApiErrorData, modelNotFoundDetail } from '@open-webui-react-native/shared/data-access/api-client';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
@@ -7,21 +7,19 @@ import { modelsApiConfig } from '../config';
 import { AIModel } from '../models';
 import { unavailableModelsState$ } from '../state';
 
-export const isModelListed = (models: Array<AIModel> | undefined, modelId?: string): boolean =>
-  Boolean(modelId && models?.some((model) => model.id === modelId));
+const isModelListed = (models: Array<AIModel>, modelId: string): boolean =>
+  models.some((model) => model.id === modelId);
 
 export const markModelUnavailable = (modelId: string): void => {
   unavailableModelsState$[modelId].set(true);
 };
 
 export const isModelNotFoundError = (error: unknown): boolean =>
-  isAxiosError<ApiErrorData>(error) && error.response?.data?.detail === modelNotFoundDetail;
+  isAxiosError<ApiErrorData>(error) &&
+  error.response?.status === HttpStatusCode.BadRequest &&
+  error.response.data?.detail === modelNotFoundDetail;
 
-const isModelSendBlocked = (modelId?: string): boolean => {
-  if (!modelId) {
-    return false;
-  }
-
+const isModelSendBlocked = (modelId: string): boolean => {
   if (unavailableModelsState$[modelId].peek()) {
     return true;
   }
@@ -36,7 +34,7 @@ const isModelSendBlocked = (modelId?: string): boolean => {
   return !isModelListed(models, modelId);
 };
 
-export const refuseUnavailableModel = (modelId?: string): boolean => {
+export const refuseUnavailableModel = (modelId: string): boolean => {
   if (!isModelSendBlocked(modelId)) {
     return false;
   }

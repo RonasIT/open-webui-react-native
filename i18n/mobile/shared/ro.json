@@ -35,7 +35,7 @@
       "TEXT_FORBIDDEN_ERROR": "Nu ai acces la această acțiune",
       "TEXT_INTERNAL_SERVER_ERROR": "Eroare la încărcarea datelor",
       "TEXT_NOT_FOUND_ERROR": "Datele nu au fost găsite",
-      "TEXT_MODEL_UNAVAILABLE": "Acest model nu este disponibil. Alegeți altul."
+      "TEXT_MODEL_UNAVAILABLE": "Acest model nu este disponibil. Alege altul."
     },
     "DATES": {
       "TEXT_TODAY": "Astăzi",

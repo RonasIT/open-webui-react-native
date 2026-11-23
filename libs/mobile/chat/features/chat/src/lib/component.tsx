@@ -27,6 +27,7 @@ import {
   isFeaturePermitted,
   isTemporaryChatId,
   refuseUnavailableModel,
+  SendOutcome,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
@@ -254,7 +255,8 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
         });
         ToastService.show(translate('TEXT_MESSAGE_QUEUED'));
       } else if (
-        sendMessage(inputValue, selectedModelId, options, attachedItems.get(), attachedImages.get()) !== 'sent'
+        sendMessage(inputValue, selectedModelId, options, attachedItems.get(), attachedImages.get()) !==
+        SendOutcome.SENT
       ) {
         return;
       }
@@ -270,7 +272,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
       return ToastService.showError(translate('TEXT_MODEL_NOT_SELECTED'));
     }
 
-    if (sendMessage(text, selectedModelId) !== 'sent') {
+    if (sendMessage(text, selectedModelId) !== SendOutcome.SENT) {
       return;
     }
 
@@ -305,11 +307,27 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
 
       // NOTE: not-ready means the chat has not loaded yet. Leave the message queued so this
       // effect can send it once the chat arrives, instead of toasting on every run.
-      if (result !== 'not-ready') {
+      if (result === SendOutcome.UNAVAILABLE) {
+        reset({ inputValue: queuedMessage.inputValue });
+        attachedItems.set(queuedMessage.attachedItems);
+        attachedImages.set(queuedMessage.attachedImages);
+        setInputRerenderKey((key) => key + 1);
+      }
+
+      if (result !== SendOutcome.NOT_READY) {
         setQueuedMessage(null);
       }
     }
-  }, [isResponseGenerating, isOfflineMode, queuedMessage, selectedModelId, sendMessage]);
+  }, [
+    isResponseGenerating,
+    isOfflineMode,
+    queuedMessage,
+    selectedModelId,
+    sendMessage,
+    reset,
+    attachedItems,
+    attachedImages,
+  ]);
 
   // NOTE: Deleting, regenerating or switching a branch removes the message being read
   useEffect(() => {

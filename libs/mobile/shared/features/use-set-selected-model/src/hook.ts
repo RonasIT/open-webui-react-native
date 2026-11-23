@@ -8,7 +8,7 @@ import {
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 
-const firstPresentId = (ids: Array<string | null | undefined>): string | undefined => {
+const firstPresentId = (ids: Array<string | undefined>): string | undefined => {
   for (const id of ids) {
     const trimmed = id?.trim();
 

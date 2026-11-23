@@ -22,7 +22,7 @@ const getErrorMessageFromData = (data: ApiErrorData): string | undefined => {
 export const getErrorMessage = (data?: ApiErrorData, status?: number): string => {
   const errorMessageByData = data && getErrorMessageFromData(data);
 
-  if (errorMessageByData === modelNotFoundDetail) {
+  if (status === HttpStatusCode.BadRequest && errorMessageByData === modelNotFoundDetail) {
     return i18n.t('SHARED.API_ERRORS.TEXT_MODEL_UNAVAILABLE');
   }
 
