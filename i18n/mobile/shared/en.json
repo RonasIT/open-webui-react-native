@@ -34,8 +34,7 @@
       "TEXT_YOUR_SESSION_HAS_EXPIRED": "Your session has expired. Please sign in again",
       "TEXT_FORBIDDEN_ERROR": "You have no access to this action",
       "TEXT_INTERNAL_SERVER_ERROR": "Loading data error",
-      "TEXT_NOT_FOUND_ERROR": "Data not found",
-      "TEXT_MODEL_UNAVAILABLE": "This model is unavailable. Choose another."
+      "TEXT_NOT_FOUND_ERROR": "Data not found"
     },
     "DATES": {
       "TEXT_TODAY": "Today",

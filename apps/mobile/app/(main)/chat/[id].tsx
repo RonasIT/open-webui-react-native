@@ -73,7 +73,7 @@ export default function ChatScreen(): ReactElement {
   const renderTrigger = ({ onPress }: { onPress: () => void }): ReactElement => (
     <AppPressable className='flex-row items-center max-w-full' onPress={onPress}>
       <AppText numberOfLines={1} className='text-md-sm sm:text-md font-medium shrink'>
-        {modelName}
+        {modelName || translate('TEXT_SELECT_A_MODEL')}
       </AppText>
       <Icon name='chevronDown' />
     </AppPressable>

@@ -24,7 +24,6 @@ import {
   ChatGenerationOption,
   chatApi,
   isTemporaryChatId,
-  SendOutcome,
   tasksApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
@@ -112,15 +111,7 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
         pendingImageRef.current = null;
 
         const send = chatIdRef.current ? sendMessageRef.current : startChatCreationRef.current;
-        const result = send(text, modelIdRef.current, [ChatGenerationOption.VOICE], undefined, attachedImages);
-
-        if (result !== SendOutcome.SENT) {
-          if (isVisibleRef.current) {
-            startSpeechRecording();
-          }
-
-          return;
-        }
+        send(text, modelIdRef.current, [ChatGenerationOption.VOICE], undefined, attachedImages);
 
         speechStreamingService.resumeContentSpeaking();
         setIsWaitingNewMessage(true);

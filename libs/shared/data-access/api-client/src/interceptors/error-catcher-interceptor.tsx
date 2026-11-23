@@ -1,6 +1,6 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
 import { AxiosError, HttpStatusCode } from 'axios';
-import { ApiErrorData, modelNotFoundDetail } from '../types';
+import { ApiErrorData } from '../types';
 
 const errorMessageMapping = {
   [HttpStatusCode.Forbidden]: 'SHARED.API_ERRORS.TEXT_FORBIDDEN_ERROR',
@@ -21,10 +21,6 @@ const getErrorMessageFromData = (data: ApiErrorData): string | undefined => {
 
 export const getErrorMessage = (data?: ApiErrorData, status?: number): string => {
   const errorMessageByData = data && getErrorMessageFromData(data);
-
-  if (status === HttpStatusCode.BadRequest && errorMessageByData === modelNotFoundDetail) {
-    return i18n.t('SHARED.API_ERRORS.TEXT_MODEL_UNAVAILABLE');
-  }
 
   if (errorMessageByData) {
     return errorMessageByData;

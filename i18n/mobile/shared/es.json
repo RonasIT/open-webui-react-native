@@ -34,8 +34,7 @@
       "TEXT_YOUR_SESSION_HAS_EXPIRED": "Tu sesión ha caducado. Inicia sesión de nuevo",
       "TEXT_FORBIDDEN_ERROR": "No tienes acceso a esta acción",
       "TEXT_INTERNAL_SERVER_ERROR": "Error al cargar los datos",
-      "TEXT_NOT_FOUND_ERROR": "Datos no encontrados",
-      "TEXT_MODEL_UNAVAILABLE": "Este modelo no está disponible. Elige otro."
+      "TEXT_NOT_FOUND_ERROR": "Datos no encontrados"
     },
     "DATES": {
       "TEXT_TODAY": "Hoy",

@@ -25,7 +25,6 @@ import {
   isFeaturePermitted,
   modelsApi,
   NEW_CHAT_SELECTION_KEY,
-  refuseUnavailableModel,
   resolveDefaultGenerationOptions,
   resolveDefaultToolIds,
   tasksApi,
@@ -164,11 +163,6 @@ export function FormChatInput<T extends FieldValues>({
     if (!modelId) {
       return ToastService.showError(translate('TEXT_MODEL_NOT_SELECTED'));
     }
-
-    if (refuseUnavailableModel(modelId)) {
-      return;
-    }
-
     setIsMicrophonePreparing(true);
     await openVoiceModeModal({ chatId: chat?.id, modelId });
     setIsMicrophonePreparing(false);

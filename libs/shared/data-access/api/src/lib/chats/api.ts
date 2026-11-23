@@ -18,7 +18,7 @@ import { refetchOnMountWithStaleCheck } from '@open-webui-react-native/shared/da
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { useSubscribeToEvent, WebSocketEventName } from '@open-webui-react-native/shared/data-access/websocket';
 import { modelsApiConfig } from '../ai-models/config';
-import { isModelNotFoundError, markModelUnavailable } from '../ai-models/utils/model-availability';
+import { isModelNotFoundError } from '../ai-models/utils/model-availability';
 import { foldersApiConfig } from '../folders';
 import { archivedChatListQueryKey } from './archived-chat-list-query-keys';
 import { chatQueriesKeys } from './chat-queries-keys';
@@ -573,10 +573,9 @@ function useCompleteChat({
     },
     ...options,
     onError: (error, variables, onMutateResult, context) => {
-      // NOTE: The model can still be in the list when its base model is gone. Remember it so the
-      // next send does not repeat the request, and refresh the list in case the id was removed.
+      // NOTE: The phone may still be showing a cached list. Refresh it so a removed id leaves the
+      // header; a listed model whose base is gone stays selected and the server error is shown as-is.
       if (isModelNotFoundError(error)) {
-        markModelUnavailable(variables.model);
         queryClient.invalidateQueries({ queryKey: modelsApiConfig.getModelsQueryKey });
       }
 

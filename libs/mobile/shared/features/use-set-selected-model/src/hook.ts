@@ -71,17 +71,22 @@ export const useSetSelectedModel = (chatId?: string): UseSetSelectedModelResult 
     (isModelsLoading && !isModelsFetched) ||
     (isChatLoading && !isChatFetched);
 
-  // NOTE: An explicit id stays selected when it has left the list, so the screen can say it is
-  // unavailable instead of silently sending the next model. Only a chat with no explicit model
-  // falls through, and that fallback skips models the picker hides.
+  // NOTE: A chat, user or server id that has left GET /api/models stays empty, as the web selector
+  // does when the list arrives late: the header asks for a model instead of sending the next one.
+  // A chat with no explicit id still starts on the first model the picker offers.
   const explicitModelId = firstPresentId([
     chatId ? chat?.chat.models?.[0] : undefined,
     settings?.ui.models?.[0],
     ...(config?.defaultModels?.split(',') ?? []),
   ]);
+  const candidateId = pickedModelId ?? explicitModelId;
+  const listedCandidateId =
+    candidateId && models?.some((model) => model.id === candidateId) ? candidateId : undefined;
   const modelId = !isDataReceived
     ? undefined
-    : (pickedModelId ?? explicitModelId ?? (models?.find(isModelSelectable) ?? models?.[0])?.id);
+    : candidateId
+      ? listedCandidateId
+      : (models?.find(isModelSelectable) ?? models?.[0])?.id;
 
   const onSelectModel = (id: string): void => {
     setPickedModelIds((current) => ({ ...current, [pickKey]: id }));

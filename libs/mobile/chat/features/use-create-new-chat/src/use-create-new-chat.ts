@@ -14,8 +14,6 @@ import {
   patchChatList,
   prepareCompleteChatPayload,
   prepareCreateChatPayload,
-  refuseUnavailableModel,
-  SendOutcome,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import { AttachedListItem, ImageData } from '@open-webui-react-native/shared/data-access/common';
@@ -42,11 +40,7 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
     attachedItems?: Array<AttachedListItem>,
     attachedImages?: Array<ImageData>,
     folderId?: string,
-  ): SendOutcome => {
-    if (refuseUnavailableModel(model)) {
-      return SendOutcome.UNAVAILABLE;
-    }
-
+  ): void => {
     const payload = prepareCreateChatPayload({
       prompt,
       model,
@@ -108,7 +102,7 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
         }),
       );
 
-      return SendOutcome.SENT;
+      return;
     }
 
     createNewChat(payload, {
@@ -145,8 +139,6 @@ export function useCreateNewChat({ onSuccess }: UseCreateNewChatArgs): typeof re
         completeChat(completePayload);
       },
     });
-
-    return SendOutcome.SENT;
   };
 
   const result = {

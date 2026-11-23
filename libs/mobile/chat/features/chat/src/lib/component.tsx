@@ -26,8 +26,6 @@ import {
   getPendingToolCall,
   isFeaturePermitted,
   isTemporaryChatId,
-  refuseUnavailableModel,
-  SendOutcome,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
@@ -142,8 +140,9 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   const firstMessageGeneratedRef = useRef(false);
 
   // NOTE: Only the first fetch after mount hides the chat; foreground refetches update it in place.
-  const shouldHideContent =
-    isLoading || (isRefetching && !isFetchedAfterMount) || !isMessagesListLoaded || !selectedModelId;
+  // A model that has left the list leaves selectedModelId empty on purpose. The chat stays visible
+  // and send is refused with "Model not selected", the same gate the web uses.
+  const shouldHideContent = isLoading || (isRefetching && !isFetchedAfterMount) || !isMessagesListLoaded;
 
   useSubscribeToQueryCache({
     eventType: 'removed',
@@ -241,10 +240,6 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
       }
 
       if (isResponseGenerating && isMessageQueueEnabled) {
-        if (refuseUnavailableModel(selectedModelId)) {
-          return;
-        }
-
         // NOTE: Snapshot attachments now — they're cleared by resetAttachments() below and must not
         // be re-read live when this queued message is flushed later.
         setQueuedMessage({
@@ -254,11 +249,8 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
           attachedImages: attachedImages.get(),
         });
         ToastService.show(translate('TEXT_MESSAGE_QUEUED'));
-      } else if (
-        sendMessage(inputValue, selectedModelId, options, attachedItems.get(), attachedImages.get()) !==
-        SendOutcome.SENT
-      ) {
-        return;
+      } else {
+        sendMessage(inputValue, selectedModelId, options, attachedItems.get(), attachedImages.get());
       }
 
       reset();
@@ -272,13 +264,11 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
       return ToastService.showError(translate('TEXT_MODEL_NOT_SELECTED'));
     }
 
-    if (sendMessage(text, selectedModelId) !== SendOutcome.SENT) {
-      return;
-    }
-
     cancelEditing();
     cancelSuggesting();
     setActiveInputMode(null);
+
+    sendMessage(text, selectedModelId);
   };
 
   useEffect(() => {
@@ -297,37 +287,16 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
 
   useEffect(() => {
     if (!isResponseGenerating && !isOfflineMode && queuedMessage && selectedModelId) {
-      const result = sendMessage(
+      sendMessage(
         queuedMessage.inputValue,
         selectedModelId,
         queuedMessage.options,
         queuedMessage.attachedItems,
         queuedMessage.attachedImages,
       );
-
-      // NOTE: not-ready means the chat has not loaded yet. Leave the message queued so this
-      // effect can send it once the chat arrives, instead of toasting on every run.
-      if (result === SendOutcome.UNAVAILABLE) {
-        reset({ inputValue: queuedMessage.inputValue });
-        attachedItems.set(queuedMessage.attachedItems);
-        attachedImages.set(queuedMessage.attachedImages);
-        setInputRerenderKey((key) => key + 1);
-      }
-
-      if (result !== SendOutcome.NOT_READY) {
-        setQueuedMessage(null);
-      }
+      setQueuedMessage(null);
     }
-  }, [
-    isResponseGenerating,
-    isOfflineMode,
-    queuedMessage,
-    selectedModelId,
-    sendMessage,
-    reset,
-    attachedItems,
-    attachedImages,
-  ]);
+  }, [isResponseGenerating, isOfflineMode, queuedMessage, selectedModelId, sendMessage]);
 
   // NOTE: Deleting, regenerating or switching a branch removes the message being read
   useEffect(() => {

@@ -34,8 +34,7 @@
       "TEXT_YOUR_SESSION_HAS_EXPIRED": "会话已过期。请重新登录",
       "TEXT_FORBIDDEN_ERROR": "您无权执行此操作",
       "TEXT_INTERNAL_SERVER_ERROR": "加载数据出错",
-      "TEXT_NOT_FOUND_ERROR": "未找到数据",
-      "TEXT_MODEL_UNAVAILABLE": "此模型不可用。请选择其他模型。"
+      "TEXT_NOT_FOUND_ERROR": "未找到数据"
     },
     "DATES": {
       "TEXT_TODAY": "今天",
