@@ -10,7 +10,7 @@ import {
   UseQueryOptions,
   InfiniteData,
 } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
+import { AxiosError, HttpStatusCode } from 'axios';
 import { merge } from 'lodash-es';
 import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
 import { getNextPageParam } from '@open-webui-react-native/shared/data-access/common';
@@ -572,9 +572,12 @@ function useCompleteChat({
     },
     ...options,
     onError: (error, variables, onMutateResult, context) => {
-      // NOTE: The phone may still be showing a cached list. Refresh it so an id the server
-      // rejected can leave the header once it is gone from GET /api/models.
-      queryClient.invalidateQueries({ queryKey: modelsApiConfig.getModelsQueryKey });
+      // NOTE: Open WebUI answers 400 when the completion model is missing. Refresh the cached
+      // list so the header can drop that id. Other statuses leave the list alone.
+      if (error.response?.status === HttpStatusCode.BadRequest) {
+        queryClient.invalidateQueries({ queryKey: modelsApiConfig.getModelsQueryKey });
+      }
+
       onError?.(error, variables, onMutateResult, context);
     },
   });
