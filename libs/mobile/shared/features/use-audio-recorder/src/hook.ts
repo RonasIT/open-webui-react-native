@@ -7,7 +7,7 @@ import { recordingOptions } from './config';
 export interface UseAudioRecorderResult {
   recorder: AudioRecorder;
   isReady: boolean;
-  startRecording: () => Promise<void>;
+  startRecording: () => Promise<boolean>;
   stopRecording: () => Promise<string | null | undefined>;
 }
 
@@ -16,7 +16,7 @@ export const useAudioRecorder = (): UseAudioRecorderResult => {
   const stopPromiseRef = useRef<Promise<string | null | undefined> | null>(null);
   const [isReady, setIsReady] = useState(false);
 
-  const startRecording = async (): Promise<void> => {
+  const startRecording = async (): Promise<boolean> => {
     // NOTE: The recorder reports isRecording until stop finishes, so a start during it would be skipped
     try {
       await stopPromiseRef.current;
@@ -25,30 +25,34 @@ export const useAudioRecorder = (): UseAudioRecorderResult => {
     }
 
     if (recorder.isRecording) {
-      return;
+      return true;
     }
 
     const permission = await AudioModule.requestRecordingPermissionsAsync();
 
-    if (permission.status === 'granted') {
-      await AudioModule.setAudioModeAsync({
-        allowsRecording: true,
-        playsInSilentMode: true,
-      });
-
-      await recorder.prepareToRecordAsync();
-      recorder.record();
-
-      setIsReady(false);
-      //NOTE: Android native-level MediaRecorder needs ~100–150ms to warm up
-      setTimeout(() => setIsReady(true), 150);
-    } else {
+    if (permission.status !== 'granted') {
       permissionAlertService.showAlert(
         i18n.t('SHARED.USE_AUDIO_RECORDER.TEXT_NO_ACCESS'),
         i18n.t('SHARED.USE_AUDIO_RECORDER.TEXT_APP_NEEDS_ACCESS'),
       );
-      throw new Error();
+
+      // NOTE: Denied permission is a choice, not a failure. An empty rejection was unhandled and Sentry stored "No error message".
+      return false;
     }
+
+    await AudioModule.setAudioModeAsync({
+      allowsRecording: true,
+      playsInSilentMode: true,
+    });
+
+    await recorder.prepareToRecordAsync();
+    recorder.record();
+
+    setIsReady(false);
+    //NOTE: Android native-level MediaRecorder needs ~100–150ms to warm up
+    setTimeout(() => setIsReady(true), 150);
+
+    return true;
   };
 
   const stopRecorder = async (): Promise<string | null | undefined> => {

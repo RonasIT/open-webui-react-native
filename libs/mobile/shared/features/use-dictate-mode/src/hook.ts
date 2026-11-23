@@ -21,7 +21,7 @@ export interface UseDictateModeResult {
   durationMillis: number;
   isRecording: boolean;
   isTranscribing: boolean;
-  startSpeechRecording: () => Promise<void>;
+  startSpeechRecording: () => Promise<boolean>;
   completeSpeechRecording: () => Promise<void>;
   pauseSpeechRecording: () => Promise<void>;
   stopSpeechRecording: () => Promise<void>;
@@ -122,11 +122,18 @@ export const useDictateMode = ({
     }
   };
 
-  const startSpeechRecording = async (): Promise<void> => {
-    await startRecording();
+  const startSpeechRecording = async (): Promise<boolean> => {
+    const hasStarted = await startRecording();
+
+    if (!hasStarted) {
+      return false;
+    }
+
     hasSpeechRef.current = false;
     setIsRecording(true);
     onStartRecording?.();
+
+    return true;
   };
 
   const completeSpeechRecording = async (): Promise<void> => {

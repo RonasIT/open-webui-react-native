@@ -62,9 +62,20 @@ export function SoundWaveRecorder({
   });
 
   useEffect(() => {
-    if (isRecordingStarted) {
-      startSpeechRecording();
+    if (!isRecordingStarted) {
+      return;
     }
+
+    const start = async (): Promise<void> => {
+      const hasStarted = await startSpeechRecording();
+
+      if (!hasStarted) {
+        // NOTE: The parent shows the recorder before permission is known. Denied access must leave the text input in place.
+        onStopRecording();
+      }
+    };
+
+    void start();
   }, [isRecordingStarted]);
 
   useEffect(() => {
