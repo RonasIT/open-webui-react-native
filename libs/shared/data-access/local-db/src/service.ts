@@ -3,6 +3,10 @@ import { pick } from 'lodash-es';
 import { clearLocalDb, getLocalDbGeneration, readLocalDb, writeLocalDb } from './database';
 import { LocalChat, LocalChatListItem, LocalChatSummary, LocalFolder, LocalProfile, localProfileKeys } from './types';
 
+// NOTE: A proxy sign-in page can answer 200 with HTML instead of JSON; records without an `id` are skipped.
+const hasId = (record: unknown): record is { id: string } =>
+  typeof (record as { id?: unknown } | null)?.id === 'string';
+
 class LocalDbService {
   public getGeneration(): number {
     return getLocalDbGeneration();
@@ -12,7 +16,9 @@ class LocalDbService {
     return clearLocalDb();
   }
 
-  public upsertChatListItems(items: Array<LocalChatListItem>, generation: number): Promise<void> {
+  public upsertChatListItems(response: Array<LocalChatListItem>, generation: number): Promise<void> {
+    const items = Array.isArray(response) ? response.filter(hasId) : [];
+
     return writeLocalDb(
       'upsertChatListItems',
       async (db) => {
@@ -55,7 +61,11 @@ class LocalDbService {
     );
   }
 
-  public upsertChat(chat: LocalChat, generation: number): Promise<void> {
+  public async upsertChat(chat: LocalChat, generation: number): Promise<void> {
+    if (!hasId(chat)) {
+      return;
+    }
+
     return writeLocalDb(
       'upsertChat',
       async (db) => {
@@ -230,7 +240,14 @@ class LocalDbService {
     });
   }
 
-  public replaceFolders(folders: Array<LocalFolder>, generation: number): Promise<void> {
+  public async replaceFolders(response: Array<LocalFolder>, generation: number): Promise<void> {
+    // NOTE: Not a folder list: the stored folders are kept rather than replaced with nothing.
+    if (!Array.isArray(response)) {
+      return;
+    }
+
+    const folders = response.filter(hasId);
+
     return writeLocalDb(
       'replaceFolders',
       async (db) => {
@@ -257,7 +274,11 @@ class LocalDbService {
   }
 
   // NOTE: Whitelisted keys: the sign-in response also carries the token.
-  public saveProfile(profile: LocalProfile, generation: number): Promise<void> {
+  public async saveProfile(profile: LocalProfile, generation: number): Promise<void> {
+    if (!hasId(profile)) {
+      return;
+    }
+
     return writeLocalDb(
       'saveProfile',
       async (db) => {
