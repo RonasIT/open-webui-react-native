@@ -268,8 +268,12 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
         setIsAiSpeaking(true);
       });
       speechStreamingService.onSpeakingEnd(async () => {
-        await startSpeechRecording();
-        setIsAiSpeaking(false);
+        const hasStarted = await startSpeechRecording();
+
+        // NOTE: A rejection used to skip this. Clearing it anyway left the screen saying it was listening.
+        if (hasStarted) {
+          setIsAiSpeaking(false);
+        }
       });
     } else {
       speechStreamingService.clearListeners();
