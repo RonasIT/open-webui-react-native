@@ -1,3 +1,4 @@
+import { compact } from 'lodash-es';
 import { useEffect, useMemo, useState } from 'react';
 import {
   appConfigurationApi,
@@ -62,13 +63,11 @@ export const useSetSelectedModel = (chatId?: string): UseSetSelectedModelResult 
       return undefined;
     }
 
-    const candidateIds = [
-      chatId ? chat?.chat.models?.[0] : undefined,
-      settings?.ui.models?.[0],
-      ...(config?.defaultModels?.split(',') ?? []),
-    ]
-      .map((id) => id?.trim())
-      .filter((id): id is string => Boolean(id));
+    const candidateIds = compact(
+      [chatId ? chat?.chat.models?.[0] : undefined, settings?.ui.models?.[0], ...(config?.defaultModels?.split(',') ?? [])].map(
+        (id) => id?.trim(),
+      ),
+    );
 
     for (const candidateId of candidateIds) {
       const model = models.find((model) => model.id === candidateId);
