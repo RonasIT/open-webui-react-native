@@ -17,6 +17,8 @@ import { getNextPageParam } from '@open-webui-react-native/shared/data-access/co
 import { refetchOnMountWithStaleCheck } from '@open-webui-react-native/shared/data-access/persist-query-helpers';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { useSubscribeToEvent, WebSocketEventName } from '@open-webui-react-native/shared/data-access/websocket';
+import { modelsApiConfig } from '../ai-models/config';
+import { isModelNotFoundError, markModelUnavailable } from '../ai-models/utils/model-availability';
 import { foldersApiConfig } from '../folders';
 import { archivedChatListQueryKey } from './archived-chat-list-query-keys';
 import { chatQueriesKeys } from './chat-queries-keys';
@@ -553,9 +555,14 @@ function useCreateNewChat(
   });
 }
 
-function useCompleteChat(
-  options?: UseMutationOptions<CompleteChatResponse, AxiosError, CompleteChatRequest>,
-): UseMutationResult<CompleteChatResponse, AxiosError, CompleteChatRequest> {
+function useCompleteChat({
+  onError,
+  ...options
+}: UseMutationOptions<CompleteChatResponse, AxiosError, CompleteChatRequest> = {}): UseMutationResult<
+  CompleteChatResponse,
+  AxiosError,
+  CompleteChatRequest
+> {
   return useMutation({
     // NOTE: Drop any streaming state left over from a previous (possibly interrupted) response
     // before a new one starts, otherwise its trailing text would prefix the next answer.
@@ -565,6 +572,16 @@ function useCompleteChat(
       return chatService.completeChat(params);
     },
     ...options,
+    onError: (error, variables, onMutateResult, context) => {
+      // NOTE: The model can still be in the list when its base model is gone. Remember it so the
+      // next send does not repeat the request, and refresh the list in case the id was removed.
+      if (isModelNotFoundError(error)) {
+        markModelUnavailable(variables.model);
+        queryClient.invalidateQueries({ queryKey: modelsApiConfig.getModelsQueryKey });
+      }
+
+      onError?.(error, variables, onMutateResult, context);
+    },
   });
 }
 

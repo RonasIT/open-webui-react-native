@@ -34,7 +34,8 @@
       "TEXT_YOUR_SESSION_HAS_EXPIRED": "Votre session a expiré. Veuillez vous reconnecter",
       "TEXT_FORBIDDEN_ERROR": "Vous n’avez pas accès à cette action",
       "TEXT_INTERNAL_SERVER_ERROR": "Erreur de chargement des données",
-      "TEXT_NOT_FOUND_ERROR": "Données introuvables"
+      "TEXT_NOT_FOUND_ERROR": "Données introuvables",
+      "TEXT_MODEL_UNAVAILABLE": "Ce modèle n'est pas disponible. Choisissez-en un autre."
     },
     "DATES": {
       "TEXT_TODAY": "Aujourd’hui",

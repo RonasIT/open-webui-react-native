@@ -1,5 +1,9 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { authService, resetChatSessionState } from '@open-webui-react-native/shared/data-access/api';
+import {
+  authService,
+  resetChatSessionState,
+  resetUnavailableModels,
+} from '@open-webui-react-native/shared/data-access/api';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { cookieService } from '@open-webui-react-native/shared/data-access/cookie';
 import { localDbService } from '@open-webui-react-native/shared/data-access/local-db';
@@ -31,6 +35,7 @@ export const useLogout = (): { logout: (options?: LogoutOptions) => Promise<void
 
     queryClient.removeQueries();
     resetChatSessionState();
+    resetUnavailableModels();
     cookieService.clearAll();
     await queryPersister.removeClient();
     await localDbService.clear();

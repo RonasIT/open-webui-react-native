@@ -10,6 +10,7 @@ import {
   createMessagesList,
   patchChatWithSelectedMessages,
   prepareCompleteChatPayload,
+  refuseUnavailableModel,
 } from '@open-webui-react-native/shared/data-access/api';
 import { Role } from '@open-webui-react-native/shared/data-access/common';
 import { socketService } from '@open-webui-react-native/shared/data-access/websocket';
@@ -54,6 +55,8 @@ export const useSuggestChange = ({ chat, modelId }: UseSuggestChangeProps): UseS
 
   const regenerateForMessage = async (messageId: string, message: string): Promise<void> => {
     if (!chat?.chat || !modelId) return;
+
+    if (refuseUnavailableModel(modelId)) return;
 
     const history = chat.chat.history;
     const baseAssistant = history.messages[messageId];

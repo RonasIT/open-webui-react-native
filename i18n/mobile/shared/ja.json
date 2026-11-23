@@ -34,7 +34,8 @@
       "TEXT_YOUR_SESSION_HAS_EXPIRED": "セッションの有効期限が切れました。再度サインインしてください",
       "TEXT_FORBIDDEN_ERROR": "この操作へのアクセス権がありません",
       "TEXT_INTERNAL_SERVER_ERROR": "データの読み込みエラー",
-      "TEXT_NOT_FOUND_ERROR": "データが見つかりません"
+      "TEXT_NOT_FOUND_ERROR": "データが見つかりません",
+      "TEXT_MODEL_UNAVAILABLE": "このモデルは利用できません。別のモデルを選んでください。"
     },
     "DATES": {
       "TEXT_TODAY": "今日",

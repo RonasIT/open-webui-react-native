@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 import {
   appConfigurationApi,
   chatApi,
@@ -8,6 +8,18 @@ import {
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 
+const firstPresentId = (ids: Array<string | null | undefined>): string | undefined => {
+  for (const id of ids) {
+    const trimmed = id?.trim();
+
+    if (trimmed) {
+      return trimmed;
+    }
+  }
+
+  return undefined;
+};
+
 export interface UseSetSelectedModelResult {
   isLoading: boolean;
   onSelectModel: (id: string) => void;
@@ -16,7 +28,9 @@ export interface UseSetSelectedModelResult {
 }
 
 export const useSetSelectedModel = (chatId?: string): UseSetSelectedModelResult => {
-  const [modelId, setModelId] = useState<string | undefined>(undefined);
+  const [pickedModelIds, setPickedModelIds] = useState<Record<string, string>>({});
+  const pickKey = chatId ?? '';
+  const pickedModelId = pickedModelIds[pickKey];
 
   const {
     data: settings,
@@ -57,39 +71,26 @@ export const useSetSelectedModel = (chatId?: string): UseSetSelectedModelResult 
     (isModelsLoading && !isModelsFetched) ||
     (isChatLoading && !isChatFetched);
 
-  const defaultModelId = useMemo(() => {
-    if (!isDataReceived || !models?.length) {
-      return undefined;
-    }
+  // NOTE: An explicit id stays selected when it has left the list, so the screen can say it is
+  // unavailable instead of silently sending the next model. Only a chat with no explicit model
+  // falls through, and that fallback skips models the picker hides.
+  const explicitModelId = firstPresentId([
+    chatId ? chat?.chat.models?.[0] : undefined,
+    settings?.ui.models?.[0],
+    ...(config?.defaultModels?.split(',') ?? []),
+  ]);
+  const modelId = !isDataReceived
+    ? undefined
+    : (pickedModelId ?? explicitModelId ?? (models?.find(isModelSelectable) ?? models?.[0])?.id);
 
-    const modelCandidatesIds = [
-      chatId && chat?.chat.models?.[0],
-      settings?.ui.models?.[0],
-      ...(config?.defaultModels?.split(',') ?? []),
-      //NOTE Explicit candidates above are honoured even when hidden, but the implicit fallback
-      //NOTE should not start a chat on a model the picker does not offer
-      (models.find(isModelSelectable) ?? models[0]).id,
-    ].filter(Boolean);
-
-    for (const candidateId of modelCandidatesIds) {
-      const model = models.find((model) => model.id === candidateId);
-
-      if (model) {
-        return model.id;
-      }
-    }
-  }, [isDataReceived, chatId, models, chat?.chat.models, settings?.ui?.models, config?.defaultModels]);
-
-  useEffect(() => {
-    if (defaultModelId) {
-      setModelId(defaultModelId);
-    }
-  }, [defaultModelId]);
+  const onSelectModel = (id: string): void => {
+    setPickedModelIds((current) => ({ ...current, [pickKey]: id }));
+  };
 
   return {
     isLoading,
-    onSelectModel: setModelId,
+    onSelectModel,
     modelId,
-    modelName: models?.find((model) => model.id === modelId)?.name,
+    modelName: models?.find((model) => model.id === modelId)?.name ?? modelId,
   };
 };

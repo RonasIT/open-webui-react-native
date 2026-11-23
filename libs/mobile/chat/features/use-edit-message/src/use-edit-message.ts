@@ -12,6 +12,7 @@ import {
   prepareEditAssistantMessagePayload,
   prepareCopyEditedMessagePayload,
   prepareUpdateMessageInChatPayload,
+  refuseUnavailableModel,
   History,
 } from '@open-webui-react-native/shared/data-access/api';
 import { Role } from '@open-webui-react-native/shared/data-access/common';
@@ -85,6 +86,11 @@ export const useEditMessage = ({ chat, modelId }: UseEditMessageProps): typeof r
     if (!chat?.chat || !editingMessageId || !modelId) {
       return;
     }
+
+    if (refuseUnavailableModel(modelId)) {
+      return;
+    }
+
     const chatHistory = chat.chat.history;
     const editedMessage = chatHistory.messages[editingMessageId];
 

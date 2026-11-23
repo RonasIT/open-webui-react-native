@@ -19,6 +19,7 @@ import {
   Message,
   patchChatQueryData,
   prepareCompleteChatPayload,
+  refuseUnavailableModel,
 } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { Role } from '@open-webui-react-native/shared/data-access/common';
@@ -158,7 +159,7 @@ export default function ChatMessagesList({
   };
 
   const handleContinueResponsePress = (messageId: string): void => {
-    if (!modelId) return;
+    if (!modelId || refuseUnavailableModel(modelId)) return;
 
     patchChatQueryData(chatId, {
       chat: {

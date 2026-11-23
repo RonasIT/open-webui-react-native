@@ -8,6 +8,7 @@ import {
   patchChatQueryData,
   prepareCompleteChatPayload,
   prepareSendMessagePayload,
+  refuseUnavailableModel,
 } from '@open-webui-react-native/shared/data-access/api';
 import { AttachedListItem, ImageData } from '@open-webui-react-native/shared/data-access/common';
 import { socketService } from '@open-webui-react-native/shared/data-access/websocket';
@@ -34,9 +35,13 @@ export function useSendMessage({ chatData }: UseSendMessageArgs): typeof result 
       generationOptions?: Array<ChatGenerationOption>,
       attachedItems?: Array<AttachedListItem>,
       attachedImages?: Array<ImageData>,
-    ): void => {
+    ): 'sent' | 'unavailable' | 'not-ready' => {
       if (!chatData) {
-        return;
+        return 'not-ready';
+      }
+
+      if (refuseUnavailableModel(model)) {
+        return 'unavailable';
       }
 
       const payload = prepareSendMessagePayload({
@@ -66,12 +71,14 @@ export function useSendMessage({ chatData }: UseSendMessageArgs): typeof result 
         patchChatQueryData(payload.id!, payload);
         triggerCompletion(payload);
 
-        return;
+        return 'sent';
       }
 
       updateChat(payload, {
         onSuccess: triggerCompletion,
       });
+
+      return 'sent';
     },
     [chatData, socketSessionId, updateChat, completeChat],
   );

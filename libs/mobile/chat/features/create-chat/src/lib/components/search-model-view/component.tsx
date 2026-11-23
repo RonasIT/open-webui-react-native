@@ -26,7 +26,7 @@ export function SearchModelView({ selectedItemId, ...props }: SearchModelViewPro
   const renderTrigger = ({ onPress }: { onPress: () => void }): ReactElement => (
     <AppPressable className='flex-row items-center px-content-offset' onPress={onPress}>
       <AppText numberOfLines={1} className='text-h1-sm sm:text-h1 font-medium mr-8 max-w-[90%]'>
-        {selectedModelName || translate('TEXT_SELECT_A_MODEL')}
+        {selectedModelName || selectedItemId || translate('TEXT_SELECT_A_MODEL')}
       </AppText>
       <Icon name='chevronDown' />
     </AppPressable>

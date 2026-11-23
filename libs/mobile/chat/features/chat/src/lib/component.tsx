@@ -26,6 +26,7 @@ import {
   getPendingToolCall,
   isFeaturePermitted,
   isTemporaryChatId,
+  refuseUnavailableModel,
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
@@ -239,6 +240,10 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
       }
 
       if (isResponseGenerating && isMessageQueueEnabled) {
+        if (refuseUnavailableModel(selectedModelId)) {
+          return;
+        }
+
         // NOTE: Snapshot attachments now — they're cleared by resetAttachments() below and must not
         // be re-read live when this queued message is flushed later.
         setQueuedMessage({
@@ -248,8 +253,10 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
           attachedImages: attachedImages.get(),
         });
         ToastService.show(translate('TEXT_MESSAGE_QUEUED'));
-      } else {
-        sendMessage(inputValue, selectedModelId, options, attachedItems.get(), attachedImages.get());
+      } else if (
+        sendMessage(inputValue, selectedModelId, options, attachedItems.get(), attachedImages.get()) !== 'sent'
+      ) {
+        return;
       }
 
       reset();
@@ -263,11 +270,13 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
       return ToastService.showError(translate('TEXT_MODEL_NOT_SELECTED'));
     }
 
+    if (sendMessage(text, selectedModelId) !== 'sent') {
+      return;
+    }
+
     cancelEditing();
     cancelSuggesting();
     setActiveInputMode(null);
-
-    sendMessage(text, selectedModelId);
   };
 
   useEffect(() => {
@@ -286,14 +295,19 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
 
   useEffect(() => {
     if (!isResponseGenerating && !isOfflineMode && queuedMessage && selectedModelId) {
-      sendMessage(
+      const result = sendMessage(
         queuedMessage.inputValue,
         selectedModelId,
         queuedMessage.options,
         queuedMessage.attachedItems,
         queuedMessage.attachedImages,
       );
-      setQueuedMessage(null);
+
+      // NOTE: not-ready means the chat has not loaded yet. Leave the message queued so this
+      // effect can send it once the chat arrives, instead of toasting on every run.
+      if (result !== 'not-ready') {
+        setQueuedMessage(null);
+      }
     }
   }, [isResponseGenerating, isOfflineMode, queuedMessage, selectedModelId, sendMessage]);
 

@@ -111,7 +111,11 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
         pendingImageRef.current = null;
 
         const send = chatIdRef.current ? sendMessageRef.current : startChatCreationRef.current;
-        send(text, modelIdRef.current, [ChatGenerationOption.VOICE], undefined, attachedImages);
+        const result = send(text, modelIdRef.current, [ChatGenerationOption.VOICE], undefined, attachedImages);
+
+        if (result !== 'sent') {
+          return;
+        }
 
         speechStreamingService.resumeContentSpeaking();
         setIsWaitingNewMessage(true);
