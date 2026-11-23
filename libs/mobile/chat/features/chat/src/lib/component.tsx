@@ -140,8 +140,6 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   const firstMessageGeneratedRef = useRef(false);
 
   // NOTE: Only the first fetch after mount hides the chat; foreground refetches update it in place.
-  // A model that has left the list leaves selectedModelId empty on purpose. The chat stays visible
-  // and send is refused with "Model not selected", the same gate the web uses.
   const shouldHideContent = isLoading || (isRefetching && !isFetchedAfterMount) || !isMessagesListLoaded;
 
   useSubscribeToQueryCache({
