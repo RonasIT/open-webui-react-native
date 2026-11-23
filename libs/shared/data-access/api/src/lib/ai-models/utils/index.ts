@@ -1,4 +1,3 @@
-export * from './model-availability';
 export * from './get-model-control-choices';
 export * from './get-selectable-models';
 export * from './is-model-controls-available';
