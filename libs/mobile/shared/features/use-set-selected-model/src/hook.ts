@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   appConfigurationApi,
   chatApi,
@@ -8,18 +8,6 @@ import {
   usersApi,
 } from '@open-webui-react-native/shared/data-access/api';
 
-const firstPresentId = (ids: Array<string | undefined>): string | undefined => {
-  for (const id of ids) {
-    const trimmed = id?.trim();
-
-    if (trimmed) {
-      return trimmed;
-    }
-  }
-
-  return undefined;
-};
-
 export interface UseSetSelectedModelResult {
   isLoading: boolean;
   onSelectModel: (id: string) => void;
@@ -28,9 +16,7 @@ export interface UseSetSelectedModelResult {
 }
 
 export const useSetSelectedModel = (chatId?: string): UseSetSelectedModelResult => {
-  const [pickedModelIds, setPickedModelIds] = useState<Record<string, string>>({});
-  const pickKey = chatId ?? '';
-  const pickedModelId = pickedModelIds[pickKey];
+  const [modelId, setModelId] = useState<string | undefined>(undefined);
 
   const {
     data: settings,
@@ -71,31 +57,36 @@ export const useSetSelectedModel = (chatId?: string): UseSetSelectedModelResult 
     (isModelsLoading && !isModelsFetched) ||
     (isChatLoading && !isChatFetched);
 
-  // NOTE: A chat, user or server id that has left GET /api/models stays empty, as the web selector
-  // does when the list arrives late: the header asks for a model instead of sending the next one.
-  // A chat with no explicit id still starts on the first model the picker offers.
-  const explicitModelId = firstPresentId([
-    chatId ? chat?.chat.models?.[0] : undefined,
-    settings?.ui.models?.[0],
-    ...(config?.defaultModels?.split(',') ?? []),
-  ]);
-  const candidateId = pickedModelId ?? explicitModelId;
-  const listedCandidateId =
-    candidateId && models?.some((model) => model.id === candidateId) ? candidateId : undefined;
-  const modelId = !isDataReceived
-    ? undefined
-    : candidateId
-      ? listedCandidateId
-      : (models?.find(isModelSelectable) ?? models?.[0])?.id;
+  const defaultModelId = useMemo(() => {
+    if (!isDataReceived || !models?.length) {
+      return undefined;
+    }
 
-  const onSelectModel = (id: string): void => {
-    setPickedModelIds((current) => ({ ...current, [pickKey]: id }));
-  };
+    const explicitId = [
+      chatId ? chat?.chat.models?.[0] : undefined,
+      settings?.ui.models?.[0],
+      ...(config?.defaultModels?.split(',') ?? []),
+    ]
+      .map((id) => id?.trim())
+      .find(Boolean);
+
+    // NOTE: An explicit id that has left the list stays empty, so the header asks for a model
+    // instead of starting on the next one. With no explicit id, keep the first model the picker offers.
+    if (explicitId) {
+      return models.some((model) => model.id === explicitId) ? explicitId : undefined;
+    }
+
+    return (models.find(isModelSelectable) ?? models[0]).id;
+  }, [isDataReceived, chatId, models, chat?.chat.models, settings?.ui?.models, config?.defaultModels]);
+
+  useEffect(() => {
+    setModelId(defaultModelId);
+  }, [defaultModelId]);
 
   return {
     isLoading,
-    onSelectModel,
+    onSelectModel: setModelId,
     modelId,
-    modelName: models?.find((model) => model.id === modelId)?.name ?? modelId,
+    modelName: models?.find((model) => model.id === modelId)?.name,
   };
 };
