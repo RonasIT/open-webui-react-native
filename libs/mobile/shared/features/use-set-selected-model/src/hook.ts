@@ -66,11 +66,9 @@ export const useSetSelectedModel = (chatId?: string): UseSetSelectedModelResult 
       chatId ? chat?.chat.models?.[0] : undefined,
       settings?.ui.models?.[0],
       ...(config?.defaultModels?.split(',') ?? []),
-    ].flatMap((id) => {
-      const trimmed = id?.trim();
-
-      return trimmed ? [trimmed] : [];
-    });
+    ]
+      .map((id) => id?.trim())
+      .filter((id): id is string => Boolean(id));
 
     for (const candidateId of candidateIds) {
       const model = models.find((model) => model.id === candidateId);
