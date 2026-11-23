@@ -62,18 +62,28 @@ export const useSetSelectedModel = (chatId?: string): UseSetSelectedModelResult 
       return undefined;
     }
 
-    const explicitId = [
+    const candidateIds = [
       chatId ? chat?.chat.models?.[0] : undefined,
       settings?.ui.models?.[0],
       ...(config?.defaultModels?.split(',') ?? []),
-    ]
-      .map((id) => id?.trim())
-      .find(Boolean);
+    ].flatMap((id) => {
+      const trimmed = id?.trim();
 
-    // NOTE: An explicit id that has left the list stays empty, so the header asks for a model
-    // instead of starting on the next one. With no explicit id, keep the first model the picker offers.
-    if (explicitId) {
-      return models.some((model) => model.id === explicitId) ? explicitId : undefined;
+      return trimmed ? [trimmed] : [];
+    });
+
+    for (const candidateId of candidateIds) {
+      const model = models.find((model) => model.id === candidateId);
+
+      if (model) {
+        return model.id;
+      }
+    }
+
+    // NOTE: The header asks for a model only when every candidate has left the list.
+    // With no candidate at all, keep the first model the picker offers.
+    if (candidateIds.length > 0) {
+      return undefined;
     }
 
     return (models.find(isModelSelectable) ?? models[0]).id;
