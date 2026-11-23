@@ -3,9 +3,7 @@ import { pick } from 'lodash-es';
 import { clearLocalDb, getLocalDbGeneration, readLocalDb, writeLocalDb } from './database';
 import { LocalChat, LocalChatListItem, LocalChatSummary, LocalFolder, LocalProfile, localProfileKeys } from './types';
 
-// NOTE: The writes below take the response typed as the server promises, but a proxy in front of the server
-// (an auth sign-in page) can answer 200 with HTML, which axios returns as a string. A record without an `id`
-// is not the server's data: it is skipped without a report, since the response is wrong, not the write.
+// NOTE: A proxy sign-in page can answer 200 with HTML instead of JSON; records without an `id` are skipped.
 const hasId = (record: unknown): record is { id: string } =>
   typeof (record as { id?: unknown } | null)?.id === 'string';
 
