@@ -78,11 +78,11 @@ export const useSetSelectedModel = (chatId?: string): UseSetSelectedModelResult 
     }
 
     // NOTE: The header asks for a model only when every candidate has left the list.
-    // With no candidate at all, keep the first model the picker offers.
     if (candidateIds.length > 0) {
       return undefined;
     }
 
+    // NOTE: A new chat with no models of its own starts on the first one the picker offers.
     return (models.find(isModelSelectable) ?? models[0]).id;
   }, [isDataReceived, chatId, models, chat?.chat.models, settings?.ui?.models, config?.defaultModels]);
 
