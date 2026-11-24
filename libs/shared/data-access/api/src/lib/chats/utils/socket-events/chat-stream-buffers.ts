@@ -11,8 +11,8 @@ import { patchChatMessagesWithCompletion } from '../patch-chat-message-with-comp
 
 interface ChatStreamBuffer {
   content: string;
-  // NOTE: The raw `output` array is buffered so it can be persisted on the message. The backend
-  // seeds "Continue Response" from the stored `output`; if we drop it, continue starts from scratch.
+  // NOTE: Kept so the open chat's query cache shows tool calls / reasoning while streaming.
+  // The backend already stores `output` on `done` for "Continue Response"; we do not POST it back.
   output?: Array<ChatCompletionOutputItem>;
   // NOTE: Sources arrive only in the first chunk, so they are kept until the response is complete.
   sources?: Array<MessageSource>;

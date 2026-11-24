@@ -69,10 +69,9 @@ export function prepareCompleteChatPayload({
 
   // NOTE: The backend re-saves the assistant placeholder on every completion and takes its parentId
   // from `user_message` — omitting it persists the turn with `parentId: null`, overwriting the link
-  // the client just saved. A completed turn hides this (handleCompletedChat rewrites the history at
-  // the end), but a turn that never completes — one paused on tool approval — stays orphaned, and
-  // `.../resolve` then answers 409 "Tool call parent message is missing". Derived from the cache
-  // instead of being threaded through all six completion entry points.
+  // the client just saved. A turn that never completes — one paused on tool approval — stays
+  // orphaned, and `.../resolve` then answers 409 "Tool call parent message is missing". Derived
+  // from the cache instead of being threaded through all six completion entry points.
   const assistantMessage = chatResponse?.chat.history.messages[messageId];
   const resolvedUserMessage =
     userMessage ??
