@@ -159,7 +159,14 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
         setModelId(modelId);
         // NOTE: A message may be read aloud from its actions, the mic must not pick it up
         await speechStreamingService.stopContentSpeaking();
-        await startSpeechRecording();
+        const hasStarted = await startSpeechRecording();
+
+        if (!hasStarted) {
+          isVisibleRef.current = false;
+
+          return;
+        }
+
         setIsVisible(true);
       },
       close,
@@ -178,7 +185,11 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
   // NOTE: The camera can keep the audio session. A failed restart still sends the cut-off phrase with the photo
   const resumeListening = async (): Promise<void> => {
     try {
-      await startSpeechRecording();
+      const hasStarted = await startSpeechRecording();
+
+      if (!hasStarted) {
+        await completeSpeechRecording();
+      }
     } catch {
       await completeSpeechRecording();
     }
@@ -257,8 +268,12 @@ export function VoiceModeModal({ onChatCreated, ref, ...props }: VoiceModeModalP
         setIsAiSpeaking(true);
       });
       speechStreamingService.onSpeakingEnd(async () => {
-        await startSpeechRecording();
-        setIsAiSpeaking(false);
+        const hasStarted = await startSpeechRecording();
+
+        // NOTE: A rejection used to skip this. Clearing it anyway left the screen saying it was listening.
+        if (hasStarted) {
+          setIsAiSpeaking(false);
+        }
       });
     } else {
       speechStreamingService.clearListeners();
