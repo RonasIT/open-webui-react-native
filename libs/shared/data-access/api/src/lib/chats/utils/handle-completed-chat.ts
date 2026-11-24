@@ -13,22 +13,26 @@ import { isTemporaryChatId } from './temporary-chat-id';
 // for external integrations only. Calling it re-ran the filters on a payload this client discards,
 // and the endpoint turns every internal error into a 400 (a missing `model`, a stale `session_id`,
 // a throwing filter), which used to abort the chat update below.
+// NOTE: `not-ready` means the chat is gone from the query cache, so a POST cannot be built yet —
+// callers that retry must keep the payload, not treat this as a successful save.
+export type HandleCompletedChatResult = 'saved' | 'skipped' | 'not-ready';
+
 export const handleCompletedChat = async (
   message: string,
   chatId: string,
   sources?: Array<MessageSource>,
   output?: Message['output'],
-): Promise<void> => {
+): Promise<HandleCompletedChatResult> => {
   // NOTE: Temporary chats are never persisted — the completed message is already reflected in the
   // cache by patchCompletedMessage (see handleChatCompletionEvent), so there's nothing left to do.
   if (isTemporaryChatId(chatId)) {
-    return;
+    return 'skipped';
   }
 
   const chatData = queryClient.getQueryData<ChatResponse>(chatQueriesKeys.get(chatId).queryKey);
 
   if (!chatData) {
-    return;
+    return 'not-ready';
   }
 
   const { chat } = chatData;
@@ -56,4 +60,6 @@ export const handleCompletedChat = async (
   });
 
   await chatService.update({ id: chatId, chat: updateChatPayload });
+
+  return 'saved';
 };

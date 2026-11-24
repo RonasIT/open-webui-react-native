@@ -1,3 +1,4 @@
+import { observe } from '@legendapp/state';
 import { onlineManager } from '@tanstack/react-query';
 import { HttpStatusCode, isAxiosError } from 'axios';
 import { AppState, type AppStateStatus } from 'react-native';
@@ -24,6 +25,12 @@ const isSessionGone = (error: unknown): boolean =>
 const canFlush = (): boolean =>
   authState$.isAuthenticated.get() && onlineManager.isOnline() && AppState.currentState === 'active';
 
+const queuePending = (chatId: string, pending: PendingCompletedChatSave): void => {
+  pendingByChatId.set(chatId, pending);
+  ensureRetryListeners();
+  scheduleRetry();
+};
+
 const scheduleRetry = (): void => {
   if (retryTimer !== undefined || pendingByChatId.size === 0) {
     return;
@@ -43,6 +50,13 @@ const ensureRetryListeners = (): void => {
   }
 
   isListening = true;
+
+  // NOTE: Drop queued saves on logout so a later sign-in cannot POST another account's chat id.
+  observe(() => {
+    if (!authState$.isAuthenticated.get()) {
+      pendingByChatId.clear();
+    }
+  });
 
   AppState.addEventListener('change', (status: AppStateStatus) => {
     if (status === 'active') {
@@ -81,7 +95,13 @@ const flushPendingCompletedChatSaves = async (): Promise<void> => {
       }
 
       try {
-        await handleCompletedChat(pending.message, chatId, pending.sources, pending.output);
+        const result = await handleCompletedChat(pending.message, chatId, pending.sources, pending.output);
+
+        if (result === 'not-ready') {
+          scheduleRetry();
+          break;
+        }
+
         pendingByChatId.delete(chatId);
       } catch (error) {
         if (isSessionGone(error)) {
@@ -106,9 +126,22 @@ export const persistCompletedChat = async (
   sources?: Array<MessageSource>,
   output?: Message['output'],
 ): Promise<void> => {
+  if (!authState$.isAuthenticated.get()) {
+    pendingByChatId.clear();
+
+    return;
+  }
+
   try {
-    await handleCompletedChat(message, chatId, sources, output);
-    pendingByChatId.delete(chatId);
+    const result = await handleCompletedChat(message, chatId, sources, output);
+
+    if (result === 'saved' || result === 'skipped') {
+      pendingByChatId.delete(chatId);
+
+      return;
+    }
+
+    queuePending(chatId, { message, sources, output });
   } catch (error) {
     if (isSessionGone(error)) {
       pendingByChatId.delete(chatId);
@@ -116,8 +149,6 @@ export const persistCompletedChat = async (
       return;
     }
 
-    pendingByChatId.set(chatId, { message, sources, output });
-    ensureRetryListeners();
-    scheduleRetry();
+    queuePending(chatId, { message, sources, output });
   }
 };
