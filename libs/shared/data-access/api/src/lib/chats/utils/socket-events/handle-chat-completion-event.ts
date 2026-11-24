@@ -9,8 +9,8 @@ import {
 import { hapticFeedbackService } from '@open-webui-react-native/shared/utils/haptic-feedback-service';
 import { chatQueriesKeys } from '../../chat-queries-keys';
 import { ChatResponse } from '../../models';
-import { handleCompletedChat } from '../handle-completed-chat';
 import { patchCompletedMessage } from '../patch-completed-message';
+import { persistCompletedChat } from '../persist-completed-chat';
 import {
   flushChatStreamBuffer,
   getChatStreamBuffer,
@@ -64,7 +64,7 @@ export const handleChatCompletionEvent = async (socketResponse: ChatEventBase): 
     queryClient.setQueryData(chatQueriesKeys.get(chatId).queryKey, (oldData: ChatResponse) =>
       patchCompletedMessage(oldData),
     );
-    await handleCompletedChat(buffer.content, chatId, buffer.sources, buffer.output);
+    await persistCompletedChat(buffer.content, chatId, buffer.sources, buffer.output);
     resetChatStreamBuffer(chatId);
     await hapticFeedbackService.trigger();
   }
