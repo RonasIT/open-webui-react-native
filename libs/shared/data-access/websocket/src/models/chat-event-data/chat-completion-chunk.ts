@@ -8,7 +8,7 @@ export class ChatCompletionOutputItem {
   public type?: string;
 
   // NOTE: Kept faithful to the Responses-API item shape so the open chat can render tool calls /
-  // reasoning from the stream. The backend persists `output` itself on `done` for Continue Response.
+  // reasoning from the stream.
   @Expose()
   public id?: string;
 

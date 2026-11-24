@@ -58,9 +58,6 @@ export const handleChatCompletionEvent = async (socketResponse: ChatEventBase): 
   if (chatCompletionData.done) {
     // NOTE: Apply the buffered content synchronously — a pending frame would otherwise land after
     // the buffer is dropped below, leaving the message rendered without its final text.
-    // The backend already persists the assistant message inline (Open WebUI 0.9.0+); the web client
-    // only refreshes the sidebar after `done`. We patch the query cache for the open screen and
-    // leave the server copy alone — a client POST would only risk overwriting `output` via merge.
     flushChatStreamBuffer(chatId);
 
     queryClient.setQueryData(chatQueriesKeys.get(chatId).queryKey, (oldData: ChatResponse) =>
