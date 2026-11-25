@@ -16,7 +16,7 @@ import {
   unauthorizedInterceptor,
 } from './interceptors';
 import { ApiErrorData } from './types';
-import { resetProxyRejectionNotice, showProxyRejectionNotice } from './utils/proxy-rejection-notice';
+import { showProxyRejectionNotice } from './utils/proxy-rejection-notice';
 
 const apiServiceCache = new Map<string, ApiService>();
 
@@ -48,7 +48,7 @@ const setupInterceptors = (service: ApiService, apiUrl: string): void => {
   service.useInterceptors({
     request: [[requestHeadersInterceptor(apiUrl)]],
     response: [
-      [resetProxyRejectionNotice, sentryErrorCatcherInterceptor()],
+      [null, sentryErrorCatcherInterceptor()],
       [
         null,
         unauthorizedInterceptor({
