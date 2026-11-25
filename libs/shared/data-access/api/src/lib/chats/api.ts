@@ -9,9 +9,8 @@ import {
   UseQueryResult,
   UseQueryOptions,
   InfiniteData,
-  onlineManager,
 } from '@tanstack/react-query';
-import { AxiosError, HttpStatusCode, isAxiosError } from 'axios';
+import { AxiosError, HttpStatusCode } from 'axios';
 import { merge } from 'lodash-es';
 import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
 import { getNextPageParam } from '@open-webui-react-native/shared/data-access/common';
@@ -112,37 +111,7 @@ export const getChatQueryOptions = (
   options?: Omit<UseQueryOptions<ChatResponse, AxiosError<ApiErrorData>>, 'queryKey' | 'queryFn'>,
 ): UseQueryOptions<ChatResponse, AxiosError<ApiErrorData>> => ({
   queryKey: chatQueriesKeys.get(id).queryKey,
-  queryFn: async ({ client, queryKey }): Promise<ChatResponse> => {
-    if (!onlineManager.isOnline()) {
-      // NOTE: A background refetch must not replace a newer in-memory chat with the older database row.
-      const cached = client.getQueryData<ChatResponse>(queryKey);
-
-      if (cached) {
-        return cached;
-      }
-
-      const stored = await chatService.getLocalChat(id);
-
-      if (stored) {
-        return stored;
-      }
-    }
-
-    try {
-      return normalizeChatResponse(await chatService.get(id));
-    } catch (error) {
-      // NOTE: The server did not answer. The local row is the copy the MMKV cache used to keep.
-      if (!isAxiosError(error) || !error.response) {
-        const stored = await chatService.getLocalChat(id);
-
-        if (stored) {
-          return stored;
-        }
-      }
-
-      throw error;
-    }
-  },
+  queryFn: async (): Promise<ChatResponse> => normalizeChatResponse(await chatService.get(id)),
   staleTime: 5000,
   ...options,
   // NOTE: `online` would never run the query while offline, so the local database would not be read.

@@ -1,6 +1,7 @@
 import { createEntityInstance, EntityPartial } from '@ronas-it/rtkq-entity-api';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { mapValues } from 'lodash-es';
+import { onlineManager } from '@tanstack/react-query';
 import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
 import { EntityPromiseService } from '@open-webui-react-native/shared/data-access/base-entity';
 import { Role } from '@open-webui-react-native/shared/data-access/common';
@@ -90,13 +91,21 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
   }
 
   public async get(id: string): Promise<ChatResponse> {
+    if (!onlineManager.isOnline()) {
+      const stored = await this.getLocalChat(id);
+
+      if (stored) {
+        return stored;
+      }
+    }
+
     const response = await this.fetchChat(id);
 
     return createEntityInstance<ChatResponse>(ChatResponse, response);
   }
 
   // NOTE: The same shape as `get`, from the local database. A shared chat and a reply still streaming are not stored.
-  public async getLocalChat(id: string): Promise<ChatResponse | null> {
+  private async getLocalChat(id: string): Promise<ChatResponse | null> {
     const stored = await localDbService.getChat(id);
     const body = stored?.chat;
 
