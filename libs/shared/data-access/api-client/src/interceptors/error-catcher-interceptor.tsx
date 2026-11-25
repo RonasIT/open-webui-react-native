@@ -46,6 +46,7 @@ export const errorCatcherInterceptor =
 
       return Promise.reject(error);
     }
+
     const data = error.response?.data as ApiErrorData | undefined;
     const status = error.response?.status;
 

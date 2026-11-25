@@ -19,8 +19,11 @@ export const queryClient = new QueryClient({
     queries: {
       gcTime: queryClientConfig.gcTime,
       // NOTE: A 401 or a 403 is not transient, and every retry would trigger its own session check and error toast
-      retry: (failureCount, error) =>
-        !(isAxiosError(error) && nonRetryableStatuses.has(error.response?.status ?? 0)) && failureCount < 3,
+      retry: (failureCount, error) => {
+        const status = isAxiosError(error) ? error.response?.status : undefined;
+
+        return !(status !== undefined && nonRetryableStatuses.has(status)) && failureCount < 3;
+      },
       refetchOnMount: (query) => {
         // NOTE: Prevent refetching data on every screen mount
         if (query.meta?.shouldThrottleRefetch) {
