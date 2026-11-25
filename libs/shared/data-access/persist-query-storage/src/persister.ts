@@ -1,5 +1,5 @@
 import { Persister, PersistedClient } from '@tanstack/react-query-persist-client';
-import { isChatBodyQueryKey } from '@open-webui-react-native/shared/data-access/api';
+import { isChatByIdQuery } from '@open-webui-react-native/shared/data-access/api';
 import { persistStorageConfig } from './config';
 import { persistStorage } from './storage';
 
@@ -7,7 +7,7 @@ const cacheLengthKey = `${persistStorageConfig.mmkvStorageID}-length`;
 
 // NOTE: Chat bodies live in the local database. A cache saved before that still holds them, and MMKV does not shrink the file on its own.
 const withoutChatBodies = (client: PersistedClient): PersistedClient => {
-  const queries = client.clientState.queries.filter((query) => !isChatBodyQueryKey(query.queryKey));
+  const queries = client.clientState.queries.filter((query) => !isChatByIdQuery(query.queryKey));
 
   if (queries.length === client.clientState.queries.length) {
     return client;
