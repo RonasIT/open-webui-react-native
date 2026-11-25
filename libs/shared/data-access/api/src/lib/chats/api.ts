@@ -9,6 +9,7 @@ import {
   UseQueryResult,
   UseQueryOptions,
   InfiniteData,
+  onlineManager,
 } from '@tanstack/react-query';
 import { AxiosError, HttpStatusCode } from 'axios';
 import { merge } from 'lodash-es';
@@ -40,6 +41,7 @@ import {
   invalidateArchivedChatListQuery,
   invalidateSearchChatsQuery,
   normalizeChatResponse,
+  OfflineChatMissingError,
   patchChatQueryData,
   resetChatStreamBuffer,
 } from './utils';
@@ -106,14 +108,34 @@ function useSearchInfinite(
   });
 }
 
+const defaultRetryDelayMs = (failureCount: number): number => Math.min(1000 * 2 ** failureCount, 30000);
+
 export const getChatQueryOptions = (
   id: string,
   options?: Omit<UseQueryOptions<ChatResponse, AxiosError<ApiErrorData>>, 'queryKey' | 'queryFn'>,
-) => ({
+): UseQueryOptions<ChatResponse, AxiosError<ApiErrorData>> => ({
   queryKey: chatQueriesKeys.get(id).queryKey,
-  queryFn: async (): Promise<ChatResponse> => normalizeChatResponse(await chatService.get(id)),
+  queryFn: async (): Promise<ChatResponse> => {
+    // NOTE: offlineFirst runs this while the device is offline. A stored chat is shown; anything else pauses until the network returns.
+    if (!onlineManager.isOnline()) {
+      const stored = await chatService.getLocalChat(id);
+
+      if (stored) {
+        return stored;
+      }
+
+      throw new OfflineChatMissingError();
+    }
+
+    return normalizeChatResponse(await chatService.get(id));
+  },
   staleTime: 5000,
   ...options,
+  networkMode: 'offlineFirst' as const,
+  refetchOnReconnect: 'always' as const,
+  retryDelay: (failureCount: number, error: Error): number =>
+    error instanceof OfflineChatMissingError ? 0 : defaultRetryDelayMs(failureCount),
+  meta: { ...options?.meta, persist: false },
 });
 
 function useGet(

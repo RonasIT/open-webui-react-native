@@ -29,6 +29,7 @@ import {
   ShareChatResponse,
 } from './models';
 import { BackgroundRequestOptions, getBackgroundRequestConfig } from './utils/background-request';
+import { normalizeChatResponse } from './utils/normalize-chat-response';
 import { prepareOutputForSave } from './utils/prepare-output-for-save';
 
 // NOTE: Converts on a copy — the query cache must keep the parsed `output` shape.
@@ -92,6 +93,17 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
     const response = await this.fetchChat(id);
 
     return createEntityInstance<ChatResponse>(ChatResponse, response);
+  }
+
+  // NOTE: The same shape as `get`, from the local database. A shared chat and a reply still streaming are not stored.
+  public async getLocalChat(id: string): Promise<ChatResponse | null> {
+    const stored = await localDbService.getChat(id);
+
+    if (!stored?.chat) {
+      return null;
+    }
+
+    return normalizeChatResponse(createEntityInstance(ChatResponse, stored));
   }
 
   // NOTE: Raw server JSON; the background sync calls it directly, so the local DB rules stay in this service.
