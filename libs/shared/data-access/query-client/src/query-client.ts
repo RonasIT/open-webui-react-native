@@ -2,6 +2,8 @@ import { MutationCache, onlineManager, QueryClient } from '@tanstack/react-query
 import { HttpStatusCode, isAxiosError } from 'axios';
 import { queryClientConfig } from './config';
 
+const nonRetryableStatuses = new Set<number>([HttpStatusCode.Unauthorized, HttpStatusCode.Forbidden]);
+
 export const queryClient = new QueryClient({
   mutationCache: new MutationCache({
     // NOTE: Safety net for offline mode, which is read-only: UI guards block writes with a toast, this catches
@@ -16,9 +18,9 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       gcTime: queryClientConfig.gcTime,
-      // NOTE: A 401 is not transient, and every retry would trigger its own session check and error toast
+      // NOTE: A 401 or a 403 is not transient, and every retry would trigger its own session check and error toast
       retry: (failureCount, error) =>
-        !(isAxiosError(error) && error.response?.status === HttpStatusCode.Unauthorized) && failureCount < 3,
+        !(isAxiosError(error) && nonRetryableStatuses.has(error.response?.status ?? 0)) && failureCount < 3,
       refetchOnMount: (query) => {
         // NOTE: Prevent refetching data on every screen mount
         if (query.meta?.shouldThrottleRefetch) {

@@ -33,6 +33,7 @@
       "TEXT_SOMETHING_WENT_WRONG": "Что-то пошло не так",
       "TEXT_YOUR_SESSION_HAS_EXPIRED": "Сеанс истёк. Войдите снова",
       "TEXT_FORBIDDEN_ERROR": "У вас нет доступа к этому действию",
+      "TEXT_PROXY_REJECTION": "Прокси перед сервером заблокировал это устройство. Проверьте сеть или VPN либо обратитесь к администратору сервера",
       "TEXT_INTERNAL_SERVER_ERROR": "Ошибка загрузки данных",
       "TEXT_NOT_FOUND_ERROR": "Данные не найдены"
     },

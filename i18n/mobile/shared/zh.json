@@ -33,6 +33,7 @@
       "TEXT_SOMETHING_WENT_WRONG": "出了点问题",
       "TEXT_YOUR_SESSION_HAS_EXPIRED": "会话已过期。请重新登录",
       "TEXT_FORBIDDEN_ERROR": "您无权执行此操作",
+      "TEXT_PROXY_REJECTION": "服务器前的代理阻止了此设备。请检查网络或 VPN，或联系服务器管理员",
       "TEXT_INTERNAL_SERVER_ERROR": "加载数据出错",
       "TEXT_NOT_FOUND_ERROR": "未找到数据"
     },

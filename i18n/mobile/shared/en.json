@@ -33,6 +33,7 @@
       "TEXT_SOMETHING_WENT_WRONG": "Something went wrong",
       "TEXT_YOUR_SESSION_HAS_EXPIRED": "Your session has expired. Please sign in again",
       "TEXT_FORBIDDEN_ERROR": "You have no access to this action",
+      "TEXT_PROXY_REJECTION": "A proxy in front of the server blocked this device. Check your network or VPN, or ask the server's administrator",
       "TEXT_INTERNAL_SERVER_ERROR": "Loading data error",
       "TEXT_NOT_FOUND_ERROR": "Data not found"
     },

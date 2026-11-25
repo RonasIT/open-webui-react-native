@@ -1,6 +1,7 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
 import { AxiosError, HttpStatusCode } from 'axios';
 import { ApiErrorData } from '../types';
+import { isProxyRejection } from '../utils/is-proxy-rejection';
 
 const errorMessageMapping = {
   [HttpStatusCode.Forbidden]: 'SHARED.API_ERRORS.TEXT_FORBIDDEN_ERROR',
@@ -34,9 +35,17 @@ export const getErrorMessage = (data?: ApiErrorData, status?: number): string =>
 };
 
 export const errorCatcherInterceptor =
-  (options: { onError: (message: string) => void }) =>
+  (options: { onError: (message: string) => void; onProxyRejection: () => void }) =>
   (error: AxiosError<ApiErrorData>): Promise<never> => {
     const skipToast = error.config?.params?.skipToast as boolean | undefined;
+
+    if (isProxyRejection(error)) {
+      if (!skipToast) {
+        options.onProxyRejection();
+      }
+
+      return Promise.reject(error);
+    }
     const data = error.response?.data as ApiErrorData | undefined;
     const status = error.response?.status;
 

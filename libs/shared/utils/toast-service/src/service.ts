@@ -12,12 +12,12 @@ export class ToastService {
     });
   }
 
-  public static showError(message?: string): void {
+  public static showError(message?: string, visibilityTime = 2000): void {
     Toast.show({
       type: 'error',
       position: 'top',
       topOffset: 32,
-      visibilityTime: 2000,
+      visibilityTime,
       text1: message || i18n.t('SHARED.API_ERRORS.TEXT_SOMETHING_WENT_WRONG'),
     });
   }

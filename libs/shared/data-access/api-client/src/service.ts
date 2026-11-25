@@ -1,6 +1,7 @@
 import { ApiService } from '@ronas-it/axios-api-client';
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
-import { AxiosError, HttpStatusCode } from 'axios';
+import { AxiosError, AxiosResponse, HttpStatusCode } from 'axios';
+import { AppState } from 'react-native';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { UserRole } from '@open-webui-react-native/shared/data-access/common';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
@@ -34,6 +35,33 @@ const checkSession = (service: ApiService): Promise<boolean> => {
   return sessionCheck;
 };
 
+// NOTE: A proxy that blocks the device rejects every request: the person needs its notice once, not per request.
+// The notice shows again after a request gets through or the app comes back from the background.
+let isProxyRejectionShown = false;
+
+AppState.addEventListener('change', (status) => {
+  if (status === 'active') {
+    isProxyRejectionShown = false;
+  }
+});
+
+const PROXY_REJECTION_TOAST_DURATION = 5000;
+
+const onProxyRejection = (): void => {
+  if (isProxyRejectionShown) {
+    return;
+  }
+
+  isProxyRejectionShown = true;
+  ToastService.showError(i18n.t('SHARED.API_ERRORS.TEXT_PROXY_REJECTION'), PROXY_REJECTION_TOAST_DURATION);
+};
+
+const onResponse = (response: AxiosResponse): AxiosResponse => {
+  isProxyRejectionShown = false;
+
+  return response;
+};
+
 const onSessionExpired = (): void => {
   if (authState$.isUnauthorized.get()) {
     return;
@@ -47,7 +75,7 @@ const setupInterceptors = (service: ApiService, apiUrl: string): void => {
   service.useInterceptors({
     request: [[requestHeadersInterceptor(apiUrl)]],
     response: [
-      [null, sentryErrorCatcherInterceptor()],
+      [onResponse, sentryErrorCatcherInterceptor()],
       [
         null,
         unauthorizedInterceptor({
@@ -67,6 +95,7 @@ const setupInterceptors = (service: ApiService, apiUrl: string): void => {
           onError: (error: string) => {
             ToastService.showError(error);
           },
+          onProxyRejection,
         }),
       ],
     ],
