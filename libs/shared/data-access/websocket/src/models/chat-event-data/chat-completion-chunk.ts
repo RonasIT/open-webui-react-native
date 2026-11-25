@@ -7,9 +7,8 @@ export class ChatCompletionOutputItem {
   @Expose()
   public type?: string;
 
-  // NOTE: These are echoed back to the backend when persisting the assistant message so that
-  // "Continue Response" can seed generation from the prior `output` (see handle-completed-chat).
-  // Kept faithful to the Responses-API item shape.
+  // NOTE: Kept faithful to the Responses-API item shape so the open chat can render tool calls /
+  // reasoning from the stream.
   @Expose()
   public id?: string;
 

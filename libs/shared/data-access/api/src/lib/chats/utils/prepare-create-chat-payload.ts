@@ -3,6 +3,7 @@ import { AttachedListItem, ImageData } from '@open-webui-react-native/shared/dat
 import { Chat, CreateNewChatRequest } from '../models';
 import { buildMessagesHistory } from './build-messages-history';
 import { createMessagePair } from './create-message-pair';
+import { getCompletionFiles } from './get-completion-files';
 
 export interface PrepareCreateChatPayloadArgs {
   prompt: string;
@@ -29,17 +30,19 @@ export function prepareCreateChatPayload({
   });
 
   const history = buildMessagesHistory({}, userMessage, assistantMessage, assistantMessageId);
+  const messages = [userMessage, assistantMessage];
 
   return new CreateNewChatRequest({
     chat: new Chat({
       history,
-      messages: [userMessage, assistantMessage],
+      messages,
       timestamp: timestampMs,
       title: i18n.t('SHARED.COMMON.TEXT_NEW_CHAT'),
       id: '',
       params: systemPrompt ? { system: systemPrompt } : {},
       tags: [],
       models: [model],
+      files: getCompletionFiles(messages),
     }),
     folderId,
   });

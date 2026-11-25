@@ -4,7 +4,6 @@ export * from './get-completion-files';
 export * from './prepare-send-message-payload';
 export * from './patch-chat-message-with-completion';
 export * from './patch-completed-message';
-export * from './handle-completed-chat';
 export * from './patch-chat-list';
 export * from './get-search-chats-query-key';
 export * from './socket-events';

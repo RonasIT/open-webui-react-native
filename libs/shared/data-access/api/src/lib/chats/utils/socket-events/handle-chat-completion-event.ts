@@ -1,4 +1,5 @@
-import { plainToInstance } from 'class-transformer';
+import { instanceToPlain, plainToInstance } from 'class-transformer';
+import { LocalChat, localDbService } from '@open-webui-react-native/shared/data-access/local-db';
 import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import {
   ChatEventBase,
@@ -9,8 +10,9 @@ import {
 import { hapticFeedbackService } from '@open-webui-react-native/shared/utils/haptic-feedback-service';
 import { chatQueriesKeys } from '../../chat-queries-keys';
 import { ChatResponse } from '../../models';
-import { handleCompletedChat } from '../handle-completed-chat';
+import { saveChatLocally } from '../../service';
 import { patchCompletedMessage } from '../patch-completed-message';
+import { isTemporaryChatId } from '../temporary-chat-id';
 import {
   flushChatStreamBuffer,
   getChatStreamBuffer,
@@ -61,10 +63,18 @@ export const handleChatCompletionEvent = async (socketResponse: ChatEventBase): 
     // the buffer is dropped below, leaving the message rendered without its final text.
     flushChatStreamBuffer(chatId);
 
-    queryClient.setQueryData(chatQueriesKeys.get(chatId).queryKey, (oldData: ChatResponse) =>
-      patchCompletedMessage(oldData),
+    const patched = patchCompletedMessage(
+      queryClient.getQueryData<ChatResponse>(chatQueriesKeys.get(chatId).queryKey),
     );
-    await handleCompletedChat(buffer.content, chatId, buffer.sources, buffer.output);
+
+    if (patched) {
+      queryClient.setQueryData(chatQueriesKeys.get(chatId).queryKey, patched);
+
+      if (!isTemporaryChatId(chatId)) {
+        void saveChatLocally(instanceToPlain(patched) as LocalChat, localDbService.getGeneration());
+      }
+    }
+
     resetChatStreamBuffer(chatId);
     await hapticFeedbackService.trigger();
   }
