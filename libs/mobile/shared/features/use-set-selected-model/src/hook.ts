@@ -1,3 +1,4 @@
+import { compact } from 'lodash-es';
 import { useEffect, useMemo, useState } from 'react';
 import {
   appConfigurationApi,
@@ -62,28 +63,31 @@ export const useSetSelectedModel = (chatId?: string): UseSetSelectedModelResult 
       return undefined;
     }
 
-    const modelCandidatesIds = [
-      chatId && chat?.chat.models?.[0],
-      settings?.ui.models?.[0],
-      ...(config?.defaultModels?.split(',') ?? []),
-      //NOTE Explicit candidates above are honoured even when hidden, but the implicit fallback
-      //NOTE should not start a chat on a model the picker does not offer
-      (models.find(isModelSelectable) ?? models[0]).id,
-    ].filter(Boolean);
+    const candidateIds = compact(
+      [chatId ? chat?.chat.models?.[0] : undefined, settings?.ui.models?.[0], ...(config?.defaultModels?.split(',') ?? [])].map(
+        (id) => id?.trim(),
+      ),
+    );
 
-    for (const candidateId of modelCandidatesIds) {
+    for (const candidateId of candidateIds) {
       const model = models.find((model) => model.id === candidateId);
 
       if (model) {
         return model.id;
       }
     }
+
+    // NOTE: The header asks for a model only when every candidate has left the list.
+    if (candidateIds.length > 0) {
+      return undefined;
+    }
+
+    // NOTE: A new chat with no models of its own starts on the first one the picker offers.
+    return (models.find(isModelSelectable) ?? models[0]).id;
   }, [isDataReceived, chatId, models, chat?.chat.models, settings?.ui?.models, config?.defaultModels]);
 
   useEffect(() => {
-    if (defaultModelId) {
-      setModelId(defaultModelId);
-    }
+    setModelId(defaultModelId);
   }, [defaultModelId]);
 
   return {

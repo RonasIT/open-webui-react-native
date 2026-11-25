@@ -140,8 +140,7 @@ export function Chat({ chatId, selectedModelId, isNewChat, resetToChatsList }: C
   const firstMessageGeneratedRef = useRef(false);
 
   // NOTE: Only the first fetch after mount hides the chat; foreground refetches update it in place.
-  const shouldHideContent =
-    isLoading || (isRefetching && !isFetchedAfterMount) || !isMessagesListLoaded || !selectedModelId;
+  const shouldHideContent = isLoading || (isRefetching && !isFetchedAfterMount) || !isMessagesListLoaded;
 
   useSubscribeToQueryCache({
     eventType: 'removed',
