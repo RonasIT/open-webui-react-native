@@ -11,7 +11,7 @@ import {
   InfiniteData,
   onlineManager,
 } from '@tanstack/react-query';
-import { AxiosError, HttpStatusCode } from 'axios';
+import { AxiosError, HttpStatusCode, isAxiosError } from 'axios';
 import { merge } from 'lodash-es';
 import { ApiErrorData } from '@open-webui-react-native/shared/data-access/api-client';
 import { getNextPageParam } from '@open-webui-react-native/shared/data-access/common';
@@ -41,7 +41,6 @@ import {
   invalidateArchivedChatListQuery,
   invalidateSearchChatsQuery,
   normalizeChatResponse,
-  OfflineChatMissingError,
   patchChatQueryData,
   resetChatStreamBuffer,
 } from './utils';
@@ -108,33 +107,94 @@ function useSearchInfinite(
   });
 }
 
-const defaultRetryDelayMs = (failureCount: number): number => Math.min(1000 * 2 ** failureCount, 30000);
+// NOTE: Keeps the query pending, so a chat with no local row stays on "Loading..." until the network returns.
+const waitUntilOnline = (signal: AbortSignal): Promise<void> =>
+  new Promise((resolve, reject) => {
+    let settled = false;
+
+    const finish = (settle: () => void): void => {
+      if (settled) {
+        return;
+      }
+
+      settled = true;
+      unsubscribe();
+      signal.removeEventListener('abort', onAbort);
+      settle();
+    };
+
+    const unsubscribe = onlineManager.subscribe((isOnline) => {
+      if (isOnline) {
+        finish(resolve);
+      }
+    });
+
+    const onAbort = (): void => {
+      const reason = signal.reason instanceof Error ? signal.reason : new Error('The chat request was cancelled');
+
+      finish(() => reject(reason));
+    };
+
+    if (signal.aborted) {
+      onAbort();
+
+      return;
+    }
+
+    if (onlineManager.isOnline()) {
+      finish(resolve);
+
+      return;
+    }
+
+    signal.addEventListener('abort', onAbort);
+  });
 
 export const getChatQueryOptions = (
   id: string,
   options?: Omit<UseQueryOptions<ChatResponse, AxiosError<ApiErrorData>>, 'queryKey' | 'queryFn'>,
 ): UseQueryOptions<ChatResponse, AxiosError<ApiErrorData>> => ({
   queryKey: chatQueriesKeys.get(id).queryKey,
-  queryFn: async (): Promise<ChatResponse> => {
-    // NOTE: offlineFirst runs this while the device is offline. A stored chat is shown; anything else pauses until the network returns.
+  queryFn: async ({ client, queryKey, signal }): Promise<ChatResponse> => {
     if (!onlineManager.isOnline()) {
+      // NOTE: A background refetch must not replace a newer in-memory chat with the older database row.
+      const cached = client.getQueryData<ChatResponse>(queryKey);
+
+      if (cached) {
+        return cached;
+      }
+
       const stored = await chatService.getLocalChat(id);
 
-      if (stored) {
+      if (!onlineManager.isOnline() && stored) {
         return stored;
       }
 
-      throw new OfflineChatMissingError();
+      if (!onlineManager.isOnline()) {
+        await waitUntilOnline(signal);
+      }
     }
 
-    return normalizeChatResponse(await chatService.get(id));
+    try {
+      return normalizeChatResponse(await chatService.get(id));
+    } catch (error) {
+      // NOTE: The server did not answer. The local row is the copy the MMKV cache used to keep.
+      if (!isAxiosError(error) || !error.response) {
+        const stored = await chatService.getLocalChat(id);
+
+        if (stored) {
+          return stored;
+        }
+      }
+
+      throw error;
+    }
   },
   staleTime: 5000,
   ...options,
-  networkMode: 'offlineFirst' as const,
-  refetchOnReconnect: 'always' as const,
-  retryDelay: (failureCount: number, error: Error): number =>
-    error instanceof OfflineChatMissingError ? 0 : defaultRetryDelayMs(failureCount),
+  // NOTE: `online` would never run the query while offline, so the local database would not be read.
+  networkMode: options?.networkMode ?? 'offlineFirst',
+  refetchOnReconnect: options?.refetchOnReconnect ?? 'always',
   meta: { ...options?.meta, persist: false },
 });
 

@@ -48,12 +48,12 @@ function createQueryPersister(): Persister {
       const parsed = JSON.parse(raw) as PersistedClient;
       const stored = withoutChatBodies(parsed);
 
-      // NOTE: First launch after the chat bodies leave this file: rewrite and trim, or the old size stays mapped into memory.
+      // NOTE: The file shrinks now. This launch still hydrates the old chat bodies, so a chat that is not in SQLite yet can open.
       if (stored !== parsed || persistStorage.getNumber(cacheLengthKey) === undefined) {
         writeClient(stored);
       }
 
-      return stored;
+      return parsed;
     },
     removeClient: async () => {
       persistStorage.delete(mmkvStorageID);

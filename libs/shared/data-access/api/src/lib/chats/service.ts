@@ -98,8 +98,15 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
   // NOTE: The same shape as `get`, from the local database. A shared chat and a reply still streaming are not stored.
   public async getLocalChat(id: string): Promise<ChatResponse | null> {
     const stored = await localDbService.getChat(id);
+    const body = stored?.chat;
 
-    if (!stored?.chat) {
+    if (!body || typeof body !== 'object' || !('history' in body)) {
+      return null;
+    }
+
+    const { history } = body;
+
+    if (!history || typeof history !== 'object' || !('messages' in history) || !history.messages) {
       return null;
     }
 
