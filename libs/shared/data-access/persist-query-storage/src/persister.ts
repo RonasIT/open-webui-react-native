@@ -13,7 +13,7 @@ function createQueryPersister(): Persister {
   let saveTimer: ReturnType<typeof setTimeout> | undefined;
   let wasSaveFailureReported = false;
 
-  // NOTE: A failed write (iOS under memory pressure) is skipped: the next cache change saves the whole cache again.
+  // NOTE: A failed write (iOS under memory pressure) is not retried on a timer; the failed state waits for the next save.
   // Reported once per launch, with the size, so a cache too large to write shows up without an event per attempt.
   const reportSaveFailure = (error: unknown, jsonLength?: number): void => {
     if (wasSaveFailureReported) {
@@ -21,6 +21,12 @@ function createQueryPersister(): Persister {
     }
 
     wasSaveFailureReported = true;
+
+    // NOTE: Sentry is off in development builds
+    if (__DEV__) {
+      console.warn(`[persist-query-storage] Saving the cache failed (${jsonLength} characters)`, error);
+    }
+
     Sentry.withScope((scope) => {
       scope.setTag('persist-query-storage.operation', 'save');
       scope.setContext('persistedCache', { jsonLength });
@@ -28,29 +34,36 @@ function createQueryPersister(): Persister {
     });
   };
 
-  const savePendingClient = (): void => {
+  const takePendingClient = (): PersistedClient | undefined => {
+    const client = pendingClient;
     clearTimeout(saveTimer);
     saveTimer = undefined;
+    pendingClient = undefined;
 
-    if (!pendingClient) {
+    return client;
+  };
+
+  const savePendingClient = (): void => {
+    const client = takePendingClient();
+
+    if (!client) {
       return;
     }
 
-    const client = pendingClient;
-    pendingClient = undefined;
     let json: string | undefined;
 
     try {
       json = JSON.stringify(client);
       persistStorage.set(mmkvStorageID, json);
     } catch (error) {
+      pendingClient ??= client;
       reportSaveFailure(error, json?.length);
     }
   };
 
   // NOTE: The app may be killed in the background before the timer fires, so the last change is saved right away
   AppState.addEventListener('change', (state) => {
-    if (state !== 'active') {
+    if (state === 'background') {
       savePendingClient();
     }
   });
@@ -69,9 +82,7 @@ function createQueryPersister(): Persister {
     },
     removeClient: async () => {
       // NOTE: A save scheduled before logout must not write the old cache back
-      clearTimeout(saveTimer);
-      saveTimer = undefined;
-      pendingClient = undefined;
+      takePendingClient();
       persistStorage.delete(mmkvStorageID);
     },
   } satisfies Persister;
