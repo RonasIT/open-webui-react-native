@@ -33,6 +33,7 @@
       "TEXT_SOMETHING_WENT_WRONG": "Algo salió mal",
       "TEXT_YOUR_SESSION_HAS_EXPIRED": "Tu sesión ha caducado. Inicia sesión de nuevo",
       "TEXT_FORBIDDEN_ERROR": "No tienes acceso a esta acción",
+      "TEXT_PROXY_REJECTION": "Un proxy delante del servidor ha bloqueado este dispositivo. Comprueba tu red o VPN, o consulta al administrador del servidor",
       "TEXT_INTERNAL_SERVER_ERROR": "Error al cargar los datos",
       "TEXT_NOT_FOUND_ERROR": "Datos no encontrados"
     },

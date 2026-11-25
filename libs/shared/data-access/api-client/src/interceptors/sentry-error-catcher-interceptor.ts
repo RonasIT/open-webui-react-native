@@ -1,5 +1,6 @@
 import { AxiosError, HttpStatusCode, isAxiosError } from 'axios';
 import { captureApiError } from '../utils/capture-api-error';
+import { isProxyRejection } from '../utils/is-proxy-rejection';
 
 // Only statuses that signal a broken API contract: no-response errors, 401 and proxy 5xx are noise that
 // drains the Sentry quota and buries real breakages in the "API error spike" alert.
@@ -32,6 +33,11 @@ const getSkipSentryReport = (error: unknown): boolean => {
 const getIsReportableError = (error: unknown): boolean => {
   if (!isAxiosError(error)) {
     return true;
+  }
+
+  // NOTE: A proxy that does not let the device in is not a broken API contract: nothing to fix in the app.
+  if (isProxyRejection(error)) {
+    return false;
   }
 
   const status = (error as AxiosError).response?.status;

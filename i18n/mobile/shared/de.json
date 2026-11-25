@@ -33,6 +33,7 @@
       "TEXT_SOMETHING_WENT_WRONG": "Etwas ist schiefgelaufen",
       "TEXT_YOUR_SESSION_HAS_EXPIRED": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an",
       "TEXT_FORBIDDEN_ERROR": "Sie haben keinen Zugriff auf diese Aktion",
+      "TEXT_PROXY_REJECTION": "Ein Proxy vor dem Server hat dieses Gerät blockiert. Prüfen Sie Ihr Netzwerk oder VPN oder wenden Sie sich an den Administrator des Servers",
       "TEXT_INTERNAL_SERVER_ERROR": "Fehler beim Laden der Daten",
       "TEXT_NOT_FOUND_ERROR": "Daten nicht gefunden"
     },

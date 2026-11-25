@@ -16,6 +16,7 @@ import {
   unauthorizedInterceptor,
 } from './interceptors';
 import { ApiErrorData } from './types';
+import { showProxyRejectionNotice } from './utils/proxy-rejection-notice';
 
 const apiServiceCache = new Map<string, ApiService>();
 
@@ -67,6 +68,7 @@ const setupInterceptors = (service: ApiService, apiUrl: string): void => {
           onError: (error: string) => {
             ToastService.showError(error);
           },
+          onProxyRejection: showProxyRejectionNotice,
         }),
       ],
     ],

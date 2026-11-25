@@ -33,6 +33,7 @@
       "TEXT_SOMETHING_WENT_WRONG": "Ceva nu a mers bine",
       "TEXT_YOUR_SESSION_HAS_EXPIRED": "Sesiunea ta a expirat. Te rugăm să te conectezi din nou",
       "TEXT_FORBIDDEN_ERROR": "Nu ai acces la această acțiune",
+      "TEXT_PROXY_REJECTION": "Un proxy din fața serverului a blocat acest dispozitiv. Verifică rețeaua sau VPN-ul ori contactează administratorul serverului",
       "TEXT_INTERNAL_SERVER_ERROR": "Eroare la încărcarea datelor",
       "TEXT_NOT_FOUND_ERROR": "Datele nu au fost găsite"
     },
