@@ -107,55 +107,12 @@ function useSearchInfinite(
   });
 }
 
-// NOTE: Keeps the query pending, so a chat with no local row stays on "Loading..." until the network returns.
-const waitUntilOnline = (signal: AbortSignal): Promise<void> =>
-  new Promise((resolve, reject) => {
-    let settled = false;
-
-    const finish = (settle: () => void): void => {
-      if (settled) {
-        return;
-      }
-
-      settled = true;
-      unsubscribe();
-      signal.removeEventListener('abort', onAbort);
-      settle();
-    };
-
-    const unsubscribe = onlineManager.subscribe((isOnline) => {
-      if (isOnline) {
-        finish(resolve);
-      }
-    });
-
-    const onAbort = (): void => {
-      const reason = signal.reason instanceof Error ? signal.reason : new Error('The chat request was cancelled');
-
-      finish(() => reject(reason));
-    };
-
-    if (signal.aborted) {
-      onAbort();
-
-      return;
-    }
-
-    if (onlineManager.isOnline()) {
-      finish(resolve);
-
-      return;
-    }
-
-    signal.addEventListener('abort', onAbort);
-  });
-
 export const getChatQueryOptions = (
   id: string,
   options?: Omit<UseQueryOptions<ChatResponse, AxiosError<ApiErrorData>>, 'queryKey' | 'queryFn'>,
 ): UseQueryOptions<ChatResponse, AxiosError<ApiErrorData>> => ({
   queryKey: chatQueriesKeys.get(id).queryKey,
-  queryFn: async ({ client, queryKey, signal }): Promise<ChatResponse> => {
+  queryFn: async ({ client, queryKey }): Promise<ChatResponse> => {
     if (!onlineManager.isOnline()) {
       // NOTE: A background refetch must not replace a newer in-memory chat with the older database row.
       const cached = client.getQueryData<ChatResponse>(queryKey);
@@ -166,12 +123,8 @@ export const getChatQueryOptions = (
 
       const stored = await chatService.getLocalChat(id);
 
-      if (!onlineManager.isOnline() && stored) {
+      if (stored) {
         return stored;
-      }
-
-      if (!onlineManager.isOnline()) {
-        await waitUntilOnline(signal);
       }
     }
 
