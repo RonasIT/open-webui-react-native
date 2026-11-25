@@ -4,6 +4,7 @@ import { Chat, ChatResponse } from '../models';
 import { buildMessagesHistory } from './build-messages-history';
 import { createMessagePair } from './create-message-pair';
 import { createMessagesList } from './create-messages-list';
+import { getCompletionFiles } from './get-completion-files';
 
 export interface PrepareSendMessagePayloadArgs {
   prompt: string;
@@ -37,13 +38,15 @@ export function prepareSendMessagePayload({
   };
 
   const history = buildMessagesHistory(updatedMessages, userMessage, assistantMessage, assistantMessageId);
+  const messages = createMessagesList(history, assistantMessageId);
 
   return {
     id: chatData.id,
     chat: new Chat({
       history,
-      messages: createMessagesList(history, assistantMessageId),
+      messages,
       models: [model],
+      files: getCompletionFiles(messages),
     }),
   };
 }
