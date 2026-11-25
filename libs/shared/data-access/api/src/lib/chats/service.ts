@@ -1,7 +1,7 @@
 import { createEntityInstance, EntityPartial } from '@ronas-it/rtkq-entity-api';
+import { onlineManager } from '@tanstack/react-query';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { mapValues } from 'lodash-es';
-import { onlineManager } from '@tanstack/react-query';
 import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
 import { EntityPromiseService } from '@open-webui-react-native/shared/data-access/base-entity';
 import { Role } from '@open-webui-react-native/shared/data-access/common';
@@ -102,24 +102,6 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
     const response = await this.fetchChat(id);
 
     return createEntityInstance<ChatResponse>(ChatResponse, response);
-  }
-
-  // NOTE: The same shape as `get`, from the local database. A shared chat and a reply still streaming are not stored.
-  private async getLocalChat(id: string): Promise<ChatResponse | null> {
-    const stored = await localDbService.getChat(id);
-    const body = stored?.chat;
-
-    if (!body || typeof body !== 'object' || !('history' in body)) {
-      return null;
-    }
-
-    const { history } = body;
-
-    if (!history || typeof history !== 'object' || !('messages' in history) || !history.messages) {
-      return null;
-    }
-
-    return normalizeChatResponse(createEntityInstance(ChatResponse, stored));
   }
 
   // NOTE: Raw server JSON; the background sync calls it directly, so the local DB rules stay in this service.
@@ -372,6 +354,24 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
     const generation = localDbService.getGeneration();
     await getApiService().delete<void>(`${chatServiceConfig.versionedRoute}/`);
     void localDbService.deleteAllChats(generation);
+  }
+
+  // NOTE: The same shape as `get`, from the local database. A shared chat and a reply still streaming are not stored.
+  private async getLocalChat(id: string): Promise<ChatResponse | null> {
+    const stored = await localDbService.getChat(id);
+    const body = stored?.chat;
+
+    if (!body || typeof body !== 'object' || !('history' in body)) {
+      return null;
+    }
+
+    const { history } = body;
+
+    if (!history || typeof history !== 'object' || !('messages' in history) || !history.messages) {
+      return null;
+    }
+
+    return normalizeChatResponse(createEntityInstance(ChatResponse, stored));
   }
 }
 
