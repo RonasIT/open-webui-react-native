@@ -82,6 +82,12 @@
       "VALIDATION": {
         "TEXT_REQUIRED_RECOVERY_TOKEN": "Введите токен восстановления"
       }
+    },
+    "ACCESS_PASS_EXPIRED_SHEET": {
+      "TEXT_TITLE": "Сессия Cloudflare Access истекла",
+      "TEXT_DESCRIPTION": "Снова войдите в Cloudflare Access, чтобы продолжить. Вход в Open WebUI сохранится.",
+      "BUTTON_SIGN_IN": "Войти",
+      "BUTTON_SIGN_OUT": "Выйти"
     }
   }
 }

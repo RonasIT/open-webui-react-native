@@ -82,6 +82,12 @@
       "VALIDATION": {
         "TEXT_REQUIRED_RECOVERY_TOKEN": "Bitte gib das Wiederherstellungstoken ein"
       }
+    },
+    "ACCESS_PASS_EXPIRED_SHEET": {
+      "TEXT_TITLE": "Cloudflare-Access-Sitzung abgelaufen",
+      "TEXT_DESCRIPTION": "Melde dich erneut bei Cloudflare Access an, um fortzufahren. Du bleibst bei Open WebUI angemeldet.",
+      "BUTTON_SIGN_IN": "Anmelden",
+      "BUTTON_SIGN_OUT": "Abmelden"
     }
   }
 }

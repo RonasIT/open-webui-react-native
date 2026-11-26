@@ -82,6 +82,12 @@
       "VALIDATION": {
         "TEXT_REQUIRED_RECOVERY_TOKEN": "Introdu tokenul de recuperare"
       }
+    },
+    "ACCESS_PASS_EXPIRED_SHEET": {
+      "TEXT_TITLE": "Sesiunea Cloudflare Access a expirat",
+      "TEXT_DESCRIPTION": "Conectează-te din nou la Cloudflare Access pentru a continua. Rămâi conectat la Open WebUI.",
+      "BUTTON_SIGN_IN": "Conectare",
+      "BUTTON_SIGN_OUT": "Deconectare"
     }
   }
 }

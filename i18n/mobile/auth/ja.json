@@ -82,6 +82,12 @@
       "VALIDATION": {
         "TEXT_REQUIRED_RECOVERY_TOKEN": "リカバリートークンを入力してください"
       }
+    },
+    "ACCESS_PASS_EXPIRED_SHEET": {
+      "TEXT_TITLE": "Cloudflare Access のセッションが期限切れです",
+      "TEXT_DESCRIPTION": "続けるには Cloudflare Access に再度サインインしてください。Open WebUI へのサインインは維持されます。",
+      "BUTTON_SIGN_IN": "サインイン",
+      "BUTTON_SIGN_OUT": "サインアウト"
     }
   }
 }

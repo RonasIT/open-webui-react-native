@@ -10,6 +10,8 @@ export interface AccessPass {
 interface AuthState {
   isAuthenticated: boolean;
   isUnauthorized: boolean;
+  // NOTE: Cloudflare Access stopped taking the pass while the Open WebUI session is kept.
+  isAccessPassExpired: boolean;
   // NOTE: The Cloudflare Access pass (`CF_Authorization`) with the server it was issued for. It is saved as soon as
   // the sign-in WebView hands it over, even before the server is saved, and goes only to that server's origin.
   accessPass: AccessPass | null;
@@ -32,11 +34,13 @@ const readSavedAccessPass = (): AccessPass | null => {
 export const authState$: Observable<AuthState> = observable<AuthState>({
   isAuthenticated: false,
   isUnauthorized: false,
+  isAccessPassExpired: false,
   accessPass: readSavedAccessPass(),
   logout: () => {
     appStorageService.token.set(null);
     authState$.isAuthenticated.set(false);
     authState$.isUnauthorized.set(false);
+    authState$.isAccessPassExpired.set(false);
   },
   signIn: (token) => {
     appStorageService.token.set(token);

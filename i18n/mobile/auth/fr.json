@@ -82,6 +82,12 @@
       "VALIDATION": {
         "TEXT_REQUIRED_RECOVERY_TOKEN": "Veuillez saisir le jeton de récupération"
       }
+    },
+    "ACCESS_PASS_EXPIRED_SHEET": {
+      "TEXT_TITLE": "Session Cloudflare Access expirée",
+      "TEXT_DESCRIPTION": "Reconnectez-vous à Cloudflare Access pour continuer. Vous restez connecté à Open WebUI.",
+      "BUTTON_SIGN_IN": "Se connecter",
+      "BUTTON_SIGN_OUT": "Se déconnecter"
     }
   }
 }

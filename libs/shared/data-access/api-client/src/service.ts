@@ -16,18 +16,23 @@ import {
   unauthorizedInterceptor,
 } from './interceptors';
 import { ApiErrorData } from './types';
+import { isCloudflareAccessError } from './utils/is-cloudflare-access-error';
 import { showProxyRejectionNotice } from './utils/proxy-rejection-notice';
 
 const apiServiceCache = new Map<string, ApiService>();
 
 let sessionCheck: Promise<boolean> | null = null;
 
-// NOTE: Concurrent 401s share one profile request. A 401 from it logs out on its own; on a network error the session is kept.
+// NOTE: Concurrent 401s share one profile request. A 401 from it logs out on its own; on a network error or an
+// expired Access pass the session is kept.
 const checkSession = (service: ApiService): Promise<boolean> => {
   sessionCheck ??= service
     .get<{ role?: UserRole }>('v1/auths/', { skipToast: true })
     .then(({ role }) => role !== UserRole.PENDING)
-    .catch((error: AxiosError) => error.response?.status !== HttpStatusCode.Unauthorized)
+    .catch(
+      (error: AxiosError) =>
+        isCloudflareAccessError(error) || error.response?.status !== HttpStatusCode.Unauthorized,
+    )
     .finally(() => {
       sessionCheck = null;
     });
@@ -56,6 +61,7 @@ const setupInterceptors = (service: ApiService, apiUrl: string): void => {
           hasToken: () => Boolean(appStorageService.token.get()),
           checkSession: () => checkSession(service),
           onSessionExpired,
+          onAccessPassExpired: () => authState$.isAccessPassExpired.set(true),
           onError: ({ response }: AxiosError<ApiErrorData>) => {
             ToastService.showError(getErrorMessage(response?.data, response?.status));
           },

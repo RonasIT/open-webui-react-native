@@ -25,6 +25,9 @@
     "baseUrl": ".",
     "paths": {
       "@expo/ui": ["node_modules/@expo/ui/build/universal/index.d.ts"],
+      "@open-webui-react-native/mobile/auth/features/access-pass-expired-sheet": [
+        "libs/mobile/auth/features/access-pass-expired-sheet/src/index.ts"
+      ],
       "@open-webui-react-native/mobile/auth/features/cloudflare-access-web-view": [
         "libs/mobile/auth/features/cloudflare-access-web-view/src/index.ts"
       ],

@@ -1,7 +1,8 @@
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
+import { isEqual } from 'lodash-es';
 import { io, Socket } from 'socket.io-client';
 
-import { getRequestHeaders } from '@open-webui-react-native/shared/data-access/api-client';
+import { getApiService, getRequestHeaders } from '@open-webui-react-native/shared/data-access/api-client';
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { webSocketConfig } from './config';
@@ -17,26 +18,23 @@ export class SocketService {
   private _listeners: Record<string, Array<SocketEventListener>> = {};
   private _socketSessionId = '';
   private _heartbeatTimer: ReturnType<typeof setInterval> | null = null;
+  private _isSessionChecked = false;
 
   public init(token: string, onConnect: () => void, onDisconnect: () => void): void {
     if (this._socket) return;
-    const apiUrl = getApiUrl();
 
     this._socket = io(getApiUrl(), {
       path: webSocketConfig.path,
       transports: webSocketConfig.transports,
       tryAllTransports: webSocketConfig.tryAllTransports,
       auth: { token },
-      // NOTE: Workaround required for the socket to connect to the backend, which rejects WS connections without this header.
-      extraHeaders: {
-        Origin: apiUrl,
-        ...getRequestHeaders(apiUrl),
-      },
+      extraHeaders: this.getHeaders(),
     });
 
     this._socket.on(SocketState.CONNECT, () => {
       if (this._socket?.id) {
         this._socketSessionId = this._socket.id;
+        this._isSessionChecked = false;
         this.startHeartbeat();
         onConnect();
       }
@@ -50,6 +48,7 @@ export class SocketService {
 
     this._socket.on(SocketState.CONNECT_ERROR, () => {
       ToastService.showError(i18n.t('SHARED.SOCKET_SERVICE.TEXT_CONNECTION_ERROR'));
+      this.checkSession();
     });
 
     this._socket.on(SocketState.RECONNECT, () => {
@@ -63,12 +62,25 @@ export class SocketService {
     });
   }
 
+  // NOTE: The same socket keeps its event listeners; only the headers, fixed at connect time, are taken again.
+  public reconnectWithNewHeaders(): void {
+    const headers = this.getHeaders();
+
+    if (!this._socket || isEqual(this._socket.io.opts.extraHeaders, headers)) {
+      return;
+    }
+
+    this._socket.io.opts.extraHeaders = headers;
+    this._socket.disconnect().connect();
+  }
+
   public disconnect(): void {
     this.stopHeartbeat();
     this._socket?.disconnect();
     this._socket = null;
     this._socketSessionId = '';
     this._listeners = {};
+    this._isSessionChecked = false;
   }
 
   public subscribeToEvent(event: WebSocketEventName, listener: SocketEventListener): void {
@@ -94,6 +106,26 @@ export class SocketService {
 
   public get socketSessionId(): string {
     return this._socketSessionId;
+  }
+
+  private getHeaders(): Record<string, string> {
+    const apiUrl = getApiUrl();
+
+    // NOTE: Workaround required for the socket to connect to the backend, which rejects WS connections without this header.
+    return { Origin: apiUrl, ...getRequestHeaders(apiUrl) };
+  }
+
+  // NOTE: Only REST tells why the server refused: an expired Access pass or Open WebUI session goes through the
+  // api-client's 401 handling. One request per run of failed connects, since the socket retries on its own.
+  private checkSession(): void {
+    if (this._isSessionChecked) {
+      return;
+    }
+
+    this._isSessionChecked = true;
+    getApiService()
+      .get('v1/auths/', { skipToast: true })
+      .catch(() => undefined);
   }
 
   private startHeartbeat(): void {
