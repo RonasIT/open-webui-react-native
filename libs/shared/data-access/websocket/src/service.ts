@@ -25,6 +25,7 @@ export class SocketService {
     this._socket = io(getApiUrl(), {
       path: webSocketConfig.path,
       transports: webSocketConfig.transports,
+      tryAllTransports: webSocketConfig.tryAllTransports,
       auth: { token },
       // NOTE: Workaround required for the socket to connect to the backend, which rejects WS connections without this header.
       extraHeaders: {
