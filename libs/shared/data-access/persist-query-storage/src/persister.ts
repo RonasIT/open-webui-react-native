@@ -7,18 +7,16 @@ import { persistStorage } from './storage';
 // https://app.clickup.com/t/24336023/PRD-1631?comment=90150161124908 before using
 function createQueryPersister(): Persister {
   const { mmkvStorageID } = persistStorageConfig;
-  // NOTE: set() leaves the old file size. trim() shrinks it. A streaming reply is not in this JSON, so the same length does not trim again.
-  let trimmedLength: number | undefined;
+  // NOTE: set() leaves the old file size. One trim after launch shrinks it. Later saves, including a streaming reply, do not.
+  let hasTrimmed = false;
 
   return {
     persistClient: async (persistedClient: PersistedClient) => {
-      const json = JSON.stringify(persistedClient);
+      persistStorage.set(mmkvStorageID, JSON.stringify(persistedClient));
 
-      persistStorage.set(mmkvStorageID, json);
-
-      if (trimmedLength === undefined || json.length > trimmedLength * 2 || json.length * 2 < trimmedLength) {
+      if (!hasTrimmed) {
         persistStorage.trim();
-        trimmedLength = json.length;
+        hasTrimmed = true;
       }
     },
     restoreClient: async (): Promise<PersistedClient | undefined> => {
