@@ -5,7 +5,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Fragment, ReactElement, useEffect, useRef, useState } from 'react';
 import { CloudflareAccessWebView } from '@open-webui-react-native/mobile/auth/features/cloudflare-access-web-view';
 import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-logout';
-import { AppBottomSheet, AppButton, AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { AppBottomSheet, AppButton, AppText, Icon, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { useBottomInset } from '@open-webui-react-native/mobile/shared/utils/use-bottom-inset';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { getAccessPassEmail } from './utils/get-access-pass-email';
@@ -14,6 +15,7 @@ export function AccessPassExpiredSheet(): ReactElement {
   const translate = useTranslation('AUTH.ACCESS_PASS_EXPIRED_SHEET');
   const queryClient = useQueryClient();
   const { logout } = useLogout();
+  const bottomInset = useBottomInset();
 
   const isAccessPassExpired = useSelector(authState$.isAccessPassExpired);
   const sheetRef = useRef<BottomSheetModal>(null);
@@ -63,13 +65,25 @@ export function AccessPassExpiredSheet(): ReactElement {
       <AppBottomSheet
         ref={sheetRef}
         isDismissible={false}
+        isScrollable
+        snapPoints={['100%']}
         content={
-          <View className='gap-16'>
-            <AppText className='text-center font-medium'>{translate('TEXT_TITLE')}</AppText>
-            <AppText className='text-sm-sm sm:text-sm text-text-secondary text-center'>
-              {translate('TEXT_DESCRIPTION')}
-            </AppText>
-            <AppButton text={translate('BUTTON_SIGN_IN')} onPress={() => setIsAccessWebViewVisible(true)} />
+          <View className='flex-1 gap-16 py-16' style={{ paddingBottom: bottomInset }}>
+            <View className='flex-1 items-center justify-center gap-32 py-40'>
+              <Icon
+                name='sadFace'
+                width={120}
+                height={120}
+                className='color-text-tertiary' />
+              <View className='w-full gap-8'>
+                <AppText className='text-h3-sm sm:text-h3 font-medium text-center'>{translate('TEXT_TITLE')}</AppText>
+                <AppText className='text-md-sm sm:text-md text-center'>{translate('TEXT_DESCRIPTION')}</AppText>
+              </View>
+            </View>
+            <AppButton
+              text={translate('BUTTON_SIGN_IN')}
+              variant='outline'
+              onPress={() => setIsAccessWebViewVisible(true)} />
             <AppButton
               text={translate('BUTTON_SIGN_OUT')}
               variant='outline'
