@@ -26,18 +26,21 @@ export function AccessPassExpiredSheet(): ReactElement {
     logout({ shouldClearAccessPass: true });
   };
 
-  // NOTE: A pass issued to another person must not continue this person's Open WebUI session.
+  // NOTE: A pass issued to another person must not continue this person's Open WebUI session. It is saved first,
+  // so the sign-out request passes Access and ends the session on the server too.
   const handleAccessPass = (value: string): void => {
-    const previousAccessPass = authState$.accessPass.get();
+    const previousEmail = getAccessPassEmail(authState$.accessPass.value.get() ?? '');
+    const isAnotherPerson = !!previousEmail && previousEmail !== getAccessPassEmail(value);
 
-    if (previousAccessPass && getAccessPassEmail(previousAccessPass.value) !== getAccessPassEmail(value)) {
+    setIsAccessWebViewVisible(false);
+    authState$.setAccessPass({ serverUrl, value });
+
+    if (isAnotherPerson) {
       handleSignOutPress();
 
       return;
     }
 
-    setIsAccessWebViewVisible(false);
-    authState$.setAccessPass({ serverUrl, value });
     authState$.isAccessPassExpired.set(false);
     queryClient.invalidateQueries();
   };

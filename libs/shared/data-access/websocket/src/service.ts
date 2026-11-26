@@ -62,7 +62,8 @@ export class SocketService {
     });
   }
 
-  // NOTE: The same socket keeps its event listeners; only the headers, fixed at connect time, are taken again.
+  // NOTE: Headers are taken at connect time. A live connection keeps streaming as it is and takes them on its next
+  // connect; a failing one connects again at once. The same socket keeps its event listeners.
   public reconnectWithNewHeaders(): void {
     const headers = this.getHeaders();
 
@@ -71,7 +72,11 @@ export class SocketService {
     }
 
     this._socket.io.opts.extraHeaders = headers;
-    this._socket.disconnect().connect();
+    this._isSessionChecked = false;
+
+    if (!this._socket.connected) {
+      this._socket.disconnect().connect();
+    }
   }
 
   public disconnect(): void {
