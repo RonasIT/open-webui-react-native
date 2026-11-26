@@ -5,7 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Fragment, ReactElement, useEffect, useRef, useState } from 'react';
 import { CloudflareAccessWebView } from '@open-webui-react-native/mobile/auth/features/cloudflare-access-web-view';
 import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-logout';
-import { AppBottomSheet, AppButton, AppText, SheetHeader, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { AppBottomSheet, AppButton, AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { getAccessPassEmail } from './utils/get-access-pass-email';
@@ -17,6 +17,7 @@ export function AccessPassExpiredSheet(): ReactElement {
 
   const isAccessPassExpired = useSelector(authState$.isAccessPassExpired);
   const sheetRef = useRef<BottomSheetModal>(null);
+  const isPresented = useRef(false);
   const [isAccessWebViewVisible, setIsAccessWebViewVisible] = useState(false);
 
   const serverUrl = getApiUrl();
@@ -46,11 +47,14 @@ export function AccessPassExpiredSheet(): ReactElement {
   };
 
   // NOTE: The sheet follows the flag the api-client raises: concurrent 401s raise it once, any sign-out lowers it.
+  // NOTE: Dismissing a modal that was never presented makes it skip the next present, so only a shown sheet is dismissed.
   useEffect(() => {
     if (isAccessPassExpired) {
       sheetRef.current?.present();
-    } else {
+      isPresented.current = true;
+    } else if (isPresented.current) {
       sheetRef.current?.dismiss();
+      isPresented.current = false;
     }
   }, [isAccessPassExpired]);
 
@@ -61,7 +65,7 @@ export function AccessPassExpiredSheet(): ReactElement {
         isDismissible={false}
         content={
           <View className='gap-16'>
-            <SheetHeader title={translate('TEXT_TITLE')} />
+            <AppText className='text-center font-medium'>{translate('TEXT_TITLE')}</AppText>
             <AppText className='text-sm-sm sm:text-sm text-text-secondary text-center'>
               {translate('TEXT_DESCRIPTION')}
             </AppText>
