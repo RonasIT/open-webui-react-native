@@ -109,11 +109,15 @@ function useSearchInfinite(
 export const getChatQueryOptions = (
   id: string,
   options?: Omit<UseQueryOptions<ChatResponse, AxiosError<ApiErrorData>>, 'queryKey' | 'queryFn'>,
-) => ({
+): UseQueryOptions<ChatResponse, AxiosError<ApiErrorData>> => ({
   queryKey: chatQueriesKeys.get(id).queryKey,
   queryFn: async (): Promise<ChatResponse> => normalizeChatResponse(await chatService.get(id)),
   staleTime: 5000,
   ...options,
+  // NOTE: `online` would never run the query while offline, so the local database would not be read.
+  networkMode: options?.networkMode ?? 'offlineFirst',
+  refetchOnReconnect: options?.refetchOnReconnect ?? 'always',
+  meta: { ...options?.meta, persist: false },
 });
 
 function useGet(

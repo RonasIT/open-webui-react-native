@@ -6,6 +6,7 @@ import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-l
 import { colors, fonts, useColorScheme } from '@open-webui-react-native/mobile/shared/ui/styles';
 import { StatusBar, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
 import { navigationConfig } from '@open-webui-react-native/mobile/shared/utils/navigation';
+import { isChatByIdQuery } from '@open-webui-react-native/shared/data-access/api';
 import { beforeBreadcrumb } from '@open-webui-react-native/shared/data-access/api-client';
 import { appState$ } from '@open-webui-react-native/shared/data-access/app-state';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
@@ -213,7 +214,8 @@ function RootLayout(): ReactElement | null {
               persister: queryPersister,
               maxAge: persistStorageConfig.maxAge,
               dehydrateOptions: {
-                shouldDehydrateQuery: (query) => query.meta?.persist !== false,
+                // NOTE: Restored chat queries still carry the old meta, so the key drops them on the next save.
+                shouldDehydrateQuery: (query) => query.meta?.persist !== false && !isChatByIdQuery(query.queryKey),
               },
             }}>
             <ToastProvider>

@@ -1,4 +1,5 @@
 import { createEntityInstance, EntityPartial } from '@ronas-it/rtkq-entity-api';
+import { onlineManager } from '@tanstack/react-query';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { mapValues } from 'lodash-es';
 import { getApiService } from '@open-webui-react-native/shared/data-access/api-client';
@@ -29,6 +30,7 @@ import {
   ShareChatResponse,
 } from './models';
 import { BackgroundRequestOptions, getBackgroundRequestConfig } from './utils/background-request';
+import { normalizeChatResponse } from './utils/normalize-chat-response';
 import { prepareOutputForSave } from './utils/prepare-output-for-save';
 
 // NOTE: Converts on a copy — the query cache must keep the parsed `output` shape.
@@ -89,6 +91,14 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
   }
 
   public async get(id: string): Promise<ChatResponse> {
+    if (!onlineManager.isOnline()) {
+      const stored = await this.getLocalChat(id);
+
+      if (stored) {
+        return stored;
+      }
+    }
+
     const response = await this.fetchChat(id);
 
     return createEntityInstance<ChatResponse>(ChatResponse, response);
@@ -344,6 +354,24 @@ export class ChatService extends EntityPromiseService<ChatResponse> {
     const generation = localDbService.getGeneration();
     await getApiService().delete<void>(`${chatServiceConfig.versionedRoute}/`);
     void localDbService.deleteAllChats(generation);
+  }
+
+  // NOTE: The same shape as `get`, from the local database. A shared chat and a reply still streaming are not stored.
+  private async getLocalChat(id: string): Promise<ChatResponse | null> {
+    const stored = await localDbService.getChat(id);
+    const body = stored?.chat;
+
+    if (!body || typeof body !== 'object' || !('history' in body)) {
+      return null;
+    }
+
+    const { history } = body;
+
+    if (!history || typeof history !== 'object' || !('messages' in history) || !history.messages) {
+      return null;
+    }
+
+    return normalizeChatResponse(createEntityInstance(ChatResponse, stored));
   }
 }
 
