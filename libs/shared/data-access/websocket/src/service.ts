@@ -2,7 +2,7 @@ import { i18n } from '@ronas-it/react-native-common-modules/i18n';
 import { isEqual } from 'lodash-es';
 import { io, Socket } from 'socket.io-client';
 
-import { getApiService, getRequestHeaders } from '@open-webui-react-native/shared/data-access/api-client';
+import { checkSession, getApiService, getRequestHeaders } from '@open-webui-react-native/shared/data-access/api-client';
 import { getApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 import { webSocketConfig } from './config';
@@ -48,7 +48,7 @@ export class SocketService {
 
     this._socket.on(SocketState.CONNECT_ERROR, () => {
       ToastService.showError(i18n.t('SHARED.SOCKET_SERVICE.TEXT_CONNECTION_ERROR'));
-      this.checkSession();
+      this.checkSessionOnce();
     });
 
     this._socket.on(SocketState.RECONNECT, () => {
@@ -117,15 +117,13 @@ export class SocketService {
 
   // NOTE: Only REST tells why the server refused: an expired Access pass or Open WebUI session goes through the
   // api-client's 401 handling. One request per run of failed connects, since the socket retries on its own.
-  private checkSession(): void {
+  private checkSessionOnce(): void {
     if (this._isSessionChecked) {
       return;
     }
 
     this._isSessionChecked = true;
-    getApiService()
-      .get('v1/auths/', { skipToast: true })
-      .catch(() => undefined);
+    void checkSession(getApiService());
   }
 
   private startHeartbeat(): void {

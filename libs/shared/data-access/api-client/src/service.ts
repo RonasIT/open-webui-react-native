@@ -25,7 +25,7 @@ let sessionCheck: Promise<boolean> | null = null;
 
 // NOTE: Concurrent 401s share one profile request. A 401 from it logs out on its own; on a network error or an
 // expired Access pass the session is kept.
-const checkSession = (service: ApiService): Promise<boolean> => {
+export const checkSession = (service: ApiService): Promise<boolean> => {
   sessionCheck ??= service
     .get<{ role?: UserRole }>('v1/auths/', { skipToast: true })
     .then(({ role }) => role !== UserRole.PENDING)
