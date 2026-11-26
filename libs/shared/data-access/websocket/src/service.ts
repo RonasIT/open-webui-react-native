@@ -128,6 +128,7 @@ export class SocketService {
     }
 
     this._isSessionChecked = true;
+    // NOTE: The result is not needed: the api-client interceptors act on the response.
     void checkSession(getApiService());
   }
 
