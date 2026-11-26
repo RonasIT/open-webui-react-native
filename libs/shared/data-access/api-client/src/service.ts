@@ -1,6 +1,6 @@
 import { ApiService } from '@ronas-it/axios-api-client';
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
-import { AxiosError, HttpStatusCode } from 'axios';
+import { AxiosError, AxiosHeaders, HttpStatusCode } from 'axios';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { UserRole } from '@open-webui-react-native/shared/data-access/common';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
@@ -49,6 +49,18 @@ const onSessionExpired = (): void => {
   ToastService.showError(i18n.t('SHARED.API_ERRORS.TEXT_YOUR_SESSION_HAS_EXPIRED'));
 };
 
+// NOTE: A request sent with an older pass may come back after the person passed Access again: it must not reopen the sheet.
+const onAccessPassExpired = (error: AxiosError): void => {
+  const accessPass = authState$.accessPass.get();
+  const sentCookie = AxiosHeaders.from(error.config?.headers).get('Cookie');
+
+  if (accessPass && sentCookie !== `CF_Authorization=${accessPass.value}`) {
+    return;
+  }
+
+  authState$.isAccessPassExpired.set(true);
+};
+
 const setupInterceptors = (service: ApiService, apiUrl: string): void => {
   service.useInterceptors({
     request: [[requestHeadersInterceptor(apiUrl)]],
@@ -61,7 +73,7 @@ const setupInterceptors = (service: ApiService, apiUrl: string): void => {
           hasToken: () => Boolean(appStorageService.token.get()),
           checkSession: () => checkSession(service),
           onSessionExpired,
-          onAccessPassExpired: () => authState$.isAccessPassExpired.set(true),
+          onAccessPassExpired,
           onError: ({ response }: AxiosError<ApiErrorData>) => {
             ToastService.showError(getErrorMessage(response?.data, response?.status));
           },

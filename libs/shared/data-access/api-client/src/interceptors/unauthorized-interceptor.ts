@@ -9,7 +9,7 @@ type UnauthorizedInterceptorOptions = {
   // Resolves to false only when the session itself is invalid.
   checkSession: () => Promise<boolean>;
   onSessionExpired: () => void;
-  onAccessPassExpired: () => void;
+  onAccessPassExpired: (error: AxiosError<ApiErrorData>) => void;
   onError: (error: AxiosError<ApiErrorData>) => void;
 };
 
@@ -20,7 +20,7 @@ export const unauthorizedInterceptor =
   async (error: AxiosError<ApiErrorData>): Promise<never> => {
     // NOTE: Cloudflare Access, not Open WebUI, answered: the Open WebUI session is kept and only the pass is renewed.
     if (isCloudflareAccessError(error) && hasToken()) {
-      onAccessPassExpired();
+      onAccessPassExpired(error);
 
       return Promise.reject(error);
     }
