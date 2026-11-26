@@ -7,12 +7,17 @@ import { persistStorage } from './storage';
 // https://app.clickup.com/t/24336023/PRD-1631?comment=90150161124908 before using
 function createQueryPersister(): Persister {
   const { mmkvStorageID } = persistStorageConfig;
+  // NOTE: set() keeps the old file size. The first save of this launch already omits chat bodies, so one trim shrinks the file. A later save, including a streaming reply, does not.
+  let hasTrimmed = false;
 
   return {
     persistClient: async (persistedClient: PersistedClient) => {
       persistStorage.set(mmkvStorageID, JSON.stringify(persistedClient));
-      // NOTE: set() keeps the old file size. trim() shrinks it once chat bodies are left out of the next save.
-      persistStorage.trim();
+
+      if (!hasTrimmed) {
+        persistStorage.trim();
+        hasTrimmed = true;
+      }
     },
     restoreClient: async (): Promise<PersistedClient | undefined> => {
       const raw = persistStorage.getString(mmkvStorageID);
