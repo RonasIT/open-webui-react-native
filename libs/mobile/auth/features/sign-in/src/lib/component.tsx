@@ -21,7 +21,8 @@ export function SignIn({ onSuccess }: SignInProps): ReactElement {
 
   const serverUrl = appStorageService.apiUrl.get() ?? '';
   const apiUrl = resolveApiUrl(serverUrl);
-  const { data: config } = appConfigurationApi.useGetServerConfiguration(apiUrl);
+  // NOTE: Never refetched here: a failed refetch would leave its error on the connect screen below.
+  const { data: config } = appConfigurationApi.useGetServerConfiguration(apiUrl, { staleTime: Infinity });
   const accessPassServerUrl = useSelector(authState$.accessPass.serverUrl);
 
   const providers = config?.oauth?.providers ?? {};

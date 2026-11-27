@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/react-native';
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
-import { RequestOptions } from '@open-webui-react-native/shared/data-access/api-client';
+import { ApiErrorData, RequestOptions } from '@open-webui-react-native/shared/data-access/api-client';
 import { refetchOnMountWithStaleCheck } from '@open-webui-react-native/shared/data-access/persist-query-helpers';
 import { appConfigurationApiConfig } from './config';
 import { Configuration } from './models';
@@ -40,11 +40,11 @@ export function useGetAppConfiguration(
 // the sign-in screen reads the checked result from the cache.
 export function useGetServerConfiguration(
   serverUrl: string,
-  options?: Omit<UseQueryOptions<Configuration, AxiosError>, 'queryKey' | 'queryFn'>,
-): UseQueryResult<Configuration, AxiosError> {
+  options?: Omit<UseQueryOptions<Configuration, AxiosError<ApiErrorData>>, 'queryKey' | 'queryFn'>,
+): UseQueryResult<Configuration, AxiosError<ApiErrorData>> {
   const configUrl = getConfigPath(serverUrl);
 
-  return useQuery<Configuration, AxiosError>({
+  return useQuery<Configuration, AxiosError<ApiErrorData>>({
     queryFn: () =>
       appConfigurationService.get({
         url: configUrl,

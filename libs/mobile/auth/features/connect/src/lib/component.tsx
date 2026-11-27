@@ -18,9 +18,10 @@ import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { normalizeServerUrl, resolveApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
-import { connectConfig } from './config';
 import { ConnectFormSchema } from './forms';
 import { hasSupportedSignIn } from './utils';
+
+const apiUrlPlaceholder = 'https://someurl.com/api';
 
 export interface ConnectProps {
   onContinue: () => void;
@@ -31,9 +32,12 @@ export function Connect({ onContinue, onSignIn }: ConnectProps): ReactElement {
   const translate = useTranslation('AUTH.CONNECT');
 
   const [isAccessWebViewVisible, setIsAccessWebViewVisible] = useState(false);
+  // NOTE: Results are shown only for the address checked by "Continue" here, not for one cached from earlier.
+  const [checkedApiUrl, setCheckedApiUrl] = useState<string>();
 
   const {
     control,
+    getValues,
     formState: { isValid, errors },
   } = useForm<ConnectFormSchema>({
     defaultValues: new ConnectFormSchema({ url: appStorageService.apiUrl.get() ?? '' }),
@@ -48,12 +52,15 @@ export function Connect({ onContinue, onSignIn }: ConnectProps): ReactElement {
   const {
     data: config,
     error,
-    isFetching,
+    fetchStatus,
     refetch,
   } = appConfigurationApi.useGetServerConfiguration(apiUrl, { enabled: false });
   const { mutate: signIn, isPending: isSigningIn } = authApi.useSignInWithEmailPassword({});
 
-  const isAccessRequired = !isFetching && isCloudflareAccessError(error);
+  // NOTE: Offline the check is paused rather than failed, so the field stays locked until it ends.
+  const isChecking = fetchStatus !== 'idle';
+  const isChecked = checkedApiUrl === apiUrl && !isChecking;
+  const isAccessRequired = isChecked && isCloudflareAccessError(error);
   const isContinueDisabled = !isValid || !serverUrl;
 
   const handleSignInWithoutAuth = (response: SignInResponse): void => {
@@ -71,7 +78,12 @@ export function Connect({ onContinue, onSignIn }: ConnectProps): ReactElement {
       return;
     }
 
+    setCheckedApiUrl(apiUrl);
     const result = await refetch();
+
+    if (normalizeServerUrl(getValues('url')) !== serverUrl) {
+      return;
+    }
 
     if (isCloudflareAccessError(result.error)) {
       setIsAccessWebViewVisible(true);
@@ -83,10 +95,6 @@ export function Connect({ onContinue, onSignIn }: ConnectProps): ReactElement {
       return;
     }
 
-    if (isAfterAccessPass) {
-      ToastService.showSuccess(translate('TEXT_SIGNED_IN_TO_CLOUDFLARE_ACCESS'));
-    }
-
     // NOTE: Saving another server drops a pass issued for a different one, so coming back asks for Access again.
     if (authState$.accessPass.get() && authState$.accessPass.serverUrl.get() !== apiUrl) {
       authState$.clearAccessPass();
@@ -94,15 +102,21 @@ export function Connect({ onContinue, onSignIn }: ConnectProps): ReactElement {
 
     appStorageService.apiUrl.set(serverUrl);
 
+    if (!hasSupportedSignIn(result.data)) {
+      return;
+    }
+
+    if (isAfterAccessPass) {
+      ToastService.showSuccess(translate('TEXT_SIGNED_IN_TO_CLOUDFLARE_ACCESS'));
+    }
+
     if (result.data.features?.auth === false) {
       signIn({ email: '', password: '' }, { onSuccess: handleSignInWithoutAuth });
 
       return;
     }
 
-    if (hasSupportedSignIn(result.data)) {
-      onContinue();
-    }
+    onContinue();
   };
 
   const handleAccessPass = (value: string): void => {
@@ -116,7 +130,7 @@ export function Connect({ onContinue, onSignIn }: ConnectProps): ReactElement {
       return errors.url.message;
     }
 
-    if (isFetching || isAccessRequired) {
+    if (!isChecked || isAccessRequired) {
       return;
     }
 
@@ -140,7 +154,7 @@ export function Connect({ onContinue, onSignIn }: ConnectProps): ReactElement {
       return;
     }
 
-    const hasOtherSignIn = !!config.features?.enableLdap || Object.keys(config.oauth?.providers ?? {}).length > 0;
+    const hasOtherSignIn = Boolean(config.features?.enableLdap) || Object.keys(config.oauth?.providers ?? {}).length > 0;
 
     return hasOtherSignIn ? translate('TEXT_SSO_PROVIDER_NOT_SUPPORTED') : translate('TEXT_SSO_MISCONFIGURED');
   };
@@ -156,15 +170,15 @@ export function Connect({ onContinue, onSignIn }: ConnectProps): ReactElement {
       <View className='w-full gap-8'>
         <FormFloatedLabelInput
           name='url'
-          testID='sign-in-api-url'
+          testID='connect-api-url'
           control={control}
-          editable={!isFetching && !isSigningIn}
+          editable={!isChecking && !isSigningIn}
           autoCapitalize='none'
           autoCorrect={false}
           secureTextEntry={false}
           returnKeyType='go'
           keyboardType='url'
-          placeholder={connectConfig.apiUrlPlaceholder}
+          placeholder={apiUrlPlaceholder}
           label={translate('TEXT_API_URL')}
           onSubmitEditing={() => handleContinue()}
           enablesReturnKeyAutomatically={true}
@@ -175,7 +189,7 @@ export function Connect({ onContinue, onSignIn }: ConnectProps): ReactElement {
           text={translate('BUTTON_CONTINUE')}
           testID='connect-continue'
           disabled={isContinueDisabled}
-          isLoading={isFetching || isSigningIn}
+          isLoading={isChecking || isSigningIn}
           className='mt-16'
           onPress={() => handleContinue()}
         />
