@@ -1,0 +1,96 @@
+{
+    "APP": {
+        "CHAT_LIST_SCREEN": {
+            "TEXT_CHATS": "Chat"
+        },
+        "SETTINGS_SCREEN": {
+            "TEXT_SETTINGS": "Profilo e impostazioni",
+            "TEXT_SECTION_GENERAL": "Generale",
+            "TEXT_SECTION_PROFILE": "Profilo",
+            "TEXT_SECTION_FEEDBACK": "Feedback",
+            "TEXT_SECTION_CHATS": "Chat",
+            "TEXT_DEFAULT_MODEL": "Modello predefinito",
+            "TEXT_DEFAULT_SYSTEM_PROMPT": "Prompt di sistema predefinito",
+            "TEXT_LANGUAGE": "Lingua",
+            "TEXT_NOT_SET": "Non impostato",
+            "TEXT_LOAD_ERROR": "Caricamento fallito",
+            "TEXT_PROFILE_NAME": "Nome profilo",
+            "TEXT_AVATAR": "Avatar",
+            "TEXT_CHANGE_PASSWORD": "Cambia password",
+            "TEXT_LOGOUT": "Esci",
+            "TEXT_REPORT_A_BUG": "Segnala un bug",
+            "TEXT_RATE_APP": "Valuta l'app",
+            "TEXT_ARCHIVED_CHATS": "Chat archiviate",
+            "TEXT_EXPORT_ALL_CHATS": "Esporta tutte le chat",
+            "TEXT_ARCHIVE_ALL": "Archivia tutto",
+            "TEXT_ARCHIVE_ALL_CHATS_TITLE": "Archivia tutte le chat",
+            "TEXT_ARCHIVE_ALL_CHATS_MESSAGE": "Sei sicuro di voler archiviare tutte le chat? Questa azione non può essere annullata.",
+            "TEXT_DELETE_ALL": "Elimina tutto",
+            "TEXT_DELETE_ALL_CHATS_TITLE": "Elimina tutte le chat",
+            "TEXT_DELETE_ALL_CHATS_MESSAGE": "Sei sicuro di voler eliminare tutte le chat? Questa azione non può essere annullata.",
+            "TEXT_ALWAYS_ON_WEB_SEARCH": "Ricerca web sempre attiva",
+            "TEXT_HAPTIC_FEEDBACK": "Feedback aptico",
+            "TEXT_ENABLE_MESSAGE_QUEUE": "Abilita coda messaggi",
+            "TEXT_CHAT_BUBBLE_UI": "Interfaccia chat bubble",
+            "TEXT_TEMPORARY_CHAT_BY_DEFAULT": "Chat temporanea per impostazione predefinita",
+            "TEXT_RENDER_MARKDOWN_IN_USER_MESSAGE": "Visualizza markdown nei messaggi utente",
+            "TEXT_MARKDOWN_RENDERER": "Motore rendering markdown",
+            "TEXT_MARKDOWN_RENDERER_DEFAULT": "Predefinito",
+            "TEXT_MARKDOWN_RENDERER_NITRO": "Sperimentale",
+            "TEXT_APP_VERSION": "Versione Open MobileUI {{version}}",
+            "TEXT_APP_AUTHOR": "di Ronas IT",
+            "PROFILE_AVATAR_SHEET": {
+                "TEXT_TITLE": "Avatar del profilo",
+                "BUTTON_UPLOAD_PROFILE_IMAGE": "Carica immagine profilo",
+                "BUTTON_RESTORE_DEFAULT_AVATAR": "Ripristina avatar predefinito",
+                "TEXT_IMAGE_TOO_LARGE": "Questa immagine è troppo grande. Scegli un'immagine più piccola",
+                "TEXT_UPLOAD_FAILED": "Elaborazione dell'immagine fallita. Prova con un'altra"
+            },
+            "PROFILE_NAME_SHEET": {
+                "TEXT_TITLE": "Nome profilo",
+                "TEXT_PROFILE_NAME": "Nome profilo"
+            },
+            "CHANGE_PASSWORD_SHEET": {
+                "TEXT_TITLE": "Cambia password",
+                "TEXT_CURRENT_PASSWORD": "Password attuale",
+                "TEXT_ENTER_CURRENT_PASSWORD": "Inserisci la tua password attuale",
+                "TEXT_NEW_PASSWORD": "Nuova password",
+                "TEXT_ENTER_NEW_PASSWORD": "Inserisci la tua nuova password",
+                "TEXT_CONFIRM_NEW_PASSWORD": "Conferma nuova password",
+                "TEXT_ENTER_CONFIRM_NEW_PASSWORD": "Ripeti la tua nuova password",
+                "TEXT_PASSWORD_CHANGED": "Password aggiornata. Accedi di nuovo."
+            },
+            "DEFAULT_MODEL_MODAL": {
+                "TEXT_SEARCH_MODEL": "Cerca modello"
+            },
+            "DEFAULT_SYSTEM_PROMPT_SHEET": {
+                "TEXT_TITLE": "Prompt di sistema predefinito",
+                "TEXT_LABEL": "Prompt di sistema predefinito"
+            },
+            "CONTACT_SUPPORT_SHEET": {
+                "TEXT_REPORT_BUG": "Segnala un bug",
+                "TEXT_YOUR_EMAIL": "La tua email",
+                "TEXT_YOUR_MESSAGE": "Il tuo messaggio",
+                "TEXT_MESSAGE_SENT": "Grazie per il feedback! Il tuo messaggio è stato inviato con successo",
+                "BUTTON_ATTACH_SCREENSHOTS_OR_VIDEO": "Allega screenshot o video",
+                "TEXT_ATTACHMENTS_LIMIT_REACHED": "Puoi allegare fino a {{count}} file"
+            },
+            "LANGUAGE_SHEET": {
+                "TEXT_TITLE": "Lingua"
+            },
+            "MARKDOWN_RENDERER_SHEET": {
+                "TEXT_TITLE": "Motore rendering markdown"
+            },
+            "TEXT_DELETE_ACCOUNT": "Elimina account",
+            "TEXT_DELETE_ACCOUNT_TITLE": "Sei sicuro di voler eliminare il tuo account?",
+            "TEXT_DELETE_ACCOUNT_MESSAGE": "Questa azione comporterà una perdita definitiva dei dati se non riceveremo tue notizie nei prossimi 30 giorni.",
+            "BUTTON_DELETE_ACCOUNT": "Sì, elimina il mio account",
+            "BUTTON_DONT_DELETE": "Non eliminare",
+            "TEXT_ACCOUNT_DELETION_REQUEST": "La richiesta di eliminazione dell'account è stata inviata.",
+            "TEXT_LOGOUT_TITLE": "Escire?",
+            "TEXT_LOGOUT_MESSAGE": "Sei sicuro di voler uscire?",
+            "BUTTON_LOGOUT": "Esci",
+            "BUTTON_CANCEL": "Annulla"
+        }
+    }
+}

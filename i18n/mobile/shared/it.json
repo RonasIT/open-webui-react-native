@@ -1,0 +1,133 @@
+{
+    "SHARED": {
+        "VALIDATION": {
+            "TEXT_INVALID_EMAIL": "Inserisci un indirizzo email valido",
+            "TEXT_REQUIRED_EMAIL": "Inserisci la tua email",
+            "TEXT_REQUIRED_PASSWORD": "Inserisci la tua password",
+            "TEXT_INVALID_URL": "Inserisci un URL API valido, es. https://tuo.dominio o http://192.168.1.10:3000",
+            "TEXT_REQUIRED_FOLDER_NAME": "Inserisci un nome cartella",
+            "TEXT_REQUIRED_MESSAGE": "Inserisci un messaggio",
+            "TEXT_REQUIRED_PROFILE_NAME": "Inserisci un nome profilo",
+            "TEXT_REQUIRED_CURRENT_PASSWORD": "Inserisci la tua password attuale",
+            "TEXT_REQUIRED_NEW_PASSWORD": "Inserisci una nuova password",
+            "TEXT_REQUIRED_CONFIRM_PASSWORD": "Conferma la nuova password",
+            "TEXT_PASSWORDS_DO_NOT_MATCH": "Le password non corrispondono",
+            "TEXT_PASSWORD_TOO_SHORT": "La password deve avere almeno 8 caratteri"
+        },
+        "COMMON": {
+            "TEXT_FEATURE_NOT_IMPLEMENTED_YET": "Funzionalità non ancora implementata.",
+            "TEXT_NEW_CHAT": "Nuova chat",
+            "BUTTON_CANCEL": "Annulla",
+            "BUTTON_CONFIRM": "Conferma",
+            "BUTTON_OPEN_SETTINGS": "Apri impostazioni",
+            "TEXT_UNABLE_TO_OPEN_SETTINGS": "Impossibile aprire le impostazioni",
+            "TEXT_UNABLE_TO_OPEN_LINK": "Impossibile aprire il link",
+            "TEXT_SETTINGS": "Impostazioni",
+            "TEXT_DISABLED_IN_OFFLINE_MODE": "Disabilitato in modalità offline",
+            "ACTIONS_BOTTOM_SHEET": {
+                "BUTTON_CANCEL": "Annulla"
+            },
+            "TEXT_COPIED_TO_CLIPBOARD": "Copiato negli appunti"
+        },
+        "API_ERRORS": {
+            "TEXT_SOMETHING_WENT_WRONG": "Si è verificato un errore",
+            "TEXT_YOUR_SESSION_HAS_EXPIRED": "La sessione è scaduta. Accedi di nuovo",
+            "TEXT_FORBIDDEN_ERROR": "Non hai accesso a questa azione",
+            "TEXT_PROXY_REJECTION": "Un proxy ha bloccato l'accesso del dispositivo. Controlla la rete o VPN, oppure contatta l'amministratore",
+            "TEXT_INTERNAL_SERVER_ERROR": "Errore nel caricamento dei dati",
+            "TEXT_NOT_FOUND_ERROR": "Dati non trovati"
+        },
+        "DATES": {
+            "TEXT_TODAY": "Oggi",
+            "TEXT_YESTERDAY": "Ieri",
+            "TEXT_LAST_DAYS": "Ultimi {{days}} giorni",
+            "TEXT_AT_TIME": "alle {{time}}",
+            "TEXT_TODAY_TIME": "Oggi alle {{time}}",
+            "TEXT_YESTERDAY_TIME": "Ieri alle {{time}}"
+        },
+        "CODE_BLOCK": {
+            "TEXT_COPIED_TO_CLIPBOARD": "Copiato negli appunti",
+            "TEXT_COPY": "Copia"
+        },
+        "SOCKET_SERVICE": {
+            "TEXT_CONNECTION_ERROR": "Errore di connessione"
+        },
+        "IMAGE_PICKER_SERVICE": {
+            "TEXT_ACCESS_DENIED": "Accesso negato"
+        },
+        "ACTION_BUTTONS_MODAL": {
+            "BUTTON_CONFIRM": "Conferma",
+            "BUTTON_CANCEL": "Annulla",
+            "TEXT_TITLE_CAN_NOT_BE_EMPTY": "Il titolo non può essere vuoto"
+        },
+        "MEDIA_LIBRARY_SERVICE": {
+            "TEXT_SUCCESSFULLY_SAVED": "Immagine salvata con successo",
+            "TEXT_ERROR_DURING_SAVING": "Si è verificato un errore durante il salvataggio dell'immagine",
+            "TEXT_SETTINGS": "Impostazioni",
+            "TEXT_SETTINGS_MESSAGE": "Consenti l'accesso alla fotocamera dalle impostazioni. Impostazioni > Open Web UI > Foto > Tutte le foto"
+        },
+        "FILE_SYSTEM_SERVICE": {
+            "TEXT_SHARE": "Condividi {{fileName}}",
+            "TEXT_SHARING_IS_NOT_AVAILABLE": "La condivisione non è disponibile su questo dispositivo"
+        },
+        "USE_AUDIO_RECORDER": {
+            "TEXT_NO_ACCESS": "Nessun accesso",
+            "TEXT_APP_NEEDS_ACCESS": "L'app ha bisogno dell'accesso al microfono del dispositivo"
+        },
+        "NO_CONNECTION_BANNER": {
+            "TEXT_YOU_ARE_OFFLINE": "Sei offline!"
+        },
+        "PRESSABLE_SEARCH_INPUT": {
+            "TEXT_SEARCH_CHATS": "Cerca chat"
+        },
+        "CHAT_ACTIONS_MENU_SHEET": {
+            "TEXT_PIN": "Fissa",
+            "TEXT_UNPIN": "Rimuovi fissaggio",
+            "TEXT_RENAME": "Rinomina",
+            "TEXT_CLONE": "Clona",
+            "TEXT_ARCHIVE": "Archivia",
+            "TEXT_RESTORE": "Ripristina",
+            "TEXT_SHARE": "Condividi",
+            "TEXT_DOWNLOAD": "Scarica",
+            "TEXT_DELETE": "Elimina",
+            "TEXT_KEEP": "Mantieni",
+            "TEXT_RENAME_CHAT": "Rinomina chat",
+            "TEXT_DELETE_CHAT": "Eliminare la chat?",
+            "TEXT_THIS_WILL_DELETE": "Questo eliminerà {{name}}",
+            "TEXT_CLONE_OF": "Clone di {{title}}",
+            "TEXT_MOVE_TO_FOLDER": "Sposta nella cartella",
+            "TEXT_CHAT_MOVED": "Chat spostata con successo",
+            "DOWNLOAD_CHAT_OPTIONS_SHEET": {
+                "TEXT_EXPORT_CHAT_JSON": "Esporta chat (.json)",
+                "TEXT_PLAIN_TEXT": "Testo normale (.txt)"
+            },
+            "MOVE_CHAT_TO_FOLDER_MODAL": {
+                "TEXT_SEARCH_FOLDER": "Cerca cartella",
+                "TEXT_CREATE_NEW_FOLDER": "Crea cartella",
+                "TEXT_NO_FOLDER": "Nessuna cartella"
+            }
+        },
+        "SEARCH_INPUT": {
+            "BUTTON_CANCEL": "Annulla",
+            "TEXT_SEARCH_CHATS": "Cerca chat"
+        },
+        "USE_ATTACHED_FILES": {
+            "TEXT_IMAGE_UPLOAD_FAILED": "Impossibile caricare la foto. Controlla la connessione e riprova"
+        },
+        "MARKDOWN_VIEW": {
+            "DIAGRAM_BLOCK": {
+                "BUTTON_CODE": "Codice",
+                "BUTTON_DIAGRAM": "Diagramma",
+                "TEXT_SHOW_CODE": "Mostra codice",
+                "TEXT_SHOW_DIAGRAM": "Mostra diagramma",
+                "TEXT_OPEN_FULLSCREEN": "Apri diagramma a schermo intero"
+            }
+        },
+        "MODEL_CONTROLS": {
+            "TEXT_STALE_CHOICE": {
+                "one": "L'opzione selezionata per {{controls}} non è più disponibile — viene usata l'opzione predefinita",
+                "other": "Le opzioni selezionate per {{controls}} non sono più disponibili — vengono usate le opzioni predefinite"
+            }
+        }
+    }
+}
