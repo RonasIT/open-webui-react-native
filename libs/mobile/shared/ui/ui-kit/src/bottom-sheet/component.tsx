@@ -62,6 +62,8 @@ export interface AppBottomSheetProps {
   onOpen?: () => void;
   withoutBackground?: boolean;
   onBackdropPress?: () => void;
+  // NOTE: A sheet the person has to answer: no swipe, backdrop or back button closes it.
+  isDismissible?: boolean;
 }
 
 export interface AppBottomSheetNonModalProps extends SetOptional<BottomSheetProps, 'snapPoints' | 'children'> {
@@ -92,6 +94,7 @@ export function AppBottomSheet({
   onOpen,
   withoutBackground,
   onBackdropPress,
+  isDismissible = true,
   ...restProps
 }: AppBottomSheetPropsType): ReactElement {
   const { top } = useSafeAreaInsets();
@@ -106,6 +109,10 @@ export function AppBottomSheet({
   }));
 
   const handleBackdropPress = (): void => {
+    if (!isDismissible) {
+      return;
+    }
+
     onBackdropPress?.();
     elementRef.current?.close();
   };
@@ -117,7 +124,7 @@ export function AppBottomSheet({
           <Animated.View style={[StyleSheet.absoluteFill, animatedStyle, { backgroundColor: 'black' }]} />
         </TouchableWithoutFeedback>
       ),
-    [isBackdropDisabled, animatedStyle],
+    [isBackdropDisabled, animatedStyle, isDismissible],
   );
 
   const renderBackground = useCallback(
@@ -173,7 +180,9 @@ export function AppBottomSheet({
 
   useBackHandler(() => {
     if (isSheetOpen && elementRef.current) {
-      elementRef.current?.close();
+      if (isDismissible) {
+        elementRef.current?.close();
+      }
 
       return true;
     }
@@ -198,7 +207,7 @@ export function AppBottomSheet({
         handleComponent={() => null}
         ref={elementRef}
         backdropComponent={renderBackdrop}
-        enablePanDownToClose={true}
+        enablePanDownToClose={isDismissible}
         {...restProps}>
         {renderedContent}
       </Component>

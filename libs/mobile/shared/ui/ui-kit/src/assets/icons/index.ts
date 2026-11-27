@@ -57,6 +57,7 @@ import play from './play.svg';
 import plusInCircle from './plus-in-circle.svg';
 import plus from './plus.svg';
 import refresh from './refresh.svg';
+import sadFace from './sad-face.svg';
 import search from './search.svg';
 import settings from './settings.svg';
 import shieldTick from './shield-tick.svg';
@@ -140,6 +141,7 @@ export const Icons = {
   play,
   pause,
   refresh,
+  sadFace,
   keyboard,
   lessText,
   moreText,

@@ -1,5 +1,6 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { useSelector } from '@legendapp/state/react';
+import { AccessPassExpiredSheet } from '@open-webui-react-native/mobile/auth/features/access-pass-expired-sheet';
 import { DiagramRenderer } from '@open-webui-react-native/mobile/shared/features/markdown-view';
 import { ToastProvider } from '@open-webui-react-native/mobile/shared/features/toast';
 import { useLogout } from '@open-webui-react-native/mobile/shared/features/use-logout';
@@ -177,6 +178,7 @@ function App(): ReactElement | null {
           </Stack.Protected>
         </Stack>
         <DiagramRenderer />
+        <AccessPassExpiredSheet />
       </View>
     </ThemeProvider>
   );

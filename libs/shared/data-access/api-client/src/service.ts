@@ -1,6 +1,6 @@
 import { ApiService } from '@ronas-it/axios-api-client';
 import { i18n } from '@ronas-it/react-native-common-modules/i18n';
-import { AxiosError, HttpStatusCode } from 'axios';
+import { AxiosError, AxiosHeaders, HttpStatusCode } from 'axios';
 import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { UserRole } from '@open-webui-react-native/shared/data-access/common';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
@@ -16,18 +16,23 @@ import {
   unauthorizedInterceptor,
 } from './interceptors';
 import { ApiErrorData } from './types';
+import { isCloudflareAccessError } from './utils/is-cloudflare-access-error';
 import { showProxyRejectionNotice } from './utils/proxy-rejection-notice';
 
 const apiServiceCache = new Map<string, ApiService>();
 
 let sessionCheck: Promise<boolean> | null = null;
 
-// NOTE: Concurrent 401s share one profile request. A 401 from it logs out on its own; on a network error the session is kept.
-const checkSession = (service: ApiService): Promise<boolean> => {
+// NOTE: Concurrent 401s share one profile request. A 401 from it logs out on its own; on a network error or an
+// expired Access pass the session is kept.
+export const checkSession = (service: ApiService): Promise<boolean> => {
   sessionCheck ??= service
     .get<{ role?: UserRole }>('v1/auths/', { skipToast: true })
     .then(({ role }) => role !== UserRole.PENDING)
-    .catch((error: AxiosError) => error.response?.status !== HttpStatusCode.Unauthorized)
+    .catch(
+      (error: AxiosError) =>
+        isCloudflareAccessError(error) || error.response?.status !== HttpStatusCode.Unauthorized,
+    )
     .finally(() => {
       sessionCheck = null;
     });
@@ -44,6 +49,18 @@ const onSessionExpired = (): void => {
   ToastService.showError(i18n.t('SHARED.API_ERRORS.TEXT_YOUR_SESSION_HAS_EXPIRED'));
 };
 
+// NOTE: A request sent with an older pass may come back after the person passed Access again: it must not reopen the sheet.
+const onAccessPassExpired = (error: AxiosError): void => {
+  const accessPass = authState$.accessPass.get();
+  const sentCookie = AxiosHeaders.from(error.config?.headers).get('Cookie');
+
+  if (accessPass && sentCookie !== `CF_Authorization=${accessPass.value}`) {
+    return;
+  }
+
+  authState$.isAccessPassExpired.set(true);
+};
+
 const setupInterceptors = (service: ApiService, apiUrl: string): void => {
   service.useInterceptors({
     request: [[requestHeadersInterceptor(apiUrl)]],
@@ -56,6 +73,7 @@ const setupInterceptors = (service: ApiService, apiUrl: string): void => {
           hasToken: () => Boolean(appStorageService.token.get()),
           checkSession: () => checkSession(service),
           onSessionExpired,
+          onAccessPassExpired,
           onError: ({ response }: AxiosError<ApiErrorData>) => {
             ToastService.showError(getErrorMessage(response?.data, response?.status));
           },

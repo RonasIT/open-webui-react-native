@@ -82,6 +82,12 @@
       "VALIDATION": {
         "TEXT_REQUIRED_RECOVERY_TOKEN": "Introduce el token de recuperación"
       }
+    },
+    "ACCESS_PASS_EXPIRED_SHEET": {
+      "TEXT_TITLE": "La sesión de Cloudflare Access ha caducado",
+      "TEXT_DESCRIPTION": "Vuelve a iniciar sesión en Cloudflare Access para continuar. Tu sesión de Open WebUI se mantiene.",
+      "BUTTON_SIGN_IN": "Iniciar sesión",
+      "BUTTON_SIGN_OUT": "Cerrar sesión"
     }
   }
 }

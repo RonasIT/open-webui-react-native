@@ -82,6 +82,12 @@
       "VALIDATION": {
         "TEXT_REQUIRED_RECOVERY_TOKEN": "请输入恢复令牌"
       }
+    },
+    "ACCESS_PASS_EXPIRED_SHEET": {
+      "TEXT_TITLE": "Cloudflare Access 会话已过期",
+      "TEXT_DESCRIPTION": "请重新登录 Cloudflare Access 以继续。你在 Open WebUI 中的登录状态会保留。",
+      "BUTTON_SIGN_IN": "登录",
+      "BUTTON_SIGN_OUT": "退出登录"
     }
   }
 }

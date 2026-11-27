@@ -82,6 +82,12 @@
       "VALIDATION": {
         "TEXT_REQUIRED_RECOVERY_TOKEN": "Please enter the recovery token"
       }
+    },
+    "ACCESS_PASS_EXPIRED_SHEET": {
+      "TEXT_TITLE": "Cloudflare Access session expired",
+      "TEXT_DESCRIPTION": "Sign in to Cloudflare Access again to continue. You stay signed in to Open WebUI.",
+      "BUTTON_SIGN_IN": "Sign in",
+      "BUTTON_SIGN_OUT": "Sign out"
     }
   }
 }

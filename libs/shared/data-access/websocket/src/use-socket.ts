@@ -1,4 +1,6 @@
+import { useSelector } from '@legendapp/state/react';
 import { useEffect } from 'react';
+import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { socketService } from './service';
 import { webSocketState$ } from './state';
@@ -9,6 +11,9 @@ interface UseSocketArgs {
 }
 
 export const useSocket = ({ isAuthenticated, isOfflineMode }: UseSocketArgs): void => {
+  // NOTE: The socket takes its headers at connect time, so a new Access pass needs a new connection.
+  const accessPassValue = useSelector(authState$.accessPass.value);
+
   const onSocketConnectionHandler = (isConnected: boolean) => () => {
     webSocketState$.isSocketConnected.set(isConnected);
   };
@@ -26,4 +31,8 @@ export const useSocket = ({ isAuthenticated, isOfflineMode }: UseSocketArgs): vo
       }
     }
   }, [isAuthenticated, isOfflineMode]);
+
+  useEffect(() => {
+    socketService.reconnectWithNewHeaders();
+  }, [accessPassValue]);
 };
