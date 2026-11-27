@@ -101,7 +101,10 @@ export function CloudflareAccessWebView({
   return (
     <FullScreenModal isVisible={isVisible}>
       <AppSafeAreaView edges={['top']} className='flex-1 bg-background-primary'>
-        <View className='flex-row justify-end px-16 py-12'>
+        <View className='flex-row items-center gap-12 px-16 py-12'>
+          <AppText className='flex-1 font-medium' numberOfLines={1}>
+            {translate('TEXT_TITLE')}
+          </AppText>
           <AppPressable onPress={onClose} hitSlop={12}>
             <AppText>{translate('BUTTON_CLOSE')}</AppText>
           </AppPressable>

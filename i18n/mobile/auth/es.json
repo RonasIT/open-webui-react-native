@@ -1,26 +1,33 @@
 {
   "AUTH": {
+    "CONNECT": {
+      "TEXT_TITLE": "Iniciar sesión",
+      "TEXT_DESCRIPTION": "Introduce la URL de tu servidor API para iniciar sesión",
+      "TEXT_API_URL": "URL de la API",
+      "BUTTON_CONTINUE": "Continuar",
+      "TEXT_SERVER_UNREACHABLE": "No se puede conectar con el servidor. Comprueba la dirección y tu conexión. Para un servidor HTTP local, escribe http:// al principio de la dirección.",
+      "TEXT_NOT_OPEN_WEBUI_SERVER": "El servidor respondió, pero no es un servidor de Open WebUI. Comprueba la dirección.",
+      "TEXT_SSO_MISCONFIGURED": "El inicio de sesión no está configurado en este servidor. Ponte en contacto con tu administrador.",
+      "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Este método de inicio de sesión aún no es compatible con la aplicación. Prueba con otra opción de inicio de sesión.",
+      "TEXT_PROTECTED_BY_CLOUDFLARE_ACCESS": "Este servidor está protegido por Cloudflare Access",
+      "TEXT_SIGNED_IN_TO_CLOUDFLARE_ACCESS": "Sesión iniciada en Cloudflare Access",
+      "TEXT_YOU_LOGGED_IN": "Has iniciado sesión.",
+      "CLOUDFLARE_ACCESS_SHEET": {
+        "TEXT_TITLE": "Iniciar sesión con Cloudflare",
+        "TEXT_DESCRIPTION": "Parece que el servidor API está protegido por Cloudflare Access. Inicia sesión con Cloudflare para continuar.",
+        "BUTTON_SIGN_IN_WITH_CLOUDFLARE": "Iniciar sesión con Cloudflare"
+      }
+    },
     "SIGN_IN": {
       "TEXT_TITLE_EXTERNAL": "Iniciar sesión",
+      "TEXT_SERVER_VIA_CLOUDFLARE_ACCESS": "{{server}} · a través de Cloudflare Access",
       "TEXT_YOU_LOGGED_IN": "Has iniciado sesión.",
-      "TEXT_NEED_HELP_OR_FEEDBACK": "¿Necesitas ayuda o tienes comentarios?",
-      "TEXT_EMAIL_RONAS_IT": "Escribir a Ronas IT",
-      "TEXT_NO_EMAIL_APP_FOUND": "No se encontró ninguna aplicación de correo. Escríbenos a {{email}}.",
       "EMAIL_FORM": {
         "TEXT_EMAIL_ADDRESS": "Correo electrónico",
         "TEXT_PASSWORD": "Contraseña",
-        "TEXT_API_URL": "URL de la API",
         "TEXT_ENTER_YOUR_PASSWORD": "Introduce tu contraseña",
         "BUTTON_SIGN_IN": "Iniciar sesión",
-        "TEXT_SSO_MISCONFIGURED": "El inicio de sesión no está configurado en este servidor. Ponte en contacto con tu administrador.",
-        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Este método de inicio de sesión aún no es compatible con la aplicación. Prueba con otra opción de inicio de sesión.",
-        "TEXT_SERVER_UNREACHABLE": "No se puede conectar con el servidor. Comprueba la dirección y tu conexión. Para un servidor HTTP local, escribe http:// al principio de la dirección.",
-        "TEXT_NOT_OPEN_WEBUI_SERVER": "El servidor respondió, pero no es un servidor de Open WebUI. Comprueba la dirección.",
-        "BUTTON_RETRY_SERVER_CHECK": "Volver a comprobar el servidor",
-        "TEXT_ACCOUNT_PENDING_APPROVAL": "Tu cuenta está pendiente de aprobación por un administrador.",
-        "TEXT_PROTECTED_BY_CLOUDFLARE_ACCESS": "Este servidor está protegido por Cloudflare Access",
-        "TEXT_SERVER_VIA_CLOUDFLARE_ACCESS": "{{server}} · a través de Cloudflare Access",
-        "BUTTON_SIGN_IN_TO_CLOUDFLARE_ACCESS": "Iniciar sesión en Cloudflare Access"
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "Tu cuenta está pendiente de aprobación por un administrador."
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Continuar con {{provider}}"
@@ -30,9 +37,15 @@
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Este método de inicio de sesión no está disponible. Usa otra opción para continuar."
       },
       "CLOUDFLARE_ACCESS_WEB_VIEW": {
+        "TEXT_TITLE": "Iniciar sesión en Cloudflare Access",
         "BUTTON_CLOSE": "Cerrar",
         "TEXT_ACCESS_PASS_NOT_RECEIVED": "No se pudo iniciar sesión en Cloudflare Access. Inténtalo de nuevo."
       }
+    },
+    "SUPPORT_LINK": {
+      "TEXT_NEED_HELP_OR_FEEDBACK": "¿Necesitas ayuda o tienes comentarios?",
+      "TEXT_EMAIL_RONAS_IT": "Escribir a Ronas IT",
+      "TEXT_NO_EMAIL_APP_FOUND": "No se encontró ninguna aplicación de correo. Escríbenos a {{email}}."
     },
     "MFA_VERIFICATION": {
       "TEXT_TITLE": "Verifica tu inicio de sesión",

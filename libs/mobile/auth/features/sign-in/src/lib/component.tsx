@@ -1,26 +1,39 @@
+import { useSelector } from '@legendapp/state/react';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
-import { ReactElement, useState } from 'react';
-import { Linking } from 'react-native';
+import { ReactElement } from 'react';
 import { EmailSignInForm } from '@open-webui-react-native/mobile/auth/features/email-sign-in-form';
 import { OauthSignIn } from '@open-webui-react-native/mobile/auth/features/oauth-sign-in';
-import { AppPressable, AppSafeAreaView, AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
-import { Provider, supportedOauthProviders } from '@open-webui-react-native/shared/data-access/api';
-import { constants, isTestApiUrl } from '@open-webui-react-native/shared/utils/config';
+import { SupportLink } from '@open-webui-react-native/mobile/auth/ui/support-link';
+import { AppSafeAreaView, AppText, View } from '@open-webui-react-native/mobile/shared/ui/ui-kit';
+import { appConfigurationApi, supportedOauthProviders } from '@open-webui-react-native/shared/data-access/api';
+import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
+import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
+import { getHost, isTestApiUrl, resolveApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
 
 export interface SignInProps {
   onSuccess: () => void;
 }
 
-export function SignIn(props: SignInProps): ReactElement {
-  const { onSuccess } = props;
+// NOTE: Opens only after the connect screen has checked and saved the server, so its config is in the cache.
+export function SignIn({ onSuccess }: SignInProps): ReactElement {
   const translate = useTranslation('AUTH.SIGN_IN');
-  const [apiUrlInput, setApiUrlInput] = useState<string>();
-  const [providers, setProviders] = useState<Partial<Record<Provider, string>>>({});
 
-  const oauthProviders = isTestApiUrl(apiUrlInput)
+  const serverUrl = appStorageService.apiUrl.get() ?? '';
+  const apiUrl = resolveApiUrl(serverUrl);
+  // NOTE: Never refetched here: a failed refetch would leave its error on the connect screen below.
+  const { data: config } = appConfigurationApi.useGetServerConfiguration(apiUrl, { staleTime: Infinity });
+  const accessPassServerUrl = useSelector(authState$.accessPass.serverUrl);
+
+  const providers = config?.oauth?.providers ?? {};
+  const oauthProviders = isTestApiUrl(serverUrl)
     ? []
     : supportedOauthProviders.filter((provider) => provider in providers);
+  const isLoginFormEnabled = config?.features?.enableLoginForm !== false;
+
+  const server = config ? `${getHost(serverUrl)} · ${config.name} ${config.version}` : getHost(serverUrl);
+  const subtitle =
+    accessPassServerUrl === apiUrl ? translate('TEXT_SERVER_VIA_CLOUDFLARE_ACCESS', { server }) : server;
 
   const handleSuccess = (): void => {
     onSuccess();
@@ -29,33 +42,18 @@ export function SignIn(props: SignInProps): ReactElement {
     }, 250);
   };
 
-  const handleSupportPress = async (): Promise<void> => {
-    const mailUrl = `mailto:${constants.supportEmail}`;
-
-    try {
-      const canOpenMailUrl = await Linking.canOpenURL(mailUrl);
-
-      if (canOpenMailUrl) {
-        await Linking.openURL(mailUrl);
-      }
-    } catch {
-      ToastService.showError(translate('TEXT_NO_EMAIL_APP_FOUND', { email: constants.supportEmail }));
-    }
-  };
-
   return (
     <AppSafeAreaView
       testID='sign-in-screen'
       edges={['bottom']}
       className='flex-1 pt-32'>
-      <View className='mb-12'>
-        <AppText className='text-h2-sm sm:text-h2 font-medium mb-24'>{translate('TEXT_TITLE_EXTERNAL')}</AppText>
+      <View className='mb-12 gap-8'>
+        <AppText className='text-h2-sm sm:text-h2 font-medium'>{translate('TEXT_TITLE_EXTERNAL')}</AppText>
+        <AppText testID='sign-in-server' className='text-sm-sm sm:text-sm text-text-secondary mb-24'>
+          {subtitle}
+        </AppText>
       </View>
-      <EmailSignInForm
-        onSuccess={handleSuccess}
-        onApiUrlChange={(url) => setApiUrlInput(url)}
-        setOauthProviders={setProviders}
-      />
+      {isLoginFormEnabled && <EmailSignInForm onSuccess={handleSuccess} />}
       {oauthProviders.map((provider) => (
         <View key={provider} className='pt-40'>
           <OauthSignIn
@@ -64,19 +62,7 @@ export function SignIn(props: SignInProps): ReactElement {
             onSuccess={handleSuccess} />
         </View>
       ))}
-      <View className='mt-auto pt-40 pb-16 gap-4'>
-        <AppText className='text-sm-sm sm:text-sm text-text-secondary text-center'>
-          {translate('TEXT_NEED_HELP_OR_FEEDBACK')}
-        </AppText>
-        <AppPressable
-          className='self-center'
-          onPress={handleSupportPress}
-          hitSlop={12}>
-          <AppText className='text-sm-sm sm:text-sm text-brand-primary text-center'>
-            {translate('TEXT_EMAIL_RONAS_IT')}
-          </AppText>
-        </AppPressable>
-      </View>
+      <SupportLink />
     </AppSafeAreaView>
   );
 }

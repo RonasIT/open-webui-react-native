@@ -17,7 +17,7 @@ export default function RootScreen(): ReactElement {
     if (!isInitialLoadingFinished) return;
 
     if (!isAuthenticated) {
-      router.replace(`/${navigationConfig.auth.signIn}`);
+      router.replace(`/${navigationConfig.auth.connect}`);
 
       return;
     }

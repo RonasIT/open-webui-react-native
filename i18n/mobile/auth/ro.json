@@ -1,26 +1,33 @@
 {
   "AUTH": {
+    "CONNECT": {
+      "TEXT_TITLE": "Conectare",
+      "TEXT_DESCRIPTION": "Introdu URL-ul serverului API pentru a te conecta",
+      "TEXT_API_URL": "URL API",
+      "BUTTON_CONTINUE": "Continuă",
+      "TEXT_SERVER_UNREACHABLE": "Serverul nu poate fi accesat. Verifică adresa și conexiunea. Pentru un server HTTP local, începe adresa cu http://.",
+      "TEXT_NOT_OPEN_WEBUI_SERVER": "Serverul a răspuns, dar nu este un server Open WebUI. Verifică adresa.",
+      "TEXT_SSO_MISCONFIGURED": "Conectarea nu este configurată pe acest server. Te rugăm să contactezi administratorul.",
+      "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Această metodă de conectare nu este încă acceptată de aplicație. Te rugăm să încerci o altă opțiune de conectare.",
+      "TEXT_PROTECTED_BY_CLOUDFLARE_ACCESS": "Acest server este protejat de Cloudflare Access",
+      "TEXT_SIGNED_IN_TO_CLOUDFLARE_ACCESS": "Conectat la Cloudflare Access",
+      "TEXT_YOU_LOGGED_IN": "Ești conectat acum.",
+      "CLOUDFLARE_ACCESS_SHEET": {
+        "TEXT_TITLE": "Conectează-te cu Cloudflare",
+        "TEXT_DESCRIPTION": "Se pare că serverul API este protejat de Cloudflare Access. Conectează-te cu Cloudflare pentru a continua.",
+        "BUTTON_SIGN_IN_WITH_CLOUDFLARE": "Conectează-te cu Cloudflare"
+      }
+    },
     "SIGN_IN": {
       "TEXT_TITLE_EXTERNAL": "Conectare",
+      "TEXT_SERVER_VIA_CLOUDFLARE_ACCESS": "{{server}} · prin Cloudflare Access",
       "TEXT_YOU_LOGGED_IN": "Ești conectat acum.",
-      "TEXT_NEED_HELP_OR_FEEDBACK": "Ai nevoie de ajutor sau vrei să trimiți feedback?",
-      "TEXT_EMAIL_RONAS_IT": "Trimite e-mail către Ronas IT",
-      "TEXT_NO_EMAIL_APP_FOUND": "Nu a fost găsită nicio aplicație de e-mail. Scrie-ne la {{email}}.",
       "EMAIL_FORM": {
         "TEXT_EMAIL_ADDRESS": "Adresă de email",
         "TEXT_PASSWORD": "Parolă",
-        "TEXT_API_URL": "URL API",
         "TEXT_ENTER_YOUR_PASSWORD": "Introdu parola",
         "BUTTON_SIGN_IN": "Conectare",
-        "TEXT_SSO_MISCONFIGURED": "Conectarea nu este configurată pe acest server. Te rugăm să contactezi administratorul.",
-        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Această metodă de conectare nu este încă acceptată de aplicație. Te rugăm să încerci o altă opțiune de conectare.",
-        "TEXT_SERVER_UNREACHABLE": "Serverul nu poate fi accesat. Verifică adresa și conexiunea. Pentru un server HTTP local, începe adresa cu http://.",
-        "TEXT_NOT_OPEN_WEBUI_SERVER": "Serverul a răspuns, dar nu este un server Open WebUI. Verifică adresa.",
-        "BUTTON_RETRY_SERVER_CHECK": "Verifică din nou serverul",
-        "TEXT_ACCOUNT_PENDING_APPROVAL": "Contul dvs. așteaptă aprobarea administratorului.",
-        "TEXT_PROTECTED_BY_CLOUDFLARE_ACCESS": "Acest server este protejat de Cloudflare Access",
-        "TEXT_SERVER_VIA_CLOUDFLARE_ACCESS": "{{server}} · prin Cloudflare Access",
-        "BUTTON_SIGN_IN_TO_CLOUDFLARE_ACCESS": "Conectează-te la Cloudflare Access"
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "Contul dvs. așteaptă aprobarea administratorului."
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "Continuă cu {{provider}}"
@@ -30,9 +37,15 @@
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "Această metodă de conectare nu este disponibilă. Te rugăm să folosești o altă opțiune pentru a continua."
       },
       "CLOUDFLARE_ACCESS_WEB_VIEW": {
+        "TEXT_TITLE": "Conectează-te la Cloudflare Access",
         "BUTTON_CLOSE": "Închide",
         "TEXT_ACCESS_PASS_NOT_RECEIVED": "Conectarea la Cloudflare Access a eșuat. Încearcă din nou."
       }
+    },
+    "SUPPORT_LINK": {
+      "TEXT_NEED_HELP_OR_FEEDBACK": "Ai nevoie de ajutor sau vrei să trimiți feedback?",
+      "TEXT_EMAIL_RONAS_IT": "Trimite e-mail către Ronas IT",
+      "TEXT_NO_EMAIL_APP_FOUND": "Nu a fost găsită nicio aplicație de e-mail. Scrie-ne la {{email}}."
     },
     "MFA_VERIFICATION": {
       "TEXT_TITLE": "Confirmă autentificarea",

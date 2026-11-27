@@ -1,45 +1,24 @@
 import * as Sentry from '@sentry/react-native';
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useEffect, useRef, useState } from 'react';
-import { RequestOptions } from '@open-webui-react-native/shared/data-access/api-client';
+import { useEffect } from 'react';
+import { ApiErrorData, RequestOptions } from '@open-webui-react-native/shared/data-access/api-client';
 import { refetchOnMountWithStaleCheck } from '@open-webui-react-native/shared/data-access/persist-query-helpers';
-import { queryClient } from '@open-webui-react-native/shared/data-access/query-client';
 import { appConfigurationApiConfig } from './config';
 import { Configuration } from './models';
 import { appConfigurationService } from './service';
 import { getConfigPath } from './utils';
 
-type UseGetAppConfigurationResult = UseQueryResult<Configuration, AxiosError> & {
-  fetchWithUrlResult: Configuration | undefined;
-  fetchWithUrl: (url: string) => Promise<Configuration | undefined>;
-  isFetchWithUrlSuccess: boolean;
-  isFetchWithUrlError: boolean;
-  isFetchWithUrlLoading: boolean;
-  fetchWithUrlError: AxiosError | undefined;
-};
+const configStaleTime = 5 * 60 * 1000;
 
 export function useGetAppConfiguration(
   options?: Omit<UseQueryOptions<Configuration, AxiosError>, 'queryKey' | 'queryFn'>,
   requestOptions?: RequestOptions,
-): UseGetAppConfigurationResult {
-  const [fetchWithUrlResult, setFetchWithUrlResult] = useState<Configuration | undefined>();
-  const [customState, setCustomState] = useState<{
-    isSuccess: boolean;
-    isError: boolean;
-    isLoading: boolean;
-    error?: AxiosError;
-  }>({
-    isSuccess: false,
-    isError: false,
-    isLoading: false,
-  });
-  const latestFetchUrlRef = useRef<string>(undefined);
-
+): UseQueryResult<Configuration, AxiosError> {
   const result = useQuery<Configuration, AxiosError>({
     queryFn: () => appConfigurationService.get(requestOptions),
     queryKey: appConfigurationApiConfig.getConfigQueryKey,
-    staleTime: 5 * 60 * 1000,
+    staleTime: configStaleTime,
     // NOTE: The cache is persisted to MMKV, so without this a launch within `staleTime` of the last
     // fetch would run entirely on the restored config — an admin flipping a feature flag would not
     // reach the app for up to five minutes. `refetchedQueries` lives in memory only, so this
@@ -48,58 +27,41 @@ export function useGetAppConfiguration(
     ...options,
   });
 
-  const fetchWithUrl = async (url: string): Promise<Configuration | undefined> => {
-    const configUrl = getConfigPath(url);
-    const isLatestFetch = (): boolean => latestFetchUrlRef.current === url;
-
-    latestFetchUrlRef.current = url;
-    setCustomState({ isSuccess: false, isError: false, isLoading: true });
-
-    try {
-      const config = await queryClient.fetchQuery({
-        queryKey: appConfigurationApiConfig.getUrlConfigQueryKey(configUrl),
-        queryFn: () =>
-          appConfigurationService.get({
-            url: configUrl,
-            skipToast: true,
-            skipSentryReport: true,
-            timeout: appConfigurationApiConfig.urlConfigRequestTimeout,
-          }),
-        meta: { persist: false },
-      });
-
-      if (!isLatestFetch()) {
-        return;
-      }
-
-      setCustomState({ isSuccess: true, isError: false, isLoading: false });
-      setFetchWithUrlResult(config);
-
-      return config;
-    } catch (error) {
-      if (isLatestFetch()) {
-        setCustomState({ isSuccess: false, isError: true, isLoading: false, error: error as AxiosError });
-      }
-    }
-  };
-
   useEffect(() => {
     if (result.isSuccess) {
       Sentry.setTag('api.version', result.data?.version);
     }
   }, [result.isSuccess, result.data?.version]);
 
-  return {
-    ...result,
-    fetchWithUrlResult,
-    fetchWithUrl,
-    isFetchWithUrlSuccess: customState.isSuccess,
-    isFetchWithUrlError: customState.isError,
-    isFetchWithUrlLoading: customState.isLoading,
-    fetchWithUrlError: customState.error,
-  };
+  return result;
+}
+
+// NOTE: The config of a server given by its URL, before or right after it is saved: the connect screen checks it,
+// the sign-in screen reads the checked result from the cache.
+export function useGetServerConfiguration(
+  serverUrl: string,
+  options?: Omit<UseQueryOptions<Configuration, AxiosError<ApiErrorData>>, 'queryKey' | 'queryFn'>,
+): UseQueryResult<Configuration, AxiosError<ApiErrorData>> {
+  const configUrl = getConfigPath(serverUrl);
+
+  return useQuery<Configuration, AxiosError<ApiErrorData>>({
+    queryFn: () =>
+      appConfigurationService.get({
+        url: configUrl,
+        skipToast: true,
+        skipSentryReport: true,
+        timeout: appConfigurationApiConfig.urlConfigRequestTimeout,
+      }),
+    queryKey: appConfigurationApiConfig.getUrlConfigQueryKey(configUrl),
+    staleTime: configStaleTime,
+    // NOTE: A wrong address is not transient: retries would only delay its error.
+    retry: false,
+    meta: { persist: false },
+    ...options,
+  });
 }
 
 export const appConfigurationApi = {
   useGetAppConfiguration,
+  useGetServerConfiguration,
 };

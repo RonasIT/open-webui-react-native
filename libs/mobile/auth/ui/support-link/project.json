@@ -1,0 +1,9 @@
+{
+  "name": "mobile/auth/ui/support-link",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mobile/auth/ui/support-link/src",
+  "projectType": "library",
+  "tags": ["app:mobile", "scope:auth", "type:ui"],
+  "// targets": "to see all targets run: nx show project mobile/auth/ui/support-link --web",
+  "targets": {}
+}

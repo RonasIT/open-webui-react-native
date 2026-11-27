@@ -5,7 +5,7 @@ import { ReactElement } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const unstable_settings = {
-  initialRouteName: navigationConfig.auth.signIn,
+  initialRouteName: navigationConfig.auth.connect,
 };
 
 export default function AuthLayout(): ReactElement {

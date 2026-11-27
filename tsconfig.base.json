@@ -31,6 +31,7 @@
       "@open-webui-react-native/mobile/auth/features/cloudflare-access-web-view": [
         "libs/mobile/auth/features/cloudflare-access-web-view/src/index.ts"
       ],
+      "@open-webui-react-native/mobile/auth/features/connect": ["libs/mobile/auth/features/connect/src/index.ts"],
       "@open-webui-react-native/mobile/auth/features/email-sign-in-form": [
         "libs/mobile/auth/features/email-sign-in-form/src/index.ts"
       ],
@@ -57,6 +58,7 @@
         "libs/mobile/auth/features/use-mfa-navigation/src/index.ts"
       ],
       "@open-webui-react-native/mobile/auth/ui/mfa-layout": ["libs/mobile/auth/ui/mfa-layout/src/index.ts"],
+      "@open-webui-react-native/mobile/auth/ui/support-link": ["libs/mobile/auth/ui/support-link/src/index.ts"],
       "@open-webui-react-native/mobile/chat/data-access/archived-chats-filter-state": [
         "libs/mobile/chat/data-access/archived-chats-filter-state/src/index.ts"
       ],

@@ -83,6 +83,7 @@ module.exports = {
       44: '2.75rem',
       48: '3rem',
       64: '4rem',
+      120: '7.5rem',
       'content-offset': '1rem',
     },
     borderRadius: {
