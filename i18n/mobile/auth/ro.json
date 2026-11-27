@@ -2,6 +2,7 @@
   "AUTH": {
     "CONNECT": {
       "TEXT_TITLE": "Conectare",
+      "TEXT_DESCRIPTION": "Introdu URL-ul serverului API pentru a te conecta",
       "TEXT_API_URL": "URL API",
       "BUTTON_CONTINUE": "Continuă",
       "TEXT_SERVER_UNREACHABLE": "Serverul nu poate fi accesat. Verifică adresa și conexiunea. Pentru un server HTTP local, începe adresa cu http://.",
@@ -10,7 +11,12 @@
       "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Această metodă de conectare nu este încă acceptată de aplicație. Te rugăm să încerci o altă opțiune de conectare.",
       "TEXT_PROTECTED_BY_CLOUDFLARE_ACCESS": "Acest server este protejat de Cloudflare Access",
       "TEXT_SIGNED_IN_TO_CLOUDFLARE_ACCESS": "Conectat la Cloudflare Access",
-      "TEXT_YOU_LOGGED_IN": "Ești conectat acum."
+      "TEXT_YOU_LOGGED_IN": "Ești conectat acum.",
+      "CLOUDFLARE_ACCESS_SHEET": {
+        "TEXT_TITLE": "Conectează-te cu Cloudflare",
+        "TEXT_DESCRIPTION": "Se pare că serverul API este protejat de Cloudflare Access. Conectează-te cu Cloudflare pentru a continua.",
+        "BUTTON_SIGN_IN_WITH_CLOUDFLARE": "Conectează-te cu Cloudflare"
+      }
     },
     "SIGN_IN": {
       "TEXT_TITLE_EXTERNAL": "Conectare",

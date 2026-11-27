@@ -12,6 +12,7 @@ import chevronLeft from './chevron-left.svg';
 import chevronRight from './chevron-right.svg';
 import closeSM from './close-sm.svg';
 import close from './close.svg';
+import cloudflare from './cloudflare.svg';
 import console from './console.svg';
 import copy from './copy.svg';
 import database from './database.svg';
@@ -106,6 +107,7 @@ export const Icons = {
   plus,
   file,
   close,
+  cloudflare,
   console,
   headphones,
   history,

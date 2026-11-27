@@ -2,6 +2,7 @@
   "AUTH": {
     "CONNECT": {
       "TEXT_TITLE": "サインイン",
+      "TEXT_DESCRIPTION": "サインインするには API サーバーの URL を入力してください",
       "TEXT_API_URL": "API URL",
       "BUTTON_CONTINUE": "続行",
       "TEXT_SERVER_UNREACHABLE": "サーバーに接続できません。アドレスと接続を確認してください。ローカル HTTP サーバーの場合は、アドレスの先頭に http:// を付けてください。",
@@ -10,7 +11,12 @@
       "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "このサインイン方法はまだアプリでサポートされていません。別のサインイン方法をお試しください。",
       "TEXT_PROTECTED_BY_CLOUDFLARE_ACCESS": "このサーバーは Cloudflare Access で保護されています",
       "TEXT_SIGNED_IN_TO_CLOUDFLARE_ACCESS": "Cloudflare Access にサインインしました",
-      "TEXT_YOU_LOGGED_IN": "ログインしました。"
+      "TEXT_YOU_LOGGED_IN": "ログインしました。",
+      "CLOUDFLARE_ACCESS_SHEET": {
+        "TEXT_TITLE": "Cloudflare でサインイン",
+        "TEXT_DESCRIPTION": "API サーバーは Cloudflare Access で保護されているようです。サインインを続けるには Cloudflare でサインインしてください。",
+        "BUTTON_SIGN_IN_WITH_CLOUDFLARE": "Cloudflare でサインイン"
+      }
     },
     "SIGN_IN": {
       "TEXT_TITLE_EXTERNAL": "サインイン",

@@ -2,6 +2,7 @@
   "AUTH": {
     "CONNECT": {
       "TEXT_TITLE": "Anmelden",
+      "TEXT_DESCRIPTION": "Geben Sie die URL Ihres API-Servers ein, um sich anzumelden",
       "TEXT_API_URL": "API-URL",
       "BUTTON_CONTINUE": "Weiter",
       "TEXT_SERVER_UNREACHABLE": "Der Server ist nicht erreichbar. Überprüfen Sie die Adresse und Ihre Verbindung. Beginnen Sie die Adresse eines lokalen HTTP-Servers mit http://.",
@@ -10,7 +11,12 @@
       "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Diese Anmeldemethode wird von der App noch nicht unterstützt. Bitte versuchen Sie eine andere Anmeldeoption.",
       "TEXT_PROTECTED_BY_CLOUDFLARE_ACCESS": "Dieser Server ist durch Cloudflare Access geschützt",
       "TEXT_SIGNED_IN_TO_CLOUDFLARE_ACCESS": "Bei Cloudflare Access angemeldet",
-      "TEXT_YOU_LOGGED_IN": "Sie sind jetzt angemeldet."
+      "TEXT_YOU_LOGGED_IN": "Sie sind jetzt angemeldet.",
+      "CLOUDFLARE_ACCESS_SHEET": {
+        "TEXT_TITLE": "Mit Cloudflare anmelden",
+        "TEXT_DESCRIPTION": "Der API-Server ist offenbar durch Cloudflare Access geschützt. Melden Sie sich bei Cloudflare an, um mit der Anmeldung fortzufahren.",
+        "BUTTON_SIGN_IN_WITH_CLOUDFLARE": "Mit Cloudflare anmelden"
+      }
     },
     "SIGN_IN": {
       "TEXT_TITLE_EXTERNAL": "Anmelden",

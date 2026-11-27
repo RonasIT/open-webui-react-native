@@ -2,6 +2,7 @@
   "AUTH": {
     "CONNECT": {
       "TEXT_TITLE": "Вход",
+      "TEXT_DESCRIPTION": "Введите URL API-сервера, чтобы войти",
       "TEXT_API_URL": "API URL",
       "BUTTON_CONTINUE": "Продолжить",
       "TEXT_SERVER_UNREACHABLE": "Не удалось связаться с сервером. Проверьте адрес и подключение к сети. Для локального HTTP-сервера укажите http:// в начале адреса.",
@@ -10,7 +11,12 @@
       "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Этот способ входа пока не поддерживается приложением. Попробуйте другой способ входа.",
       "TEXT_PROTECTED_BY_CLOUDFLARE_ACCESS": "Этот сервер защищён Cloudflare Access",
       "TEXT_SIGNED_IN_TO_CLOUDFLARE_ACCESS": "Вход в Cloudflare Access выполнен",
-      "TEXT_YOU_LOGGED_IN": "Вы вошли в систему."
+      "TEXT_YOU_LOGGED_IN": "Вы вошли в систему.",
+      "CLOUDFLARE_ACCESS_SHEET": {
+        "TEXT_TITLE": "Войти через Cloudflare",
+        "TEXT_DESCRIPTION": "Похоже, API-сервер защищён Cloudflare Access. Войдите через Cloudflare, чтобы продолжить вход.",
+        "BUTTON_SIGN_IN_WITH_CLOUDFLARE": "Войти через Cloudflare"
+      }
     },
     "SIGN_IN": {
       "TEXT_TITLE_EXTERNAL": "Вход",

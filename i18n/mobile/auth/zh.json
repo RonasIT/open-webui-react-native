@@ -2,6 +2,7 @@
   "AUTH": {
     "CONNECT": {
       "TEXT_TITLE": "登录",
+      "TEXT_DESCRIPTION": "输入 API 服务器 URL 以登录",
       "TEXT_API_URL": "API 地址",
       "BUTTON_CONTINUE": "继续",
       "TEXT_SERVER_UNREACHABLE": "无法连接到服务器。请检查地址和网络连接。如果是本地 HTTP 服务器，请在地址开头添加 http://。",
@@ -10,7 +11,12 @@
       "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "该登录方式暂不受应用支持，请尝试其他登录方式。",
       "TEXT_PROTECTED_BY_CLOUDFLARE_ACCESS": "此服务器受 Cloudflare Access 保护",
       "TEXT_SIGNED_IN_TO_CLOUDFLARE_ACCESS": "已登录 Cloudflare Access",
-      "TEXT_YOU_LOGGED_IN": "您已成功登录。"
+      "TEXT_YOU_LOGGED_IN": "您已成功登录。",
+      "CLOUDFLARE_ACCESS_SHEET": {
+        "TEXT_TITLE": "使用 Cloudflare 登录",
+        "TEXT_DESCRIPTION": "API 服务器似乎受 Cloudflare Access 保护。请使用 Cloudflare 登录以继续。",
+        "BUTTON_SIGN_IN_WITH_CLOUDFLARE": "使用 Cloudflare 登录"
+      }
     },
     "SIGN_IN": {
       "TEXT_TITLE_EXTERNAL": "登录",

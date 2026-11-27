@@ -2,6 +2,7 @@
   "AUTH": {
     "CONNECT": {
       "TEXT_TITLE": "Connexion",
+      "TEXT_DESCRIPTION": "Saisissez l'URL de votre serveur API pour vous connecter",
       "TEXT_API_URL": "URL de l’API",
       "BUTTON_CONTINUE": "Continuer",
       "TEXT_SERVER_UNREACHABLE": "Impossible de joindre le serveur. Vérifiez l’adresse et votre connexion. Pour un serveur HTTP local, commencez l’adresse par http://.",
@@ -10,7 +11,12 @@
       "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Cette méthode de connexion n’est pas encore prise en charge par l’application. Veuillez essayer une autre option de connexion.",
       "TEXT_PROTECTED_BY_CLOUDFLARE_ACCESS": "Ce serveur est protégé par Cloudflare Access",
       "TEXT_SIGNED_IN_TO_CLOUDFLARE_ACCESS": "Connecté à Cloudflare Access",
-      "TEXT_YOU_LOGGED_IN": "Vous êtes maintenant connecté."
+      "TEXT_YOU_LOGGED_IN": "Vous êtes maintenant connecté.",
+      "CLOUDFLARE_ACCESS_SHEET": {
+        "TEXT_TITLE": "Se connecter avec Cloudflare",
+        "TEXT_DESCRIPTION": "Il semble que le serveur API soit protégé par Cloudflare Access. Connectez-vous avec Cloudflare pour poursuivre la connexion.",
+        "BUTTON_SIGN_IN_WITH_CLOUDFLARE": "Se connecter avec Cloudflare"
+      }
     },
     "SIGN_IN": {
       "TEXT_TITLE_EXTERNAL": "Connexion",

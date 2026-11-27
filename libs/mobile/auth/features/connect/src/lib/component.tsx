@@ -1,9 +1,9 @@
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useTranslation } from '@ronas-it/react-native-common-modules/i18n';
 import { HttpStatusCode } from 'axios';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useRef, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import { CloudflareAccessWebView } from '@open-webui-react-native/mobile/auth/features/cloudflare-access-web-view';
 import { SupportLink } from '@open-webui-react-native/mobile/auth/ui/support-link';
 import {
   AppButton,
@@ -18,10 +18,11 @@ import { authState$ } from '@open-webui-react-native/shared/data-access/auth';
 import { appStorageService } from '@open-webui-react-native/shared/data-access/storage';
 import { normalizeServerUrl, resolveApiUrl } from '@open-webui-react-native/shared/utils/config';
 import { ToastService } from '@open-webui-react-native/shared/utils/toast-service';
+import { CloudflareAccessSheet } from './components';
 import { ConnectFormSchema } from './forms';
 import { hasSupportedSignIn } from './utils';
 
-const apiUrlPlaceholder = 'https://someurl.com/api';
+const apiUrlPlaceholder = 'https://yoururl.com/api';
 
 export interface ConnectProps {
   onContinue: () => void;
@@ -31,7 +32,7 @@ export interface ConnectProps {
 export function Connect({ onContinue, onSignIn }: ConnectProps): ReactElement {
   const translate = useTranslation('AUTH.CONNECT');
 
-  const [isAccessWebViewVisible, setIsAccessWebViewVisible] = useState(false);
+  const accessSheetRef = useRef<BottomSheetModal>(null);
   // NOTE: Results are shown only for the address checked by "Continue" here, not for one cached from earlier.
   const [checkedApiUrl, setCheckedApiUrl] = useState<string>();
 
@@ -86,7 +87,7 @@ export function Connect({ onContinue, onSignIn }: ConnectProps): ReactElement {
     }
 
     if (isCloudflareAccessError(result.error)) {
-      setIsAccessWebViewVisible(true);
+      accessSheetRef.current?.present();
 
       return;
     }
@@ -120,7 +121,7 @@ export function Connect({ onContinue, onSignIn }: ConnectProps): ReactElement {
   };
 
   const handleAccessPass = (value: string): void => {
-    setIsAccessWebViewVisible(false);
+    accessSheetRef.current?.dismiss();
     authState$.setAccessPass({ serverUrl: apiUrl, value });
     handleContinue(true);
   };
@@ -164,10 +165,9 @@ export function Connect({ onContinue, onSignIn }: ConnectProps): ReactElement {
       testID='connect-screen'
       edges={['bottom']}
       className='flex-1 pt-32'>
-      <View className='mb-12'>
-        <AppText className='text-h2-sm sm:text-h2 font-medium mb-24'>{translate('TEXT_TITLE')}</AppText>
-      </View>
-      <View className='w-full gap-8'>
+      <AppText className='text-h2-sm sm:text-h2 font-medium mb-24'>{translate('TEXT_TITLE')}</AppText>
+      <View className='w-full gap-16'>
+        <AppText className='text-md-sm sm:text-md'>{translate('TEXT_DESCRIPTION')}</AppText>
         <FormFloatedLabelInput
           name='url'
           testID='connect-api-url'
@@ -190,15 +190,14 @@ export function Connect({ onContinue, onSignIn }: ConnectProps): ReactElement {
           testID='connect-continue'
           disabled={isContinueDisabled}
           isLoading={isChecking || isSigningIn}
-          className='mt-16'
           onPress={() => handleContinue()}
         />
       </View>
       <SupportLink />
-      <CloudflareAccessWebView
-        isVisible={isAccessWebViewVisible}
+      <CloudflareAccessSheet
+        ref={accessSheetRef}
         serverUrl={apiUrl}
-        onClose={() => setIsAccessWebViewVisible(false)}
+        onClose={() => accessSheetRef.current?.dismiss()}
         onAccessPass={handleAccessPass}
       />
     </AppSafeAreaView>

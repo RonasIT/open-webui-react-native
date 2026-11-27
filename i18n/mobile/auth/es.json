@@ -2,6 +2,7 @@
   "AUTH": {
     "CONNECT": {
       "TEXT_TITLE": "Iniciar sesión",
+      "TEXT_DESCRIPTION": "Introduce la URL de tu servidor API para iniciar sesión",
       "TEXT_API_URL": "URL de la API",
       "BUTTON_CONTINUE": "Continuar",
       "TEXT_SERVER_UNREACHABLE": "No se puede conectar con el servidor. Comprueba la dirección y tu conexión. Para un servidor HTTP local, escribe http:// al principio de la dirección.",
@@ -10,7 +11,12 @@
       "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "Este método de inicio de sesión aún no es compatible con la aplicación. Prueba con otra opción de inicio de sesión.",
       "TEXT_PROTECTED_BY_CLOUDFLARE_ACCESS": "Este servidor está protegido por Cloudflare Access",
       "TEXT_SIGNED_IN_TO_CLOUDFLARE_ACCESS": "Sesión iniciada en Cloudflare Access",
-      "TEXT_YOU_LOGGED_IN": "Has iniciado sesión."
+      "TEXT_YOU_LOGGED_IN": "Has iniciado sesión.",
+      "CLOUDFLARE_ACCESS_SHEET": {
+        "TEXT_TITLE": "Iniciar sesión con Cloudflare",
+        "TEXT_DESCRIPTION": "Parece que el servidor API está protegido por Cloudflare Access. Inicia sesión con Cloudflare para continuar.",
+        "BUTTON_SIGN_IN_WITH_CLOUDFLARE": "Iniciar sesión con Cloudflare"
+      }
     },
     "SIGN_IN": {
       "TEXT_TITLE_EXTERNAL": "Iniciar sesión",
