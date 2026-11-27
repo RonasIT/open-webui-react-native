@@ -1,0 +1,57 @@
+{
+    "FOLDER": {
+        "CHATS_LIST": {
+            "TEXT_NO_CHATS": "Non ci sono chat in questa cartella."
+        },
+        "FOLDER_ACTIONS_SHEET": {
+            "TEXT_EDIT": "Modifica",
+            "TEXT_SHARE": "Condividi",
+            "TEXT_EXPORT_MY_CHATS": "Esporta le mie chat",
+            "TEXT_DELETE": "Elimina",
+            "TEXT_KEEP": "Mantieni",
+            "TEXT_DELETE_FOLDER": "Eliminare la cartella?",
+            "TEXT_THIS_WILL_DELETE": "Questo eliminerà {{name}}"
+        },
+        "SHARE_FOLDER_SHEET": {
+            "TEXT_SHARE_FOLDER": "Condividi cartella",
+            "TEXT_PRIVATE": "Privata",
+            "TEXT_PRIVATE_DESCRIPTION": "Solo utenti e gruppi selezionati con autorizzazione possono accedere",
+            "TEXT_ACCESS_LIST": "Gruppi e utenti con accesso",
+            "TEXT_READ": "Lettura",
+            "TEXT_WRITE": "Scrittura",
+            "BUTTON_ADD": "Aggiungi"
+        },
+        "SHARE_WITH_SHEET": {
+            "TEXT_SHARE_WITH": "Condividi con...",
+            "TEXT_SEARCH": "Cerca",
+            "TEXT_GROUPS": "Gruppi",
+            "TEXT_USERS": "Utenti",
+            "TEXT_NOBODY_TO_SHARE_WITH": "Non ci sono più persone con cui condividere questa cartella.",
+            "TEXT_SELECTED_COUNT": "{{groupsCount}} gruppi, {{usersCount}} utenti",
+            "BUTTON_ADD_SELECTED": "Aggiungi selezionati"
+        },
+        "UPSERT_FOLDER_SHEET": {
+            "TEXT_NEW_FOLDER": "Nuova cartella",
+            "TEXT_EDIT_FOLDER": "Modifica cartella",
+            "TEXT_FOLDER_NAME": "Nome cartella",
+            "TEXT_DOCUMENT": "Documento",
+            "TEXT_FILE": "File",
+            "TEXT_COLLECTION": "Collezione",
+            "TEXT_FOLDER_NAME_PLACEHOLDER": "es. La mia cartella",
+            "TEXT_SYSTEM_PROMPT": "Prompt di sistema",
+            "TEXT_KNOWLEDGE": "Conoscenza",
+            "BUTTON_SELECT_KNOWLEDGE": "Seleziona conoscenza",
+            "BUTTON_UPLOAD_FILES": "Carica file",
+            "TEXT_YOU_CANNOT_UPLOAD_EMPTY_FILE": "Non puoi caricare un file vuoto.",
+            "TEXT_UNSUPPORTED_TYPE": "Tipo non supportato."
+        },
+        "SELECT_KNOWLEDGE_SHEET": {
+            "TEXT_SEARCH_KNOWLEDGE": "Cerca conoscenza",
+            "TEXT_SELECT_KNOWLEDGE": "Seleziona conoscenza",
+            "TEXT_NO_KNOWLEDGE": "Non c'è conoscenza.",
+            "TEXT_COLLECTIONS": "Collezioni",
+            "TEXT_FILES": "File",
+            "TEXT_NO_FILES": "Non ci sono file."
+        }
+    }
+}
