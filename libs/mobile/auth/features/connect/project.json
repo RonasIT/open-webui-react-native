@@ -1,0 +1,9 @@
+{
+  "name": "mobile/auth/features/connect",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mobile/auth/features/connect/src",
+  "projectType": "library",
+  "tags": ["app:mobile", "scope:auth", "type:features"],
+  "// targets": "to see all targets run: nx show project mobile/auth/features/connect --web",
+  "targets": {}
+}

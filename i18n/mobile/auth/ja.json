@@ -1,26 +1,27 @@
 {
   "AUTH": {
+    "CONNECT": {
+      "TEXT_TITLE": "サインイン",
+      "TEXT_API_URL": "API URL",
+      "BUTTON_CONTINUE": "続行",
+      "TEXT_SERVER_UNREACHABLE": "サーバーに接続できません。アドレスと接続を確認してください。ローカル HTTP サーバーの場合は、アドレスの先頭に http:// を付けてください。",
+      "TEXT_NOT_OPEN_WEBUI_SERVER": "サーバーは応答しましたが、Open WebUI サーバーではありません。アドレスを確認してください。",
+      "TEXT_SSO_MISCONFIGURED": "このサーバーではサインインが設定されていません。管理者にお問い合わせください。",
+      "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "このサインイン方法はまだアプリでサポートされていません。別のサインイン方法をお試しください。",
+      "TEXT_PROTECTED_BY_CLOUDFLARE_ACCESS": "このサーバーは Cloudflare Access で保護されています",
+      "TEXT_SIGNED_IN_TO_CLOUDFLARE_ACCESS": "Cloudflare Access にサインインしました",
+      "TEXT_YOU_LOGGED_IN": "ログインしました。"
+    },
     "SIGN_IN": {
       "TEXT_TITLE_EXTERNAL": "サインイン",
+      "TEXT_SERVER_VIA_CLOUDFLARE_ACCESS": "{{server}} · Cloudflare Access 経由",
       "TEXT_YOU_LOGGED_IN": "ログインしました。",
-      "TEXT_NEED_HELP_OR_FEEDBACK": "ヘルプやフィードバックが必要ですか？",
-      "TEXT_EMAIL_RONAS_IT": "Ronas IT にメールする",
-      "TEXT_NO_EMAIL_APP_FOUND": "メールアプリが見つかりません。{{email}} 宛にご連絡ください。",
       "EMAIL_FORM": {
         "TEXT_EMAIL_ADDRESS": "メールアドレス",
         "TEXT_PASSWORD": "パスワード",
-        "TEXT_API_URL": "API URL",
         "TEXT_ENTER_YOUR_PASSWORD": "パスワードを入力",
         "BUTTON_SIGN_IN": "サインイン",
-        "TEXT_SSO_MISCONFIGURED": "このサーバーではサインインが設定されていません。管理者にお問い合わせください。",
-        "TEXT_SSO_PROVIDER_NOT_SUPPORTED": "このサインイン方法はまだアプリでサポートされていません。別のサインイン方法をお試しください。",
-        "TEXT_SERVER_UNREACHABLE": "サーバーに接続できません。アドレスと接続を確認してください。ローカル HTTP サーバーの場合は、アドレスの先頭に http:// を付けてください。",
-        "TEXT_NOT_OPEN_WEBUI_SERVER": "サーバーは応答しましたが、Open WebUI サーバーではありません。アドレスを確認してください。",
-        "BUTTON_RETRY_SERVER_CHECK": "サーバーを再確認",
-        "TEXT_ACCOUNT_PENDING_APPROVAL": "アカウントは管理者の承認待ちです。",
-        "TEXT_PROTECTED_BY_CLOUDFLARE_ACCESS": "このサーバーは Cloudflare Access で保護されています",
-        "TEXT_SERVER_VIA_CLOUDFLARE_ACCESS": "{{server}} · Cloudflare Access 経由",
-        "BUTTON_SIGN_IN_TO_CLOUDFLARE_ACCESS": "Cloudflare Access にサインイン"
+        "TEXT_ACCOUNT_PENDING_APPROVAL": "アカウントは管理者の承認待ちです。"
       },
       "OAUTH_SIGN_IN": {
         "BUTTON_CONTINUE_WITH": "{{provider}} で続行"
@@ -30,9 +31,15 @@
         "TEXT_THIS_SIGN_IN_METHOD_IS_UNAVAILABLE": "このサインイン方法は利用できません。別の方法をお試しください。"
       },
       "CLOUDFLARE_ACCESS_WEB_VIEW": {
+        "TEXT_TITLE": "Cloudflare Access にサインイン",
         "BUTTON_CLOSE": "閉じる",
         "TEXT_ACCESS_PASS_NOT_RECEIVED": "Cloudflare Access にサインインできませんでした。もう一度お試しください。"
       }
+    },
+    "SUPPORT_LINK": {
+      "TEXT_NEED_HELP_OR_FEEDBACK": "ヘルプやフィードバックが必要ですか？",
+      "TEXT_EMAIL_RONAS_IT": "Ronas IT にメールする",
+      "TEXT_NO_EMAIL_APP_FOUND": "メールアプリが見つかりません。{{email}} 宛にご連絡ください。"
     },
     "MFA_VERIFICATION": {
       "TEXT_TITLE": "サインインの確認",

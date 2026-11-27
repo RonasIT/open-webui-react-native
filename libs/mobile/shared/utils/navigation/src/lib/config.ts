@@ -16,6 +16,7 @@ const groups = {
 export const navigationConfig = {
   auth: {
     root: groups.auth,
+    connect: 'connect',
     signIn: 'sign-in',
     mfa: {
       verification: 'mfa-verification',
